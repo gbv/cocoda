@@ -4,7 +4,9 @@
       <strong>Top Concepts</strong>
       <ul class="concept" v-show="!loading">
         <li v-for="(d, i) in tops" :key="i">
-          <b-link @click="choose(d, 0)">{{ d.prefLabel.de }}</b-link>
+          <b-link @click="choose(d, 0)">
+            <notation-badge :concept="d" /> {{ d.prefLabel.de }}
+          </b-link>
         </li>
       </ul>
       <loading-indicator v-show="loading" />
