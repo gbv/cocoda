@@ -116,7 +116,12 @@ export default {
       if (this.loading) {
         this.cancelToken.cancel("Request canceled by user action.")
       } else {
-      this.loading = true
+        this.loading = true
+      }
+      if (this.concept.narrower && this.concept.narrower.length == 0) {
+        // If the narrower property is explicitly an empty list, don't load child concepts
+        this.loading = false
+        return
       }
       // Generate new cancel token
       this.cancelToken = axios.CancelToken.source()
