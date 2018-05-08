@@ -5,7 +5,7 @@
       <ul class="concept" v-show="!loading">
         <li v-for="(d, i) in tops" :key="i">
           <b-link @click="choose(d, 0)">
-            <notation-badge :concept="d" /> {{ d.prefLabel.de }}
+            <notation-badge :concept="d" /> <prefLabel-text :concept="d" />
           </b-link>
         </li>
       </ul>
@@ -20,19 +20,21 @@
         <li v-for="(p, i) in parents" :key="i">
           <b-link @click="choose(p, i)">
             <span v-for="j in i + 1" :key="j">•</span>
-            <notation-badge :concept="p" /> {{ p.prefLabel.de }}
+            <notation-badge :concept="p" /> <prefLabel-text :concept="p" />
           </b-link>
         </li>
       </ul>
       <!-- 2. Currently chosen concept and notation -->
       <div>
-        <notation-badge :concept="concept" /> <strong>{{ concept.prefLabel.de }}</strong>
+        <notation-badge :concept="concept" /> <strong><prefLabel-text :concept="concept" /></strong>
       </div>
       <!-- 3. List of child concepts -->
       <loading-indicator v-show="loading" />
       <ul class="concept conceptSmall">
         <li v-for="(c, i) in children" :key="i">
-          <b-link @click="choose(c, depth+1)">↪ <notation-badge :concept="c" /> {{ c.prefLabel.de }}</b-link>
+          <b-link @click="choose(c, depth+1)">
+            ↪ <notation-badge :concept="c" /> <prefLabel-text :concept="c" />
+          </b-link>
         </li>
       </ul>
     </span>
@@ -142,6 +144,11 @@ import Vue from 'vue'
 Vue.component('notation-badge', {
   props: ['concept'],
   template: '<b-badge v-if="concept.notation">{{ concept.notation[0] }}</b-badge>'
+})
+// Component to show prefLabel text (German over English)
+Vue.component('prefLabel-text', {
+  props: ['concept'],
+  template: '<span>{{ concept.prefLabel.de ? concept.prefLabel.de : concept.prefLabel.en }}</span>'
 })
 </script>
 
