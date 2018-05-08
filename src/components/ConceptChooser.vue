@@ -170,4 +170,7 @@ Vue.component('prefLabel-text', {
 .conceptSmall {
   font-size: 0.9em;
 }
+.badge {
+  font-family: "Courier New", Courier, monospace;
+}
 </style>
