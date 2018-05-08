@@ -56,7 +56,8 @@ export default {
       depth: 0,
       parents: [],
       children: [],
-      loading: false
+      loading: false,
+      cancelToken: axios.CancelToken.source()
     }
   },
   watch: {
@@ -108,13 +109,20 @@ export default {
     loadChildren: function() {
       this.children = []
       let vm = this
+      if (this.loading) {
+        this.cancelToken.cancel("Request canceled by user action.")
+      } else {
       this.loading = true
+      }
+      // Generate new cancel token
+      this.cancelToken = axios.CancelToken.source()
       // TODO: - Move API calls into its own class.
       axios.get('http://api.dante.gbv.de/narrower', {
         params: {
           properties: properties,
           uri: this.concept.uri
-        }
+        },
+        cancelToken: this.cancelToken.token
         })
         .then(function(response) {
           vm.children = response.data
