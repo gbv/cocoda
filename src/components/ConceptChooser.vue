@@ -46,6 +46,13 @@ import axios from 'axios'
 import LoadingIndicator from './LoadingIndicator'
 let properties = 'uri,prefLabel,broader,narrower,notation'
 
+// Helper function to sort data. Sort by notation if possible, otherwise by uri.
+function sortData(data) {
+  return data.sort(
+    (a,b) => a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri
+  )
+}
+
 export default {
   name: 'conceptchooser',
   components: {
@@ -102,7 +109,7 @@ export default {
             console.log('Another voc was chosen in the meanwhile.')
           } else {
             // Save data sorted by uri
-            vm.tops = response.data.sort( (a,b) => a.uri > b.uri )
+            vm.tops = sortData(response.data)
             vm.loading = false
           }
         }).catch(function(error) {
@@ -134,7 +141,7 @@ export default {
         cancelToken: this.cancelToken.token
         })
         .then(function(response) {
-          vm.children = response.data
+          vm.children = sortData(response.data)
           vm.loading = false
         }).catch(function(error) {
           console.log('Request failed', error)
