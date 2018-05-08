@@ -1,6 +1,6 @@
-# cocoda-2018
+# cocoda
 
-> Cocoda - Concordance App
+This repository contains the **cocoda** mapping tool web application.
 
 ## Build Setup
 

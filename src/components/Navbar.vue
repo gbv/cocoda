@@ -9,7 +9,7 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      brand: "Cocoda - Corcordance App"
+      brand: "Cocoda Prototype 2018"
     }
   }
 }
