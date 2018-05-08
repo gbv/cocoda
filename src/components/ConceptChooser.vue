@@ -18,19 +18,19 @@
         <li v-for="(p, i) in parents" :key="i">
           <b-link @click="choose(p, i)">
             <span v-for="j in i + 1" :key="j">•</span>
-            {{ p.prefLabel.de }}
+            <notation-badge :concept="p" /> {{ p.prefLabel.de }}
           </b-link>
         </li>
       </ul>
       <!-- 2. Currently chosen concept and notation -->
       <div>
-        <b-badge>{{ concept.notation ? concept.notation[0] : '?' }}</b-badge> <strong>{{ concept.prefLabel.de }}</strong>
+        <notation-badge :concept="concept" /> <strong>{{ concept.prefLabel.de }}</strong>
       </div>
       <!-- 3. List of child concepts -->
       <loading-indicator v-show="loading" />
       <ul class="concept conceptSmall">
         <li v-for="(c, i) in children" :key="i">
-          <b-link @click="choose(c, depth+1)">↪ {{ c.prefLabel.de }}</b-link>
+          <b-link @click="choose(c, depth+1)">↪ <notation-badge :concept="c" /> {{ c.prefLabel.de }}</b-link>
         </li>
       </ul>
     </span>
@@ -134,6 +134,13 @@ export default {
     }
   }
 }
+
+// Notation badge component
+import Vue from 'vue'
+Vue.component('notation-badge', {
+  props: ['concept'],
+  template: '<b-badge v-if="concept.notation">{{ concept.notation[0] }}</b-badge>'
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
