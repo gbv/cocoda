@@ -5,7 +5,7 @@
       <ul class="concept" v-show="!loading">
         <li v-for="(d, i) in tops" :key="i">
           <b-link @click="choose(d, 0)">
-            <notation-badge :concept="d" /> <prefLabel-text :concept="d" />
+            <item-name :item="d" />
           </b-link>
         </li>
       </ul>
@@ -20,20 +20,20 @@
         <li v-for="(p, i) in parents" :key="i">
           <b-link @click="choose(p, i)">
             <span v-for="j in i + 1" :key="j">•</span>
-            <notation-badge :concept="p" /> <prefLabel-text :concept="p" />
+            <item-name :item="p" />
           </b-link>
         </li>
       </ul>
       <!-- 2. Currently chosen concept and notation -->
       <div>
-        <notation-badge :concept="concept" /> <strong><prefLabel-text :concept="concept" /></strong>
+        <item-name :item="p" />
       </div>
       <!-- 3. List of child concepts -->
       <loading-indicator v-show="loading" />
       <ul class="concept conceptSmall">
         <li v-for="(c, i) in children" :key="i">
           <b-link @click="choose(c, depth+1)">
-            ↪ <notation-badge :concept="c" /> <prefLabel-text :concept="c" />
+            ↪ <item-name :item="c" />
           </b-link>
         </li>
       </ul>
@@ -44,6 +44,7 @@
 <script>
 import axios from 'axios'
 import LoadingIndicator from './LoadingIndicator'
+import ItemName from './ItemName'
 let properties = 'uri,prefLabel,broader,narrower,notation'
 
 // Helper function to sort data. Sort by notation if possible, otherwise by uri.
@@ -56,7 +57,8 @@ function sortData(data) {
 export default {
   name: 'conceptchooser',
   components: {
-    LoadingIndicator
+    LoadingIndicator,
+    ItemName
   },
   props: ['vocSelected'],
   data () {
@@ -151,20 +153,8 @@ export default {
   }
 }
 
-// Notation badge component
-import Vue from 'vue'
-Vue.component('notation-badge', {
-  props: ['concept'],
-  template: '<b-badge v-if="concept.notation">{{ concept.notation[0] }}</b-badge>'
-})
-// Component to show prefLabel text (German over English)
-Vue.component('prefLabel-text', {
-  props: ['concept'],
-  template: '<span>{{ concept.prefLabel.de ? concept.prefLabel.de : concept.prefLabel.en }}</span>'
-})
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .concept {
   font-size: 1em;
@@ -181,8 +171,5 @@ Vue.component('prefLabel-text', {
 }
 .conceptSmall {
   font-size: 0.9em;
-}
-.badge {
-  font-family: "Courier New", Courier, monospace;
 }
 </style>
