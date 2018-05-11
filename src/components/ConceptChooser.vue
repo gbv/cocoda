@@ -26,7 +26,7 @@
       </ul>
       <!-- 2. Currently chosen concept and notation -->
       <div>
-        <item-name :item="p" />
+        <strong><item-name :item="concept" /></strong>
       </div>
       <!-- 3. List of child concepts -->
       <loading-indicator v-show="loading" />

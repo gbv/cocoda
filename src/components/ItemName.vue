@@ -31,7 +31,6 @@ Vue.component('notation-badge', {
 Vue.component('prefLabel-text', {
   introduction: 'display a prefLabel (German over English)',
   props: ['item'],
-  props: ['item'],
   template: '<span>{{ item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en }}</span>'
 })
 </script>
