@@ -2,7 +2,7 @@
    <div v-if="item != null" class="conceptDetail">
       <p>Type: {{ isSchema ? "Schema" : "Concept" }}</p>
       <span v-if="detail != null">
-        <p>URI: {{ detail.uri }}</p>
+        <p>URI: <possible-link :link="detail.uri" /></p>
         <p v-if="detail.notation">
           Notations: <b-badge v-for="(notation, index) in detail.notation" :key="index">
             {{ notation }}
@@ -12,7 +12,7 @@
           Identifier:
           <ul>
             <li v-for="(identifier, index) in detail.identifier" :key="index">
-              {{ identifier }}
+              <possible-link :link="identifier" />
             </li>
           </ul>
         </p>
@@ -26,7 +26,7 @@
           License:
           <ul>
             <li v-for="(license, index) in detail.license" :key="index">
-              {{ license.uri }}
+              <possible-link :link="license.uri" />
             </li>
           </ul>
         </p>
@@ -57,6 +57,7 @@
 <script>
 import axios from 'axios'
 import LoadingIndicator from './LoadingIndicator'
+import PossibleLink from './PossibleLink'
 
 /**
  * Displays an item's (either schema or concept) details (URI, notation, identifier, ...)
@@ -67,7 +68,7 @@ export default {
   name: 'ConceptDetail',
   props: ["item", "isSchema"],
   components: {
-    LoadingIndicator
+    LoadingIndicator, PossibleLink
   },
   data () {
     return {
