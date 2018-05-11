@@ -78,6 +78,9 @@ export default {
       if (oldValue != newValue) {
         this.reloadData()
       }
+    },
+    concept: function(newValue, oldValue) {
+      this.$emit('selectedConcept', newValue != null ? newValue.uri : null)
     }
   },
   methods: {

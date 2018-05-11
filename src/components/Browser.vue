@@ -1,23 +1,26 @@
 <template>
   <b-col cols="3">
     <b-form-select v-model="vocSelected" :options="vocOptions" class="mb-3" />
-    <concept-chooser :vocSelected="vocSelected" />
+    <concept-chooser :vocSelected="vocSelected" @selectedConcept="conceptUri = $event" />
+    <concept-detail :item="conceptUri != null ? conceptUri : vocSelected" :isSchema="conceptUri == null" />
   </b-col>
 </template>
 
 <script>
 import axios from 'axios'
 import ConceptChooser from './ConceptChooser'
+import ConceptDetail from './ConceptDetail'
 
 export default {
   name: 'Browser',
   components: {
-    ConceptChooser
+    ConceptChooser, ConceptDetail
   },
   data () {
     return {
       vocSelected: null,
-      vocs: []
+      vocs: [],
+      conceptUri: null
     }
   },
   methods: {},
