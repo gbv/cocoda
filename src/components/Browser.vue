@@ -1,9 +1,9 @@
 <template>
-  <b-col cols="3">
-    <b-form-select v-model="vocSelected" :options="vocOptions" class="mb-3" />
+  <div class="browser">
+    <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
     <concept-chooser :vocSelected="vocSelected" @selectedConcept="conceptUri = $event" />
     <concept-detail :item="conceptUri != null ? conceptUri : vocSelected" :isSchema="conceptUri == null" />
-  </b-col>
+  </div>
 </template>
 
 <script>
@@ -61,5 +61,13 @@ export default {
 </script>
 
 <style scoped>
-
+.browser {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.schemaSelect {
+  flex: none;
+  margin-bottom: 10px;
+}
 </style>

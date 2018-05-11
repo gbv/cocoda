@@ -120,8 +120,10 @@ export default {
 
 <style scoped>
 .conceptDetail {
-  margin-top: 30px;
+  margin-top: 5px;
   font-size: 0.8em;
+  flex: 1;
+  overflow-y: auto;
 }
 p {
   margin: 5px 0;

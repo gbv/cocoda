@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="conceptChooser">
     <span v-if="concept == null">
       <strong>Top Concepts</strong>
       <ul class="concept" v-show="!loading">
@@ -159,6 +159,10 @@ export default {
 </script>
 
 <style scoped>
+.conceptChooser {
+  flex: 1.5;
+  overflow-y: auto;
+}
 .concept {
   font-size: 1em;
   list-style-type: none;
