@@ -22,7 +22,7 @@ import Vue from 'vue'
  */
 Vue.component('notation-badge', {
   props: ['item'],
-  template: '<b-badge v-if="item.notation.length">{{ item.notation[0] }}</b-badge>'
+  template: '<b-badge v-if="item.notation && item.notation.length">{{ item.notation[0] }}</b-badge>'
 })
 
 /**
