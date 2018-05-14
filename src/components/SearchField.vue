@@ -1,5 +1,5 @@
 <template>
-  <div class="searchfield">
+  <div class="searchfield" v-show="voc != null">
     <b-form-input
       size="sm"
       v-model="searchQuery"
@@ -48,6 +48,14 @@ export default {
         this.loading = true
         this.isOpen = true
         this.debouncedGetAnswer()
+      }
+    },
+    voc: function(newValue, oldValue) {
+      if (newValue != oldValue) {
+        this.searchQuery = ""
+        this.searchResult = []
+        this.isOpen = false
+        this.loading = false
       }
     }
   },
