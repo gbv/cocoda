@@ -1,5 +1,6 @@
 <template>
   <div class="conceptChooser">
+    <search-field :voc="vocSelected" @chooseUri="chooseFromUri($event)" />
     <span v-if="concept == null">
       <strong>Top Concepts</strong>
       <ul class="concept" v-show="!loading">
@@ -17,6 +18,7 @@
         <li>
           <b-link @click="concept = null">Top Concepts</b-link>
         </li>
+        <li v-show="loadingParents"><loading-indicator /></li>
         <li v-for="(p, i) in parents" :key="i">
           <b-link @click="choose(p, i)">
             <span v-for="j in i + 1" :key="j">•</span>
@@ -26,10 +28,11 @@
       </ul>
       <!-- 2. Currently chosen concept and notation -->
       <div>
+        <loading-indicator v-show="loading" />
         <strong><item-name :item="concept" /></strong>
       </div>
       <!-- 3. List of child concepts -->
-      <loading-indicator v-show="loading" />
+      <loading-indicator v-show="loadingChildren" />
       <ul class="concept conceptSmall">
         <li v-for="(c, i) in children" :key="i">
           <b-link @click="choose(c, depth+1)">
@@ -46,6 +49,7 @@ import axios from 'axios'
 import LoadingIndicator from './LoadingIndicator'
 import ItemName from './ItemName'
 let properties = 'uri,prefLabel,broader,narrower,notation'
+import SearchField from './SearchField'
 
 // Helper function to sort data. Sort by notation if possible, otherwise by uri.
 function sortData(data) {
@@ -58,7 +62,8 @@ export default {
   name: 'conceptchooser',
   components: {
     LoadingIndicator,
-    ItemName
+    ItemName,
+    SearchField
   },
   props: ['vocSelected'],
   data () {
@@ -70,7 +75,11 @@ export default {
       parents: [],
       children: [],
       loading: false,
-      cancelToken: axios.CancelToken.source()
+      loadingParents: false,
+      loadingChildren: false,
+      cancelToken: axios.CancelToken.source(),
+      cancelTokenParents: axios.CancelToken.source(),
+      cancelTokenChildren: axios.CancelToken.source()
     }
   },
   watch: {
@@ -96,6 +105,42 @@ export default {
       this.depth = depth
       // Load children
       this.loadChildren()
+    },
+    chooseFromUri: function(uri) {
+      // Load data for uri including all parent concepts
+      console.log("Chose via search: ", uri)
+      let vm = this
+      if (this.loading) {
+        this.cancelToken.cancel("Request canceled by user action.")
+      } else {
+        this.loading = true
+      }
+      // Generate new cancel token
+      this.cancelToken = axios.CancelToken.source()
+      // TODO: - Move API calls into its own class.
+      axios.get('http://api.dante.gbv.de/data', {
+        params: {
+          properties: properties,
+          uri: uri
+        },
+        cancelToken: this.cancelToken.token
+        })
+        .then(function(response) {
+          vm.loading = false
+          if (response.data.length == 0) {
+            console.log("Only received one result...")
+            vm.concept = null
+            vm.parents = []
+            vm.depth = 0
+          } else {
+            vm.concept = response.data[0]
+            vm.loadParents()
+            vm.loadChildren()
+          }
+        }).catch(function(error) {
+          console.log('Request failed', error)
+          vm.loading = false
+        })
     },
     reloadData: function() {
       this.tops = []
@@ -125,32 +170,65 @@ export default {
     loadChildren: function() {
       this.children = []
       let vm = this
-      if (this.loading) {
-        this.cancelToken.cancel("Request canceled by user action.")
+      if (this.loadingChildren) {
+        this.cancelTokenChildren.cancel("Request canceled by user action.")
       } else {
-        this.loading = true
+        this.loadingChildren = true
       }
       if (this.concept.narrower && this.concept.narrower.length == 0) {
         // If the narrower property is explicitly an empty list, don't load child concepts
-        this.loading = false
+        this.loadingChildren = false
         return
       }
       // Generate new cancel token
-      this.cancelToken = axios.CancelToken.source()
+      this.cancelTokenChildren = axios.CancelToken.source()
       // TODO: - Move API calls into its own class.
       axios.get('http://api.dante.gbv.de/narrower', {
         params: {
           properties: properties,
           uri: this.concept.uri
         },
-        cancelToken: this.cancelToken.token
+        cancelToken: this.cancelTokenChildren.token
         })
         .then(function(response) {
           vm.children = sortData(response.data)
-          vm.loading = false
+          vm.loadingChildren = false
         }).catch(function(error) {
           console.log('Request failed', error)
-          vm.loading = false
+          vm.loadingChildren = false
+        })
+    },
+    loadParents: function() {
+      this.parents = []
+      this.depth = 0
+      let vm = this
+      if (this.loadingParents) {
+        this.cancelTokenParents.cancel("Request canceled by user action.")
+      } else {
+        this.loadingParents = true
+      }
+      if (this.concept.broader && this.concept.broader.length == 0) {
+        // If the narrower property is explicitly an empty list, don't load child concepts
+        this.loadingParents = false
+        return
+      }
+      // Generate new cancel token
+      this.cancelTokenParents = axios.CancelToken.source()
+      // TODO: - Move API calls into its own class.
+      axios.get('http://api.dante.gbv.de/ancestors', {
+        params: {
+          properties: properties,
+          uri: this.concept.uri
+        },
+        cancelToken: this.cancelTokenParents.token
+        })
+        .then(function(response) {
+          vm.parents = response.data
+          vm.depth = vm.parents.length
+          vm.loadingParents = false
+        }).catch(function(error) {
+          console.log('Request failed', error)
+          vm.loadingParents = false
         })
     }
   }
