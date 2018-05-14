@@ -56,7 +56,7 @@ html, body {
 }
 .flexbox-row > div {
   margin: 10px 5px 2px 2px;
-  padding: 10px 7px 12px 12px;
+  padding: 10px 12px 12px 12px;
   outline: 2px solid #ccc;
   outline-offset: -5px;
   -moz-outline-radius: 9px;
