@@ -2,7 +2,7 @@
   <div class="conceptChooser">
     <search-field :voc="vocSelected" @chooseUri="chooseFromUri($event)" />
     <span v-if="concept == null">
-      <strong>Top Concepts</strong>
+      <strong v-show="vocSelected != null">Top Concepts</strong>
       <ul class="concept" v-show="!loading">
         <li v-for="(d, i) in tops" :key="i">
           <b-link @click="choose(d, 0)">
