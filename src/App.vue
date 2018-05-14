@@ -55,11 +55,22 @@ html, body {
   width: 100%;
 }
 .flexbox-row > div {
-  margin: 10px 5px 2px 2px;
-  padding: 10px 12px 12px 12px;
-  outline: 2px solid #ccc;
+  margin: 10px 6px 2px 6px;
+  padding: 10px 0px 12px 0px;
+  /* outline: 2px solid #ccc;
   outline-offset: -5px;
   -moz-outline-radius: 9px;
-  -webkit-outline-radius: 9px;
+  -webkit-outline-radius: 9px; */
  }
+
+/* Overwrite the default to keep the scrollbar always visible */
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 9px;
+}
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 5px 5px #AEAEAE;
+    border: solid 1px transparent;
+    border-radius: 6px;
+}
 </style>

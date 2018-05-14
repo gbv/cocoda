@@ -109,7 +109,8 @@ export default {
 <style scoped>
 .searchfield {
   position: relative;
-  margin: 0 15px;
+  margin: 0px 15px -10px 15px;
+  padding-top: 3px;
 }
 
 .searchfield-results {
