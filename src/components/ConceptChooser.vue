@@ -48,7 +48,7 @@
 import axios from 'axios'
 import LoadingIndicator from './LoadingIndicator'
 import ItemName from './ItemName'
-let properties = 'uri,prefLabel,broader,narrower,notation'
+let properties = 'uri,prefLabel,notation'
 import SearchField from './SearchField'
 
 // Helper function to sort data. Sort by notation if possible, otherwise by uri.

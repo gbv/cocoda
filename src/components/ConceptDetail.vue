@@ -86,7 +86,7 @@ export default {
       // Get details from API
       // TODO: - Move API calls into its own class.
       let params = {
-        properties: "*"
+        properties: "uri,identifier,altLabel,definition,license,publisher,created,issued,modified"
       }
       let url = ""
       if (this.isSchema) {
