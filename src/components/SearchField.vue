@@ -1,5 +1,5 @@
 <template>
-  <div class="searchfield" v-show="voc != null">
+  <span class="searchfield" v-show="voc != null">
     <b-form-input
       size="sm"
       v-model="searchQuery"
@@ -15,7 +15,7 @@
         {{ result[0] }}
       </li>
     </ul><br>
-  </div>
+  </span>
 </template>
 
 <script>

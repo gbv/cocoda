@@ -1,6 +1,5 @@
 <template>
   <div class="conceptChooser">
-    <search-field :voc="vocSelected" @chooseUri="chooseFromUri($event)" />
     <span v-if="concept == null">
       <strong v-show="vocSelected != null">Top Concepts</strong>
       <ul class="concept" v-show="!loading">
@@ -49,7 +48,6 @@ import axios from 'axios'
 import LoadingIndicator from './LoadingIndicator'
 import ItemName from './ItemName'
 let properties = 'uri,prefLabel,notation'
-import SearchField from './SearchField'
 
 // Helper function to sort data. Sort by notation if possible, otherwise by uri.
 function sortData(data) {
@@ -62,8 +60,7 @@ export default {
   name: 'conceptchooser',
   components: {
     LoadingIndicator,
-    ItemName,
-    SearchField
+    ItemName
   },
   props: ['vocSelected'],
   data () {

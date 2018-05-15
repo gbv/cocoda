@@ -1,7 +1,8 @@
 <template>
   <div class="browser">
     <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
-    <concept-chooser :vocSelected="vocSelected" @selectedConcept="conceptUri = $event" />
+    <search-field :voc="vocSelected" @chooseUri="$refs.conceptChooser.chooseFromUri($event)" />
+    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected" @selectedConcept="conceptUri = $event" />
     <concept-detail :item="conceptUri != null ? conceptUri : vocSelected" :isSchema="conceptUri == null" />
   </div>
 </template>
@@ -10,11 +11,12 @@
 import axios from 'axios'
 import ConceptChooser from './ConceptChooser'
 import ConceptDetail from './ConceptDetail'
+import SearchField from './SearchField'
 
 export default {
   name: 'Browser',
   components: {
-    ConceptChooser, ConceptDetail
+    ConceptChooser, ConceptDetail, SearchField
   },
   data () {
     return {
