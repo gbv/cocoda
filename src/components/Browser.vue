@@ -1,14 +1,14 @@
 <template>
   <div class="browser">
     <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
-    <search-field :voc="vocSelected" @chooseUri="$refs.conceptChooser.chooseFromUri($event)" />
-    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected" @selectedConcept="conceptUri = $event" />
-    <concept-detail :item="conceptUri != null ? conceptUri : vocSelected" :isSchema="conceptUri == null" />
+    <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptChooser.chooseFromUri($event)" />
+    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptUri = $event" />
+    <concept-detail :item="conceptUri != null ? conceptUri : (vocSelected ? vocSelected.uri : null)" :isSchema="conceptUri == null" />
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import * as api from './api'
 import ConceptChooser from './ConceptChooser'
 import ConceptDetail from './ConceptDetail'
 import SearchField from './SearchField'
@@ -37,7 +37,7 @@ export default {
         // TODO: - Support other languages.
         // TODO: - Fallback if no German label is available.
         options.push(
-          { value: voc.notation[0], text: voc.prefLabel.de }
+          { value: voc, text: voc.prefLabel.de }
         )
       }
       return options
@@ -46,15 +46,14 @@ export default {
   mounted: function () {
     // Load vocabularies/schemas
     var vm = this
-    // TODO: - Move API calls into its own class.
-    axios.get('http://api.dante.gbv.de/voc')
-      .then(function (response) {
+    api.voc()
+      .then(function(data) {
         // Save data sorted by German prefLabel
         // TODO: - Support other langauges.
         // TODO: - Fallback if no German label is available.
-        vm.vocs = response.data.sort( (a,b) => a.prefLabel.de > b.prefLabel.de )
+        vm.vocs = data.sort( (a,b) => a.prefLabel.de > b.prefLabel.de )
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log('Request failed', error)
       })
   }

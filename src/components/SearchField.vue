@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 var _ = require('lodash')
 
@@ -71,22 +71,15 @@ export default {
       this.isOpen = false
     },
     getAnswer:  function () {
-      this.searchResult = ['Thinking...']
+      this.searchResult = ['Searching...']
       var vm = this
-      axios.get('http://api.dante.gbv.de/suggest', {
-          params: {
-            voc: this.voc,
-            limit: 20,
-            search: this.searchQuery,
-            use: 'notation,label'
-          }
-        })
-        .then(function (response) {
+      api.suggest(this.searchQuery, this.voc, 20)
+        .then(function(data) {
           vm.loading = false
           vm.isOpen = true
-          vm.searchResult = _.zip(response.data[1], response.data[2], response.data[3])
+          vm.searchResult = _.zip(data[1], data[2], data[3])
         })
-        .catch(function (error) {
+        .catch(function(error) {
           vm.loading = false
           vm.searchResult = ['Error! Could not reach the API. ' + error]
         })

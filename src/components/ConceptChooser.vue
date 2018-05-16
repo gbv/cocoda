@@ -45,9 +45,9 @@
 
 <script>
 import axios from 'axios'
+import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import ItemName from './ItemName'
-let properties = 'uri,prefLabel,notation'
 
 // Helper function to sort data. Sort by notation if possible, otherwise by uri.
 function sortData(data) {
@@ -114,23 +114,16 @@ export default {
       }
       // Generate new cancel token
       this.cancelToken = axios.CancelToken.source()
-      // TODO: - Move API calls into its own class.
-      axios.get('http://api.dante.gbv.de/data', {
-        params: {
-          properties: properties,
-          uri: uri
-        },
-        cancelToken: this.cancelToken.token
-        })
-        .then(function(response) {
+      api.data(uri, api.defaultProperties, this.cancelToken.token)
+        .then(function(data) {
           vm.loading = false
-          if (response.data.length == 0) {
+          if (data.length == 0) {
             console.log("Only received one result...")
             vm.concept = null
             vm.parents = []
             vm.depth = 0
           } else {
-            vm.concept = response.data[0]
+            vm.concept = data[0]
             vm.loadParents()
             vm.loadChildren()
           }
@@ -145,18 +138,13 @@ export default {
       let selectedBefore = this.vocSelected
       let vm = this
       this.loading = true
-      // TODO: - Move API calls into its own class.
-      axios.get('http://api.dante.gbv.de/voc/'+this.vocSelected+'/top', {
-        params: {
-          properties: properties
-        }
-        })
-        .then(function(response) {
+      api.topByNotation(this.vocSelected.notation[0])
+        .then(function(data) {
           if (selectedBefore != vm.vocSelected) {
             console.log('Another voc was chosen in the meanwhile.')
           } else {
             // Save data sorted by uri
-            vm.tops = sortData(response.data)
+            vm.tops = sortData(data)
             vm.loading = false
           }
         }).catch(function(error) {
@@ -179,16 +167,9 @@ export default {
       }
       // Generate new cancel token
       this.cancelTokenChildren = axios.CancelToken.source()
-      // TODO: - Move API calls into its own class.
-      axios.get('http://api.dante.gbv.de/narrower', {
-        params: {
-          properties: properties,
-          uri: this.concept.uri
-        },
-        cancelToken: this.cancelTokenChildren.token
-        })
-        .then(function(response) {
-          vm.children = sortData(response.data)
+      api.narrower(this.concept.uri, api.defaultProperties, this.cancelTokenChildren.token)
+        .then(function(data) {
+          vm.children = sortData(data)
           vm.loadingChildren = false
         }).catch(function(error) {
           console.log('Request failed', error)
@@ -211,16 +192,9 @@ export default {
       }
       // Generate new cancel token
       this.cancelTokenParents = axios.CancelToken.source()
-      // TODO: - Move API calls into its own class.
-      axios.get('http://api.dante.gbv.de/ancestors', {
-        params: {
-          properties: properties,
-          uri: this.concept.uri
-        },
-        cancelToken: this.cancelTokenParents.token
-        })
-        .then(function(response) {
-          vm.parents = response.data
+      api.ancestors(this.concept.uri, api.defaultProperties, this.cancelTokenParents.token)
+        .then(function(data) {
+          vm.parents = data
           vm.depth = vm.parents.length
           vm.loadingParents = false
         }).catch(function(error) {

@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import PossibleLink from './PossibleLink'
 
@@ -84,27 +84,14 @@ export default {
       let vm = this
       this.loading = true
       // Get details from API
-      // TODO: - Move API calls into its own class.
-      let params = {
-        properties: "uri,identifier,altLabel,definition,license,publisher,created,issued,modified"
-      }
-      let url = ""
-      if (this.isSchema) {
-        url = 'http://api.dante.gbv.de/voc/'+this.item
-      } else {
-        url = 'http://api.dante.gbv.de/data'
-        params.uri = this.item
-      }
-      axios.get(url, {
-        params: params
-        })
-        .then(function(response) {
+      api.data(this.item, api.detailProperties)
+        .then(function(data) {
           if (itemBefore != vm.item) {
             console.log('Item changed during the request, discarding data...')
           } else {
-            if (Array.isArray(response.data) && response.data.length > 0)
-            vm.detail = response.data[0]
-            if (response.data.length > 1) {
+            if (Array.isArray(data) && data.length > 0)
+            vm.detail = data[0]
+            if (data.length > 1) {
               console.log('For some reason, more than one set of properties was received for ', vm.item)
             }
             vm.loading = false
