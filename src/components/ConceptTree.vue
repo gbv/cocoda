@@ -52,7 +52,30 @@ export default {
   },
   methods: {
     chooseFromUri: function(uri) {
-      // ...
+      // Load data for uri including all parent concepts
+      console.log("Chose via search: ", uri)
+      let vm = this
+      if (this.loading) {
+        // TODO: Cancel request via token
+      } else {
+        this.loading = true
+      }
+      // Generate new cancel token
+      // TODO
+      api.data(uri, api.defaultProperties, null)
+        .then(function(data) {
+          vm.loading = false
+          if (data.length == 0) {
+            console.log("Only received one result...")
+            vm.selected = null
+          } else {
+            vm.selected = data[0]
+          }
+          vm.loading = false
+        }).catch(function(error) {
+          console.log('Request failed', error)
+          vm.loading = false
+        })
     },
     reset: function() {
       this.tree = []
