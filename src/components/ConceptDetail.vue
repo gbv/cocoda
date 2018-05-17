@@ -57,7 +57,7 @@
 <script>
 import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
-import PossibleLink from './PossibleLink'
+import AutoLink from './AutoLink'
 
 /**
  * Displays an item's (either schema or concept) details (URI, notation, identifier, ...)
@@ -68,7 +68,7 @@ export default {
   name: 'ConceptDetail',
   props: ["item", "isSchema"],
   components: {
-    LoadingIndicator, PossibleLink
+    LoadingIndicator, AutoLink
   },
   data () {
     return {
