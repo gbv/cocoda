@@ -1,5 +1,5 @@
 <template>
-  <div v-if="item != null" class="conceptDetail">
+  <div v-if="item != null" class="conceptDetail" :class="{ conceptDetailNotLoading: !loading }">
       <span v-if="detail != null">
         <div class="parents">
           <span v-for="parent in parents" :key="parent.uri">
@@ -50,8 +50,8 @@
         </p>
       </span>
       <span v-else>
-        <div class="loading-full">
-          <loading-indicator v-show="loading" size="lg" class="loading-full-indicator" />
+        <div v-if="loading" class="loadingFull">
+          <loading-indicator size="lg"  />
         </div>
       </span>
    </div>
@@ -132,6 +132,8 @@ export default {
   font-size: 0.8em;
   flex: 1;
   overflow-y: auto;
+}
+.conceptDetailNotLoading {
   padding: 2px 8px 2px 8px;
 }
 p {
@@ -150,16 +152,16 @@ ul {
 .parents > span {
   margin-right: 5px;
 }
-.loading-full {
+.loadingFull {
   width: 100%;
   height: 100%;
   position: relative;
-}
-.loading-full-indicator {
-  position: absolute;
-  top: 40%;
-  bottom: 40%;
-  left: 40%;
-  right: 40%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #bbbbbb55;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
