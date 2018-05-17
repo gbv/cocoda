@@ -174,6 +174,7 @@ export default {
   width: 100%;
   position: absolute;
   background-color: white;
+  z-index: 10;
 }
 
 .searchfield-result {
