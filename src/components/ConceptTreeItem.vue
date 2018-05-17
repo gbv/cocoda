@@ -85,7 +85,7 @@ export default {
       newConcept.isOpen = isOpen
       this.update(newConcept)
       this.loadChildren()
-      if (isOpen && this.childrenLoaded) {
+      if (isOpen && this.childrenLoaded && this.hasChildren) {
         this.scrollTo()
       }
     },
