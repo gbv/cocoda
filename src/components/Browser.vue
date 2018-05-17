@@ -1,22 +1,22 @@
 <template>
   <div class="browser">
     <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
-    <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptChooser.chooseFromUri($event)" />
-    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptUri = $event" />
+    <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
+    <concept-tree ref="conceptTree" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptUri = $event" />
     <concept-detail :item="conceptUri != null ? conceptUri : (vocSelected ? vocSelected.uri : null)" :isSchema="conceptUri == null" />
   </div>
 </template>
 
 <script>
 import * as api from './api'
-import ConceptChooser from './ConceptChooser'
+import ConceptTree from './ConceptTree'
 import ConceptDetail from './ConceptDetail'
 import SearchField from './SearchField'
 
 export default {
   name: 'Browser',
   components: {
-    ConceptChooser, ConceptDetail, SearchField
+    ConceptTree, ConceptDetail, SearchField
   },
   data () {
     return {
