@@ -28,7 +28,7 @@
         @hovered="hovering($event)"
         @selected="select($event)" />
     </div>
-    <loading-indicator v-show="loadingChildren" />
+    <loading-indicator v-show="loadingChildren" size="sm" style="margin-left: 36px" />
   </div>
 </template>
 
