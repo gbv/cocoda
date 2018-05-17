@@ -67,6 +67,9 @@ export default {
     },
     isSelected() {
       return this.selected != null ? this.selected.uri == this.concept.uri : false
+    },
+    childrenLoaded() {
+      return !this.concept.narrower || !this.concept.narrower.includes(null)
     }
   },
   watch: {},
@@ -82,6 +85,9 @@ export default {
       newConcept.isOpen = isOpen
       this.update(newConcept)
       this.loadChildren()
+      if (isOpen && this.childrenLoaded) {
+        this.scrollTo()
+      }
     },
     select(concept) {
       this.$emit('selected', concept)
@@ -94,7 +100,7 @@ export default {
       }
     },
     loadChildren() {
-      if (!this.hasChildren) {
+      if (!this.hasChildren || this.childrenLoaded) {
         return
       }
       let children = []
@@ -116,10 +122,37 @@ export default {
           }
           newConcept.narrower = children
           vm.update(newConcept)
+          vm.scrollTo()
         }).catch(function(error) {
           console.log('Request failed', error)
           vm.loadingChildren = false
         })
+    },
+    scrollTo() {
+      // Determine conceptTree element because it is the scrolling container
+      let parent = this.$parent
+      while (!parent.$el.classList.contains('conceptTree')) {
+        parent = parent.$parent
+      }
+      // Scroll element
+      var options = {
+        container: parent.$el,
+        easing: 'ease-in',
+        offset: -20,
+        cancelable: true,
+        onStart: function(element) {
+          // scrolling started
+        },
+        onDone: function(element) {
+          // scrolling is done
+        },
+        onCancel: function() {
+          // scrolling has been interrupted
+        },
+        x: false,
+        y: true
+      }
+      this.$scrollTo(this.$el, 200, options)
     }
   }
 }
