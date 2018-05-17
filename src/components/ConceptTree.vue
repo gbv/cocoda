@@ -1,5 +1,5 @@
 <template>
-  <div class="conceptTree">
+  <div class="conceptTree" :class="{ conceptTreeNotLoading: !loading }">
     <concept-tree-item
       v-for="(concept, index) in tree"
       :key="index"
@@ -11,6 +11,9 @@
       @hovered="hovered = $event"
       @selected="selected = $event"
       @update="update($event)" />
+    <div v-if="loading" class="loadingFull">
+      <loading-indicator size="lg"  />
+    </div>
   </div>
 </template>
 
@@ -155,6 +158,9 @@ Array.prototype.pathForUri = function(uri, recursive = false, path = []) {
   flex: 1.5;
   overflow-y: auto;
 }
+.conceptTreeNotLoading {
+  padding: 2px 8px 2px 8px;
+}
 .concept {
   font-size: 1em;
   list-style-type: none;
@@ -170,5 +176,17 @@ Array.prototype.pathForUri = function(uri, recursive = false, path = []) {
 }
 .conceptSmall {
   font-size: 0.9em;
+}
+.loadingFull {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #bbbbbb55;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

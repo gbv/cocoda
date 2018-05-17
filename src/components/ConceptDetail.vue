@@ -132,6 +132,7 @@ export default {
   font-size: 0.8em;
   flex: 1;
   overflow-y: auto;
+  padding: 2px 8px 2px 8px;
 }
 p {
   margin: 5px 0;

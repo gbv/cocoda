@@ -72,7 +72,6 @@ export default {
   margin-bottom: 5px;
 }
 .browser > div {
-  padding: 2px 8px 2px 8px;
   outline: 1px solid #ccc;
 }
 </style>
