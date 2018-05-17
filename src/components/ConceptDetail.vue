@@ -1,13 +1,14 @@
 <template>
-   <div v-if="item != null" class="conceptDetail">
-      <p>Type: {{ isSchema ? "Schema" : "Concept" }}</p>
+  <div v-if="item != null" class="conceptDetail">
       <span v-if="detail != null">
-        <p>URI: <possible-link :link="detail.uri" /></p>
-        <p v-if="detail.notation">
-          Notations: <b-badge v-for="(notation, index) in detail.notation" :key="index">
-            {{ notation }}
-          </b-badge>
-        </p>
+        <div class="parents">
+          <span v-for="parent in parents" :key="parent.uri">
+            <item-name :item="parent" /> →
+          </span>
+        </div>
+        <loading-indicator v-show="loadingParents" size="sm" />
+        <item-name :item="detail" class="label" />
+        <p>{{ isSchema ? "Schema" : "Concept" }} - <possible-link :link="detail.uri" /></p>
         <p v-if="detail.identifier">
           Identifier:
           <ul>
@@ -49,7 +50,9 @@
         </p>
       </span>
       <span v-else>
-        <loading-indicator v-show="loading" />
+        <div class="loading-full">
+          <loading-indicator v-show="loading" size="lg" class="loading-full-indicator" />
+        </div>
       </span>
    </div>
 </template>
@@ -58,6 +61,7 @@
 import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import PossibleLink from './PossibleLink'
+import ItemName from './ItemName'
 
 /**
  * Displays an item's (either schema or concept) details (URI, notation, identifier, ...)
@@ -68,12 +72,14 @@ export default {
   name: 'ConceptDetail',
   props: ["item", "isSchema"],
   components: {
-    LoadingIndicator, PossibleLink
+    LoadingIndicator, PossibleLink, ItemName
   },
   data () {
     return {
       detail: null,
-      loading: false
+      loading: false,
+      loadingParents: false,
+      parents: []
     }
   },
   watch: {
@@ -84,7 +90,7 @@ export default {
       let vm = this
       this.loading = true
       // Get details from API
-      api.data(this.item, api.detailProperties)
+      api.data(this.item.uri, api.detailProperties)
         .then(function(data) {
           if (itemBefore != vm.item) {
             console.log('Item changed during the request, discarding data...')
@@ -99,6 +105,21 @@ export default {
         }).catch(function(error) {
           console.log('Request failed', error)
           vm.loading = false
+        })
+      // Get ancestors from API
+      this.parents = []
+      if (this.loadingParents) {
+        // TODO: Cancel previous load request
+      } else {
+        this.loadingParents = true
+      }
+      api.ancestors(this.item.uri, api.defaultProperties, null)
+        .then(function(data) {
+          vm.parents = data
+          vm.loadingParents = false
+        }).catch(function(error) {
+          console.log('Request failed', error)
+          vm.loadingParents = false
         })
     }
   }
@@ -117,5 +138,27 @@ p {
 }
 ul {
   margin-bottom: 0px;
+}
+.label {
+  font-size: 1.5em;
+}
+.parents {
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+.parents > span {
+  margin-right: 5px;
+}
+.loading-full {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.loading-full-indicator {
+  position: absolute;
+  top: 40%;
+  bottom: 40%;
+  left: 40%;
+  right: 40%;
 }
 </style>

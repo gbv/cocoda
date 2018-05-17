@@ -2,8 +2,8 @@
   <div class="browser">
     <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
     <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptChooser.chooseFromUri($event)" />
-    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptUri = $event" />
-    <concept-detail :item="conceptUri != null ? conceptUri : (vocSelected ? vocSelected.uri : null)" :isSchema="conceptUri == null" />
+    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptSelected = $event" />
+    <concept-detail :item="conceptSelected != null ? conceptSelected : vocSelected" :isSchema="conceptSelected == null" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
     return {
       vocSelected: null,
       vocs: [],
-      conceptUri: null
+      conceptSelected: null
     }
   },
   methods: {},
