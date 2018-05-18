@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 var _ = require('lodash')
 
@@ -98,7 +97,7 @@ export default {
     getAnswer:  function () {
       this.searchResult = ['Searching...']
       var vm = this
-      api.suggest(this.searchQuery, this.voc, 20)
+      this.$api.suggest(this.searchQuery, this.voc, 20)
         .then(function(data) {
           vm.loading = false
           vm.searchResult = _.zip(data[1], data[2], data[3])

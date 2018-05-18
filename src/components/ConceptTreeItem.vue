@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import ItemName from './ItemName'
 
@@ -112,7 +111,7 @@ export default {
       }
       // Generate new cancel token
       // this.cancelTokenChildren = axios.CancelToken.source()
-      api.narrower(this.concept.uri, api.defaultProperties)
+      this.$api.narrower(this.concept.uri, this.$api.defaultProperties)
         .then(function(data) {
           vm.loadingChildren = false
           let newConcept = vm.concept

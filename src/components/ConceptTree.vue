@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import ConceptTreeItem from './ConceptTreeItem'
 
@@ -67,7 +66,7 @@ export default {
       }
       // Generate new cancel token
       // TODO
-      api.data(uri, api.defaultProperties, null)
+      this.$api.data(uri, this.$api.defaultProperties, null)
         .then(function(data) {
           vm.loading = false
           if (data.length == 0) {
@@ -89,7 +88,7 @@ export default {
       this.loading = true
       let selectedBefore = this.vocSelected
       let vm = this
-      api.topByNotation(this.vocSelected.notation[0])
+      this.$api.topByNotation(this.vocSelected.notation[0])
         .then(function(data) {
           if (selectedBefore != vm.vocSelected) {
             console.log('Another voc was chosen in the meanwhile.')

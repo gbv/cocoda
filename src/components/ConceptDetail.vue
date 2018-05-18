@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import PossibleLink from './PossibleLink'
 import ItemName from './ItemName'
@@ -88,7 +87,7 @@ export default {
       let vm = this
       this.loading = true
       // Get details from API
-      api.data(this.item.uri, api.detailProperties)
+      this.$api.data(this.item.uri, this.$api.detailProperties)
         .then(function(data) {
           if (itemBefore != vm.item) {
             console.log('Item changed during the request, discarding data...')
@@ -111,7 +110,7 @@ export default {
       } else {
         this.loadingParents = true
       }
-      api.ancestors(this.item.uri, api.defaultProperties, null)
+      this.$api.ancestors(this.item.uri, this.$api.defaultProperties, null)
         .then(function(data) {
           vm.parents = data
           vm.loadingParents = false

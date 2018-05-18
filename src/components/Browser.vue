@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import * as api from './api'
 import ConceptTree from './ConceptTree'
 import ConceptDetail from './ConceptDetail'
 import SearchField from './SearchField'
@@ -46,7 +45,7 @@ export default {
   mounted: function () {
     // Load vocabularies/schemas
     var vm = this
-    api.voc()
+    this.$api.voc()
       .then(function(data) {
         // Save data sorted by German prefLabel
         // TODO: - Support other langauges.

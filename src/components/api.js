@@ -3,8 +3,7 @@
  * @module components/api
  *
  * Usage:
- * import * as api from './api'
- * api.voc().then(function(data) {
+ * this.$api.voc().then(function(data) {
  *   // do something with data
  * }).catch(function(error) {
  *   // do something with error
