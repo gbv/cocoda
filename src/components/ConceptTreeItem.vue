@@ -60,7 +60,7 @@ export default {
       return !this.concept.narrower || this.concept.narrower.length != 0
     },
     isOpen() {
-      return this.concept.isOpen ? true : false
+      return this.concept.ISOPEN ? true : false
     },
     isHovered() {
       return this.hovered != null ? this.hovered.uri == this.concept.uri : false
@@ -82,7 +82,7 @@ export default {
     },
     open(isOpen) {
       let newConcept = this.concept
-      newConcept.isOpen = isOpen
+      newConcept.ISOPEN = isOpen
       this.update(newConcept)
       this.loadChildren()
       if (isOpen && this.childrenLoaded && this.hasChildren) {
@@ -116,11 +116,7 @@ export default {
         .then(function(data) {
           vm.loadingChildren = false
           let newConcept = vm.concept
-          let children = sortData(data)
-          for (var i = 0; i < children.length; i++) {
-            children[i].isOpen = false
-          }
-          newConcept.narrower = children
+          newConcept.narrower = sortData(data)
           vm.update(newConcept)
           vm.scrollTo()
         }).catch(function(error) {

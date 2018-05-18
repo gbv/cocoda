@@ -105,7 +105,7 @@ export default {
         })
         .catch(function(error) {
           vm.loading = false
-          vm.searchResult = ['Error! Could not reach the API. ' + error]
+          vm.searchResult = [['Error! Could not reach the API. ' + error]]
         })
     },
     handleClickOutside(evt) {

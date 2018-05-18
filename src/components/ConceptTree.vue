@@ -95,11 +95,7 @@ export default {
             console.log('Another voc was chosen in the meanwhile.')
           } else {
             // Save data sorted by uri
-            let tree = sortData(data)
-            for (var i = 0; i < tree.length; i++) {
-              tree[i].isOpen = false
-            }
-            vm.tree = tree
+            vm.tree = sortData(data)
             vm.loading = false
           }
         }).catch(function(error) {
