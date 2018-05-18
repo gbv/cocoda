@@ -60,6 +60,7 @@ export default {
         },
         loadChildren: function(concept, callback = null) {
           if ( (concept.narrower.length > 0 && !concept.narrower.includes(null)) || concept.narrower.length == 0 ) {
+            callback && callback(true)
             return
           }
           let treeHelper = this
@@ -67,6 +68,10 @@ export default {
             .then(function(data) {
               let newConcept = concept
               newConcept.narrower = sortData(data)
+              // Add ancestors to all children
+              for (var child of newConcept.narrower) {
+                child.ancestors = concept.ancestors.concat([concept])
+              }
               treeHelper.update(newConcept)
               callback && callback(true)
             }).catch(function(error) {
@@ -173,6 +178,10 @@ export default {
           } else {
             // Save data sorted by uri
             vm.tree = sortData(data)
+            // Top do not have ancestors
+            for (var top of vm.tree) {
+              top.ancestors = []
+            }
             vm.loading = false
           }
         }).catch(function(error) {

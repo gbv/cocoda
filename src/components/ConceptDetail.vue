@@ -1,12 +1,12 @@
 <template>
   <div v-if="item != null" class="conceptDetail">
       <div v-if="detail != null" class="conceptDetailContent">
-        <div class="parents">
-          <span v-for="parent in parents" :key="parent.uri">
+        <div class="parents" v-if="item.ancestors.length > 0 && (item.ancestors.length > 1 || !item.ancestors.includes(null))">
+          <span v-for="(parent, index) in item.ancestors" :key="index">
             <item-name :item="parent" /> →
           </span>
         </div>
-        <loading-indicator v-show="loadingParents" size="sm" />
+        <span v-else><loading-indicator v-show="item.ancestors.length != 0" size="sm" /></span>
         <item-name :item="detail" class="label" />
         <p>{{ isSchema ? "Schema" : "Concept" }} - <possible-link :link="detail.uri" /></p>
         <p v-if="detail.identifier">
@@ -74,9 +74,7 @@ export default {
   data () {
     return {
       detail: null,
-      loading: false,
-      loadingParents: false,
-      parents: []
+      loading: false
     }
   },
   watch: {
@@ -102,21 +100,6 @@ export default {
         }).catch(function(error) {
           console.log('Request failed', error)
           vm.loading = false
-        })
-      // Get ancestors from API
-      this.parents = []
-      if (this.loadingParents) {
-        // TODO: Cancel previous load request
-      } else {
-        this.loadingParents = true
-      }
-      this.$api.ancestors(this.item.uri, this.$api.defaultProperties, null)
-        .then(function(data) {
-          vm.parents = data
-          vm.loadingParents = false
-        }).catch(function(error) {
-          console.log('Request failed', error)
-          vm.loadingParents = false
         })
     }
   }
