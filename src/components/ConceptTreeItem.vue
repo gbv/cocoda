@@ -25,6 +25,7 @@
         :hovered="hovered"
         :depth="depth + 1"
         :index="index"
+        :treeHelper="treeHelper"
         @hovered="hovering($event)"
         @selected="select($event)" />
     </div>
@@ -48,7 +49,7 @@ export default {
   components: {
     LoadingIndicator, ItemName
   },
-  props: ['concept', 'selected', 'hovered', 'depth', 'index'],
+  props: ['concept', 'selected', 'hovered', 'depth', 'index', 'treeHelper'],
   data () {
     return {
       loadingChildren: false
@@ -76,13 +77,10 @@ export default {
     hovering(el) {
       this.$emit('hovered', el)
     },
-    update(concept) {
-      this.$emit('update', concept)
-    },
     open(isOpen) {
       let newConcept = this.concept
       newConcept.ISOPEN = isOpen
-      this.update(newConcept)
+      this.treeHelper.update(newConcept)
       this.loadChildren()
       if (isOpen && this.childrenLoaded && this.hasChildren) {
         this.scrollTo()
@@ -99,29 +97,12 @@ export default {
       }
     },
     loadChildren() {
-      if (!this.hasChildren || this.childrenLoaded) {
-        return
-      }
-      let children = []
+      this.loadingChildren = true
       let vm = this
-      if (this.loadingChildren) {
-        // Possibly cancel token
-      } else {
-        this.loadingChildren = true
-      }
-      // Generate new cancel token
-      // this.cancelTokenChildren = axios.CancelToken.source()
-      this.$api.narrower(this.concept.uri, this.$api.defaultProperties)
-        .then(function(data) {
-          vm.loadingChildren = false
-          let newConcept = vm.concept
-          newConcept.narrower = sortData(data)
-          vm.update(newConcept)
-          vm.scrollTo()
-        }).catch(function(error) {
-          console.log('Request failed', error)
-          vm.loadingChildren = false
-        })
+      this.treeHelper.loadChildren(this.concept, function(success) {
+        vm.loadingChildren = false
+        vm.scrollTo()
+      })
     },
     scrollTo() {
       // Determine conceptTree element because it is the scrolling container

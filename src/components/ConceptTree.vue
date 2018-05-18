@@ -9,9 +9,9 @@
         :hovered="hovered"
         :depth="0"
         :index="index"
+        :treeHelper="treeHelper"
         @hovered="hovered = $event"
-        @selected="selected = $event"
-        @update="update($event)" />
+        @selected="selected = $event" />
     </div>
     <div v-if="loading" class="loadingFull">
       <loading-indicator size="lg" />
@@ -41,8 +41,86 @@ export default {
       tree: [],
       selected: null,
       loading: false,
-      hovered: null
+      hovered: null,
+      treeHelper: {
+        vm: null, // Has to be set to component's "this" before first use
+        update: function(concept) {
+          // Recursively search for concept by uri and update it
+          let path = this.getPath(concept.uri, true)
+          if (path != null) {
+            let lastIndex = path.pop()
+            let element = this.vm.tree
+            for (var index of path) {
+              element = element[index].narrower
+            }
+            element[lastIndex] = concept
+          } else {
+            console.log("Could not determine path for uri", concept.uri)
+          }
+        },
+        loadChildren: function(concept, callback = null) {
+          if ( (concept.narrower.length > 0 && !concept.narrower.includes(null)) || concept.narrower.length == 0 ) {
+            return
+          }
+          let treeHelper = this
+          this.vm.$api.narrower(concept.uri, this.vm.$api.defaultProperties)
+            .then(function(data) {
+              let newConcept = concept
+              newConcept.narrower = sortData(data)
+              treeHelper.update(newConcept)
+              callback && callback(true)
+            }).catch(function(error) {
+              console.log('Request failed', error)
+              callback && callback(false)
+            })
+        },
+        getConcept: function(uri) {
+          // Recursively search for concept by uri and update it
+          let path = this.getPath(uri, true)
+          if (path != null) {
+            let lastIndex = path.pop()
+            let element = this.vm.tree
+            for (var index of path) {
+              element = element[index].narrower
+            }
+            return element[lastIndex]
+          } else {
+            return null
+          }
+        },
+        getPath: function(uri, recursive = false, path = [], root = this.vm.tree) {
+          let shouldReturn = false
+          let newPath = path
+          root.forEach(function(concept, index) {
+            if (!shouldReturn && concept != null && concept.uri == uri) {
+              newPath.push(index)
+              shouldReturn = true
+            }
+          })
+          if (recursive) {
+            let treeHelper = this
+            root.forEach(function(concept, index) {
+              if (shouldReturn || concept == null || !concept.narrower) {
+                return
+              }
+              let result = treeHelper.getPath(uri, true, newPath.concat([index]), concept.narrower)
+              if (result != null) {
+                newPath = result
+                shouldReturn = true
+              }
+            })
+          }
+          if (shouldReturn) {
+            return newPath
+          } else {
+            return null
+          }
+        }
+      }
     }
+  },
+  created() {
+    this.treeHelper.vm = this
   },
   watch: {
     vocSelected: function(newValue, oldValue) {
@@ -101,50 +179,7 @@ export default {
           console.log('Request failed', error)
           vm.loading = false
         })
-    },
-    update(concept) {
-      // Recursively search for concept by uri and update it
-      let path = this.tree.pathForUri(concept.uri, true)
-      if (path != null) {
-        let lastIndex = path.pop()
-        let element = this.tree
-        for (var index of path) {
-          element = element[index].narrower
-        }
-        element[index] = concept
-      } else {
-        console.log("Could not determine path for uri", concept.uri)
-      }
     }
-  }
-}
-
-// Add a prototype method to Array to find path for uri
-Array.prototype.pathForUri = function(uri, recursive = false, path = []) {
-  let shouldReturn = false
-  let newPath = path
-  this.forEach(function(concept, index) {
-    if (!shouldReturn && concept != null && concept.uri == uri) {
-      newPath.push(index)
-      shouldReturn = true
-    }
-  })
-  if (recursive) {
-    this.forEach(function(concept, index) {
-      if (shouldReturn || concept == null || !concept.narrower) {
-        return
-      }
-      let result = concept.narrower.pathForUri(uri, true, newPath.concat([index]))
-      if (result != null) {
-        newPath = result
-        shouldReturn = true
-      }
-    })
-  }
-  if (shouldReturn) {
-    return newPath
-  } else {
-    return null
   }
 }
 
