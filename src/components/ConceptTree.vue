@@ -1,18 +1,20 @@
 <template>
-  <div class="conceptTree" :class="{ conceptTreeNotLoading: !loading }">
-    <concept-tree-item
-      v-for="(concept, index) in tree"
-      :key="index"
-      :concept="concept"
-      :selected="selected"
-      :hovered="hovered"
-      :depth="0"
-      :index="index"
-      @hovered="hovered = $event"
-      @selected="selected = $event"
-      @update="update($event)" />
+  <div class="conceptTree">
+    <div class="conceptTreeItems">
+      <concept-tree-item
+        v-for="(concept, index) in tree"
+        :key="index"
+        :concept="concept"
+        :selected="selected"
+        :hovered="hovered"
+        :depth="0"
+        :index="index"
+        @hovered="hovered = $event"
+        @selected="selected = $event"
+        @update="update($event)" />
+    </div>
     <div v-if="loading" class="loadingFull">
-      <loading-indicator size="lg"  />
+      <loading-indicator size="lg" />
     </div>
   </div>
 </template>
@@ -157,6 +159,7 @@ Array.prototype.pathForUri = function(uri, recursive = false, path = []) {
 .conceptTree {
   flex: 1.5;
   overflow-y: auto;
+  position: relative;
 }
 .conceptTreeNotLoading {
   padding: 2px 8px 2px 8px;
@@ -177,14 +180,19 @@ Array.prototype.pathForUri = function(uri, recursive = false, path = []) {
 .conceptSmall {
   font-size: 0.9em;
 }
-.loadingFull {
+.conceptTreeItems, .loadingFull {
   width: 100%;
   height: 100%;
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
+}
+.conceptTreeItems {
+  padding: 2px 8px 2px 8px;
+}
+.loadingFull {
   z-index: 100;
-  background-color: #bbbbbb55;
+  background-color: #ffffff55;
   display: flex;
   justify-content: center;
   align-items: center;
