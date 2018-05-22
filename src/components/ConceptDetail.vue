@@ -1,12 +1,12 @@
 <template>
   <div v-if="item != null" class="conceptDetail">
-      <span v-if="detail != null">
-        <div class="parents">
-          <span v-for="parent in parents" :key="parent.uri">
+      <div v-if="detail != null" class="conceptDetailContent">
+        <div class="parents" v-if="item.ancestors.length > 0 && (item.ancestors.length > 1 || !item.ancestors.includes(null))">
+          <span v-for="(parent, index) in item.ancestors" :key="index">
             <item-name :item="parent" /> →
           </span>
         </div>
-        <loading-indicator v-show="loadingParents" size="sm" />
+        <span v-else><loading-indicator v-show="item.ancestors.length != 0 && !isSchema" size="sm" /></span>
         <item-name :item="detail" class="label" />
         <p>{{ isSchema ? "Schema" : "Concept" }} - <possible-link :link="detail.uri" /></p>
         <p v-if="detail.identifier">
@@ -48,17 +48,14 @@
         <p v-if="detail.modified">
           Modified: {{ detail.modified }}
         </p>
-      </span>
-      <span v-else>
-        <div class="loading-full">
-          <loading-indicator v-show="loading" size="lg" class="loading-full-indicator" />
-        </div>
-      </span>
+      </div>
+      <div v-if="loading" class="loadingFull">
+        <loading-indicator size="lg"  />
+      </div>
    </div>
 </template>
 
 <script>
-import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 import PossibleLink from './PossibleLink'
 import ItemName from './ItemName'
@@ -77,9 +74,7 @@ export default {
   data () {
     return {
       detail: null,
-      loading: false,
-      loadingParents: false,
-      parents: []
+      loading: false
     }
   },
   watch: {
@@ -90,7 +85,7 @@ export default {
       let vm = this
       this.loading = true
       // Get details from API
-      api.data(this.item.uri, api.detailProperties)
+      this.$api.data(this.item.uri, this.$api.detailProperties)
         .then(function(data) {
           if (itemBefore != vm.item) {
             console.log('Item changed during the request, discarding data...')
@@ -106,21 +101,6 @@ export default {
           console.log('Request failed', error)
           vm.loading = false
         })
-      // Get ancestors from API
-      this.parents = []
-      if (this.loadingParents) {
-        // TODO: Cancel previous load request
-      } else {
-        this.loadingParents = true
-      }
-      api.ancestors(this.item.uri, api.defaultProperties, null)
-        .then(function(data) {
-          vm.parents = data
-          vm.loadingParents = false
-        }).catch(function(error) {
-          console.log('Request failed', error)
-          vm.loadingParents = false
-        })
     }
   }
 }
@@ -132,6 +112,7 @@ export default {
   font-size: 0.8em;
   flex: 1;
   overflow-y: auto;
+  position: relative;
 }
 p {
   margin: 5px 0;
@@ -149,16 +130,21 @@ ul {
 .parents > span {
   margin-right: 5px;
 }
-.loading-full {
+.conceptDetailContent, .loadingFull {
   width: 100%;
   height: 100%;
-  position: relative;
-}
-.loading-full-indicator {
   position: absolute;
-  top: 40%;
-  bottom: 40%;
-  left: 40%;
-  right: 40%;
+  top: 0;
+  left: 0;
+}
+.conceptDetailContent {
+  padding: 2px 8px 2px 8px;
+}
+.loadingFull {
+  z-index: 100;
+  background-color: #ffffff55;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

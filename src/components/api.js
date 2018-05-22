@@ -3,8 +3,7 @@
  * @module components/api
  *
  * Usage:
- * import * as api from './api'
- * api.voc().then(function(data) {
+ * this.$api.voc().then(function(data) {
  *   // do something with data
  * }).catch(function(error) {
  *   // do something with error
@@ -14,7 +13,7 @@
 import axios from 'axios'
 
 /** URL for API */
-const url = 'http://api.dante.gbv.de/'
+const url = 'http://dev-api.dante.gbv.de/'
 
 /** Property sets */
 const minimumProperties = '-'
@@ -65,7 +64,8 @@ function narrower(uri, properties = defaultProperties, cancelToken = null) {
   return get('narrower', {
     params: {
       uri: uri,
-      properties: properties
+      properties: properties,
+      limit: 10000
     },
     cancelToken: cancelToken
   })
@@ -135,7 +135,27 @@ function topByNotation(notation, properties = defaultProperties, cancelToken = n
 function get(endpoint, config) {
   return axios.get(url + endpoint, config)
     .then(function(response) {
-      return response.data
+      let data = response.data
+      // Temporary fix for bug in DANTE dev-api
+      if (!Array.isArray(data)) {
+        if (data[0] == "<") {
+          try {
+            data = JSON.parse(data.substring(data.indexOf("[")))
+          } catch(error) {
+            // Return raw data
+            return data
+          }
+        }
+      }
+      // For Objects, add custom properties
+      data.forEach(element => {
+        if (element !== null && typeof element === 'object') {
+          element.ISOPEN = false
+          element.DETAILSLOADED = false
+          element.ancestors = element.ancestors ? element.ancestors : [null]
+        }
+      })
+      return data
     })
 }
 

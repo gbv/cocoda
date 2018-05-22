@@ -9,6 +9,14 @@ Vue.use(BootstrapVue)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+// Add vue-scrollto
+var VueScrollTo = require('vue-scrollto');
+Vue.use(VueScrollTo)
+
+// Add api
+import * as api from './components/api'
+Vue.prototype.$api = api
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

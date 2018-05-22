@@ -21,7 +21,6 @@ export default {
   width: 24px;
   height: 24px;
   animation: spin 2s linear infinite;
-  margin: 10px 0px 10px 16px;
 }
 .loader-sm {
   width: 16px;

@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import * as api from './api'
 import LoadingIndicator from './LoadingIndicator'
 var _ = require('lodash')
 
@@ -98,14 +97,14 @@ export default {
     getAnswer:  function () {
       this.searchResult = ['Searching...']
       var vm = this
-      api.suggest(this.searchQuery, this.voc, 20)
+      this.$api.suggest(this.searchQuery, this.voc, 20)
         .then(function(data) {
           vm.loading = false
           vm.searchResult = _.zip(data[1], data[2], data[3])
         })
         .catch(function(error) {
           vm.loading = false
-          vm.searchResult = ['Error! Could not reach the API. ' + error]
+          vm.searchResult = [['Error! Could not reach the API. ' + error]]
         })
     },
     handleClickOutside(evt) {
@@ -174,6 +173,7 @@ export default {
   width: 100%;
   position: absolute;
   background-color: white;
+  z-index: 10;
 }
 
 .searchfield-result {

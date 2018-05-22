@@ -1,22 +1,28 @@
 <template>
   <div class="browser">
     <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
-    <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptChooser.chooseFromUri($event)" />
-    <concept-chooser ref="conceptChooser" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptSelected = $event" />
+    <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
+    <concept-tree ref="conceptTree" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptSelected = $event" />
     <concept-detail :item="conceptSelected != null ? conceptSelected : vocSelected" :isSchema="conceptSelected == null" />
   </div>
 </template>
 
 <script>
-import * as api from './api'
-import ConceptChooser from './ConceptChooser'
+import ConceptTree from './ConceptTree'
 import ConceptDetail from './ConceptDetail'
 import SearchField from './SearchField'
+
+// TODO: - Rethink way of sorting
+function sortData(data) {
+  return data.sort(
+    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
+  )
+}
 
 export default {
   name: 'Browser',
   components: {
-    ConceptChooser, ConceptDetail, SearchField
+    ConceptTree, ConceptDetail, SearchField
   },
   data () {
     return {
@@ -46,12 +52,9 @@ export default {
   mounted: function () {
     // Load vocabularies/schemas
     var vm = this
-    api.voc()
+    this.$api.voc()
       .then(function(data) {
-        // Save data sorted by German prefLabel
-        // TODO: - Support other langauges.
-        // TODO: - Fallback if no German label is available.
-        vm.vocs = data.sort( (a,b) => a.prefLabel.de > b.prefLabel.de )
+        vm.vocs = sortData(data)
       })
       .catch(function(error) {
         console.log('Request failed', error)
@@ -72,7 +75,6 @@ export default {
   margin-bottom: 5px;
 }
 .browser > div {
-  padding: 2px 8px 2px 8px;
   outline: 1px solid #ccc;
 }
 </style>
