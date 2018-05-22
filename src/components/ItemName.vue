@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="item != null">
     <notation-badge :item="item" />
     <prefLabel-text :item="item" />
   </span>

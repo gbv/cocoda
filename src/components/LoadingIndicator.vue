@@ -1,10 +1,11 @@
 <template>
-   <div class="loader"></div>
+   <div class="loader" :class="'loader-' + size"></div>
 </template>
 
 <script>
 export default {
   name: 'LoadingIndicator',
+  props: ['size'],
   data () {
     return {}
   }
@@ -14,13 +15,25 @@ export default {
 <!-- from: https://www.w3schools.com/howto/howto_css_loader.asp -->
 <style scoped>
 .loader {
-    border: 4px solid #f3f3f3; /* Light grey */
-    border-top: 4px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: spin 2s linear infinite;
-    margin: 10px 0px 10px 16px;
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 2s linear infinite;
+  margin: 10px 0px 10px 16px;
+}
+.loader-sm {
+  width: 16px;
+  height: 16px;
+}
+.loader-md {
+  width: 24px;
+  height: 24px;
+}
+.loader-lg {
+  width: 32px;
+  height: 32px;
 }
 
 @keyframes spin {

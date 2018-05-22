@@ -86,7 +86,7 @@ export default {
       }
     },
     concept: function(newValue, oldValue) {
-      this.$emit('selectedConcept', newValue != null ? newValue.uri : null)
+      this.$emit('selectedConcept', newValue)
     }
   },
   methods: {
