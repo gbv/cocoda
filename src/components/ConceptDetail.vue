@@ -6,7 +6,7 @@
             <item-name :item="parent" /> →
           </span>
         </div>
-        <span v-else><loading-indicator v-show="item.ancestors.length != 0" size="sm" /></span>
+        <span v-else><loading-indicator v-show="item.ancestors.length != 0 && !isSchema" size="sm" /></span>
         <item-name :item="detail" class="label" />
         <p>{{ isSchema ? "Schema" : "Concept" }} - <possible-link :link="detail.uri" /></p>
         <p v-if="detail.identifier">
