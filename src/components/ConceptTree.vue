@@ -1,6 +1,6 @@
 <template>
-  <div class="conceptTree">
-    <div class="conceptTreeItems">
+  <div class="conceptTree" :class="{ scrollable: !loading }">
+    <div class="conceptTreeItems" ref="conceptTreeItems">
       <concept-tree-item
         v-for="(concept, index) in tree"
         :key="index"
@@ -13,7 +13,7 @@
         @hovered="hovered = $event"
         @selected="selected = $event" />
     </div>
-    <div v-if="loading" class="loadingFull">
+    <div v-show="loading" class="loadingFull" ref="loadingFull">
       <loading-indicator size="lg" />
     </div>
   </div>
@@ -22,11 +22,13 @@
 <script>
 import LoadingIndicator from './LoadingIndicator'
 import ConceptTreeItem from './ConceptTreeItem'
+var _ = require('lodash')
 
 // Helper function to sort data. Sort by notation if possible, otherwise by uri.
+// TODO: - Rethink way of sorting
 function sortData(data) {
   return data.sort(
-    (a,b) => a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri
+    (a, b) => (a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri) ? 1 : -1
   )
 }
 
@@ -46,7 +48,7 @@ export default {
         vm: null, // Has to be set to component's "this" before first use
         update: function(concept) {
           // Recursively search for concept by uri and update it
-          let path = this.getPath(concept.uri, true)
+          let path = this.getPath(concept, true)
           if (path != null) {
             let lastIndex = path.pop()
             let element = this.vm.tree
@@ -54,13 +56,15 @@ export default {
               element = element[index].narrower
             }
             element[lastIndex] = concept
+            return true
           } else {
             console.log("Could not determine path for uri", concept.uri)
+            return false
           }
         },
-        loadChildren: function(concept, callback = null) {
+        loadChildren: function(concept, callback = null, update = true) {
           if ( (concept.narrower.length > 0 && !concept.narrower.includes(null)) || concept.narrower.length == 0 ) {
-            callback && callback(true)
+            callback && callback(concept)
             return
           }
           let treeHelper = this
@@ -72,16 +76,18 @@ export default {
               for (var child of newConcept.narrower) {
                 child.ancestors = concept.ancestors.concat([concept])
               }
-              treeHelper.update(newConcept)
-              callback && callback(true)
+              if (update) {
+                treeHelper.update(newConcept)
+              }
+              callback && callback(newConcept)
             }).catch(function(error) {
               console.log('Request failed', error)
-              callback && callback(false)
+              callback && callback(null)
             })
         },
-        getConcept: function(uri) {
-          // Recursively search for concept by uri and update it
-          let path = this.getPath(uri, true)
+        getConcept: function(concept) {
+          // Recursively search for concept
+          let path = this.getPath(concept, true)
           if (path != null) {
             let lastIndex = path.pop()
             let element = this.vm.tree
@@ -93,22 +99,33 @@ export default {
             return null
           }
         },
-        getPath: function(uri, recursive = false, path = [], root = this.vm.tree) {
+        getPath: function(concept, recursive = false, path = [], root = this.vm.tree) {
+          let useAncestors = false
+          if (concept.ancestors.length > 0 && path.length < concept.ancestors.length && !concept.ancestors.includes(null)) {
+            useAncestors = true
+          }
+          if (path.length > 10) {
+            return null
+          }
           let shouldReturn = false
           let newPath = path
-          root.forEach(function(concept, index) {
-            if (!shouldReturn && concept != null && concept.uri == uri) {
+          root.forEach(function(child, index) {
+            if (!shouldReturn && child != null && child.uri == concept.uri) {
               newPath.push(index)
               shouldReturn = true
             }
           })
-          if (recursive) {
+          if (recursive && !shouldReturn) {
             let treeHelper = this
-            root.forEach(function(concept, index) {
-              if (shouldReturn || concept == null || !concept.narrower) {
+            root.forEach(function(child, index) {
+              if (shouldReturn || child == null || !child.narrower) {
                 return
               }
-              let result = treeHelper.getPath(uri, true, newPath.concat([index]), concept.narrower)
+              // Restrict recursion to ancestors
+              if (useAncestors && concept.ancestors[path.length].uri != child.uri) {
+                return
+              }
+              let result = treeHelper.getPath(concept, true, newPath.concat([index]), child.narrower)
               if (result != null) {
                 newPath = result
                 shouldReturn = true
@@ -120,6 +137,22 @@ export default {
           } else {
             return null
           }
+        },
+        loadAncestors: function(uri, callback = null) {
+          let treeHelper = this
+          this.vm.$api.ancestors(uri, this.vm.$api.defaultProperties)
+            .then(function(data) {
+              // Set ancestor property for loaded ancestors
+              var ancestors = []
+              for (var ancestor of data) {
+                ancestor.ancestors = ancestors.slice()
+                ancestors.push(ancestor)
+              }
+              callback && callback(data)
+            }).catch(function(error) {
+              console.log('Request failed', error)
+              callback && callback(null)
+            })
         }
       }
     }
@@ -135,32 +168,98 @@ export default {
     },
     selected: function(newValue, oldValue) {
       this.$emit('selectedConcept', newValue)
+    },
+    loading: function(newValue, oldValue) {
+      // Move loading indicator to right scrolling position in tree
+      let loadingFull = this.$refs.loadingFull
+      loadingFull.style.top = (this.$el.scrollTop - this.$el.clientTop) + 'px'
     }
   },
   methods: {
     chooseFromUri: function(uri) {
-      // Load data for uri including all parent concepts
-      console.log("Chose via search: ", uri)
       let vm = this
-      if (this.loading) {
-        // TODO: Cancel request via token
-      } else {
-        this.loading = true
-      }
-      // Generate new cancel token
-      // TODO
+      this.loading = true
       this.$api.data(uri, this.$api.defaultProperties, null)
         .then(function(data) {
-          vm.loading = false
           if (data.length == 0) {
-            console.log("Only received one result...")
+            console.log("##### chooseFromUri ##### No results...")
             vm.selected = null
+            vm.loading = false
           } else {
-            vm.selected = data[0]
+            let currentAncestors = []
+            let finalCallback = function() {
+              console.log("##### chooseFromUri ##### final callback")
+              selected.ancestors = currentAncestors
+              vm.loading = false
+              for (var ancestor of currentAncestors) {
+                ancestor.ISOPEN = true
+              }
+              // Scroll to selected
+              _.delay(function() {
+                let el = document.querySelectorAll(`[data-uri='${selected.uri}']`)[0]
+                // Scroll element
+                var options = {
+                  container: vm.$el,
+                  easing: 'ease-in',
+                  offset: -50,
+                  cancelable: true,
+                  onStart: function(element) {
+                    // scrolling started
+                  },
+                  onDone: function(element) {
+                    // scrolling is done
+                  },
+                  onCancel: function() {
+                    // scrolling has been interrupted
+                  },
+                  x: false,
+                  y: true
+                }
+                vm.$scrollTo(el, 200, options)
+              }, 100)
+            }
+            let selected = data[0]
+            vm.selected = selected
+            // Concept loaded
+            console.log("##### chooseFromUri ##### concept loaded")
+            // Check if it is already in tree
+            let selectedInTree = vm.treeHelper.getConcept(selected)
+            if (selectedInTree != null) {
+              console.log("##### chooseFromUri ##### concept found in tree!")
+              vm.selected = selectedInTree
+              currentAncestors = selectedInTree.ancestors
+              finalCallback()
+              return
+            }
+            // Load Ancestors
+            vm.treeHelper.loadAncestors(uri, function(data) {
+              console.log("##### chooseFromUri ##### ancestors loaded")
+              selected.ancestors = data.slice()
+              let forEachAncestor = function(ancestors, callback = null) {
+                if (ancestors.length == 0) {
+                  callback && callback()
+                  return
+                }
+                let ancestor = ancestors.shift()
+                console.log("##### chooseFromUri ##### deal with ancestor", ancestor.uri)
+                // Find in tree
+                let ancestorInTree = vm.treeHelper.getConcept(ancestor)
+                // Set ancestors
+                ancestorInTree.ancestors = currentAncestors.slice()
+                // Load children and update
+                vm.treeHelper.loadChildren(ancestorInTree, function(ancestor) {
+                  console.log("##### chooseFromUri ##### children loaded", ancestor.uri)
+                  // Add to ancestors list
+                  currentAncestors.push(ancestor)
+                  // Continue execution
+                  forEachAncestor(ancestors, callback)
+                })
+              }
+              forEachAncestor(data, finalCallback)
+            })
           }
-          vm.loading = false
         }).catch(function(error) {
-          console.log('Request failed', error)
+          console.log('##### chooseFromUri ##### Load concept request failed', error)
           vm.loading = false
         })
     },
@@ -197,8 +296,11 @@ export default {
 <style scoped>
 .conceptTree {
   flex: 1.5;
-  overflow-y: auto;
   position: relative;
+  overflow-y: hidden;
+}
+.scrollable {
+  overflow-y: auto;
 }
 .conceptTreeNotLoading {
   padding: 2px 8px 2px 8px;
