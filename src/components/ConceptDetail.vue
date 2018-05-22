@@ -8,12 +8,12 @@
         </div>
         <span v-else><loading-indicator v-show="item.ancestors.length != 0 && !isSchema" size="sm" /></span>
         <item-name :item="detail" class="label" />
-        <p>{{ isSchema ? "Schema" : "Concept" }} - <possible-link :link="detail.uri" /></p>
+        <p>{{ isSchema ? "Schema" : "Concept" }} - <auto-link :link="detail.uri" /></p>
         <p v-if="detail.identifier">
           Identifier:
           <ul>
             <li v-for="(identifier, index) in detail.identifier" :key="index">
-              <possible-link :link="identifier" />
+              <auto-link :link="identifier" />
             </li>
           </ul>
         </p>
@@ -27,7 +27,7 @@
           License:
           <ul>
             <li v-for="(license, index) in detail.license" :key="index">
-              <possible-link :link="license.uri" />
+              <auto-link :link="license.uri" />
             </li>
           </ul>
         </p>
@@ -57,7 +57,7 @@
 
 <script>
 import LoadingIndicator from './LoadingIndicator'
-import PossibleLink from './PossibleLink'
+import AutoLink from './AutoLink'
 import ItemName from './ItemName'
 
 /**
@@ -69,7 +69,7 @@ export default {
   name: 'ConceptDetail',
   props: ["item", "isSchema"],
   components: {
-    LoadingIndicator, PossibleLink, ItemName
+    LoadingIndicator, AutoLink, ItemName
   },
   data () {
     return {
