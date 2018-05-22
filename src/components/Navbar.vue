@@ -1,6 +1,14 @@
 <template>
-  <b-navbar toggleable="md" type="dark" variant="info">
+  <b-navbar toggleable="md" type="dark">
     <b-navbar-brand href="#">{{ brand }}</b-navbar-brand>
+    <b-navbar-nav class="ml-auto">
+      <b-button variant="link" disabled>
+        Login
+      </b-button>
+      <b-nav-item right :href="github" v-if="github">
+        GitHub
+      </b-nav-item>
+    </b-navbar-nav>
   </b-navbar>
 </template>
 
@@ -9,13 +17,21 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      brand: "Cocoda Prototype 2018"
+      brand: "Cocoda Prototype 2018",
+      github: "https://github.com/gbv/cocoda"
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+nav.navbar {
+  background: #577fbb;
+}
+.navbar-dark .navbar-nav .nav-link, .btn-link {
+  color: #fff;
+}
+.btn-link:disabled, .btn-link.disabled {
+  text-decoration: line-through;
+}
 </style>
