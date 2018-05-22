@@ -64,7 +64,8 @@ function narrower(uri, properties = defaultProperties, cancelToken = null) {
   return get('narrower', {
     params: {
       uri: uri,
-      properties: properties
+      properties: properties,
+      limit: 10000
     },
     cancelToken: cancelToken
   })
