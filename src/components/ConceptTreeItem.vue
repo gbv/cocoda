@@ -1,5 +1,5 @@
 <template>
-  <div class="conceptTreeItem" v-if="concept != null" :style="{ 'margin-left': depth * 5 + 'px' }">
+  <div class="conceptTreeItem" v-if="concept != null" :style="{ 'margin-left': depth * 5 + 'px' }" :data-uri="concept.uri">
     <div
       class="conceptBox"
       :class="{
