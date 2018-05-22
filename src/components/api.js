@@ -136,16 +136,25 @@ function get(endpoint, config) {
   return axios.get(url + endpoint, config)
     .then(function(response) {
       let data = response.data
-      // For Objects, add custom properties
-      if (Array.isArray(data)) {
-        response.data.forEach(element => {
-          if (element !== null && typeof element === 'object') {
-            element.ISOPEN = false
-            element.DETAILSLOADED = false
-            element.ancestors = element.ancestors ? element.ancestors : [null]
+      // Temporary fix for bug in DANTE dev-api
+      if (!Array.isArray(data)) {
+        if (data[0] == "<") {
+          try {
+            data = JSON.parse(data.substring(data.indexOf("[")))
+          } catch(error) {
+            // Return raw data
+            return data
           }
-        })
+        }
       }
+      // For Objects, add custom properties
+      data.forEach(element => {
+        if (element !== null && typeof element === 'object') {
+          element.ISOPEN = false
+          element.DETAILSLOADED = false
+          element.ancestors = element.ancestors ? element.ancestors : [null]
+        }
+      })
       return data
     })
 }
