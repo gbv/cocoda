@@ -12,6 +12,13 @@ import ConceptTree from './ConceptTree'
 import ConceptDetail from './ConceptDetail'
 import SearchField from './SearchField'
 
+// TODO: - Rethink way of sorting
+function sortData(data) {
+  return data.sort(
+    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
+  )
+}
+
 export default {
   name: 'Browser',
   components: {
@@ -47,10 +54,7 @@ export default {
     var vm = this
     this.$api.voc()
       .then(function(data) {
-        // Save data sorted by German prefLabel
-        // TODO: - Support other langauges.
-        // TODO: - Fallback if no German label is available.
-        vm.vocs = data.sort( (a,b) => a.prefLabel.de > b.prefLabel.de )
+        vm.vocs = sortData(data)
       })
       .catch(function(error) {
         console.log('Request failed', error)
