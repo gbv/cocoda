@@ -2,6 +2,8 @@
 
 This repository contains the **cocoda** mapping tool web application.
 
+[![Build Status](https://travis-ci.org/gbv/cocoda.svg?branch=master)](https://travis-ci.org/gbv/cocoda)
+
 ## Build Setup
 
 ``` bash
