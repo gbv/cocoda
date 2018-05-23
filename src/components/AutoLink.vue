@@ -4,6 +4,10 @@
 </template>
 
 <script>
+
+/**
+ * Represents an element that automatically converts a valid URL into a link.
+ */
 export default {
   name: 'AutoLink',
   props: ['link'],
