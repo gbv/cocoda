@@ -166,10 +166,8 @@ export default {
     },
     /**
      * Scrolls the currently selected search result into view.
-     *
-     * TODO: - Remove alignTo parameter.
      */
-    scrollSelectedIntoView(alignTo=null) {
+    scrollSelectedIntoView() {
       scrollIntoViewIfNeeded(document.getElementById('searchResult'+this.searchSelected))
     },
     /**
