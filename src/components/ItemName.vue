@@ -8,13 +8,14 @@
 <script>
 
 /**
- * Displays an item's notation (if defined) and prefLabel.
+ * Component that displays an item's notation (if defined) and prefLabel.
  */
 export default {
   name: 'item-name',
   props: ['item'],
 }
 
+// TODO: - Move badge and prefLabel text to its own components.
 import Vue from 'vue'
 
 /**
