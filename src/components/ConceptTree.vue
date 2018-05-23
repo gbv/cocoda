@@ -1,6 +1,10 @@
 <template>
-  <div class="conceptTree" :class="{ scrollable: !loading }">
-    <div class="conceptTreeItems" ref="conceptTreeItems">
+  <div
+    :class="{ scrollable: !loading }"
+    class="conceptTree">
+    <div
+      ref="conceptTreeItems"
+      class="conceptTreeItems">
       <concept-tree-item
         v-for="(concept, index) in tree"
         :key="index"
@@ -9,43 +13,72 @@
         :hovered="hovered"
         :depth="0"
         :index="index"
-        :treeHelper="treeHelper"
+        :tree-helper="treeHelper"
         @hovered="hovered = $event"
         @selected="selected = $event" />
     </div>
-    <div v-show="loading" class="loadingFull" ref="loadingFull">
+    <div
+      v-show="loading"
+      ref="loadingFull"
+      class="loadingFull">
       <loading-indicator size="lg" />
     </div>
   </div>
 </template>
 
 <script>
-import LoadingIndicator from './LoadingIndicator'
-import ConceptTreeItem from './ConceptTreeItem'
-var _ = require('lodash')
+import LoadingIndicator from "./LoadingIndicator"
+import ConceptTreeItem from "./ConceptTreeItem"
+var _ = require("lodash")
 
-// Helper function to sort data. Sort by notation if possible, otherwise by uri.
-// TODO: - Rethink way of sorting
+/**
+ * Sorts data by notation with fallback to uri.
+ *
+ * TODO: - Rethink way of sorting
+ */
 function sortData(data) {
   return data.sort(
     (a, b) => (a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri) ? 1 : -1
   )
 }
 
+/**
+ * Component that represents a (navigatable) concept tree.
+ */
 export default {
-  name: 'concepttree',
+  name: "Concepttree",
   components: {
     LoadingIndicator, ConceptTreeItem
   },
-  props: ['vocSelected'],
+  props: {
+    vocSelected: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
       tree: [],
       selected: null,
       loading: false,
       hovered: null,
+      /**
+       * A helper object that provides utility functions to work on the concept tree.
+       */
       treeHelper: {
-        vm: null, // Has to be set to component's "this" before first use
+        /**
+         * A reference to the component. Has to be set to "this" in the component's "created()" method.
+         */
+        vm: null,
+        /**
+         * Updates a concept in the tree.
+         *
+         * If a concept can't be modified in-place, use this method to update it in the tree.
+         * @param {object} concept - the concept to be updated
+         *
+         * @returns {boolean} - true if update was successful
+         *
+         */
         update: function(concept) {
           // Recursively search for concept by uri and update it
           let path = this.getPath(concept, true)
@@ -62,6 +95,14 @@ export default {
             return false
           }
         },
+        /**
+         * Loads the children (= narrower) for a concept.
+         *
+         * @param {object} concept - the concept for which to load the children
+         * @param {function} [callback=null] - callback function that has the updated concept as a parameter
+         * @param {boolean} [update=true] - if true, update concept in the tree
+         * Note that if concept is already part of the tree, it will be updated even with update=false.
+         */
         loadChildren: function(concept, callback = null, update = true) {
           if ( (concept.narrower.length > 0 && !concept.narrower.includes(null)) || concept.narrower.length == 0 ) {
             callback && callback(concept)
@@ -81,10 +122,17 @@ export default {
               }
               callback && callback(newConcept)
             }).catch(function(error) {
-              console.log('Request failed', error)
+              console.log("Request failed", error)
               callback && callback(null)
             })
         },
+        /**
+         * Retrieves a concept from the tree.
+         *
+         * @param {object} concept - concept to be retrieved, identified by its uri
+         *
+         * @returns {object} - concept in tree, null if not found
+         */
         getConcept: function(concept) {
           // Recursively search for concept
           let path = this.getPath(concept, true)
@@ -99,6 +147,16 @@ export default {
             return null
           }
         },
+        /**
+         * Determines the path for a concept inside the tree.
+         *
+         * @param {object} concept - concept for which the path is determined
+         * @param {boolean} [recursive=false] - if true, search recursively through the whole tree
+         * @param {number[]} [path=[]] - current path (only used for recursion)
+         * @param {object[]} [root=this.vm.tree] - the root element where the search begins (only used for recursion)
+         *
+         * @returns {number[]} - path for concept, null if not found
+         */
         getPath: function(concept, recursive = false, path = [], root = this.vm.tree) {
           let useAncestors = false
           if (concept.ancestors.length > 0 && path.length < concept.ancestors.length && !concept.ancestors.includes(null)) {
@@ -138,8 +196,15 @@ export default {
             return null
           }
         },
+        /**
+         * Loads ancestors for a concept by uri.
+         *
+         * @param {string} uri - the uri of the concept for which to load the ancestors
+         * @param {function} [callback=null] - callback function with ancestor data as parameter
+         *
+         * Is only used when selecting a concept from search.
+         */
         loadAncestors: function(uri, callback = null) {
-          let treeHelper = this
           this.vm.$api.ancestors(uri, this.vm.$api.defaultProperties)
             .then(function(data) {
               // Set ancestor property for loaded ancestors
@@ -150,32 +215,49 @@ export default {
               }
               callback && callback(data)
             }).catch(function(error) {
-              console.log('Request failed', error)
+              console.log("Request failed", error)
               callback && callback(null)
             })
         }
       }
     }
   },
-  created() {
-    this.treeHelper.vm = this
-  },
   watch: {
+    /**
+     * Resets the tree when new vocabulary is chosen.
+     */
     vocSelected: function(newValue, oldValue) {
       if (oldValue != newValue) {
         this.reset()
       }
     },
-    selected: function(newValue, oldValue) {
-      this.$emit('selectedConcept', newValue)
+    selected: function(newValue) {
+      /**
+       * Event when a concept is selected.
+       *
+       * @event selectedConcept
+       * @type {object}
+       */
+      this.$emit("selectedConcept", newValue)
     },
-    loading: function(newValue, oldValue) {
-      // Move loading indicator to right scrolling position in tree
+    /**
+     * Move loading indicator to right scrolling position in tree.
+     */
+    loading: function() {
       let loadingFull = this.$refs.loadingFull
-      loadingFull.style.top = (this.$el.scrollTop - this.$el.clientTop) + 'px'
+      loadingFull.style.top = (this.$el.scrollTop - this.$el.clientTop) + "px"
     }
   },
+  created() {
+    // Give the treeHelper object a reference to the component
+    this.treeHelper.vm = this
+  },
   methods: {
+    /**
+     * Select a concept from uri (e.g. for search).
+     *
+     * @param {string} uri - uri of concept to be loaded
+     */
     chooseFromUri: function(uri) {
       let vm = this
       this.loading = true
@@ -200,18 +282,9 @@ export default {
                 // Scroll element
                 var options = {
                   container: vm.$el,
-                  easing: 'ease-in',
+                  easing: "ease-in",
                   offset: -50,
                   cancelable: true,
-                  onStart: function(element) {
-                    // scrolling started
-                  },
-                  onDone: function(element) {
-                    // scrolling is done
-                  },
-                  onCancel: function() {
-                    // scrolling has been interrupted
-                  },
                   x: false,
                   y: true
                 }
@@ -259,10 +332,13 @@ export default {
             })
           }
         }).catch(function(error) {
-          console.log('##### chooseFromUri ##### Load concept request failed', error)
+          console.log("##### chooseFromUri ##### Load concept request failed", error)
           vm.loading = false
         })
     },
+    /**
+     * Resets the concept tree and loads top concepts for new vocabulary.
+     */
     reset: function() {
       this.tree = []
       this.selected = null
@@ -273,7 +349,7 @@ export default {
       this.$api.topByNotation(this.vocSelected.notation[0])
         .then(function(data) {
           if (selectedBefore != vm.vocSelected) {
-            console.log('Another voc was chosen in the meanwhile.')
+            console.log("Another voc was chosen in the meanwhile.")
           } else {
             // Save data sorted by uri
             vm.tree = sortData(data)
@@ -284,7 +360,7 @@ export default {
             vm.loading = false
           }
         }).catch(function(error) {
-          console.log('Request failed', error)
+          console.log("Request failed", error)
           vm.loading = false
         })
     }

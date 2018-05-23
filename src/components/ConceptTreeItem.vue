@@ -1,22 +1,31 @@
 <template>
-  <div class="conceptTreeItem" v-if="concept != null" :style="{ 'margin-left': depth * 5 + 'px' }" :data-uri="concept.uri">
+  <div
+    v-if="concept != null"
+    :style="{ 'margin-left': depth * 5 + 'px' }"
+    :data-uri="concept.uri"
+    class="conceptTreeItem">
     <div
-      class="conceptBox"
       :class="{
         conceptBoxHovered: isHovered,
         conceptBoxSelected: isSelected
-      }">
-      <div class="arrowBox" @click="open(!isOpen)" v-if="hasChildren"><i :class="{ right: !isOpen, down: isOpen }"></i></div>
+      }"
+      class="conceptBox">
       <div
+        v-if="hasChildren"
+        class="arrowBox"
+        @click="open(!isOpen)"><i :class="{ right: !isOpen, down: isOpen }"/></div>
+      <div
+        :class="{ labelBoxFull: !hasChildren }"
         class="labelBox"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
-        @click="onClick"
-        :class="{ labelBoxFull: !hasChildren }">
+        @click="onClick">
         <item-name :item="concept" />
       </div>
     </div>
-    <div class="conceptChildrenBox" v-if="isOpen">
+    <div
+      v-if="isOpen"
+      class="conceptChildrenBox">
       <concept-tree-item
         v-for="(child, index) in concept.narrower"
         :key="index"
@@ -25,31 +34,55 @@
         :hovered="hovered"
         :depth="depth + 1"
         :index="index"
-        :treeHelper="treeHelper"
+        :tree-helper="treeHelper"
         @hovered="hovering($event)"
         @selected="select($event)" />
     </div>
-    <loading-indicator v-show="loadingChildren" size="sm" style="margin-left: 36px" />
+    <loading-indicator
+      v-show="loadingChildren"
+      size="sm"
+      style="margin-left: 36px" />
   </div>
 </template>
 
 <script>
-import LoadingIndicator from './LoadingIndicator'
-import ItemName from './ItemName'
+import LoadingIndicator from "./LoadingIndicator"
+import ItemName from "./ItemName"
 
-// Helper function to sort data. Sort by notation if possible, otherwise by uri.
-function sortData(data) {
-  return data.sort(
-    (a,b) => a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri
-  )
-}
-
+/**
+ * Component that represents one concept item in a ConceptTree and possibly its children.
+ */
 export default {
-  name: 'concept-tree-item',
+  name: "ConceptTreeItem",
   components: {
     LoadingIndicator, ItemName
   },
-  props: ['concept', 'selected', 'hovered', 'depth', 'index', 'treeHelper'],
+  props: {
+    concept: {
+      type: Object,
+      default: null
+    },
+    selected: {
+      type: Object,
+      default: null
+    },
+    hovered: {
+      type: Object,
+      default: null
+    },
+    depth: {
+      type: Number,
+      default: null
+    },
+    index: {
+      type: Number,
+      default: null
+    },
+    treeHelper: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
       loadingChildren: false
@@ -74,21 +107,51 @@ export default {
   },
   watch: {},
   methods: {
+    /**
+     * Triggers a hovered event.
+     */
     hovering(el) {
-      this.$emit('hovered', el)
+      /**
+       * Event that is triggered when concept is hovered over.
+       *
+       * @event hovered
+       * @type {object} - concept object that is hovered over
+       */
+      this.$emit("hovered", el)
     },
+    /**
+     * Sets the ISOPEN property of the concept, loads it's children and scrolls the concept further to the top.
+     *
+     * @param {boolean} isOpen - open status to be set to
+     */
     open(isOpen) {
       let newConcept = this.concept
       newConcept.ISOPEN = isOpen
       this.treeHelper.update(newConcept)
-      this.loadChildren()
       if (isOpen && this.childrenLoaded && this.hasChildren) {
         this.scrollTo()
+      } else {
+        this.loadChildren()
       }
     },
+    /**
+     * Triggers a selected event.
+     */
     select(concept) {
-      this.$emit('selected', concept)
+      /**
+       * Event that is triggered when concept is selected.
+       *
+       * @event selected
+       * @type {object} - concept object that is selected
+       */
+      this.$emit("selected", concept)
     },
+    /**
+     * Deals with a click on a concept.
+     *
+     * If the concept is not selected, select the concept.
+     * If the concept is selected, toggle the open status.
+     */
     onClick() {
       if (!this.isSelected) {
         this.select(this.concept)
@@ -96,35 +159,37 @@ export default {
         this.open(!this.isOpen)
       }
     },
+    /**
+     * Loads the concept's children (via treeHelper).
+     *
+     * Scroll on finish.
+     */
     loadChildren() {
       this.loadingChildren = true
       let vm = this
       this.treeHelper.loadChildren(this.concept, function(success) {
         vm.loadingChildren = false
-        vm.scrollTo()
+        // Only scroll when concept is open
+        if (vm.concept.ISOPEN && success) {
+          vm.scrollTo()
+        }
       })
     },
+    /**
+     * Scrolls the concept further to the top.
+     */
     scrollTo() {
       // Determine conceptTree element because it is the scrolling container
       let parent = this.$parent
-      while (!parent.$el.classList.contains('conceptTree')) {
+      while (!parent.$el.classList.contains("conceptTree")) {
         parent = parent.$parent
       }
       // Scroll element
       var options = {
         container: parent.$el,
-        easing: 'ease-in',
+        easing: "ease-in",
         offset: -20,
         cancelable: true,
-        onStart: function(element) {
-          // scrolling started
-        },
-        onDone: function(element) {
-          // scrolling is done
-        },
-        onCancel: function() {
-          // scrolling has been interrupted
-        },
         x: false,
         y: true
       }

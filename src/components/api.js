@@ -10,16 +10,16 @@
  * })
  */
 
-import axios from 'axios'
+import axios from "axios"
 
 /** URL for API */
-const url = 'http://dev-api.dante.gbv.de/'
+const url = "http://dev-api.dante.gbv.de/"
 
 /** Property sets */
-const minimumProperties = '-'
-const defaultProperties = 'uri,prefLabel,notation'
-const detailProperties =  'uri,prefLabel,notation,identifier,altLabel,definition,license,publisher,created,issued,modified'
-const allProperties = '*'
+const minimumProperties = "-"
+const defaultProperties = "uri,prefLabel,notation"
+const detailProperties =  "uri,prefLabel,notation,identifier,altLabel,definition,license,publisher,created,issued,modified"
+const allProperties = "*"
 
 /**
  * Loads all vocabularies or information about a particular vocabulary.
@@ -30,9 +30,9 @@ const allProperties = '*'
  */
 function voc(uri = null, properties = defaultProperties, cancelToken = null) {
   if (uri == null) {
-    return get('voc', {})
+    return get("voc", {})
   } else {
-    return data(uri, properties, cancelToken);
+    return data(uri, properties, cancelToken)
   }
 }
 
@@ -44,7 +44,7 @@ function voc(uri = null, properties = defaultProperties, cancelToken = null) {
  * @param {axios.cancelToken} cancelToken
  */
 function data(uri, properties = defaultProperties, cancelToken = null) {
-  return get('data', {
+  return get("data", {
     params: {
       uri: uri,
       properties: properties
@@ -61,7 +61,7 @@ function data(uri, properties = defaultProperties, cancelToken = null) {
  * @param {axios.cancelToken} cancelToken
  */
 function narrower(uri, properties = defaultProperties, cancelToken = null) {
-  return get('narrower', {
+  return get("narrower", {
     params: {
       uri: uri,
       properties: properties,
@@ -79,7 +79,7 @@ function narrower(uri, properties = defaultProperties, cancelToken = null) {
  * @param {axios.cancelToken} cancelToken
  */
 function ancestors(uri, properties = defaultProperties, cancelToken = null) {
-  return get('ancestors', {
+  return get("ancestors", {
     params: {
       uri: uri,
       properties: properties
@@ -97,8 +97,8 @@ function ancestors(uri, properties = defaultProperties, cancelToken = null) {
  * @param {string} use - whether to include notations, labels, or both ("notation", "label", "notation,label")
  * @param {*} cancelToken
  */
-function suggest(search, voc = '', limit = 0, use = "notation,label", cancelToken = null) {
-  return get('suggest', {
+function suggest(search, voc = "", limit = 0, use = "notation,label", cancelToken = null) {
+  return get("suggest", {
     params: {
       search: search,
       voc: voc,
@@ -149,7 +149,7 @@ function get(endpoint, config) {
       }
       // For Objects, add custom properties
       data.forEach(element => {
-        if (element !== null && typeof element === 'object') {
+        if (element !== null && typeof element === "object") {
           element.ISOPEN = false
           element.DETAILSLOADED = false
           element.ancestors = element.ancestors ? element.ancestors : [null]

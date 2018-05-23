@@ -1,17 +1,20 @@
 <template>
-  <div id="mapping"></div>
+  <div id="mapping"/>
 </template>
 
 <script>
+
+/**
+ * The mapping component.
+ */
 export default {
-  name: 'Mapping',
+  name: "Mapping",
   data () {
     return {}
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #mapping {
   flex: 2;
