@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "lint": "./node_modules/.bin/eslint ./src/**/*.{js,vue}",
-    "lint-fix": "./node_modules/.bin/eslint --fix ./src/**/*.{js,vue}",
+    "fix": "./node_modules/.bin/eslint --fix ./src/**/*.{js,vue}",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
