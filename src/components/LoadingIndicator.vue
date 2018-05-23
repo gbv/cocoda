@@ -3,6 +3,10 @@
 </template>
 
 <script>
+
+/**
+ * Component that displays a spinning loading indicator.
+ */
 export default {
   name: 'LoadingIndicator',
   props: ['size'],
