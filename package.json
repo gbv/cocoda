@@ -10,11 +10,19 @@
     "build": "node build/build.js",
     "lint": "./node_modules/.bin/eslint ./src/*.{js,vue} ./src/**/*.{js,vue}",
     "fix": "./node_modules/.bin/eslint --fix ./src/*.{js,vue} ./src/**/*.{js,vue}",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "styleguide": "vue-styleguidist server",
+    "styleguide:build": "vue-styleguidist build"
   },
   "lint-staged": {
-    "src/**/*.{js,vue}": ["eslint --fix", "git add"],
-    "src/*.{js,vue}": ["eslint --fix", "git add"]
+    "src/**/*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "src/*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "pre-commit": "lint-staged",
   "dependencies": {
@@ -60,6 +68,7 @@
     "url-loader": "^0.5.8",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
+    "vue-styleguidist": "^1.7.7",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
