@@ -37,13 +37,9 @@
 import LoadingIndicator from './LoadingIndicator'
 import ItemName from './ItemName'
 
-// Helper function to sort data. Sort by notation if possible, otherwise by uri.
-function sortData(data) {
-  return data.sort(
-    (a,b) => a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri
-  )
-}
-
+/**
+ * Component that represents one concept item in a ConceptTree and possibly its children.
+ */
 export default {
   name: 'concept-tree-item',
   components: {
@@ -74,9 +70,23 @@ export default {
   },
   watch: {},
   methods: {
+    /**
+     * Triggers a hovered event.
+     */
     hovering(el) {
+      /**
+       * Event that is triggered when concept is hovered over.
+       *
+       * @event hovered
+       * @type {object} - concept object that is hovered over
+       */
       this.$emit('hovered', el)
     },
+    /**
+     * Sets the ISOPEN property of the concept, loads it's children and scrolls the concept further to the top.
+     *
+     * @param {boolean} isOpen - open status to be set to
+     */
     open(isOpen) {
       let newConcept = this.concept
       newConcept.ISOPEN = isOpen
@@ -86,9 +96,24 @@ export default {
         this.scrollTo()
       }
     },
+    /**
+     * Triggers a selected event.
+     */
     select(concept) {
+      /**
+       * Event that is triggered when concept is selected.
+       *
+       * @event selected
+       * @type {object} - concept object that is selected
+       */
       this.$emit('selected', concept)
     },
+    /**
+     * Deals with a click on a concept.
+     *
+     * If the concept is not selected, select the concept.
+     * If the concept is selected, toggle the open status.
+     */
     onClick() {
       if (!this.isSelected) {
         this.select(this.concept)
@@ -96,6 +121,12 @@ export default {
         this.open(!this.isOpen)
       }
     },
+    /**
+     * Loads the concept's children (via treeHelper).
+     *
+     * Scroll on finish.
+     * TODO: - Scrolling is redundant, remove.
+     */
     loadChildren() {
       this.loadingChildren = true
       let vm = this
@@ -104,6 +135,9 @@ export default {
         vm.scrollTo()
       })
     },
+    /**
+     * Scrolls the concept further to the top.
+     */
     scrollTo() {
       // Determine conceptTree element because it is the scrolling container
       let parent = this.$parent
