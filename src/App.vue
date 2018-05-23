@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import Navbar from './components/Navbar'
-import Browser from './components/Browser'
-import Mapping from './components/Mapping'
+import Navbar from "./components/Navbar"
+import Browser from "./components/Browser"
+import Mapping from "./components/Mapping"
 
 /**
  * The main application.
  */
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navbar, Browser, Mapping
   }

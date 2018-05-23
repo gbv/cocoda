@@ -8,12 +8,13 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "lint": "./node_modules/.bin/eslint ./src/**/*.{js,vue}",
-    "fix": "./node_modules/.bin/eslint --fix ./src/**/*.{js,vue}",
+    "lint": "./node_modules/.bin/eslint ./src/*.{js,vue} ./src/**/*.{js,vue}",
+    "fix": "./node_modules/.bin/eslint --fix ./src/*.{js,vue} ./src/**/*.{js,vue}",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "src/**/*.{js,vue}": ["eslint --fix", "git add"]
+    "src/**/*.{js,vue}": ["eslint --fix", "git add"],
+    "src/*.{js,vue}": ["eslint --fix", "git add"]
   },
   "pre-commit": "lint-staged",
   "dependencies": {
