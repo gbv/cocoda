@@ -13,6 +13,10 @@
 </template>
 
 <script>
+
+/**
+ * The navigation bar.
+ */
 export default {
   name: 'Navbar',
   data () {
