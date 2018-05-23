@@ -16,6 +16,9 @@ import Navbar from './components/Navbar'
 import Browser from './components/Browser'
 import Mapping from './components/Mapping'
 
+/**
+ * The main application.
+ */
 export default {
   name: 'App',
   components: {
@@ -57,10 +60,6 @@ html, body {
 .flexbox-row > div {
   margin: 10px 6px 2px 6px;
   padding: 10px 0px 12px 0px;
-  /* outline: 2px solid #ccc;
-  outline-offset: -5px;
-  -moz-outline-radius: 9px;
-  -webkit-outline-radius: 9px; */
  }
 
 /* Overwrite the default to keep the scrollbar always visible */
