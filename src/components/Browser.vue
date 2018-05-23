@@ -12,13 +12,19 @@ import ConceptTree from './ConceptTree'
 import ConceptDetail from './ConceptDetail'
 import SearchField from './SearchField'
 
-// TODO: - Rethink way of sorting
+/**
+ * Sorts data by German prefLabel with fallback to uri.
+ */
 function sortData(data) {
+  // TODO: - Rethink way of sorting
   return data.sort(
     (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
   )
 }
 
+/**
+ * The component for the concept browser (usually one on the left and one on the right).
+ */
 export default {
   name: 'Browser',
   components: {
@@ -33,6 +39,9 @@ export default {
   },
   methods: {},
   computed: {
+    /**
+     * Generates the options for the select element.
+     */
     vocOptions: function() {
       let options = [
         { value: null, text: 'Select a schema', disabled: true }
