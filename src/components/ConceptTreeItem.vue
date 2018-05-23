@@ -91,9 +91,10 @@ export default {
       let newConcept = this.concept
       newConcept.ISOPEN = isOpen
       this.treeHelper.update(newConcept)
-      this.loadChildren()
       if (isOpen && this.childrenLoaded && this.hasChildren) {
         this.scrollTo()
+      } else {
+        this.loadChildren()
       }
     },
     /**
@@ -125,14 +126,16 @@ export default {
      * Loads the concept's children (via treeHelper).
      *
      * Scroll on finish.
-     * TODO: - Scrolling is redundant, remove.
      */
     loadChildren() {
       this.loadingChildren = true
       let vm = this
       this.treeHelper.loadChildren(this.concept, function(success) {
         vm.loadingChildren = false
-        vm.scrollTo()
+        // Only scroll when concept is open
+        if (vm.concept.ISOPEN) {
+          vm.scrollTo()
+        }
       })
     },
     /**
