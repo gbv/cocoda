@@ -1,25 +1,33 @@
 <template>
-  <span class="searchfield" v-show="voc != null">
+  <span
+    v-show="voc != null"
+    class="searchfield">
     <b-form-input
-      size="sm"
       v-model="searchQuery"
+      size="sm"
       type="search"
       placeholder="Type to search..."
       @click.native="isOpen = searchQuery != ''"
       @keydown.down.native.prevent="onArrowDown"
       @keydown.up.native.prevent="onArrowUp"
-      @keyup.enter.native="onEnter"></b-form-input>
-    <ul v-show="isOpen" class="searchfield-results">
-      <li class="loading" v-if="loading">
+      @keyup.enter.native="onEnter"/>
+    <ul
+      v-show="isOpen"
+      class="searchfield-results">
+      <li
+        v-if="loading"
+        class="loading">
         <loading-indicator />
       </li>
-      <li v-else v-for="(result, i) in searchResult"
+      <li
+        v-for="(result, i) in searchResult"
+        v-else
         :key="i"
-        class="searchfield-result"
         :id="'searchResult' + i"
+        :class="{ 'searchfield-selected': i === searchSelected }"
+        class="searchfield-result"
         @click="chooseResult(result)"
-        @mouseover="mouseover(i)"
-        :class="{ 'searchfield-selected': i === searchSelected }">
+        @mouseover="mouseover(i)">
         {{ result[0] }}
       </li>
     </ul><br>
@@ -27,8 +35,8 @@
 </template>
 
 <script>
-import LoadingIndicator from './LoadingIndicator'
-var _ = require('lodash')
+import LoadingIndicator from "./LoadingIndicator"
+var _ = require("lodash")
 
 /**
  * Helper function that scrolls the search result when navigating with the keyboard.
@@ -36,13 +44,13 @@ var _ = require('lodash')
  * @param {element} target - DOM element to scroll to
  */
 function scrollIntoViewIfNeeded(target) {
-  var rect = target.getBoundingClientRect();
+  var rect = target.getBoundingClientRect()
   var parentRect = target.parentElement.getBoundingClientRect()
   if (rect.bottom > parentRect.bottom) {
-    target.scrollIntoView(false);
+    target.scrollIntoView(false)
   }
   if (rect.top < parentRect.top) {
-    target.scrollIntoView();
+    target.scrollIntoView()
   }
 }
 
@@ -50,10 +58,15 @@ function scrollIntoViewIfNeeded(target) {
  * Component that represents a SearchField.
  */
 export default {
-  name: 'SearchField',
-  props: ["voc"],
+  name: "SearchField",
   components: {
     LoadingIndicator
+  },
+  props: {
+    voc: {
+      type: String,
+      default: ""
+    }
   },
   data () {
     return {
@@ -68,13 +81,13 @@ export default {
     /**
      * Deals with query changes.
      */
-    searchQuery: function (newQuestion, oldQuestion) {
+    searchQuery: function (newQuestion) {
       this.searchSelected = -1
       if (newQuestion == "") {
         this.loading = false
         this.isOpen = false
       } else {
-        this.searchResult = ['Waiting for you to stop typing...']
+        this.searchResult = ["Waiting for you to stop typing..."]
         this.loading = true
         this.isOpen = true
         this.debouncedGetAnswer()
@@ -96,6 +109,14 @@ export default {
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)
   },
+  mounted() {
+    // Add click event listener
+    document.addEventListener("click", this.handleClickOutside)
+  },
+  destroyed() {
+    // Remove click event listener
+    document.removeEventListener("click", this.handleClickOutside)
+  },
   methods: {
     /**
      * Chooses a search result and resets search field.
@@ -110,7 +131,7 @@ export default {
        * @event chooseUri
        * @type {string} - uri that is chosen
        */
-      this.$emit('chooseUri', uri)
+      this.$emit("chooseUri", uri)
       this.searchQuery = ""
       this.isOpen = false
       this.searchSelected = -1
@@ -119,7 +140,7 @@ export default {
      * Loads autosuggest results from API.
      */
     getAnswer:  function () {
-      this.searchResult = ['Searching...']
+      this.searchResult = ["Searching..."]
       var vm = this
       this.$api.suggest(this.searchQuery, this.voc, 20)
         .then(function(data) {
@@ -128,7 +149,7 @@ export default {
         })
         .catch(function(error) {
           vm.loading = false
-          vm.searchResult = [['Error! Could not reach the API. ' + error]]
+          vm.searchResult = [["Error! Could not reach the API. " + error]]
         })
     },
     /**
@@ -138,7 +159,7 @@ export default {
      */
     handleClickOutside(evt) {
       if (!this.$el.contains(evt.target)) {
-        this.isOpen = false;
+        this.isOpen = false
         this.searchSelected = -1
       }
     },
@@ -168,7 +189,7 @@ export default {
      * Scrolls the currently selected search result into view.
      */
     scrollSelectedIntoView() {
-      scrollIntoViewIfNeeded(document.getElementById('searchResult'+this.searchSelected))
+      scrollIntoViewIfNeeded(document.getElementById("searchResult"+this.searchSelected))
     },
     /**
      * Handles an enter down event.
@@ -193,14 +214,6 @@ export default {
       this.searchSelected = i
     }
   },
-  mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside);
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside);
-  }
 }
 </script>
 

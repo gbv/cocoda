@@ -1,16 +1,26 @@
 <template>
   <div class="browser">
-    <b-form-select v-model="vocSelected" :options="vocOptions" class="schemaSelect" />
-    <search-field :voc="vocSelected ? vocSelected.notation[0] : null" @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
-    <concept-tree ref="conceptTree" :vocSelected="vocSelected ? vocSelected : null" @selectedConcept="conceptSelected = $event" />
-    <concept-detail :item="conceptSelected != null ? conceptSelected : vocSelected" :isSchema="conceptSelected == null" />
+    <b-form-select 
+      v-model="vocSelected" 
+      :options="vocOptions" 
+      class="schemaSelect" />
+    <search-field 
+      :voc="vocSelected ? vocSelected.notation[0] : null" 
+      @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
+    <concept-tree 
+      ref="conceptTree" 
+      :voc-selected="vocSelected ? vocSelected : null" 
+      @selectedConcept="conceptSelected = $event" />
+    <concept-detail 
+      :item="conceptSelected != null ? conceptSelected : vocSelected" 
+      :is-schema="conceptSelected == null" />
   </div>
 </template>
 
 <script>
-import ConceptTree from './ConceptTree'
-import ConceptDetail from './ConceptDetail'
-import SearchField from './SearchField'
+import ConceptTree from "./ConceptTree"
+import ConceptDetail from "./ConceptDetail"
+import SearchField from "./SearchField"
 
 /**
  * Sorts data by German prefLabel with fallback to uri.
@@ -26,7 +36,7 @@ function sortData(data) {
  * The component for the concept browser (usually one on the left and one on the right).
  */
 export default {
-  name: 'Browser',
+  name: "Browser",
   components: {
     ConceptTree, ConceptDetail, SearchField
   },
@@ -37,14 +47,13 @@ export default {
       conceptSelected: null
     }
   },
-  methods: {},
   computed: {
     /**
      * Generates the options for the select element.
      */
     vocOptions: function() {
       let options = [
-        { value: null, text: 'Select a schema', disabled: true }
+        { value: null, text: "Select a schema", disabled: true }
       ]
       // Add from vocs
       for (var voc of this.vocs) {
@@ -66,9 +75,10 @@ export default {
         vm.vocs = sortData(data)
       })
       .catch(function(error) {
-        console.log('Request failed', error)
+        console.log("Request failed", error)
       })
-  }
+  },
+  methods: {},
 }
 
 </script>

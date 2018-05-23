@@ -1,6 +1,10 @@
 <template>
-  <div class="conceptTree" :class="{ scrollable: !loading }">
-    <div class="conceptTreeItems" ref="conceptTreeItems">
+  <div
+    :class="{ scrollable: !loading }"
+    class="conceptTree">
+    <div
+      ref="conceptTreeItems"
+      class="conceptTreeItems">
       <concept-tree-item
         v-for="(concept, index) in tree"
         :key="index"
@@ -9,20 +13,23 @@
         :hovered="hovered"
         :depth="0"
         :index="index"
-        :treeHelper="treeHelper"
+        :tree-helper="treeHelper"
         @hovered="hovered = $event"
         @selected="selected = $event" />
     </div>
-    <div v-show="loading" class="loadingFull" ref="loadingFull">
+    <div
+      v-show="loading"
+      ref="loadingFull"
+      class="loadingFull">
       <loading-indicator size="lg" />
     </div>
   </div>
 </template>
 
 <script>
-import LoadingIndicator from './LoadingIndicator'
-import ConceptTreeItem from './ConceptTreeItem'
-var _ = require('lodash')
+import LoadingIndicator from "./LoadingIndicator"
+import ConceptTreeItem from "./ConceptTreeItem"
+var _ = require("lodash")
 
 /**
  * Sorts data by notation with fallback to uri.
@@ -39,11 +46,16 @@ function sortData(data) {
  * Component that represents a (navigatable) concept tree.
  */
 export default {
-  name: 'concepttree',
+  name: "Concepttree",
   components: {
     LoadingIndicator, ConceptTreeItem
   },
-  props: ['vocSelected'],
+  props: {
+    vocSelected: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
       tree: [],
@@ -110,7 +122,7 @@ export default {
               }
               callback && callback(newConcept)
             }).catch(function(error) {
-              console.log('Request failed', error)
+              console.log("Request failed", error)
               callback && callback(null)
             })
         },
@@ -193,7 +205,6 @@ export default {
          * Is only used when selecting a concept from search.
          */
         loadAncestors: function(uri, callback = null) {
-          let treeHelper = this
           this.vm.$api.ancestors(uri, this.vm.$api.defaultProperties)
             .then(function(data) {
               // Set ancestor property for loaded ancestors
@@ -204,16 +215,12 @@ export default {
               }
               callback && callback(data)
             }).catch(function(error) {
-              console.log('Request failed', error)
+              console.log("Request failed", error)
               callback && callback(null)
             })
         }
       }
     }
-  },
-  created() {
-    // Give the treeHelper object a reference to the component
-    this.treeHelper.vm = this
   },
   watch: {
     /**
@@ -224,22 +231,26 @@ export default {
         this.reset()
       }
     },
-    selected: function(newValue, oldValue) {
+    selected: function(newValue) {
       /**
        * Event when a concept is selected.
        *
        * @event selectedConcept
        * @type {object}
        */
-      this.$emit('selectedConcept', newValue)
+      this.$emit("selectedConcept", newValue)
     },
     /**
      * Move loading indicator to right scrolling position in tree.
      */
-    loading: function(newValue, oldValue) {
+    loading: function() {
       let loadingFull = this.$refs.loadingFull
-      loadingFull.style.top = (this.$el.scrollTop - this.$el.clientTop) + 'px'
+      loadingFull.style.top = (this.$el.scrollTop - this.$el.clientTop) + "px"
     }
+  },
+  created() {
+    // Give the treeHelper object a reference to the component
+    this.treeHelper.vm = this
   },
   methods: {
     /**
@@ -271,18 +282,9 @@ export default {
                 // Scroll element
                 var options = {
                   container: vm.$el,
-                  easing: 'ease-in',
+                  easing: "ease-in",
                   offset: -50,
                   cancelable: true,
-                  onStart: function(element) {
-                    // scrolling started
-                  },
-                  onDone: function(element) {
-                    // scrolling is done
-                  },
-                  onCancel: function() {
-                    // scrolling has been interrupted
-                  },
                   x: false,
                   y: true
                 }
@@ -330,7 +332,7 @@ export default {
             })
           }
         }).catch(function(error) {
-          console.log('##### chooseFromUri ##### Load concept request failed', error)
+          console.log("##### chooseFromUri ##### Load concept request failed", error)
           vm.loading = false
         })
     },
@@ -347,7 +349,7 @@ export default {
       this.$api.topByNotation(this.vocSelected.notation[0])
         .then(function(data) {
           if (selectedBefore != vm.vocSelected) {
-            console.log('Another voc was chosen in the meanwhile.')
+            console.log("Another voc was chosen in the meanwhile.")
           } else {
             // Save data sorted by uri
             vm.tree = sortData(data)
@@ -358,7 +360,7 @@ export default {
             vm.loading = false
           }
         }).catch(function(error) {
-          console.log('Request failed', error)
+          console.log("Request failed", error)
           vm.loading = false
         })
     }

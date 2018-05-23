@@ -1,5 +1,7 @@
 <template>
-   <div class="loader" :class="'loader-' + size"></div>
+  <div
+    :class="'loader-' + size"
+    class="loader"/>
 </template>
 
 <script>
@@ -8,8 +10,13 @@
  * Component that displays a spinning loading indicator.
  */
 export default {
-  name: 'LoadingIndicator',
-  props: ['size'],
+  name: "LoadingIndicator",
+  props: {
+    size: {
+      type: String,
+      default: "md"
+    }
+  },
   data () {
     return {}
   }

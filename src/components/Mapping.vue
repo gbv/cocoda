@@ -1,5 +1,5 @@
 <template>
-  <div id="mapping"></div>
+  <div id="mapping"/>
 </template>
 
 <script>
@@ -8,7 +8,7 @@
  * The mapping component.
  */
 export default {
-  name: 'Mapping',
+  name: "Mapping",
   data () {
     return {}
   }

@@ -1,11 +1,18 @@
 <template>
-  <b-navbar toggleable="md" type="dark">
+  <b-navbar 
+    toggleable="md" 
+    type="dark">
     <b-navbar-brand href="#">{{ brand }}</b-navbar-brand>
     <b-navbar-nav class="ml-auto">
-      <b-button variant="link" disabled>
+      <b-button 
+        variant="link" 
+        disabled>
         Login
       </b-button>
-      <b-nav-item right :href="github" v-if="github">
+      <b-nav-item 
+        v-if="github" 
+        :href="github" 
+        right>
         GitHub
       </b-nav-item>
     </b-navbar-nav>
@@ -18,7 +25,7 @@
  * The navigation bar.
  */
 export default {
-  name: 'Navbar',
+  name: "Navbar",
   data () {
     return {
       brand: "Cocoda Prototype 2018",
