@@ -61,7 +61,8 @@ import AutoLink from './AutoLink'
 import ItemName from './ItemName'
 
 /**
- * Displays an item's (either schema or concept) details (URI, notation, identifier, ...)
+ * Component that displays an item's (either schema or concept) details (URI, notation, identifier, ...).
+ *
  * isSchema == true means item contains a schema's notation (needed to get data from API).
  * isSchema == false means item contains a concept's uri.
  */
@@ -78,6 +79,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * Refreshes data when item changes.
+     */
     item: function(newValue, oldValue) {
       this.detail = null
       if (this.item == null) return;
