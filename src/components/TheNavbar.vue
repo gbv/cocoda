@@ -25,7 +25,7 @@
  * The navigation bar.
  */
 export default {
-  name: "Navbar",
+  name: "TheNavbar",
   data () {
     return {
       brand: "Cocoda Prototype 2018",

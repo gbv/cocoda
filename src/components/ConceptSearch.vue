@@ -58,10 +58,10 @@ function scrollIntoViewIfNeeded(target) {
 }
 
 /**
- * Component that represents a SearchField.
+ * Component that represents a search field for concepts.
  */
 export default {
-  name: "SearchField",
+  name: "ConceptSearch",
   components: {
     LoadingIndicator
   },

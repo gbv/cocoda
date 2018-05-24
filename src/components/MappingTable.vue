@@ -1,14 +1,14 @@
 <template>
-  <div id="mapping"/>
+  <div id="mappingTable"/>
 </template>
 
 <script>
 
 /**
- * The mapping component.
+ * The MappingTable component.
  */
 export default {
-  name: "Mapping",
+  name: "MappingTable",
   data () {
     return {}
   }
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style scoped>
-#mapping {
-  flex: 2;
+#mappingTable {
+  flex: 1;
 }
 </style>

@@ -4,7 +4,7 @@
       v-model="vocSelected"
       :options="vocOptions"
       class="schemaSelect" />
-    <search-field
+    <concept-search
       :voc="vocSelected ? vocSelected.notation[0] : null"
       @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
     <concept-detail
@@ -20,7 +20,7 @@
 <script>
 import ConceptTree from "./ConceptTree"
 import ConceptDetail from "./ConceptDetail"
-import SearchField from "./SearchField"
+import ConceptSearch from "./ConceptSearch"
 
 /**
  * Sorts data by German prefLabel with fallback to uri.
@@ -36,9 +36,9 @@ function sortData(data) {
  * The component for the concept browser (usually one on the left and one on the right).
  */
 export default {
-  name: "Browser",
+  name: "ConceptSchemeBrowser",
   components: {
-    ConceptTree, ConceptDetail, SearchField
+    ConceptTree, ConceptDetail, ConceptSearch
   },
   data () {
     return {

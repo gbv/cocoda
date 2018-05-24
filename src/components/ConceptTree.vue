@@ -46,7 +46,7 @@ function sortData(data) {
  * Component that represents a (navigatable) concept tree.
  */
 export default {
-  name: "Concepttree",
+  name: "ConceptTree",
   components: {
     LoadingIndicator, ConceptTreeItem
   },

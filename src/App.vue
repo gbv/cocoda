@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <navbar />
+    <the-navbar />
     <div class="main">
       <div class="flexbox-row">
-        <browser />
-        <mapping />
-        <browser />
+        <concept-scheme-browser />
+        <mapping-browser />
+        <concept-scheme-browser />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from "./components/Navbar"
-import Browser from "./components/Browser"
-import Mapping from "./components/Mapping"
+import TheNavbar from "./components/TheNavbar"
+import ConceptSchemeBrowser from "./components/ConceptSchemeBrowser"
+import MappingBrowser from "./components/MappingBrowser"
 
 /**
  * The main application.
@@ -22,7 +22,7 @@ import Mapping from "./components/Mapping"
 export default {
   name: "App",
   components: {
-    Navbar, Browser, Mapping
+    TheNavbar, ConceptSchemeBrowser, MappingBrowser
   }
 }
 </script>
