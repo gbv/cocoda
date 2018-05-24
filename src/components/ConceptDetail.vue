@@ -148,7 +148,6 @@ export default {
   flex: 1;
   overflow-y: auto;
   position: relative;
-  margin: 0px 0px 4px 0px;
 }
 p {
   margin: 5px 0;

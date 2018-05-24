@@ -6,8 +6,8 @@
     class="conceptTreeItem">
     <div
       :class="{
-        conceptBoxHovered: isHovered,
-        conceptBoxSelected: isSelected
+        'color-primary-2-bg': isHovered,
+        'font-heavy': isSelected
       }"
       class="conceptBox">
       <div
@@ -240,9 +240,6 @@ export default {
 }
 .conceptBoxHovered, .arrowBox:hover {
   background-color: bisque;
-}
-.conceptBoxSelected {
-  font-weight: bold;
 }
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 i {

@@ -9,10 +9,12 @@
       @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
     <concept-detail
       :item="conceptSelected != null ? conceptSelected : vocSelected"
-      :is-schema="conceptSelected == null" />
+      :is-schema="conceptSelected == null"
+      class="main-component" />
     <concept-tree
       ref="conceptTree"
       :voc-selected="vocSelected ? vocSelected : null"
+      class="main-component"
       @selectedConcept="conceptSelected = $event" />
   </div>
 </template>
@@ -92,8 +94,5 @@ export default {
 .schemaSelect {
   flex: none;
   margin-bottom: 5px;
-}
-.browser > div {
-  outline: 1px solid #ccc;
 }
 </style>

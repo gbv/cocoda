@@ -1,7 +1,8 @@
 <template>
   <b-navbar
     toggleable="md"
-    type="dark">
+    type="dark"
+    class="color-primary-base-bg">
     <b-navbar-brand href="#">{{ brand }}</b-navbar-brand>
     <b-navbar-nav class="ml-auto">
       <b-button
@@ -39,7 +40,6 @@ export default {
 
 <style scoped>
 nav.navbar {
-  background: #577fbb;
   padding: 4px 16px 4px 16px;
   height: 40px;
 

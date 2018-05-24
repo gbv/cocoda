@@ -1,8 +1,8 @@
 <template>
   <div id="mappingBrowser">
-    <mapping-editor />
-    <mapping-table />
-    <mapping-occurrences />
+    <mapping-editor class="main-component" />
+    <mapping-table class="main-component" />
+    <mapping-occurrences class="main-component" />
   </div>
 </template>
 
@@ -30,9 +30,5 @@ export default {
   flex: 2;
   display: flex;
   flex-direction: column;
-}
-#mappingBrowser > div {
-  outline: 1px solid #ccc;
-  margin: 0px 0px 4px 0px;
 }
 </style>
