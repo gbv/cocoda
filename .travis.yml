@@ -14,5 +14,6 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   on:
+    node: "7"
     all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^dev|styleguidist$
+    condition: $TRAVIS_BRANCH =~ ^dev|master|styleguidist$
