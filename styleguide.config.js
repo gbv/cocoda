@@ -13,6 +13,10 @@ module.exports = {
         {
           name: 'Installation',
           content: 'docs/installation.md'
+        },
+        {
+          name: 'Technical background',
+          content: 'docs/technical-background.md'
         }
       ]
     },

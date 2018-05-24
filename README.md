@@ -1,10 +1,10 @@
 # cocoda
 
-This repository contains the **cocoda** mapping tool web application.
+This repository contains the **Cocoda** mapping tool web application.
 
 [![Build Status](https://travis-ci.org/gbv/cocoda.svg?branch=master)](https://travis-ci.org/gbv/cocoda)
 
-The `docs` directory contains additional documentation.
+The `docs` directory contains additional documentation made available at <https://gbv.github.io/cocoda/>.
 
 ## Build Setup
 
