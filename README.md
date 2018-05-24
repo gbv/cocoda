@@ -4,6 +4,8 @@ This repository contains the **cocoda** mapping tool web application.
 
 [![Build Status](https://travis-ci.org/gbv/cocoda.svg?branch=master)](https://travis-ci.org/gbv/cocoda)
 
+The `docs` directory contains additional documentation.
+
 ## Build Setup
 
 ``` bash
@@ -18,6 +20,9 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+
+# serve documentation at localhost:6060
+npm run styleguide
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
