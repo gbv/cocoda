@@ -46,7 +46,7 @@ function sortData(data) {
  * Component that represents a (navigatable) concept tree.
  */
 export default {
-  name: "Concepttree",
+  name: "ConceptTree",
   components: {
     LoadingIndicator, ConceptTreeItem
   },
@@ -374,6 +374,7 @@ export default {
   flex: 1.5;
   position: relative;
   overflow-y: hidden;
+  margin: 0px 0px 4px 0px;
 }
 .scrollable {
   overflow-y: auto;

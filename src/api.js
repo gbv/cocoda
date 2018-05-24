@@ -120,7 +120,8 @@ function suggest(search, voc = "", limit = 0, use = "notation,label", cancelToke
 function topByNotation(notation, properties = defaultProperties, cancelToken = null) {
   return get(`voc/${notation}/top`, {
     params: {
-      properties: properties
+      properties: properties,
+      limit: 10000
     },
     cancelToken: cancelToken
   })

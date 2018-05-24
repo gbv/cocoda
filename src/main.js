@@ -14,7 +14,7 @@ var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
 
 // Add api, use with this.$api in components
-import * as api from "./components/api"
+import * as api from "./api"
 Vue.prototype.$api = api
 
 new Vue({

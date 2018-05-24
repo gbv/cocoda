@@ -141,11 +141,11 @@ export default {
 
 <style scoped>
 .conceptDetail {
-  margin-top: 5px;
   font-size: 0.8em;
   flex: 1;
   overflow-y: auto;
   position: relative;
+  margin: 0px 0px 4px 0px;
 }
 p {
   margin: 5px 0;
