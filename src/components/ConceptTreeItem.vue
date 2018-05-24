@@ -58,26 +58,44 @@ export default {
     LoadingIndicator, ItemName
   },
   props: {
+    /**
+     * The concept object that this tree item represents.
+     */
     concept: {
       type: Object,
       default: null
     },
+    /**
+     * The currently selected concept.
+     */
     selected: {
       type: Object,
       default: null
     },
+    /**
+     * The currently hovered concept.
+     */
     hovered: {
       type: Object,
       default: null
     },
+    /**
+     * The depth of the current item.
+     */
     depth: {
       type: Number,
       default: null
     },
+    /**
+     * The index of the current item.
+     */
     index: {
       type: Number,
       default: null
     },
+    /**
+     * A reference to ConceptTree's treeHelper object.
+     */
     treeHelper: {
       type: Object,
       default: null

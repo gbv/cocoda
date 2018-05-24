@@ -51,6 +51,9 @@ export default {
     LoadingIndicator, ConceptTreeItem
   },
   props: {
+    /**
+     * The currently selected scheme as an object.
+     */
     vocSelected: {
       type: Object,
       default: null

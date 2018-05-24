@@ -12,6 +12,10 @@
 export default {
   name: "LoadingIndicator",
   props: {
+    /**
+     * The size of the loading indicator.
+     * `sm, md, lg`
+     */
     size: {
       type: String,
       default: "md"

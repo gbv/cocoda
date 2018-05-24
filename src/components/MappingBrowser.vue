@@ -12,7 +12,7 @@ import MappingOccurrences from "./MappingOccurrences"
 import MappingTable from "./MappingTable"
 
 /**
- * The MappingBrowser component.
+ * The mapping browser component which includes the mapping editor, mapping table, and mapping occurrences.
  */
 export default {
   name: "MappingBrowser",

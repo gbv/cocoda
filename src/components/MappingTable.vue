@@ -5,7 +5,7 @@
 <script>
 
 /**
- * The MappingTable component.
+ * The mapping table component.
  */
 export default {
   name: "MappingTable",

@@ -82,9 +82,6 @@ import ItemName from "./ItemName"
 
 /**
  * Component that displays an item's (either schema or concept) details (URI, notation, identifier, ...).
- *
- * isSchema == true means item contains a schema's notation (needed to get data from API).
- * isSchema == false means item contains a concept's uri.
  */
 export default {
   name: "ConceptDetail",
@@ -92,10 +89,16 @@ export default {
     LoadingIndicator, AutoLink, ItemName
   },
   props: {
+    /**
+     * The concept object whose details should be displayed.
+     */
     item: {
       type: Object,
       default: null
     },
+    /**
+     * `true` means item is a scheme, `false` means item is a concept.
+     */
     isSchema: {
       type: Boolean,
       default: false

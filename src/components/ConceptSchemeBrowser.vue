@@ -33,7 +33,7 @@ function sortData(data) {
 }
 
 /**
- * The component for the concept browser (usually one on the left and one on the right).
+ * The component for the concept scheme browser. It incorporates selecting a scheme, searching concepts, displaying details for a concept, and browsing concepts in a tree view.
  */
 export default {
   name: "ConceptSchemeBrowser",

@@ -28,7 +28,9 @@ export default {
   name: "TheNavbar",
   data () {
     return {
+      /** The title text displayed in the top left corner. */
       brand: "Cocoda Prototype 2018",
+      /** The link to the GitHub project. */
       github: "https://github.com/gbv/cocoda"
     }
   }

@@ -5,7 +5,7 @@
 <script>
 
 /**
- * The MappingOccurrences component.
+ * The mapping occurrences component.
  */
 export default {
   name: "MappingOccurrences",

@@ -58,7 +58,7 @@ function scrollIntoViewIfNeeded(target) {
 }
 
 /**
- * Component that represents a search field for concepts.
+ * Component that represents a typeahead-enabled search field for concepts.
  */
 export default {
   name: "ConceptSearch",
@@ -66,6 +66,9 @@ export default {
     LoadingIndicator
   },
   props: {
+    /**
+     * The ID (notation) for the scheme that should be searched.
+     */
     voc: {
       type: String,
       default: ""
@@ -129,7 +132,7 @@ export default {
     chooseResult: function (result) {
       let uri = _.last(result)
       /**
-       * chooseUri event.
+       * Event when the user has chosen a result.
        *
        * @event chooseUri
        * @type {string} - uri that is chosen

@@ -14,6 +14,9 @@
 export default {
   name: "AutoLink",
   props: {
+    /**
+     * The string that is potentially a URL.
+     */
     link: {
       type: String,
       default: ""

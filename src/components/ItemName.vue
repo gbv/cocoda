@@ -13,6 +13,9 @@
 export default {
   name: "ItemName",
   props: {
+    /**
+     * The item whose notation and name this component will display.
+     */
     item: {
       type: Object,
       default: null

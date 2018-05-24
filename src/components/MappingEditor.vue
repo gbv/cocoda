@@ -5,7 +5,7 @@
 <script>
 
 /**
- * The MappingEditor component.
+ * The mapping editor component.
  */
 export default {
   name: "MappingEditor",
