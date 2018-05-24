@@ -7,3 +7,12 @@ install:
 script:
   - npm run lint
   - npm run build
+  - npm run styleguide:build
+deploy:
+  provider: pages
+  local_dir: styleguide
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^dev|styleguidist$
