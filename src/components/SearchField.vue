@@ -11,26 +11,29 @@
       @keydown.down.native.prevent="onArrowDown"
       @keydown.up.native.prevent="onArrowUp"
       @keyup.enter.native="onEnter"/>
-    <ul
+    <div
       v-show="isOpen"
       class="searchfield-results">
-      <li
+      <div
         v-if="loading"
         class="loading">
         <loading-indicator />
-      </li>
-      <li
-        v-for="(result, i) in searchResult"
+      </div>
+      <ul
         v-else
-        :key="i"
-        :id="'searchResult' + i"
-        :class="{ 'searchfield-selected': i === searchSelected }"
-        class="searchfield-result"
-        @click="chooseResult(result)"
-        @mouseover="mouseover(i)">
-        {{ result[0] }}
-      </li>
-    </ul><br>
+        class="searchfield-results-list">
+        <li
+          v-for="(result, i) in searchResult"
+          :key="i"
+          :id="'searchResult' + i"
+          :class="{ 'searchfield-selected': i === searchSelected }"
+          class="searchfield-results-item"
+          @click="chooseResult(result)"
+          @mouseover="mouseover(i)">
+          {{ result[0] }}
+        </li>
+      </ul>
+    </div>
   </span>
 </template>
 
@@ -229,7 +232,7 @@ export default {
   margin: 0;
   border: 1px solid #aaaaaa;
   height: auto;
-  max-height: 200px;
+  max-height: 250px;
   overflow: auto;
   width: 100%;
   position: absolute;
@@ -237,16 +240,32 @@ export default {
   z-index: 10;
 }
 
-.searchfield-result {
+.searchfield-results-list {
+  padding: 0;
+  margin: 0;
+}
+
+.searchfield-results-item {
   list-style: none;
   text-align: left;
   cursor: pointer;
   font-size: 14px;
-  padding-left: 8px;
+  padding: 3px 0px 3px 12px;
 }
 
 .searchfield-selected {
   background-color: #4AAE9B;
   color: white;
+}
+
+.loading {
+  width: 100%;
+  height: 50px;
+  padding: 0px 0px 0px 12px;
+  z-index: 100;
+  background-color: #ffffff55;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 </style>
