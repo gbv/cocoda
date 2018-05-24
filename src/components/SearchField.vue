@@ -221,8 +221,7 @@ export default {
 .searchfield {
   position: relative;
   margin: 0px 15px 0px 15px;
-  padding-top: 3px;
-  height: 43px;
+  height: 37px;
 }
 
 .searchfield-results {

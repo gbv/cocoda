@@ -1,19 +1,19 @@
 <template>
   <div class="browser">
-    <b-form-select 
-      v-model="vocSelected" 
-      :options="vocOptions" 
+    <b-form-select
+      v-model="vocSelected"
+      :options="vocOptions"
       class="schemaSelect" />
-    <search-field 
-      :voc="vocSelected ? vocSelected.notation[0] : null" 
+    <search-field
+      :voc="vocSelected ? vocSelected.notation[0] : null"
       @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
-    <concept-tree 
-      ref="conceptTree" 
-      :voc-selected="vocSelected ? vocSelected : null" 
-      @selectedConcept="conceptSelected = $event" />
-    <concept-detail 
-      :item="conceptSelected != null ? conceptSelected : vocSelected" 
+    <concept-detail
+      :item="conceptSelected != null ? conceptSelected : vocSelected"
       :is-schema="conceptSelected == null" />
+    <concept-tree
+      ref="conceptTree"
+      :voc-selected="vocSelected ? vocSelected : null"
+      @selectedConcept="conceptSelected = $event" />
   </div>
 </template>
 

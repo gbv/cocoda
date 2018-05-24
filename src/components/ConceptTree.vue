@@ -374,6 +374,7 @@ export default {
   flex: 1.5;
   position: relative;
   overflow-y: hidden;
+  margin: 0px 0px 4px 0px;
 }
 .scrollable {
   overflow-y: auto;
