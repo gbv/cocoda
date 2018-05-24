@@ -1,17 +1,17 @@
 <template>
-  <b-navbar 
-    toggleable="md" 
+  <b-navbar
+    toggleable="md"
     type="dark">
     <b-navbar-brand href="#">{{ brand }}</b-navbar-brand>
     <b-navbar-nav class="ml-auto">
-      <b-button 
-        variant="link" 
+      <b-button
+        variant="link"
         disabled>
         Login
       </b-button>
-      <b-nav-item 
-        v-if="github" 
-        :href="github" 
+      <b-nav-item
+        v-if="github"
+        :href="github"
         right>
         GitHub
       </b-nav-item>
@@ -38,6 +38,9 @@ export default {
 <style scoped>
 nav.navbar {
   background: #577fbb;
+  padding: 4px 16px 4px 16px;
+  height: 40px;
+
 }
 .navbar-dark .navbar-nav .nav-link, .btn-link {
   color: #fff;

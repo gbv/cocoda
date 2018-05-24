@@ -58,8 +58,8 @@ html, body {
   width: 100%;
 }
 .flexbox-row > div {
-  margin: 10px 6px 2px 6px;
-  padding: 10px 0px 12px 0px;
+  margin: 0px 6px 0px 6px;
+  padding: 8px 0px 8px 0px;
  }
 
 /* Overwrite the default to keep the scrollbar always visible */
