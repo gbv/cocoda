@@ -2,11 +2,14 @@
   <span
     v-show="voc != null"
     class="searchfield">
-    <div class="searchIcon">
+    <div
+      class="searchIcon"
+      @click="focusSearch" >
       <div class="searchIcon__circle" />
       <div class="searchIcon__rectangle" />
     </div>
     <b-form-input
+      ref="searchInput"
       v-model="searchQuery"
       size="sm"
       type="search"
@@ -222,6 +225,10 @@ export default {
      */
     mouseover(i) {
       this.searchSelected = i
+    },
+    focusSearch() {
+      this.$refs.searchInput.focus()
+      this.isOpen = this.searchQuery != ""
     }
   },
 }
@@ -256,6 +263,13 @@ left: -24px;
     border-top-right-radius: 1px;
     border-bottom-right-radius: 1px;
   }
+}
+
+.searchIcon:hover {
+  cursor: pointer;
+}
+.searchIcon:hover > .searchIcon__circle, .searchIcon:hover > .searchIcon__rectangle  {
+  border: 1px solid @color-secondary-2-4;
 }
 
 .searchfield {
