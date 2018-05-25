@@ -2,9 +2,12 @@
   <div
     v-if="item != null"
     :style="{'font-size': fontSize + 'em'}"
-    class="itemName">
+    class="itemName"
+    @mouseover="mouseOver"
+    @mouseout="mouseOut" >
     <notation-badge
       :item="item"
+      :class="{ 'badge-hovered': isLink && isHovered }"
       :style="{ bottom: (fontSize * 2) + 'px' }" />
     <prefLabel-text
       v-if="showText"
@@ -40,6 +43,26 @@ export default {
     showText: {
       type: Boolean,
       default: true
+    },
+    /**
+     * Determines whether it is a link.
+     */
+    isLink: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      isHovered: false
+    }
+  },
+  methods: {
+    mouseOver() {
+      this.isHovered = true
+    },
+    mouseOut() {
+      this.isHovered = false
     }
   }
 }
@@ -75,12 +98,18 @@ Vue.component("prefLabel-text", {
 })
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 .itemName {
   display: inline;
 }
 .badge {
   font-family: "Courier New", Courier, monospace;
   position: relative;
+}
+.badge-hovered {
+  background-color: @color-secondary-2-4;
+  cursor: pointer;
 }
 </style>

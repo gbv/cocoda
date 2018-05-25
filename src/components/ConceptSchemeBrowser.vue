@@ -10,7 +10,8 @@
     <concept-detail
       :item="conceptSelected != null ? conceptSelected : vocSelected"
       :is-schema="conceptSelected == null"
-      class="main-component" />
+      class="main-component"
+      @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
     <concept-tree
       ref="conceptTree"
       :voc-selected="vocSelected ? vocSelected : null"

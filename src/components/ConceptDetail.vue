@@ -14,7 +14,8 @@
           <item-name
             :item="parent"
             :show-text="false"
-            :font-size="0.95" /> →
+            :is-link="true"
+            @click.native="parentClicked(parent)" /> →
         </span>
       </div>
       <span v-else><loading-indicator
@@ -142,7 +143,18 @@ export default {
           vm.loading = false
         })
     }
-  }
+  },
+  methods: {
+    parentClicked(parent) {
+      /**
+       * Event when the user has chosen a result.
+       *
+       * @event chooseUri
+       * @type {string} - uri that is chosen
+       */
+      this.$emit("chooseUri", parent.uri)
+    }
+  },
 }
 </script>
 
