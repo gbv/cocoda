@@ -14,7 +14,7 @@
           <item-name
             :item="parent"
             :show-text="false"
-            font-size="0.95" /> →
+            :font-size="0.95" /> →
         </span>
       </div>
       <span v-else><loading-indicator
@@ -22,8 +22,8 @@
         size="sm" /></span>
       <item-name
         :item="detail"
-        class="label"
-        font-size="1.2" />
+        :font-size="1.2"
+        class="label" />
       <p>{{ isSchema ? "Schema" : "Concept" }} - <auto-link :link="detail.uri" /></p>
       <p v-if="detail.identifier">
         Identifier:
