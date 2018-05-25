@@ -29,7 +29,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+@import "./style/main.less";
+
 html, body {
   height: 100%;
   margin: 0;
@@ -38,7 +40,6 @@ html, body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
   margin-top: 0px;
   height: 100%;
   width: 100%;
@@ -62,40 +63,14 @@ html, body {
 .flexbox-row > div {
   margin: 0px 4px 0px 4px;
   padding: 4px 0px 0px 0px;
- }
+}
 
-/* Define color scheme for text and background color */
-.color-primary-0 { color: hsl(216, 42%, 99%) }
-.color-primary-1 { color: hsl(216, 42%, 94%) }
-.color-primary-2 { color: hsl(216, 42%, 84%) }
-.color-primary-3 { color: hsl(216, 42%, 74%) }
-.color-primary-4 { color: hsl(216, 42%, 64%) }
-.color-primary-base, .color-primary-5 { color: hsl(216, 42%, 54%) }	/* Main Primary color */
-.color-primary-6 { color: hsl(216, 42%, 44%) }
-.color-primary-7 { color: hsl(216, 42%, 34%) }
-.color-primary-8 { color: hsl(216, 42%, 24%) }
-.color-primary-9 { color: hsl(216, 42%, 14%) }
-.text-dark { color: hsl(0, 0%, 13%) }
-.text-grey { color: hsl(0, 0%, 29%) }
-.text-light-grey { color: hsl(0, 0%, 45%) }
-.font-normal { font-weight: 400 }
-.font-heavy { font-weight: 700 }
-.color-primary-0-bg { background-color: hsl(216, 42%, 99%) }
-.color-primary-1-bg { background-color: hsl(216, 42%, 94%) }
-.color-primary-2-bg { background-color: hsl(216, 42%, 84%) }
-.color-primary-3-bg { background-color: hsl(216, 42%, 74%) }
-.color-primary-4-bg { background-color: hsl(216, 42%, 64%) }
-.color-primary-base-bg, .color-primary-5-bg { background-color: hsl(216, 42%, 54%) }	/* Main Primary color */
-.color-primary-6-bg { background-color: hsl(216, 42%, 44%) }
-.color-primary-7-bg { background-color: hsl(216, 42%, 34%) }
-.color-primary-8-bg { background-color: hsl(216, 42%, 24%) }
-.color-primary-9-bg { background-color: hsl(216, 42%, 14%) }
-
-/* Define appearance of main components (boxes) */
-.main-component {
-  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
-  background-color: #ffffff;
-  margin: 2px;
+a:link, a:visited, a:active {
+  color: @color-primary-6;
+}
+a:hover {
+  text-decoration: none;
+  color: @color-primary-4;
 }
 
 /* Overwrite the default to keep the scrollbar always visible */
@@ -109,4 +84,5 @@ html, body {
     border: solid 1px transparent;
     border-radius: 6px;
 }
+
 </style>

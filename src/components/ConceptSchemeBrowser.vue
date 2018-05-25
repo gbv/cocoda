@@ -85,7 +85,9 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 .browser {
   flex: 1;
   display: flex;
@@ -93,6 +95,9 @@ export default {
 }
 .schemaSelect {
   flex: none;
-  margin-bottom: 5px;
+  margin: 3px 3px 3px 3px;
+  width: 99%;
+  border: 0;
+  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
 }
 </style>

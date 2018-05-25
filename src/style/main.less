@@ -1,0 +1,44 @@
+@color-primary-base: hsl(216, 42%, 54%);
+@color-primary-0:     lighten(@color-primary-base, 45%);
+@color-primary-1:     lighten(@color-primary-base, 40%);
+@color-primary-2:     lighten(@color-primary-base, 30%);
+@color-primary-3:     lighten(@color-primary-base, 20%);
+@color-primary-4:     lighten(@color-primary-base, 10%);
+@color-primary-6:     darken(@color-primary-base, 10%);
+@color-primary-7:     darken(@color-primary-base, 20%);
+@color-primary-8:     darken(@color-primary-base, 30%);
+@color-primary-9:     darken(@color-primary-base, 40%);
+
+/* Define color scheme for text and background color */
+.color-primary-0 { color: @color-primary-0 }
+.color-primary-1 { color: @color-primary-1 }
+.color-primary-2 { color: @color-primary-2 }
+.color-primary-3 { color: @color-primary-3 }
+.color-primary-4 { color: @color-primary-4 }
+.color-primary-base, .color-primary-5 { color: @color-primary-0 }	/* Main Primary color */
+.color-primary-6 { color: @color-primary-6 }
+.color-primary-7 { color: @color-primary-7 }
+.color-primary-8 { color: @color-primary-8 }
+.color-primary-9 { color: @color-primary-9 }
+.text-dark { color: hsl(0, 0%, 13%) }
+.text-grey { color: hsl(0, 0%, 29%) }
+.text-light-grey { color: hsl(0, 0%, 45%) }
+.font-normal { font-weight: 400 }
+.font-heavy { font-weight: 700 }
+.color-primary-0-bg { background-color: @color-primary-0 }
+.color-primary-1-bg { background-color: @color-primary-1 }
+.color-primary-2-bg { background-color: @color-primary-2 }
+.color-primary-3-bg { background-color: @color-primary-3 }
+.color-primary-4-bg { background-color: @color-primary-4 }
+.color-primary-base-bg, .color-primary-5-bg { background-color: @color-primary-base }	/* Main Primary color */
+.color-primary-6-bg { background-color: @color-primary-6 }
+.color-primary-7-bg { background-color: @color-primary-7 }
+.color-primary-8-bg { background-color: @color-primary-8 }
+.color-primary-9-bg { background-color: @color-primary-9 }
+
+/* Define appearance of main components (boxes) */
+.main-component {
+  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+  background-color: #ffffff;
+  margin: 3px;
+}

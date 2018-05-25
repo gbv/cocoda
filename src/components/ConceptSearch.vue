@@ -2,6 +2,10 @@
   <span
     v-show="voc != null"
     class="searchfield">
+    <div class="searchIcon">
+      <div class="searchIcon__circle" />
+      <div class="searchIcon__rectangle" />
+    </div>
     <b-form-input
       v-model="searchQuery"
       size="sm"
@@ -223,17 +227,51 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
+// adapted from https://codepen.io/satrya/pen/JGRxNb
+.searchIcon {
+position: absolute;
+width: 30px;
+margin: 0 auto;
+padding: 8px 0;
+text-align: center;
+left: -24px;
+
+  &__circle {
+    width: 12px;
+    height: 12px;
+    border: 2px solid @color-primary-6;
+    border-radius: 12px;
+  }
+
+  &__rectangle {
+    position: absolute;
+    right: 13px;
+    bottom: 7px;
+    width: 8px;
+    transform: rotate(45deg);
+    border: 1px solid @color-primary-6;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+  }
+}
+
 .searchfield {
   position: relative;
-  margin: 0px 15px 0px 15px;
-  height: 37px;
+  margin: 3px 3px 0px 28px;
+  height: 34px;
+}
+.searchfield > input {
+  border: 0;
+  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
 }
 
 .searchfield-results {
   padding: 0;
   margin: 0;
-  border: 1px solid #aaaaaa;
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
   height: auto;
   max-height: 250px;
   overflow: auto;
@@ -257,8 +295,8 @@ export default {
 }
 
 .searchfield-selected {
-  background-color: #4AAE9B;
-  color: white;
+  &:extend(.color-primary-2-bg);
+  &:extend(.color-primary-8);
 }
 
 .loading {

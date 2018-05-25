@@ -6,14 +6,21 @@
     class="conceptTreeItem">
     <div
       :class="{
-        'color-primary-2-bg': isHovered,
-        'font-heavy': isSelected
+        conceptBoxHovered: isHovered,
+        conceptBoxSelected: isSelected
       }"
       class="conceptBox">
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="open(!isOpen)"><i :class="{ right: !isOpen, down: isOpen }"/></div>
+        @click="open(!isOpen)">
+        <i
+          :class="{
+            right: !isOpen,
+            down: isOpen,
+            selected: isSelected
+        }"/>
+      </div>
       <div
         :class="{ labelBoxFull: !hasChildren }"
         class="labelBox"
@@ -218,7 +225,9 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 .conceptBox {
   display: flex;
   min-height: 24px;
@@ -234,16 +243,33 @@ export default {
 .labelBox {
   flex: 1;
   vertical-align: center;
+  padding-right: 5px;
 }
 .labelBoxFull {
   padding-left: 18px;
 }
+.conceptBoxSelected {
+  &:extend(.font-heavy);
+  &:extend(.color-primary-6-bg);
+  &:extend(.color-primary-1);
+}
 .conceptBoxHovered, .arrowBox:hover {
-  background-color: bisque;
+  &:extend(.color-primary-2-bg);
+  &:extend(.color-primary-8);
+}
+.conceptBoxHovered.conceptBoxSelected {
+  &:extend(.color-primary-5-bg);
+  &:extend(.color-primary-1);
 }
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 i {
   border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+}
+i.selected {
+  border: solid @color-primary-1;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
