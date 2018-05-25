@@ -22,7 +22,7 @@
         }"/>
       </div>
       <div
-        :class="{ labelBoxFull: !hasChildren }"
+        :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
@@ -256,7 +256,10 @@ export default {
 .labelBox {
   flex: 1;
   vertical-align: center;
-  padding-right: 5px;
+  padding-right: 12px;
+}
+.labelBoxSelected {
+  padding-right: 4px;
 }
 .labelBoxFull {
   padding-left: 18px;
