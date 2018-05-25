@@ -247,8 +247,11 @@ export default {
      * Move loading indicator to right scrolling position in tree.
      */
     loading: function() {
-      let loadingFull = this.$refs.loadingFull
-      loadingFull.style.top = (this.$el.scrollTop - this.$el.clientTop) + "px"
+      let vm = this
+      _.delay(function() {
+        let loadingFull = vm.$refs.loadingFull
+        loadingFull.style.top = (vm.$el.scrollTop - vm.$el.clientTop) + "px"
+      }, 50)
     }
   },
   created() {
