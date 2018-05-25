@@ -18,5 +18,7 @@ export default {
 <style scoped>
 #mappingOccurrences {
   flex: 1;
+  height: 0;
+  overflow: hidden;
 }
 </style>

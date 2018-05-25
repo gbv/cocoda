@@ -146,6 +146,7 @@ export default {
 .conceptDetail {
   font-size: 0.8em;
   flex: 1;
+  height: 0;
   overflow-y: auto;
   position: relative;
 }

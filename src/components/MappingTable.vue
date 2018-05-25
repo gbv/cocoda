@@ -1,5 +1,5 @@
 <template>
-  <div id="mappingTable"/>
+  <div id="mappingTable" />
 </template>
 
 <script>
@@ -18,5 +18,7 @@ export default {
 <style scoped>
 #mappingTable {
   flex: 1;
+  height: 0;
+  overflow: hidden;
 }
 </style>

@@ -375,6 +375,7 @@ export default {
 <style scoped>
 .conceptTree {
   flex: 1.5;
+  height: 0;
   position: relative;
   overflow-y: hidden;
 }

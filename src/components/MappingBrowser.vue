@@ -28,6 +28,7 @@ export default {
 <style scoped>
 #mappingBrowser {
   flex: 2;
+  width: 0;
   display: flex;
   flex-direction: column;
 }

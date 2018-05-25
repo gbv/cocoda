@@ -90,6 +90,7 @@ export default {
 
 .browser {
   flex: 1;
+  width: 0;
   display: flex;
   flex-direction: column;
 }
