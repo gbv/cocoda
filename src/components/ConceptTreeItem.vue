@@ -185,7 +185,7 @@ export default {
       }
       if (!this.isSelected) {
         this.select(this.concept)
-      } else {
+      } else if(this.hasChildren) {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
         let vm = this
