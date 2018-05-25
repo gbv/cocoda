@@ -242,7 +242,7 @@ left: -24px;
   &__circle {
     width: 12px;
     height: 12px;
-    border: 2px solid @color-primary-6;
+    border: 2px solid @color-primary-4;
     border-radius: 12px;
   }
 
@@ -252,7 +252,7 @@ left: -24px;
     bottom: 7px;
     width: 8px;
     transform: rotate(45deg);
-    border: 1px solid @color-primary-6;
+    border: 1px solid @color-primary-4;
     border-top-right-radius: 1px;
     border-bottom-right-radius: 1px;
   }
@@ -295,8 +295,8 @@ left: -24px;
 }
 
 .searchfield-selected {
-  &:extend(.color-primary-2-bg);
-  &:extend(.color-primary-8);
+  background-color: @color-primary-1;
+  color: @color-primary-4;
 }
 
 .loading {

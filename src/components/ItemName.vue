@@ -1,8 +1,15 @@
 <template>
-  <span v-if="item != null">
-    <notation-badge :item="item" />
-    <prefLabel-text :item="item" />
-  </span>
+  <div
+    v-if="item != null"
+    :style="{'font-size': fontSize + 'em'}"
+    class="itemName">
+    <notation-badge
+      :item="item"
+      :style="{ bottom: (fontSize * 2) + 'px' }" />
+    <prefLabel-text
+      v-if="showText"
+      :item="item" />
+  </div>
 </template>
 
 <script>
@@ -19,6 +26,20 @@ export default {
     item: {
       type: Object,
       default: null
+    },
+    /**
+     * The font size for the text in em.
+     */
+    fontSize: {
+      type: Number,
+      default: 1.0
+    },
+    /**
+     * Determines whether to show or hide the label text.
+     */
+    showText: {
+      type: Boolean,
+      default: true
     }
   }
 }
@@ -55,7 +76,11 @@ Vue.component("prefLabel-text", {
 </script>
 
 <style scoped>
+.itemName {
+  display: inline;
+}
 .badge {
   font-family: "Courier New", Courier, monospace;
+  position: relative;
 }
 </style>

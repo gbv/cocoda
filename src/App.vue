@@ -66,11 +66,11 @@ html, body {
 }
 
 a:link, a:visited, a:active {
-  color: @color-primary-6;
+  color: darken(@color-complement-4, 5%);
 }
 a:hover {
   text-decoration: none;
-  color: @color-primary-4;
+  color: @color-complement-3;
 }
 
 /* Overwrite the default to keep the scrollbar always visible */

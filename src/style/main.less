@@ -1,40 +1,44 @@
-@color-primary-base: hsl(216, 42%, 54%);
-@color-primary-0:     lighten(@color-primary-base, 45%);
-@color-primary-1:     lighten(@color-primary-base, 40%);
-@color-primary-2:     lighten(@color-primary-base, 30%);
-@color-primary-3:     lighten(@color-primary-base, 20%);
-@color-primary-4:     lighten(@color-primary-base, 10%);
-@color-primary-6:     darken(@color-primary-base, 10%);
-@color-primary-7:     darken(@color-primary-base, 20%);
-@color-primary-8:     darken(@color-primary-base, 30%);
-@color-primary-9:     darken(@color-primary-base, 40%);
+/* LESS - http://lesscss.org style sheet */
+/* Palette color codes */
+/* Palette URL: http://paletton.com/#uid=73F0u0kiBBW8sTLdZLomAv2s4sx */
+
+/* Feel free to copy&paste color codes to your application */
+
+
+/* MIXINS */
+
+/* As hex codes */
+
+@color-primary-0: #5880BB;	/* Main Primary color */
+@color-primary-1: #B3CAEB;
+@color-primary-2: #80A2D5;
+@color-primary-3: #3A65A3;
+@color-primary-4: #1E4F96;
+
+@color-secondary-1-0: #6E5FC2;	/* Main Secondary color (1) */
+@color-secondary-1-1: #BFB7ED;
+@color-secondary-1-2: #9386D9;
+@color-secondary-1-3: #5242AB;
+@color-secondary-1-4: #37259D;
+
+@color-secondary-2-0: #FFE16B;	/* Main Secondary color (2) */
+@color-secondary-2-1: #FFF1BC;
+@color-secondary-2-2: #FFE890;
+@color-secondary-2-3: #F7D449;
+@color-secondary-2-4: #E3BB1C;
+
+@color-complement-0: #FFC86B;	/* Main Complement color */
+@color-complement-1: #FFE6BC;
+@color-complement-2: #FFD690;
+@color-complement-3: #F7B749;
+@color-complement-4: #E39A1C;
 
 /* Define color scheme for text and background color */
-.color-primary-0 { color: @color-primary-0 }
-.color-primary-1 { color: @color-primary-1 }
-.color-primary-2 { color: @color-primary-2 }
-.color-primary-3 { color: @color-primary-3 }
-.color-primary-4 { color: @color-primary-4 }
-.color-primary-base, .color-primary-5 { color: @color-primary-0 }	/* Main Primary color */
-.color-primary-6 { color: @color-primary-6 }
-.color-primary-7 { color: @color-primary-7 }
-.color-primary-8 { color: @color-primary-8 }
-.color-primary-9 { color: @color-primary-9 }
 .text-dark { color: hsl(0, 0%, 13%) }
 .text-grey { color: hsl(0, 0%, 29%) }
 .text-light-grey { color: hsl(0, 0%, 45%) }
 .font-normal { font-weight: 400 }
 .font-heavy { font-weight: 700 }
-.color-primary-0-bg { background-color: @color-primary-0 }
-.color-primary-1-bg { background-color: @color-primary-1 }
-.color-primary-2-bg { background-color: @color-primary-2 }
-.color-primary-3-bg { background-color: @color-primary-3 }
-.color-primary-4-bg { background-color: @color-primary-4 }
-.color-primary-base-bg, .color-primary-5-bg { background-color: @color-primary-base }	/* Main Primary color */
-.color-primary-6-bg { background-color: @color-primary-6 }
-.color-primary-7-bg { background-color: @color-primary-7 }
-.color-primary-8-bg { background-color: @color-primary-8 }
-.color-primary-9-bg { background-color: @color-primary-9 }
 
 /* Define appearance of main components (boxes) */
 .main-component {

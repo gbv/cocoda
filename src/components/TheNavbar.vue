@@ -43,11 +43,11 @@ export default {
 nav.navbar {
   padding: 4px 16px 4px 16px;
   height: 40px;
-  background-color: @color-primary-base;
+  background-color: @color-primary-0;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
 }
 .navbar-dark .navbar-nav .nav-link, .btn-link, .navbar-brand {
-  color: @color-primary-0;
+  color: hsla(100, 100%, 100%, 0.8);
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;

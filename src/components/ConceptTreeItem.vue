@@ -250,16 +250,16 @@ export default {
 }
 .conceptBoxSelected {
   &:extend(.font-heavy);
-  &:extend(.color-primary-6-bg);
-  &:extend(.color-primary-1);
+  background-color: @color-primary-4;
+  color: lighten(@color-primary-1, 10%);
 }
 .conceptBoxHovered, .arrowBox:hover {
-  &:extend(.color-primary-2-bg);
-  &:extend(.color-primary-8);
+  background-color: @color-primary-1;
+  color: @color-primary-4;
 }
 .conceptBoxHovered.conceptBoxSelected {
-  &:extend(.color-primary-5-bg);
-  &:extend(.color-primary-1);
+  background-color: @color-primary-3;
+  color: lighten(@color-primary-1, 10%);
 }
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 i {
@@ -267,6 +267,7 @@ i {
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
+  margin: 2px 0;
 }
 i.selected {
   border: solid @color-primary-1;

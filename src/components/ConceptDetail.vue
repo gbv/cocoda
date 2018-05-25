@@ -11,7 +11,10 @@
         <span
           v-for="(parent, index) in item.ancestors"
           :key="index">
-          <item-name :item="parent" /> →
+          <item-name
+            :item="parent"
+            :show-text="false"
+            font-size="0.95" /> →
         </span>
       </div>
       <span v-else><loading-indicator
@@ -19,7 +22,8 @@
         size="sm" /></span>
       <item-name
         :item="detail"
-        class="label" />
+        class="label"
+        font-size="1.2" />
       <p>{{ isSchema ? "Schema" : "Concept" }} - <auto-link :link="detail.uri" /></p>
       <p v-if="detail.identifier">
         Identifier:
@@ -142,7 +146,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 .conceptDetail {
   font-size: 0.8em;
   flex: 1;
@@ -157,14 +163,10 @@ ul {
   margin-bottom: 0px;
 }
 .label {
-  font-size: 1.5em;
+  &:extend(.font-heavy);
 }
 .parents {
-  font-size: 0.9em;
   margin-top: 5px;
-}
-.parents > span {
-  margin-right: 5px;
 }
 .conceptDetailContent, .loadingFull {
   width: 100%;

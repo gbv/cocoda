@@ -100,5 +100,8 @@ export default {
   width: 99%;
   border: 0;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+  background-color: lighten(@color-primary-1, 15%);
+  color: @color-primary-4;
+  &:extend(.font-heavy);
 }
 </style>
