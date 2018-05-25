@@ -55,6 +55,7 @@
 <script>
 import LoadingIndicator from "./LoadingIndicator"
 import ItemName from "./ItemName"
+var _ = require("lodash")
 
 /**
  * Component that represents one concept item in a ConceptTree and possibly its children.
@@ -110,7 +111,8 @@ export default {
   },
   data () {
     return {
-      loadingChildren: false
+      loadingChildren: false,
+      preventClick: false
     }
   },
   computed: {
@@ -178,10 +180,21 @@ export default {
      * If the concept is selected, toggle the open status.
      */
     onClick() {
+      if (this.preventClick) {
+        return
+      }
       if (!this.isSelected) {
         this.select(this.concept)
       } else {
-        this.open(!this.isOpen)
+        // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
+        this.preventClick = true
+        let vm = this
+        _.delay(function() {
+          vm.open(!vm.isOpen)
+          _.delay(function() {
+            vm.preventClick = false
+          }, 200)
+        }, 50)
       }
     },
     /**
