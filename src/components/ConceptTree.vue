@@ -412,7 +412,7 @@ export default {
   left: 0;
 }
 .conceptTreeItems {
-  padding: 2px 8px 2px 8px;
+  padding: 2px 0px;
 }
 .loadingFull {
   z-index: 100;
