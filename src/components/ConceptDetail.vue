@@ -67,6 +67,18 @@
           </li>
         </ul>
       </p>
+      <p v-if="gndMappings.length != 0">
+        GND mappings:
+        <span
+          v-for="(mapping, index) in gndMappings"
+          :key="index">
+          <a
+            :href="mapping.to.memberSet.uri"
+            target="_blank">
+            <b-badge class="badgeLink">{{ mapping.to.memberSet.notation[0] }}</b-badge>
+          </a>&nbsp;
+        </span>
+      </p>
       <p v-if="detail.license">
         License:
         <ul>
@@ -109,6 +121,7 @@
 import LoadingIndicator from "./LoadingIndicator"
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
+import axios from "axios"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -158,7 +171,8 @@ export default {
   data () {
     return {
       detail: null,
-      loading: false
+      loading: false,
+      gndMappings: []
     }
   },
   watch: {
@@ -167,6 +181,7 @@ export default {
      */
     item: function() {
       this.detail = null
+      this.gndMappings = []
       if (this.item == null) return
       let itemBefore = this.item
       let vm = this
@@ -188,6 +203,17 @@ export default {
           console.log("Request failed", error)
           vm.loading = false
         })
+
+      // If scheme is RVK, get the GND mappings
+      axios.get("http://localhost:3000/mappings", {
+        params: {
+          uri: this.item.uri
+        }
+      }).then(function(response) {
+        vm.gndMappings = response.data
+      }).catch(function(error) {
+        console.log("API error (GND mappings):", error)
+      })
     }
   },
   methods: {
@@ -241,5 +267,8 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.badgeLink:hover {
+  background-color: @color-secondary-2-4;
 }
 </style>
