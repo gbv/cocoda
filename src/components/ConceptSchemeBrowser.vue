@@ -3,13 +3,13 @@
     <b-form-select
       v-model="vocSelected"
       :options="vocOptions"
-      class="schemaSelect" />
+      class="schemeSelect" />
     <concept-search
       :voc="vocSelected ? vocSelected.notation[0] : null"
       @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
     <concept-detail
       :item="conceptSelected != null ? conceptSelected : vocSelected"
-      :is-schema="conceptSelected == null"
+      :is-scheme="conceptSelected == null"
       class="main-component"
       @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
     <concept-tree
@@ -56,7 +56,7 @@ export default {
      */
     vocOptions: function() {
       let options = [
-        { value: null, text: "Select a schema", disabled: true }
+        { value: null, text: "Select a scheme", disabled: true }
       ]
       // Add from vocs
       for (var voc of this.vocs) {
@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted: function () {
-    // Load vocabularies/schemas
+    // Load vocabularies/schemes
     var vm = this
     this.$api.voc()
       .then(function(data) {
@@ -95,7 +95,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.schemaSelect {
+.schemeSelect {
   flex: none;
   margin: 3px 3px 3px 3px;
   width: 99%;

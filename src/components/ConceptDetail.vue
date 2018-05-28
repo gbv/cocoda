@@ -19,13 +19,13 @@
         </span>
       </div>
       <span v-else><loading-indicator
-        v-show="item.ancestors.length != 0 && !isSchema"
+        v-show="item.ancestors.length != 0 && !isScheme"
         size="sm" /></span>
       <item-name
         :item="detail"
         :font-size="1.2"
         class="label" />
-      <p>{{ isSchema ? "Schema" : "Concept" }} - <auto-link :link="detail.uri" /></p>
+      <p>{{ isScheme ? "Scheme" : "Concept" }} - <auto-link :link="detail.uri" /></p>
       <p v-if="detail.identifier">
         Identifier:
         <ul>
@@ -106,7 +106,7 @@ import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 
 /**
- * Component that displays an item's (either schema or concept) details (URI, notation, identifier, ...).
+ * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
  */
 export default {
   name: "ConceptDetail",
@@ -124,7 +124,7 @@ export default {
     /**
      * `true` means item is a scheme, `false` means item is a concept.
      */
-    isSchema: {
+    isScheme: {
       type: Boolean,
       default: false
     }
