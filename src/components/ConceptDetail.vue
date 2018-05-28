@@ -42,6 +42,26 @@
       <p v-if="detail.definition">
         Definition: {{ detail.definition.de ? detail.definition.de[0] : detail.definition.en[0] }}
       </p>
+      <p v-if="detail.scopeNote && detail.scopeNote.de">
+        Scope Notes:
+        <ul>
+          <li
+            v-for="(note, index) in detail.scopeNote.de"
+            :key="index">
+            {{ note }}
+          </li>
+        </ul>
+      </p>
+      <p v-if="detail.editorialNote && detail.editorialNote.de">
+        Editorial Notes:
+        <ul>
+          <li
+            v-for="(note, index) in detail.editorialNote.de"
+            :key="index">
+            {{ note }}
+          </li>
+        </ul>
+      </p>
       <p v-if="detail.license">
         License:
         <ul>

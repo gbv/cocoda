@@ -18,7 +18,7 @@ const url = "http://dev-api.dante.gbv.de/"
 /** Property sets */
 const minimumProperties = "-"
 const defaultProperties = "uri,prefLabel,notation"
-const detailProperties =  "uri,prefLabel,notation,identifier,altLabel,definition,license,publisher,created,issued,modified"
+const detailProperties =  "uri,prefLabel,notation,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote"
 const allProperties = "*"
 
 /**
