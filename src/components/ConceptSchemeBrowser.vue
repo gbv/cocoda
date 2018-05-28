@@ -1,5 +1,7 @@
 <template>
-  <div class="browser">
+  <div
+    :style="{ flex: flex }"
+    class="browser">
     <b-form-select
       v-model="vocSelected"
       :options="vocOptions"
@@ -42,6 +44,15 @@ export default {
   name: "ConceptSchemeBrowser",
   components: {
     ConceptTree, ConceptDetail, ConceptSearch
+  },
+  props: {
+    /**
+     * The width of the component as a flex value.
+     */
+    flex: {
+      type: Number,
+      default: 1
+    }
   },
   data () {
     return {
