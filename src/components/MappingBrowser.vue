@@ -22,6 +22,8 @@
       @mousedown="startResizing($event, 1, false)" />
     <mapping-occurrences
       ref="mainElement2"
+      :selected-left="selectedLeft"
+      :selected-right="selectedRight"
       :flex="flexes[2]"
       class="main-component"
       data-direction="row" />
@@ -50,6 +52,14 @@ export default {
     flex: {
       type: Number,
       default: 2
+    },
+    selectedLeft: {
+      type: Object,
+      default: null
+    },
+    selectedRight: {
+      type: Object,
+      default: null
     }
   },
   data () {

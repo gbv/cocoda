@@ -105,6 +105,9 @@ export default {
           vm.resetFlex()
         }, 100)
       }
+    },
+    conceptSelected: function() {
+      this.$emit("selectedConcept", this.conceptSelected)
     }
   },
   mounted: function () {

@@ -8,7 +8,8 @@
         <concept-scheme-browser
           ref="mainElement0"
           :flex="flexes[0]"
-          data-direction="column" />
+          data-direction="column"
+          @selectedConcept="selectedLeft = $event" />
         <div
           ref="resizeSlider0"
           class="resizeSliderCol"
@@ -16,6 +17,8 @@
         <mapping-browser
           ref="mainElement1"
           :flex="flexes[1]"
+          :selected-left="selectedLeft"
+          :selected-right="selectedRight"
           data-direction="column" />
         <div
           ref="resizeSlider1"
@@ -24,7 +27,8 @@
         <concept-scheme-browser
           ref="mainElement2"
           :flex="flexes[2]"
-          data-direction="column" />
+          data-direction="column"
+          @selectedConcept="selectedRight = $event" />
       </div>
     </div>
   </div>
@@ -47,7 +51,9 @@ export default {
   mixins: [mixins.resizingMixin],
   data () {
     return {
-      flexes: [1.0, 2.0, 1.0]
+      flexes: [1.0, 2.0, 1.0],
+      selectedLeft: null,
+      selectedRight: null
     }
   }
 }
