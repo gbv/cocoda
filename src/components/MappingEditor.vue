@@ -92,8 +92,14 @@ export default {
     deleteFromMapping(indexMapping, indexConcept) {
       if (indexMapping == 0 && !this.mapping.REVERSED || indexMapping == 1 && this.mapping.REVERSED) {
         this.mapping.from.splice(indexConcept, 1)
+        if (this.mapping.from.length == 0) {
+          this.mapping.fromScheme = null
+        }
       } else {
         this.mapping.to.splice(indexConcept, 1)
+        if (this.mapping.to.length == 0) {
+          this.mapping.toScheme = null
+        }
       }
     },
     reverseMapping() {
