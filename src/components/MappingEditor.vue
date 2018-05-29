@@ -2,23 +2,30 @@
   <div
     id="mappingEditor"
     :style="{ flex: flex }">
-    <div class="mappingArrow">
+    <div
+      v-b-tooltip.hover
+      class="mappingArrow"
+      title="click to reverse mapping"
+      @click="reverseMapping">
       {{ mapping.REVERSED ? "←" : "→" }}
     </div>
     <div
-      v-for="(m, index) in mappingList()"
-      :key="index"
+      v-for="(m, indexm) in mappingList()"
+      :key="indexm"
       class="mappingEditorPart" >
       <div v-if="m.scheme">
         <div class="mappingScheme font-heavy">{{ labelForScheme(m.scheme) }}</div>
         <ul class="mappingConceptList">
           <li
-            v-for="(concept, index) in m.concepts"
-            :key="index" >
+            v-for="(concept, indexc) in m.concepts"
+            :key="indexc" >
             <item-name
               :item="concept"
               :is-link="true"
               @click="selected(concept)" />
+            <div
+              class="mappingConceptDelete"
+              @click="deleteFromMapping(indexm, indexc)">X</div>
           </li>
         </ul>
       </div>
@@ -81,6 +88,18 @@ export default {
     },
     labelForScheme(scheme) {
       return scheme ? scheme.notation[0].toUpperCase() : "No Scheme"
+    },
+    deleteFromMapping(indexMapping, indexConcept) {
+      if (indexMapping == 0 && !this.mapping.REVERSED || indexMapping == 1 && this.mapping.REVERSED) {
+        this.mapping.from.splice(indexConcept, 1)
+      } else {
+        this.mapping.to.splice(indexConcept, 1)
+      }
+    },
+    reverseMapping() {
+      this.mapping.REVERSED = !this.mapping.REVERSED;
+      [this.mapping.to, this.mapping.from] = [this.mapping.from, this.mapping.to];
+      [this.mapping.toScheme, this.mapping.fromScheme] = [this.mapping.fromScheme, this.mapping.toScheme]
     }
   }
 }
@@ -90,6 +109,7 @@ export default {
 @import "../style/main.less";
 
 #mappingEditor {
+  position: relative;
   height: 0;
   overflow: hidden;
   display: flex;
@@ -120,7 +140,26 @@ export default {
   overflow: auto;
   list-style: none;
   & > li {
+    position: relative;
     margin: 5px 0;
+    & > .mappingConceptDelete {
+      position: absolute;
+      right: 5px;
+      top: -5px;
+      bottom: 0;
+      margin: auto 0;
+      cursor: pointer;
+      z-index: 50;
+      user-select: none;
+      font-size: 12px;
+      width: 12px;
+      height: 12px;
+      text-align: center;
+      font-weight: bold;
+      &:hover {
+        color: @color-secondary-2-4;
+      }
+    }
   }
 }
 .mappingConceptLink:hover {
@@ -134,6 +173,7 @@ export default {
 }
 
 .mappingArrow {
+  cursor: pointer;
   position: absolute;
   margin: auto auto;
   text-align: center;
@@ -145,5 +185,8 @@ export default {
   width: 1.6em;
   height: 1.6em;
   user-select: none;
+  &:hover {
+    color: @color-secondary-2-4;
+  }
 }
 </style>
