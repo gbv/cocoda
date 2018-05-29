@@ -51,12 +51,12 @@ export default {
       if (this.selectedLeft == null) {
         return
       }
-      axios.get("http://coli-conc.gbv.de/concordances/occurrences.php", {
+      axios.get("http://coli-conc.gbv.de/occurrences/api/", {
         params: {
-          concepts: vm.selectedLeft.uri
+          members: vm.selectedLeft.uri
         }
       }).then(function(response) {
-        vm.leftResult = response.data
+        vm.leftResult = response.data.length > 0 ? response.data[0] : []
       }).catch(function(error) {
         console.log(error)
       })
@@ -67,12 +67,12 @@ export default {
       if (this.selectedRight == null) {
         return
       }
-      axios.get("http://coli-conc.gbv.de/concordances/occurrences.php", {
+      axios.get("http://coli-conc.gbv.de/occurrences/api/", {
         params: {
-          concepts: vm.selectedRight.uri
+          members: vm.selectedRight.uri
         }
       }).then(function(response) {
-        vm.rightResult = response.data
+        vm.rightResult = response.data.length > 0 ? response.data[0] : []
       }).catch(function(error) {
         console.log(error)
       })
