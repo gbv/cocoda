@@ -207,7 +207,7 @@ export default {
       // If scheme is RVK, get the GND mappings
       axios.get("http://localhost:3000/mappings", {
         params: {
-          uri: this.item.uri
+          from: this.item.uri
         }
       }).then(function(response) {
         vm.gndMappings = response.data
