@@ -1,0 +1,1 @@
+A preview of the current version ([master branch](https://github.com/gbv/cocoda/tree/master)) is available at <https://coli-conc.gbv.de/cocoda/>. This is an early prototype not ready for productive usage yet! Bugs and planned features are [collected in an issue tracker](https://github.com/gbv/cocoda/issues).

@@ -11,12 +11,16 @@ module.exports = {
       content: 'docs/introduction.md',
       sections: [
         {
-          name: 'Installation',
-          content: 'docs/installation.md'
+          name: 'Usage',
+          content: 'docs/usage.md'
         },
         {
-          name: 'Technical background',
-          content: 'docs/technical-background.md'
+          name: 'Background',
+          content: 'docs/background.md'
+        },
+        {
+          name: 'Installation',
+          content: 'docs/installation.md'
         }
       ]
     },
