@@ -11,6 +11,7 @@
       :style="{ bottom: (fontSize * 2) + 'px' }" />
     <prefLabel-text
       v-if="showText"
+      :class="{ 'label-hovered': isLink && isHovered }"
       :item="item" />
   </div>
 </template>
@@ -111,5 +112,9 @@ Vue.component("prefLabel-text", {
 .badge-hovered {
   background-color: @color-secondary-2-4;
   cursor: pointer;
+}
+.label-hovered {
+  cursor: pointer;
+  color: @color-secondary-2-4;
 }
 </style>

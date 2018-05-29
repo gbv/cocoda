@@ -8,6 +8,7 @@
         <concept-scheme-browser
           ref="mainElement0"
           :flex="flexes[0]"
+          :is-left="true"
           data-direction="column"
           @selectedConcept="selectedLeft = $event" />
         <div
@@ -27,6 +28,7 @@
         <concept-scheme-browser
           ref="mainElement2"
           :flex="flexes[2]"
+          :is-left="false"
           data-direction="column"
           @selectedConcept="selectedRight = $event" />
       </div>

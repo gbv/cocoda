@@ -20,5 +20,14 @@ Vue.prototype.$api = api
 new Vue({
   el: "#app",
   components: { App },
+  data: {
+    mapping: {
+      from: [],
+      to: [],
+      fromScheme: null,
+      toScheme: null,
+      REVERSED: false
+    }
+  },
   template: "<App/>"
 })

@@ -4,6 +4,17 @@
     :style="{ flex: flex }"
     class="conceptDetail">
     <div
+      v-b-tooltip.hover
+      :style="styles.addButton"
+      class="addButton"
+      title="add to mapping"
+      @click="addToMapping" >
+      <div class="circle">
+        <div class="horizontal"/>
+        <div class="vertical"/>
+      </div>
+    </div>
+    <div
       v-if="detail != null"
       class="conceptDetailContent">
       <div
@@ -139,12 +150,50 @@ export default {
     flex: {
       type: Number,
       default: 1
+    },
+    /**
+     * Tells the component on which side of the application it is.
+     */
+    isLeft: {
+      type: Boolean,
+      default: true
+    },
+    /**
+     * Reference to the scheme
+     */
+    voc: {
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
       detail: null,
-      loading: false
+      loading: false,
+      mapping: this.$root.$data.mapping
+    }
+  },
+  computed: {
+    styles() {
+      let addButtonDelta = "-16px"
+      return {
+        addButton: this.isLeft ? { right: addButtonDelta } : { left: addButtonDelta }
+      }
+    },
+    isMappingFrom() {
+      return (this.isLeft && !this.mapping.REVERSED || !this.isLeft && this.mapping.REVERSED)
+    },
+    isMappingAdded() {
+      if (this.item == null) {
+        return false
+      }
+      let listToSearch = this.isMappingFrom ? this.mapping.from : this.mapping.to
+      for (let concept of listToSearch) {
+        if (this.item.uri == concept.uri) {
+          return true
+        }
+      }
+      return false
     }
   },
   watch: {
@@ -185,6 +234,31 @@ export default {
        * @type {string} - uri that is chosen
        */
       this.$emit("chooseUri", parent.uri)
+    },
+    addToMapping() {
+      if (this.voc == null || this.item == null || this.isSchema) {
+        alert("Please select a concept.")
+        return
+      }
+      if (this.isMappingAdded) {
+        alert("Concept already added.")
+        return
+      }
+      let isFrom = this.isMappingFrom
+      if (
+        isFrom && (this.mapping.fromScheme == null || this.mapping.fromScheme.uri == this.voc.uri) ||
+        !isFrom && (this.mapping.toScheme == null || this.mapping.toScheme.uri == this.voc.uri) ) {
+        if (isFrom) {
+          this.mapping.fromScheme = this.voc
+          this.mapping.from.push(this.item)
+        } else {
+          this.mapping.toScheme = this.voc
+          this.mapping.to.push(this.item)
+        }
+      } else {
+        alert("You can't add this concept.")
+        return
+      }
     }
   },
 }
@@ -196,7 +270,6 @@ export default {
 .conceptDetail {
   font-size: 0.8em;
   height: 0;
-  overflow-y: auto;
   position: relative;
 }
 p {
@@ -215,6 +288,7 @@ ul {
   width: 100%;
   height: 100%;
   position: absolute;
+  overflow-y: auto;
   top: 0;
   left: 0;
 }
@@ -228,4 +302,27 @@ ul {
   justify-content: center;
   align-items: center;
 }
+
+@addButtonColor: fadeout(@color-primary-4, 70%);
+@addButtonColorHover: @color-primary-0;
+.addButton:hover .circle {
+  border-color: @addButtonColorHover;
+  & .horizontal, & .vertical {
+    background-color: @addButtonColorHover;
+  }
+}
+.addButton {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  cursor: pointer;
+  z-index: 50;
+  user-select: none;
+  width: 32px;
+  height: 32px
+}
+.addButton .circle {position: relative; width: 32px; height: 32px; border-radius: 100%; border: solid 5px @addButtonColor;}
+.addButton .circle .horizontal {position: absolute; background-color: @addButtonColor; width: 16px; height: 4px; top: 9px; left: 3px;}
+.addButton .circle .vertical {position: absolute; background-color: @addButtonColor; width: 4px; height: 16px; top: 3px; left: 9px;}
 </style>

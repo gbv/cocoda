@@ -14,6 +14,8 @@
       :item="conceptSelected != null ? conceptSelected : vocSelected"
       :is-scheme="conceptSelected == null"
       :flex="flexes[0]"
+      :is-left="isLeft"
+      :voc="vocSelected"
       class="main-component"
       data-direction="row"
       @chooseUri="$refs.mainElement1.chooseFromUri($event)" />
@@ -65,6 +67,13 @@ export default {
     flex: {
       type: Number,
       default: 1
+    },
+    /**
+     * Tells the component on which side of the application it is.
+     */
+    isLeft: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
