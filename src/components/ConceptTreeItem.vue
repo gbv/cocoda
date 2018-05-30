@@ -13,7 +13,7 @@
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="open(!isOpen)">
+        @click="openByArrow(!isOpen)">
         <i
           :class="{
             right: !isOpen,
@@ -112,7 +112,8 @@ export default {
   data () {
     return {
       loadingChildren: false,
-      preventClick: false
+      preventClick: false,
+      preventClickArrow: false
     }
   },
   computed: {
@@ -160,6 +161,22 @@ export default {
       } else {
         this.loadChildren()
       }
+    },
+    /**
+     * Calls open and prevents accidental double clicks.
+     */
+    openByArrow(isOpen) {
+      if (this.preventClickArrow) {
+        return
+      }
+      this.preventClickArrow = true
+      let vm = this
+      _.delay(function() {
+        vm.open(isOpen)
+        _.delay(function() {
+          vm.preventClickArrow = false
+        }, 200)
+      }, 50)
     },
     /**
      * Triggers a selected event.
