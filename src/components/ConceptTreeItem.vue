@@ -285,6 +285,9 @@ export default {
   &:extend(.font-heavy);
   background-color: @color-primary-4;
   color: lighten(@color-primary-1, 10%);
+  & .arrowBox:hover {
+    background-color: @color-primary-3;
+  }
 }
 .conceptBoxHovered, .arrowBox:hover {
   background-color: @color-primary-1;
