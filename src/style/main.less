@@ -56,3 +56,31 @@
   flex: 0 1 5px;
   cursor: row-resize;
 }
+
+/* Define default table style */
+.defaultTableWrapper {
+  position: relative;
+  flex: 1 1 auto;
+  height: 0;
+  margin: 10px auto;
+  max-width: 97%;
+}
+.defaultTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+.defaultTableHead {
+  display: block;
+  flex: 0 0 auto;
+  overflow-y: auto;
+  overflow: hidden;
+}
+.defaultTableBody {
+  display: block;
+  flex: 1 1 auto;
+  overflow: auto;
+}

@@ -2,13 +2,16 @@
   <div
     id="mappingOccurrences"
     :style="{ flex: flex }">
-    <div class="test">
-      <p>{{ selectedLeft ? selectedLeft.uri : "Not selected" }}</p>
-      <p v-if="leftResult">{{ leftResult.count }}</p>
-    </div>
-    <div class="test">
-      <p>{{ selectedRight ? selectedRight.uri : "Not selected" }}</p>
-      <p v-if="rightResult">Occurrences: {{ rightResult.count }}</p>
+    <div class="defaultTableWrapper">
+      <b-table
+        ref="occurrencesTable"
+        :items="items"
+        :fields="fields"
+        class="defaultTable"
+        striped
+        small
+        thead-class="defaultTableHead"
+        tbody-class="defaultTableBody" />
     </div>
   </div>
 </template>
@@ -41,56 +44,104 @@ export default {
   data () {
     return {
       leftResult: null,
-      rightResult: null
+      rightResult: null,
+      mapping: this.$root.$data.mapping
     }
   },
-  watch: {
-    selectedLeft: function() {
-      this.leftResult = null
-      let vm = this
-      if (this.selectedLeft == null) {
-        return
+  computed: {
+    items() {
+      let items = []
+      for (let concept of this.mapping.from) {
+        if (concept.OCCURRENCES == null) {
+          this.loadOccurrences(concept)
+        }
+        items.push({
+          from: concept.notation[0],
+          to: "-",
+          occurrences: this.occurrencesToString(concept.OCCURRENCES)
+        })
       }
-      axios.get("http://coli-conc.gbv.de/occurrences/api/", {
+      for (let concept of this.mapping.to) {
+        if (concept.OCCURRENCES == null) {
+          this.loadOccurrences(concept)
+        }
+        items.push({
+          from: "-",
+          to: concept.notation[0],
+          occurrences: this.occurrencesToString(concept.OCCURRENCES)
+        })
+      }
+      return items
+    },
+    fields() {
+      let fromSchemeLabel = this.mapping.fromScheme ? this.mapping.fromScheme.notation[0].toUpperCase() : "-"
+      let toSchemeLabel = this.mapping.toScheme ? this.mapping.toScheme.notation[0].toUpperCase() : "-"
+      return [
+        {
+          key: "from",
+          label: fromSchemeLabel,
+          tdClass: "moColWide",
+          thClass: "moColWide"
+        },
+        {
+          key: "to",
+          label: toSchemeLabel,
+          tdClass: "moColWide",
+          thClass: "moColWide"
+        },
+        {
+          key: "occurrences",
+          tdClass: "moColShort",
+          thClass: "moColShort"
+        }
+      ]
+    }
+  },
+  methods: {
+    loadOccurrences(concept) {
+      axios.get("//coli-conc.gbv.de/occurrences/api/", {
         params: {
-          members: vm.selectedLeft.uri
+          members: concept.uri
         }
       }).then(function(response) {
-        vm.leftResult = response.data.length > 0 ? response.data[0] : []
+        concept.OCCURRENCES = response.data.length > 0 ? response.data[0].count : -1
       }).catch(function(error) {
         console.log(error)
+        concept.OCCURRENCES = -1
       })
     },
-    selectedRight: function() {
-      this.rightResult = null
-      let vm = this
-      if (this.selectedRight == null) {
-        return
+    occurrencesToString(occurrences) {
+      if (occurrences == null) {
+        return "..."
+      } else if (occurrences == -1) {
+        return "-"
+      } else {
+        return occurrences
       }
-      axios.get("http://coli-conc.gbv.de/occurrences/api/", {
-        params: {
-          members: vm.selectedRight.uri
-        }
-      }).then(function(response) {
-        vm.rightResult = response.data.length > 0 ? response.data[0] : []
-      }).catch(function(error) {
-        console.log(error)
-      })
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 #mappingOccurrences {
   height: 0;
-  overflow: hidden;
   display: flex;
+  flex-direction: column;
 }
-.test {
-  flex: 1;
-  width: 0;
-  margin: auto;
-  text-align: center;
+
+</style>
+
+<style>
+.moColWide {
+  width: 200px;
+  min-width: 200px;
+}
+.moColShort {
+  width: 150px;
+  min-width: 100px;
 }
 </style>
+

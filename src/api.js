@@ -153,6 +153,7 @@ function get(endpoint, config) {
         if (element !== null && typeof element === "object") {
           element.ISOPEN = false
           element.DETAILSLOADED = false
+          element.OCCURRENCES = null
           element.ancestors = element.ancestors ? element.ancestors : [null]
         }
       })
