@@ -6,9 +6,15 @@
     <div
       v-b-tooltip.hover
       :style="styles.addButton"
+      :class="{ addButtonClickable: !isSchema && !mapping.added(item, isLeft) && mapping.checkScheme(voc, isLeft) }"
+      :title="
+        isSchema ? 'please select a concept' : (
+          mapping.added(item, isLeft) ? 'concept is already in mapping' :
+          (!mapping.checkScheme(voc, isLeft) ? 'scheme in mapping does not match' : 'add concept to mapping')
+        )
+      "
       class="addButton"
-      title="add to mapping"
-      @click="addToMapping" >
+      @click="!isSchema && !mapping.added(item, isLeft) && mapping.checkScheme(voc, isLeft) && addToMapping()" >
       <div class="circle">
         <div class="horizontal"/>
         <div class="vertical"/>
@@ -245,7 +251,11 @@ export default {
         return
       }
       if (!this.mapping.add(this.item, this.voc, this.isLeft)) {
-        alert("You can't add this concept.")
+        if (this.mapping._fromTo(this.isLeft) == "from" && this.mapping.jskos.from.memberSet.length == 1) {
+          alert("Can't add this concept, source can only have one concept.")
+        } else {
+          alert("You can't add this concept.")
+        }
         return
       }
     }
@@ -294,18 +304,20 @@ ul {
 
 @addButtonColor: fadeout(@color-primary-4, 70%);
 @addButtonColorHover: @color-primary-0;
-.addButton:hover .circle {
+.addButtonClickable:hover .circle {
   border-color: @addButtonColorHover;
   & .horizontal, & .vertical {
     background-color: @addButtonColorHover;
   }
+}
+.addButtonClickable {
+  cursor: pointer;
 }
 .addButton {
   position: absolute;
   top: 0;
   bottom: 0;
   margin: auto 0;
-  cursor: pointer;
   z-index: 50;
   user-select: none;
   width: 32px;
