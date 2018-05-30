@@ -240,22 +240,11 @@ export default {
         alert("Please select a concept.")
         return
       }
-      if (this.isMappingAdded) {
+      if (this.mapping.added(this.item, this.isLeft)) {
         alert("Concept already added.")
         return
       }
-      let isFrom = this.isMappingFrom
-      if (
-        isFrom && (this.mapping.fromScheme == null || this.mapping.fromScheme.uri == this.voc.uri) ||
-        !isFrom && (this.mapping.toScheme == null || this.mapping.toScheme.uri == this.voc.uri) ) {
-        if (isFrom) {
-          this.mapping.fromScheme = this.voc
-          this.mapping.from.push(this.item)
-        } else {
-          this.mapping.toScheme = this.voc
-          this.mapping.to.push(this.item)
-        }
-      } else {
+      if (!this.mapping.add(this.item, this.voc, this.isLeft)) {
         alert("You can't add this concept.")
         return
       }

@@ -51,7 +51,7 @@ export default {
   computed: {
     items() {
       let items = []
-      for (let concept of this.mapping.from) {
+      for (let concept of this.mapping.jskos.from.memberSet) {
         if (concept.OCCURRENCES == null) {
           this.loadOccurrences(concept)
         }
@@ -61,7 +61,7 @@ export default {
           occurrences: this.occurrencesToString(concept.OCCURRENCES)
         })
       }
-      for (let concept of this.mapping.to) {
+      for (let concept of this.mapping.jskos.to.memberSet) {
         if (concept.OCCURRENCES == null) {
           this.loadOccurrences(concept)
         }
@@ -74,8 +74,8 @@ export default {
       return items
     },
     fields() {
-      let fromSchemeLabel = this.mapping.fromScheme ? this.mapping.fromScheme.notation[0].toUpperCase() : "-"
-      let toSchemeLabel = this.mapping.toScheme ? this.mapping.toScheme.notation[0].toUpperCase() : "-"
+      let fromSchemeLabel = this.mapping.jskos.fromScheme ? this.mapping.jskos.fromScheme.notation[0].toUpperCase() : "-"
+      let toSchemeLabel = this.mapping.jskos.toScheme ? this.mapping.jskos.toScheme.notation[0].toUpperCase() : "-"
       return [
         {
           key: "from",

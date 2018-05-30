@@ -4,28 +4,29 @@
     :style="{ flex: flex }">
     <div
       v-b-tooltip.hover
+      :title="mapping.reversible() ? 'reverse mapping' : 'not reversible, source can only have one concept'"
+      :class="{ mappingArrowReversible: mapping.reversible() }"
       class="mappingArrow"
-      title="click to reverse mapping"
-      @click="reverseMapping">
-      {{ mapping.REVERSED ? "←" : "→" }}
+      @click="mapping.reversible() && reverseMapping()">
+      {{ mapping.reversed ? "←" : "→" }}
     </div>
     <div
-      v-for="(m, indexm) in mappingList()"
-      :key="indexm"
+      v-for="isLeft in [true, false]"
+      :key="isLeft"
       class="mappingEditorPart" >
-      <div v-if="m.scheme">
-        <div class="mappingScheme font-heavy">{{ labelForScheme(m.scheme) }}</div>
+      <div v-if="mapping.getScheme(isLeft) != null">
+        <div class="mappingScheme font-heavy">{{ labelForScheme(mapping.getScheme(isLeft)) }}</div>
         <ul class="mappingConceptList">
           <li
-            v-for="(concept, indexc) in m.concepts"
-            :key="indexc" >
+            v-for="(concept, index) in mapping.getConcepts(isLeft)"
+            :key="index" >
             <item-name
               :item="concept"
               :is-link="true"
               @click="selected(concept)" />
             <div
               class="mappingConceptDelete"
-              @click="deleteFromMapping(indexm, indexc)">X</div>
+              @click="mapping.remove(concept, isLeft)">X</div>
           </li>
         </ul>
       </div>
@@ -59,53 +60,14 @@ export default {
       mapping: this.$root.$data.mapping
     }
   },
-  computed: {
-    mappingScheme() {
-      return {
-        left: !this.mapping.REVERSED ? this.mapping.fromScheme : this.mapping.toScheme,
-        right: this.mapping.REVERSED ? this.mapping.fromScheme : this.mapping.toScheme
-      }
-    },
-    mappingSchemeLabel() {
-      return {
-        left: this.labelForScheme(this.mappingScheme.left),
-        right: this.labelForScheme(this.mappingScheme.right)
-      }
-    },
-    mappingConcepts() {
-      return {
-        left: !this.mapping.REVERSED ? this.mapping.from : this.mapping.to,
-        right: this.mapping.REVERSED ? this.mapping.from : this.mapping.to
-      }
-    }
-  },
   methods: {
-    mappingList() {
-      return [
-        { concepts: this.mappingConcepts.left, scheme: this.mappingScheme.left },
-        { concepts: this.mappingConcepts.right, scheme: this.mappingScheme.right }
-      ]
-    },
     labelForScheme(scheme) {
       return scheme ? scheme.notation[0].toUpperCase() : "No Scheme"
     },
-    deleteFromMapping(indexMapping, indexConcept) {
-      if (indexMapping == 0 && !this.mapping.REVERSED || indexMapping == 1 && this.mapping.REVERSED) {
-        this.mapping.from.splice(indexConcept, 1)
-        if (this.mapping.from.length == 0) {
-          this.mapping.fromScheme = null
-        }
-      } else {
-        this.mapping.to.splice(indexConcept, 1)
-        if (this.mapping.to.length == 0) {
-          this.mapping.toScheme = null
-        }
-      }
-    },
     reverseMapping() {
-      this.mapping.REVERSED = !this.mapping.REVERSED;
-      [this.mapping.to, this.mapping.from] = [this.mapping.from, this.mapping.to];
-      [this.mapping.toScheme, this.mapping.fromScheme] = [this.mapping.fromScheme, this.mapping.toScheme]
+      if (!this.mapping.reverse()) {
+        alert("Reversion not possible")
+      }
     }
   }
 }
@@ -179,7 +141,6 @@ export default {
 }
 
 .mappingArrow {
-  cursor: pointer;
   position: absolute;
   margin: auto auto;
   text-align: center;
@@ -191,6 +152,9 @@ export default {
   width: 1.6em;
   height: 1.6em;
   user-select: none;
+}
+.mappingArrowReversible {
+  cursor: pointer;
   &:hover {
     color: @color-secondary-2-4;
   }
