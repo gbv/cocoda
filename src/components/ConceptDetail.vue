@@ -12,6 +12,8 @@
           v-for="(parent, index) in item.ancestors"
           :key="index">
           <item-name
+            v-b-tooltip.hover
+            :title="parent.prefLabel.de ? parent.prefLabel.de : parent.prefLabel.en"
             :item="parent"
             :show-text="false"
             :is-link="true"
