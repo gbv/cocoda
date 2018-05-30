@@ -5,35 +5,28 @@
     <div
       v-show="items.length == 0 || true"
       class="mappingToolbar">
+      Add or remove test:
       <span @click="add">✚</span> <span @click="remove">－</span>
     </div>
-    <div id="mappingTableWrapper">
-      <vue-scrolling-table
-        :scroll-horizontal="true"
-        :scroll-vertical="true"
-        :sync-header-scroll="true"
-        :sync-footer-scroll="true"
-        :include-footer="true"
-        :dead-area-color="'white'">
-        <template slot="thead">
-          <tr>
-            <th
-              v-for="col in columns"
-              :class="col.cssClasses"
-              :key="col.id">{{ col.title }}</th>
-          </tr>
-        </template>
-        <template slot="tbody">
-          <tr
-            v-for="item in items"
-            :key="item.id">
-            <td
-              v-for="col in columns"
-              :class="col.cssClasses"
-              :key="col.id">{{ item[col.id] }}</td>
-          </tr>
-        </template>
-      </vue-scrolling-table>
+    <div class="defaultTableWrapper">
+      <b-table
+        ref="occurrencesTable"
+        :items="items"
+        :fields="fields"
+        class="defaultTable"
+        striped
+        small
+        thead-class="defaultTableHead"
+        tbody-class="defaultTableBody">
+        <span
+          slot="sourceConcept"
+          slot-scope="data"
+          v-html="data.value" />
+        <span
+          slot="targetConcept"
+          slot-scope="data"
+          v-html="data.value" />
+      </b-table>
     </div>
     <div
       v-show="items.length == 0"
@@ -72,13 +65,47 @@ export default {
       ],
       sampleItem: {
         sourceScheme: "DDC",
-        sourceConcept: "Test",
+        sourceConcept: "<span class='badge badge-secondary'>Test</span>",
         targetScheme: "RVK",
-        targetConcept: "Test 2",
-        creator: "Stefan",
-        test: "Test"
+        targetConcept: "<span class='badge badge-secondary'>Test</span>",
+        creator: "VZG"
       },
       items: []
+    }
+  },
+  computed: {
+    fields() {
+      return [
+        {
+          key: "sourceScheme",
+          label: "Scheme",
+          tdClass: "mtColShort",
+          thClass: "mtColShort"
+        },
+        {
+          key: "sourceConcept",
+          label: "Concept",
+          tdClass: "mtColWide",
+          thClass: "mtColWide"
+        },
+        {
+          key: "targetScheme",
+          label: "Scheme",
+          tdClass: "mtColShort",
+          thClass: "mtColShort"
+        },
+        {
+          key: "targetConcept",
+          label: "Concept",
+          tdClass: "mtColWide",
+          thClass: "mtColWide"
+        },
+        {
+          key: "creator",
+          tdClass: "mtColNormal",
+          thClass: "mtColNormal"
+        }
+      ]
     }
   },
   created() {
@@ -105,45 +132,39 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.noItems, #mappingTableWrapper, .mappingToolbar {
+.noItems, .mappingToolbar {
   margin: 5px auto 5px auto;
-}
-#mappingTableWrapper {
-  position: relative;
-  flex: 1 1 auto;
-  max-width: 100%;
-  height: 0;
-  font-size: 0.9em;
-  text-align: center;
 }
 .noItems {
   flex: 5 0 auto;
 }
 .mappingToolbar {
-  cursor: pointer;
   user-select: none;
 }
-
-table.scrolling {
-  padding-left: 8px;
+.mappingToolbar span {
+  cursor: pointer;
+  &:hover {
+    color: @color-secondary-2-4;
+  }
 }
+
+</style>
+
+<style lang="less">
 
 @table-cell-width: 120px;
 @table-cell-width-short: 70px;
 @table-cell-width-wide: 160px;
-.colNormal {
-  width: @table-cell-width;
+.mtColNormal {
+  width: @table-cell-width * 3;
   min-width: @table-cell-width;
-  max-width: @table-cell-width;
 }
-.colShort {
-  width: @table-cell-width-short;
+.mtColShort {
+  width: @table-cell-width-short * 3;
   min-width: @table-cell-width-short;
-  max-width: @table-cell-width-short;
 }
-.colWide {
-  width: @table-cell-width-wide;
+.mtColWide {
+  width: @table-cell-width-wide * 3;
   min-width: @table-cell-width-wide;
-  max-width: @table-cell-width-wide;
 }
 </style>
