@@ -14,7 +14,7 @@
           :key="index">
           <item-name
             v-b-tooltip.hover
-            :title="parent.prefLabel.de ? parent.prefLabel.de : parent.prefLabel.en"
+            :title="index != item.ancestors.length - 1 ? (parent.prefLabel.de ? parent.prefLabel.de : parent.prefLabel.en) : ''"
             :item="parent"
             :show-text="index == item.ancestors.length - 1"
             :is-link="true"
