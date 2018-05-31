@@ -16,9 +16,12 @@
             v-b-tooltip.hover
             :title="parent.prefLabel.de ? parent.prefLabel.de : parent.prefLabel.en"
             :item="parent"
-            :show-text="false"
+            :show-text="index == item.ancestors.length - 1"
             :is-link="true"
-            @click.native="parentClicked(parent)" /> →
+            @click.native="parentClicked(parent)" />
+          <span v-if="index < item.ancestors.length - 1">
+            ›
+          </span>
         </span>
       </div>
       <span v-else><loading-indicator
@@ -28,9 +31,8 @@
         :item="detail"
         :font-size="1.2"
         class="label" />
-      <p>{{ isScheme ? "Scheme" : "Concept" }} - <auto-link :link="detail.uri" /></p>
+      <p><auto-link :link="detail.uri" /></p>
       <p v-if="detail.identifier">
-        Identifier:
         <ul>
           <li
             v-for="(identifier, index) in detail.identifier"
@@ -40,7 +42,7 @@
         </ul>
       </p>
       <p v-if="detail.altLabel">
-        Label: {{ detail.altLabel.de ? detail.altLabel.de[0] : detail.altLabel.en[0] }}
+        {{ detail.altLabel.de ? detail.altLabel.de[0] : detail.altLabel.en[0] }}
       </p>
       <p v-if="detail.definition">
         Definition: {{ detail.definition.de ? detail.definition.de[0] : detail.definition.en[0] }}
