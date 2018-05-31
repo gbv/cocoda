@@ -5,6 +5,10 @@ module.exports = {
   ribbon: {
     url: 'https://github.com/gbv/cocoda',
   },
+  template: {
+    favicon: '/favicon.ico',
+  },
+  assetsDir: 'static',
   sections: [
     {
       name: 'Cocoda',
