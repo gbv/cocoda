@@ -36,7 +36,8 @@ new Vue({
         }
         let fromTo = this._fromTo(isLeft)
         if (fromTo == "from" && this.jskos.from.memberSet.length != 0) {
-          return false
+          this.jskos.from.memberSet = [concept]
+          return true
         }
         this.jskos[fromTo].memberSet.push(concept)
         return true
