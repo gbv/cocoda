@@ -15,7 +15,9 @@
       :key="isLeft"
       class="mappingEditorPart" >
       <div v-if="mapping.getScheme(isLeft) != null">
-        <div class="mappingScheme font-heavy">{{ labelForScheme(mapping.getScheme(isLeft)) }}</div>
+        <div
+          v-show="showScheme(isLeft)"
+          class="mappingScheme font-heavy">{{ labelForScheme(mapping.getScheme(isLeft)) }}</div>
         <ul class="mappingConceptList">
           <li
             v-for="(concept, index) in mapping.getConcepts(isLeft)"
@@ -154,6 +156,17 @@ export default {
     },
     deleteAll(isLeft) {
       this.mapping.removeAll(isLeft)
+    },
+    showScheme(isLeft) {
+      let chosenScheme = isLeft ? this.schemeLeft : this.schemeRight
+      let mappingScheme = this.mapping.getScheme(isLeft)
+      if (chosenScheme == null || mappingScheme == null) {
+        return true
+      }
+      if (chosenScheme.uri != mappingScheme.uri) {
+        return true
+      }
+      return false
     }
   }
 }
