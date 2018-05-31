@@ -117,6 +117,9 @@ export default {
     },
     conceptSelected: function() {
       this.$emit("selectedConcept", this.conceptSelected)
+    },
+    vocSelected: function() {
+      this.$emit("selectedScheme", this.vocSelected)
     }
   },
   mounted: function () {

@@ -11,7 +11,7 @@
       {{ mapping.reversed ? "←" : "→" }}
     </div>
     <div
-      v-for="isLeft in [true, false]"
+      v-for="(isLeft, index0) in [true, false]"
       :key="isLeft"
       class="mappingEditorPart" >
       <div v-if="mapping.getScheme(isLeft) != null">
@@ -33,6 +33,32 @@
       <div v-else >
         <div class="mappingNoConcepts">No Concepts</div>
       </div>
+      <div
+        v-if="!isAddButtonEnabled(isLeft)"
+        class="addButtonDisabledReason">
+        {{ addButtonDisabledReason(isLeft) }}
+      </div>
+      <div class="mappingButtons">
+        <div class="mappingButtonsFiller" />
+        <div
+          v-b-tooltip.hover
+          :class="{ addButtonClickable: isAddButtonEnabled(isLeft), addButtonDisabled: !isAddButtonEnabled(isLeft) }"
+          :id="'addButton'+index0"
+          :title="isAddButtonEnabled(isLeft) ? 'add selected concept' : ''"
+          class="addButton"
+          @click="addToMapping(isLeft)" >
+          <div class="circle">
+            <div class="horizontal"/>
+            <div class="vertical"/>
+          </div>
+        </div>
+        <div
+          v-b-tooltip.hover
+          title="delete all concepts"
+          class="deleteAllButton"
+          @click="deleteAll(isLeft)" >🗑</div>
+        <div class="mappingButtonsFiller" />
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +79,34 @@ export default {
     flex: {
       type: Number,
       default: 1
+    },
+    /**
+     * The selected concept from the left hand concept browser.
+     */
+    selectedLeft: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected concept from the right hand concept browser.
+     */
+    selectedRight: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the left hand concept browser.
+     */
+    schemeLeft: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the right hand concept browser.
+     */
+    schemeRight: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -68,6 +122,38 @@ export default {
       if (!this.mapping.reverse()) {
         alert("Reversion not possible")
       }
+    },
+    isAddButtonEnabled(isLeft) {
+      let concept = isLeft ? this.selectedLeft : this.selectedRight
+      if (!this.mapping.checkScheme(isLeft ? this.schemeLeft : this.schemeRight, isLeft)) {
+        return false
+      }
+      if (concept == null) {
+        return false
+      }
+      if (this.mapping.added(concept, isLeft)) {
+        return false
+      }
+      return true
+    },
+    addButtonDisabledReason(isLeft) {
+      let concept = isLeft ? this.selectedLeft : this.selectedRight
+      if (!this.mapping.checkScheme(isLeft ? this.schemeLeft : this.schemeRight, isLeft)) {
+        return "Scheme does not match."
+      }
+      if (concept == null) {
+        return "Please select a concept."
+      }
+      if (this.mapping.added(concept, isLeft)) {
+        return "Selected concept is already in mapping."
+      }
+      return "Other reason."
+    },
+    addToMapping(isLeft) {
+      this.mapping.add(isLeft ? this.selectedLeft : this.selectedRight, isLeft ? this.schemeLeft : this.schemeRight, isLeft)
+    },
+    deleteAll(isLeft) {
+      this.mapping.removeAll(isLeft)
     }
   }
 }
@@ -89,6 +175,7 @@ export default {
   margin-right: 5px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .mappingEditorPart > div {
   flex: 1;
@@ -134,10 +221,10 @@ export default {
   color: @color-primary-0;
 }
 .mappingNoConcepts {
-  position: relative;
-  margin: 0 auto;
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .mappingArrow {
@@ -157,6 +244,65 @@ export default {
   cursor: pointer;
   &:hover {
     color: @color-secondary-2-4;
+  }
+}
+
+.mappingButtons {
+  flex: 0 0 32px !important;
+  display: flex;
+  flex-direction: row !important;
+}
+.mappingButtonsFiller {
+  flex: 1;
+}
+
+@addButtonColor: @color-primary-0;
+@addButtonColorHover: @color-secondary-2-0;
+@addButtonColorDisabled: fadeout(#777777, 80%);
+.addButton {
+  flex: none;
+  z-index: 50;
+  user-select: none;
+  margin: 0 10px;
+}
+.addButtonDisabledReason {
+  flex: 0 0 20px !important;
+  margin: 0 auto;
+  &:extend(.text-light-grey);
+  font-size: 0.8em;
+}
+.addButton .circle {position: relative; width: 32px; height: 32px; border-radius: 100%; border: solid 5px red;}
+.addButton .circle .horizontal {position: absolute; width: 16px; height: 4px; top: 9px; left: 3px;}
+.addButton .circle .vertical {position: absolute; width: 4px; height: 16px; top: 3px; left: 9px;}
+.addButtonClickable .circle {
+  border-color: @addButtonColor;
+  & .horizontal, & .vertical {
+    background-color: @addButtonColor;
+  }
+}
+.addButtonClickable:hover .circle {
+  border-color: @addButtonColorHover;
+  & .horizontal, & .vertical {
+    background-color: @addButtonColorHover;
+  }
+}
+.addButtonClickable {
+  cursor: pointer;
+}
+.addButtonDisabled .circle {
+  border-color: @addButtonColorDisabled;
+  & .horizontal, & .vertical {
+    background-color: @addButtonColorDisabled;
+  }
+}
+.deleteAllButton {
+  font-size: 1.5em;
+  flex: none;
+  margin: 0 10px;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    background-color: @color-secondary-2-1;
   }
 }
 </style>

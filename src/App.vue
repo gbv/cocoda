@@ -10,7 +10,8 @@
           :flex="flexes[0]"
           :is-left="true"
           data-direction="column"
-          @selectedConcept="selectedLeft = $event" />
+          @selectedConcept="selectedLeft = $event"
+          @selectedScheme="schemeLeft = $event" />
         <div
           ref="resizeSlider0"
           class="resizeSliderCol"
@@ -20,6 +21,8 @@
           :flex="flexes[1]"
           :selected-left="selectedLeft"
           :selected-right="selectedRight"
+          :scheme-left="schemeLeft"
+          :scheme-right="schemeRight"
           data-direction="column" />
         <div
           ref="resizeSlider1"
@@ -30,7 +33,8 @@
           :flex="flexes[2]"
           :is-left="false"
           data-direction="column"
-          @selectedConcept="selectedRight = $event" />
+          @selectedConcept="selectedRight = $event"
+          @selectedScheme="schemeRight = $event" />
       </div>
     </div>
   </div>
@@ -55,7 +59,9 @@ export default {
     return {
       flexes: [1.0, 2.0, 1.0],
       selectedLeft: null,
-      selectedRight: null
+      selectedRight: null,
+      schemeLeft: null,
+      schemeRight: null
     }
   },
   mounted() {

@@ -5,6 +5,10 @@
     <mapping-editor
       ref="mainElement0"
       :flex="flexes[0]"
+      :selected-left="selectedLeft"
+      :selected-right="selectedRight"
+      :scheme-left="schemeLeft"
+      :scheme-right="schemeRight"
       class="main-component"
       data-direction="row" />
     <div
@@ -24,6 +28,8 @@
       ref="mainElement2"
       :selected-left="selectedLeft"
       :selected-right="selectedRight"
+      :scheme-left="schemeLeft"
+      :scheme-right="schemeRight"
       :flex="flexes[2]"
       class="main-component"
       data-direction="row" />
@@ -53,11 +59,31 @@ export default {
       type: Number,
       default: 2
     },
+    /**
+     * The selected concept from the left hand concept browser.
+     */
     selectedLeft: {
       type: Object,
       default: null
     },
+    /**
+     * The selected concept from the right hand concept browser.
+     */
     selectedRight: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the left hand concept browser.
+     */
+    schemeLeft: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the right hand concept browser.
+     */
+    schemeRight: {
       type: Object,
       default: null
     }

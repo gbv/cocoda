@@ -4,23 +4,6 @@
     :style="{ flex: flex }"
     class="conceptDetail">
     <div
-      v-b-tooltip.hover
-      :style="styles.addButton"
-      :class="{ addButtonClickable: !isSchema && !mapping.added(item, isLeft) && mapping.checkScheme(voc, isLeft) }"
-      :title="
-        isSchema ? 'please select a concept' : (
-          mapping.added(item, isLeft) ? 'concept is already in mapping' :
-          (!mapping.checkScheme(voc, isLeft) ? 'scheme in mapping does not match' : 'add concept to mapping')
-        )
-      "
-      class="addButton"
-      @click="!isSchema && !mapping.added(item, isLeft) && mapping.checkScheme(voc, isLeft) && addToMapping()" >
-      <div class="circle">
-        <div class="horizontal"/>
-        <div class="vertical"/>
-      </div>
-    </div>
-    <div
       v-if="detail != null"
       class="conceptDetailContent">
       <div
@@ -175,31 +158,7 @@ export default {
   data () {
     return {
       detail: null,
-      loading: false,
-      mapping: this.$root.$data.mapping
-    }
-  },
-  computed: {
-    styles() {
-      let addButtonDelta = "-16px"
-      return {
-        addButton: this.isLeft ? { right: addButtonDelta } : { left: addButtonDelta }
-      }
-    },
-    isMappingFrom() {
-      return (this.isLeft && !this.mapping.REVERSED || !this.isLeft && this.mapping.REVERSED)
-    },
-    isMappingAdded() {
-      if (this.item == null) {
-        return false
-      }
-      let listToSearch = this.isMappingFrom ? this.mapping.from : this.mapping.to
-      for (let concept of listToSearch) {
-        if (this.item.uri == concept.uri) {
-          return true
-        }
-      }
-      return false
+      loading: false
     }
   },
   watch: {
@@ -240,24 +199,6 @@ export default {
        * @type {string} - uri that is chosen
        */
       this.$emit("chooseUri", parent.uri)
-    },
-    addToMapping() {
-      if (this.voc == null || this.item == null || this.isSchema) {
-        alert("Please select a concept.")
-        return
-      }
-      if (this.mapping.added(this.item, this.isLeft)) {
-        alert("Concept already added.")
-        return
-      }
-      if (!this.mapping.add(this.item, this.voc, this.isLeft)) {
-        if (this.mapping._fromTo(this.isLeft) == "from" && this.mapping.jskos.from.memberSet.length == 1) {
-          alert("Can't add this concept, source can only have one concept.")
-        } else {
-          alert("You can't add this concept.")
-        }
-        return
-      }
     }
   },
 }
@@ -301,29 +242,4 @@ ul {
   justify-content: center;
   align-items: center;
 }
-
-@addButtonColor: fadeout(@color-primary-4, 70%);
-@addButtonColorHover: @color-primary-0;
-.addButtonClickable:hover .circle {
-  border-color: @addButtonColorHover;
-  & .horizontal, & .vertical {
-    background-color: @addButtonColorHover;
-  }
-}
-.addButtonClickable {
-  cursor: pointer;
-}
-.addButton {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  z-index: 50;
-  user-select: none;
-  width: 32px;
-  height: 32px
-}
-.addButton .circle {position: relative; width: 32px; height: 32px; border-radius: 100%; border: solid 5px @addButtonColor;}
-.addButton .circle .horizontal {position: absolute; background-color: @addButtonColor; width: 16px; height: 4px; top: 9px; left: 3px;}
-.addButton .circle .vertical {position: absolute; background-color: @addButtonColor; width: 4px; height: 16px; top: 3px; left: 9px;}
 </style>
