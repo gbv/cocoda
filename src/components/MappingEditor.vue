@@ -258,6 +258,7 @@ export default {
   &:hover {
     color: @color-secondary-2-4;
   }
+  z-index: 50;
 }
 
 .mappingButtons {
