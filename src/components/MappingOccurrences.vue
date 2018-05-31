@@ -31,11 +31,31 @@ export default {
       type: Number,
       default: 1
     },
+    /**
+     * The selected concept from the left hand concept browser.
+     */
     selectedLeft: {
       type: Object,
       default: null
     },
+    /**
+     * The selected concept from the right hand concept browser.
+     */
     selectedRight: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the left hand concept browser.
+     */
+    schemeLeft: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the right hand concept browser.
+     */
+    schemeRight: {
       type: Object,
       default: null
     }
@@ -106,8 +126,16 @@ export default {
       return items
     },
     fields() {
-      let fromSchemeLabel = this.mapping.jskos.fromScheme ? this.mapping.jskos.fromScheme.notation[0].toUpperCase() : "-"
-      let toSchemeLabel = this.mapping.jskos.toScheme ? this.mapping.jskos.toScheme.notation[0].toUpperCase() : "-"
+      let fromSchemeSelected = this.mapping.reversed ? this.schemeRight : this.schemeLeft
+      let fromSchemeLabel =
+        this.mapping.jskos.fromScheme ?
+          this.mapping.jskos.fromScheme.notation[0].toUpperCase() :
+          (fromSchemeSelected ? fromSchemeSelected.notation[0].toUpperCase() : "-")
+      let toSchemeSelected = this.mapping.reversed ? this.schemeLeft : this.schemeRight
+      let toSchemeLabel =
+        this.mapping.jskos.toScheme ?
+          this.mapping.jskos.toScheme.notation[0].toUpperCase() :
+          (toSchemeSelected ? toSchemeSelected.notation[0].toUpperCase() : "-")
       return [
         {
           key: "from",
