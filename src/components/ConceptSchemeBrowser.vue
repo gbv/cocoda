@@ -8,16 +8,26 @@
       class="schemeSelect" />
     <concept-search
       :voc="vocSelected ? vocSelected.notation[0] : null"
-      @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
+      @chooseUri="$refs.mainElement1.chooseFromUri($event)" />
     <concept-detail
+      ref="mainElement0"
       :item="conceptSelected != null ? conceptSelected : vocSelected"
       :is-scheme="conceptSelected == null"
+      :flex="flexes[0]"
       class="main-component"
-      @chooseUri="$refs.conceptTree.chooseFromUri($event)" />
+      data-direction="row"
+      @chooseUri="$refs.mainElement1.chooseFromUri($event)" />
+    <div
+      v-if="conceptSelected != null || vocSelected != null"
+      ref="resizeSlider0"
+      class="resizeSliderRow"
+      @mousedown="startResizing($event, 0, false)" />
     <concept-tree
-      ref="conceptTree"
+      ref="mainElement1"
       :voc-selected="vocSelected ? vocSelected : null"
+      :flex="flexes[1]"
       class="main-component"
+      data-direction="row"
       @selectedConcept="conceptSelected = $event" />
   </div>
 </template>
@@ -26,6 +36,8 @@
 import ConceptTree from "./ConceptTree"
 import ConceptDetail from "./ConceptDetail"
 import ConceptSearch from "./ConceptSearch"
+var _ = require("lodash")
+import * as mixins from "../mixins"
 
 /**
  * Sorts data by German prefLabel with fallback to uri.
@@ -45,6 +57,7 @@ export default {
   components: {
     ConceptTree, ConceptDetail, ConceptSearch
   },
+  mixins: [mixins.resizingMixin],
   props: {
     /**
      * The width of the component as a flex value.
@@ -58,7 +71,8 @@ export default {
     return {
       vocSelected: null,
       vocs: [],
-      conceptSelected: null
+      conceptSelected: null,
+      flexes: [1.0, 1.5]
     }
   },
   computed: {
@@ -81,6 +95,18 @@ export default {
       return options
     }
   },
+  watch: {
+    vocSelected(newValue, oldValue) {
+      if (oldValue == null && newValue != null) {
+        let vm = this
+        this.flexes = [1.0, 1.5]
+        // Introduce short delay to resetting flex values so that the ConceptDetail component has time to expand to its proper size.
+        _.delay(function() {
+          vm.resetFlex()
+        }, 100)
+      }
+    }
+  },
   mounted: function () {
     // Load vocabularies/schemes
     var vm = this
@@ -101,7 +127,6 @@ export default {
 @import "../style/main.less";
 
 .browser {
-  flex: 1;
   width: 0;
   display: flex;
   flex-direction: column;

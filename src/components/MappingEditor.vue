@@ -1,5 +1,7 @@
 <template>
-  <div id="mappingEditor"/>
+  <div
+    id="mappingEditor"
+    :style="{ flex: flex }" />
 </template>
 
 <script>
@@ -9,6 +11,15 @@
  */
 export default {
   name: "MappingEditor",
+  props: {
+    /**
+     * The height of the component as a flex value.
+     */
+    flex: {
+      type: Number,
+      default: 1
+    }
+  },
   data () {
     return {}
   }
@@ -17,7 +28,6 @@ export default {
 
 <style scoped>
 #mappingEditor {
-  flex: 1;
   height: 0;
   overflow: hidden;
 }

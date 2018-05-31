@@ -1,6 +1,7 @@
 <template>
   <div
-    v-if="item != null"
+    v-show="item != null"
+    :style="{ flex: flex }"
     class="conceptDetail">
     <div
       v-if="detail != null"
@@ -129,6 +130,13 @@ export default {
     isScheme: {
       type: Boolean,
       default: false
+    },
+    /**
+     * The height of the component as a flex value.
+     */
+    flex: {
+      type: Number,
+      default: 1
     }
   },
   data () {
@@ -185,7 +193,6 @@ export default {
 
 .conceptDetail {
   font-size: 0.8em;
-  flex: 1;
   height: 0;
   overflow-y: auto;
   position: relative;

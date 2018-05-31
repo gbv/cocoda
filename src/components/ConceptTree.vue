@@ -1,7 +1,8 @@
 <template>
   <div
     :class="{ scrollable: !loading }"
-    class="conceptTree">
+    :style="{ flex: flex }"
+    class="conceptTree" >
     <div
       ref="conceptTreeItems"
       class="conceptTreeItems">
@@ -57,6 +58,13 @@ export default {
     vocSelected: {
       type: Object,
       default: null
+    },
+    /**
+     * The height of the component as a flex value.
+     */
+    flex: {
+      type: Number,
+      default: 1.5
     }
   },
   data () {
@@ -377,7 +385,6 @@ export default {
 
 <style scoped>
 .conceptTree {
-  flex: 1.5;
   height: 0;
   position: relative;
   overflow-y: hidden;
