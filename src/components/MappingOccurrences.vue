@@ -18,14 +18,16 @@
           slot-scope="data">
           <item-name
             :item="data.value"
-            :show-text="false" />
+            :show-text="false"
+            :show-tooltip="true" />
         </span>
         <span
           slot="to"
           slot-scope="data">
           <item-name
             :item="data.value"
-            :show-text="false" />
+            :show-text="false"
+            :show-tooltip="true" />
         </span>
       </b-table>
     </div>
@@ -159,8 +161,8 @@ export default {
         {
           key: "from",
           label: "Concept",
-          tdClass: "moColWide",
-          thClass: "moColWide",
+          tdClass: "moColShort",
+          thClass: "moColShort",
           sortable: true
         },
         {
@@ -173,8 +175,8 @@ export default {
         {
           key: "to",
           label: "Concept",
-          tdClass: "moColWide",
-          thClass: "moColWide",
+          tdClass: "moColShort",
+          thClass: "moColShort",
           sortable: true
         },
         {
