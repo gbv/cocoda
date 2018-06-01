@@ -152,7 +152,11 @@ export default {
       return "Other reason."
     },
     addToMapping(isLeft) {
-      this.mapping.add(isLeft ? this.selectedLeft : this.selectedRight, isLeft ? this.schemeLeft : this.schemeRight, isLeft)
+      if (!this.isAddButtonEnabled(isLeft)) {
+        return
+      }
+      let concept = isLeft ? this.selectedLeft : this.selectedRight
+      this.mapping.add(concept, isLeft ? this.schemeLeft : this.schemeRight, isLeft)
     },
     deleteAll(isLeft) {
       this.mapping.removeAll(isLeft)
