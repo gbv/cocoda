@@ -6,6 +6,7 @@
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
     <notation-badge
+      :id="notationBadgeID"
       :item="item"
       :class="{ 'badge-hovered': isLink && isHovered }"
       :style="{ bottom: (fontSize * 2) + 'px' }" />
@@ -13,6 +14,9 @@
       v-if="showText"
       :class="{ 'label-hovered': isLink && isHovered }"
       :item="item" />
+    <b-tooltip
+      :target="notationBadgeID"
+      :title="showTooltip ? (item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) : ''" />
   </div>
 </template>
 
@@ -51,11 +55,19 @@ export default {
     isLink: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Determines whether to show the concepts label as a tooltip.
+     */
+    showTooltip: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      isHovered: false
+      isHovered: false,
+      notationBadgeID: Math.random().toString(36).substring(2, 15)
     }
   },
   methods: {
