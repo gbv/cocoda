@@ -13,7 +13,7 @@
 import axios from "axios"
 
 /** URL for API */
-const url = "http://dev-api.dante.gbv.de/"
+const url = "//api.dante.gbv.de/"
 
 /** Property sets */
 const minimumProperties = "-"
