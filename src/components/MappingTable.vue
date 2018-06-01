@@ -14,7 +14,6 @@
         :items="items"
         :fields="fields"
         class="defaultTable"
-        striped
         small
         thead-class="defaultTableHead"
         tbody-class="defaultTableBody">
