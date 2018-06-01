@@ -29,6 +29,17 @@
             :show-text="false"
             :show-tooltip="true" />
         </span>
+        <span
+          slot="occurrences"
+          slot-scope="data">
+          <span v-if="data.value == null">...</span>
+          <span v-else-if="data.value == -1">-</span>
+          <span v-else>
+            <auto-link
+              :link="data.value.url"
+              :text="data.value.count" />
+          </span>
+        </span>
       </b-table>
     </div>
   </div>
@@ -36,6 +47,7 @@
 
 <script>
 import ItemName from "./ItemName"
+import AutoLink from "./AutoLink"
 import axios from "axios"
 
 /**
@@ -43,7 +55,7 @@ import axios from "axios"
  */
 export default {
   name: "MappingOccurrences",
-  components: { ItemName },
+  components: { ItemName, AutoLink },
   props: {
     /**
      * The height of the component as a flex value.
@@ -141,7 +153,7 @@ export default {
           this.loadOccurrences(item.concept)
         }
         items.push({
-          occurrences: this.occurrencesToString(item.concept.OCCURRENCES)
+          occurrences: item.concept.OCCURRENCES
         })
         // items[items.length-1][item.type] = item.concept.notation[0]
         items[items.length-1][item.type] = item.concept
@@ -195,20 +207,11 @@ export default {
           members: concept.uri
         }
       }).then(function(response) {
-        concept.OCCURRENCES = response.data.length > 0 ? response.data[0].count : -1
+        concept.OCCURRENCES = response.data.length > 0 ? response.data[0] : -1
       }).catch(function(error) {
         console.log(error)
         concept.OCCURRENCES = -1
       })
-    },
-    occurrencesToString(occurrences) {
-      if (occurrences == null) {
-        return "..."
-      } else if (occurrences == -1) {
-        return "-"
-      } else {
-        return occurrences
-      }
     }
   }
 }
