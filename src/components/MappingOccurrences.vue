@@ -76,28 +76,29 @@ export default {
       if (!this.mapping.reversed) {
         intermediateItems.push({
           concept: this.selectedLeft,
-          type: "from",
-          _rowVariant: "info"
+          scheme: this.schemeLeft,
+          type: "from"
         }, {
           concept: this.selectedRight,
-          type: "to",
-          _rowVariant: "success"
+          scheme: this.schemeRight,
+          type: "to"
         })
       } else {
         intermediateItems.push({
           concept: this.selectedRight,
-          type: "from",
-          _rowVariant: "success"
+          scheme: this.schemeRight,
+          type: "from"
         }, {
           concept: this.selectedLeft,
-          type: "to",
-          _rowVariant: "info"
+          scheme: this.schemeLeft,
+          type: "to"
         })
       }
       for (let concept of this.mapping.jskos.from.memberSet) {
         if ((!this.selectedLeft || this.selectedLeft.uri != concept.uri) && (!this.selectedRight || this.selectedRight.uri != concept.uri)) {
           intermediateItems.push({
             concept: concept,
+            scheme: this.mapping.jskos.fromScheme,
             type: "from"
           })
         }
@@ -106,6 +107,7 @@ export default {
         if ((!this.selectedLeft || this.selectedLeft.uri != concept.uri) && (!this.selectedRight || this.selectedRight.uri != concept.uri)) {
           intermediateItems.push({
             concept: concept,
+            scheme: this.mapping.jskos.toScheme,
             type: "to"
           })
         }
@@ -118,34 +120,36 @@ export default {
           this.loadOccurrences(item.concept)
         }
         items.push({
-          occurrences: this.occurrencesToString(item.concept.OCCURRENCES),
-          _rowVariant: item._rowVariant ? item._rowVariant : ""
+          occurrences: this.occurrencesToString(item.concept.OCCURRENCES)
         })
         items[items.length-1][item.type] = item.concept.notation[0]
+        items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
       }
       return items
     },
     fields() {
-      let fromSchemeSelected = this.mapping.reversed ? this.schemeRight : this.schemeLeft
-      let fromSchemeLabel =
-        this.mapping.jskos.fromScheme ?
-          this.mapping.jskos.fromScheme.notation[0].toUpperCase() :
-          (fromSchemeSelected ? fromSchemeSelected.notation[0].toUpperCase() : "-")
-      let toSchemeSelected = this.mapping.reversed ? this.schemeLeft : this.schemeRight
-      let toSchemeLabel =
-        this.mapping.jskos.toScheme ?
-          this.mapping.jskos.toScheme.notation[0].toUpperCase() :
-          (toSchemeSelected ? toSchemeSelected.notation[0].toUpperCase() : "-")
       return [
         {
+          key: "fromScheme",
+          label: "Scheme",
+          tdClass: "moColShort",
+          thClass: "moColShort"
+        },
+        {
           key: "from",
-          label: fromSchemeLabel,
+          label: "Concept",
           tdClass: "moColWide",
           thClass: "moColWide"
         },
         {
+          key: "toScheme",
+          label: "Scheme",
+          tdClass: "moColShort",
+          thClass: "moColShort"
+        },
+        {
           key: "to",
-          label: toSchemeLabel,
+          label: "Concept",
           tdClass: "moColWide",
           thClass: "moColWide"
         },
