@@ -5,17 +5,35 @@
     <div class="defaultTableWrapper">
       <b-table
         ref="occurrencesTable"
+        :sort-desc="true"
         :items="items"
         :fields="fields"
+        sort-by="occurrences"
         class="defaultTable"
         small
         thead-class="defaultTableHead"
-        tbody-class="defaultTableBody" />
+        tbody-class="defaultTableBody">
+        <span
+          slot="from"
+          slot-scope="data">
+          <item-name
+            :item="data.value"
+            :show-text="false" />
+        </span>
+        <span
+          slot="to"
+          slot-scope="data">
+          <item-name
+            :item="data.value"
+            :show-text="false" />
+        </span>
+      </b-table>
     </div>
   </div>
 </template>
 
 <script>
+import ItemName from "./ItemName"
 import axios from "axios"
 
 /**
@@ -23,6 +41,7 @@ import axios from "axios"
  */
 export default {
   name: "MappingOccurrences",
+  components: { ItemName },
   props: {
     /**
      * The height of the component as a flex value.
@@ -122,7 +141,8 @@ export default {
         items.push({
           occurrences: this.occurrencesToString(item.concept.OCCURRENCES)
         })
-        items[items.length-1][item.type] = item.concept.notation[0]
+        // items[items.length-1][item.type] = item.concept.notation[0]
+        items[items.length-1][item.type] = item.concept
         items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
       }
       return items
@@ -133,30 +153,35 @@ export default {
           key: "fromScheme",
           label: "Scheme",
           tdClass: "moColShort",
-          thClass: "moColShort"
+          thClass: "moColShort",
+          sortable: true
         },
         {
           key: "from",
           label: "Concept",
           tdClass: "moColWide",
-          thClass: "moColWide"
+          thClass: "moColWide",
+          sortable: true
         },
         {
           key: "toScheme",
           label: "Scheme",
           tdClass: "moColShort",
-          thClass: "moColShort"
+          thClass: "moColShort",
+          sortable: true
         },
         {
           key: "to",
           label: "Concept",
           tdClass: "moColWide",
-          thClass: "moColWide"
+          thClass: "moColWide",
+          sortable: true
         },
         {
           key: "occurrences",
           tdClass: "moColShort",
-          thClass: "moColShort"
+          thClass: "moColShort",
+          sortable: true
         }
       ]
     }
