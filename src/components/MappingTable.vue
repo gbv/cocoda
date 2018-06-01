@@ -20,12 +20,20 @@
         tbody-class="defaultTableBody">
         <span
           slot="sourceConcept"
-          slot-scope="data"
-          v-html="data.value" />
+          slot-scope="data">
+          <item-name
+            :item="data.value"
+            :show-text="false"
+            :show-tooltip="true" />
+        </span>
         <span
           slot="targetConcept"
-          slot-scope="data"
-          v-html="data.value" />
+          slot-scope="data">
+          <item-name
+            :item="data.value"
+            :show-text="false"
+            :show-tooltip="true" />
+        </span>
       </b-table>
     </div>
     <div
@@ -37,13 +45,14 @@
 </template>
 
 <script>
-import VueScrollingTable from "./VueScrollingTable"
+import ItemName from "./ItemName"
+
 /**
  * The mapping table component.
  */
 export default {
   name: "MappingTable",
-  components: { VueScrollingTable },
+  components: { ItemName },
   props: {
     /**
      * The height of the component as a flex value.
@@ -65,9 +74,21 @@ export default {
       ],
       sampleItem: {
         sourceScheme: "DDC",
-        sourceConcept: "<span class='badge badge-secondary'>Test</span>",
+        sourceConcept: {
+          uri: "test",
+          prefLabel: {
+            de: "Test Label Source Concept"
+          },
+          notation: ["ABC"]
+        },
         targetScheme: "RVK",
-        targetConcept: "<span class='badge badge-secondary'>Test</span>",
+        targetConcept: {
+          uri: "test",
+          prefLabel: {
+            de: "Test Label Target Concept"
+          },
+          notation: ["DEF"]
+        },
         creator: "VZG"
       },
       items: []
@@ -80,30 +101,35 @@ export default {
           key: "sourceScheme",
           label: "Scheme",
           tdClass: "mtColShort",
-          thClass: "mtColShort"
+          thClass: "mtColShort",
+          sortable: true
         },
         {
           key: "sourceConcept",
           label: "Concept",
-          tdClass: "mtColWide",
-          thClass: "mtColWide"
+          tdClass: "mtColShort",
+          thClass: "mtColShort",
+          sortable: true
         },
         {
           key: "targetScheme",
           label: "Scheme",
           tdClass: "mtColShort",
-          thClass: "mtColShort"
+          thClass: "mtColShort",
+          sortable: true
         },
         {
           key: "targetConcept",
           label: "Concept",
-          tdClass: "mtColWide",
-          thClass: "mtColWide"
+          tdClass: "mtColShort",
+          thClass: "mtColShort",
+          sortable: true
         },
         {
           key: "creator",
           tdClass: "mtColNormal",
-          thClass: "mtColNormal"
+          thClass: "mtColNormal",
+          sortable: true
         }
       ]
     }
