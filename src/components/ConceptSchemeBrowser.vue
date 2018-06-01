@@ -114,12 +114,10 @@ export default {
           vm.resetFlex()
         }, 100)
       }
+      this.$emit("selectedScheme", this.vocSelected)
     },
     conceptSelected: function() {
       this.$emit("selectedConcept", this.conceptSelected)
-    },
-    vocSelected: function() {
-      this.$emit("selectedScheme", this.vocSelected)
     }
   },
   mounted: function () {

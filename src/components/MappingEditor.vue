@@ -211,10 +211,10 @@ export default {
   list-style: none;
   & > li {
     position: relative;
-    margin: 5px 0;
+    margin: 5px 12px 5px 0;
     & > .mappingConceptDelete {
       position: absolute;
-      right: 5px;
+      right: -10px;
       top: -5px;
       bottom: 0;
       margin: auto 0;
@@ -254,13 +254,13 @@ export default {
   width: 1.6em;
   height: 1.6em;
   user-select: none;
+  z-index: 50;
 }
 .mappingArrowReversible {
   cursor: pointer;
   &:hover {
     color: @color-secondary-2-4;
   }
-  z-index: 50;
 }
 
 .mappingButtons {
