@@ -3,8 +3,7 @@
     id="mappingEditor"
     :style="{ flex: flex }">
     <div
-      v-b-tooltip.hover
-      :title="mapping.reversible() ? 'reverse mapping' : 'not reversible, source can only have one concept'"
+      v-b-tooltip.hover="mapping.reversible() ? 'reverse mapping' : 'not reversible, source can only have one concept'"
       :class="{ mappingArrowReversible: mapping.reversible() }"
       class="mappingArrow"
       @click="mapping.reversible() && reverseMapping()">
