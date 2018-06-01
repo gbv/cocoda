@@ -2,8 +2,8 @@
   <a
     v-if="isValidURL(link)"
     :href="link"
-    target="_blank">{{ link }}</a>
-  <span v-else>{{ link }}</span>
+    target="_blank">{{ text ? text : link }}</a>
+  <span v-else>{{ text ? text : link }}</span>
 </template>
 
 <script>
@@ -20,6 +20,13 @@ export default {
     link: {
       type: String,
       default: ""
+    },
+    /**
+     * The text that is shown (defaults to URL).
+     */
+    text: {
+      type: String,
+      default: null
     }
   },
   methods: {
