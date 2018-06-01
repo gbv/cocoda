@@ -24,7 +24,6 @@
             :key="index" >
             <item-name
               :item="concept"
-              :is-link="true"
               @click="selected(concept)" />
             <div
               class="mappingConceptDelete"
