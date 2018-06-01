@@ -43,10 +43,9 @@
       <div class="mappingButtons">
         <div class="mappingButtonsFiller" />
         <div
-          v-b-tooltip.hover
+          v-b-tooltip.hover="isAddButtonEnabled(isLeft) ? 'add selected concept' : ''"
           :class="{ addButtonClickable: isAddButtonEnabled(isLeft), addButtonDisabled: !isAddButtonEnabled(isLeft) }"
           :id="'addButton'+index0"
-          :title="isAddButtonEnabled(isLeft) ? 'add selected concept' : ''"
           class="addButton"
           @click="addToMapping(isLeft)" >
           <div class="circle">
