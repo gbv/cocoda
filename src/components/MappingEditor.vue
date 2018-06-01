@@ -4,6 +4,7 @@
     :style="{ flex: flex }">
     <div
       v-b-tooltip.hover="mapping.reversible() ? 'reverse mapping' : 'not reversible, source can only have one concept'"
+      v-show="schemeLeft != null || schemeRight != null"
       :class="{ mappingArrowReversible: mapping.reversible() }"
       class="mappingArrow"
       @click="mapping.reversible() && reverseMapping()">
@@ -11,6 +12,7 @@
     </div>
     <div
       v-for="(isLeft, index0) in [true, false]"
+      v-show="schemeLeft != null || schemeRight != null"
       :key="isLeft"
       class="mappingEditorPart" >
       <div v-if="mapping.getScheme(isLeft) != null">

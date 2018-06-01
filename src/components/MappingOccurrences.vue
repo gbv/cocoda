@@ -2,7 +2,9 @@
   <div
     id="mappingOccurrences"
     :style="{ flex: flex }">
-    <div class="defaultTableWrapper">
+    <div
+      v-show="schemeLeft != null || schemeRight != null"
+      class="defaultTableWrapper">
       <b-table
         ref="occurrencesTable"
         :sort-desc="true"

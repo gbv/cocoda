@@ -3,42 +3,51 @@
     id="mappingTable"
     :style="{ flex: flex }">
     <div
-      v-show="items.length == 0 || true"
-      class="mappingToolbar">
-      Add or remove test:
-      <span @click="add">✚</span> <span @click="remove">－</span>
-    </div>
-    <div class="defaultTableWrapper">
-      <b-table
-        ref="occurrencesTable"
-        :items="items"
-        :fields="fields"
-        class="defaultTable"
-        small
-        thead-class="defaultTableHead"
-        tbody-class="defaultTableBody">
-        <span
-          slot="sourceConcept"
-          slot-scope="data">
-          <item-name
-            :item="data.value"
-            :show-text="false"
-            :show-tooltip="true" />
-        </span>
-        <span
-          slot="targetConcept"
-          slot-scope="data">
-          <item-name
-            :item="data.value"
-            :show-text="false"
-            :show-tooltip="true" />
-        </span>
-      </b-table>
+      v-if="schemeLeft != null || schemeRight != null"
+      id="mappingTableWrapper">
+      <div
+        v-show="items.length == 0 || true"
+        class="mappingToolbar">
+        Add or remove test:
+        <span @click="add">✚</span> <span @click="remove">－</span>
+      </div>
+      <div class="defaultTableWrapper">
+        <b-table
+          ref="occurrencesTable"
+          :items="items"
+          :fields="fields"
+          class="defaultTable"
+          small
+          thead-class="defaultTableHead"
+          tbody-class="defaultTableBody">
+          <span
+            slot="sourceConcept"
+            slot-scope="data">
+            <item-name
+              :item="data.value"
+              :show-text="false"
+              :show-tooltip="true" />
+          </span>
+          <span
+            slot="targetConcept"
+            slot-scope="data">
+            <item-name
+              :item="data.value"
+              :show-text="false"
+              :show-tooltip="true" />
+          </span>
+        </b-table>
+      </div>
+      <div
+        v-show="items.length == 0"
+        class="noItems">
+        No mappings.
+      </div>
     </div>
     <div
-      v-show="items.length == 0"
-      class="noItems">
-      No mappings.
+      v-else
+      id="mappingTableWelcome">
+      <h2>Welcome to Cocoda!</h2>
     </div>
   </div>
 </template>
@@ -59,6 +68,20 @@ export default {
     flex: {
       type: Number,
       default: 1
+    },
+    /**
+     * The selected scheme from the left hand concept browser.
+     */
+    schemeLeft: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected scheme from the right hand concept browser.
+     */
+    schemeRight: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -154,6 +177,17 @@ export default {
 
 #mappingTable {
   height: 0;
+  display: flex;
+}
+#mappingTableWelcome {
+  flex: 1;
+  width: 0;
+  text-align: center;
+  margin: auto auto;
+}
+#mappingTableWrapper {
+  flex: 1;
+  width: 0;
   display: flex;
   flex-direction: column;
 }

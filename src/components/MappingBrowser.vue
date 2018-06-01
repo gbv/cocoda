@@ -18,6 +18,8 @@
     <mapping-table
       ref="mainElement1"
       :flex="flexes[1]"
+      :scheme-left="schemeLeft"
+      :scheme-right="schemeRight"
       class="main-component"
       data-direction="row" />
     <div
