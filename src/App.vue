@@ -16,7 +16,7 @@
           ref="resizeSlider0"
           class="resizeSliderCol"
           @mousedown="startResizing($event, 0)" />
-        <mapping-browser
+        <mapping-tool
           ref="mainElement1"
           :flex="flexes[1]"
           :selected-left="selectedLeft"
@@ -43,7 +43,7 @@
 <script>
 import TheNavbar from "./components/TheNavbar"
 import ConceptSchemeBrowser from "./components/ConceptSchemeBrowser"
-import MappingBrowser from "./components/MappingBrowser"
+import MappingTool from "./components/MappingTool"
 import * as mixins from "./mixins"
 
 /**
@@ -52,7 +52,7 @@ import * as mixins from "./mixins"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptSchemeBrowser, MappingBrowser
+    TheNavbar, ConceptSchemeBrowser, MappingTool
   },
   mixins: [mixins.resizingMixin],
   data () {

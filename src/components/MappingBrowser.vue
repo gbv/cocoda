@@ -2,78 +2,72 @@
   <div
     id="mappingBrowser"
     :style="{ flex: flex }">
-    <mapping-editor
-      ref="mainElement0"
-      :flex="flexes[0]"
-      :selected-left="selectedLeft"
-      :selected-right="selectedRight"
-      :scheme-left="schemeLeft"
-      :scheme-right="schemeRight"
-      class="main-component"
-      data-direction="row" />
     <div
-      ref="resizeSlider0"
-      class="resizeSliderRow"
-      @mousedown="startResizing($event, 0, false)" />
-    <mapping-table
-      ref="mainElement1"
-      :flex="flexes[1]"
-      :scheme-left="schemeLeft"
-      :scheme-right="schemeRight"
-      class="main-component"
-      data-direction="row" />
+      v-if="schemeLeft != null || schemeRight != null"
+      id="mappingBrowserWrapper">
+      <div
+        v-show="items.length == 0 || true"
+        class="mappingToolbar">
+        Add or remove test:
+        <span @click="add">✚</span> <span @click="remove">－</span>
+      </div>
+      <div class="defaultTableWrapper">
+        <b-table
+          ref="occurrencesTable"
+          :items="items"
+          :fields="fields"
+          class="defaultTable"
+          small
+          thead-class="defaultTableHead"
+          tbody-class="defaultTableBody">
+          <span
+            slot="sourceConcept"
+            slot-scope="data">
+            <item-name
+              :item="data.value"
+              :show-text="false"
+              :show-tooltip="true" />
+          </span>
+          <span
+            slot="targetConcept"
+            slot-scope="data">
+            <item-name
+              :item="data.value"
+              :show-text="false"
+              :show-tooltip="true" />
+          </span>
+        </b-table>
+      </div>
+      <div
+        v-show="items.length == 0"
+        class="noItems">
+        No mappings.
+      </div>
+    </div>
     <div
-      ref="resizeSlider1"
-      class="resizeSliderRow"
-      @mousedown="startResizing($event, 1, false)" />
-    <mapping-occurrences
-      ref="mainElement2"
-      :selected-left="selectedLeft"
-      :selected-right="selectedRight"
-      :scheme-left="schemeLeft"
-      :scheme-right="schemeRight"
-      :flex="flexes[2]"
-      class="main-component"
-      data-direction="row" />
+      v-else
+      id="mappingBrowserWelcome">
+      <h2>Welcome to Cocoda!</h2>
+    </div>
   </div>
 </template>
 
 <script>
-import MappingEditor from "./MappingEditor"
-import MappingOccurrences from "./MappingOccurrences"
-import MappingTable from "./MappingTable"
-import * as mixins from "../mixins"
+import ItemName from "./ItemName"
 
 /**
- * The mapping browser component which includes the mapping editor, mapping table, and mapping occurrences.
+ * The mapping browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: {
-    MappingEditor, MappingOccurrences, MappingTable
-  },
-  mixins: [mixins.resizingMixin],
+  components: { ItemName },
   props: {
     /**
-     * The width of the component as a flex value.
+     * The height of the component as a flex value.
      */
     flex: {
       type: Number,
-      default: 2
-    },
-    /**
-     * The selected concept from the left hand concept browser.
-     */
-    selectedLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected concept from the right hand concept browser.
-     */
-    selectedRight: {
-      type: Object,
-      default: null
+      default: 1
     },
     /**
      * The selected scheme from the left hand concept browser.
@@ -92,16 +86,144 @@ export default {
   },
   data () {
     return {
-      flexes: [1.0, 1.0, 1.0]
+      columns: [
+        { id: "sourceScheme", title: "Scheme", cssClasses: "colShort" },
+        { id: "sourceConcept", title: "Concept", cssClasses: "colWide" },
+        { id: "targetScheme", title: "Scheme", cssClasses: "colShort" },
+        { id: "targetConcept", title: "Concept", cssClasses: "colWide" },
+        { id: "creator", title: "Creator", cssClasses: "colNormal" },
+        { id: "test", title: "Test", cssClasses: "colShort" }
+      ],
+      sampleItem: {
+        sourceScheme: "DDC",
+        sourceConcept: {
+          uri: "test",
+          prefLabel: {
+            de: "Test Label Source Concept"
+          },
+          notation: ["ABC"]
+        },
+        targetScheme: "RVK",
+        targetConcept: {
+          uri: "test",
+          prefLabel: {
+            de: "Test Label Target Concept"
+          },
+          notation: ["DEF"]
+        },
+        creator: "VZG"
+      },
+      items: []
+    }
+  },
+  computed: {
+    fields() {
+      return [
+        {
+          key: "sourceScheme",
+          label: "Scheme",
+          tdClass: "mtColShort",
+          thClass: "mtColShort",
+          sortable: true
+        },
+        {
+          key: "sourceConcept",
+          label: "Concept",
+          tdClass: "mtColShort",
+          thClass: "mtColShort",
+          sortable: true
+        },
+        {
+          key: "targetScheme",
+          label: "Scheme",
+          tdClass: "mtColShort",
+          thClass: "mtColShort",
+          sortable: true
+        },
+        {
+          key: "targetConcept",
+          label: "Concept",
+          tdClass: "mtColShort",
+          thClass: "mtColShort",
+          sortable: true
+        },
+        {
+          key: "creator",
+          tdClass: "mtColNormal",
+          thClass: "mtColNormal",
+          sortable: true
+        }
+      ]
+    }
+  },
+  created() {
+    for (let i = 0; i < 30; i++) {
+      // this.items.push(this.sampleItem)
+    }
+  },
+  methods: {
+    add() {
+      this.items.push(this.sampleItem)
+    },
+    remove() {
+      this.items.pop()
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 #mappingBrowser {
+  height: 0;
+  display: flex;
+}
+#mappingBrowserWelcome {
+  flex: 1;
+  width: 0;
+  text-align: center;
+  margin: auto auto;
+}
+#mappingBrowserWrapper {
+  flex: 1;
   width: 0;
   display: flex;
   flex-direction: column;
+}
+.noItems, .mappingToolbar {
+  margin: 5px auto 5px auto;
+}
+.noItems {
+  flex: 5 0 auto;
+}
+.mappingToolbar {
+  user-select: none;
+}
+.mappingToolbar span {
+  cursor: pointer;
+  &:hover {
+    color: @color-secondary-2-4;
+  }
+}
+
+</style>
+
+<style lang="less">
+
+@table-cell-width: 120px;
+@table-cell-width-short: 70px;
+@table-cell-width-wide: 160px;
+.mtColNormal {
+  width: @table-cell-width * 3;
+  min-width: @table-cell-width;
+}
+.mtColShort {
+  width: @table-cell-width-short * 3;
+  min-width: @table-cell-width-short;
+}
+.mtColWide {
+  width: @table-cell-width-wide * 3;
+  min-width: @table-cell-width-wide;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    id="mappingOccurrences"
+    id="occurrencesBrowser"
     :style="{ flex: flex }">
     <div
       v-show="schemeLeft != null || schemeRight != null"
@@ -53,10 +53,10 @@ import AutoLink from "./AutoLink"
 import axios from "axios"
 
 /**
- * The mapping occurrences component.
+ * The occurrences browser component.
  */
 export default {
-  name: "MappingOccurrences",
+  name: "OccurrencesBrowser",
   components: { ItemName, AutoLink },
   props: {
     /**
@@ -222,7 +222,7 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-#mappingOccurrences {
+#occurrencesBrowser {
   height: 0;
   display: flex;
   flex-direction: column;
