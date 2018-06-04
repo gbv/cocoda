@@ -10,7 +10,7 @@
         :sort-desc="true"
         :items="items"
         :fields="fields"
-        sort-by="occurrences"
+        sort-by="occurrencesSort"
         class="defaultTable"
         small
         thead-class="defaultTableHead"
@@ -157,7 +157,11 @@ export default {
         items.push({
           occurrences: item.concept.OCCURRENCES
         })
-        // items[items.length-1][item.type] = item.concept.notation[0]
+        if (item.concept.OCCURRENCES == null || item.concept.OCCURRENCES == -1) {
+          items[items.length-1].occurrencesSort = -1
+        } else {
+          items[items.length-1].occurrencesSort = item.concept.OCCURRENCES.count
+        }
         items[items.length-1][item.type] = item.concept
         items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
       }
@@ -210,6 +214,7 @@ export default {
         }
       }).then(function(response) {
         concept.OCCURRENCES = response.data.length > 0 ? response.data[0] : -1
+        console.log(concept.OCCURRENCES)
       }).catch(function(error) {
         console.log(error)
         concept.OCCURRENCES = -1
