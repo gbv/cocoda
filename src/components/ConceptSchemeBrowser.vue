@@ -28,6 +28,7 @@
       ref="mainElement1"
       :voc-selected="vocSelected ? vocSelected : null"
       :flex="flexes[1]"
+      :is-left="isLeft"
       class="main-component"
       data-direction="row"
       @selectedConcept="conceptSelected = $event" />

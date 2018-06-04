@@ -15,6 +15,8 @@
         :depth="0"
         :index="index"
         :tree-helper="treeHelper"
+        :is-left="isLeft"
+        :scheme="vocSelected"
         @hovered="hovered = $event"
         @selected="selected = $event" />
     </div>
@@ -65,6 +67,13 @@ export default {
     flex: {
       type: Number,
       default: 1.5
+    },
+    /**
+     * Tells the component on which side of the application it is.
+     */
+    isLeft: {
+      type: Boolean,
+      default: true
     }
   },
   data () {

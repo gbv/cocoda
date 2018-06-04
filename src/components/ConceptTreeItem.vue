@@ -29,6 +29,13 @@
         @click="onClick">
         <item-name :item="concept" />
       </div>
+      <div
+        v-b-tooltip.hover="'add to mapping'"
+        v-show="mapping.canAdd(concept, scheme, isLeft)"
+        class="addToMapping"
+        @click="mapping.add(concept, scheme, isLeft)"
+        @mouseover="hovering(concept)"
+        @mouseout="hovering(null)">+</div>
     </div>
     <div
       v-if="isOpen"
@@ -42,6 +49,8 @@
         :depth="depth + 1"
         :index="index"
         :tree-helper="treeHelper"
+        :is-left="isLeft"
+        :scheme="scheme"
         @hovered="hovering($event)"
         @selected="select($event)" />
     </div>
@@ -107,13 +116,28 @@ export default {
     treeHelper: {
       type: Object,
       default: null
+    },
+    /**
+     * Tells the component on which side of the application it is.
+     */
+    isLeft: {
+      type: Boolean,
+      default: true
+    },
+    /**
+     * The currently selected scheme as an object.
+     */
+    scheme: {
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
       loadingChildren: false,
       preventClick: false,
-      preventClickArrow: false
+      preventClickArrow: false,
+      mapping: this.$root.$data.mapping
     }
   },
   computed: {
@@ -260,6 +284,7 @@ export default {
 
 .conceptBox {
   display: flex;
+  position: relative;
   min-height: 24px;
   margin: 3px;
   cursor: pointer;
@@ -280,6 +305,19 @@ export default {
 }
 .labelBoxFull {
   padding-left: 18px;
+}
+.addToMapping {
+  position: absolute;
+  color: white;
+  top: -2px;
+  right: 5px;
+  font-size: 1.2em;
+  font-weight: 700;
+  opacity: 0.7;
+  &:hover {
+    color: @color-secondary-2-0;
+    opacity: 1.0;
+  }
 }
 .conceptBoxSelected {
   &:extend(.font-heavy);
