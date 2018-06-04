@@ -42,6 +42,18 @@ new Vue({
         this.jskos[fromTo].memberSet.push(concept)
         return true
       },
+      canAdd(concept, scheme, isLeft=true) {
+        if(!this.checkScheme(scheme, isLeft)) {
+          return false
+        }
+        if(concept == null) {
+          return false
+        }
+        if(this.added(concept, isLeft)) {
+          return false
+        }
+        return true
+      },
       remove(concept, isLeft=true) {
         let fromTo = this._fromTo(isLeft)
         let indexConcept = _.findIndex(this.jskos[fromTo].memberSet, function(c) {
