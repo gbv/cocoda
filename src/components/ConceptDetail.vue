@@ -73,9 +73,9 @@
           v-for="(mapping, index) in gndMappings"
           :key="index">
           <a
-            :href="mapping.to.memberSet.uri"
+            :href="mapping.uri"
             target="_blank">
-            <b-badge class="badgeLink">{{ mapping.to.memberSet.notation[0] }}</b-badge>
+            <b-badge class="badgeLink">{{ mapping.notation[0] }}</b-badge>
           </a>&nbsp;
         </span>
       </p>
@@ -192,8 +192,9 @@ export default {
           if (itemBefore != vm.item) {
             console.log("Item changed during the request, discarding data...")
           } else {
-            if (Array.isArray(data) && data.length > 0)
+            if (Array.isArray(data) && data.length > 0) {
               vm.detail = data[0]
+            }
             if (data.length > 1) {
               console.log("For some reason, more than one set of properties was received for ", vm.item)
             }
@@ -204,13 +205,20 @@ export default {
           vm.loading = false
         })
 
-      // If scheme is RVK, get the GND mappings
-      axios.get("http://localhost:3000/mappings", {
+      // Get GND mappings
+      // TODO: - Put into its own mapping providers module.
+      axios.get("//coli-conc.gbv.de/api/mappings", {
         params: {
           from: this.item.uri
         }
       }).then(function(response) {
-        vm.gndMappings = response.data
+        vm.gndMappings = []
+        let data = response.data
+        for(let mapping of data) {
+          if (mapping.toScheme.uri == "http://bartoc.org/en/node/430") {
+            vm.gndMappings = vm.gndMappings.concat(mapping.to.memberSet || [])
+          }
+        }
       }).catch(function(error) {
         console.log("API error (GND mappings):", error)
       })
