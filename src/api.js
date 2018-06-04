@@ -22,6 +22,13 @@ const detailProperties =  "uri,prefLabel,notation,identifier,altLabel,definition
 const allProperties = "*"
 
 /**
+ * Returns a new axios CancelToken source
+ */
+function token() {
+  return axios.CancelToken.source()
+}
+
+/**
  * Loads all vocabularies or information about a particular vocabulary.
  *
  * @param {string} uri - if null, load all vocabularies
@@ -161,4 +168,4 @@ function get(endpoint, config) {
     })
 }
 
-export { voc, data, narrower, ancestors, suggest, topByNotation, get, minimumProperties, defaultProperties, detailProperties, allProperties, url }
+export { voc, data, narrower, ancestors, suggest, topByNotation, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token }
