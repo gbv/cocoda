@@ -87,7 +87,8 @@ export default {
       searchResult: [],
       isOpen: false,
       loading: false,
-      searchSelected: -1
+      searchSelected: -1,
+      cancelToken: null
     }
   },
   watch: {
@@ -155,7 +156,11 @@ export default {
     getAnswer:  function () {
       this.searchResult = ["Searching..."]
       var vm = this
-      this.$api.suggest(this.searchQuery, this.voc, 20)
+      if (this.cancelToken != null) {
+        this.cancelToken.cancel("There was a newer search query.")
+      }
+      this.cancelToken = this.$api.token()
+      this.$api.suggest(this.searchQuery, this.voc, 20, undefined, this.cancelToken.token)
         .then(function(data) {
           vm.loading = false
           vm.searchResult = _.zip(data[1], data[2], data[3])
