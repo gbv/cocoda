@@ -55,7 +55,7 @@ var _ = require("lodash")
  */
 function scrollIntoViewIfNeeded(target) {
   var rect = target.getBoundingClientRect()
-  var parentRect = target.parentElement.getBoundingClientRect()
+  var parentRect = target.parentElement.parentElement.getBoundingClientRect()
   if (rect.bottom > parentRect.bottom) {
     target.scrollIntoView(false)
   }
