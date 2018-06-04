@@ -37,7 +37,7 @@
           class="searchfield-results-item"
           @click="chooseResult(result)"
           @mouseover="mouseover(i)">
-          {{ result[0] }}
+          <span v-html="highlightQueryInResult(result[0])"/>
         </li>
       </ul>
     </div>
@@ -229,6 +229,18 @@ export default {
     focusSearch() {
       this.$refs.searchInput.focus()
       this.isOpen = this.searchQuery != ""
+    },
+    highlightQueryInResult(result) {
+      let index = result.search(new RegExp(this.searchQuery, "i"))
+      if (index == -1) {
+        return result
+      } else {
+        return result.slice(0, index)
+          + "<span class='searchHighlight'>"
+          + result.slice(index, index
+          + this.searchQuery.length)
+          + "</span>" + result.slice(index + this.searchQuery.length)
+      }
     }
   },
 }
@@ -322,5 +334,15 @@ left: -24px;
   display: flex;
   justify-content: left;
   align-items: center;
+}
+</style>
+
+<style lang="less">
+@import "../style/main.less";
+
+// Has to be global to work
+.searchHighlight {
+  &:extend(.font-heavy);
+  color: @color-secondary-2-4;
 }
 </style>
