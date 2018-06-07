@@ -6,12 +6,12 @@
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
     <notation-badge
-      v-b-tooltip.hover="showTooltip ? (item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) : ''"
+      v-b-tooltip.hover="showTooltip && item.prefLabel ? (item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) : ''"
       :item="item"
       :class="{ 'badge-hovered': isLink && isHovered }"
       :style="{ bottom: (fontSize * 2) + 'px' }" />
     <prefLabel-text
-      v-if="showText"
+      v-if="showText && item.prefLabel"
       :class="{ 'label-hovered': isLink && isHovered }"
       :item="item" />
   </div>
