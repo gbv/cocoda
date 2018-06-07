@@ -161,6 +161,7 @@ function get(endpoint, config) {
           element.ISOPEN = false
           element.DETAILSLOADED = false
           element.OCCURRENCES = null
+          element.MAPPINGS = null
           element.ancestors = element.ancestors ? element.ancestors : [null]
         }
       })

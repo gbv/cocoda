@@ -18,6 +18,8 @@
     <mapping-browser
       ref="mainElement1"
       :flex="flexes[1]"
+      :selected-left="selectedLeft"
+      :selected-right="selectedRight"
       :scheme-left="schemeLeft"
       :scheme-right="schemeRight"
       class="main-component"

@@ -5,12 +5,9 @@
     <div
       v-if="schemeLeft != null || schemeRight != null"
       id="mappingBrowserWrapper">
-      <div
-        v-show="items.length == 0 || true"
+      <!-- div
         class="mappingToolbar">
-        Add or remove test:
-        <span @click="add">✚</span> <span @click="remove">－</span>
-      </div>
+      </div -->
       <div class="defaultTableWrapper">
         <b-table
           ref="occurrencesTable"
@@ -21,18 +18,22 @@
           thead-class="defaultTableHead"
           tbody-class="defaultTableBody">
           <span
-            slot="sourceConcept"
+            slot="sourceConcepts"
             slot-scope="data">
             <item-name
-              :item="data.value"
+              v-for="concept in data.value"
+              :key="concept.uri"
+              :item="concept"
               :show-text="false"
               :show-tooltip="true" />
           </span>
           <span
-            slot="targetConcept"
+            slot="targetConcepts"
             slot-scope="data">
             <item-name
-              :item="data.value"
+              v-for="concept in data.value"
+              :key="concept.uri"
+              :item="concept"
               :show-text="false"
               :show-tooltip="true" />
           </span>
@@ -54,6 +55,7 @@
 
 <script>
 import ItemName from "./ItemName"
+import axios from "axios"
 
 /**
  * The mapping browser component.
@@ -68,6 +70,20 @@ export default {
     flex: {
       type: Number,
       default: 1
+    },
+    /**
+     * The selected concept from the left hand concept browser.
+     */
+    selectedLeft: {
+      type: Object,
+      default: null
+    },
+    /**
+     * The selected concept from the right hand concept browser.
+     */
+    selectedRight: {
+      type: Object,
+      default: null
     },
     /**
      * The selected scheme from the left hand concept browser.
@@ -88,35 +104,49 @@ export default {
     return {
       columns: [
         { id: "sourceScheme", title: "Scheme", cssClasses: "colShort" },
-        { id: "sourceConcept", title: "Concept", cssClasses: "colWide" },
+        { id: "sourceConcepts", title: "Concept", cssClasses: "colWide" },
         { id: "targetScheme", title: "Scheme", cssClasses: "colShort" },
-        { id: "targetConcept", title: "Concept", cssClasses: "colWide" },
-        { id: "creator", title: "Creator", cssClasses: "colNormal" },
-        { id: "test", title: "Test", cssClasses: "colShort" }
-      ],
-      sampleItem: {
-        sourceScheme: "DDC",
-        sourceConcept: {
-          uri: "test",
-          prefLabel: {
-            de: "Test Label Source Concept"
-          },
-          notation: ["ABC"]
-        },
-        targetScheme: "RVK",
-        targetConcept: {
-          uri: "test",
-          prefLabel: {
-            de: "Test Label Target Concept"
-          },
-          notation: ["DEF"]
-        },
-        creator: "VZG"
-      },
-      items: []
+        { id: "targetConcepts", title: "Concept", cssClasses: "colWide" },
+        { id: "creator", title: "Creator", cssClasses: "colNormal" }
+      ]
     }
   },
   computed: {
+    items() {
+      let items = []
+      let conceptList = [
+        {
+          concept: this.selectedLeft,
+          fromTo: "from"
+        },
+        {
+          concept: this.selectedRight,
+          fromTo: "to"
+        }
+      ]
+      for (let conceptItem of conceptList) {
+        if (conceptItem.concept == null) {
+          continue
+        }
+        let mappings = conceptItem.concept.MAPPINGS
+        if (mappings == null) {
+          // Load mappings
+          this.loadMappings(conceptItem)
+        } else {
+          // Save mappings
+          for (let mapping of mappings) {
+            let item = {}
+            item.sourceScheme = mapping.fromScheme.notation[0]
+            item.targetScheme = mapping.toScheme.notation[0]
+            item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
+            item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
+            item.creator = mapping.creator || "?"
+            items.push(item)
+          }
+        }
+      }
+      return items
+    },
     fields() {
       return [
         {
@@ -127,7 +157,7 @@ export default {
           sortable: true
         },
         {
-          key: "sourceConcept",
+          key: "sourceConcepts",
           label: "Concept",
           tdClass: "mtColShort",
           thClass: "mtColShort",
@@ -141,7 +171,7 @@ export default {
           sortable: true
         },
         {
-          key: "targetConcept",
+          key: "targetConcepts",
           label: "Concept",
           tdClass: "mtColShort",
           thClass: "mtColShort",
@@ -167,6 +197,20 @@ export default {
     },
     remove() {
       this.items.pop()
+    },
+    loadMappings(conceptItem) {
+      // Get GND mappings
+      // TODO: - Put into its own mapping providers module.
+      let params = {}
+      let concept = conceptItem.concept
+      params[conceptItem.fromTo] = concept.uri
+      axios.get("//coli-conc.gbv.de/api/mappings", {
+        params: params
+      }).then(function(response) {
+        concept.MAPPINGS = response.data
+      }).catch(function(error) {
+        console.log("API error (mappings):", error)
+      })
     }
   }
 }
