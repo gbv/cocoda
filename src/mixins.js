@@ -27,7 +27,8 @@ var resizingMixin = {
       function endResizing() {
         document.removeEventListener("mousemove", onMouseMove)
         document.onmouseup = null
-        document.body.style.cursor = "default"
+        document.body.style.cursor = "auto"
+        document.body.style.userSelect = "auto"
         vm.resizing = false
       }
       if (this.resizing) {
@@ -37,6 +38,7 @@ var resizingMixin = {
       this.resizing = true
       let start = column ? event.clientX : event.clientY
       document.body.style.cursor = column ? "col-resize" : "row-resize"
+      document.body.style.userSelect = "none"
       function onMouseMove(event) {
         let moved = (column ? event.clientX : event.clientY) - start
         let newFlexLeft = vm.flexes[index] + moved
