@@ -349,5 +349,8 @@ left: -24px;
 .searchHighlight {
   &:extend(.font-heavy);
   color: @color-secondary-2-4;
+  .searchfield-selected & {
+    color: darken(@color-secondary-2-4, 10%);
+  }
 }
 </style>
