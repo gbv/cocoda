@@ -9,23 +9,27 @@
         disabled>
         Login
       </b-button>
-      <b-nav-item 
-        v-if="github" 
-        :href="github">GitHub</b-nav-item>
-      <b-nav-item 
-        v-if="help" 
+      <b-nav-item
+        v-if="github"
+        :href="github"><font-awesome-icon :icon="['fab', 'github']" /> GitHub</b-nav-item>
+      <b-nav-item
+        v-if="help"
         :href="help">Help</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>
 
 <script>
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
  * The navigation bar.
  */
 export default {
   name: "TheNavbar",
+  components: {
+    FontAwesomeIcon
+  },
   data () {
     return {
       /** The title text displayed in the top left corner. */
