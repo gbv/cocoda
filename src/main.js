@@ -23,6 +23,15 @@ Vue.prototype.$config = config
 
 var _ = require("lodash")
 
+// Add fontawesome
+// TODO: - Only import individual items, e.g.
+// import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner'
+// fontawesome.library.add(faSpinner)
+import fontawesome from "@fortawesome/fontawesome"
+import solid from "@fortawesome/fontawesome-free-solid"
+fontawesome.library.add(solid)
+
+
 new Vue({
   el: "#app",
   components: { App },
