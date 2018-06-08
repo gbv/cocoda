@@ -240,11 +240,11 @@ export default {
       if (index == -1) {
         return result
       } else {
-        return result.slice(0, index)
+        return _.escape(result.slice(0, index))
           + "<span class='searchHighlight'>"
-          + result.slice(index, index
-          + this.searchQuery.length)
-          + "</span>" + result.slice(index + this.searchQuery.length)
+          + _.escape(result.slice(index, index + this.searchQuery.length))
+          + "</span>"
+          + _.escape(result.slice(index + this.searchQuery.length))
       }
     }
   },
