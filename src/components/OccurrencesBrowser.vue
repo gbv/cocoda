@@ -214,7 +214,6 @@ export default {
         }
       }).then(function(response) {
         concept.OCCURRENCES = response.data.length > 0 ? response.data[0] : -1
-        console.log(concept.OCCURRENCES)
       }).catch(function(error) {
         console.log(error)
         concept.OCCURRENCES = -1
