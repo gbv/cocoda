@@ -5,8 +5,7 @@
     <div
       class="searchIcon"
       @click="focusSearch" >
-      <div class="searchIcon__circle" />
-      <div class="searchIcon__rectangle" />
+      <font-awesome-icon icon="search" />
     </div>
     <b-form-input
       ref="searchInput"
@@ -46,6 +45,7 @@
 
 <script>
 import LoadingIndicator from "./LoadingIndicator"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 var _ = require("lodash")
 
 /**
@@ -70,7 +70,7 @@ function scrollIntoViewIfNeeded(target) {
 export default {
   name: "ConceptSearch",
   components: {
-    LoadingIndicator
+    LoadingIndicator, FontAwesomeIcon
   },
   props: {
     /**
@@ -256,37 +256,17 @@ export default {
 
 // adapted from https://codepen.io/satrya/pen/JGRxNb
 .searchIcon {
-position: absolute;
-width: 30px;
-margin: 0 auto;
-padding: 8px 0;
-text-align: center;
-left: -24px;
-
-  &__circle {
-    width: 12px;
-    height: 12px;
-    border: 2px solid @color-primary-4;
-    border-radius: 12px;
+  position: absolute;
+  font-size: 1rem;
+  margin: 0 auto;
+  padding: 4px 0;
+  text-align: center;
+  left: -22px;
+  color: @buttonColor;
+  &:hover {
+    cursor: pointer;
+    color: @buttonColorHover;
   }
-
-  &__rectangle {
-    position: absolute;
-    right: 13px;
-    bottom: 7px;
-    width: 8px;
-    transform: rotate(45deg);
-    border: 1px solid @color-primary-4;
-    border-top-right-radius: 1px;
-    border-bottom-right-radius: 1px;
-  }
-}
-
-.searchIcon:hover {
-  cursor: pointer;
-}
-.searchIcon:hover > .searchIcon__circle, .searchIcon:hover > .searchIcon__rectangle  {
-  border: 1px solid @color-secondary-2-4;
 }
 
 .searchfield {

@@ -35,7 +35,7 @@
         class="addToMapping"
         @click="mapping.add(concept, scheme, isLeft)"
         @mouseover="hovering(concept)"
-        @mouseout="hovering(null)">+</div>
+        @mouseout="hovering(null)"><font-awesome-icon icon="plus-circle" /></div>
     </div>
     <div
       v-if="isOpen"
@@ -64,6 +64,7 @@
 <script>
 import LoadingIndicator from "./LoadingIndicator"
 import ItemName from "./ItemName"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 var _ = require("lodash")
 
 /**
@@ -72,7 +73,7 @@ var _ = require("lodash")
 export default {
   name: "ConceptTreeItem",
   components: {
-    LoadingIndicator, ItemName
+    LoadingIndicator, ItemName, FontAwesomeIcon
   },
   props: {
     /**
@@ -309,9 +310,9 @@ export default {
 .addToMapping {
   position: absolute;
   color: white;
-  top: -2px;
+  top: 1px;
   right: 5px;
-  font-size: 1.2em;
+  font-size: 1rem;
   font-weight: 700;
   opacity: 0.7;
   &:hover {

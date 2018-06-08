@@ -48,16 +48,13 @@
           :id="'addButton'+index0"
           class="addButton"
           @click="addToMapping(isLeft)" >
-          <div class="circle">
-            <div class="horizontal"/>
-            <div class="vertical"/>
-          </div>
+          <font-awesome-icon icon="plus-circle" />
         </div>
         <div
-          v-b-tooltip.hover
-          title="delete all concepts"
+          v-b-tooltip.hover="isDeleteAllButtonEnabled(isLeft) ? 'delete all concepts' : ''"
+          :class="{ deleteAllButtonClickable: isDeleteAllButtonEnabled(isLeft), deleteAllButtonDisabled: !isDeleteAllButtonEnabled(isLeft) }"
           class="deleteAllButton"
-          @click="deleteAll(isLeft)" >🗑</div>
+          @click="deleteAll(isLeft)" ><font-awesome-icon icon="trash-alt" /></div>
         <div class="mappingButtonsFiller" />
       </div>
     </div>
@@ -66,13 +63,14 @@
 
 <script>
 import ItemName from "./ItemName"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
  * The mapping editor component.
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName },
+  components: { ItemName, FontAwesomeIcon },
   props: {
     /**
      * The height of the component as a flex value.
@@ -136,6 +134,9 @@ export default {
         return false
       }
       return true
+    },
+    isDeleteAllButtonEnabled(isLeft) {
+      return this.mapping.getConcepts(isLeft).length > 0
     },
     addButtonDisabledReason(isLeft) {
       let concept = isLeft ? this.selectedLeft : this.selectedRight
@@ -273,14 +274,13 @@ export default {
   flex: 1;
 }
 
-@addButtonColor: @color-primary-0;
-@addButtonColorHover: @color-secondary-2-0;
-@addButtonColorDisabled: fadeout(#777777, 80%);
-.addButton {
+.addButton, .deleteAllButton {
   flex: none;
   z-index: 50;
   user-select: none;
   margin: 0 10px;
+  font-size: 1.5rem;
+  color: @buttonColor;
 }
 .addButtonDisabledReason {
   flex: 0 0 20px !important;
@@ -288,38 +288,14 @@ export default {
   &:extend(.text-light-grey);
   font-size: 0.8em;
 }
-.addButton .circle {position: relative; width: 32px; height: 32px; border-radius: 100%; border: solid 5px red;}
-.addButton .circle .horizontal {position: absolute; width: 16px; height: 4px; top: 9px; left: 3px;}
-.addButton .circle .vertical {position: absolute; width: 4px; height: 16px; top: 3px; left: 9px;}
-.addButtonClickable .circle {
-  border-color: @addButtonColor;
-  & .horizontal, & .vertical {
-    background-color: @addButtonColor;
-  }
-}
-.addButtonClickable:hover .circle {
-  border-color: @addButtonColorHover;
-  & .horizontal, & .vertical {
-    background-color: @addButtonColorHover;
-  }
-}
-.addButtonClickable {
-  cursor: pointer;
-}
-.addButtonDisabled .circle {
-  border-color: @addButtonColorDisabled;
-  & .horizontal, & .vertical {
-    background-color: @addButtonColorDisabled;
-  }
-}
-.deleteAllButton {
-  font-size: 1.5em;
-  flex: none;
-  margin: 0 10px;
-  user-select: none;
+.addButtonClickable, .deleteAllButtonClickable {
   cursor: pointer;
   &:hover {
-    background-color: @color-secondary-2-1;
+    color: @buttonColorHover;
   }
 }
+.addButtonDisabled, .deleteAllButtonDisabled {
+  color: @buttonColorDisabled;
+}
+
 </style>

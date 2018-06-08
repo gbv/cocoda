@@ -31,7 +31,7 @@
         :item="detail"
         :font-size="1.2"
         class="label" />
-      <p><auto-link :link="detail.uri" /></p>
+      <p><font-awesome-icon icon="link" /> <auto-link :link="detail.uri" /></p>
       <p v-if="detail.identifier">
         <ul>
           <li
@@ -122,6 +122,7 @@ import LoadingIndicator from "./LoadingIndicator"
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import axios from "axios"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -129,7 +130,7 @@ import axios from "axios"
 export default {
   name: "ConceptDetail",
   components: {
-    LoadingIndicator, AutoLink, ItemName
+    LoadingIndicator, AutoLink, ItemName, FontAwesomeIcon
   },
   props: {
     /**
