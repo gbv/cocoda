@@ -10,8 +10,9 @@ install:
 script:
   - npm run lint
   - npm run build
+  - mv dist dist-files # prevent styleguide:build overriding dist
   - npm run styleguide:build
-  - if [ "$TRAVIS_BRANCH" == "dev" ]; cp -r dist styleguide/dev; fi
+  - mv dist-files styleguide/dev
 deploy:
   provider: pages
   local_dir: styleguide
@@ -19,5 +20,4 @@ deploy:
   github_token: $GITHUB_TOKEN
   on:
     node: "7"
-    all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^dev|master|styleguidist$
+    branch: dev
