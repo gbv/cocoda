@@ -204,7 +204,7 @@ export default {
       let params = {}
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
-      axios.get("//coli-conc.gbv.de/api/mappings", {
+      axios.get(this.$config.mappingProviders[0].url, {
         params: params
       }).then(function(response) {
         concept.MAPPINGS = response.data

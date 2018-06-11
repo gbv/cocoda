@@ -11,9 +11,10 @@
  */
 
 import axios from "axios"
+import config from "./config"
 
 /** URL for API */
-const url = "//api.dante.gbv.de/"
+const url = config.terminologyProviders[0].url
 
 /** Property sets */
 const minimumProperties = "-"

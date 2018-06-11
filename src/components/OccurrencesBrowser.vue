@@ -208,7 +208,7 @@ export default {
   },
   methods: {
     loadOccurrences(concept) {
-      axios.get("//coli-conc.gbv.de/occurrences/api/", {
+      axios.get(this.$config.occurrenceProviders[0].url, {
         params: {
           members: concept.uri
         }

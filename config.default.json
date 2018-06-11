@@ -1,0 +1,11 @@
+{
+  "terminologyProviders": [
+    { "url": "//api.dante.gbv.de/" }
+  ],
+  "mappingProviders": [
+    { "url": "//coli-conc.gbv.de/api/mappings/" }
+  ],
+  "occurrenceProviders": [
+    { "url": "//coli-conc.gbv.de/occurrences/api/" }
+  ]
+}

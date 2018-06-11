@@ -17,6 +17,10 @@ Vue.use(VueScrollTo)
 import * as api from "./api"
 Vue.prototype.$api = api
 
+// Add config, use with this.$config in components
+import config from "./config"
+Vue.prototype.$config = config
+
 var _ = require("lodash")
 
 new Vue({
