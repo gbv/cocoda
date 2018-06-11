@@ -1,7 +1,6 @@
 <template>
   <div
     :class="{ scrollable: !loading }"
-    :style="{ flex: flex }"
     class="conceptTree" >
     <div
       ref="conceptTreeItems"
@@ -60,13 +59,6 @@ export default {
     vocSelected: {
       type: Object,
       default: null
-    },
-    /**
-     * The height of the component as a flex value.
-     */
-    flex: {
-      type: Number,
-      default: 1.5
     },
     /**
      * Tells the component on which side of the application it is.

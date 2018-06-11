@@ -1,7 +1,6 @@
 <template>
   <div
     v-show="item != null"
-    :style="{ flex: flex }"
     class="conceptDetail font-size-small">
     <div
       v-if="detail != null"
@@ -147,13 +146,6 @@ export default {
     isScheme: {
       type: Boolean,
       default: false
-    },
-    /**
-     * The height of the component as a flex value.
-     */
-    flex: {
-      type: Number,
-      default: 1
     },
     /**
      * Tells the component on which side of the application it is.

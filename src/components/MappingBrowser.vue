@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="mappingBrowser"
-    :style="{ flex: flex }">
+  <div id="mappingBrowser">
     <div
       v-if="schemeLeft != null || schemeRight != null"
       id="mappingBrowserWrapper">
@@ -64,13 +62,6 @@ export default {
   name: "MappingBrowser",
   components: { ItemName },
   props: {
-    /**
-     * The height of the component as a flex value.
-     */
-    flex: {
-      type: Number,
-      default: 1
-    },
     /**
      * The selected concept from the left hand concept browser.
      */

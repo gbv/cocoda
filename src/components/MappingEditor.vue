@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="mappingEditor"
-    :style="{ flex: flex }">
+  <div id="mappingEditor">
     <div
       v-b-tooltip.hover="mapping.reversible() ? 'reverse mapping' : 'not reversible, source can only have one concept'"
       v-show="schemeLeft != null || schemeRight != null"
@@ -72,13 +70,6 @@ export default {
   name: "MappingEditor",
   components: { ItemName, FontAwesomeIcon },
   props: {
-    /**
-     * The height of the component as a flex value.
-     */
-    flex: {
-      type: Number,
-      default: 1
-    },
     /**
      * The selected concept from the left hand concept browser.
      */

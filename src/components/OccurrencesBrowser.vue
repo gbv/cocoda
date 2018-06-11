@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="occurrencesBrowser"
-    :style="{ flex: flex }">
+  <div id="occurrencesBrowser">
     <div
       v-show="schemeLeft != null || schemeRight != null"
       class="defaultTableWrapper">
@@ -59,13 +57,6 @@ export default {
   name: "OccurrencesBrowser",
   components: { ItemName, AutoLink },
   props: {
-    /**
-     * The height of the component as a flex value.
-     */
-    flex: {
-      type: Number,
-      default: 1
-    },
     /**
      * The selected concept from the left hand concept browser.
      */
