@@ -3,9 +3,6 @@
     <div
       v-show="schemeLeft != null || schemeRight != null"
       id="mappingBrowserWrapper">
-      <!-- div
-        class="mappingToolbar">
-      </div -->
       <div class="defaultTableWrapper">
         <b-table
           ref="occurrencesTable"
@@ -37,6 +34,14 @@
           </span>
         </b-table>
       </div>
+      <div
+        v-if="items.length > 0"
+        class="mappingToolbar">
+        <div /><div /><div style="text-align: right;">{{ items.length }} mappings</div>
+      </div>
+      <div
+        v-else
+        class="noItems">No mappings</div>
     </div>
   </div>
 </template>
@@ -210,20 +215,19 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.noItems, .mappingToolbar {
+.noItems {
   margin: 5px auto 5px auto;
 }
 .noItems {
   flex: 5 0 auto;
 }
 .mappingToolbar {
-  user-select: none;
+  margin: 0 10px;
+  display: flex;
 }
-.mappingToolbar span {
-  cursor: pointer;
-  &:hover {
-    color: @color-secondary-2-4;
-  }
+.mappingToolbar > div {
+  width: 0;
+  flex: 1;
 }
 
 </style>
