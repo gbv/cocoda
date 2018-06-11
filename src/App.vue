@@ -5,36 +5,127 @@
     <the-navbar />
     <div class="main">
       <div class="flexbox-row">
-        <concept-scheme-browser
-          ref="mainElement0"
-          :flex="flexes[0]"
-          :is-left="true"
-          data-direction="column"
-          @selectedConcept="selectedLeft = $event"
-          @selectedScheme="schemeLeft = $event" />
         <div
-          ref="resizeSlider0"
-          class="resizeSliderCol"
-          @mousedown="startResizing($event, 0)" />
-        <mapping-tool
-          ref="mainElement1"
-          :flex="flexes[1]"
-          :selected-left="selectedLeft"
-          :selected-right="selectedRight"
-          :scheme-left="schemeLeft"
-          :scheme-right="schemeRight"
-          data-direction="column" />
+          ref="mainElement0-0"
+          :style="{ flex: flex[0][0] }"
+          class="browser"
+          data-direction="column">
+          <b-form-select
+            v-model="schemeSelectedLeft"
+            :options="schemeOptions"
+            class="schemeSelect" />
+          <concept-search
+            :voc="schemeSelectedLeft"
+            @chooseUri="$refs['mainElement1-1'].chooseFromUri($event)" />
+          <concept-detail
+            ref="mainElement1-0"
+            :style="{ flex: flex[1][0] }"
+            :item="conceptSelectedLeft || schemeSelectedLeft"
+            :is-scheme="conceptSelectedLeft == null"
+            :is-left="true"
+            :voc="schemeSelectedLeft"
+            class="main-component"
+            data-direction="row"
+            @chooseUri="$refs['mainElement1-1'].chooseFromUri($event)" />
+          <div
+            v-if="conceptSelectedLeft != null || schemeSelectedLeft != null"
+            ref="resizeSlider1-0"
+            class="resizeSliderRow"
+            @mousedown="startResizing($event, 1, 0, false)" />
+          <concept-tree
+            ref="mainElement1-1"
+            :style="{ flex: flex[1][1] }"
+            :voc-selected="schemeSelectedLeft"
+            :is-left="true"
+            class="main-component"
+            data-direction="row"
+            @selectedConcept="conceptSelectedLeft = $event" />
+        </div>
         <div
-          ref="resizeSlider1"
+          ref="resizeSlider0-0"
           class="resizeSliderCol"
-          @mousedown="startResizing($event, 1)" />
-        <concept-scheme-browser
-          ref="mainElement2"
-          :flex="flexes[2]"
-          :is-left="false"
-          data-direction="column"
-          @selectedConcept="selectedRight = $event"
-          @selectedScheme="schemeRight = $event" />
+          @mousedown="startResizing($event, 0, 0)" />
+        <div
+          id="mappingTool"
+          ref="mainElement0-1"
+          :style="{ flex: flex[0][1] }"
+          data-direction="column">
+          <mapping-editor
+            ref="mainElement2-0"
+            :style="{ flex: flex[2][0] }"
+            :selected-left="conceptSelectedLeft"
+            :selected-right="conceptSelectedRight"
+            :scheme-left="schemeSelectedLeft"
+            :scheme-right="schemeSelectedRight"
+            class="main-component"
+            data-direction="row" />
+          <div
+            ref="resizeSlider2-0"
+            class="resizeSliderRow"
+            @mousedown="startResizing($event, 2, 0, false)" />
+          <mapping-browser
+            ref="mainElement2-1"
+            :style="{ flex: flex[2][1] }"
+            :selected-left="conceptSelectedLeft"
+            :selected-right="conceptSelectedRight"
+            :scheme-left="schemeSelectedLeft"
+            :scheme-right="schemeSelectedRight"
+            class="main-component"
+            data-direction="row" />
+          <div
+            ref="resizeSlider2-1"
+            class="resizeSliderRow"
+            @mousedown="startResizing($event, 2, 1, false)" />
+          <occurrences-browser
+            ref="mainElement2-2"
+            :style="{ flex: flex[2][2] }"
+            :selected-left="conceptSelectedLeft"
+            :selected-right="conceptSelectedRight"
+            :scheme-left="schemeSelectedLeft"
+            :scheme-right="schemeSelectedRight"
+            class="main-component"
+            data-direction="row" />
+        </div>
+        <div
+          ref="resizeSlider0-1"
+          class="resizeSliderCol"
+          @mousedown="startResizing($event, 0, 1)" />
+        <div
+          ref="mainElement0-2"
+          :style="{ flex: flex[0][2] }"
+          class="browser"
+          data-direction="column">
+          <b-form-select
+            v-model="schemeSelectedRight"
+            :options="schemeOptions"
+            class="schemeSelect" />
+          <concept-search
+            :voc="schemeSelectedRight"
+            @chooseUri="$refs['mainElement3-1'].chooseFromUri($event)" />
+          <concept-detail
+            ref="mainElement3-0"
+            :style="{ flex: flex[3][0] }"
+            :item="conceptSelectedRight || schemeSelectedRight"
+            :is-scheme="conceptSelectedRight == null"
+            :is-left="false"
+            :voc="schemeSelectedRight"
+            class="main-component"
+            data-direction="row"
+            @chooseUri="$refs['mainElement3-1'].chooseFromUri($event)" />
+          <div
+            v-if="conceptSelectedRight != null || schemeSelectedRight != null"
+            ref="resizeSlider3-0"
+            class="resizeSliderRow"
+            @mousedown="startResizing($event, 3, 0, false)" />
+          <concept-tree
+            ref="mainElement3-1"
+            :style="{ flex: flex[3][1] }"
+            :voc-selected="schemeSelectedRight"
+            :is-left="false"
+            class="main-component"
+            data-direction="row"
+            @selectedConcept="conceptSelectedRight = $event" />
+        </div>
       </div>
     </div>
   </div>
@@ -42,9 +133,24 @@
 
 <script>
 import TheNavbar from "./components/TheNavbar"
-import ConceptSchemeBrowser from "./components/ConceptSchemeBrowser"
-import MappingTool from "./components/MappingTool"
+import MappingEditor from "./components/MappingEditor"
+import OccurrencesBrowser from "./components/OccurrencesBrowser"
+import MappingBrowser from "./components/MappingBrowser"
 import * as mixins from "./mixins"
+import ConceptTree from "./components/ConceptTree"
+import ConceptDetail from "./components/ConceptDetail"
+import ConceptSearch from "./components/ConceptSearch"
+var _ = require("lodash")
+
+/**
+ * Sorts data by German prefLabel with fallback to uri.
+ */
+function sortData(data) {
+  // TODO: - Rethink way of sorting
+  return data.sort(
+    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
+  )
+}
 
 /**
  * The main application.
@@ -52,16 +158,54 @@ import * as mixins from "./mixins"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptSchemeBrowser, MappingTool
+    TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser
   },
   mixins: [mixins.resizingMixin],
   data () {
     return {
-      flexes: [1.0, 2.0, 1.0],
-      selectedLeft: null,
-      selectedRight: null,
-      schemeLeft: null,
-      schemeRight: null
+      flex: [
+        [1.0, 2.0, 1.0], // main columns
+        [1.0, 1.5], // left concept browser
+        [1.0, 1.0, 1.0], // mapping tool
+        [1.0, 1.5], // right concept browser
+      ],
+      conceptSelectedLeft: null,
+      conceptSelectedRight: null,
+      schemeSelectedLeft: null,
+      schemeSelectedRight: null,
+      schemes: [],
+    }
+  },
+  computed: {
+    /**
+     * Generates the options for the select element.
+     */
+    schemeOptions: function() {
+      let options = [
+        { value: null, text: "Select a scheme", disabled: true }
+      ]
+      // Add from schemes
+      for (var scheme of this.schemes) {
+        // TODO: - Check if notation always has a single value (and why is it an array then?).
+        // TODO: - Support other languages.
+        // TODO: - Fallback if no German label is available.
+        options.push(
+          { value: scheme, text: scheme.prefLabel.de || scheme.prefLabel.en || "" }
+        )
+      }
+      return options
+    }
+  },
+  watch: {
+    schemeSelectedLeft(newValue, oldValue) {
+      if (oldValue == null && newValue != null) {
+        this.schemeChangedFromNull(true)
+      }
+    },
+    schemeSelectedRight(newValue, oldValue) {
+      if (oldValue == null && newValue != null) {
+        this.schemeChangedFromNull(false)
+      }
     }
   },
   mounted() {
@@ -74,7 +218,27 @@ export default {
         thead.scrollLeft = tbody.scrollLeft
       }
     }
-  }
+    // Load schemes
+    var vm = this
+    this.$api.voc()
+      .then(function(data) {
+        vm.schemes = sortData(data)
+      })
+      .catch(function(error) {
+        console.log("Request failed", error)
+      })
+  },
+  methods: {
+    schemeChangedFromNull(isLeft) {
+      let index = isLeft ? 1 : 3
+      let vm = this
+      this.flex[index] = [1.0, 1.5]
+      // Introduce short delay to resetting flex values so that the ConceptDetail component has time to expand to its proper size.
+      _.delay(function() {
+        vm.resetFlex()
+      }, 100)
+    }
+  },
 }
 </script>
 
@@ -112,6 +276,28 @@ html, body {
 .flexbox-row > div {
   margin: 0px 0px 0px 0px;
   padding: 4px 0px 0px 0px;
+}
+
+#mappingTool {
+  width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.browser {
+  width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.schemeSelect {
+  flex: none;
+  margin: 3px 3px 3px 3px;
+  width: 99%;
+  border: 0;
+  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+  background-color: lighten(@color-primary-1, 15%);
+  color: @color-primary-4;
+  &:extend(.font-heavy);
 }
 
 a:link, a:visited, a:active {

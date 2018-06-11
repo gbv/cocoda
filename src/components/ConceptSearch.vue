@@ -74,11 +74,11 @@ export default {
   },
   props: {
     /**
-     * The ID (notation) for the scheme that should be searched.
+     * The scheme that should be searched.
      */
     voc: {
-      type: String,
-      default: ""
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -160,7 +160,7 @@ export default {
         this.cancelToken.cancel("There was a newer search query.")
       }
       this.cancelToken = this.$api.token()
-      this.$api.suggest(this.searchQuery, this.voc, 20, undefined, this.cancelToken.token)
+      this.$api.suggest(this.searchQuery, this.voc.notation[0], 20, undefined, this.cancelToken.token)
         .then(function(data) {
           vm.loading = false
           vm.searchResult = _.zip(data[1], data[2], data[3])
