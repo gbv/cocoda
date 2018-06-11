@@ -11,6 +11,7 @@ script:
   - npm run lint
   - npm run build
   - npm run styleguide:build
+  - if [ "$TRAVIS_BRANCH" == "dev" ]; cp -r dist styleguide/dev; fi
 deploy:
   provider: pages
   local_dir: styleguide
