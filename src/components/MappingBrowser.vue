@@ -1,7 +1,7 @@
 <template>
   <div id="mappingBrowser">
     <div
-      v-if="schemeLeft != null || schemeRight != null"
+      v-show="schemeLeft != null || schemeRight != null"
       id="mappingBrowserWrapper">
       <!-- div
         class="mappingToolbar">
@@ -37,16 +37,6 @@
           </span>
         </b-table>
       </div>
-      <div
-        v-show="items.length == 0"
-        class="noItems">
-        No mappings.
-      </div>
-    </div>
-    <div
-      v-else
-      id="mappingBrowserWelcome">
-      <h2>Welcome to Cocoda!</h2>
     </div>
   </div>
 </template>
@@ -213,12 +203,6 @@ export default {
 #mappingBrowser {
   height: 0;
   display: flex;
-}
-#mappingBrowserWelcome {
-  flex: 1;
-  width: 0;
-  text-align: center;
-  margin: auto auto;
 }
 #mappingBrowserWrapper {
   flex: 1;

@@ -33,6 +33,7 @@
             class="resizeSliderRow"
             @mousedown="startResizing($event, 1, 0, false)" />
           <concept-tree
+            v-if="schemeSelectedLeft != null"
             ref="mainElement1-1"
             :style="{ flex: flex[1][1] }"
             :voc-selected="schemeSelectedLeft"
@@ -40,6 +41,20 @@
             class="main-component"
             data-direction="row"
             @selectedConcept="conceptSelectedLeft = $event" />
+          <div
+            v-else
+            :style="{ flex: flex[1][1] }"
+            class="main-component placeholder-component"
+            data-direction="row">
+            <p class="font-heavy">Scheme quick selection</p>
+            <p
+              v-for="scheme in favoriteSchemes"
+              :key="scheme.uri">
+              ·<br><a
+                href=""
+                @click.prevent="schemeSelectedLeft = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
+            </p>
+          </div>
         </div>
         <div
           ref="resizeSlider0-0"
@@ -64,6 +79,7 @@
             class="resizeSliderRow"
             @mousedown="startResizing($event, 2, 0, false)" />
           <mapping-browser
+            v-if="schemeSelectedLeft || schemeSelectedRight"
             ref="mainElement2-1"
             :style="{ flex: flex[2][1] }"
             :selected-left="conceptSelectedLeft"
@@ -72,6 +88,12 @@
             :scheme-right="schemeSelectedRight"
             class="main-component"
             data-direction="row" />
+          <div
+            v-else
+            ref="mainElement2-1"
+            :style="{ flex: flex[2][1] }"
+            class="main-component placeholder-component-center"
+            data-direction="row"><div class="font-heavy font-size-large">Welcome to Cocoda!</div></div>
           <div
             ref="resizeSlider2-1"
             class="resizeSliderRow"
@@ -118,6 +140,7 @@
             class="resizeSliderRow"
             @mousedown="startResizing($event, 3, 0, false)" />
           <concept-tree
+            v-if="schemeSelectedRight != null"
             ref="mainElement3-1"
             :style="{ flex: flex[3][1] }"
             :voc-selected="schemeSelectedRight"
@@ -125,6 +148,20 @@
             class="main-component"
             data-direction="row"
             @selectedConcept="conceptSelectedRight = $event" />
+          <div
+            v-else
+            :style="{ flex: flex[1][1] }"
+            class="main-component placeholder-component"
+            data-direction="row">
+            <p class="font-heavy">Scheme quick selection</p>
+            <p
+              v-for="scheme in favoriteSchemes"
+              :key="scheme.uri">
+              ·<br><a
+                href=""
+                @click.prevent="schemeSelectedRight = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -174,6 +211,7 @@ export default {
       schemeSelectedLeft: null,
       schemeSelectedRight: null,
       schemes: [],
+      favoriteSchemes: []
     }
   },
   computed: {
@@ -223,6 +261,16 @@ export default {
     this.$api.voc()
       .then(function(data) {
         vm.schemes = sortData(data)
+        if (vm.favoriteSchemes.length == 0) {
+          for (let scheme of vm.schemes) {
+            if ([
+              "http://uri.gbv.de/terminology/bk/",
+              "http://uri.gbv.de/terminology/rvk/"
+            ].includes(scheme.uri)) {
+              vm.favoriteSchemes.push(scheme)
+            }
+          }
+        }
       })
       .catch(function(error) {
         console.log("Request failed", error)
@@ -298,6 +346,17 @@ html, body {
   background-color: lighten(@color-primary-1, 15%);
   color: @color-primary-4;
   &:extend(.font-heavy);
+}
+
+.placeholder-component {
+  text-align: center;
+  padding-top: 50px;
+}
+.placeholder-component-center > div {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 a:link, a:visited, a:active {

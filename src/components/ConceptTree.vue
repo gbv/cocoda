@@ -266,6 +266,10 @@ export default {
   created() {
     // Give the treeHelper object a reference to the component
     this.treeHelper.vm = this
+    // Reset tree if scheme is already chosen
+    if (this.vocSelected) {
+      this.reset()
+    }
   },
   methods: {
     /**
