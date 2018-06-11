@@ -33,7 +33,7 @@
           :key="i"
           :id="'searchResult' + i"
           :class="{ 'searchfield-selected': i === searchSelected }"
-          class="searchfield-results-item"
+          class="searchfield-results-item font-size-small"
           @click="chooseResult(result)"
           @mouseover="mouseover(i)">
           <span v-html="highlightQueryInResult(result[0])"/>
@@ -254,10 +254,8 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-// adapted from https://codepen.io/satrya/pen/JGRxNb
 .searchIcon {
   position: absolute;
-  font-size: 1rem;
   margin: 0 auto;
   padding: 4px 0;
   text-align: center;
@@ -301,7 +299,6 @@ export default {
   list-style: none;
   text-align: left;
   cursor: pointer;
-  font-size: 14px;
   padding: 3px 0px 3px 12px;
 }
 

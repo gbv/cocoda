@@ -405,7 +405,6 @@ export default {
   padding: 2px 8px 2px 8px;
 }
 .concept {
-  font-size: 1em;
   list-style-type: none;
   padding: 0;
   margin-bottom: 10px;
@@ -416,9 +415,6 @@ export default {
   margin-left: 20px;
   margin-top: 10px;
   margin-bottom: 5px;
-}
-.conceptSmall {
-  font-size: 0.9em;
 }
 .conceptTreeItems, .loadingFull {
   width: 100%;

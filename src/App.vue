@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="text-dark color-primary-0-bg">
+    class="text-dark color-primary-0-bg font-size-normal">
     <the-navbar />
     <div class="main">
       <div class="flexbox-row">
@@ -106,7 +106,7 @@ html, body {
 .flexbox-row {
   display: flex;
   position: absolute;
-  height: 100%;
+  height: 99.5%;
   width: 100%;
 }
 .flexbox-row > div {

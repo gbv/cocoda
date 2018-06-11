@@ -27,7 +27,7 @@
               :item="concept"
               @click="selected(concept)" />
             <div
-              class="mappingConceptDelete"
+              class="mappingConceptDelete font-size-small"
               @click="mapping.remove(concept, isLeft)">X</div>
           </li>
         </ul>
@@ -223,7 +223,6 @@ export default {
       cursor: pointer;
       z-index: 50;
       user-select: none;
-      font-size: 12px;
       width: 12px;
       height: 12px;
       text-align: center;
@@ -248,7 +247,7 @@ export default {
   position: absolute;
   margin: auto auto;
   text-align: center;
-  font-size: 1.6em;
+  font-size: 1.6rem;
   top: 0;
   bottom: 0;
   left: 0;
@@ -286,7 +285,7 @@ export default {
   flex: 0 0 20px !important;
   margin: 0 auto;
   &:extend(.text-light-grey);
-  font-size: 0.8em;
+  &:extend(.font-size-small);
 }
 .addButtonClickable, .deleteAllButtonClickable {
   cursor: pointer;

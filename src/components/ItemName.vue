@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="item != null"
-    :style="{'font-size': fontSize + 'em'}"
+    :class="'font-size-'+(fontSize || 'normal')"
     class="itemName"
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
@@ -9,7 +9,7 @@
       v-b-tooltip.hover="showTooltip && item.prefLabel ? (item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) : ''"
       :item="item"
       :class="{ 'badge-hovered': isLink && isHovered }"
-      :style="{ bottom: (fontSize * 2) + 'px' }" />
+      :style="{ bottom: '2px' }" />
     <prefLabel-text
       v-if="showText && item.prefLabel"
       :class="{ 'label-hovered': isLink && isHovered }"
@@ -33,11 +33,11 @@ export default {
       default: null
     },
     /**
-     * The font size for the text in em.
+     * The font size for the text (small, normal, large).
      */
     fontSize: {
-      type: Number,
-      default: 1.0
+      type: String,
+      default: "normal"
     },
     /**
      * Determines whether to show or hide the label text.

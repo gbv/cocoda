@@ -2,7 +2,7 @@
   <div
     v-show="item != null"
     :style="{ flex: flex }"
-    class="conceptDetail">
+    class="conceptDetail font-size-small">
     <div
       v-if="detail != null"
       class="conceptDetailContent">
@@ -18,6 +18,7 @@
             :item="parent"
             :show-text="index == item.ancestors.length - 1"
             :is-link="true"
+            font-size="small"
             @click.native="parentClicked(parent)" />
           <span v-if="index < item.ancestors.length - 1">
             ›
@@ -29,7 +30,7 @@
         size="sm" /></span>
       <item-name
         :item="detail"
-        :font-size="1.2"
+        font-size="normal"
         class="label" />
       <p><font-awesome-icon icon="link" /> <auto-link :link="detail.uri" /></p>
       <p v-if="detail.identifier">
@@ -243,7 +244,6 @@ export default {
 @import "../style/main.less";
 
 .conceptDetail {
-  font-size: 0.8em;
   height: 0;
   position: relative;
 }

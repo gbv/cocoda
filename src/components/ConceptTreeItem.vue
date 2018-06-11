@@ -308,12 +308,11 @@ export default {
   padding-left: 18px;
 }
 .addToMapping {
+  &:extend(.font-heavy);
   position: absolute;
   color: white;
   top: 1px;
   right: 5px;
-  font-size: 1rem;
-  font-weight: 700;
   opacity: 0.7;
   &:hover {
     color: @color-secondary-2-0;
