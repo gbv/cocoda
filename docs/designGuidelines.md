@@ -55,7 +55,7 @@ Or, if you need to define slots:
 </b-table>
 ```
 
-Note that `items` and `fields` have to be defined in the component. Also, if you need to define CSS classes for your columns, you need to do that in the global CSS of your component. See components [MappingBrowser](#mappingbrowser) and [OccurrencesBrowser](#occurrencesBrowser) for examples of this in use.
+Note that `items` and `fields` have to be defined in the component. Also, if you need to define CSS classes for your columns, you need to do that in the global CSS of your component. See components [MappingBrowser](#mappingbrowser) and [OccurrencesBrowser](#occurrencesbrowser) for examples of this in use.
 
 ### Icons
 Cocoda uses [Font Awesome](https://fontawesome.com/) for some icons. You can use any of their free icons (see their [icon gallery](https://fontawesome.com/icons?d=gallery&m=free)) like this:

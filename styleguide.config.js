@@ -25,6 +25,10 @@ module.exports = {
         {
           name: "Installation",
           content: "docs/installation.md"
+        },
+        {
+          name: "Configuration",
+          content: "docs/configuration.md"
         }
       ]
     },
