@@ -21,8 +21,8 @@ let deepCopy = function(obj) {
       // Remove circular structures, replace with [null] if it has elements
       if (obj[i] && Array.isArray(obj[i]) && obj[i].length > 0) {
         clone[i] = [null]
+        continue
       }
-      continue
     }
     if (obj[i] != null &&  typeof(obj[i]) == "object")
       clone[i] = deepCopy(obj[i])

@@ -6,7 +6,7 @@
       v-if="detail != null"
       class="conceptDetailContent">
       <div
-        v-if="item.ancestors.length > 0 && (item.ancestors.length > 1 || !item.ancestors.includes(null))"
+        v-if="item.ancestors && item.ancestors.length > 0 && (item.ancestors.length > 1 || !item.ancestors.includes(null))"
         class="parents">
         <span
           v-for="(parent, index) in item.ancestors"
@@ -24,7 +24,7 @@
           </span>
         </span>
       </div>
-      <span v-else><loading-indicator
+      <span v-else-if="item.ancestors"><loading-indicator
         v-show="item.ancestors.length != 0 && !isScheme"
         size="sm" /></span>
       <item-name

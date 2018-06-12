@@ -156,14 +156,16 @@ function get(endpoint, config) {
           }
         }
       }
-      // For Objects, add custom properties
       data.forEach(element => {
         if (element !== null && typeof element === "object") {
-          element.ISOPEN = false
-          element.DETAILSLOADED = false
-          element.OCCURRENCES = null
-          element.MAPPINGS = null
-          element.ancestors = element.ancestors ? element.ancestors : [null]
+          // For concepts, add custom properties
+          if(element.type && Array.isArray(element.type) && element.type.length > 0 && element.type[0] == "http://www.w3.org/2004/02/skos/core#Concept") {
+            element.ISOPEN = false
+            element.DETAILSLOADED = false
+            element.OCCURRENCES = null
+            element.MAPPINGS = null
+            element.ancestors = element.ancestors || [null]
+          }
         }
       })
       return data
