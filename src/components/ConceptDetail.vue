@@ -42,7 +42,12 @@
         </ul>
       </p>
       <p v-if="detail.altLabel">
-        {{ detail.altLabel.de ? detail.altLabel.de[0] : detail.altLabel.en[0] }}
+        <span
+          v-for="(label, index) in [].concat(detail.altLabel.de, detail.altLabel.en)"
+          v-if="label != null && label != ''"
+          :key="index">
+          {{ label }}<br>
+        </span>
       </p>
       <p v-if="detail.definition">
         Definition: {{ detail.definition.de ? detail.definition.de[0] : detail.definition.en[0] }}
