@@ -1,17 +1,17 @@
 <template>
   <div id="mappingEditor">
     <div
-      v-b-tooltip.hover="mapping.reversible() ? 'reverse mapping' : 'not reversible, source can only have one concept'"
+      v-b-tooltip.hover="'Export mapping'"
       v-show="schemeLeft != null || schemeRight != null"
-      :class="{ mappingArrowReversible: mapping.reversible() }"
-      class="mappingArrow"
-      @click="mapping.reversible() && reverseMapping()">
-      {{ mapping.reversed ? "←" : "→" }}
+      class="mappingExport"
+      @click="exportMapping()">
+      <font-awesome-icon icon="share-square" />
     </div>
     <div
       v-for="(isLeft, index0) in [true, false]"
       v-show="schemeLeft != null || schemeRight != null"
-      :key="isLeft"
+      :key="index0"
+      :style="{ order: index0 * 2 }"
       class="mappingEditorPart" >
       <div v-if="mapping.getScheme(isLeft) != null">
         <div
@@ -56,11 +56,16 @@
         <div class="mappingButtonsFiller" />
       </div>
     </div>
+    <mapping-type-selection
+      v-show="schemeLeft != null || schemeRight != null"
+      :mapping="mapping"
+      class="mappingTypeSelection" />
   </div>
 </template>
 
 <script>
 import ItemName from "./ItemName"
+import MappingTypeSelection from "./MappingTypeSelection"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
@@ -68,7 +73,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, FontAwesomeIcon },
+  components: { ItemName, MappingTypeSelection, FontAwesomeIcon },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -162,6 +167,11 @@ export default {
         return true
       }
       return false
+    },
+    exportMapping() {
+      // Create a deep copy of mapping object before export
+      let mapping = this.$util.deepCopy(this.mapping.jskos)
+      console.log(JSON.stringify(this.$util.cleanJSKOS(mapping)))
     }
   }
 }
@@ -176,10 +186,16 @@ export default {
   overflow: hidden;
   display: flex;
 }
+.mappingTypeSelection {
+  flex: none;
+  position: relative;
+  order: 1;
+  margin-top: 10px;
+}
 .mappingEditorPart {
   flex: 1;
   width: 0;
-  padding: 10px 10px 5px 10px;
+  padding: 10px 5px 5px 10px;
   margin-right: 5px;
   display: flex;
   flex-direction: column;
@@ -252,6 +268,25 @@ export default {
   cursor: pointer;
   &:hover {
     color: @color-secondary-2-4;
+  }
+}
+
+.mappingExport {
+  position: absolute;
+  width: 24px;
+  font-size: 12px;
+  text-align: center;
+  margin: 5px auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  user-select: none;
+  z-index: 60;
+  // color: @buttonColor;
+  color: white;
+  &:hover {
+    color: @buttonColorHover;
   }
 }
 

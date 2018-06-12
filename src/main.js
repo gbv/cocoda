@@ -21,6 +21,10 @@ Vue.prototype.$api = api
 import config from "./config"
 Vue.prototype.$config = config
 
+// Add util, use with this.$util in components
+import util from "./util"
+Vue.prototype.$util = util
+
 var _ = require("lodash")
 
 // Add fontawesome
@@ -135,6 +139,7 @@ new Vue({
         to: { "memberSet": [] },
         fromScheme: null,
         toScheme: null,
+        type: [util.defaultMappingType]
       },
       reversed: false
     }
