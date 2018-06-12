@@ -77,4 +77,14 @@ let mappingTypes = [
 ]
 let defaultMappingType = mappingTypes[2]
 
-export default { mappingTypes, defaultMappingType, cleanJSKOS, deepCopy }
+
+let mappingTypeByUri = function(uri) {
+  for(let mappingType of mappingTypes) {
+    if (uri == mappingType.uri) {
+      return mappingType
+    }
+  }
+  return null
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy }

@@ -46,19 +46,11 @@ export default {
   },
   computed: {},
   created() {
-    this.mappingTypeSelected = this.mappingTypeByUri(
+    this.mappingTypeSelected = this.$util.mappingTypeByUri(
       this.mapping && this.mapping.type && this.mapping.type.length > 0 ? this.mapping.type[0] : this.$util.defaultMappingType.uri
     )
   },
   methods: {
-    mappingTypeByUri(uri) {
-      for(let mappingType of this.mappingTypes) {
-        if (uri == mappingType.uri) {
-          return mappingType
-        }
-      }
-      return null
-    },
     choose(mappingType) {
       this.mappingTypeSelected = mappingType
       // Save in mapping
