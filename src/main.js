@@ -139,7 +139,7 @@ new Vue({
         to: { "memberSet": [] },
         fromScheme: null,
         toScheme: null,
-        type: [util.defaultMappingType]
+        type: [util.defaultMappingType.uri]
       },
       reversed: false
     }

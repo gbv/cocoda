@@ -70,7 +70,7 @@ export default {
         if (mapping.type.length == 0) {
           mapping.type.push(null)
         }
-        this.$set(mapping.type, 0, this.mappingTypeSelected)
+        this.$set(mapping.type, 0, this.mappingTypeSelected.uri)
       }
     }
   }

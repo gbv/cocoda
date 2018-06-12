@@ -15,7 +15,7 @@ let cleanJSKOS = function(jskos) {
   return jskos
 }
 let deepCopy = function(obj) {
-  var clone = {}
+  var clone = Array.isArray(obj) ? [] : {}
   for(var i in obj) {
     if (i == "ancestors" || i == "narrower" || i == "broader") {
       // Remove circular structures, replace with [null] if it has elements
