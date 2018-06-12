@@ -1,7 +1,8 @@
 <template>
   <span
     v-show="voc != null"
-    class="searchfield">
+    class="searchfield"
+    @mousemove="mousemove()">
     <div
       class="searchIcon"
       @click="focusSearch" >
@@ -88,6 +89,7 @@ export default {
       isOpen: false,
       loading: false,
       searchSelected: -1,
+      preventHovering: false,
       cancelToken: null
     }
   },
@@ -185,6 +187,7 @@ export default {
      * Handles an arrow down event.
      */
     onArrowDown() {
+      this.preventHovering = true
       if (this.searchSelected >= this.searchResult.length - 1) {
         this.searchSelected = 0
       } else {
@@ -196,6 +199,7 @@ export default {
      * Handles an arrow up event.
      */
     onArrowUp() {
+      this.preventHovering = true
       if (this.searchSelected <= 0) {
         this.searchSelected = this.searchResult.length - 1
       } else {
@@ -229,7 +233,12 @@ export default {
      * @param {number} i - index of search result
      */
     mouseover(i) {
-      this.searchSelected = i
+      if (!this.preventHovering) {
+        this.searchSelected = i
+      }
+    },
+    mousemove() {
+      this.preventHovering = false
     },
     focusSearch() {
       this.$refs.searchInput.focus()
