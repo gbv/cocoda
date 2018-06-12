@@ -32,6 +32,15 @@
               :show-text="false"
               :show-tooltip="true" />
           </span>
+          <span
+            slot="type"
+            slot-scope="data">
+            <span
+              v-b-tooltip.hover="data.value.LABEL"
+              v-if="data.value != null">
+              {{ data.value.SYMBOL }}
+            </span>
+          </span>
         </b-table>
       </div>
       <div
@@ -88,13 +97,7 @@ export default {
   },
   data () {
     return {
-      columns: [
-        { id: "sourceScheme", title: "Scheme", cssClasses: "colShort" },
-        { id: "sourceConcepts", title: "Concept", cssClasses: "colWide" },
-        { id: "targetScheme", title: "Scheme", cssClasses: "colShort" },
-        { id: "targetConcepts", title: "Concept", cssClasses: "colWide" },
-        { id: "creator", title: "Creator", cssClasses: "colNormal" }
-      ]
+      columns: []
     }
   },
   computed: {
@@ -127,6 +130,7 @@ export default {
             item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
             item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
             item.creator = mapping.creator || "?"
+            item.type = (mapping.type && Array.isArray(mapping.type) && mapping.type.length > 0) ? this.$util.mappingTypeByUri(mapping.type[0]) : this.$util.defaultMappingType
             items.push(item)
           }
         }
@@ -148,6 +152,11 @@ export default {
           tdClass: "mtColShort",
           thClass: "mtColShort",
           sortable: true
+        },
+        {
+          key: "type",
+          label: "",
+          sortable: false
         },
         {
           key: "targetScheme",
@@ -193,6 +202,9 @@ export default {
       axios.get(this.$config.mappingProviders[0].url, {
         params: params
       }).then(function(response) {
+        for (let mapping of response.data) {
+          mapping.type = mapping.type || null
+        }
         concept.MAPPINGS = response.data
       }).catch(function(error) {
         console.log("API error (mappings):", error)
