@@ -7,7 +7,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local config file
-config.json
+config/cocoda.json
 
 # Editor directories and files
 .idea

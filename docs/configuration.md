@@ -1,4 +1,4 @@
-Default settings are given in file `config.default.json`. To change the configuration, create file `config.json` and override selected fields. The following fields are recognized so far:
+Default settings are given in file `config/cocoda.default.json`. To change the configuration, create file `config/cocoda.json` and override selected fields. The following fields are recognized so far:
 
 * `terminologyProviders`
 * `mappingProviders`
