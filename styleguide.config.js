@@ -19,10 +19,6 @@ module.exports = {
           content: "docs/usage.md"
         },
         {
-          name: "Background",
-          content: "docs/background.md"
-        },
-        {
           name: "Installation",
           content: "docs/installation.md"
         },
@@ -33,21 +29,29 @@ module.exports = {
       ]
     },
     {
+      name: "Development",
+      content: "CONTRIBUTING.md",
+      sections: [
+        {
+          name: "Getting Started",
+          content: "docs/setup.md"
+        },
+        {
+          name: "Background",
+          content: "docs/background.md"
+        },
+        {
+          name: "Design Guidelines",
+          content: "docs/design-guidelines.md"
+        }
+      ]
+    },
+    {
       name: "Components",
       content: "docs/components.md",
       components: "src/components/*.vue"
     },
-    {
-      name: "Development",
-      content: "docs/development.md",
-      sections: [
-        {
-          name: "Design Guidelines",
-          content: "docs/designGuidelines.md"
-        }
-      ]
-    },
-  ],
+   ],
   showUsage: true,
   webpackConfig
 }
