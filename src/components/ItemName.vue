@@ -6,10 +6,16 @@
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
     <notation-badge
-      v-b-tooltip.hover="showTooltip && item.prefLabel ? (item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) : ''"
       :item="item"
       :class="{ 'badge-hovered': isLink && isHovered }"
+      :id="tooltipDOMID"
       :style="{ bottom: '2px' }" />
+    <b-tooltip
+      v-if="showTooltip && item.prefLabel"
+      ref="tooltip"
+      :target="tooltipDOMID">
+      {{ trimTooltip(item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) }}
+    </b-tooltip>
     <prefLabel-text
       v-if="showText && item.prefLabel"
       :class="{ 'label-hovered': isLink && isHovered }"
@@ -18,6 +24,7 @@
 </template>
 
 <script>
+var _ = require("lodash")
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
@@ -63,7 +70,19 @@ export default {
   },
   data () {
     return {
-      isHovered: false
+      isHovered: false,
+      tooltipDOMID: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    }
+  },
+  watch: {
+    item: function() {
+      // Force show tooltip when item has changed
+      let vm = this
+      _.delay(function() {
+        if (vm.isHovered) {
+          vm.$refs.tooltip.$emit("open")
+        }
+      }, 50)
     }
   },
   methods: {
@@ -72,6 +91,13 @@ export default {
     },
     mouseOut() {
       this.isHovered = false
+    },
+    trimTooltip(text) {
+      if (text.length > 80) {
+        return text.substring(0,80) + "..."
+      } else {
+        return text
+      }
     }
   }
 }

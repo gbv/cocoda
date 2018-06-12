@@ -20,7 +20,8 @@
               :key="concept.uri"
               :item="concept"
               :show-text="false"
-              :show-tooltip="true" />
+              :show-tooltip="true"
+              @mouseover.native="hover(concept)" />
           </span>
           <span
             slot="targetConcepts"
@@ -30,7 +31,8 @@
               :key="concept.uri"
               :item="concept"
               :show-text="false"
-              :show-tooltip="true" />
+              :show-tooltip="true"
+              @mouseover.native="hover(concept)" />
           </span>
           <span
             slot="type"
@@ -192,6 +194,24 @@ export default {
     },
     remove() {
       this.items.pop()
+    },
+    hover(concept) {
+      if(!concept.prefLabel) {
+        // Load prefLabel to be shown as tooltip
+        let vm = this
+        this.$api.data(concept.uri)
+          .then(function(data) {
+            if (Array.isArray(data) && data.length > 0) {
+              // Add prefLabel to concept
+              vm.$set(concept, "prefLabel", data[0].prefLabel)
+            }
+            if (data.length > 1) {
+              console.log("For some reason, more than one set of properties was received for ", concept)
+            }
+          }).catch(function(error) {
+            console.log("Request failed", error)
+          })
+      }
     },
     loadMappings(conceptItem) {
       // Get GND mappings
