@@ -4,4 +4,4 @@ Default settings are given in file `config.default.json`. To change the configur
 * `mappingProviders`
 * `occurrenceProviders`
 
-The application has to be rebuild to activate changes. 
+The application has to be rebuild to activate changes.
