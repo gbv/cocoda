@@ -1,5 +1,7 @@
-To change the configuration of the project, create a copy of config.default.json and adjust settings as needed.
+Default settings are given in file `config.default.json`. To change the configuration, create file `config.json` and override selected fields. The following fields are recognized so far:
 
-```bash
-$ cp config.default.json config.json
-```
+* `terminologyProviders`
+* `mappingProviders`
+* `occurrenceProviders`
+
+The application has to be rebuild to activate changes. 
