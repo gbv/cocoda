@@ -1,13 +1,7 @@
 <template>
   <div class="mappingTypes">
-    <div class="mappingTypeHeader">
-      Type:
-    </div>
-    <div class="mappingTypeDescription">
-      {{ mappingTypeSelected.LABEL }}
-    </div>
     <div
-      v-b-tooltip.hover="mappingType.LABEL"
+      v-b-tooltip.hover.right="mappingType.LABEL"
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
       :style="mappingType.STYLE || ''"
@@ -73,34 +67,27 @@ export default {
 @import "../style/main.less";
 
 .mappingTypes {
-  width: 40px;
+  width: 30px;
+  margin: auto 0px;
+  top: 0;
+  bottom: 0;
   text-align: center;
   z-index: 50;
   user-select: none;
 }
 .mappingType {
-  font-size: 24px;
-  height: 40px;
-  width: 40px;
+  font-size: 18px;
+  height: 30px;
+  width: 30px;
   cursor: pointer;
   &:hover {
-    background-color: @buttonColorHover;
-    color: black;
+    box-shadow: 0 0 1pt 2pt fadeout(@buttonColorHover, 30%);
   }
-  border-radius: 20px;
+  border-radius: 15px;
 }
 .mappingTypeSelected {
   background-color: @color-primary-4;
   color: @color-primary-1;
 }
-.mappingTypeHeader {
-  height: 20px;
-  &:extend(.font-size-small);
-  &:extend(.font-heavy);
-}
-.mappingTypeDescription {
-  height: 40px;
-  margin-bottom: 10px;
-  &:extend(.font-size-small);
-}
+
 </style>
