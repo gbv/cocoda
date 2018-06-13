@@ -80,7 +80,7 @@ export default {
       let vm = this
       _.delay(function() {
         if (vm.isHovered) {
-          vm.$refs.tooltip.$emit("open")
+          vm.$refs.tooltip && vm.$refs.tooltip.$emit("open")
         }
       }, 50)
     }
