@@ -288,14 +288,12 @@ export default {
         .then(function(data) {
           if (vm.chooseFromUriID != id) return
           if (data.length == 0) {
-            console.log("##### chooseFromUri ##### No results...")
             vm.selected = null
             vm.loading = false
           } else {
             let currentAncestors = []
             let finalCallback = function() {
               if (vm.chooseFromUriID != id) return
-              console.log("##### chooseFromUri ##### final callback")
               selected.ancestors = currentAncestors
               vm.loading = false
               for (var ancestor of currentAncestors) {
@@ -320,11 +318,9 @@ export default {
             let selected = data[0]
             vm.selected = selected
             // Concept loaded
-            console.log("##### chooseFromUri ##### concept loaded")
             // Check if it is already in tree
             let selectedInTree = vm.treeHelper.getConcept(selected)
             if (selectedInTree != null) {
-              console.log("##### chooseFromUri ##### concept found in tree!")
               vm.selected = selectedInTree
               currentAncestors = selectedInTree.ancestors
               finalCallback()
@@ -333,7 +329,6 @@ export default {
             // Load Ancestors
             vm.treeHelper.loadAncestors(uri, function(data) {
               if (vm.chooseFromUriID != id) return
-              console.log("##### chooseFromUri ##### ancestors loaded")
               selected.ancestors = data.slice()
               let forEachAncestor = function(ancestors, callback = null) {
                 if (vm.chooseFromUriID != id) return
@@ -342,14 +337,12 @@ export default {
                   return
                 }
                 let ancestor = ancestors.shift()
-                console.log("##### chooseFromUri ##### deal with ancestor", ancestor.uri)
                 // Find in tree
                 let ancestorInTree = vm.treeHelper.getConcept(ancestor)
                 // Set ancestors
                 ancestorInTree.ancestors = currentAncestors.slice()
                 // Load children and update
                 vm.treeHelper.loadChildren(ancestorInTree, function(ancestor) {
-                  console.log("##### chooseFromUri ##### children loaded", ancestor.uri)
                   // Add to ancestors list
                   currentAncestors.push(ancestor)
                   // Continue execution
