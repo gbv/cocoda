@@ -315,7 +315,7 @@ html, body {
   flex-wrap: nowrap;
   /* TODO: - How much width and height do we need? */
   min-width: 1200px;
-  min-height: 500px;
+  min-height: 800px;
 }
 .main {
   flex: 1;
