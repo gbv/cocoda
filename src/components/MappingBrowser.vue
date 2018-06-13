@@ -115,6 +115,7 @@ export default {
           fromTo: "to"
         }
       ]
+      let hashList = []
       for (let conceptItem of conceptList) {
         if (conceptItem.concept == null) {
           continue
@@ -126,14 +127,40 @@ export default {
         } else {
           // Save mappings
           for (let mapping of mappings) {
-            let item = {}
-            item.sourceScheme = mapping.fromScheme.notation[0]
-            item.targetScheme = mapping.toScheme.notation[0]
-            item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
-            item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
-            item.creator = mapping.creator || "?"
-            item.type = (mapping.type && Array.isArray(mapping.type) && mapping.type.length > 0) ? this.$util.mappingTypeByUri(mapping.type[0]) : this.$util.defaultMappingType
-            items.push(item)
+            // Filter duplicate mappings
+            if (!hashList.includes(this.$util.mappingHash(mapping))) {
+              let item = {}
+              item.sourceScheme = mapping.fromScheme.notation[0]
+              item.targetScheme = mapping.toScheme.notation[0]
+              item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
+              item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
+              // Highlight if selected concepts are in mapping
+              let leftInSource = false
+              if (this.selectedLeft != null) {
+                for (let concept of item.sourceConcepts) {
+                  if (concept.uri == this.selectedLeft.uri) {
+                    leftInSource = true
+                  }
+                }
+              }
+              let rightInSource = false
+              if (this.selectedRight != null && leftInSource) {
+                for (let concept of item.targetConcepts) {
+                  if (concept.uri == this.selectedRight.uri) {
+                    rightInSource = true
+                  }
+                }
+              }
+              if (leftInSource && rightInSource) {
+                item._rowVariant = "info"
+              }
+              item.creator = mapping.creator || "?"
+              item.type =
+                (mapping.type && Array.isArray(mapping.type) && mapping.type.length > 0) ?
+                  this.$util.mappingTypeByUri(mapping.type[0]) : this.$util.defaultMappingType
+              items.push(item)
+              hashList.push(this.$util.mappingHash(mapping))
+            }
           }
         }
       }

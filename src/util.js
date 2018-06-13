@@ -32,6 +32,27 @@ let deepCopy = function(obj) {
   return clone
 }
 
+// Not the final implementation!
+let mappingHash = function(mapping) {
+  let hash = "mapping:"
+  for (let fromTo of ["from", "to"]) {
+    hash += fromTo + ":"
+    let concepts
+    if (mapping[fromTo].memberSet) {
+      hash += "memberSet:"
+      concepts = mapping[fromTo].memberSet
+    } else {
+      // TODO: - memberChoice should not be supported in from!
+      hash += "memberChoice:"
+      fromConcepts = mapping[fromTo].memberChoice
+    }
+    for (let concept of concepts) {
+      hash += concept.uri + ","
+    }
+  }
+  return hash
+}
+
 let mappingTypes = [
   {
     SYMBOL: "⇝",
@@ -87,4 +108,4 @@ let mappingTypeByUri = function(uri) {
   return null
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash }
