@@ -1,17 +1,16 @@
 <template>
   <div class="mappingTypes">
     <div
-      v-b-tooltip.hover.right="mappingType.LABEL"
+      v-b-tooltip.hover.right="mappingType.prefLabel.en"
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
-      :style="mappingType.STYLE || ''"
       :class="{
         mappingTypeSelected: (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         mappingTypeHovered: (mappingType && mappingTypeHovered) && mappingType.uri == mappingTypeHovered.uri
       }"
       class="mappingType"
       @click="choose(mappingType)">
-      {{ mappingType.SYMBOL }}
+      {{ mappingType.notation[0] }}
     </div>
   </div>
 </template>
@@ -67,7 +66,7 @@ export default {
 @import "../style/main.less";
 
 .mappingTypes {
-  width: 30px;
+  width: 25px;
   margin: auto 0px;
   top: 0;
   bottom: 0;
@@ -76,18 +75,24 @@ export default {
   user-select: none;
 }
 .mappingType {
-  font-size: 18px;
-  height: 30px;
-  width: 30px;
+  font-family: "Courier New", Courier, monospace;
   cursor: pointer;
+  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
   &:hover {
-    box-shadow: 0 0 1pt 2pt fadeout(@buttonColorHover, 30%);
+    background-color: @color-primary-1;
+    color: @color-primary-4;
   }
-  border-radius: 15px;
+  border-radius: 5px;
+  margin-bottom: 5px;
 }
 .mappingTypeSelected {
   background-color: @color-primary-4;
   color: @color-primary-1;
+  font-weight: bold;
+  &:hover {
+    background-color: @color-primary-4;
+    color: @color-primary-1;
+  }
 }
 
 </style>
