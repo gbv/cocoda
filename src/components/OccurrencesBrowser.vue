@@ -20,8 +20,8 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="true"
-            @click.native="chooseUri(data.value.uri, true)" />
+            :is-link="data.value && $util.compareSchemes(data.value.inScheme[0], schemeLeft)"
+            @click.native="data.value && $util.compareSchemes(data.value.inScheme[0], schemeLeft) && chooseUri(data.value.uri, true)" />
         </span>
         <span
           slot="to"
@@ -30,8 +30,8 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="true"
-            @click.native="chooseUri(data.value.uri, false)" />
+            :is-link="data.value && $util.compareSchemes(data.value.inScheme[0], schemeRight)"
+            @click.native="data.value && $util.compareSchemes(data.value.inScheme[0], schemeRight) && chooseUri(data.value.uri, false)" />
         </span>
         <span
           slot="occurrences"

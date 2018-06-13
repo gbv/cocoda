@@ -131,4 +131,19 @@ function selectText(el){
   }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText }
+let compareSchemes = function(scheme1, scheme2) {
+  if (!scheme1 || !scheme2) {
+    return false
+  }
+  // Combine and normalize URIs for comparison
+  let scheme1uris = [scheme1.uri].concat(scheme1.identifier || []).map(uri => uri.replace("https", "http").replace("/en/", "/de/"))
+  let scheme2uris = [scheme2.uri].concat(scheme2.identifier || []).map(uri => uri.replace("https", "http").replace("/en/", "/de/"))
+  let intersection = _.intersection(scheme1uris, scheme2uris)
+  // console.log(scheme1uris, scheme2uris, intersection)
+  if (intersection.length > 0) {
+    return true
+  }
+  return false
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes }

@@ -21,9 +21,9 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="concept.inScheme && schemeLeft.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase()"
+              :is-link="$util.compareSchemes(concept.inScheme[0], schemeLeft)"
               @mouseover.native="hover(concept)"
-              @click.native="concept.inScheme && schemeLeft.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase() && chooseUri(concept.uri, true)" />
+              @click.native="$util.compareSchemes(concept.inScheme[0], schemeLeft) && chooseUri(concept.uri, true)" />
           </span>
           <span
             slot="targetConcepts"
@@ -34,9 +34,9 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="concept.inScheme && schemeRight.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase()"
+              :is-link="$util.compareSchemes(concept.inScheme[0], schemeRight)"
               @mouseover.native="hover(concept)"
-              @click.native="concept.inScheme && schemeRight.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase() && chooseUri(concept.uri, false)" />
+              @click.native="$util.compareSchemes(concept.inScheme[0], schemeRight) && chooseUri(concept.uri, false)" />
           </span>
           <span
             slot="type"
