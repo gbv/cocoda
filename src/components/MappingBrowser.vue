@@ -42,9 +42,9 @@
             slot="type"
             slot-scope="data">
             <span
-              v-b-tooltip.hover="data.value.LABEL"
+              v-b-tooltip.hover="data.value.prefLabel.en"
               v-if="data.value != null">
-              {{ data.value.SYMBOL }}
+              {{ data.value.notation[0] }}
             </span>
           </span>
         </b-table>
