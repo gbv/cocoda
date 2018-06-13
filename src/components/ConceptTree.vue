@@ -74,6 +74,7 @@ export default {
       selected: null,
       loading: false,
       hovered: null,
+      chooseFromUriID: null,
       /**
        * A helper object that provides utility functions to work on the concept tree.
        */
@@ -278,10 +279,14 @@ export default {
      * @param {string} uri - uri of concept to be loaded
      */
     chooseFromUri: function(uri) {
+      // Assign a unique ID to this request to be checked later
+      let id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+      this.chooseFromUriID = id
       let vm = this
       this.loading = true
       this.$api.data(uri, this.$api.defaultProperties, null)
         .then(function(data) {
+          if (vm.chooseFromUriID != id) return
           if (data.length == 0) {
             console.log("##### chooseFromUri ##### No results...")
             vm.selected = null
@@ -289,6 +294,7 @@ export default {
           } else {
             let currentAncestors = []
             let finalCallback = function() {
+              if (vm.chooseFromUriID != id) return
               console.log("##### chooseFromUri ##### final callback")
               selected.ancestors = currentAncestors
               vm.loading = false
@@ -297,6 +303,7 @@ export default {
               }
               // Scroll to selected
               _.delay(function() {
+                if (vm.chooseFromUriID != id) return
                 let el = document.querySelectorAll(`[data-uri='${selected.uri}']`)[0]
                 // Scroll element
                 var options = {
@@ -325,9 +332,11 @@ export default {
             }
             // Load Ancestors
             vm.treeHelper.loadAncestors(uri, function(data) {
+              if (vm.chooseFromUriID != id) return
               console.log("##### chooseFromUri ##### ancestors loaded")
               selected.ancestors = data.slice()
               let forEachAncestor = function(ancestors, callback = null) {
+                if (vm.chooseFromUriID != id) return
                 if (ancestors.length == 0) {
                   callback && callback()
                   return
@@ -363,6 +372,7 @@ export default {
       this.selected = null
       this.hovered = null
       this.loading = true
+      this.chooseFromUriID = null
       let selectedBefore = this.vocSelected
       let vm = this
       this.$api.topByNotation(this.vocSelected.notation[0])
