@@ -23,7 +23,8 @@
             :key="index" >
             <item-name
               :item="concept"
-              @click="selected(concept)" />
+              :is-link="true"
+              @click.native="chooseUri(concept.uri, isLeft)" />
             <div
               class="mappingConceptDelete font-size-small"
               @click="mapping.remove(concept, isLeft)">X</div>

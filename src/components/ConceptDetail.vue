@@ -18,7 +18,7 @@
             :show-text="index == item.ancestors.length - 1"
             :is-link="true"
             font-size="small"
-            @click.native="parentClicked(parent)" />
+            @click.native="chooseUri(parent.uri, isLeft)" />
           <span v-if="index < item.ancestors.length - 1">
             ›
           </span>
@@ -222,18 +222,7 @@ export default {
         console.log("API error (GND mappings):", error)
       })
     }
-  },
-  methods: {
-    parentClicked(parent) {
-      /**
-       * Event when the user has chosen a result.
-       *
-       * @event chooseUri
-       * @type {string} - uri that is chosen
-       */
-      this.$emit("chooseUri", parent.uri)
-    }
-  },
+  }
 }
 </script>
 

@@ -21,7 +21,9 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              @mouseover.native="hover(concept)" />
+              :is-link="concept.inScheme && schemeLeft.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase()"
+              @mouseover.native="hover(concept)"
+              @click.native="concept.inScheme && schemeLeft.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase() && chooseUri(concept.uri, true)" />
           </span>
           <span
             slot="targetConcepts"
@@ -32,7 +34,9 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              @mouseover.native="hover(concept)" />
+              :is-link="concept.inScheme && schemeRight.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase()"
+              @mouseover.native="hover(concept)"
+              @click.native="concept.inScheme && schemeRight.notation[0].toUpperCase() == concept.inScheme[0].notation[0].toUpperCase() && chooseUri(concept.uri, false)" />
           </span>
           <span
             slot="type"
@@ -134,22 +138,20 @@ export default {
               item.targetScheme = mapping.toScheme.notation[0]
               item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
               item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
-              // Highlight if selected concepts are in mapping
+              // Highlight if selected concepts are in mapping and add inScheme to each concept
               let leftInSource = false
-              if (this.selectedLeft != null) {
-                for (let concept of item.sourceConcepts) {
-                  if (concept.uri == this.selectedLeft.uri) {
-                    leftInSource = true
-                  }
+              for (let concept of item.sourceConcepts) {
+                if (this.selectedLeft && concept.uri == this.selectedLeft.uri) {
+                  leftInSource = true
                 }
+                concept.inScheme = concept.inScheme || [mapping.fromScheme]
               }
               let rightInSource = false
-              if (this.selectedRight != null && leftInSource) {
-                for (let concept of item.targetConcepts) {
-                  if (concept.uri == this.selectedRight.uri) {
-                    rightInSource = true
-                  }
+              for (let concept of item.targetConcepts) {
+                if (this.selectedRight && concept.uri == this.selectedRight.uri) {
+                  rightInSource = true
                 }
+                concept.inScheme = concept.inScheme || [mapping.toScheme]
               }
               if (leftInSource && rightInSource) {
                 item._rowVariant = "info"

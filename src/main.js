@@ -37,6 +37,21 @@ import brands from "@fortawesome/fontawesome-free-brands"
 fontawesome.library.add(solid)
 fontawesome.library.add(brands)
 
+// Global mixin for choosing a concept by uri (emits the chooseUri event)
+Vue.mixin({
+  methods: {
+    chooseUri(uri, isLeft = true) {
+      /**
+       * Event when the user has chosen a result.
+       *
+       * @event chooseUri
+       * @type {string} - uri that is chosen
+       */
+      this.$emit("chooseUri", uri, isLeft)
+    }
+  }
+})
+
 new Vue({
   el: "#app",
   components: { App },

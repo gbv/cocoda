@@ -19,7 +19,9 @@
           <item-name
             :item="data.value"
             :show-text="false"
-            :show-tooltip="true" />
+            :show-tooltip="true"
+            :is-link="true"
+            @click.native="chooseUri(data.value.uri, true)" />
         </span>
         <span
           slot="to"
@@ -27,7 +29,9 @@
           <item-name
             :item="data.value"
             :show-text="false"
-            :show-tooltip="true" />
+            :show-tooltip="true"
+            :is-link="true"
+            @click.native="chooseUri(data.value.uri, false)" />
         </span>
         <span
           slot="occurrences"

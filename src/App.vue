@@ -16,7 +16,7 @@
             class="schemeSelect" />
           <concept-search
             :voc="schemeSelectedLeft"
-            @chooseUri="$refs['mainElement1-1'].chooseFromUri($event)" />
+            @chooseUri="chooseUri(arguments[0], true)" />
           <concept-detail
             ref="mainElement1-0"
             :style="{ flex: flex[1][0] }"
@@ -26,7 +26,7 @@
             :voc="schemeSelectedLeft"
             class="main-component"
             data-direction="row"
-            @chooseUri="$refs['mainElement1-1'].chooseFromUri($event)" />
+            @chooseUri="chooseUri" />
           <div
             v-if="conceptSelectedLeft != null || schemeSelectedLeft != null"
             ref="resizeSlider1-0"
@@ -73,7 +73,8 @@
             :scheme-left="schemeSelectedLeft"
             :scheme-right="schemeSelectedRight"
             class="main-component"
-            data-direction="row" />
+            data-direction="row"
+            @chooseUri="chooseUri" />
           <div
             ref="resizeSlider2-0"
             class="resizeSliderRow"
@@ -87,7 +88,8 @@
             :scheme-left="schemeSelectedLeft"
             :scheme-right="schemeSelectedRight"
             class="main-component"
-            data-direction="row" />
+            data-direction="row"
+            @chooseUri="chooseUri" />
           <div
             v-else
             ref="mainElement2-1"
@@ -106,7 +108,8 @@
             :scheme-left="schemeSelectedLeft"
             :scheme-right="schemeSelectedRight"
             class="main-component"
-            data-direction="row" />
+            data-direction="row"
+            @chooseUri="chooseUri" />
         </div>
         <div
           ref="resizeSlider0-1"
@@ -123,7 +126,7 @@
             class="schemeSelect" />
           <concept-search
             :voc="schemeSelectedRight"
-            @chooseUri="$refs['mainElement3-1'].chooseFromUri($event)" />
+            @chooseUri="chooseUri(arguments[0], false)" />
           <concept-detail
             ref="mainElement3-0"
             :style="{ flex: flex[3][0] }"
@@ -133,7 +136,7 @@
             :voc="schemeSelectedRight"
             class="main-component"
             data-direction="row"
-            @chooseUri="$refs['mainElement3-1'].chooseFromUri($event)" />
+            @chooseUri="chooseUri" />
           <div
             v-if="conceptSelectedRight != null || schemeSelectedRight != null"
             ref="resizeSlider3-0"
@@ -285,6 +288,9 @@ export default {
       _.delay(function() {
         vm.resetFlex()
       }, 100)
+    },
+    chooseUri(uri, isLeft) {
+      isLeft ? this.$refs["mainElement1-1"].chooseFromUri(uri) : this.$refs["mainElement3-1"].chooseFromUri(uri)
     }
   },
 }
