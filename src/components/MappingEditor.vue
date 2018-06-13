@@ -61,6 +61,25 @@
       v-show="schemeLeft != null || schemeRight != null"
       :mapping="mapping"
       class="mappingTypeSelection" />
+    <b-modal
+      ref="exportModal"
+      hide-footer
+      center
+      size="lg"
+      title="Export Mapping">
+      <p><b-btn
+        class="mt-3"
+        @click.stop.prevent="exportClipboard">Copy to clipboard</b-btn></p>
+      <p><a
+        :href="'data:text/json;charset=utf-8,' + mappingEncoded"
+        download="mapping.json"
+        target="_blank">Download as .json file</a></p>
+      <div
+        ref="json"
+        style="height: 600px; overflow: auto; margin-top: 20px;">
+        <pre ref="jsonPre">{{ mappingPretty }}</pre>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -68,6 +87,7 @@
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+var _ = require("lodash")
 
 /**
  * The mapping editor component.
@@ -108,6 +128,14 @@ export default {
   data () {
     return {
       mapping: this.$root.$data.mapping
+    }
+  },
+  computed: {
+    mappingPretty() {
+      return JSON.stringify(this.$util.cleanJSKOS(this.$util.deepCopy(this.mapping.jskos)), null, 2)
+    },
+    mappingEncoded() {
+      return encodeURIComponent(JSON.stringify(this.$util.cleanJSKOS(this.$util.deepCopy(this.mapping.jskos))))
     }
   },
   methods: {
@@ -170,9 +198,18 @@ export default {
       return false
     },
     exportMapping() {
-      // Create a deep copy of mapping object before export
-      let mapping = this.$util.deepCopy(this.mapping.jskos)
-      console.log(JSON.stringify(this.$util.cleanJSKOS(mapping)))
+      this.$refs.exportModal.show()
+    },
+    exportClipboard() {
+      window.getSelection().removeAllRanges()
+      this.$util.selectText(this.$refs.json)
+      _.delay(function() {
+        let successful = document.execCommand("copy")
+        if (!successful) {
+          console.log("Copy to clipboard failed.")
+        }
+        window.getSelection().removeAllRanges()
+      }, 50)
     }
   }
 }
@@ -284,8 +321,7 @@ export default {
   cursor: pointer;
   user-select: none;
   z-index: 60;
-  // color: @buttonColor;
-  color: white;
+  color: @buttonColor;
   &:hover {
     color: @buttonColorHover;
   }
