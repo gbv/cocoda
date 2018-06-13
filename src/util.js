@@ -55,48 +55,44 @@ let mappingHash = function(mapping) {
 
 let mappingTypes = [
   {
-    SYMBOL: "⇝",
-    LABEL: "Related Match",
-    uri: "http://www.w3.org/2004/02/skos/core#relatedMatch",
-    prefLabel: { "en": "has related match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    style: "padding-top: 1px;"
-  },
-  {
-    SYMBOL: "⤏",
-    LABEL: "Close Match",
-    uri: "http://www.w3.org/2004/02/skos/core#closeMatch",
-    prefLabel: { "en": "has close match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    STYLE: "padding-top: 1.5px; padding-left: 1px;"
-  },
-  {
-    SYMBOL: "⇒",
-    LABEL: "Exact Match",
+    notation: ["="],
     uri: "http://www.w3.org/2004/02/skos/core#exactMatch",
-    prefLabel: { "en": "has exact match" },
+    prefLabel: { "en": "exact match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#closeMatch" } ],
-    STYLE: "padding-top: 1px;"
   },
   {
-    SYMBOL: "⥸",
-    LABEL: "Broad Match",
+    notation: ["≈"],
+    uri: "http://www.w3.org/2004/02/skos/core#closeMatch",
+    prefLabel: { "en": "close match" },
+    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
+  },
+  {
+    notation: [">"],
     uri: "http://www.w3.org/2004/02/skos/core#broadMatch",
-    prefLabel: { "en": "has broader match" },
+    prefLabel: { "en": "broader match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
     related: [ { "uri": "http://www.w3.org/2004/02/skos/core#narrowMatch" } ],
-    STYLE: "padding-left: 1px;"
   },
   {
-    SYMBOL: "⥶",
-    LABEL: "Narrow Match",
+    notation: ["<"],
     uri: "http://www.w3.org/2004/02/skos/core#narrowMatch",
-    prefLabel: { "en": "has narrower match" },
+    prefLabel: { "en": "narrower match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
     related: [ { "uri": "http://www.w3.org/2004/02/skos/core#broadMatch" } ]
-  }
+  },
+  {
+    notation: ["~"],
+    uri: "http://www.w3.org/2004/02/skos/core#relatedMatch",
+    prefLabel: { "en": "related match" },
+    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
+  },
+  {
+    notation: ["?"],
+    uri: "http://www.w3.org/2004/02/skos/core#mappingRelation",
+    prefLabel: { "en": "mapping relation" },
+  },
 ]
-let defaultMappingType = mappingTypes[2]
+let defaultMappingType = mappingTypes[1]
 
 
 let mappingTypeByUri = function(uri) {
