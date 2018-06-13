@@ -18,8 +18,8 @@ const url = config.terminologyProviders[0].url
 
 /** Property sets */
 const minimumProperties = "-"
-const defaultProperties = "uri,prefLabel,notation"
-const detailProperties =  "uri,prefLabel,notation,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote"
+const defaultProperties = "uri,prefLabel,notation,inScheme"
+const detailProperties =  "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote"
 const allProperties = "*"
 
 /**
