@@ -6,6 +6,9 @@ cd cocoda
 # install dependencies
 npm install
 
+# create a local config file
+echo '{}' > config/cocoda.json
+
 # serve with hot reload at localhost:8080
 npm run dev
 
