@@ -203,15 +203,16 @@ export default {
   },
   methods: {
     loadOccurrences(concept) {
+      let vm = this
       axios.get(this.$config.occurrenceProviders[0].url, {
         params: {
           members: concept.uri
         }
       }).then(function(response) {
-        concept.OCCURRENCES = response.data.length > 0 ? response.data[0] : -1
+        vm.$set(concept, "OCCURRENCES", response.data.length > 0 ? response.data[0] : -1)
       }).catch(function(error) {
         console.log(error)
-        concept.OCCURRENCES = -1
+        vm.$set(concept, "OCCURRENCES", -1)
       })
     }
   }
