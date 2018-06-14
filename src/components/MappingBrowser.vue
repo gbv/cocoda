@@ -217,6 +217,9 @@ export default {
       // this.items.push(this.sampleItem)
     }
   },
+  mounted() {
+    this.$util.setupTableScrollSync()
+  },
   methods: {
     add() {
       this.items.push(this.sampleItem)

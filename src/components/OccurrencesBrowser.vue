@@ -201,6 +201,9 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.$util.setupTableScrollSync()
+  },
   methods: {
     loadOccurrences(concept) {
       let vm = this

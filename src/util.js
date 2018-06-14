@@ -142,4 +142,18 @@ let compareSchemes = function(scheme1, scheme2) {
   return false
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes }
+let setupTableScrollSync = function() {
+  // Synchronize scrolling of header and body in all default tables
+  let tables = document.getElementsByClassName("defaultTable")
+  for (let table of tables) {
+    let thead = table.getElementsByTagName("thead")[0]
+    let tbody = table.getElementsByTagName("tbody")[0]
+    tbody.onscroll = function() {
+      thead.scrollLeft = tbody.scrollLeft
+      console.log("scroll!")
+    }
+    console.log("set scroll sync for", table)
+  }
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, setupTableScrollSync }

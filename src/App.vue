@@ -250,15 +250,6 @@ export default {
     }
   },
   mounted() {
-    // Synchronize scrolling of header and body in all default tables
-    let tables = document.getElementsByClassName("defaultTable")
-    for (let table of tables) {
-      let thead = table.getElementsByTagName("thead")[0]
-      let tbody = table.getElementsByTagName("tbody")[0]
-      tbody.onscroll = function() {
-        thead.scrollLeft = tbody.scrollLeft
-      }
-    }
     // Load schemes
     var vm = this
     this.$api.voc()
