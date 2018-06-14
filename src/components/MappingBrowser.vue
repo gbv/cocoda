@@ -47,6 +47,20 @@
               {{ data.value.notation[0] }}
             </span>
           </span>
+          <span
+            slot="actions"
+            slot-scope="data">
+            <font-awesome-icon
+              v-b-tooltip.hover="'edit mapping'"
+              icon="edit"
+              class="editButton"
+              @click="edit(data)" />
+          </span>
+          <span
+            slot="HEAD_actions"
+            slot-scope="data">
+            <font-awesome-icon icon="toolbox" />
+          </span>
         </b-table>
       </div>
       <div
@@ -64,13 +78,14 @@
 <script>
 import ItemName from "./ItemName"
 import axios from "axios"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
  * The mapping browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName },
+  components: { ItemName, FontAwesomeIcon },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -103,7 +118,8 @@ export default {
   },
   data () {
     return {
-      columns: []
+      columns: [],
+      mapping: this.$root.$data.mapping
     }
   },
   computed: {
@@ -134,6 +150,7 @@ export default {
             // Filter duplicate mappings
             if (!hashList.includes(this.$util.mappingHash(mapping))) {
               let item = {}
+              item.mapping = mapping
               item.sourceScheme = mapping.fromScheme.notation[0]
               item.targetScheme = mapping.toScheme.notation[0]
               item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
@@ -208,6 +225,11 @@ export default {
           tdClass: "mtColNormal",
           thClass: "mtColNormal",
           sortable: true
+        },
+        {
+          key: "actions",
+          label: "",
+          sortable: false
         }
       ]
     }
@@ -227,8 +249,24 @@ export default {
     remove() {
       this.items.pop()
     },
+    edit(data) {
+      this.mapping.jskos = this.$util.deepCopy(data.item.mapping)
+      // Make sure concept object references are in sync
+      this.mapping.jskos.from.memberSet = data.item.mapping.from.memberSet.slice()
+      if (this.mapping.jskos.to.memberSet) {
+        this.mapping.jskos.to.memberSet = data.item.mapping.to.memberSet.slice()
+      } else if (this.mapping.jskos.to.memberList) {
+        this.mapping.jskos.to.memberList = data.item.mapping.to.memberList.slice()
+      } else if (this.mapping.jskos.to.memberChoice) {
+        this.mapping.jskos.to.memberChoice = data.item.mapping.to.memberChoice.slice()
+      }
+      // Load concept prefLabel for each concept in mapping if necessary
+      for (let concept of [].concat(this.mapping.jskos.from.memberSet, this.mapping.jskos.to.memberSet, this.mapping.jskos.to.memberList, this.mapping.jskos.to.memberChoice)) {
+        this.hover(concept)
+      }
+    },
     hover(concept) {
-      if(!concept.prefLabel) {
+      if(concept && !concept.prefLabel) {
         // Load prefLabel to be shown as tooltip
         let vm = this
         this.$api.data(concept.uri)
@@ -292,6 +330,16 @@ export default {
 .mappingToolbar > div {
   width: 0;
   flex: 1;
+}
+
+.editButton {
+  font-size: 12px;
+  color: @buttonColor;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    color: @buttonColorHover;
+  }
 }
 
 </style>
