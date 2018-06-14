@@ -308,7 +308,6 @@ export default {
 @import "../style/main.less";
 
 #mappingBrowser {
-  height: 0;
   display: flex;
 }
 #mappingBrowserWrapper {

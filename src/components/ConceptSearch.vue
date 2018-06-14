@@ -1,6 +1,5 @@
 <template>
   <span
-    v-show="voc != null"
     class="searchfield"
     @mousemove="mousemove()">
     <div
@@ -8,38 +7,40 @@
       @click="focusSearch" >
       <font-awesome-icon icon="search" />
     </div>
-    <b-form-input
-      ref="searchInput"
-      v-model="searchQuery"
-      size="sm"
-      type="search"
-      placeholder="Type to search..."
-      @click.native="isOpen = searchQuery != ''"
-      @keydown.down.native.prevent="onArrowDown"
-      @keydown.up.native.prevent="onArrowUp"
-      @keyup.enter.native="onEnter"/>
-    <div
-      v-show="isOpen"
-      class="searchfield-results">
+    <div class="searchInputWrapper">
+      <b-form-input
+        ref="searchInput"
+        v-model="searchQuery"
+        size="sm"
+        type="search"
+        placeholder="Type to search..."
+        @click.native="isOpen = searchQuery != ''"
+        @keydown.down.native.prevent="onArrowDown"
+        @keydown.up.native.prevent="onArrowUp"
+        @keyup.enter.native="onEnter"/>
       <div
-        v-if="loading"
-        class="loading">
-        <loading-indicator />
+        v-show="isOpen"
+        class="searchfield-results">
+        <div
+          v-if="loading"
+          class="loading">
+          <loading-indicator />
+        </div>
+        <ul
+          v-else
+          class="searchfield-results-list">
+          <li
+            v-for="(result, i) in searchResult"
+            :key="i"
+            :id="'searchResult' + i"
+            :class="{ 'searchfield-selected': i === searchSelected }"
+            class="searchfield-results-item font-size-small"
+            @click="chooseResult(result)"
+            @mouseover="mouseover(i)">
+            <span v-html="highlightQueryInResult(result[0])"/>
+          </li>
+        </ul>
       </div>
-      <ul
-        v-else
-        class="searchfield-results-list">
-        <li
-          v-for="(result, i) in searchResult"
-          :key="i"
-          :id="'searchResult' + i"
-          :class="{ 'searchfield-selected': i === searchSelected }"
-          class="searchfield-results-item font-size-small"
-          @click="chooseResult(result)"
-          @mouseover="mouseover(i)">
-          <span v-html="highlightQueryInResult(result[0])"/>
-        </li>
-      </ul>
     </div>
   </span>
 </template>
@@ -268,7 +269,7 @@ export default {
   margin: 0 auto;
   padding: 4px 0;
   text-align: center;
-  left: -22px;
+  left: 5px;
   color: @buttonColor;
   &:hover {
     cursor: pointer;
@@ -278,10 +279,13 @@ export default {
 
 .searchfield {
   position: relative;
-  margin: 3px 3px 0px 28px;
   height: 34px;
 }
-.searchfield > input {
+.searchInputWrapper {
+  margin-left: 28px;
+  position: relative;
+}
+.searchInputWrapper > input {
   border: 0;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
 }

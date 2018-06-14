@@ -226,7 +226,6 @@ export default {
 @import "../style/main.less";
 
 #occurrencesBrowser {
-  height: 0;
   display: flex;
   flex-direction: column;
 }

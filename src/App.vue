@@ -5,55 +5,25 @@
     <the-navbar />
     <div class="main">
       <div class="flexbox-row">
-        <div
+        <!-- <div
           ref="mainElement0-0"
           :style="{ flex: flex[0][0] }"
           class="browser"
           data-direction="column">
-          <b-form-select
-            v-model="schemeSelectedLeft"
-            :options="schemeOptions"
-            class="schemeSelect" />
-          <concept-search
-            :voc="schemeSelectedLeft"
-            @chooseUri="chooseUri(arguments[0], true)" />
-          <concept-detail
-            ref="mainElement1-0"
-            :style="{ flex: flex[1][0] }"
-            :item="conceptSelectedLeft || schemeSelectedLeft"
-            :is-scheme="conceptSelectedLeft == null"
-            :is-left="true"
-            :voc="schemeSelectedLeft"
-            class="main-component"
-            data-direction="row"
-            @chooseUri="chooseUri" />
+
+
           <div
             v-if="conceptSelectedLeft != null || schemeSelectedLeft != null"
             ref="resizeSlider1-0"
             class="resizeSliderRow"
             @mousedown="startResizing($event, 1, 0, false)" />
-          <concept-tree
-            v-if="schemeSelectedLeft != null"
-            ref="mainElement1-1"
-            :style="{ flex: flex[1][1] }"
-            :voc-selected="schemeSelectedLeft"
-            :is-left="true"
-            class="main-component"
-            data-direction="row"
-            @selectedConcept="conceptSelectedLeft = $event" />
+
           <div
             v-else
             :style="{ flex: flex[1][1] }"
             class="main-component placeholder-component"
             data-direction="row">
-            <p class="font-heavy">Scheme quick selection</p>
-            <p
-              v-for="scheme in favoriteSchemes"
-              :key="scheme.uri">
-              ·<br><a
-                href=""
-                @click.prevent="schemeSelectedLeft = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
-            </p>
+
           </div>
         </div>
         <div
@@ -65,51 +35,18 @@
           ref="mainElement0-1"
           :style="{ flex: flex[0][1] }"
           data-direction="column">
-          <mapping-editor
-            ref="mainElement2-0"
-            :style="{ flex: flex[2][0] }"
-            :selected-left="conceptSelectedLeft"
-            :selected-right="conceptSelectedRight"
-            :scheme-left="schemeSelectedLeft"
-            :scheme-right="schemeSelectedRight"
-            class="main-component"
-            data-direction="row"
-            @chooseUri="chooseUri" />
+
           <div
             ref="resizeSlider2-0"
             class="resizeSliderRow"
             @mousedown="startResizing($event, 2, 0, false)" />
-          <mapping-browser
-            v-if="schemeSelectedLeft || schemeSelectedRight"
-            ref="mainElement2-1"
-            :style="{ flex: flex[2][1] }"
-            :selected-left="conceptSelectedLeft"
-            :selected-right="conceptSelectedRight"
-            :scheme-left="schemeSelectedLeft"
-            :scheme-right="schemeSelectedRight"
-            class="main-component"
-            data-direction="row"
-            @chooseUri="chooseUri" />
-          <div
-            v-else
-            ref="mainElement2-1"
-            :style="{ flex: flex[2][1] }"
-            class="main-component placeholder-component-center"
-            data-direction="row"><div class="font-heavy font-size-large">Welcome to Cocoda!</div></div>
+
+
           <div
             ref="resizeSlider2-1"
             class="resizeSliderRow"
             @mousedown="startResizing($event, 2, 1, false)" />
-          <occurrences-browser
-            ref="mainElement2-2"
-            :style="{ flex: flex[2][2] }"
-            :selected-left="conceptSelectedLeft"
-            :selected-right="conceptSelectedRight"
-            :scheme-left="schemeSelectedLeft"
-            :scheme-right="schemeSelectedRight"
-            class="main-component"
-            data-direction="row"
-            @chooseUri="chooseUri" />
+
         </div>
         <div
           ref="resizeSlider0-1"
@@ -165,6 +102,171 @@
                 @click.prevent="schemeSelectedRight = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
             </p>
           </div>
+        </div> -->
+        <!-- Concept components left side -->
+        <div class="browser">
+          <!-- Concept scheme selection -->
+          <div class="schemeSelectWrapper">
+            <b-form-select
+              v-model="schemeSelectedLeft"
+              :options="schemeOptions"
+              class="schemeSelect" />
+          </div>
+          <!-- ConceptSearch -->
+          <concept-search
+            v-show="schemeSelectedLeft != null"
+            :voc="schemeSelectedLeft"
+            class="conceptSearch"
+            @chooseUri="chooseUri(arguments[0], true)" />
+          <!-- ConceptDetail and ConceptTree -->
+          <div class="conceptBrowser">
+            <!-- ConceptDetail -->
+            <concept-detail
+              v-if="schemeSelectedLeft != null"
+              :item="conceptSelectedLeft || schemeSelectedLeft"
+              :is-scheme="conceptSelectedLeft == null"
+              :is-left="true"
+              :voc="schemeSelectedLeft"
+              class="mainComponent conceptBrowserItem"
+              @chooseUri="chooseUri"
+            />
+            <!-- Slider -->
+            <resizing-slider />
+            <!-- ConceptTree -->
+            <concept-tree
+              v-if="schemeSelectedLeft != null"
+              ref="conceptTreeLeft"
+              :voc-selected="schemeSelectedLeft"
+              :is-left="true"
+              class="mainComponent conceptBrowserItem"
+              @selectedConcept="conceptSelectedLeft = $event"
+            />
+            <!-- Placeholder -->
+            <div
+              v-if="schemeSelectedLeft == null"
+              class="mainComponent conceptBrowserItem placeholderComponent">
+              <p class="font-heavy">Scheme quick selection</p>
+              <p
+                v-for="scheme in favoriteSchemes"
+                :key="scheme.uri">
+                ·<br><a
+                  href=""
+                  @click.prevent="schemeSelectedLeft = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slider -->
+        <resizing-slider :is-column="true" />
+
+        <!-- Mapping tools and occurrences browser -->
+        <div class="mappingTool">
+          <div class="mappingToolItem mainComponent">
+            <!-- MappingEditor -->
+            <mapping-editor
+              v-if="schemeSelectedLeft || schemeSelectedRight"
+              :selected-left="conceptSelectedLeft"
+              :selected-right="conceptSelectedRight"
+              :scheme-left="schemeSelectedLeft"
+              :scheme-right="schemeSelectedRight"
+              @chooseUri="chooseUri"
+            />
+            <!-- Placeholder -->
+
+          </div>
+          <!-- Slider -->
+          <resizing-slider />
+          <div class="mappingToolItem mainComponent">
+            <!-- MappingBrowser -->
+            <mapping-browser
+              v-if="schemeSelectedLeft || schemeSelectedRight"
+              :selected-left="conceptSelectedLeft"
+              :selected-right="conceptSelectedRight"
+              :scheme-left="schemeSelectedLeft"
+              :scheme-right="schemeSelectedRight"
+              @chooseUri="chooseUri"
+            />
+            <!-- Placeholder -->
+            <div
+              v-else
+              class="placeholderComponentCenter"
+            >
+              <div class="font-heavy font-size-large">Welcome to Cocoda!</div>
+            </div>
+          </div>
+          <!-- Slider -->
+          <resizing-slider />
+          <div class="mappingToolItem mainComponent">
+            <!-- OccurrencesBrowser -->
+            <occurrences-browser
+              v-if="schemeSelectedLeft || schemeSelectedRight"
+              :selected-left="conceptSelectedLeft"
+              :selected-right="conceptSelectedRight"
+              :scheme-left="schemeSelectedLeft"
+              :scheme-right="schemeSelectedRight"
+              @chooseUri="chooseUri"
+            />
+            <!-- Placeholder -->
+
+          </div>
+        </div>
+
+        <!-- Slider -->
+        <resizing-slider :is-column="true" />
+
+        <!-- Concept components right side -->
+        <div class="browser">
+          <!-- Concept scheme selection -->
+          <div class="schemeSelectWrapper">
+            <b-form-select
+              v-model="schemeSelectedRight"
+              :options="schemeOptions"
+              class="schemeSelect" />
+          </div>
+          <!-- ConceptSearch -->
+          <concept-search
+            v-show="schemeSelectedRight != null"
+            :voc="schemeSelectedRight"
+            class="conceptSearch"
+            @chooseUri="chooseUri(arguments[0], false)" />
+          <!-- ConceptDetail and ConceptTree -->
+          <div class="conceptBrowser">
+            <!-- ConceptDetail -->
+            <concept-detail
+              v-if="schemeSelectedRight != null"
+              :item="conceptSelectedRight || schemeSelectedRight"
+              :is-scheme="conceptSelectedRight == null"
+              :is-left="false"
+              :voc="schemeSelectedRight"
+              class="mainComponent conceptBrowserItem"
+              @chooseUri="chooseUri"
+            />
+            <!-- Slider -->
+            <resizing-slider />
+            <!-- ConceptTree -->
+            <concept-tree
+              v-if="schemeSelectedRight != null"
+              ref="conceptTreeRight"
+              :voc-selected="schemeSelectedRight"
+              :is-left="false"
+              class="mainComponent conceptBrowserItem"
+              @selectedConcept="conceptSelectedRight = $event"
+            />
+            <!-- Placeholder -->
+            <div
+              v-if="schemeSelectedRight == null"
+              class="mainComponent conceptBrowserItem placeholderComponent">
+              <p class="font-heavy">Scheme quick selection</p>
+              <p
+                v-for="scheme in favoriteSchemes"
+                :key="scheme.uri">
+                ·<br><a
+                  href=""
+                  @click.prevent="schemeSelectedRight = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -180,6 +282,7 @@ import * as mixins from "./mixins"
 import ConceptTree from "./components/ConceptTree"
 import ConceptDetail from "./components/ConceptDetail"
 import ConceptSearch from "./components/ConceptSearch"
+import ResizingSlider from "./components/ResizingSlider"
 var _ = require("lodash")
 
 /**
@@ -198,7 +301,7 @@ function sortData(data) {
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser
+    TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider
   },
   mixins: [mixins.resizingMixin],
   data () {
@@ -281,7 +384,7 @@ export default {
       }, 100)
     },
     chooseUri(uri, isLeft) {
-      isLeft ? this.$refs["mainElement1-1"].chooseFromUri(uri) : this.$refs["mainElement3-1"].chooseFromUri(uri)
+      isLeft ? this.$refs["conceptTreeLeft"].chooseFromUri(uri) : this.$refs["conceptTreeRight"].chooseFromUri(uri)
     }
   },
 }
@@ -315,41 +418,70 @@ html, body {
 .flexbox-row {
   display: flex;
   position: absolute;
-  height: 99.5%;
-  width: 100%;
-}
-.flexbox-row > div {
-  margin: 0px 0px 0px 0px;
-  padding: 4px 0px 0px 0px;
+  // height: 99.5%;
+  // width: 99.5%;
+  top: 3px;
+  bottom: 3px;
+  left: 5px;
+  right: 5px;
+  margin: auto auto;
 }
 
-#mappingTool {
+.mappingTool {
   width: 0;
+  flex: 2;
   display: flex;
   flex-direction: column;
+  min-width: 540px;
+}
+.mappingToolItem {
+  height: 0;
+  flex: 1;
+  & > div {
+    height: 100%;
+  }
+  min-height: 200px;
 }
 
+.conceptSearch {
+  margin: 5px 0 0 0;
+}
 .browser {
   width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 315px;
+}
+.conceptBrowser {
+  height: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
-.schemeSelect {
+.conceptBrowserItem {
+  height: 0;
+  flex: 1;
+  min-height: 200px;
+}
+.schemeSelectWrapper {
   flex: none;
-  margin: 3px 3px 3px 3px;
-  width: 99%;
+  padding: 2px;
+}
+.schemeSelect {
   border: 0;
+  border-radius: 2px;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
   background-color: lighten(@color-primary-1, 15%);
   color: @color-primary-4;
   &:extend(.font-heavy);
 }
 
-.placeholder-component {
+.placeholderComponent {
   text-align: center;
   padding-top: 50px;
 }
-.placeholder-component-center > div {
+.placeholderComponentCenter > div {
   text-align: center;
   position: relative;
   top: 50%;

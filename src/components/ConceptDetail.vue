@@ -1,6 +1,5 @@
 <template>
   <div
-    v-show="item != null"
     class="conceptDetail font-size-small">
     <div
       v-if="detail != null"
@@ -114,6 +113,7 @@
         Modified: {{ detail.modified }}
       </p>
     </div>
+    <div v-else>Please select a scheme/concept.</div>
     <div
       v-if="loading"
       class="loadingFull">
@@ -179,6 +179,14 @@ export default {
      * Refreshes data when item changes.
      */
     item: function() {
+      this.loadDetails()
+    }
+  },
+  created() {
+    this.loadDetails()
+  },
+  methods: {
+    loadDetails() {
       this.detail = null
       this.gndMappings = []
       if (this.item == null) return
@@ -230,7 +238,6 @@ export default {
 @import "../style/main.less";
 
 .conceptDetail {
-  height: 0;
   position: relative;
 }
 p {

@@ -2,14 +2,12 @@
   <div id="mappingEditor">
     <div
       v-b-tooltip.hover="'Export mapping'"
-      v-show="schemeLeft != null || schemeRight != null"
       class="mappingExport"
       @click="exportMapping()">
       <font-awesome-icon icon="share-square" />
     </div>
     <div
       v-for="(isLeft, index0) in [true, false]"
-      v-show="schemeLeft != null || schemeRight != null"
       :key="index0"
       :style="{ order: index0 * 2 }"
       class="mappingEditorPart" >
@@ -214,9 +212,9 @@ export default {
 
 #mappingEditor {
   position: relative;
-  height: 0;
   overflow: hidden;
   display: flex;
+  min-height: 200px;
 }
 .mappingTypeSelection {
   flex: none;
