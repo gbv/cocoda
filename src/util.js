@@ -150,9 +150,7 @@ let setupTableScrollSync = function() {
     let tbody = table.getElementsByTagName("tbody")[0]
     tbody.onscroll = function() {
       thead.scrollLeft = tbody.scrollLeft
-      console.log("scroll!")
     }
-    console.log("set scroll sync for", table)
   }
 }
 
