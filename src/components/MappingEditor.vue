@@ -189,13 +189,7 @@ export default {
     showScheme(isLeft) {
       let chosenScheme = isLeft ? this.schemeLeft : this.schemeRight
       let mappingScheme = this.mapping.getScheme(isLeft)
-      if (chosenScheme == null || mappingScheme == null) {
-        return true
-      }
-      if (chosenScheme.uri != mappingScheme.uri) {
-        return true
-      }
-      return false
+      return !this.$util.compareSchemes(chosenScheme, mappingScheme)
     },
     exportMapping() {
       this.$refs.exportModal.show()

@@ -119,7 +119,7 @@ new Vue({
       },
       checkScheme(scheme, isLeft=true) {
         let actualScheme = this.getScheme(isLeft)
-        return actualScheme == null ? true : actualScheme.uri == scheme.uri
+        return actualScheme == null ? true : util.compareSchemes(actualScheme, scheme)
       },
       getConcepts(isLeft) {
         return this.jskos[this._fromTo(isLeft)].memberSet
