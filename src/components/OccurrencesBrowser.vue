@@ -1,5 +1,6 @@
 <template>
   <div id="occurrencesBrowser">
+    <minimizer text="Occurrences Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
       class="defaultTableWrapper">
@@ -52,6 +53,7 @@
 <script>
 import ItemName from "./ItemName"
 import AutoLink from "./AutoLink"
+import Minimizer from "./Minimizer"
 import axios from "axios"
 
 /**
@@ -59,7 +61,7 @@ import axios from "axios"
  */
 export default {
   name: "OccurrencesBrowser",
-  components: { ItemName, AutoLink },
+  components: { ItemName, AutoLink, Minimizer },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -226,6 +228,7 @@ export default {
 @import "../style/main.less";
 
 #occurrencesBrowser {
+  position: relative;
   display: flex;
   flex-direction: column;
 }

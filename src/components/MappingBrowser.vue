@@ -1,5 +1,6 @@
 <template>
   <div id="mappingBrowser">
+    <minimizer text="Mapping Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
       id="mappingBrowserWrapper">
@@ -79,13 +80,14 @@
 import ItemName from "./ItemName"
 import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import Minimizer from "./Minimizer"
 
 /**
  * The mapping browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, FontAwesomeIcon },
+  components: { ItemName, FontAwesomeIcon, Minimizer },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -308,6 +310,7 @@ export default {
 @import "../style/main.less";
 
 #mappingBrowser {
+  position: relative;
   display: flex;
 }
 #mappingBrowserWrapper {

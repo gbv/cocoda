@@ -1,6 +1,7 @@
 <template>
   <div
     class="conceptTree" >
+    <minimizer text="Concept Tree" />
     <div
       ref="conceptTreeItems"
       :class="{ scrollable: !loading }"
@@ -31,6 +32,7 @@
 <script>
 import LoadingIndicator from "./LoadingIndicator"
 import ConceptTreeItem from "./ConceptTreeItem"
+import Minimizer from "./Minimizer"
 var _ = require("lodash")
 
 /**
@@ -50,7 +52,7 @@ function sortData(data) {
 export default {
   name: "ConceptTree",
   components: {
-    LoadingIndicator, ConceptTreeItem
+    LoadingIndicator, ConceptTreeItem, Minimizer
   },
   props: {
     /**

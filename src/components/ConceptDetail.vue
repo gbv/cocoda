@@ -1,6 +1,7 @@
 <template>
   <div
     class="conceptDetail font-size-small">
+    <minimizer text="Concept Detail" />
     <div
       v-if="detail != null"
       class="conceptDetailContent">
@@ -126,6 +127,7 @@
 import LoadingIndicator from "./LoadingIndicator"
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
+import Minimizer from "./Minimizer"
 import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
@@ -135,7 +137,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 export default {
   name: "ConceptDetail",
   components: {
-    LoadingIndicator, AutoLink, ItemName, FontAwesomeIcon
+    LoadingIndicator, AutoLink, ItemName, Minimizer, FontAwesomeIcon
   },
   props: {
     /**

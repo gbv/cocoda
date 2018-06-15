@@ -1,5 +1,6 @@
 <template>
   <div id="mappingEditor">
+    <minimizer text="Mapping Editor" />
     <div
       v-b-tooltip.hover="'Export mapping'"
       class="mappingExport"
@@ -84,6 +85,7 @@
 <script>
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
+import Minimizer from "./Minimizer"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 var _ = require("lodash")
 
@@ -92,7 +94,7 @@ var _ = require("lodash")
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, FontAwesomeIcon },
+  components: { ItemName, MappingTypeSelection, Minimizer, FontAwesomeIcon },
   props: {
     /**
      * The selected concept from the left hand concept browser.
