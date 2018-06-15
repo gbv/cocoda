@@ -25,10 +25,21 @@ export default {
   methods: {
     startResizing() {
       // Define all necessary values
-      let
-        slider = this.$el,
+      let slider = this.$el,
         previous = slider.previousElementSibling,
-        next = slider.nextElementSibling,
+        next = slider.nextElementSibling
+      // Skip minimized components and sliders
+      while(previous && (previous.dataset.minimized == 1 || previous.classList.contains("resizeSliderRow") || previous.classList.contains("resizeSliderColumn"))) {
+        previous = previous.previousElementSibling
+      }
+      while(next && (next.dataset.minimized == 1 || next.classList.contains("resizeSliderRow") || next.classList.contains("resizeSliderColumn"))) {
+        next = next.nextElementSibling
+      }
+      // If either previous or next is null, abort (e.g. when all other components are minimized)
+      if (previous == null || next == null) {
+        return
+      }
+      let
         previousWidth = previous.clientWidth,
         nextWidth = next.clientWidth,
         previousHeight = previous.clientHeight,

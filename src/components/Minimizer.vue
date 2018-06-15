@@ -74,6 +74,8 @@ export default {
       if (this.minimized) {
         this.previousFlex = computedStyle.getPropertyValue("flex")
         current.style.flex = "0 1 " + minimizerHeight
+        // Set data-minimized property to 1 so that it can be identified as minimized
+        current.dataset.minimized = 1
       } else {
         // Reset styles to previous
         current.style.flex = this.previousFlex
@@ -81,6 +83,8 @@ export default {
           previous.element.style.minHeight = previous.minHeight
           previous.element.style.maxHeight = ""
         }
+        // Reset data-minimized
+        current.dataset.minimized = 0
       }
     }
   }
