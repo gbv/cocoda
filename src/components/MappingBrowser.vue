@@ -290,12 +290,13 @@ export default {
       // TODO: - Put into its own mapping providers module.
       let params = {}
       let concept = conceptItem.concept
+      let vm = this
       params[conceptItem.fromTo] = concept.uri
       axios.get(this.$config.mappingProviders[0].url, {
         params: params
       }).then(function(response) {
         for (let mapping of response.data) {
-          mapping.type = mapping.type || null
+          mapping.type = mapping.type || [vm.$util.defaultMappingType.uri]
         }
         concept.MAPPINGS = response.data
       }).catch(function(error) {

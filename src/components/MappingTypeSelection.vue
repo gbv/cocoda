@@ -33,19 +33,18 @@ export default {
   data () {
     return {
       mappingTypes: this.$util.mappingTypes,
-      mappingTypeSelected: null,
       mappingTypeHovered: null
     }
   },
-  computed: {},
-  created() {
-    this.mappingTypeSelected = this.$util.mappingTypeByUri(
-      this.mapping && this.mapping.type && this.mapping.type.length > 0 ? this.mapping.type[0] : this.$util.defaultMappingType.uri
-    )
+  computed: {
+    mappingTypeSelected() {
+      return this.$util.mappingTypeByUri(
+        this.mapping && this.mapping.type && this.mapping.type.length > 0 ? this.mapping.type[0] : this.$util.defaultMappingType.uri
+      )
+    }
   },
   methods: {
     choose(mappingType) {
-      this.mappingTypeSelected = mappingType
       // Save in mapping
       let mapping = this.mapping ? this.mapping.jskos : null
       if (mapping) {
@@ -55,7 +54,7 @@ export default {
         if (mapping.type.length == 0) {
           mapping.type.push(null)
         }
-        this.$set(mapping.type, 0, this.mappingTypeSelected.uri)
+        this.$set(mapping.type, 0, mappingType.uri)
       }
     }
   }
