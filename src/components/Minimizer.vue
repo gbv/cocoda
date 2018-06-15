@@ -9,7 +9,8 @@
     </div>
     <div
       v-show="minimized"
-      class="minimizedOverlay">
+      class="minimizedOverlay"
+      @click="toggleMinimize" >
       <div>{{ text }}</div>
     </div>
   </div>
@@ -47,6 +48,8 @@ export default {
   },
   methods: {
     toggleMinimize() {
+      let minimizerHeight = "40px"
+
       this.minimized = !this.minimized
       if (this.minimized) {
         this.previousMinHeights = []
@@ -63,14 +66,14 @@ export default {
             element: current,
             minHeight: minHeight
           })
-          current.style.minHeight = "24px"
-          current.style.maxHeight = "24px"
+          current.style.minHeight = minimizerHeight
+          current.style.maxHeight = minimizerHeight
         }
       }
       let computedStyle = window.getComputedStyle(current)
       if (this.minimized) {
         this.previousFlex = computedStyle.getPropertyValue("flex")
-        current.style.flex = "0 1 24px"
+        current.style.flex = "0 1 " + minimizerHeight
       } else {
         // Reset styles to previous
         current.style.flex = this.previousFlex
@@ -88,6 +91,8 @@ export default {
 @import "../style/main.less";
 
 .minimizeButton, .maximizeButton {
+  cursor: pointer;
+  &:extend(.font-heavy);
   position: absolute;
   font-size: 12px;
   right: 0px;
@@ -95,10 +100,8 @@ export default {
   width: 24px;
   height: 24px;
   z-index: 250;
-  user-select: none;
-  cursor: pointer;
-  color: fadeout(@buttonColor, 50%);
-  background-color: fadeout(@buttonColorDisabled, 16%);
+  color: fadeout(@buttonColor, 70%);
+  background-color: fadeout(@buttonColorDisabled, 18%);
   &:hover {
     color: @buttonColor;
     background-color: @buttonColorDisabled;
@@ -112,6 +115,9 @@ export default {
   padding-top: 3px;
 }
 .minimizedOverlay {
+  cursor: pointer;
+  &:extend(.font-heavy);
+  &:extend(.font-size-normal);
   position: absolute;
   z-index: 200;
   top: 0;
@@ -120,8 +126,10 @@ export default {
   left: 0;
   background-color: white;
   text-align: center;
-  &:extend(.font-size-small);
-  &:extend(.font-heavy);
+  user-select: none;
+  &:hover {
+    background-color: lighten(@color-primary-1, 17%);
+  }
 }
 .minimizedOverlay > div {
   position: absolute;
@@ -130,6 +138,6 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 20px;
+  height: 24px;
 }
 </style>
