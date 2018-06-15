@@ -30,7 +30,7 @@
               :is-scheme="conceptSelectedLeft == null"
               :is-left="true"
               :voc="schemeSelectedLeft"
-              class="mainComponent conceptBrowserItem"
+              class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
             />
             <!-- Slider -->
@@ -41,7 +41,7 @@
               ref="conceptTreeLeft"
               :voc-selected="schemeSelectedLeft"
               :is-left="true"
-              class="mainComponent conceptBrowserItem"
+              class="mainComponent conceptBrowserItem conceptBrowserItemTree"
               @selectedConcept="conceptSelectedLeft = $event"
             />
             <!-- Placeholder -->
@@ -142,7 +142,7 @@
               :is-scheme="conceptSelectedRight == null"
               :is-left="false"
               :voc="schemeSelectedRight"
-              class="mainComponent conceptBrowserItem"
+              class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
             />
             <!-- Slider -->
@@ -153,7 +153,7 @@
               ref="conceptTreeRight"
               :voc-selected="schemeSelectedRight"
               :is-left="false"
-              class="mainComponent conceptBrowserItem"
+              class="mainComponent conceptBrowserItem conceptBrowserItemTree"
               @selectedConcept="conceptSelectedRight = $event"
             />
             <!-- Placeholder -->
@@ -330,6 +330,12 @@ html, body {
   flex: 1;
   min-height: 200px;
 }
+.conceptBrowserItemDetail {
+  flex: 4;
+}
+.conceptBrowserItemTree {
+  flex: 6;
+}
 
 .mappingTool {
   width: 0;
@@ -340,7 +346,7 @@ html, body {
 }
 .mappingToolItem {
   height: 0;
-  flex: 1;
+  flex: 3;
   & > div {
     height: 100%;
   }
