@@ -5,104 +5,7 @@
     <the-navbar />
     <div class="main">
       <div class="flexbox-row">
-        <!-- <div
-          ref="mainElement0-0"
-          :style="{ flex: flex[0][0] }"
-          class="browser"
-          data-direction="column">
 
-
-          <div
-            v-if="conceptSelectedLeft != null || schemeSelectedLeft != null"
-            ref="resizeSlider1-0"
-            class="resizeSliderRow"
-            @mousedown="startResizing($event, 1, 0, false)" />
-
-          <div
-            v-else
-            :style="{ flex: flex[1][1] }"
-            class="main-component placeholder-component"
-            data-direction="row">
-
-          </div>
-        </div>
-        <div
-          ref="resizeSlider0-0"
-          class="resizeSliderCol"
-          @mousedown="startResizing($event, 0, 0)" />
-        <div
-          id="mappingTool"
-          ref="mainElement0-1"
-          :style="{ flex: flex[0][1] }"
-          data-direction="column">
-
-          <div
-            ref="resizeSlider2-0"
-            class="resizeSliderRow"
-            @mousedown="startResizing($event, 2, 0, false)" />
-
-
-          <div
-            ref="resizeSlider2-1"
-            class="resizeSliderRow"
-            @mousedown="startResizing($event, 2, 1, false)" />
-
-        </div>
-        <div
-          ref="resizeSlider0-1"
-          class="resizeSliderCol"
-          @mousedown="startResizing($event, 0, 1)" />
-        <div
-          ref="mainElement0-2"
-          :style="{ flex: flex[0][2] }"
-          class="browser"
-          data-direction="column">
-          <b-form-select
-            v-model="schemeSelectedRight"
-            :options="schemeOptions"
-            class="schemeSelect" />
-          <concept-search
-            :voc="schemeSelectedRight"
-            @chooseUri="chooseUri(arguments[0], false)" />
-          <concept-detail
-            ref="mainElement3-0"
-            :style="{ flex: flex[3][0] }"
-            :item="conceptSelectedRight || schemeSelectedRight"
-            :is-scheme="conceptSelectedRight == null"
-            :is-left="false"
-            :voc="schemeSelectedRight"
-            class="main-component"
-            data-direction="row"
-            @chooseUri="chooseUri" />
-          <div
-            v-if="conceptSelectedRight != null || schemeSelectedRight != null"
-            ref="resizeSlider3-0"
-            class="resizeSliderRow"
-            @mousedown="startResizing($event, 3, 0, false)" />
-          <concept-tree
-            v-if="schemeSelectedRight != null"
-            ref="mainElement3-1"
-            :style="{ flex: flex[3][1] }"
-            :voc-selected="schemeSelectedRight"
-            :is-left="false"
-            class="main-component"
-            data-direction="row"
-            @selectedConcept="conceptSelectedRight = $event" />
-          <div
-            v-else
-            :style="{ flex: flex[1][1] }"
-            class="main-component placeholder-component"
-            data-direction="row">
-            <p class="font-heavy">Scheme quick selection</p>
-            <p
-              v-for="scheme in favoriteSchemes"
-              :key="scheme.uri">
-              ·<br><a
-                href=""
-                @click.prevent="schemeSelectedRight = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
-            </p>
-          </div>
-        </div> -->
         <!-- Concept components left side -->
         <div class="browser">
           <!-- Concept scheme selection -->
@@ -278,12 +181,10 @@ import TheNavbar from "./components/TheNavbar"
 import MappingEditor from "./components/MappingEditor"
 import OccurrencesBrowser from "./components/OccurrencesBrowser"
 import MappingBrowser from "./components/MappingBrowser"
-import * as mixins from "./mixins"
 import ConceptTree from "./components/ConceptTree"
 import ConceptDetail from "./components/ConceptDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
-var _ = require("lodash")
 
 /**
  * Sorts data by German prefLabel with fallback to uri.
@@ -303,15 +204,8 @@ export default {
   components: {
     TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider
   },
-  mixins: [mixins.resizingMixin],
   data () {
     return {
-      flex: [
-        [1.0, 2.0, 1.0], // main columns
-        [1.0, 1.5], // left concept browser
-        [1.0, 1.0, 1.0], // mapping tool
-        [1.0, 1.5], // right concept browser
-      ],
       conceptSelectedLeft: null,
       conceptSelectedRight: null,
       schemeSelectedLeft: null,
@@ -340,18 +234,6 @@ export default {
       return options
     }
   },
-  watch: {
-    schemeSelectedLeft(newValue, oldValue) {
-      if (oldValue == null && newValue != null) {
-        this.schemeChangedFromNull(true)
-      }
-    },
-    schemeSelectedRight(newValue, oldValue) {
-      if (oldValue == null && newValue != null) {
-        this.schemeChangedFromNull(false)
-      }
-    }
-  },
   mounted() {
     // Load schemes
     var vm = this
@@ -374,15 +256,6 @@ export default {
       })
   },
   methods: {
-    schemeChangedFromNull(isLeft) {
-      let index = isLeft ? 1 : 3
-      let vm = this
-      this.flex[index] = [1.0, 1.5]
-      // Introduce short delay to resetting flex values so that the ConceptDetail component has time to expand to its proper size.
-      _.delay(function() {
-        vm.resetFlex()
-      }, 100)
-    },
     chooseUri(uri, isLeft) {
       isLeft ? this.$refs["conceptTreeLeft"].chooseFromUri(uri) : this.$refs["conceptTreeRight"].chooseFromUri(uri)
     }
@@ -401,7 +274,6 @@ html, body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-top: 0px;
   height: 100%;
   width: 100%;
   display: flex;
@@ -409,7 +281,7 @@ html, body {
   flex-wrap: nowrap;
   /* TODO: - How much width and height do we need? */
   min-width: 1200px;
-  min-height: 800px;
+  min-height: 600px;
 }
 .main {
   flex: 1;
@@ -418,13 +290,45 @@ html, body {
 .flexbox-row {
   display: flex;
   position: absolute;
-  // height: 99.5%;
-  // width: 99.5%;
   top: 3px;
   bottom: 3px;
   left: 5px;
   right: 5px;
   margin: auto auto;
+}
+
+.browser {
+  width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 315px;
+}
+.schemeSelectWrapper {
+  flex: none;
+  padding: 2px;
+}
+.schemeSelect {
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+  background-color: lighten(@color-primary-1, 15%);
+  color: @color-primary-4;
+  &:extend(.font-heavy);
+}
+.conceptSearch {
+  margin: 5px 0 0 0;
+}
+.conceptBrowser {
+  height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.conceptBrowserItem {
+  height: 0;
+  flex: 1;
+  min-height: 200px;
 }
 
 .mappingTool {
@@ -441,40 +345,6 @@ html, body {
     height: 100%;
   }
   min-height: 200px;
-}
-
-.conceptSearch {
-  margin: 5px 0 0 0;
-}
-.browser {
-  width: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 315px;
-}
-.conceptBrowser {
-  height: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.conceptBrowserItem {
-  height: 0;
-  flex: 1;
-  min-height: 200px;
-}
-.schemeSelectWrapper {
-  flex: none;
-  padding: 2px;
-}
-.schemeSelect {
-  border: 0;
-  border-radius: 2px;
-  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
-  background-color: lighten(@color-primary-1, 15%);
-  color: @color-primary-4;
-  &:extend(.font-heavy);
 }
 
 .placeholderComponent {
