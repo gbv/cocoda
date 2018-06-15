@@ -1,9 +1,9 @@
 <template>
   <div
-    :class="{ scrollable: !loading }"
     class="conceptTree" >
     <div
       ref="conceptTreeItems"
+      :class="{ scrollable: !loading }"
       class="conceptTreeItems">
       <concept-tree-item
         v-for="(concept, index) in tree"
@@ -252,16 +252,6 @@ export default {
        * @type {object}
        */
       this.$emit("selectedConcept", newValue)
-    },
-    /**
-     * Move loading indicator to right scrolling position in tree.
-     */
-    loading: function() {
-      let vm = this
-      _.delay(function() {
-        let loadingFull = vm.$refs.loadingFull
-        loadingFull.style.top = (vm.$el.scrollTop - vm.$el.clientTop) + "px"
-      }, 50)
     }
   },
   created() {
@@ -305,7 +295,7 @@ export default {
                 let el = document.querySelectorAll(`[data-uri='${selected.uri}']`)[0]
                 // Scroll element
                 var options = {
-                  container: vm.$el,
+                  container: vm.$refs.conceptTreeItems,
                   easing: "ease-in",
                   offset: -50,
                   cancelable: true,
