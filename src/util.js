@@ -87,13 +87,11 @@ let mappingTypes = [
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
   },
   {
-    notation: ["?"],
+    notation: ["→"],
     uri: "http://www.w3.org/2004/02/skos/core#mappingRelation",
     prefLabel: { "en": "mapping relation" },
   },
 ]
-let defaultMappingType = mappingTypes[1]
-
 
 let mappingTypeByUri = function(uri) {
   for(let mappingType of mappingTypes) {
@@ -103,6 +101,8 @@ let mappingTypeByUri = function(uri) {
   }
   return null
 }
+
+let defaultMappingType = mappingTypeByUri("http://www.w3.org/2004/02/skos/core#mappingRelation")
 
 // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
 function selectText(el){
