@@ -38,8 +38,9 @@ export default {
   },
   computed: {
     mappingTypeSelected() {
+      let mapping = this.mapping ? this.mapping.jskos : null
       return this.$util.mappingTypeByUri(
-        this.mapping && this.mapping.type && this.mapping.type.length > 0 ? this.mapping.type[0] : this.$util.defaultMappingType.uri
+        mapping && mapping.type && mapping.type.length > 0 ? mapping.type[0] : this.$util.defaultMappingType.uri
       )
     }
   },
