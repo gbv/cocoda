@@ -18,7 +18,7 @@
             :show-text="index == item.ancestors.length - 1"
             :is-link="true"
             font-size="small"
-            @click.native="chooseUri(parent.uri, isLeft)" />
+            @click.native="chooseUri(parent, isLeft)" />
           <span v-if="index < item.ancestors.length - 1">
             ›
           </span>

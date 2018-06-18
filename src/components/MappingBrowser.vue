@@ -24,9 +24,9 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.compareSchemes(concept.inScheme[0], schemeLeft)"
+              :is-link="$util.canConceptBeSelected(concept, schemeLeft)"
               @mouseover.native="hover(concept)"
-              @click.native="$util.compareSchemes(concept.inScheme[0], schemeLeft) && chooseUri(concept.uri, true)" />
+              @click.native="$util.canConceptBeSelected(concept, schemeLeft) && chooseUri(concept, true)" />
           </span>
           <span
             slot="targetConcepts"
@@ -37,9 +37,9 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.compareSchemes(concept.inScheme[0], schemeRight)"
+              :is-link="$util.canConceptBeSelected(concept, schemeRight)"
               @mouseover.native="hover(concept)"
-              @click.native="$util.compareSchemes(concept.inScheme[0], schemeRight) && chooseUri(concept.uri, false)" />
+              @click.native="$util.canConceptBeSelected(concept, schemeRight) && chooseUri(concept, false)" />
           </span>
           <span
             slot="type"

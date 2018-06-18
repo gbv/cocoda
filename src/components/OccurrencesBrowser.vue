@@ -21,8 +21,8 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="data.value && $util.compareSchemes(data.value.inScheme[0], schemeLeft)"
-            @click.native="data.value && $util.compareSchemes(data.value.inScheme[0], schemeLeft) && chooseUri(data.value.uri, true)" />
+            :is-link="data.value && $util.canConceptBeSelected(data.value, schemeLeft)"
+            @click.native="data.value && $util.canConceptBeSelected(data.value, schemeLeft) && chooseUri(data.value, true)" />
         </span>
         <span
           slot="to"
@@ -31,8 +31,8 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="data.value && $util.compareSchemes(data.value.inScheme[0], schemeRight)"
-            @click.native="data.value && $util.compareSchemes(data.value.inScheme[0], schemeRight) && chooseUri(data.value.uri, false)" />
+            :is-link="data.value && $util.canConceptBeSelected(data.value, schemeRight)"
+            @click.native="data.value && $util.canConceptBeSelected(data.value, schemeRight) && chooseUri(data.value, false)" />
         </span>
         <span
           slot="occurrences"

@@ -40,14 +40,14 @@ fontawesome.library.add(brands)
 // Global mixin for choosing a concept by uri (emits the chooseUri event)
 Vue.mixin({
   methods: {
-    chooseUri(uri, isLeft = true) {
+    chooseUri(concept, isLeft = true) {
       /**
        * Event when the user has chosen a result.
        *
        * @event chooseUri
        * @type {string} - uri that is chosen
        */
-      this.$emit("chooseUri", uri, isLeft)
+      this.$emit("chooseUri", concept, isLeft)
     }
   }
 })

@@ -22,8 +22,8 @@
             :key="index" >
             <item-name
               :item="concept"
-              :is-link="$util.compareSchemes(concept.inScheme[0], isLeft ? schemeLeft : schemeRight)"
-              @click.native="$util.compareSchemes(concept.inScheme[0], isLeft ? schemeLeft : schemeRight) && chooseUri(concept.uri, isLeft)" />
+              :is-link="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight)"
+              @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
             <div
               class="mappingConceptDelete font-size-small"
               @click="mapping.remove(concept, isLeft)">X</div>

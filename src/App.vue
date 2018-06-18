@@ -185,6 +185,7 @@ import ConceptTree from "./components/ConceptTree"
 import ConceptDetail from "./components/ConceptDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
+var _ = require("lodash")
 
 /**
  * Sorts data by German prefLabel with fallback to uri.
@@ -256,8 +257,40 @@ export default {
       })
   },
   methods: {
-    chooseUri(uri, isLeft) {
-      isLeft ? this.$refs["conceptTreeLeft"].chooseFromUri(uri) : this.$refs["conceptTreeRight"].chooseFromUri(uri)
+    chooseUri(concept, isLeft) {
+      let uri
+      let delay = 0
+      // Support both URIs and objects
+      if (typeof concept === "object") {
+        uri = concept.uri
+        // Check if scheme needs to be selected as well
+        if (concept.inScheme && (isLeft && !this.schemeSelectedLeft || !isLeft && !this.schemeSelectedRight)) {
+          let conceptScheme = concept.inScheme[0]
+          let newScheme = null
+          // Find in existing list of schemes
+          for (let scheme of this.schemes) {
+            if (this.$util.compareSchemes(scheme, conceptScheme)) {
+              newScheme = scheme
+              break
+            }
+          }
+          if (newScheme) {
+            // introduce delay so that the ConceptTree component has time to load
+            delay = 200
+            if (isLeft) {
+              this.schemeSelectedLeft = newScheme
+            } else {
+              this.schemeSelectedRight = newScheme
+            }
+          }
+        }
+      } else {
+        uri = concept
+      }
+      let vm = this
+      _.delay(function() {
+        isLeft ? vm.$refs["conceptTreeLeft"].chooseFromUri(uri) : vm.$refs["conceptTreeRight"].chooseFromUri(uri)
+      }, delay)
     }
   },
 }

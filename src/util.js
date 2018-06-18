@@ -142,6 +142,14 @@ let compareSchemes = function(scheme1, scheme2) {
   return false
 }
 
+let canConceptBeSelected = function(concept, scheme) {
+  if (!concept.inScheme || concept.inScheme.length == 0) {
+    return false
+  }
+  let conceptScheme = concept.inScheme[0]
+  return scheme == null || compareSchemes(conceptScheme, scheme)
+}
+
 let setupTableScrollSync = function() {
   // Synchronize scrolling of header and body in all default tables
   let tables = document.getElementsByClassName("defaultTable")
@@ -154,4 +162,4 @@ let setupTableScrollSync = function() {
   }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, setupTableScrollSync }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, canConceptBeSelected, setupTableScrollSync }
