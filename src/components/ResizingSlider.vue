@@ -23,7 +23,7 @@ export default {
     }
   },
   methods: {
-    startResizing() {
+    startResizing(event) {
       // Define all necessary values
       let slider = this.$el,
         previous = slider.previousElementSibling,
@@ -61,6 +61,7 @@ export default {
         document.onmouseup = null
         document.body.style.cursor = "auto"
         document.body.style.userSelect = "auto"
+        document.body.style.webkitUserSelect = "auto"
         vm.resizing = false
       }
       if (this.resizing) {
@@ -71,6 +72,7 @@ export default {
       let start = vm.isColumn ? event.clientX : event.clientY
       document.body.style.cursor = vm.isColumn ? "col-resize" : "row-resize"
       document.body.style.userSelect = "none"
+      document.body.style.webkitUserSelect = "none"
       function onMouseMove(event) {
         let moved = (vm.isColumn ? event.clientX : event.clientY) - start
         if (vm.isColumn) {
