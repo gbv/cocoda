@@ -9,7 +9,7 @@
         :sort-desc="true"
         :items="items"
         :fields="fields"
-        sort-by="occurrencesSort"
+        sort-by="occurrences"
         class="defaultTable"
         small
         thead-class="defaultTableHead"
@@ -94,73 +94,57 @@ export default {
   },
   data () {
     return {
-      leftResult: null,
-      rightResult: null,
+      occurrences: [],
       mapping: this.$root.$data.mapping
     }
   },
   computed: {
+    concepts() {
+      let concepts = {}
+
+      if (this.selectedLeft) {
+        concepts[this.selectedLeft.uri] = {
+          concept: this.selectedLeft,
+          scheme: this.schemeLeft,
+          type: "from"
+        }
+      }
+      if (this.selectedRight) {
+        concepts[this.selectedRight.uri] = {
+          concept: this.selectedRight,
+          scheme: this.schemeRight,
+          type: "to"
+        }
+      }
+
+      return concepts
+    },
     items() {
       let items = []
-      let intermediateItems = []
-      // Add selected concepts
-      // TODO: - Scheme for selected concept might differ from scheme for mapping.
-      if (!this.mapping.reversed) {
-        intermediateItems.push({
-          concept: this.selectedLeft,
-          scheme: this.schemeLeft,
-          type: "from"
-        }, {
-          concept: this.selectedRight,
-          scheme: this.schemeRight,
-          type: "to"
-        })
-      } else {
-        intermediateItems.push({
-          concept: this.selectedRight,
-          scheme: this.schemeRight,
-          type: "from"
-        }, {
-          concept: this.selectedLeft,
-          scheme: this.schemeLeft,
-          type: "to"
-        })
-      }
-      for (let concept of this.mapping.jskos.from.memberSet) {
-        if ((!this.selectedLeft || this.selectedLeft.uri != concept.uri) && (!this.selectedRight || this.selectedRight.uri != concept.uri)) {
-          intermediateItems.push({
-            concept: concept,
-            scheme: this.mapping.jskos.fromScheme,
-            type: "from"
-          })
-        }
-      }
-      for (let concept of this.mapping.jskos.to.memberSet) {
-        if ((!this.selectedLeft || this.selectedLeft.uri != concept.uri) && (!this.selectedRight || this.selectedRight.uri != concept.uri)) {
-          intermediateItems.push({
-            concept: concept,
-            scheme: this.mapping.jskos.toScheme,
-            type: "to"
-          })
-        }
-      }
-      for (let item of intermediateItems) {
-        if (item.concept == null) {
+      for (let occurrence of this.occurrences) {
+        if (occurrence.memberSet.length == 0) {
+          // Should not occur, skip
           continue
-        }
-        if (item.concept.OCCURRENCES == null) {
-          this.loadOccurrences(item.concept)
-        }
-        items.push({
-          occurrences: item.concept.OCCURRENCES
-        })
-        if (item.concept.OCCURRENCES == null || item.concept.OCCURRENCES == -1) {
-          items[items.length-1].occurrencesSort = -1
+        } else if (occurrence.memberSet.length == 1) {
+          // One concept
+          items.push({
+            occurrences: occurrence
+          })
+          let item = this.concepts[occurrence.memberSet[0].uri]
+          items[items.length-1][item.type] = item.concept
+          items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
         } else {
-          items[items.length-1].occurrencesSort = item.concept.OCCURRENCES.count
+          // Two concepts
+          items.push({
+            occurrences: occurrence
+          })
+          let item = this.concepts[occurrence.memberSet[0].uri]
+          items[items.length-1][item.type] = item.concept
+          items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
+          item = this.concepts[occurrence.memberSet[1].uri]
+          items[items.length-1][item.type] = item.concept
+          items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
         }
-        items[items.length-1][item.type] = item.concept
-        items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
       }
       return items
     },
@@ -203,21 +187,30 @@ export default {
       ]
     }
   },
+  watch: {
+    concepts() {
+      this.reloadOccurrences()
+    }
+  },
   mounted() {
     this.$util.setupTableScrollSync()
   },
   methods: {
-    loadOccurrences(concept) {
+    reloadOccurrences() {
+      this.occurrences = []
+      let urisString = Object.keys(this.concepts).reduce(function(a, b) { return a + " " + b })
+      console.log(urisString)
       let vm = this
       axios.get(this.$config.occurrenceProviders[0].url, {
         params: {
-          members: concept.uri
+          members: urisString
         }
       }).then(function(response) {
-        vm.$set(concept, "OCCURRENCES", response.data.length > 0 ? response.data[0] : -1)
+        vm.occurrences = response.data
+        console.log(vm.occurrences)
       }).catch(function(error) {
         console.log(error)
-        vm.$set(concept, "OCCURRENCES", -1)
+        vm.occurrences = []
       })
     }
   }
