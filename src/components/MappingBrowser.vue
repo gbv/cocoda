@@ -67,13 +67,30 @@
         </b-table>
       </div>
       <div
-        v-if="items.length > 0"
-        class="mappingToolbar">
-        <div /><div /><div style="text-align: right;">{{ items.length }} mappings</div>
+        v-else
+        class="noItems font-heavy">No mappings available
       </div>
       <div
-        v-else
-        class="noItems font-heavy">No mappings available</div>
+        class="mappingToolbar">
+        <div>
+          <b-dropdown
+            :text="selectedOption.label"
+            dropup
+            no-flip
+            class="optionsDropdown">
+            <b-dropdown-item-button
+              v-for="option in mappingOptions"
+              :key="option.id"
+              :disabled="!option.showCondition(vm)"
+              href="#"
+              @click="selectedOption = option">
+              {{ option.label }}
+            </b-dropdown-item-button>
+          </b-dropdown>
+        </div>
+        <div />
+        <div style="text-align: right;">{{ items.length }} mappings</div>
+      </div>
     </div>
   </div>
 </template>
@@ -122,8 +139,26 @@ export default {
   },
   data () {
     return {
+      vm: this,
       columns: [],
-      mapping: this.$root.$data.mapping
+      mapping: this.$root.$data.mapping,
+      mappingOptions: {
+        showAll: {
+          id: "showAll",
+          label: "Show All Mappings",
+          showCondition() {
+            return true
+          }
+        },
+        showSelected: {
+          id: "showSelected",
+          label: "Show Only Mappings To Selected Scheme",
+          showCondition(vm) {
+            return vm.schemeLeft != null && vm.schemeRight != null
+          }
+        }
+      },
+      selectedOption: null
     }
   },
   computed: {
@@ -159,6 +194,13 @@ export default {
               item.targetScheme = mapping.toScheme.notation[0]
               item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
               item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
+              // Filter mappings depending on selected option
+              if (this.selectedOption.id == this.mappingOptions.showSelected.id) {
+                // Only show if source and target schemes match with selected schemes
+                if(!this.$util.compareSchemes(mapping.fromScheme, this.schemeLeft) || !this.$util.compareSchemes(mapping.toScheme, this.schemeRight)) {
+                  continue
+                }
+              }
               // Highlight if selected concepts are in mapping and add inScheme to each concept
               let leftInSource = false
               for (let concept of item.sourceConcepts) {
@@ -242,6 +284,8 @@ export default {
     for (let i = 0; i < 30; i++) {
       // this.items.push(this.sampleItem)
     }
+    // Set default selectedOption
+    this.selectedOption = this.mappingOptions.showAll
   },
   mounted() {
     this.$util.setupTableScrollSync()
@@ -350,6 +394,7 @@ export default {
 </style>
 
 <style lang="less">
+@import "../style/main.less";
 
 @table-cell-width: 120px;
 @table-cell-width-short: 70px;
@@ -365,5 +410,21 @@ export default {
 .mtColWide {
   width: @table-cell-width-wide * 3;
   min-width: @table-cell-width-wide;
+}
+
+// Overwriting bootstrap styles has to be done in global scope
+.optionsDropdown {
+  user-select: none;
+  & > .btn {
+    &:extend(.font-size-small);
+    padding: 0.1rem 0.4rem;
+    margin-bottom: 2px;
+    background-color: @buttonColor;
+    border-color: @buttonColor;
+  }
+
+  & > .dropdown-menu {
+    &:extend(.font-size-small);
+  }
 }
 </style>
