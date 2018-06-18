@@ -4,7 +4,9 @@
     <div
       v-show="schemeLeft != null || schemeRight != null"
       id="mappingBrowserWrapper">
-      <div class="defaultTableWrapper">
+      <div
+        v-if="items.length > 0"
+        class="defaultTableWrapper">
         <b-table
           ref="occurrencesTable"
           :items="items"
@@ -71,7 +73,7 @@
       </div>
       <div
         v-else
-        class="noItems">No mappings</div>
+        class="noItems font-heavy">No mappings available</div>
     </div>
   </div>
 </template>
@@ -321,7 +323,7 @@ export default {
   flex-direction: column;
 }
 .noItems {
-  margin: 5px auto 5px auto;
+  margin: 30px auto 5px auto;
 }
 .noItems {
   flex: 5 0 auto;
