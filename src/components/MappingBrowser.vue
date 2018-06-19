@@ -317,11 +317,19 @@ export default {
       if(concept && !concept.prefLabel) {
         // Load prefLabel to be shown as tooltip
         let vm = this
-        this.$api.data(concept.uri)
+        if (!concept.inScheme) {
+          // TODO: - Error handling
+          console.log("No scheme for", concept)
+          return
+        }
+        this.$api.data(concept.inScheme[0], concept.uri)
           .then(function(data) {
             if (Array.isArray(data) && data.length > 0) {
               // Add prefLabel to concept
               vm.$set(concept, "prefLabel", data[0].prefLabel)
+            } else {
+              // TODO: - Error handling
+              vm.$set(concept, "prefLabel", { de: " " })
             }
             if (data.length > 1) {
               console.log("For some reason, more than one set of properties was received for ", concept)

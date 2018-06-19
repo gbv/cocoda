@@ -163,7 +163,7 @@ export default {
         this.cancelToken.cancel("There was a newer search query.")
       }
       this.cancelToken = this.$api.token()
-      this.$api.suggest(this.searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
+      this.$api.suggest(this.voc, this.searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
         .then(function(data) {
           vm.loading = false
           vm.searchResult = _.zip(data[1], data[2], data[3])
