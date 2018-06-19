@@ -35,6 +35,16 @@
             @click.native="data.value && $util.canConceptBeSelected(data.value, schemeRight) && chooseUri(data.value, false)" />
         </span>
         <span
+          slot="fromScheme"
+          slot-scope="data">
+          {{ data.value ? data.value.notation[0].toUpperCase() : "-" }}
+        </span>
+        <span
+          slot="toScheme"
+          slot-scope="data">
+          {{ data.value ? data.value.notation[0].toUpperCase() : "-" }}
+        </span>
+        <span
           slot="occurrences"
           slot-scope="data">
           <span v-if="data.value == null">...</span>
@@ -44,6 +54,21 @@
               :link="data.value.url"
               :text="data.value.count" />
           </span>
+        </span>
+        <span
+          slot="actions"
+          slot-scope="data">
+          <font-awesome-icon
+            v-b-tooltip.hover="'convert to mapping'"
+            v-if="data.value"
+            icon="sign-in-alt"
+            class="toMapping"
+            @click="toMapping(data)" />
+        </span>
+        <span
+          slot="HEAD_actions"
+          slot-scope="data">
+          <font-awesome-icon icon="toolbox" />
         </span>
       </b-table>
     </div>
@@ -55,13 +80,14 @@ import ItemName from "./ItemName"
 import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import axios from "axios"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
  * The occurrences browser component.
  */
 export default {
   name: "OccurrencesBrowser",
-  components: { ItemName, AutoLink, Minimizer },
+  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -95,7 +121,8 @@ export default {
   data () {
     return {
       occurrences: [],
-      mapping: this.$root.$data.mapping
+      mapping: this.$root.$data.mapping,
+      cancelToken: null
     }
   },
   computed: {
@@ -128,22 +155,24 @@ export default {
         } else if (occurrence.memberSet.length == 1) {
           // One concept
           items.push({
-            occurrences: occurrence
+            occurrences: occurrence,
+            actions: false
           })
           let item = this.concepts[occurrence.memberSet[0].uri]
           items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
+          items[items.length-1][item.type+"Scheme"] = item.scheme
         } else {
           // Two concepts
           items.push({
-            occurrences: occurrence
+            occurrences: occurrence,
+            actions: true
           })
           let item = this.concepts[occurrence.memberSet[0].uri]
           items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
+          items[items.length-1][item.type+"Scheme"] = item.scheme
           item = this.concepts[occurrence.memberSet[1].uri]
           items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme ? item.scheme.notation[0].toUpperCase() : "-"
+          items[items.length-1][item.type+"Scheme"] = item.scheme
         }
       }
       return items
@@ -183,6 +212,11 @@ export default {
           tdClass: "moColShort",
           thClass: "moColShort",
           sortable: true
+        },
+        {
+          key: "actions",
+          label: "",
+          sortable: false
         }
       ]
     }
@@ -199,19 +233,31 @@ export default {
     reloadOccurrences() {
       this.occurrences = []
       let urisString = Object.keys(this.concepts).reduce(function(a, b) { return a + " " + b })
-      console.log(urisString)
       let vm = this
+      if (this.cancelToken != null) {
+        this.cancelToken.cancel("There was a newer search query.")
+      }
+      this.cancelToken = this.$api.token()
       axios.get(this.$config.occurrenceProviders[0].url, {
         params: {
           members: urisString
-        }
+        },
+        cancelToken: this.cancelToken.token
       }).then(function(response) {
         vm.occurrences = response.data
-        console.log(vm.occurrences)
       }).catch(function(error) {
         console.log(error)
         vm.occurrences = []
       })
+    },
+    toMapping(data) {
+      this.mapping.jskos = {
+        from: { "memberSet": [data.item.from] },
+        to: { "memberSet": [data.item.to] },
+        fromScheme: data.item.fromScheme,
+        toScheme: data.item.toScheme,
+        type: [this.$util.defaultMappingType.uri]
+      }
     }
   }
 }
@@ -224,6 +270,15 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
+}
+.toMapping {
+  font-size: 12px;
+  color: @buttonColor;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    color: @buttonColorHover;
+  }
 }
 
 </style>
