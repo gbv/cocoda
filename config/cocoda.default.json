@@ -1,6 +1,15 @@
 {
   "terminologyProviders": [
-    { "url": "//api.dante.gbv.de/" }
+    { "url": "//api.dante.gbv.de/" },
+    {
+      "voc": [ {
+        "uri": "http://bartoc.org/en/node/430",
+        "prefLabel": { "de": "Gemeinsame Normdatei" },
+        "notation": ["GND"]
+      } ],
+      "data": "http://coli-conc.gbv.de/services/gnd.php",
+      "suggest": "https://ws.gbv.de/suggest/gnd/?searchterm={searchTerms}"
+    }
   ],
   "mappingProviders": [
     { "url": "//coli-conc.gbv.de/api/mappings/" }
