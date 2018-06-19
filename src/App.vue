@@ -211,8 +211,7 @@ export default {
       conceptSelectedRight: null,
       schemeSelectedLeft: null,
       schemeSelectedRight: null,
-      schemes: [],
-      favoriteSchemes: []
+      schemes: this.$api.schemes
     }
   },
   computed: {
@@ -224,7 +223,7 @@ export default {
         { value: null, text: "Select a scheme", disabled: true }
       ]
       // Add from schemes
-      for (var scheme of this.schemes) {
+      for (var scheme of sortData(this.schemes)) {
         // TODO: - Check if notation always has a single value (and why is it an array then?).
         // TODO: - Support other languages.
         // TODO: - Fallback if no German label is available.
@@ -233,28 +232,20 @@ export default {
         )
       }
       return options
-    }
-  },
-  mounted() {
-    // Load schemes
-    var vm = this
-    this.$api.voc()
-      .then(function(data) {
-        vm.schemes = sortData(data)
-        if (vm.favoriteSchemes.length == 0) {
-          for (let scheme of vm.schemes) {
-            if ([
-              "http://uri.gbv.de/terminology/bk/",
-              "http://uri.gbv.de/terminology/rvk/"
-            ].includes(scheme.uri)) {
-              vm.favoriteSchemes.push(scheme)
-            }
-          }
+    },
+    favoriteSchemes() {
+      let schemes = []
+      for (let scheme of this.schemes) {
+        if ([
+          "http://uri.gbv.de/terminology/bk/",
+          "http://uri.gbv.de/terminology/rvk/",
+          "http://bartoc.org/en/node/430"
+        ].includes(scheme.uri)) {
+          schemes.push(scheme)
         }
-      })
-      .catch(function(error) {
-        console.log("Request failed", error)
-      })
+      }
+      return schemes
+    }
   },
   methods: {
     chooseUri(concept, isLeft) {

@@ -22,6 +22,90 @@ const defaultProperties = "uri,prefLabel,notation,inScheme"
 const detailProperties =  "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote"
 const allProperties = "*"
 
+let schemes = []
+
+// Initialize terminology providers
+let schemeToTerminologyProvider = {}
+let terminologyProviderForScheme = function(scheme) {
+  for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
+    // Workaround for http vs. https problem
+    let uri2
+    if (uri.substring(0, 5) == "https") {
+      uri2 = uri.replace("https", "http")
+    } else {
+      uri2 = uri.replace("http", "https")
+    }
+    for (let uri3 of [uri, uri2]) {
+      // Workaround for / vs. no / problem
+      let uri4
+      if (uri3.endsWith("/")) {
+        uri4 = uri3.substring(0, uri3.length - 1)
+      } else {
+        uri4 = uri3 + "/"
+      }
+      for (let uri5 of [uri3, uri4]) {
+        if (schemeToTerminologyProvider[uri5]) {
+          return schemeToTerminologyProvider[uri5]
+        }
+      }
+    }
+  }
+  return null
+}
+let saveSchemeAssociationForProvider = function(provider) {
+  // Save assignment from scheme to provider
+  for(let scheme of provider.voc) {
+    for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
+      schemeToTerminologyProvider[uri] = provider
+    }
+    schemes.push(scheme)
+  }
+}
+
+for (let provider of config.terminologyProviders) {
+  let url = provider.url || null
+  if(!Array.isArray(provider.voc)) {
+    // Load schemes
+    let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
+    if (vocEndpoint) {
+      axios.get(vocEndpoint)
+        .then(function(response) {
+          console.log("Loaded vocs")
+          provider.voc = response.data
+          saveSchemeAssociationForProvider(provider)
+        })
+      // TODO: - error handling
+    }
+  } else {
+    saveSchemeAssociationForProvider(provider)
+  }
+  if (!provider.data) {
+    provider.data = url ? url + "/data" : null
+  }
+  if (!provider.suggest) {
+    provider.suggest = url ? url + "/suggest" : null
+  }
+  if (!provider.top) {
+    provider.top = url ? url + "/voc/top" : null
+  }
+  if (!provider.ancestors) {
+    provider.ancestors = url ? url + "/ancestors" : null
+  }
+  if (!provider.narrower) {
+    provider.narrower = url ? url + "/narrower" : null
+  }
+}
+
+console.log(config.terminologyProviders)
+// var _ = require("lodash")
+// // Testing
+// _.delay(() => {
+//   console.log("testing")
+//   console.log(terminologyProviderForScheme({ uri: "http://uri.gbv.de/terminology/rvk/" }))
+//   console.log(terminologyProviderForScheme({ uri: "https://bartoc.org/en/node/533" }))
+//   console.log(terminologyProviderForScheme({ uri: "http://bartoc.org/en/node/430" }))
+// }, 500)
+
 /**
  * Returns a new axios CancelToken source
  */
@@ -30,29 +114,20 @@ function token() {
 }
 
 /**
- * Loads all vocabularies or information about a particular vocabulary.
- *
- * @param {string} uri - if null, load all vocabularies
- * @param {string} properties - ignored when uri is null
- * @param {axios.cancelToken} cancelToken - ignored when uri is null
- */
-function voc(uri = null, properties = defaultProperties, cancelToken = null) {
-  if (uri == null) {
-    return get("voc", {})
-  } else {
-    return data(uri, properties, cancelToken)
-  }
-}
-
-/**
  * Loads information about a concept or a vocabulary.
  *
+ * @param {object} scheme - scheme for which this request is about
  * @param {string} uri
  * @param {string} properties
  * @param {axios.cancelToken} cancelToken
  */
-function data(uri, properties = defaultProperties, cancelToken = null) {
-  return get("data", {
+function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
+  let provider = terminologyProviderForScheme(scheme)
+  let url = provider ? provider.data : null
+  if (!url) {
+    return Promise.resolve([])
+  }
+  return get(url, {
     params: {
       uri: uri,
       properties: properties
@@ -64,12 +139,18 @@ function data(uri, properties = defaultProperties, cancelToken = null) {
 /**
  * Loads direct children for a concept.
  *
+ * @param {object} scheme - scheme for which this request is about
  * @param {string} uri
  * @param {string} properties
  * @param {axios.cancelToken} cancelToken
  */
-function narrower(uri, properties = defaultProperties, cancelToken = null) {
-  return get("narrower", {
+function narrower(scheme, uri, properties = defaultProperties, cancelToken = null) {
+  let provider = terminologyProviderForScheme(scheme)
+  let url = provider ? provider.narrower : null
+  if (!url) {
+    return Promise.resolve([])
+  }
+  return get(url, {
     params: {
       uri: uri,
       properties: properties,
@@ -82,12 +163,18 @@ function narrower(uri, properties = defaultProperties, cancelToken = null) {
 /**
  * Loads ancestor hirarchy for a concept.
  *
+ * @param {object} scheme - scheme for which this request is about
  * @param {string} uri
  * @param {string} properties
  * @param {axios.cancelToken} cancelToken
  */
-function ancestors(uri, properties = defaultProperties, cancelToken = null) {
-  return get("ancestors", {
+function ancestors(scheme, uri, properties = defaultProperties, cancelToken = null) {
+  let provider = terminologyProviderForScheme(scheme)
+  let url = provider ? provider.ancestors : null
+  if (!url) {
+    return Promise.resolve([])
+  }
+  return get(url, {
     params: {
       uri: uri,
       properties: properties
@@ -99,14 +186,22 @@ function ancestors(uri, properties = defaultProperties, cancelToken = null) {
 /**
  * Loads autocomplete suggestions.
  *
+ * @param {object} scheme - scheme for which this request is about
  * @param {string} search - search term
  * @param {string} voc - vocabulary id/notation
  * @param {number} limit - limit number of results
  * @param {string} use - whether to include notations, labels, or both ("notation", "label", "notation,label")
  * @param {*} cancelToken
  */
-function suggest(search, voc = "", limit = 0, use = "notation,label", cancelToken = null) {
-  return get("suggest", {
+function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", cancelToken = null) {
+  let provider = terminologyProviderForScheme(scheme)
+  let url = provider ? provider.suggest : null
+  if (!url) {
+    return Promise.resolve([])
+  }
+  // Support for URL template with {searchTerms}
+  url = url.replace("{searchTerms}", search)
+  return get(url, {
     params: {
       search: search,
       voc: voc,
@@ -121,13 +216,43 @@ function suggest(search, voc = "", limit = 0, use = "notation,label", cancelToke
  * Loads top concepts for vocabulary.
  * Note that this will be deprecated as soon as the API offers a way to load top concepts by uri.
  *
+ * @param {object} scheme - scheme for which this request is about
  * @param {*} notation
  * @param {*} properties
  * @param {*} cancelToken
  */
-function topByNotation(notation, properties = defaultProperties, cancelToken = null) {
-  return get(`voc/${notation}/top`, {
+function topByNotation(scheme, notation, properties = defaultProperties, cancelToken = null) {
+  let provider = terminologyProviderForScheme(scheme)
+  let url = provider ? provider.top : null
+  if (!url) {
+    return Promise.resolve([])
+  }
+  return get(`${provider.url}/voc/${notation}/top`, {
     params: {
+      properties: properties,
+      limit: 10000
+    },
+    cancelToken: cancelToken
+  })
+}
+
+/**
+ * Loads top concepts for vocabulary.
+ *
+ * @param {object} scheme - scheme for which this request is about
+ * @param {*} uri
+ * @param {*} properties
+ * @param {*} cancelToken
+ */
+function top(scheme, uri, properties = defaultProperties, cancelToken = null) {
+  let provider = terminologyProviderForScheme(scheme)
+  let url = provider ? provider.top : null
+  if (!url) {
+    return Promise.resolve([])
+  }
+  return get(url, {
+    params: {
+      uri: uri,
       properties: properties,
       limit: 10000
     },
@@ -141,8 +266,8 @@ function topByNotation(notation, properties = defaultProperties, cancelToken = n
  * @param {string} endpoint - API endpoint to use
  * @param {axios.config} config - configuration object for axios call, usually contains params and cancelToken
  */
-function get(endpoint, config) {
-  return axios.get(url + endpoint, config)
+function get(url, config) {
+  return axios.get(url, config)
     .then(function(response) {
       let data = response.data
       // Temporary fix for bug in DANTE dev-api
@@ -172,4 +297,4 @@ function get(endpoint, config) {
     })
 }
 
-export { voc, data, narrower, ancestors, suggest, topByNotation, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token }
+export default { data, narrower, ancestors, suggest, top, topByNotation, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token, schemes }

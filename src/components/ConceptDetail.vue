@@ -196,7 +196,7 @@ export default {
       let vm = this
       this.loading = true
       // Get details from API
-      this.$api.data(this.item.uri, this.$api.detailProperties)
+      this.$api.data(this.voc, this.item.uri, this.$api.detailProperties)
         .then(function(data) {
           if (itemBefore != vm.item) {
             console.log("Item changed during the request, discarding data...")

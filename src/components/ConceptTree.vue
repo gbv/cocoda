@@ -124,7 +124,7 @@ export default {
             return
           }
           let treeHelper = this
-          this.vm.$api.narrower(concept.uri, this.vm.$api.defaultProperties)
+          this.vm.$api.narrower(this.vm.vocSelected, concept.uri, this.vm.$api.defaultProperties)
             .then(function(data) {
               let newConcept = concept
               newConcept.narrower = sortData(data)
@@ -220,7 +220,7 @@ export default {
          * Is only used when selecting a concept from search.
          */
         loadAncestors: function(uri, callback = null) {
-          this.vm.$api.ancestors(uri, this.vm.$api.defaultProperties)
+          this.vm.$api.ancestors(this.vm.vocSelected, uri, this.vm.$api.defaultProperties)
             .then(function(data) {
               // Set ancestor property for loaded ancestors
               var ancestors = []
@@ -276,7 +276,7 @@ export default {
       this.chooseFromUriID = id
       let vm = this
       this.loading = true
-      this.$api.data(uri, this.$api.defaultProperties, null)
+      this.$api.data(this.vocSelected, uri, this.$api.defaultProperties, null)
         .then(function(data) {
           if (vm.chooseFromUriID != id) return
           if (data.length == 0) {
@@ -360,7 +360,7 @@ export default {
       this.chooseFromUriID = null
       let selectedBefore = this.vocSelected
       let vm = this
-      this.$api.topByNotation(this.vocSelected.notation[0])
+      this.$api.topByNotation(this.vocSelected, this.vocSelected.notation[0])
         .then(function(data) {
           if (selectedBefore != vm.vocSelected) {
             console.log("Another voc was chosen in the meanwhile.")
