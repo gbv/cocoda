@@ -61,7 +61,7 @@
           <font-awesome-icon
             v-b-tooltip.hover="'convert to mapping'"
             v-if="data.value"
-            icon="sign-in-alt"
+            icon="edit"
             class="toMapping"
             @click="toMapping(data)" />
         </span>
