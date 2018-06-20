@@ -256,15 +256,15 @@ function topByNotation(scheme, notation, properties = defaultProperties, cancelT
  * @param {*} properties
  * @param {*} cancelToken
  */
-function top(scheme, uri, properties = defaultProperties, cancelToken = null) {
+function top(scheme, properties = defaultProperties, cancelToken = null) {
   let provider = terminologyProviderForScheme(scheme)
   let url = provider ? provider.top : null
-  if (!url) {
+  if (!url || !scheme.uri) {
     return Promise.resolve([])
   }
   return get(url, {
     params: {
-      uri: uri,
+      uri: scheme.uri,
       properties: properties,
       limit: 10000
     },
@@ -302,6 +302,7 @@ function get(url, config) {
             element.OCCURRENCES = null
             element.MAPPINGS = null
             element.ancestors = element.ancestors || [null]
+            element.narrower = element.narrower || [null]
           }
         }
       })
