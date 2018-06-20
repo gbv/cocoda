@@ -217,6 +217,7 @@ function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", ca
       search: search,
       voc: voc,
       limit: limit,
+      count: limit, // Some endpoints use count instead of limit
       use: use
     },
     cancelToken: cancelToken
