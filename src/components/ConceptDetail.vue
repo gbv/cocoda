@@ -55,23 +55,25 @@
       </p>
       <p v-if="detail.scopeNote && detail.scopeNote.de">
         Scope Notes:
-        <ul>
+        <ul v-if="Array.isArray(detail.scopeNote.de)">
           <li
             v-for="(note, index) in detail.scopeNote.de"
             :key="index">
             {{ note }}
           </li>
         </ul>
+        <ul v-else><li>{{ detail.scopeNote.de }}</li></ul>
       </p>
       <p v-if="detail.editorialNote && detail.editorialNote.de">
         Editorial Notes:
-        <ul>
+        <ul v-if="Array.isArray(detail.editorialNote.de)">
           <li
             v-for="(note, index) in detail.editorialNote.de"
             :key="index">
             {{ note }}
           </li>
         </ul>
+        <ul v-else><li>{{ detail.editorialNote.de }}</li></ul>
       </p>
       <p v-if="gndMappings.length != 0">
         GND mappings:
