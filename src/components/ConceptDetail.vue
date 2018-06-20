@@ -114,7 +114,9 @@
         Modified: {{ detail.modified }}
       </p>
     </div>
-    <div v-else>Please select a scheme/concept.</div>
+    <div
+      v-else-if="!loading"
+      class="loadingFull font-size-normal font-heavy">Please select a scheme/concept.</div>
     <div
       v-if="loading"
       class="loadingFull">
@@ -189,7 +191,7 @@ export default {
   },
   methods: {
     loadDetails() {
-      this.detail = null
+      this.detail = this.item
       this.gndMappings = []
       if (this.item == null) return
       let itemBefore = this.item
