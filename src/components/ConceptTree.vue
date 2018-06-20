@@ -21,6 +21,11 @@
         @selected="selected = $event" />
     </div>
     <div
+      v-if="tree.length == 0 && !loading"
+      class="loadingFull font-heavy">
+      No Concept Tree Available
+    </div>
+    <div
       v-show="loading"
       ref="loadingFull"
       class="loadingFull">
