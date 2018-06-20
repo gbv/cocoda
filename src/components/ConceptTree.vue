@@ -365,7 +365,7 @@ export default {
       this.chooseFromUriID = null
       let selectedBefore = this.vocSelected
       let vm = this
-      this.$api.topByNotation(this.vocSelected, this.vocSelected.notation[0])
+      this.$api.top(this.vocSelected)
         .then(function(data) {
           if (selectedBefore != vm.vocSelected) {
             console.log("Another voc was chosen in the meanwhile.")
