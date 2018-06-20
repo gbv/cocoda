@@ -3,11 +3,13 @@
  * @module components/api
  *
  * Usage:
- * this.$api.voc().then(function(data) {
+ * this.$api.data(scheme, uri).then(function(data) {
  *   // do something with data
  * }).catch(function(error) {
  *   // do something with error
  * })
+ *
+ * Note: All requests need a scheme object to determine which terminology provider to use.
  */
 
 import axios from "axios"
@@ -26,6 +28,11 @@ let schemes = []
 
 // Initialize terminology providers
 let schemeToTerminologyProvider = {}
+/**
+ * Uses schemeToTerminologyProvider to return the terminology provider for a specific scheme.
+ *
+ * @param {object} scheme
+ */
 let terminologyProviderForScheme = function(scheme) {
   for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
     // Workaround for http vs. https problem
@@ -50,9 +57,19 @@ let terminologyProviderForScheme = function(scheme) {
       }
     }
   }
+  // Return null if no provider was found
   return null
 }
+/**
+ * Saves the scheme to provider association for all schemes in provider.voc (need to be loaded before).
+ *
+ * @param {object} provider
+ */
 let saveSchemeAssociationForProvider = function(provider) {
+  // Schemes need to be loaded first
+  if(!Array.isArray(provider.voc)) {
+    throw "Provider's vocabularies need to be loaded before using saveSchemeAssociationForProvider."
+  }
   // Save assignment from scheme to provider
   for(let scheme of provider.voc) {
     for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
@@ -62,6 +79,7 @@ let saveSchemeAssociationForProvider = function(provider) {
   }
 }
 
+// Prepare all terminology providers
 for (let provider of config.terminologyProviders) {
   let url = provider.url || null
   if(!Array.isArray(provider.voc)) {
@@ -70,9 +88,12 @@ for (let provider of config.terminologyProviders) {
     if (vocEndpoint) {
       axios.get(vocEndpoint)
         .then(function(response) {
-          console.log("Loaded vocs")
-          provider.voc = response.data
-          saveSchemeAssociationForProvider(provider)
+          if (Array.isArray(response.data)) {
+            provider.voc = response.data
+            saveSchemeAssociationForProvider(provider)
+          } else {
+            console.log("Couldn't load schemes for provider", provider)
+          }
         })
       // TODO: - error handling
     }
@@ -95,16 +116,6 @@ for (let provider of config.terminologyProviders) {
     provider.narrower = url ? url + "/narrower" : null
   }
 }
-
-console.log(config.terminologyProviders)
-// var _ = require("lodash")
-// // Testing
-// _.delay(() => {
-//   console.log("testing")
-//   console.log(terminologyProviderForScheme({ uri: "http://uri.gbv.de/terminology/rvk/" }))
-//   console.log(terminologyProviderForScheme({ uri: "https://bartoc.org/en/node/533" }))
-//   console.log(terminologyProviderForScheme({ uri: "http://bartoc.org/en/node/430" }))
-// }, 500)
 
 /**
  * Returns a new axios CancelToken source
