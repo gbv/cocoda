@@ -237,9 +237,11 @@ export default {
       let schemes = []
       for (let scheme of this.schemes) {
         if ([
-          "http://uri.gbv.de/terminology/bk/",
-          "http://uri.gbv.de/terminology/rvk/",
-          "http://bartoc.org/en/node/430"
+          "http://uri.gbv.de/terminology/bk/", // BK
+          "http://uri.gbv.de/terminology/rvk/", // RVK
+          "http://bartoc.org/en/node/430", // GND
+          "http://dewey.info/scheme/edition/e23/", // DDC
+          "http://bartoc.org/en/node/241" // DDC
         ].includes(scheme.uri)) {
           schemes.push(scheme)
         }
