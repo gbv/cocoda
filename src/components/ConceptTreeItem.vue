@@ -27,7 +27,9 @@
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
         @click="onClick">
-        <item-name :item="concept" />
+        <item-name
+          :item="concept"
+          :is-highlighted="isSelected" />
       </div>
       <div
         v-b-tooltip.hover="'add to mapping'"
@@ -321,18 +323,18 @@ export default {
 }
 .conceptBoxSelected {
   &:extend(.font-heavy);
-  background-color: @color-primary-4;
+  background-color: @color-primary-1;
   color: lighten(@color-primary-1, 10%);
   & .arrowBox:hover {
-    background-color: @color-primary-3;
+    background-color: @color-secondary-2-3;
   }
 }
 .conceptBoxHovered, .arrowBox:hover {
-  background-color: @color-primary-1;
+  background-color: @color-secondary-2-3;
   color: @color-primary-4;
 }
 .conceptBoxHovered.conceptBoxSelected {
-  background-color: @color-primary-3;
+  background-color: @color-secondary-2-3;
   color: lighten(@color-primary-1, 10%);
 }
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
@@ -344,7 +346,7 @@ i {
   margin: 2px 0;
 }
 i.selected {
-  border: solid @color-primary-1;
+  border: solid @color-primary-4;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;

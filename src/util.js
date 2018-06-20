@@ -150,6 +150,13 @@ let canConceptBeSelected = function(concept, scheme) {
   return scheme == null || compareSchemes(conceptScheme, scheme)
 }
 
+let compareConcepts = function(concept1, concept2) {
+  if (!concept1 || !concept2) {
+    return concept1 == concept2
+  }
+  return concept1.uri === concept2.uri
+}
+
 let setupTableScrollSync = function() {
   // Synchronize scrolling of header and body in all default tables
   let tables = document.getElementsByClassName("defaultTable")
@@ -162,4 +169,4 @@ let setupTableScrollSync = function() {
   }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, canConceptBeSelected, setupTableScrollSync }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, canConceptBeSelected, compareConcepts, setupTableScrollSync }

@@ -25,6 +25,7 @@
               :show-text="false"
               :show-tooltip="true"
               :is-link="$util.canConceptBeSelected(concept, schemeLeft)"
+              :is-highlighted="$util.compareConcepts(concept, selectedLeft)"
               @mouseover.native="hover(concept)"
               @click.native="$util.canConceptBeSelected(concept, schemeLeft) && chooseUri(concept, true)" />
           </span>
@@ -38,6 +39,7 @@
               :show-text="false"
               :show-tooltip="true"
               :is-link="$util.canConceptBeSelected(concept, schemeRight)"
+              :is-highlighted="$util.compareConcepts(concept, selectedRight)"
               @mouseover.native="hover(concept)"
               @click.native="$util.canConceptBeSelected(concept, schemeRight) && chooseUri(concept, false)" />
           </span>

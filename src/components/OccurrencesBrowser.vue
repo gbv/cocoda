@@ -22,6 +22,7 @@
             :show-text="false"
             :show-tooltip="true"
             :is-link="data.value && $util.canConceptBeSelected(data.value, schemeLeft)"
+            :is-highlighted="$util.compareConcepts(data.value, selectedLeft)"
             @click.native="data.value && $util.canConceptBeSelected(data.value, schemeLeft) && chooseUri(data.value, true)" />
         </span>
         <span
@@ -32,6 +33,7 @@
             :show-text="false"
             :show-tooltip="true"
             :is-link="data.value && $util.canConceptBeSelected(data.value, schemeRight)"
+            :is-highlighted="$util.compareConcepts(data.value, selectedRight)"
             @click.native="data.value && $util.canConceptBeSelected(data.value, schemeRight) && chooseUri(data.value, false)" />
         </span>
         <span

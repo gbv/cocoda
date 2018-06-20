@@ -7,7 +7,7 @@
     @mouseout="mouseOut" >
     <notation-badge
       :item="item"
-      :class="{ 'badge-hovered': isLink && isHovered }"
+      :class="{ 'badge-hovered': isLink && isHovered, 'badge-highlighted': isHighlighted && !(isHovered && isLink) }"
       :id="tooltipDOMID"
       :style="{ bottom: '2px' }" />
     <b-tooltip
@@ -18,7 +18,7 @@
     </b-tooltip>
     <prefLabel-text
       v-if="showText && item.prefLabel"
-      :class="{ 'label-hovered': isLink && isHovered }"
+      :class="{ 'label-hovered': isLink && isHovered, 'label-highlighted': isHighlighted && !(isHovered && isLink) }"
       :item="item" />
   </div>
 </template>
@@ -64,6 +64,13 @@ export default {
      * Determines whether to show the concepts label as a tooltip.
      */
     showTooltip: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Determines whether the badge is highlighted
+     */
+    isHighlighted: {
       type: Boolean,
       default: false
     }
@@ -147,8 +154,15 @@ Vue.component("prefLabel-text", {
   background-color: @color-secondary-2-4;
   cursor: pointer;
 }
+.badge-highlighted {
+  background-color: @color-primary-4;
+}
 .label-hovered {
   cursor: pointer;
   color: @color-secondary-2-4;
+}
+.label-highlighted {
+  color: @color-primary-4;
+  &:extend(.font-heavy);
 }
 </style>

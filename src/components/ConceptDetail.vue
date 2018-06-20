@@ -29,6 +29,7 @@
         size="sm" /></span>
       <item-name
         :item="detail"
+        :is-highlighted="true"
         font-size="normal"
         class="label" />
       <p><font-awesome-icon icon="link" /> <auto-link :link="detail.uri" /></p>

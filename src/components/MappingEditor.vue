@@ -23,6 +23,7 @@
             <item-name
               :item="concept"
               :is-link="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight)"
+              :is-highlighted="$util.compareConcepts(concept, isLeft ? selectedLeft : selectedRight)"
               @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
             <div
               class="mappingConceptDelete font-size-small"
