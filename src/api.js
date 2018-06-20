@@ -226,30 +226,6 @@ function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", ca
 
 /**
  * Loads top concepts for vocabulary.
- * Note that this will be deprecated as soon as the API offers a way to load top concepts by uri.
- *
- * @param {object} scheme - scheme for which this request is about
- * @param {*} notation
- * @param {*} properties
- * @param {*} cancelToken
- */
-function topByNotation(scheme, notation, properties = defaultProperties, cancelToken = null) {
-  let provider = terminologyProviderForScheme(scheme)
-  let url = provider ? provider.top : null
-  if (!url) {
-    return Promise.resolve([])
-  }
-  return get(`${provider.url}/voc/${notation}/top`, {
-    params: {
-      properties: properties,
-      limit: 10000
-    },
-    cancelToken: cancelToken
-  })
-}
-
-/**
- * Loads top concepts for vocabulary.
  *
  * @param {object} scheme - scheme for which this request is about
  * @param {*} uri
@@ -310,4 +286,4 @@ function get(url, config) {
     })
 }
 
-export default { data, narrower, ancestors, suggest, top, topByNotation, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token, schemes }
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token, schemes }
