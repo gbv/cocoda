@@ -11,6 +11,15 @@
       "suggest": "https://ws.gbv.de/suggest/gnd/?searchterm={searchTerms}"
     }
   ],
+  "favoriteTerminologyProviders": [
+    "http://uri.gbv.de/terminology/bk/",
+    "http://bartoc.org/de/node/745",
+    "http://uri.gbv.de/terminology/rvk/",
+    "http://bartoc.org/en/node/533",
+    "http://bartoc.org/en/node/430",
+    "http://dewey.info/scheme/edition/e23/",
+    "http://bartoc.org/en/node/241"
+  ],
   "mappingProviders": [
     { "url": "//coli-conc.gbv.de/api/mappings/" }
   ],

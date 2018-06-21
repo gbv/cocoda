@@ -236,13 +236,7 @@ export default {
     favoriteSchemes() {
       let schemes = []
       for (let scheme of this.schemes) {
-        if ([
-          "http://uri.gbv.de/terminology/bk/", // BK
-          "http://uri.gbv.de/terminology/rvk/", // RVK
-          "http://bartoc.org/en/node/430", // GND
-          "http://dewey.info/scheme/edition/e23/", // DDC
-          "http://bartoc.org/en/node/241" // DDC
-        ].includes(scheme.uri)) {
+        if (this.$config.favoriteTerminologyProviders.includes(scheme.uri)) {
           schemes.push(scheme)
         }
       }
