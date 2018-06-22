@@ -10,6 +10,16 @@
       } ],
       "data": "http://coli-conc.gbv.de/services/gnd.php",
       "suggest": "https://ws.gbv.de/suggest/gnd/?searchterm={searchTerms}"
+    },
+    {
+      "voc": [ {
+        "uri": "http://bartoc.org/en/node/1940",
+        "prefLabel": { "de": "Wikidata", "en": "Wikidata" },
+        "notation": ["Wikidata"],
+        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
+      } ],
+      "data": "//coli-conc.gbv.de/services/wikidata.php",
+      "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}"
     }
   ],
   "favoriteTerminologyProviders": [
@@ -19,7 +29,8 @@
     "http://bartoc.org/en/node/533",
     "http://bartoc.org/en/node/430",
     "http://dewey.info/scheme/edition/e23/",
-    "http://bartoc.org/en/node/241"
+    "http://bartoc.org/en/node/241",
+    "http://bartoc.org/en/node/1940"
   ],
   "mappingProviders": [
     { "url": "//coli-conc.gbv.de/api/mappings/" }
