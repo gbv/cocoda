@@ -1,6 +1,7 @@
 {
   "terminologyProviders": [
     { "url": "//api.dante.gbv.de/" },
+    { "url": "//coli-conc.gbv.de/api/" },
     {
       "voc": [ {
         "uri": "http://bartoc.org/en/node/430",
