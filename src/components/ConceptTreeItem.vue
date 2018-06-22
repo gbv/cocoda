@@ -1,7 +1,6 @@
 <template>
   <div
     v-if="concept != null"
-    :style="{ 'margin-left': depth * 5 + 'px' }"
     :data-uri="concept.uri"
     class="conceptTreeItem">
     <div
@@ -285,6 +284,9 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
+.conceptTreeItem {
+  margin-left: 10px;
+}
 .conceptBox {
   display: flex;
   position: relative;
