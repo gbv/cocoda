@@ -124,21 +124,22 @@ export default {
     return {
       occurrences: [],
       mapping: this.$root.$data.mapping,
-      cancelToken: null
+      cancelToken: null,
+      supportedSchemes: null
     }
   },
   computed: {
     concepts() {
       let concepts = {}
 
-      if (this.selectedLeft) {
+      if (this.selectedLeft && this.$util.isSchemeInList(this.schemeLeft, this.supportedSchemes)) {
         concepts[this.selectedLeft.uri] = {
           concept: this.selectedLeft,
           scheme: this.schemeLeft,
           type: "from"
         }
       }
-      if (this.selectedRight) {
+      if (this.selectedRight && this.$util.isSchemeInList(this.schemeRight, this.supportedSchemes)) {
         concepts[this.selectedRight.uri] = {
           concept: this.selectedRight,
           scheme: this.schemeRight,
@@ -233,23 +234,41 @@ export default {
   },
   methods: {
     reloadOccurrences() {
-      this.occurrences = []
-      let urisString = Object.keys(this.concepts).reduce(function(a, b) { return a + " " + b })
       let vm = this
-      if (this.cancelToken != null) {
-        this.cancelToken.cancel("There was a newer search query.")
+      this.occurrences = []
+      let promise
+      if (!this.supportedSchemes) {
+        // Load supported schemes
+        // TODO: - Put this into API
+        promise = axios.get("//coli-conc.gbv.de/occurrences/api/voc")
+          .then(function(response) {
+            vm.supportedSchemes = response.data
+          })
+          .catch(function(error) {
+            console.log(error)
+            // TODO: - Better error handling
+            vm.supportedSchemes = {}
+          })
+      } else {
+        promise = Promise.resolve()
       }
-      this.cancelToken = this.$api.token()
-      axios.get(this.$config.occurrenceProviders[0].url, {
-        params: {
-          members: urisString
-        },
-        cancelToken: this.cancelToken.token
-      }).then(function(response) {
-        vm.occurrences = response.data
-      }).catch(function(error) {
-        console.log(error)
-        vm.occurrences = []
+      promise.then(() => {
+        let urisString = Object.keys(vm.concepts).reduce(function(a, b) { return a + " " + b })
+        if (vm.cancelToken != null) {
+          vm.cancelToken.cancel("There was a newer search query.")
+        }
+        vm.cancelToken = vm.$api.token()
+        axios.get(vm.$config.occurrenceProviders[0].url, {
+          params: {
+            members: urisString
+          },
+          cancelToken: vm.cancelToken.token
+        }).then(function(response) {
+          vm.occurrences = response.data
+        }).catch(function(error) {
+          console.log(error)
+          vm.occurrences = []
+        })
       })
     },
     toMapping(data) {
