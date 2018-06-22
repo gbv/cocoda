@@ -41,9 +41,19 @@
             target="_blank">
             <img
               v-if="licenseBadges[license.uri]"
-              :src="licenseBadges[license.uri]">
+              :src="licenseBadges[license.uri]"
+              class="licenseBadge">
             <span v-else>{{ license.uri }}</span>
           </a>
+          <span v-if="licenseAttribution(detail)">
+            by <a
+              v-if="license.uri.indexOf('by') >= 0 && licenseAttribution(detail).url"
+              :href="licenseAttribution(detail).url"
+              target="_blank">
+              <auto-link :link="licenseAttribution(detail).label" />
+            </a>
+            <span v-else><auto-link :link="licenseAttribution(detail).label" /></span>
+          </span>
         </span>
       </p>
       <p><font-awesome-icon icon="link" /> <auto-link :link="detail.uri" /></p>
@@ -100,25 +110,6 @@
             <b-badge class="badgeLink">{{ mapping.notation[0] }}</b-badge>
           </a>&nbsp;
         </span>
-      </p>
-      <p v-if="detail.publisher">
-        Publisher:
-        <ul>
-          <li
-            v-for="(publisher, index) in detail.publisher"
-            :key="index">
-            {{ publisher.prefLabel.de ? publisher.prefLabel.de : publisher.prefLabel.en }}
-          </li>
-        </ul>
-      </p>
-      <p v-if="detail.created">
-        Created: {{ detail.created }}
-      </p>
-      <p v-if="detail.issued">
-        Issued: {{ detail.issued }}
-      </p>
-      <p v-if="detail.modified">
-        Modified: {{ detail.modified }}
       </p>
     </div>
     <div
@@ -185,7 +176,12 @@ export default {
       gndMappings: [],
       licenseBadges: {
         "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
-        "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg"
+        "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+        "http://creativecommons.org/licenses/by-nc-nd/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+        "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
+        "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
+        "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
+        "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
       }
     }
   },
@@ -244,6 +240,16 @@ export default {
       }).catch(function(error) {
         console.log("API error (GND mappings):", error)
       })
+    },
+    licenseAttribution(detail) {
+      let organisation = detail.creator || detail.publisher
+      if (!organisation || organisation.length == 0) {
+        return null
+      }
+      return {
+        url: organisation[0].url,
+        label: organisation[0].prefLabel.de || organisation[0].prefLabel.en || "no name"
+      }
     }
   }
 }
@@ -287,5 +293,9 @@ ul {
 }
 .badgeLink:hover {
   background-color: @color-secondary-2-4;
+}
+.licenseBadge {
+  margin-bottom: 3px;
+  height: 15px;
 }
 </style>
