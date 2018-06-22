@@ -5,6 +5,7 @@
     {
       "voc": [ {
         "uri": "http://bartoc.org/en/node/430",
+        "identifier": ["http://www.wikidata.org/entity/Q36578"],
         "prefLabel": { "de": "Gemeinsame Normdatei" },
         "notation": ["GND"],
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
@@ -15,6 +16,7 @@
     {
       "voc": [ {
         "uri": "http://bartoc.org/en/node/1940",
+        "identifier": ["http://www.wikidata.org/entity/2013"],
         "prefLabel": { "de": "Wikidata", "en": "Wikidata" },
         "notation": ["Wikidata"],
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
