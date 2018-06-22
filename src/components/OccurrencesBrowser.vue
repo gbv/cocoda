@@ -253,6 +253,9 @@ export default {
         promise = Promise.resolve()
       }
       promise.then(() => {
+        if (Object.keys(vm.concepts).length == 0) {
+          return
+        }
         let urisString = Object.keys(vm.concepts).reduce(function(a, b) { return a + " " + b })
         if (vm.cancelToken != null) {
           vm.cancelToken.cancel("There was a newer search query.")
