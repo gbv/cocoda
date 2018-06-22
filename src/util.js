@@ -142,6 +142,18 @@ let compareSchemes = function(scheme1, scheme2) {
   return false
 }
 
+let isSchemeInList = function(scheme, schemes) {
+  if (!scheme || !schemes) {
+    return false
+  }
+  for (let s of schemes) {
+    if (compareSchemes(scheme, s)) {
+      return true
+    }
+  }
+  return false
+}
+
 let canConceptBeSelected = function(concept, scheme) {
   if (!concept.inScheme || concept.inScheme.length == 0) {
     return false
@@ -169,4 +181,4 @@ let setupTableScrollSync = function() {
   }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, canConceptBeSelected, compareConcepts, setupTableScrollSync }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, isSchemeInList, canConceptBeSelected, compareConcepts, setupTableScrollSync }
