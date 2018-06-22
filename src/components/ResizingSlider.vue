@@ -102,11 +102,15 @@ export default {
 
 <style scoped>
 .resizeSliderCol {
-  flex: 0 1 5px;
+  flex: 0 1 3px;
   cursor: col-resize;
+  margin: 0 5px;
+  box-shadow: inset 1px 0 2px -1px hsla(0, 0%, 0%, 0.2);
 }
 .resizeSliderRow {
-  flex: 0 1 5px;
+  flex: 0 1 3px;
   cursor: row-resize;
+  margin: 5px 0;
+  box-shadow: inset 0 1px 2px -1px hsla(0, 0%, 0%, 0.2);
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="concept != null"
+    :style="depth == 0 ? 'margin-left: 0px' : ''"
     :data-uri="concept.uri"
     class="conceptTreeItem">
     <div
