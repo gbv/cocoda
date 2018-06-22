@@ -14,6 +14,13 @@
               v-model="schemeSelectedLeft"
               :options="schemeOptions"
               class="schemeSelect" />
+            <div
+              v-b-tooltip.hover="'show info about scheme'"
+              v-show="schemeSelectedLeft != null"
+              class="schemeSelectInfo"
+              @click="$refs.conceptTreeLeft.selected = null">
+              <font-awesome-icon icon="info-circle" />
+            </div>
           </div>
           <!-- ConceptSearch -->
           <concept-search
@@ -126,6 +133,13 @@
               v-model="schemeSelectedRight"
               :options="schemeOptions"
               class="schemeSelect" />
+            <div
+              v-b-tooltip.hover="'show info about scheme'"
+              v-show="schemeSelectedRight != null"
+              class="schemeSelectInfo"
+              @click="$refs.conceptTreeRight.selected = null">
+              <font-awesome-icon icon="info-circle" />
+            </div>
           </div>
           <!-- ConceptSearch -->
           <concept-search
@@ -186,6 +200,7 @@ import ConceptDetail from "./components/ConceptDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
 var _ = require("lodash")
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
  * Sorts data by German prefLabel with fallback to uri.
@@ -203,7 +218,7 @@ function sortData(data) {
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider
+    TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon
   },
   data () {
     return {
@@ -327,6 +342,7 @@ html, body {
 .schemeSelectWrapper {
   flex: none;
   padding: 2px;
+  display: flex;
 }
 .schemeSelect {
   border: 0;
@@ -335,6 +351,22 @@ html, body {
   background-color: lighten(@color-primary-1, 15%);
   color: @color-primary-4;
   &:extend(.font-heavy);
+  flex: 1;
+}
+.schemeSelectInfo {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  margin-left: 10px;
+  &:extend(.font-size-large);
+  color: @buttonColor;
+  user-select: none;
+  &:hover {
+    cursor: pointer;
+    color: @buttonColorHover;
+  }
 }
 .conceptSearch {
   margin: 5px 0 0 0;
