@@ -48,6 +48,11 @@ Vue.mixin({
        * @type {string} - uri that is chosen
        */
       this.$emit("chooseUri", concept, isLeft)
+    },
+    toggleMinimize() {
+      for (let child of this.$children) {
+        child.toggleMinimize()
+      }
     }
   }
 })
