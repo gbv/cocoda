@@ -133,14 +133,14 @@ export default {
     concepts() {
       let concepts = {}
 
-      if (this.selectedLeft && this.$util.isSchemeInList(this.schemeLeft, this.supportedSchemes)) {
+      if (this.$util.isConcept(this.selectedLeft) && this.$util.isSchemeInList(this.schemeLeft, this.supportedSchemes)) {
         concepts[this.selectedLeft.uri] = {
           concept: this.selectedLeft,
           scheme: this.schemeLeft,
           type: "from"
         }
       }
-      if (this.selectedRight && this.$util.isSchemeInList(this.schemeRight, this.supportedSchemes)) {
+      if (this.$util.isConcept(this.selectedRight) && this.$util.isSchemeInList(this.schemeRight, this.supportedSchemes)) {
         concepts[this.selectedRight.uri] = {
           concept: this.selectedRight,
           scheme: this.schemeRight,
@@ -238,7 +238,7 @@ export default {
   },
   methods: {
     reloadIfChanged(newValue, oldValue) {
-      if (oldValue == null && newValue != null || newValue != null && oldValue.uri != newValue.uri) {
+      if (oldValue == null && newValue != null || oldValue != null && newValue == null || oldValue.uri != newValue.uri) {
         this.reloadOccurrences()
       }
     },
