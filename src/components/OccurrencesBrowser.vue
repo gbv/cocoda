@@ -238,7 +238,7 @@ export default {
   },
   methods: {
     reloadIfChanged(newValue, oldValue) {
-      if (oldValue == null && newValue != null || oldValue.uri != newValue.uri) {
+      if (oldValue == null && newValue != null || newValue != null && oldValue.uri != newValue.uri) {
         this.reloadOccurrences()
       }
     },
