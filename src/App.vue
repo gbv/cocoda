@@ -28,15 +28,14 @@
             :voc="schemeSelectedLeft"
             class="conceptSearch"
             @chooseUri="chooseUri(arguments[0], true)" />
-          <!-- ConceptDetail and ConceptTree -->
+          <!-- ItemDetail and ConceptTree -->
           <div class="conceptBrowser">
-            <!-- ConceptDetail -->
-            <concept-detail
+            <!-- ItemDetail -->
+            <item-detail
               v-if="schemeSelectedLeft != null"
               :item="conceptSelectedLeft || schemeSelectedLeft"
-              :is-scheme="conceptSelectedLeft == null"
               :is-left="true"
-              :voc="schemeSelectedLeft"
+              :scheme="schemeSelectedLeft"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
             />
@@ -147,15 +146,14 @@
             :voc="schemeSelectedRight"
             class="conceptSearch"
             @chooseUri="chooseUri(arguments[0], false)" />
-          <!-- ConceptDetail and ConceptTree -->
+          <!-- ItemDetail and ConceptTree -->
           <div class="conceptBrowser">
-            <!-- ConceptDetail -->
-            <concept-detail
+            <!-- ItemDetail -->
+            <item-detail
               v-if="schemeSelectedRight != null"
               :item="conceptSelectedRight || schemeSelectedRight"
-              :is-scheme="conceptSelectedRight == null"
               :is-left="false"
-              :voc="schemeSelectedRight"
+              :scheme="schemeSelectedRight"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
             />
@@ -196,7 +194,7 @@ import MappingEditor from "./components/MappingEditor"
 import OccurrencesBrowser from "./components/OccurrencesBrowser"
 import MappingBrowser from "./components/MappingBrowser"
 import ConceptTree from "./components/ConceptTree"
-import ConceptDetail from "./components/ConceptDetail"
+import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
 var _ = require("lodash")
@@ -218,7 +216,7 @@ function sortData(data) {
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ConceptDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon
   },
   data () {
     return {

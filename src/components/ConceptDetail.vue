@@ -1,135 +1,111 @@
 <template>
   <div
     class="conceptDetail font-size-small">
-    <minimizer text="Concept Detail" />
-    <div
-      v-if="detail != null"
-      class="conceptDetailContent">
+
+    <!-- Ancestors (display only broader concept by default, others can be expanded) -->
+    <div class="conceptDetailAncestors">
       <div
-        v-if="item.ancestors && item.ancestors.length > 0 && (item.ancestors.length > 1 || !item.ancestors.includes(null))"
-        class="parents">
-        <span
-          v-for="(parent, index) in item.ancestors"
-          :key="index">
-          <item-name
-            v-b-tooltip.hover
-            :title="index != item.ancestors.length - 1 ? (parent.prefLabel.de ? parent.prefLabel.de : parent.prefLabel.en) : ''"
-            :item="parent"
-            :show-text="index == item.ancestors.length - 1"
-            :is-link="true"
-            font-size="small"
-            @click.native="chooseUri(parent, isLeft)" />
-          <span v-if="index < item.ancestors.length - 1">
-            ›
-          </span>
-        </span>
+        v-b-tooltip.hover="'show all ancestors'"
+        v-show="!showAncestors && item.ancestors.length > 1"
+        class="conceptDetailAncestorsMore"
+        @click="showAncestors = true">
+        <font-awesome-icon icon="ellipsis-v" />
       </div>
-      <span v-else-if="item.ancestors"><loading-indicator
-        v-show="item.ancestors.length != 0 && !isScheme"
-        size="sm" /></span>
-      <item-name
-        :item="detail"
-        :is-highlighted="true"
-        font-size="normal"
-        class="label" />
-      <p v-if="detail.license && isScheme">
-        <span
-          v-for="(license, index) in detail.license"
-          :key="index">
-          <a
-            :href="license.uri"
-            target="_blank">
-            <img
-              v-if="licenseBadges[license.uri]"
-              :src="licenseBadges[license.uri]"
-              class="licenseBadge">
-            <span v-else>{{ license.uri }}</span>
-          </a>
-          <span v-if="licenseAttribution(detail)">
-            by <a
-              v-if="license.uri.indexOf('by') >= 0 && licenseAttribution(detail).url"
-              :href="licenseAttribution(detail).url"
-              target="_blank">
-              <auto-link :link="licenseAttribution(detail).label" />
-            </a>
-            <span v-else><auto-link :link="licenseAttribution(detail).label" /></span>
-          </span>
-        </span>
-      </p>
-      <p><font-awesome-icon icon="link" /> <auto-link :link="detail.uri" /></p>
-      <p v-if="detail.identifier">
-        <ul>
-          <li
-            v-for="(identifier, index) in detail.identifier"
-            :key="index">
-            <auto-link :link="identifier" />
-          </li>
-        </ul>
-      </p>
-      <p v-if="detail.altLabel">
-        <span
-          v-for="(label, index) in [].concat(detail.altLabel.de, detail.altLabel.en)"
-          v-if="label != null && label != ''"
-          :key="index">
-          {{ label }}<br>
-        </span>
-      </p>
-      <p v-if="detail.definition">
-        Definition: {{ detail.definition.de ? detail.definition.de[0] : detail.definition.en[0] }}
-      </p>
-      <p v-if="detail.scopeNote && detail.scopeNote.de">
-        Scope Notes:
-        <ul v-if="Array.isArray(detail.scopeNote.de)">
-          <li
-            v-for="(note, index) in detail.scopeNote.de"
-            :key="index">
-            {{ note }}
-          </li>
-        </ul>
-        <ul v-else><li>{{ detail.scopeNote.de }}</li></ul>
-      </p>
-      <p v-if="detail.editorialNote && detail.editorialNote.de">
-        Editorial Notes:
-        <ul v-if="Array.isArray(detail.editorialNote.de)">
-          <li
-            v-for="(note, index) in detail.editorialNote.de"
-            :key="index">
-            {{ note }}
-          </li>
-        </ul>
-        <ul v-else><li>{{ detail.editorialNote.de }}</li></ul>
-      </p>
-      <p v-if="gndMappings.length != 0">
-        GND mappings:
-        <span
-          v-for="(mapping, index) in gndMappings"
-          :key="index">
-          <a
-            :href="mapping.uri"
-            target="_blank">
-            <b-badge class="badgeLink">{{ mapping.notation[0] }}</b-badge>
-          </a>&nbsp;
-        </span>
-      </p>
+      <div
+        v-for="(concept, index) in item.ancestors"
+        v-if="concept != null"
+        v-show="showAncestors || index == item.ancestors.length - 1"
+        :key="concept.uri"
+        class="conceptDetailAncestorsItem" >
+        <font-awesome-icon icon="level-up-alt" />
+        <item-name
+          :item="concept"
+          :is-link="true"
+          font-size="small"
+          @click.native="chooseUri(concept, isLeft)" />
+      </div>
+      <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
+      <loading-indicator
+        v-if="item.ancestors.length != 0 && item.ancestors.includes(null)"
+        size="sm" />
     </div>
+
+    <!-- Name of concept -->
+    <item-name
+      :item="item"
+      :is-highlighted="true"
+      font-size="normal" />
+
+    <!-- URI and identifier -->
     <div
-      v-else-if="!loading"
-      class="loadingFull font-size-normal font-heavy">Please select a scheme/concept.</div>
-    <div
-      v-if="loading"
-      class="loadingFull">
-      <loading-indicator size="lg" />
+      v-for="(identifier, index) in [item.uri].concat(item.identifier)"
+      v-if="identifier != null"
+      :key="index"
+      :class="identifier.startsWith('http') ? 'conceptDetailUri' : 'conceptDetailIdentifier'">
+      <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
+      <auto-link :link="identifier" />
     </div>
+
+    <!-- AltLabels -->
+    <div v-if="item.altLabel && item.altLabel.de && item.altLabel.de.length">
+      {{ item.altLabel.de.join(", ") }}
+    </div>
+
+    <!-- ScopeNotes and EditorialNotes -->
+    <div
+      v-for="(notes, index) in [item.scopeNote, item.editorialNote]"
+      v-if="notes != null"
+      :key="'note'+index"
+      class="conceptDetailNotes">
+      <div class="conceptDetailNoteIcon">
+        <font-awesome-icon icon="comment-alt" />
+      </div>
+      <div class="conceptDetailNote">
+        <span v-if="Array.isArray(notes.de)">
+          <div
+            v-for="(note, index2) in notes.de"
+            :key="'point'+index2"
+            class="conceptDetailNotePoint">
+            {{ note }}
+          </div>
+        </span>
+        <div
+          v-else-if="notes.de"
+          class="conceptDetailNotePoint">{{ notes.de }}</div>
+      </div>
+    </div>
+
+    <!-- Narrower concepts -->
+    <div
+      v-if="item.narrower && item.narrower.length > 0"
+      class="conceptDetailNarrower">
+      <div class="font-heavy">Narrower Concepts:</div>
+      <div
+        v-for="concept in item.narrower"
+        v-if="concept != null"
+        :key="concept.uri"
+        class="conceptDetailNarrowerItem">
+        <font-awesome-icon icon="level-down-alt" />
+        <item-name
+          :item="concept"
+          :is-link="true"
+          font-size="small"
+          @click.native="chooseUri(concept, isLeft)" />
+      </div>
+      <!-- Show LoadingIndicator when narrower exist, but are not loaded yet -->
+      <loading-indicator
+        v-if="item.narrower.length != 0 && item.narrower.includes(null)"
+        size="sm" />
+    </div>
+
   </div>
 </template>
 
 <script>
-import LoadingIndicator from "./LoadingIndicator"
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
-import Minimizer from "./Minimizer"
-import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import LoadingIndicator from "./LoadingIndicator"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -137,7 +113,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 export default {
   name: "ConceptDetail",
   components: {
-    LoadingIndicator, AutoLink, ItemName, Minimizer, FontAwesomeIcon
+    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator
   },
   props: {
     /**
@@ -148,108 +124,24 @@ export default {
       default: null
     },
     /**
-     * `true` means item is a scheme, `false` means item is a concept.
-     */
-    isScheme: {
-      type: Boolean,
-      default: false
-    },
-    /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * Reference to the scheme
-     */
-    voc: {
-      type: Object,
-      default: null
     }
   },
   data () {
     return {
-      detail: null,
-      loading: false,
       gndMappings: [],
-      licenseBadges: {
-        "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
-        "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
-        "http://creativecommons.org/licenses/by-nc-nd/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
-        "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
-        "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
-        "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
-        "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
-      }
+      showAncestors: false
     }
   },
   watch: {
-    /**
-     * Refreshes data when item changes.
-     */
-    item: function() {
-      this.loadDetails()
-    }
-  },
-  created() {
-    this.loadDetails()
-  },
-  methods: {
-    loadDetails() {
-      this.detail = this.item
-      this.gndMappings = []
-      if (this.item == null) return
-      let itemBefore = this.item
-      let vm = this
-      this.loading = true
-      // Get details from API
-      this.$api.data(this.voc, this.item.uri, this.$api.detailProperties)
-        .then(function(data) {
-          if (itemBefore != vm.item) {
-            console.log("Item changed during the request, discarding data...")
-          } else {
-            if (Array.isArray(data) && data.length > 0) {
-              vm.detail = data[0]
-            }
-            if (data.length > 1) {
-              console.log("For some reason, more than one set of properties was received for ", vm.item)
-            }
-            vm.loading = false
-          }
-        }).catch(function(error) {
-          console.log("Request failed", error)
-          vm.loading = false
-        })
-
-      // Get GND mappings
-      // TODO: - Put into its own mapping providers module.
-      axios.get("//coli-conc.gbv.de/api/mappings", {
-        params: {
-          from: this.item.uri
-        }
-      }).then(function(response) {
-        vm.gndMappings = []
-        let data = response.data
-        for(let mapping of data) {
-          if (mapping.toScheme.uri == "http://bartoc.org/en/node/430") {
-            vm.gndMappings = vm.gndMappings.concat(mapping.to.memberSet || [])
-          }
-        }
-      }).catch(function(error) {
-        console.log("API error (GND mappings):", error)
-      })
-    },
-    licenseAttribution(detail) {
-      let organisation = detail.creator || detail.publisher
-      if (!organisation || organisation.length == 0) {
-        return null
-      }
-      return {
-        url: organisation[0].url,
-        label: organisation[0].prefLabel.de || organisation[0].prefLabel.en || "no name"
-      }
+    item() {
+      this.showAncestors = false
+      // Scroll to top
+      this.$el.parentElement.scrollTop = 0
     }
   }
 }
@@ -258,44 +150,46 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.conceptDetail {
-  position: relative;
+.conceptDetailAncestors {
+  margin: 5px;
+  & .conceptDetailAncestorsMore {
+    width: 20px;
+    padding-left: 2px;
+    color: @buttonColor;
+    cursor: pointer;
+    &:hover {
+      color: @buttonColorHover;
+    }
+  }
 }
-p {
-  margin: 5px 0;
+
+.conceptDetailIdentifier, .conceptDetailUri {
+  margin: 5px;
+  & a {
+    background-color: lighten(@color-primary-1, 15%);
+    border-radius: 5px;
+    padding: 0 3px;
+  }
 }
-ul {
-  margin-bottom: 0px;
-}
-.label {
-  &:extend(.font-heavy);
-}
-.parents {
-  margin-top: 5px;
-}
-.conceptDetailContent, .loadingFull {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow-y: auto;
-  top: 0;
-  left: 0;
-}
-.conceptDetailContent {
-  padding: 2px 8px 2px 8px;
-}
-.loadingFull {
-  z-index: 100;
-  background-color: #ffffff55;
+
+.conceptDetailNotes {
+  margin-top: 0px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  & .conceptDetailNoteIcon {
+    flex: none;
+    padding: 3px 5px;
+  }
+  & .conceptDetailNote {
+    padding: 0 5px;
+    flex: 1;
+    & .conceptDetailNotePoint {
+      padding: 2px 0;
+    }
+  }
 }
-.badgeLink:hover {
-  background-color: @color-secondary-2-4;
+
+.conceptDetailNarrower {
+  margin: 5px;
 }
-.licenseBadge {
-  margin-bottom: 3px;
-  height: 15px;
-}
+
 </style>
