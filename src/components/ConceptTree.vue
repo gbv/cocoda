@@ -123,24 +123,19 @@ export default {
          * @param {boolean} [update=true] - if true, update concept in the tree
          * Note that if concept is already part of the tree, it will be updated even with update=false.
          */
-        loadChildren: function(concept, callback = null, update = true) {
+        loadChildren: function(concept, callback = null) {
           if ( (concept.narrower.length > 0 && !concept.narrower.includes(null)) || concept.narrower.length == 0 ) {
             callback && callback(concept)
             return
           }
-          let treeHelper = this
           this.vm.$api.narrower(this.vm.vocSelected, concept.uri, this.vm.$api.defaultProperties)
             .then(function(data) {
-              let newConcept = concept
-              newConcept.narrower = sortData(data)
+              concept.narrower = sortData(data)
               // Add ancestors to all children
-              for (var child of newConcept.narrower) {
+              for (var child of concept.narrower) {
                 child.ancestors = concept.ancestors.concat([concept])
               }
-              if (update) {
-                treeHelper.update(newConcept)
-              }
-              callback && callback(newConcept)
+              callback && callback(concept)
             }).catch(function(error) {
               console.log("Request failed", error)
               callback && callback(null)
@@ -259,6 +254,8 @@ export default {
        * @type {object}
        */
       this.$emit("selectedConcept", newValue)
+      // Load children for selected
+      this.treeHelper.loadChildren(this.selected)
     }
   },
   created() {

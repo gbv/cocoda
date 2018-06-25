@@ -57,7 +57,7 @@
         @selected="select($event)" />
     </div>
     <loading-indicator
-      v-show="loadingChildren"
+      v-show="hasChildren && isOpen && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -180,13 +180,9 @@ export default {
      * @param {boolean} isOpen - open status to be set to
      */
     open(isOpen) {
-      let newConcept = this.concept
-      newConcept.ISOPEN = isOpen
-      this.treeHelper.update(newConcept)
-      if (isOpen && this.childrenLoaded && this.hasChildren) {
+      this.$set(this.concept, "ISOPEN", isOpen)
+      if (isOpen && this.hasChildren) {
         this.scrollTo()
-      } else {
-        this.loadChildren()
       }
     },
     /**
@@ -262,13 +258,13 @@ export default {
      */
     scrollTo() {
       // Determine conceptTree element because it is the scrolling container
-      let parent = this.$parent
-      while (!parent.$el.classList.contains("conceptTree")) {
-        parent = parent.$parent
+      let parent = this.$el.parentElement
+      while (!parent.classList.contains("scrollable")) {
+        parent = parent.parentElement
       }
       // Scroll element
       var options = {
-        container: parent.$el,
+        container: parent,
         easing: "ease-in",
         offset: -20,
         cancelable: true,
