@@ -254,8 +254,10 @@ export default {
        * @type {object}
        */
       this.$emit("selectedConcept", newValue)
-      // Load children for selected
-      this.treeHelper.loadChildren(this.selected)
+      // Load children for selected if it is a concept
+      if (this.selected && this.selected.type && this.selected.type.includes("http://www.w3.org/2004/02/skos/core#Concept")) {
+        this.treeHelper.loadChildren(this.selected)
+      }
     }
   },
   created() {
