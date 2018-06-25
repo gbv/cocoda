@@ -125,7 +125,8 @@ export default {
       occurrences: [],
       mapping: this.$root.$data.mapping,
       cancelToken: null,
-      supportedSchemes: null
+      supportedSchemes: null,
+      loading: false
     }
   },
   computed: {
@@ -225,16 +226,25 @@ export default {
     }
   },
   watch: {
-    concepts() {
-      this.reloadOccurrences()
+    selectedLeft(newValue, oldValue) {
+      this.reloadIfChanged(newValue, oldValue)
+    },
+    selectedRight(newValue, oldValue) {
+      this.reloadIfChanged(newValue, oldValue)
     }
   },
   mounted() {
     this.$util.setupTableScrollSync()
   },
   methods: {
+    reloadIfChanged(newValue, oldValue) {
+      if (oldValue == null && newValue != null || oldValue.uri != newValue.uri) {
+        this.reloadOccurrences()
+      }
+    },
     reloadOccurrences() {
       let vm = this
+      this.loading = true
       this.occurrences = []
       let promise
       if (!this.supportedSchemes) {
@@ -257,8 +267,8 @@ export default {
           return
         }
         let urisString = Object.keys(vm.concepts).reduce(function(a, b) { return a + " " + b })
-        if (vm.cancelToken != null) {
-          vm.cancelToken.cancel("There was a newer search query.")
+        if (vm.loading && vm.cancelToken != null) {
+          vm.cancelToken.cancel("Occurrences: There was a newer request.")
         }
         vm.cancelToken = vm.$api.token()
         axios.get(vm.$config.occurrenceProviders[0].url, {
@@ -272,7 +282,7 @@ export default {
           console.log(error)
           vm.occurrences = []
         })
-      })
+      }).then(() => vm.loading = false)
     },
     toMapping(data) {
       this.mapping.jskos = {
