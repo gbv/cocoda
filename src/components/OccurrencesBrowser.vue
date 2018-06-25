@@ -263,7 +263,7 @@ export default {
         vm.cancelToken = vm.$api.token()
         axios.get(vm.$config.occurrenceProviders[0].url, {
           params: {
-            members: urisString
+            member: urisString
           },
           cancelToken: vm.cancelToken.token
         }).then(function(response) {
