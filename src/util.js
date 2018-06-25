@@ -154,6 +154,13 @@ let isSchemeInList = function(scheme, schemes) {
   return false
 }
 
+let isConcept = function(object) {
+  return object && object.type && object.type.includes("http://www.w3.org/2004/02/skos/core#Concept")
+}
+let isScheme = function(object) {
+  return object && object.type && object.type.includes("http://www.w3.org/2004/02/skos/core#ConceptScheme")
+}
+
 let canConceptBeSelected = function(concept, scheme) {
   if (!concept.inScheme || concept.inScheme.length == 0) {
     return false
@@ -181,4 +188,4 @@ let setupTableScrollSync = function() {
   }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, isSchemeInList, canConceptBeSelected, compareConcepts, setupTableScrollSync }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync }
