@@ -75,6 +75,8 @@ let saveSchemeAssociationForProvider = function(provider) {
     for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
       schemeToTerminologyProvider[uri] = provider
     }
+    // Add scheme specific custom properties
+    scheme.DETAILSLOADED = false
     schemes.push(scheme)
   }
 }
@@ -86,10 +88,10 @@ for (let provider of config.terminologyProviders) {
     // Load schemes
     let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
     if (vocEndpoint) {
-      axios.get(vocEndpoint)
-        .then(function(response) {
-          if (Array.isArray(response.data)) {
-            provider.voc = response.data
+      get(vocEndpoint)
+        .then(function(data) {
+          if (Array.isArray(data)) {
+            provider.voc = data
             saveSchemeAssociationForProvider(provider)
           } else {
             console.log("Couldn't load schemes for provider", provider)
