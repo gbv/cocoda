@@ -160,7 +160,11 @@ export default {
       // Scroll to top
       this.$el.parentElement.scrollTop = 0
     }
-  }
+  },
+  mounted() {
+    // Scroll to top
+    this.$el.parentElement.scrollTop = 0
+  },
 }
 </script>
 
