@@ -53,8 +53,9 @@
       v-if="identifier != null"
       :key="index"
       :class="identifier.startsWith('http') ? 'conceptDetailUri' : 'conceptDetailIdentifier'">
-      <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
-      <auto-link :link="identifier" />
+      <font-awesome-icon
+        :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
+        @dblclick="copy" /><auto-link :link="identifier" />
     </div>
 
     <!-- AltLabels -->
@@ -133,6 +134,7 @@ import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicator from "./LoadingIndicator"
+var _ = require("lodash")
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -234,6 +236,22 @@ export default {
             console.log("Request failed", error)
           })
       }
+    },
+    copy(event) {
+      let element = event.target
+      if (element.tagName.toLowerCase() == "path") {
+        element = element.parentElement
+      }
+      element = element.nextSibling
+      window.getSelection().removeAllRanges()
+      this.$util.selectText(element)
+      _.delay(function() {
+        let successful = document.execCommand("copy")
+        if (!successful) {
+          console.log("Copy to clipboard failed.")
+        }
+        window.getSelection().removeAllRanges()
+      }, 50)
     }
   }
 }
@@ -261,6 +279,9 @@ export default {
     background-color: lighten(@color-primary-1, 15%);
     border-radius: 5px;
     padding: 0 3px;
+  }
+  & svg {
+    user-select: none;
   }
 }
 
