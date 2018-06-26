@@ -156,28 +156,22 @@ export default {
         if (occurrence.memberSet.length == 0) {
           // Should not occur, skip
           continue
-        } else if (occurrence.memberSet.length == 1) {
-          // One concept
-          items.push({
-            occurrences: occurrence,
-            actions: false
-          })
-          let item = this.concepts[occurrence.memberSet[0].uri]
-          items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme
-        } else {
-          // Two concepts
-          items.push({
-            occurrences: occurrence,
-            actions: true
-          })
-          let item = this.concepts[occurrence.memberSet[0].uri]
-          items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme
-          item = this.concepts[occurrence.memberSet[1].uri]
-          items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme
         }
+        items.push({
+          occurrences: occurrence,
+          actions: false
+        })
+        let numOfItems = 0
+        for (let member of occurrence.memberSet) {
+          if (!Object.keys(this.concepts).includes(member.uri)) {
+            continue
+          }
+          let item = this.concepts[member.uri]
+          items[items.length-1][item.type] = item.concept
+          items[items.length-1][item.type+"Scheme"] = item.scheme
+          numOfItems += 1
+        }
+        items[items.length-1].actions = numOfItems > 1
       }
       return items
     },
