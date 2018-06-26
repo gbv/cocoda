@@ -86,24 +86,27 @@
     <!-- ScopeNotes and EditorialNotes -->
     <div
       v-for="(notes, index) in [item.scopeNote, item.editorialNote]"
-      v-if="notes != null"
-      :key="'note'+index"
+      v-if="notes != null && notes.de != null"
+      :key="'note'+index+'-'+iteration"
       class="conceptDetailNotes">
       <div class="conceptDetailNoteIcon">
         <font-awesome-icon icon="comment-alt" />
       </div>
       <div class="conceptDetailNote">
-        <span v-if="Array.isArray(notes.de)">
-          <div
-            v-for="(note, index2) in notes.de"
-            :key="'point'+index2"
-            class="conceptDetailNotePoint">
-            {{ note }}
-          </div>
-        </span>
-        <div
-          v-else-if="notes.de"
-          class="conceptDetailNotePoint">{{ notes.de }}</div>
+        <span
+          v-html="notesOptions.replaceDivider(notesOptions.joinAndTruncate(notes.de, index))" />
+        <a
+          v-if="!notesOptions.showMore[index] && notesOptions.isTruncated(notes.de)"
+          href=""
+          @click.prevent="notesShowMore(true, index)">
+          show more
+        </a>
+        <a
+          v-else-if="notesOptions.isTruncated(notes.de)"
+          href=""
+          @click.prevent="notesShowMore(false, index)">
+          show less
+        </a>
       </div>
     </div>
 
@@ -183,7 +186,38 @@ export default {
   data () {
     return {
       gndMappings: [],
-      showAncestors: false
+      showAncestors: false,
+      iteration: 0,
+      notesOptions: {
+        divider: "∤",
+        maximumCharacters: 120,
+        showMore: {},
+        showAll: false,
+        join(notes) {
+          if (Array.isArray(notes)) {
+            return notes.join(this.divider)
+          } else {
+            return notes
+          }
+        },
+        joinAndTruncate(notes, index) {
+          let notesString = this.join(notes)
+          if (this.showMore[index]) {
+            return notesString
+          }
+          if (!this.showAll && notesString.length > this.maximumCharacters) {
+            notesString = notesString.substring(0, this.maximumCharacters - 4) + " ..."
+          }
+          return notesString
+        },
+        isTruncated(notes) {
+          let notesString = this.join(notes)
+          return !this.showAll && notesString.length > this.maximumCharacters
+        },
+        replaceDivider(notes) {
+          return "<p class='conceptDetailNotePoint'>" + notes.split(this.divider).join("</p><p class='conceptDetailNotePoint'>") + "</p>"
+        }
+      }
     }
   },
   watch: {
@@ -206,6 +240,9 @@ export default {
       this.$el.parentElement.scrollTop = 0
       // Load GND mappings
       this.loadGndMappings()
+      // Reset notes
+      this.notesOptions.showMore = {}
+      this.notesOptions.showAll = this.settings.showAllNotes
     },
     loadGndMappings() {
       this.gndMappings = []
@@ -268,6 +305,10 @@ export default {
         }
         window.getSelection().removeAllRanges()
       }, 50)
+    },
+    notesShowMore(status, index) {
+      this.notesOptions.showMore[index] = status
+      this.iteration += 1
     }
   }
 }

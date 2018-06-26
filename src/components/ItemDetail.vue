@@ -73,6 +73,7 @@ export default {
      * - showGndTerms: show GND terms in ConceptDetail (default true)
      * - enableFullNavigation: show the scheme in the ancestors list in ConceptDetail and show the top concepts in SchemeDetail (default false)
      * - showAllAncestors: always show all ancestors (default false)
+     * - showAllNotes: do not truncate notes (default false)
      */
     settings: {
       type: Object,
@@ -87,6 +88,7 @@ export default {
         showGndTerms: true,
         enableFullNavigation: false,
         showAllAncestors: false,
+        showAllNotes: false
       }
     }
   },
