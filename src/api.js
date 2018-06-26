@@ -77,6 +77,7 @@ let saveSchemeAssociationForProvider = function(provider) {
     }
     // Add scheme specific custom properties
     scheme.DETAILSLOADED = false
+    scheme.TOPCONCEPTS = [null]
     schemes.push(scheme)
   }
 }

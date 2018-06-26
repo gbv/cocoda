@@ -48,7 +48,28 @@
     </div>
 
     <!-- Top Concepts -->
-    <!-- TODO -->
+    <div
+      v-if="item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
+      class="schemeDetailTop">
+      <div class="font-heavy">Top Concepts:</div>
+      <div
+        v-for="concept in item.TOPCONCEPTS"
+        v-if="concept != null"
+        :key="concept.uri"
+        class="schemeDetailTopItem">
+        <font-awesome-icon icon="level-down-alt" />
+        <item-name
+          :item="concept"
+          :is-link="true"
+          font-size="small"
+          @click.native="chooseUri(concept, isLeft)" />
+      </div>
+      <!-- Show LoadingIndicator when top concepts exist, but are not loaded yet -->
+      <loading-indicator
+        v-if="item.TOPCONCEPTS.length != 0 && item.TOPCONCEPTS.includes(null)"
+        size="sm" />
+    </div>
+    <div v-else>No top concepts</div>
 
   </div>
 </template>
@@ -57,6 +78,7 @@
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import LoadingIndicator from "./LoadingIndicator"
 
 /**
  * Component that displays a scheme's details (URI, notation, identifier, ...).
@@ -64,7 +86,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, FontAwesomeIcon
+    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator
   },
   props: {
     /**
@@ -95,6 +117,16 @@ export default {
       }
     }
   },
+  watch: {
+    item() {
+      // Scroll to top
+      this.$el.parentElement.scrollTop = 0
+    }
+  },
+  mounted() {
+    // Scroll to top
+    this.$el.parentElement.scrollTop = 0
+  },
   methods: {
     licenseAttribution(detail) {
       let organisation = detail.creator || detail.publisher
@@ -124,6 +156,10 @@ export default {
     border-radius: 5px;
     padding: 0 3px;
   }
+}
+
+.schemeDetailTop {
+  margin: 5px;
 }
 
 .licenseBadge {

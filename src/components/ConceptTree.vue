@@ -375,6 +375,7 @@ export default {
             for (var top of vm.tree) {
               top.ancestors = []
             }
+            vm.vocSelected.TOPCONCEPTS = vm.tree
             vm.loading = false
           }
         }).catch(function(error) {
