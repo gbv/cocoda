@@ -177,6 +177,7 @@ export default {
       if (this.preventClickArrow) {
         return
       }
+      this.loadChildren()
       this.preventClickArrow = true
       let vm = this
       _.delay(function() {
