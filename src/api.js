@@ -283,6 +283,21 @@ function get(url, config) {
             element.MAPPINGS = null
             element.ancestors = element.ancestors || [null]
             element.narrower = element.narrower || [null]
+            // reorder scopeNotes and editorialNotes
+            if (element.scopeNote) {
+              for (let lang of Object.keys(element.scopeNote)) {
+                if (Array.isArray(element.scopeNote[lang])) {
+                  element.scopeNote[lang] = element.scopeNote[lang].sort()
+                }
+              }
+            }
+            if (element.editorialNote) {
+              for (let lang of Object.keys(element.editorialNote)) {
+                if (Array.isArray(element.editorialNote[lang])) {
+                  element.editorialNote[lang] = element.editorialNote[lang].sort()
+                }
+              }
+            }
           }
         }
       })
