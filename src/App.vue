@@ -262,6 +262,15 @@ export default {
       let delay = 0
       // Support both URIs and objects
       if (typeof concept === "object") {
+        if (this.$util.isScheme(concept)) {
+          // Loading scheme by setting selected to null
+          if (isLeft) {
+            this.$refs.conceptTreeLeft.selected = null
+          } else {
+            this.$refs.conceptTreeRight.selected = null
+          }
+          return
+        }
         uri = concept.uri
         // Check if scheme needs to be selected as well
         if (concept.inScheme && (isLeft && !this.schemeSelectedLeft || !isLeft && !this.schemeSelectedRight)) {
