@@ -99,7 +99,6 @@
 
 <script>
 import ItemName from "./ItemName"
-import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import Minimizer from "./Minimizer"
 
@@ -342,19 +341,12 @@ export default {
       }
     },
     loadMappings(conceptItem) {
-      // Get GND mappings
-      // TODO: - Put into its own mapping providers module.
+      // Get mappings
       let params = {}
       let concept = conceptItem.concept
-      let vm = this
       params[conceptItem.fromTo] = concept.uri
-      axios.get(this.$config.mappingProviders[0].url, {
-        params: params
-      }).then(function(response) {
-        for (let mapping of response.data) {
-          mapping.type = mapping.type || [vm.$util.defaultMappingType.uri]
-        }
-        concept.MAPPINGS = response.data
+      this.$api.mappings(params).then(data => {
+        concept.MAPPINGS = data
       }).catch(function(error) {
         console.log("API error (mappings):", error)
       })

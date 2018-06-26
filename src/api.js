@@ -290,4 +290,18 @@ function get(url, config) {
     })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token, schemes }
+function mappings(params) {
+  if (config.mappingProviders.length == 0) {
+    return Promise.resolve([])
+  }
+  return axios.get(config.mappingProviders[0].url, {
+    params: params
+  }).then(response => {
+    for (let mapping of response.data) {
+      mapping.type = mapping.type || [util.defaultMappingType.uri]
+    }
+    return response.data
+  })
+}
+
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, url, token, schemes, mappings }
