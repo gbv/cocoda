@@ -61,6 +61,7 @@ new Vue({
   el: "#app",
   components: { App },
   data: {
+    hoveredConcept: null,
     mapping: {
       // TODO: - Differenciate between AND (memberSet) and OR (memberChoice) in jskos.to
       add(concept, scheme, isLeft=true) {

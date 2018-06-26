@@ -11,13 +11,11 @@
         :key="index"
         :concept="concept"
         :selected="selected"
-        :hovered="hovered"
         :depth="0"
         :index="index"
         :tree-helper="treeHelper"
         :is-left="isLeft"
         :scheme="vocSelected"
-        @hovered="hovered = $event"
         @selected="selected = $event" />
     </div>
     <div
@@ -80,7 +78,6 @@ export default {
       tree: [],
       selected: null,
       loading: false,
-      hovered: null,
       chooseFromUriID: null,
       /**
        * A helper object that provides utility functions to work on the concept tree.
@@ -359,7 +356,6 @@ export default {
     reset: function() {
       this.tree = []
       this.selected = null
-      this.hovered = null
       this.loading = true
       this.chooseFromUriID = null
       let selectedBefore = this.vocSelected

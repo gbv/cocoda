@@ -47,13 +47,11 @@
         :key="index"
         :concept="child"
         :selected="selected"
-        :hovered="hovered"
         :depth="depth + 1"
         :index="index"
         :tree-helper="treeHelper"
         :is-left="isLeft"
         :scheme="scheme"
-        @hovered="hovering($event)"
         @selected="select($event)" />
     </div>
     <loading-indicator
@@ -89,13 +87,6 @@ export default {
      * The currently selected concept.
      */
     selected: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The currently hovered concept.
-     */
-    hovered: {
       type: Object,
       default: null
     },
@@ -151,7 +142,7 @@ export default {
       return this.concept.ISOPEN ? true : false
     },
     isHovered() {
-      return this.hovered != null ? this.hovered.uri == this.concept.uri : false
+      return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.concept)
     },
     isSelected() {
       return this.selected != null ? this.selected.uri == this.concept.uri : false
@@ -165,14 +156,8 @@ export default {
     /**
      * Triggers a hovered event.
      */
-    hovering(el) {
-      /**
-       * Event that is triggered when concept is hovered over.
-       *
-       * @event hovered
-       * @type {object} - concept object that is hovered over
-       */
-      this.$emit("hovered", el)
+    hovering(concept) {
+      this.$root.$data.hoveredConcept = concept
     },
     /**
      * Sets the ISOPEN property of the concept, loads it's children and scrolls the concept further to the top.

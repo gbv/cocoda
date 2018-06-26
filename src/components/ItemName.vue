@@ -77,8 +77,12 @@ export default {
   },
   data () {
     return {
-      isHovered: false,
       tooltipDOMID: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    }
+  },
+  computed: {
+    isHovered() {
+      return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.item)
     }
   },
   watch: {
@@ -94,10 +98,12 @@ export default {
   },
   methods: {
     mouseOver() {
-      this.isHovered = true
+      // this.isHovered = true
+      this.$root.$data.hoveredConcept = this.item
     },
     mouseOut() {
-      this.isHovered = false
+      // this.isHovered = false
+      this.$root.$data.hoveredConcept = null
     },
     trimTooltip(text) {
       if (text.length > 80) {
