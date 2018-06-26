@@ -95,6 +95,7 @@ export default {
   methods: {
     loadDetails() {
       if (this.item == null || this.item.DETAILSLOADED) {
+        this.loading = false
         return
       }
       let vm = this
