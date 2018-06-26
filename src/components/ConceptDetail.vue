@@ -62,6 +62,22 @@
       {{ item.altLabel.de.join(", ") }}
     </div>
 
+    <!-- GND Mappings -->
+    <div
+      v-if="gndMappings.length > 0"
+      class="conceptDetailGndMappings">
+      GND:
+      <item-name
+        v-for="(concept, index) in gndMappings"
+        v-if="concept != null"
+        :key="'gnd'+index"
+        :item="concept"
+        :show-text="false"
+        :show-tooltip="true"
+        font-size="sm"
+        @mouseover.native="hoverGnd(concept)" />
+    </div>
+
     <!-- ScopeNotes and EditorialNotes -->
     <div
       v-for="(notes, index) in [item.scopeNote, item.editorialNote]"
@@ -156,16 +172,71 @@ export default {
     }
   },
   watch: {
-    item() {
-      this.showAncestors = false
-      // Scroll to top
-      this.$el.parentElement.scrollTop = 0
+    item(newItem, oldItem) {
+      if(!this.$util.compareConcepts(newItem, oldItem)) {
+        this.refresh()
+      }
     }
   },
   mounted() {
-    // Scroll to top
-    this.$el.parentElement.scrollTop = 0
+    this.refresh()
   },
+  methods: {
+    refresh() {
+      this.showAncestors = false
+      // Scroll to top
+      this.$el.parentElement.scrollTop = 0
+      // Load GND mappings
+      this.loadGndMappings()
+    },
+    loadGndMappings() {
+      this.gndMappings = []
+      let itemBefore = this.item
+      if (!this.item) return
+      // Load GND mappings from and to item
+      let vm = this
+      for (let fromTo of ["from", "to"]) {
+        let params = {}
+        params[fromTo] = this.item.uri
+        this.$api.mappings(params).then(data => {
+          if (!vm.$util.compareConcepts(itemBefore, vm.item)) {
+            console.log("ConceptDetail: Item changed before GND mappings were loaded.")
+            return
+          }
+          for(let mapping of data) {
+            if (mapping.toScheme.uri == "http://bartoc.org/en/node/430") {
+              let toFrom = fromTo == "from" ? "to" : "from"
+              vm.gndMappings = vm.gndMappings.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
+            }
+          }
+          console.log(vm.gndMappings.length, "GND mappings loaded")
+        }).catch(error => {
+          console.log("ConceptDetail: Error when loading GND mappings:", error)
+        })
+      }
+    },
+    hoverGnd(concept) {
+      if(concept && !concept.prefLabel) {
+        // Load prefLabel to be shown as tooltip
+        let vm = this
+        this.$api.data({ uri: "http://bartoc.org/en/node/430" }, concept.uri)
+          .then(function(data) {
+            if (Array.isArray(data) && data.length > 0) {
+              // Add prefLabel to concept
+              vm.$set(concept, "prefLabel", data[0].prefLabel)
+            } else {
+              // TODO: - Error handling
+              vm.$set(concept, "prefLabel", { de: " " })
+            }
+            if (data.length > 1) {
+              console.log("For some reason, more than one set of properties was received for ", concept)
+            }
+          }).catch(function(error) {
+            console.log("Request failed", error)
+          })
+      }
+    }
+  }
 }
 </script>
 
