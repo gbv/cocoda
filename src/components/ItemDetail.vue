@@ -8,6 +8,7 @@
       <component
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
+        :scheme="scheme"
         :is-left="isLeft"
         @chooseUri="chooseUri" />
     </div>

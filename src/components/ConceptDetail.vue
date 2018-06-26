@@ -12,6 +12,16 @@
         <font-awesome-icon icon="ellipsis-v" />
       </div>
       <div
+        v-show="showAncestors || item.ancestors.length <= 1"
+        class="conceptDetailAncestorsItem">
+        <font-awesome-icon icon="level-up-alt" />
+        <item-name
+          :item="scheme"
+          :is-link="true"
+          font-size="small"
+          @click.native="chooseUri(scheme, isLeft)" />
+      </div>
+      <div
         v-for="(concept, index) in item.ancestors"
         v-if="concept != null"
         v-show="showAncestors || index == item.ancestors.length - 1"
@@ -129,6 +139,13 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
+    },
+    /**
+     * Reference to the scheme
+     */
+    scheme: {
+      type: Object,
+      default: null
     }
   },
   data () {
