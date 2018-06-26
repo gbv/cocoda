@@ -10,7 +10,9 @@
         v-show="!settings.showAllAncestors && !showAncestors && (settings.enableFullNavigation && item.ancestors.length > 1 || !settings.enableFullNavigation && item.ancestors.length > 2)"
         class="conceptDetailAncestorsMore"
         @click="showAncestors = true">
-        <font-awesome-icon icon="ellipsis-v" />
+        <font-awesome-icon
+          class="flipHorizontal"
+          icon="ellipsis-v" />
       </div>
       <div
         v-show="settings.enableFullNavigation && (settings.showAllAncestors || showAncestors || item.ancestors.length <= 1)"
@@ -27,7 +29,9 @@
         v-show="showAncestors || settings.showAllAncestors || settings.enableFullNavigation && index == item.ancestors.length - 1 || !settings.enableFullNavigation && (item.ancestors.length <= 2 || index >= item.ancestors.length - 1)"
         :key="concept.uri"
         class="conceptDetailAncestorsItem" >
-        <font-awesome-icon icon="level-up-alt" />
+        <font-awesome-icon
+          class="flipHorizontal"
+          icon="level-up-alt" />
         <item-name
           :item="concept"
           :is-link="true"
@@ -113,7 +117,9 @@
         v-if="concept != null"
         :key="concept.uri"
         class="conceptDetailNarrowerItem">
-        <font-awesome-icon icon="level-down-alt" />
+        <font-awesome-icon
+          class="flipHorizontal"
+          icon="level-down-alt" />
         <item-name
           :item="concept"
           :is-link="true"

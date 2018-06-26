@@ -57,7 +57,9 @@
         v-if="concept != null"
         :key="concept.uri"
         class="schemeDetailTopItem">
-        <font-awesome-icon icon="level-down-alt" />
+        <font-awesome-icon
+          class="flipHorizontal"
+          icon="level-down-alt" />
         <item-name
           :item="concept"
           :is-link="true"
