@@ -77,7 +77,8 @@ export default {
   },
   data () {
     return {
-      tooltipDOMID: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+      tooltipDOMID: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      isHoveredFromHere: false
     }
   },
   computed: {
@@ -90,7 +91,7 @@ export default {
       // Force show tooltip when item has changed
       let vm = this
       _.delay(function() {
-        if (vm.isHovered) {
+        if (vm.isHoveredFromHere) {
           vm.$refs.tooltip && vm.$refs.tooltip.$emit("open")
         }
       }, 50)
@@ -98,11 +99,11 @@ export default {
   },
   methods: {
     mouseOver() {
-      // this.isHovered = true
+      this.isHoveredFromHere = true
       this.$root.$data.hoveredConcept = this.item
     },
     mouseOut() {
-      // this.isHovered = false
+      this.isHoveredFromHere = false
       this.$root.$data.hoveredConcept = null
     },
     trimTooltip(text) {
