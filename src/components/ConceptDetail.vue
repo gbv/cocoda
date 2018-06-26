@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="item != null"
     class="conceptDetail font-size-small">
 
     <!-- Ancestors (display only broader concept by default, others can be expanded) -->

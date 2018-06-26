@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     type() {
-      if (this.item && this.item.type && Array.isArray(this.item.type) && this.item.type.length > 0 && this.item.type.includes("http://www.w3.org/2004/02/skos/core#Concept")) {
+      if (this.$util.isConcept(this.item)) {
         return "Concept"
       } else {
         return "Scheme"

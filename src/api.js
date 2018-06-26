@@ -14,6 +14,7 @@
 
 import axios from "axios"
 import config from "./config"
+import util from "./util"
 
 /** URL for API */
 const url = config.terminologyProviders[0].url
@@ -275,7 +276,7 @@ function get(url, config) {
       data.forEach(element => {
         if (element !== null && typeof element === "object") {
           // For concepts, add custom properties
-          if(element.type && Array.isArray(element.type) && element.type.length > 0 && element.type[0] == "http://www.w3.org/2004/02/skos/core#Concept") {
+          if(util.isConcept(element)) {
             element.ISOPEN = false
             element.DETAILSLOADED = false
             element.OCCURRENCES = null
