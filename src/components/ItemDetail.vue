@@ -10,6 +10,7 @@
         :item="item"
         :scheme="scheme"
         :is-left="isLeft"
+        :settings="internalSettings"
         @chooseUri="chooseUri" />
     </div>
     <div
@@ -65,11 +66,28 @@ export default {
     scheme: {
       type: Object,
       default: null
+    },
+    /**
+     * Settings - An object with a subset of the following properties:
+     * - showGndMappings: show all GND mappings in ConceptDetail (default false)
+     * - showGndTerms: show GND terms in ConceptDetail (default true)
+     * - enableFullNavigation: show the scheme in the ancestors list in ConceptDetail and show the top concepts in SchemeDetail (default false)
+     * - showAllAncestors: always show all ancestors (default false)
+     */
+    settings: {
+      type: Object,
+      default: () => { return {} }
     }
   },
   data () {
     return {
-      loading: false
+      loading: false,
+      defaultSettings: {
+        showGndMappings: false,
+        showGndTerms: true,
+        enableFullNavigation: false,
+        showAllAncestors: false,
+      }
     }
   },
   computed: {
@@ -79,6 +97,14 @@ export default {
       } else {
         return "Scheme"
       }
+    },
+    internalSettings() {
+      // Merge prop settings and default settings
+      let settings = {}
+      for (let setting of Object.keys(this.defaultSettings)) {
+        settings[setting] = this.settings[setting] || this.defaultSettings[setting]
+      }
+      return settings
     }
   },
   watch: {

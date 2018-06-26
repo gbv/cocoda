@@ -7,15 +7,14 @@
     <div class="conceptDetailAncestors">
       <div
         v-b-tooltip.hover="'show all ancestors'"
-        v-show="!showAncestors && item.ancestors.length > 1"
+        v-show="!settings.showAllAncestors && !showAncestors && (settings.enableFullNavigation && item.ancestors.length > 1 || !settings.enableFullNavigation && item.ancestors.length > 2)"
         class="conceptDetailAncestorsMore"
         @click="showAncestors = true">
         <font-awesome-icon icon="ellipsis-v" />
       </div>
       <div
-        v-show="showAncestors || item.ancestors.length <= 1"
+        v-show="settings.enableFullNavigation && (settings.showAllAncestors || showAncestors || item.ancestors.length <= 1)"
         class="conceptDetailAncestorsItem">
-        <font-awesome-icon icon="level-up-alt" />
         <item-name
           :item="scheme"
           :is-link="true"
@@ -25,7 +24,7 @@
       <div
         v-for="(concept, index) in item.ancestors"
         v-if="concept != null"
-        v-show="showAncestors || index == item.ancestors.length - 1"
+        v-show="showAncestors || settings.showAllAncestors || settings.enableFullNavigation && index == item.ancestors.length - 1 || !settings.enableFullNavigation && (item.ancestors.length <= 2 || index >= item.ancestors.length - 1)"
         :key="concept.uri"
         class="conceptDetailAncestorsItem" >
         <font-awesome-icon icon="level-up-alt" />
@@ -55,7 +54,8 @@
       :class="identifier.startsWith('http') ? 'conceptDetailUri' : 'conceptDetailIdentifier'">
       <font-awesome-icon
         :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
-        @dblclick="copy" /><auto-link :link="identifier" />
+        @dblclick="copy" />
+      <auto-link :link="identifier" />
     </div>
 
     <!-- AltLabels -->
@@ -65,7 +65,7 @@
 
     <!-- GND Mappings -->
     <div
-      v-if="gndMappings.length > 0"
+      v-if="settings.showGndMappings && gndMappings.length > 0"
       class="conceptDetailGndMappings">
       GND:
       <item-name
@@ -165,6 +165,13 @@ export default {
     scheme: {
       type: Object,
       default: null
+    },
+    /**
+     * Settings - see `ItemDetail`
+     */
+    settings: {
+      type: Object,
+      default: () => { return {} }
     }
   },
   data () {
@@ -178,6 +185,9 @@ export default {
       if(!this.$util.compareConcepts(newItem, oldItem)) {
         this.refresh()
       }
+    },
+    settings() {
+      this.refresh()
     }
   },
   mounted() {
@@ -194,7 +204,7 @@ export default {
     loadGndMappings() {
       this.gndMappings = []
       let itemBefore = this.item
-      if (!this.item) return
+      if (!this.settings.showGndMappings || !this.item) return
       // Load GND mappings from and to item
       let vm = this
       for (let fromTo of ["from", "to"]) {
