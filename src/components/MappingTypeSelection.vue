@@ -67,7 +67,6 @@ export default {
 
 .mappingTypes {
   width: 25px;
-  margin: auto 0px;
   top: 0;
   bottom: 0;
   text-align: center;

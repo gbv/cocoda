@@ -14,8 +14,13 @@
       class="mappingEditorPart" >
       <div v-if="mapping.getScheme(isLeft) != null">
         <div
-          v-show="showScheme(isLeft)"
-          class="mappingScheme font-heavy">{{ labelForScheme(mapping.getScheme(isLeft)) }}</div>
+          class="mappingScheme font-heavy">
+          <span v-if="showScheme(isLeft)">
+            {{ labelForScheme(mapping.getScheme(isLeft)) }}
+          </span>
+          <span v-else>&nbsp;</span>
+        </div>
+
         <ul class="mappingConceptList">
           <li
             v-for="(concept, index) in mapping.getConcepts(isLeft)"
@@ -27,7 +32,9 @@
               @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
             <div
               class="mappingConceptDelete font-size-small"
-              @click="mapping.remove(concept, isLeft)">X</div>
+              @click="mapping.remove(concept, isLeft)">
+              <font-awesome-icon icon="minus-circle" />
+            </div>
           </li>
         </ul>
       </div>
@@ -57,10 +64,12 @@
         <div class="mappingButtonsFiller" />
       </div>
     </div>
-    <mapping-type-selection
-      v-show="schemeLeft != null || schemeRight != null"
-      :mapping="mapping"
-      class="mappingTypeSelection" />
+    <div class="mappingTypeSelection">
+      <div class="mappingScheme font-heavy">&nbsp;</div>
+      <mapping-type-selection
+        v-show="schemeLeft != null || schemeRight != null"
+        :mapping="mapping"/>
+    </div>
     <b-modal
       ref="exportModal"
       hide-footer
@@ -141,7 +150,7 @@ export default {
   },
   methods: {
     labelForScheme(scheme) {
-      return scheme ? scheme.notation[0].toUpperCase() : "No Scheme"
+      return scheme ? scheme.notation[0] : "&nbsp;"
     },
     reverseMapping() {
       if (!this.mapping.reverse()) {
@@ -223,7 +232,7 @@ export default {
   flex: none;
   position: relative;
   order: 1;
-  margin-top: 10px;
+  margin-top: 1em;
 }
 .mappingEditorPart {
   flex: 1;
