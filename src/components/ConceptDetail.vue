@@ -203,13 +203,12 @@ export default {
             console.log("ConceptDetail: Item changed before GND mappings were loaded.")
             return
           }
+          let toFrom = fromTo == "from" ? "to" : "from"
           for(let mapping of data) {
-            if (mapping.toScheme.uri == "http://bartoc.org/en/node/430") {
-              let toFrom = fromTo == "from" ? "to" : "from"
+            if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
               vm.gndMappings = vm.gndMappings.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
             }
           }
-          console.log(vm.gndMappings.length, "GND mappings loaded")
         }).catch(error => {
           console.log("ConceptDetail: Error when loading GND mappings:", error)
         })
