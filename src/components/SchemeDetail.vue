@@ -40,6 +40,7 @@
     <!-- URI and identifier -->
     <div
       v-for="(identifier, index) in [item.uri].concat(item.identifier)"
+      v-if="identifier != null"
       :key="index"
       :class="identifier.startsWith('http') ? 'schemeDetailUri' : 'schemeDetailIdentifier'">
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
