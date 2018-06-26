@@ -1,6 +1,11 @@
 <template>
   <div
-    :class="isColumn ? 'resizeSliderCol' : 'resizeSliderRow'"
+    :class="{
+      resizeSliderCol: isColumn,
+      resizeSliderRow: !isColumn,
+      resizeSliderCocodaRed: cocodaRed,
+      resizeSliderBlack: !cocodaRed
+    }"
     @mousedown="startResizing" />
 </template>
 
@@ -13,6 +18,10 @@ export default {
   name: "ResizingSlider",
   props: {
     isColumn: {
+      type: Boolean,
+      default: false
+    },
+    cocodaRed: {
       type: Boolean,
       default: false
     }
@@ -101,16 +110,23 @@ export default {
 </script>
 
 <style scoped>
-.resizeSliderCol {
+.resizeSliderCol, .resizeSliderRow {
   flex: 0 1 3px;
+}
+.resizeSliderBlack {
+  color: hsla(0, 0%, 0%, 0.2);
+}
+.resizeSliderCocodaRed {
+  color: #B44D28;
+}
+.resizeSliderCol {
   cursor: col-resize;
   margin: 0 5px;
-  box-shadow: inset 1px 0 2px -1px hsla(0, 0%, 0%, 0.2);
+  box-shadow: inset 1px 0 2px -1px;
 }
 .resizeSliderRow {
-  flex: 0 1 3px;
   cursor: row-resize;
   margin: 5px 0;
-  box-shadow: inset 0 1px 2px -1px hsla(0, 0%, 0%, 0.2);
+  box-shadow: inset 0 1px 2px -1px;
 }
 </style>

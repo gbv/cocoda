@@ -85,7 +85,7 @@
 
           </div>
           <!-- Slider -->
-          <resizing-slider />
+          <resizing-slider :cocoda-red="true" />
           <div class="mappingToolItem mainComponent">
             <!-- MappingBrowser -->
             <mapping-browser
@@ -105,7 +105,7 @@
             </div>
           </div>
           <!-- Slider -->
-          <resizing-slider />
+          <resizing-slider :cocoda-red="true" />
           <div class="mappingToolItem mainComponent">
             <!-- OccurrencesBrowser -->
             <occurrences-browser
