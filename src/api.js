@@ -108,6 +108,7 @@ let objects = {
   get(uri, schemeUri) {
     console.log("newApi/get", uri, schemeUri)
     if (this.map.has(uri)) {
+      console.log("newApi/get Immediately return")
       return Promise.resolve(this.map.get(uri))
     } else {
       // TODO: Rethink all of this
@@ -199,6 +200,7 @@ let objects = {
    * @returns a Promise with the updated object
    */
   narrower(object) {
+    console.log("narrower for", object)
     if (object.narrower && !object.narrower.includes(null)) {
       console.log("newApi/narrower: Immediately return")
       return Promise.resolve(object)
@@ -257,6 +259,7 @@ let objects = {
    * @returns a Promise with the updated object
    */
   ancestors(object) {
+    console.log("ancestors for", object)
     if (object.ancestors && !object.ancestors.includes(null)) {
       console.log("newApi/ancestors: Immediately return")
       return Promise.resolve(object)
