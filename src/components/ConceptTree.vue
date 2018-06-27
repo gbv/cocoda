@@ -113,11 +113,13 @@ export default {
       // 1. Get concept object
       console.log("chooseFromUri: 1. Get concept object")
       this.$api.objects.get(uri, this.vocSelected.uri).then(concept => {
+        if (this.chooseFromUriID != id) return
         this.selected = concept
         // 2. Load ancestors
         console.log("chooseFromUri: 2. Load ancestors", concept)
         return this.$api.objects.ancestors(concept)
       }).then(concept => {
+        if (this.chooseFromUriID != id) return
         // 3. Load children for all ancestors
         console.log("chooseFromUri: 3. Load children for all ancestors")
         let promises = [Promise.resolve(concept)]
@@ -125,8 +127,15 @@ export default {
           console.log("chooseFromUri: 3.1. Load children", ancestor)
           promises.push(this.$api.objects.narrower(ancestor))
         }
+        // 3.2 If children were loaded before ancestors, then the children's ancestors property is set to [null]
+        if (concept.narrower && !concept.narrower.includes(null)) {
+          for (let child of concept.narrower) {
+            child.ancestors = concept.ancestors.concat([concept])
+          }
+        }
         return Promise.all(promises)
       }).then(result => {
+        if (this.chooseFromUriID != id) return
         let concept = result[0]
         // 4. Set all ancestors to open
         console.log("chooseFromUri: 4. Set all ancestors to open")
@@ -149,8 +158,10 @@ export default {
             y: true
           }
           vm.$scrollTo(el, 200, options)
-          vm.loading = false
         }, 100)
+      }).then(() => {
+        console.log("chooseFromUri finished")
+        this.loading = false
       }).catch(error => {
         console.log("chooseFromUri Error:", error)
         this.loading = false
