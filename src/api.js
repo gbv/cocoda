@@ -149,6 +149,45 @@ let objects = {
   },
 
   /**
+   * Loads top concepts for scheme
+   *
+   * @param {object} scheme
+   *
+   * @returns a Promise with the updated scheme
+   */
+  top(scheme) {
+    if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
+      console.log("newApi/top: Immediately return")
+      return Promise.resolve(scheme)
+    } else {
+      return top(scheme).then(results => {
+        if (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null)) {
+          console.log("newApi/top: loaded elsewhere")
+          return scheme
+        }
+        console.log("newApi/top: loaded")
+        let top = []
+        for (let result of results) {
+          let resultInMap = this.map.get(result.uri)
+          if (resultInMap) {
+            top.push(resultInMap)
+          } else {
+            // Save into map
+            this.save(result)
+            top.push(result)
+          }
+        }
+        // Set ancestors to []
+        for (let concept of top) {
+          concept.ancestors = []
+        }
+        scheme.TOPCONCEPTS = util.sortConcepts(top)
+        return scheme
+      }).catch(() => scheme)
+    }
+  },
+
+  /**
    * Loads narrower concepts for an object if necessary.
    *
    * @param {object} object
@@ -171,6 +210,7 @@ let objects = {
           console.log("newApi/narrower: loaded elsewhere")
           return object
         }
+        console.log("newApi/narrower: loaded")
         // Integrate resulting concepts into map
         let narrower = []
         for (let result of results) {
@@ -224,6 +264,7 @@ let objects = {
           console.log("newApi/ancestors: loaded elsewhere")
           return object
         }
+        console.log("newApi/ancestors: loaded")
         // Integrate resulting concepts into map
         let ancestors = []
         for (let result of results) {
