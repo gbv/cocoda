@@ -127,6 +127,25 @@ function selectText(el){
   }
 }
 
+let getAllUris = object => {
+  if (!object) return []
+  let uris = [object.uri].concat(object.identifier || [])
+  uris = uris.concat(uris.map(uri => uri.startsWith("https") ? uri.replace("https", "http") : uri.replace("http", "https")))
+  uris = uris.concat(uris.map(uri => uri.endsWith("/") ? uri.substring(0, uri.length - 1) : uri + "/"))
+  uris = uris.concat(uris.map(uri => uri.replace("/en/", "/de/")))
+  return uris
+}
+
+let compareObjects = (object1, object2) => {
+  let object1uris = getAllUris(object1)
+  let object2uris = getAllUris(object2)
+  if (_.intersection(object1uris, object2uris).length > 0) {
+    return true
+  } else {
+    return false
+  }
+}
+
 let compareSchemes = function(scheme1, scheme2) {
   if (!scheme1 || !scheme2) {
     return false
@@ -135,7 +154,6 @@ let compareSchemes = function(scheme1, scheme2) {
   let scheme1uris = [scheme1.uri].concat(scheme1.identifier || []).map(uri => uri.replace("https", "http").replace("/en/", "/de/"))
   let scheme2uris = [scheme2.uri].concat(scheme2.identifier || []).map(uri => uri.replace("https", "http").replace("/en/", "/de/"))
   let intersection = _.intersection(scheme1uris, scheme2uris)
-  // console.log(scheme1uris, scheme2uris, intersection)
   if (intersection.length > 0) {
     return true
   }
@@ -188,4 +206,10 @@ let setupTableScrollSync = function() {
   }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync }
+function sortConcepts(data) {
+  return data.sort(
+    (a, b) => (a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri) ? 1 : -1
+  )
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts }
