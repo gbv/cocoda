@@ -49,7 +49,7 @@ let objects = {
       if (util.isConcept(object)) {
         object.DETAILSLOADED = false
         object.ISOPEN = false
-        object.MAPPINGS = null
+        object.MAPPINGS = object.MAPPINGS || null
         object.ancestors = object.ancestors || [null]
         object.broader = object.broader || [null]
         object.narrower = object.narrower || [null]
@@ -71,11 +71,11 @@ let objects = {
               let schemeInMap = this.map.get(uri)
               let alreadyAdded = false
               for (let schemeInScheme of inScheme) {
-                if (this.compare(schemeInMap.uri, schemeInScheme.uri)) {
+                if (schemeInMap && this.compare(schemeInMap.uri, schemeInScheme.uri)) {
                   alreadyAdded = true
                 }
               }
-              if (!alreadyAdded) {
+              if (!alreadyAdded && schemeInMap) {
                 inScheme.push(schemeInMap)
               }
             }
@@ -84,7 +84,7 @@ let objects = {
         }
       } else if (util.isScheme(object)) {
         object.DETAILSLOADED = false
-        object.TOPCONCEPTS = [null]
+        object.TOPCONCEPTS = object.TOPCONCEPTS || [null]
         object.created = object.created || null
         object.issued = object.issued || null
         object.modified = object.modified || null
@@ -165,7 +165,7 @@ let objects = {
           console.log("newApi/top: loaded elsewhere")
           return scheme
         }
-        console.log("newApi/top: loaded")
+        console.log("newApi/top: loaded", results)
         let top = []
         for (let result of results) {
           let resultInMap = this.map.get(result.uri)
@@ -182,8 +182,12 @@ let objects = {
           concept.ancestors = []
         }
         scheme.TOPCONCEPTS = util.sortConcepts(top)
+        console.log("newApi/top: saved", scheme)
         return scheme
-      }).catch(() => scheme)
+      }).catch(error => {
+        console.log(error)
+        return null
+      })
     }
   },
 
@@ -238,7 +242,10 @@ let objects = {
         // Save narrower
         object.narrower = util.sortConcepts(narrower)
         return object
-      }).catch(() => object)
+      }).catch(error => {
+        console.log(error)
+        return null
+      })
     }
   },
 
@@ -287,7 +294,10 @@ let objects = {
         // Save ancestors
         object.ancestors = ancestors
         return object
-      }).catch(() => object)
+      }).catch(error => {
+        console.log(error)
+        return null
+      })
     }
   },
 
@@ -320,7 +330,10 @@ let objects = {
         } else {
           return null
         }
-      }).catch(() => null)
+      }).catch(error => {
+        console.log(error)
+        return null
+      })
     }
   }
 
