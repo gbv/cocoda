@@ -49,7 +49,6 @@
         :selected="selected"
         :depth="depth + 1"
         :index="index"
-        :tree-helper="treeHelper"
         :is-left="isLeft"
         :scheme="scheme"
         @selected="select($event)" />
@@ -102,13 +101,6 @@ export default {
      */
     index: {
       type: Number,
-      default: null
-    },
-    /**
-     * A reference to ConceptTree's treeHelper object.
-     */
-    treeHelper: {
-      type: Object,
       default: null
     },
     /**
@@ -165,7 +157,7 @@ export default {
      * @param {boolean} isOpen - open status to be set to
      */
     open(isOpen) {
-      this.$set(this.concept, "ISOPEN", isOpen)
+      this.concept.ISOPEN = isOpen
       if (isOpen && this.hasChildren) {
         this.scrollTo()
       }
@@ -224,18 +216,17 @@ export default {
       }
     },
     /**
-     * Loads the concept's children (via treeHelper).
+     * Loads the concept's children.
      *
      * Scroll on finish.
      */
     loadChildren() {
       this.loadingChildren = true
-      let vm = this
-      this.treeHelper.loadChildren(this.concept, function(success) {
-        vm.loadingChildren = false
+      this.$api.objects.narrower(this.concept).then(concept => {
+        this.loadingChildren = false
         // Only scroll when concept is open
-        if (vm.concept.ISOPEN && success) {
-          vm.scrollTo()
+        if (concept.ISOPEN) {
+          this.scrollTo()
         }
       })
     },

@@ -122,38 +122,11 @@ export default {
   },
   methods: {
     loadDetails() {
-      if (this.item == null || this.item.DETAILSLOADED) {
-        this.loading = false
-        return
-      }
-      let vm = this
-      let itemBefore = this.item
       this.loading = true
       // Get details from API
-      this.$api.data(this.scheme, this.item.uri, this.$api.detailProperties)
-        .then(function(data) {
-          if (itemBefore != vm.item) {
-            console.log("Item changed during the request, discarding data...")
-          } else {
-            if (Array.isArray(data) && data.length > 0) {
-              // Integrate details into item
-              let detail = data[0]
-              for (let prop of Object.keys(detail)) {
-                if (vm.item[prop] == null) {
-                  vm.$set(vm.item, prop, detail[prop])
-                }
-              }
-            }
-            if (data.length > 1) {
-              console.log("For some reason, more than one set of properties was received for ", vm.item)
-            }
-            vm.item.DETAILSLOADED = true
-            vm.loading = false
-          }
-        }).catch(function(error) {
-          console.log("Request failed", error)
-          vm.loading = false
-        })
+      this.$api.objects.details(this.item).then(() => {
+        this.loading = false
+      })
     }
   }
 }
