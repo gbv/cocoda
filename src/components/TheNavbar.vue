@@ -2,6 +2,12 @@
   <b-navbar
     toggleable="md"
     type="dark">
+    <b-navbar-brand href="https://coli-conc.gbv.de">
+      <img
+        src="../assets/coli-conc-logo.svg"
+        alt="coli-conc"
+        height="40px" >
+    </b-navbar-brand>
     <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
     <b-navbar-nav class="ml-auto">
       <b-button
