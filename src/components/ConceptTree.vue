@@ -114,12 +114,18 @@ export default {
       console.log("chooseFromUri: 1. Get concept object")
       this.$api.objects.get(uri, this.vocSelected.uri).then(concept => {
         if (this.chooseFromUriID != id) return
+        if (concept == null) {
+          // Show error message for nonexisting concept
+          this.$root.alert("Could not load concept. This is likely caused by conversion failure of a mapping.")
+          return
+        }
         this.selected = concept
         // 2. Load ancestors
         console.log("chooseFromUri: 2. Load ancestors", concept)
         return this.$api.objects.ancestors(concept)
       }).then(concept => {
         if (this.chooseFromUriID != id) return
+        if (concept == null) return
         // 3. Load children for all ancestors
         console.log("chooseFromUri: 3. Load children for all ancestors")
         let promises = [Promise.resolve(concept)]
@@ -136,6 +142,7 @@ export default {
         return Promise.all(promises)
       }).then(result => {
         if (this.chooseFromUriID != id) return
+        if (result == null) return
         let concept = result[0]
         // 4. Set all ancestors to open
         console.log("chooseFromUri: 4. Set all ancestors to open")

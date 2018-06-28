@@ -163,7 +163,25 @@ new Vue({
         type: [util.defaultMappingType.uri]
       },
       reversed: false
+    },
+    alerts: []
+  },
+  methods: {
+    /**
+     * Shows a bootstrap alert with text and variant.
+     * Usage from any component: this.$root.alert(text, variant)
+     *
+     * This is actually shown by App.vue, so it has to implement the respective HTML and CSS for this.
+     *
+     * @param {string} text
+     * @param {string} variant
+     */
+    alert(text, variant = "danger") {
+      this.alerts.push({
+        text: text,
+        variant: variant
+      })
     }
   },
-  template: "<App/>"
+  template: "<App/>",
 })

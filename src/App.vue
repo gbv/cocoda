@@ -2,6 +2,17 @@
   <div
     id="app"
     class="text-dark color-primary-0-bg font-size-normal">
+    <div class="alertsContainer">
+      <b-alert
+        v-for="(alert, index) in $root.$data.alerts"
+        :key="index"
+        :variant="alert.variant"
+        :show="!alert.dismissed"
+        dismissible
+        @dismissed="alert.dismissed = true">
+        {{ alert.text }}
+      </b-alert>
+    </div>
     <the-navbar />
     <div class="main">
       <div class="flexbox-row">
@@ -429,6 +440,15 @@ a:link, a:visited, a:active {
 a:hover {
   text-decoration: none;
   color: @color-complement-3;
+}
+
+.alertsContainer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1000;
+  width: 600px;
 }
 
 /* Overwrite the default to keep the scrollbar always visible */
