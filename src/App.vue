@@ -47,6 +47,7 @@
               :item="conceptSelectedLeft || schemeSelectedLeft"
               :is-left="true"
               :scheme="schemeSelectedLeft"
+              :settings="itemDetailSettings.left"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
             />
@@ -165,6 +166,7 @@
               :item="conceptSelectedRight || schemeSelectedRight"
               :is-left="false"
               :scheme="schemeSelectedRight"
+              :settings="itemDetailSettings.right"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
             />
@@ -235,7 +237,15 @@ export default {
       conceptSelectedRight: null,
       schemeSelectedLeft: null,
       schemeSelectedRight: null,
-      schemes: this.$api.schemes
+      schemes: this.$api.schemes,
+      itemDetailSettings: {
+        left: {
+          showTopConceptsInScheme: false
+        },
+        right: {
+          showTopConceptsInScheme: false
+        }
+      }
     }
   },
   computed: {
@@ -268,6 +278,13 @@ export default {
     }
   },
   methods: {
+    refresh(key) {
+      if (key == "minimize") {
+        // Minimizer causes a refresh, therefore recheck item detail settings
+        this.itemDetailSettings.left.showTopConceptsInScheme = this.$refs.conceptTreeLeft != null && this.$refs.conceptTreeLeft.$el.dataset.minimized == "1"
+        this.itemDetailSettings.right.showTopConceptsInScheme = this.$refs.conceptTreeRight != null && this.$refs.conceptTreeRight.$el.dataset.minimized == "1"
+      }
+    },
     chooseUri(concept, isLeft) {
       let uri
       let delay = 0

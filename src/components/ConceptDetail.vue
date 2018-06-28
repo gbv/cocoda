@@ -7,7 +7,7 @@
     <div class="conceptDetailAncestors">
       <div
         v-b-tooltip.hover="'show all ancestors'"
-        v-show="!settings.showAllAncestors && !showAncestors && (settings.enableFullNavigation && item.ancestors.length > 1 || !settings.enableFullNavigation && item.ancestors.length > 2)"
+        v-show="!settings.showAllAncestors && !showAncestors && (settings.showSchemeInAncestors && item.ancestors.length > 1 || !settings.showSchemeInAncestors && item.ancestors.length > 2)"
         class="conceptDetailAncestorsMore"
         @click="showAncestors = true">
         <font-awesome-icon
@@ -15,7 +15,7 @@
           icon="ellipsis-v" />
       </div>
       <div
-        v-show="settings.enableFullNavigation && (settings.showAllAncestors || showAncestors || item.ancestors.length <= 1)"
+        v-show="settings.showSchemeInAncestors && (settings.showAllAncestors || showAncestors || item.ancestors.length <= 1)"
         class="conceptDetailAncestorsItem">
         <item-name
           :item="scheme"
@@ -26,7 +26,7 @@
       <div
         v-for="(concept, index) in item.ancestors"
         v-if="concept != null"
-        v-show="showAncestors || settings.showAllAncestors || settings.enableFullNavigation && index == item.ancestors.length - 1 || !settings.enableFullNavigation && (item.ancestors.length <= 2 || index >= item.ancestors.length - 1)"
+        v-show="showAncestors || settings.showAllAncestors || settings.showSchemeInAncestors && index == item.ancestors.length - 1 || !settings.showSchemeInAncestors && (item.ancestors.length <= 2 || index >= item.ancestors.length - 1)"
         :key="concept.uri"
         class="conceptDetailAncestorsItem" >
         <font-awesome-icon

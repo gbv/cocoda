@@ -53,6 +53,9 @@ Vue.mixin({
       for (let child of this.$children) {
         child.toggleMinimize()
       }
+    },
+    refresh(key) {
+      this.$parent && this.$parent.refresh(key)
     }
   }
 })

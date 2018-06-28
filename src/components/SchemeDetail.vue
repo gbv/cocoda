@@ -49,7 +49,7 @@
 
     <!-- Top Concepts -->
     <div
-      v-if="settings.enableFullNavigation && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
+      v-if="settings.showTopConceptsInScheme && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
       class="schemeDetailTop">
       <div class="font-heavy">Top Concepts:</div>
       <div
@@ -71,7 +71,7 @@
         v-if="item.TOPCONCEPTS.length != 0 && item.TOPCONCEPTS.includes(null)"
         size="sm" />
     </div>
-    <div v-else-if="settings.enableFullNavigation">No top concepts</div>
+    <div v-else-if="settings.showTopConceptsInScheme">No top concepts</div>
 
   </div>
 </template>

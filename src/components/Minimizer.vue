@@ -76,6 +76,7 @@ export default {
         current.style.flex = "0 1 " + minimizerHeight
         // Set data-minimized property to 1 so that it can be identified as minimized
         current.dataset.minimized = 1
+        this.refresh("minimize")
       } else {
         // Reset styles to previous
         current.style.flex = this.previousFlex
@@ -85,6 +86,7 @@ export default {
         }
         // Reset data-minimized
         current.dataset.minimized = 0
+        this.refresh("minimize")
       }
     }
   }

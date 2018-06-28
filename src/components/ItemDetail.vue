@@ -71,7 +71,8 @@ export default {
      * Settings - An object with a subset of the following properties:
      * - showGndMappings: show all GND mappings in ConceptDetail (default false)
      * - showGndTerms: show GND terms in ConceptDetail (default true)
-     * - enableFullNavigation: show the scheme in the ancestors list in ConceptDetail and show the top concepts in SchemeDetail (default false)
+     * - showSchemeInAncestors: (default true)
+     * - showTopConceptsInScheme: (default false)
      * - showAllAncestors: always show all ancestors (default false)
      * - showAllNotes: do not truncate notes (default false)
      */
@@ -86,7 +87,8 @@ export default {
       defaultSettings: {
         showGndMappings: false,
         showGndTerms: true,
-        enableFullNavigation: false,
+        showSchemeInAncestors: true,
+        showTopConceptsInScheme: false,
         showAllAncestors: false,
         showAllNotes: false
       }
