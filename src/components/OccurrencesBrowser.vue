@@ -39,12 +39,12 @@
         <span
           slot="fromScheme"
           slot-scope="data">
-          {{ data.value ? data.value.notation[0].toUpperCase() : "-" }}
+          {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
         </span>
         <span
           slot="toScheme"
           slot-scope="data">
-          {{ data.value ? data.value.notation[0].toUpperCase() : "-" }}
+          {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
         </span>
         <span
           slot="occurrences"
@@ -54,7 +54,7 @@
           <span v-else>
             <auto-link
               :link="data.value.url"
-              :text="data.value.count" />
+              :text="String(data.value.count)" />
           </span>
         </span>
         <span
@@ -74,6 +74,11 @@
         </span>
       </b-table>
     </div>
+    <div
+      v-if="loading"
+      class="loadingFull">
+      <loading-indicator size="lg" />
+    </div>
   </div>
 </template>
 
@@ -83,13 +88,15 @@ import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import LoadingIndicator from "./LoadingIndicator"
+var _ = require("lodash")
 
 /**
  * The occurrences browser component.
  */
 export default {
   name: "OccurrencesBrowser",
-  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon },
+  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicator },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -126,55 +133,11 @@ export default {
       mapping: this.$root.$data.mapping,
       cancelToken: null,
       supportedSchemes: null,
-      loading: false
+      loading: false,
+      items: []
     }
   },
   computed: {
-    concepts() {
-      let concepts = {}
-
-      if (this.$util.isConcept(this.selectedLeft) && this.$util.isSchemeInList(this.schemeLeft, this.supportedSchemes)) {
-        concepts[this.selectedLeft.uri] = {
-          concept: this.selectedLeft,
-          scheme: this.schemeLeft,
-          type: "from"
-        }
-      }
-      if (this.$util.isConcept(this.selectedRight) && this.$util.isSchemeInList(this.schemeRight, this.supportedSchemes)) {
-        concepts[this.selectedRight.uri] = {
-          concept: this.selectedRight,
-          scheme: this.schemeRight,
-          type: "to"
-        }
-      }
-
-      return concepts
-    },
-    items() {
-      let items = []
-      for (let occurrence of this.occurrences) {
-        if (occurrence.memberSet.length == 0) {
-          // Should not occur, skip
-          continue
-        }
-        items.push({
-          occurrences: occurrence,
-          actions: false
-        })
-        let numOfItems = 0
-        for (let member of occurrence.memberSet) {
-          if (!Object.keys(this.concepts).includes(member.uri)) {
-            continue
-          }
-          let item = this.concepts[member.uri]
-          items[items.length-1][item.type] = item.concept
-          items[items.length-1][item.type+"Scheme"] = item.scheme
-          numOfItems += 1
-        }
-        items[items.length-1].actions = numOfItems > 1
-      }
-      return items
-    },
     fields() {
       return [
         {
@@ -225,6 +188,51 @@ export default {
     },
     selectedRight(newValue, oldValue) {
       this.reloadIfChanged(newValue, oldValue)
+    },
+    occurrences() {
+      console.log("Occurrences changed", this.occurrences.slice())
+      let items = []
+      for (let occurrence of this.occurrences) {
+        if (!occurrence || !occurrence.memberSet || occurrence.memberSet.length == 0 || occurrence.memberSet.length > 2) {
+          // Should not occur, skip
+          continue
+        }
+        items.push({
+          occurrences: occurrence,
+          actions: false
+        })
+        let fromTos = ["to", "from"]
+        let fromToMap = []
+        for (let member of occurrence.memberSet) {
+          if (this.$util.compareConcepts(member, this.selectedLeft)) {
+            fromToMap[member.uri] = "from"
+            _.pull(fromTos, "from")
+          } else if (this.$util.compareConcepts(member, this.selectedRight)) {
+            fromToMap[member.uri] = "to"
+            _.pull(fromTos, "to")
+          }
+        }
+        for (let member of occurrence.memberSet) {
+          let fromTo = fromToMap[member.uri] || fromTos.pop()
+          items[items.length-1][fromTo] = member
+          items[items.length-1][fromTo+"Scheme"] = member.inScheme[0]
+          // refresh member
+          let index = items.length-1
+          this.$api.objects.get(member.uri, member.inScheme[0].uri).then(concept => {
+            if (!concept) {
+              // if concept couldn't be loaded, at least try to load the member's scheme
+              return this.$api.objects.get(member.inScheme[0].uri)
+            }
+            this.items[index][fromTo] = concept
+            this.items[index][fromTo+"Scheme"] = concept.inScheme[0]
+          }).then(scheme => {
+            if (!scheme) return
+            this.items[index][fromTo+"Scheme"] = scheme
+          })
+        }
+        items[items.length-1].actions = occurrence.memberSet.length > 1
+      }
+      this.items = items
     }
   },
   mounted() {
@@ -239,7 +247,6 @@ export default {
     reloadOccurrences() {
       let vm = this
       this.loading = true
-      this.occurrences = []
       let promise
       if (!this.supportedSchemes) {
         // Load supported schemes
@@ -257,26 +264,51 @@ export default {
         promise = Promise.resolve()
       }
       promise.then(() => {
-        if (Object.keys(vm.concepts).length == 0) {
-          return
+        let uris = []
+        let promises = []
+        for (let concept of [this.selectedLeft, this.selectedRight]) {
+          if (concept) {
+            uris.push(concept.uri)
+          }
         }
-        let urisString = Object.keys(vm.concepts).reduce(function(a, b) { return a + " " + b })
-        if (vm.loading && vm.cancelToken != null) {
-          vm.cancelToken.cancel("Occurrences: There was a newer request.")
+        if (uris.length == 0) {
+          return []
         }
-        vm.cancelToken = vm.$api.token()
-        axios.get(vm.$config.occurrenceProviders[0].url, {
-          params: {
-            member: urisString
-          },
-          cancelToken: vm.cancelToken.token
-        }).then(function(response) {
-          vm.occurrences = response.data
-        }).catch(function(error) {
-          console.log(error)
-          vm.occurrences = []
-        })
-      }).then(() => vm.loading = false)
+        if (this.loading && this.cancelToken != null) {
+          this.cancelToken.cancel("Occurrences: There was a newer request.")
+        }
+        this.cancelToken = this.$api.token()
+        for (let uri of uris) {
+          promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
+            params: {
+              member: uri,
+              scheme: "*",
+              threshold: 5
+            },
+            cancelToken: this.cancelToken.token
+          }).catch(error => {
+            console.log("Occurrences API Error:", error)
+            return { data: [] }
+          }))
+        }
+        return Promise.all(promises)
+      }).then(responses => {
+        let occurrences = []
+        for (let response of responses) {
+          let result = response.data
+          occurrences = occurrences.concat(result)
+        }
+        // Sort occurrences and only save top 10
+        console.log(occurrences)
+        this.occurrences = occurrences.sort((a, b) => a.count < b.count).slice(0, 10)
+        console.log(this.occurrences)
+        this.loading = false
+        console.log("Occurrences loaded")
+      }).catch(error => {
+        console.log("Occurrences Error:", error)
+        this,occurrences = []
+        this.loading = false
+      })
     },
     toMapping(data) {
       this.mapping.jskos = {
@@ -307,6 +339,20 @@ export default {
   &:hover {
     color: @buttonColorHover;
   }
+}
+
+.loadingFull {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #ffffff55;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 </style>
