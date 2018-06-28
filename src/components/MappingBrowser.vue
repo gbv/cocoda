@@ -221,9 +221,7 @@ export default {
                 item._rowVariant = "info"
               }
               item.creator = mapping.creator || "?"
-              item.type =
-                (mapping.type && Array.isArray(mapping.type) && mapping.type.length > 0) ?
-                  this.$util.mappingTypeByUri(mapping.type[0]) : this.$util.defaultMappingType
+              item.type = this.$util.mappingTypeByType(mapping.type)
               items.push(item)
               hashList.push(this.$util.mappingHash(mapping))
             }

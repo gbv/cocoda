@@ -39,9 +39,7 @@ export default {
   computed: {
     mappingTypeSelected() {
       let mapping = this.mapping ? this.mapping.jskos : null
-      return this.$util.mappingTypeByUri(
-        mapping && mapping.type && mapping.type.length > 0 ? mapping.type[0] : this.$util.defaultMappingType.uri
-      )
+      return this.$util.mappingTypeByType(mapping ? mapping.type : null)
     }
   },
   methods: {
@@ -49,7 +47,7 @@ export default {
       // Save in mapping
       let mapping = this.mapping ? this.mapping.jskos : null
       if (mapping) {
-        if (!mapping.type) {
+        if (!mapping.type || !Array.isArray(mapping.type)) {
           this.$set(mapping, "type", [])
         }
         if (mapping.type.length == 0) {

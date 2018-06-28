@@ -102,6 +102,16 @@ let mappingTypeByUri = function(uri) {
   return null
 }
 
+let mappingTypeByType = function(type, defaultType = defaultMappingType) {
+  let uri
+  if (Array.isArray(type) && type.length > 0) {
+    uri = type[0]
+  } else {
+    uri = type
+  }
+  return mappingTypeByUri(uri) || defaultType
+}
+
 let defaultMappingType = mappingTypeByUri("http://www.w3.org/2004/02/skos/core#mappingRelation")
 
 // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
@@ -212,4 +222,4 @@ function sortConcepts(data) {
   )
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts }
