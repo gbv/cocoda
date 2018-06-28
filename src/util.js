@@ -107,6 +107,7 @@ let mappingTypeByType = function(type, defaultType = defaultMappingType) {
   if (Array.isArray(type) && type.length > 0) {
     uri = type[0]
   } else {
+    // FIXME: This is a workaround for the type being a string instead of an array.
     uri = type
   }
   return mappingTypeByUri(uri) || defaultType
