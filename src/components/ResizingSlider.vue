@@ -114,7 +114,7 @@ export default {
   flex: 0 1 3px;
 }
 .resizeSliderBlack {
-  color: hsla(0, 0%, 0%, 0.2);
+  color: #777777;
 }
 .resizeSliderCocodaRed {
   color: #B44D28;
