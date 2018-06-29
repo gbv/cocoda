@@ -143,7 +143,7 @@ Vue.component("prefLabel-text", {
       default: null
     }
   },
-  template: "<span>{{ item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en }}</span>"
+  template: "<span>{{ item.prefLabel.de || item.prefLabel.en || 'No Label' }}</span>"
 })
 </script>
 
@@ -152,6 +152,7 @@ Vue.component("prefLabel-text", {
 
 .itemName {
   display: inline;
+  user-select: none;
 }
 .badge {
   font-family: "Courier New", Courier, monospace;
