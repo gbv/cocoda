@@ -62,12 +62,6 @@
       <auto-link :link="identifier" />
     </div>
 
-    <!-- AltLabels -->
-    <div v-if="item.altLabel && item.altLabel.de && item.altLabel.de.length">
-      <!-- FIXME: Workaround for altLabel.de sometimes being a string -->
-      {{ Array.isArray(item.altLabel.de) ? item.altLabel.de.join(", ") : item.altLabel.de }}
-    </div>
-
     <!-- GND Mappings -->
     <div
       v-if="settings.showGndMappings && gndMappings.length > 0"
@@ -84,32 +78,50 @@
         @mouseover.native="hoverGnd(concept)" />
     </div>
 
-    <!-- ScopeNotes and EditorialNotes -->
-    <div
-      v-for="(notes, index) in [item.scopeNote, item.editorialNote]"
-      v-if="notes != null && notes.de != null"
-      :key="'note'+index+'-'+iteration"
-      class="conceptDetailNotes">
-      <div class="conceptDetailNoteIcon">
-        <font-awesome-icon icon="comment-alt" />
-      </div>
-      <div class="conceptDetailNote">
-        <span
-          v-html="notesOptions.replaceDivider(notesOptions.joinAndTruncate(notes.de, index))" />
-        <a
-          v-if="!notesOptions.showMore[index] && notesOptions.isTruncated(notes.de)"
-          href=""
-          @click.prevent="notesShowMore(true, index)">
-          show more
-        </a>
-        <a
-          v-else-if="notesOptions.isTruncated(notes.de)"
-          href=""
-          @click.prevent="notesShowMore(false, index)">
-          show less
-        </a>
-      </div>
-    </div>
+    <!--  -->
+    <b-card
+      v-if="item.scopeNote && item.scopeNote.de && item.scopeNote.de.length > 0 || item.editorialNote && item.editorialNote.de && item.editorialNote.de.length || item.altLabel && item.altLabel.de && item.altLabel.de.length"
+      :key="'conceptDetailNoteTabs'+iteration"
+      no-body
+      class="conceptDetailNoteTabs">
+      <b-tabs
+        no-fade
+        card>
+        <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
+        <!-- TODO: Should altLabels really be called "Register Entries"? -->
+        <b-tab
+          v-for="([notes, title], index) in [[item.scopeNote, 'Scope'], [item.editorialNote, 'Editorial'], [item.altLabel, 'Register Entries']]"
+          v-if="notes != null && notes.de != null"
+          :key="'note'+index+'-'+iteration"
+          :title="title"
+          class="conceptDetailNotes">
+          <div class="conceptDetailNoteIcon">
+            <font-awesome-icon icon="comment-alt" />
+          </div>
+          <div class="conceptDetailNote">
+            <span v-html="notesOptions.visiblePart(notes.de)" /><b-collapse
+              :id="'note'+index"
+              tag="span">
+              <span v-html="notesOptions.hiddenPart(notes.de)" />
+            </b-collapse>
+            <a
+              v-b-toggle="'note'+index"
+              v-if="notesOptions.isTruncated(notes.de)"
+              href=""
+              @click.prevent >
+              <span class="when-opened">show less</span>
+              <span class="when-closed">show more</span>
+            </a>
+          </div>
+        </b-tab>
+        <b-tab
+          v-if="false"
+          key="zzzzzzzzzz"
+          title="GND" >
+          GND terms
+        </b-tab>
+      </b-tabs>
+    </b-card>
 
     <!-- Narrower concepts -->
     <div
@@ -192,8 +204,6 @@ export default {
       notesOptions: {
         divider: "∤",
         maximumCharacters: 120,
-        showMore: {},
-        showAll: false,
         join(notes) {
           if (Array.isArray(notes)) {
             return notes.join(this.divider)
@@ -201,22 +211,23 @@ export default {
             return notes
           }
         },
-        joinAndTruncate(notes, index) {
+        visiblePart(notes) {
           let notesString = this.join(notes)
-          if (this.showMore[index]) {
-            return notesString
+          if (notesString.length > this.maximumCharacters) {
+            notesString = notesString.substring(0, this.maximumCharacters)
           }
-          if (!this.showAll && notesString.length > this.maximumCharacters) {
-            notesString = notesString.substring(0, this.maximumCharacters - 4) + " ..."
-          }
-          return notesString
+          return this.replaceDivider(notesString)
+        },
+        hiddenPart(notes) {
+          let notesString = this.join(notes)
+          return this.replaceDivider(notesString.substring(this.maximumCharacters))
         },
         isTruncated(notes) {
           let notesString = this.join(notes)
           return !this.showAll && notesString.length > this.maximumCharacters
         },
         replaceDivider(notes) {
-          return "<p class='conceptDetailNotePoint'>" + notes.split(this.divider).join("</p><p class='conceptDetailNotePoint'>") + "</p>"
+          return notes.split(this.divider).join("<br>")
         }
       }
     }
@@ -244,6 +255,7 @@ export default {
       // Reset notes
       this.notesOptions.showMore = {}
       this.notesOptions.showAll = this.settings.showAllNotes
+      this.iteration += 1
     },
     loadGndMappings() {
       this.gndMappings = []
@@ -348,7 +360,8 @@ export default {
   display: flex;
   & .conceptDetailNoteIcon {
     flex: none;
-    padding: 3px 5px;
+    padding: 1px 3px;
+    height: 14px;
   }
   & .conceptDetailNote {
     padding: 0 5px;
@@ -363,4 +376,38 @@ export default {
   margin: 5px;
 }
 
+</style>
+
+<style lang="less">
+.conceptDetailNoteTabs {
+  border: none;
+  & .tabs {
+    box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
+  }
+  & .card-header {
+    padding: 2px 10px 10px 10px;
+    background-color: white;
+    user-select: none;
+  }
+  & .card-header-tabs {
+    margin-bottom: -10px;
+  }
+  & .nav-link {
+    padding: 4px 12px 0px 12px;
+  }
+  & .card-body {
+    padding: 10px;
+    background-color: rgba(0,0,0,0.02);
+    border-radius: 0px 0px 5px 5px;
+  }
+}
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
 </style>
