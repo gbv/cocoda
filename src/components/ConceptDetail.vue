@@ -23,6 +23,7 @@
           font-size="small"
           @click.native="chooseUri(scheme, isLeft)" />
       </div>
+      <!-- Ancestors -->
       <div
         v-for="(concept, index) in item.ancestors"
         v-if="concept != null"
@@ -38,9 +39,24 @@
           font-size="small"
           @click.native="chooseUri(concept, isLeft)" />
       </div>
+      <!-- Broader -->
+      <!-- v-show="showAncestors || settings.showAllAncestors || settings.showSchemeInAncestors && index == item.broader.length - 1 || !settings.showSchemeInAncestors && (item.broader.length <= 2 || index >= item.broader.length - 1)" -->
+      <div
+        v-for="(concept) in (item.ancestors.length == 0 && item.BROADERLOADED ? item.broader : [])"
+        v-if="concept != null"
+        :key="concept.uri"
+        class="conceptDetailAncestorsItem" >
+        <font-awesome-icon
+          icon="sort-up" />
+        <item-name
+          :item="concept"
+          :is-link="true"
+          font-size="small"
+          @click.native="chooseUri(concept, isLeft)" />
+      </div>
       <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
       <loading-indicator
-        v-if="item.ancestors.length != 0 && item.ancestors.includes(null)"
+        v-if="item.ancestors.length != 0 && item.ancestors.includes(null) || item.ancestors.length == 0 && item.broader.length != 0 && !item.BROADERLOADED"
         size="sm" />
     </div>
 
@@ -399,6 +415,9 @@ export default {
     padding: 10px;
     background-color: rgba(0,0,0,0.02);
     border-radius: 0px 0px 5px 5px;
+    br {
+      line-height: 24px;
+    }
   }
 }
 .collapsed > .when-opened,

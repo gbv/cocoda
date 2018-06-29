@@ -128,6 +128,32 @@ export default {
       // Get details from API
       this.$api.objects.details(this.item).then(() => {
         this.loading = false
+        // If there are no ancestors, but broader, load concepts for broader
+        if ((!this.item.ancestors || this.item.ancestors.length == 0) && !this.item.BROADERLOADED) {
+          let item = this.item
+          if (!item.broader || item.broader.length == 0) {
+            item.BROADERLOADED = true
+            console.log("broader: no broader concepts")
+            return
+          }
+          if (item.broader.includes(null)) {
+          // FIXME: Use broader endpoint to load broader instead
+            console.log("broader: null")
+            item.BROADERLOADED = true
+            return
+          } else {
+            let promises = []
+            for (let i = 0; i < item.broader.length; i += 1) {
+              promises.push(this.$api.objects.get(item.broader[i].uri, item.inScheme[0].uri).then( broader => {
+                this.$set(item.broader, i, broader)
+                console.log("broader", i, "loaded")
+              }))
+            }
+            Promise.all(promises).then(() => {
+              item.BROADERLOADED = true
+            })
+          }
+        }
       })
     }
   }

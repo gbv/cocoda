@@ -48,6 +48,7 @@ let objects = {
       // Add all possible properties to ensure reactivity in Vue
       if (util.isConcept(object)) {
         object.DETAILSLOADED = false
+        object.BROADERLOADED = false
         object.ISOPEN = false
         object.MAPPINGS = object.MAPPINGS || null
         object.ancestors = object.ancestors || [null]
