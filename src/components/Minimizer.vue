@@ -97,21 +97,9 @@ export default {
 @import "../style/main.less";
 
 .minimizeButton, .maximizeButton {
-  cursor: pointer;
-  &:extend(.font-heavy);
-  position: absolute;
-  font-size: 12px;
+  &:extend(.utilityIcon);
   right: 0px;
   top: 0px;
-  width: 24px;
-  height: 24px;
-  z-index: 250;
-  color: fadeout(@buttonColor, 70%);
-  background-color: fadeout(@buttonColorDisabled, 18%);
-  &:hover {
-    color: @buttonColor;
-    background-color: @buttonColorDisabled;
-  }
 }
 .minimizeButton {
   padding-left: 6px;

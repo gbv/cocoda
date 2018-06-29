@@ -21,6 +21,23 @@
       class="loadingFull">
       <loading-indicator size="lg" />
     </div>
+    <!-- Previos and next buttons -->
+    <div
+      v-b-tooltip.hover="prevConcepts.length > 0 ? 'previous concept' : ''"
+      class="prevButton"
+      @click="choosePrevious">
+      <font-awesome-icon
+        v-if="prevConcepts.length > 0"
+        icon="chevron-left" />
+    </div>
+    <div
+      v-b-tooltip.hover="nextConcepts.length > 0 ? 'next concept' : ''"
+      class="nextButton"
+      @click="chooseNext">
+      <font-awesome-icon
+        v-if="nextConcepts.length > 0"
+        icon="chevron-right" />
+    </div>
   </div>
 </template>
 
@@ -29,6 +46,8 @@ import LoadingIndicator from "./LoadingIndicator"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+var _ = require("lodash")
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -36,7 +55,7 @@ import SchemeDetail from "./SchemeDetail"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicator, Minimizer, ConceptDetail, SchemeDetail
+    LoadingIndicator, Minimizer, ConceptDetail, SchemeDetail, FontAwesomeIcon
   },
   props: {
     /**
@@ -91,7 +110,9 @@ export default {
         showTopConceptsInScheme: false,
         showAllAncestors: false,
         showAllNotes: false
-      }
+      },
+      prevConcepts: [],
+      nextConcepts: []
     }
   },
   computed: {
@@ -115,8 +136,23 @@ export default {
     /**
      * Refreshes data when item changes.
      */
-    item: function() {
-      this.loadDetails()
+    item: function(newItem, oldItem) {
+      if (!this.$util.compareConcepts(newItem, oldItem)) {
+        this.loadDetails()
+        if (this.prevConcepts.length > 0 && this.$util.compareConcepts(newItem, _.last(this.prevConcepts))) {
+          // new item came from prevConcepts
+          this.nextConcepts.unshift(oldItem)
+          this.prevConcepts.pop()
+        } else if (this.nextConcepts.length > 0 && this.$util.compareConcepts(newItem, _.first(this.nextConcepts))) {
+          // new item came from nextConcepts
+          if (oldItem) this.prevConcepts.push(oldItem)
+          this.nextConcepts.shift()
+        } else {
+          // new item came from elsewhere
+          if (oldItem) this.prevConcepts.push(oldItem)
+          this.nextConcepts = []
+        }
+      }
     }
   },
   created() {
@@ -155,6 +191,16 @@ export default {
           }
         }
       })
+    },
+    choosePrevious() {
+      if (this.prevConcepts.length) {
+        this.chooseUri(_.last(this.prevConcepts), this.isLeft)
+      }
+    },
+    chooseNext() {
+      if (this.nextConcepts.length) {
+        this.chooseUri(_.first(this.nextConcepts), this.isLeft)
+      }
     }
   }
 }
@@ -183,6 +229,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.prevButton, .nextButton {
+  &:extend(.utilityIcon);
+  top: 0px;
+  font-size: 16px;
+  padding-top: 1px;
+  padding-left: 7px;
+  z-index: 199;
+}
+.prevButton {
+  right: 50px;
+}
+.nextButton {
+  right: 25px;
 }
 
 </style>
