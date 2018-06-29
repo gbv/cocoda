@@ -95,9 +95,6 @@
           :key="'note'+index+'-'+iteration"
           :title="title"
           class="conceptDetailNotes">
-          <div class="conceptDetailNoteIcon">
-            <font-awesome-icon icon="comment-alt" />
-          </div>
           <div class="conceptDetailNote">
             <span v-html="notesOptions.visiblePart(notes.de)" /><b-collapse
               :id="'note'+index"
