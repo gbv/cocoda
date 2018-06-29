@@ -210,18 +210,26 @@ export default {
         },
         visiblePart(notes) {
           let notesString = this.join(notes)
-          if (notesString.length > this.maximumCharacters) {
-            notesString = notesString.substring(0, this.maximumCharacters)
-          }
+          notesString = notesString.substring(0, this.cutPosition(notesString))
           return this.replaceDivider(notesString)
         },
         hiddenPart(notes) {
           let notesString = this.join(notes)
-          return this.replaceDivider(notesString.substring(this.maximumCharacters))
+          return this.replaceDivider(notesString.substring(this.cutPosition(notesString)))
+        },
+        cutPosition(notesString) {
+          if (notesString.length - this.maximumCharacters <= 20) {
+            return notesString.length
+          }
+          // Go back from position maximumCharacters and find next space, newLine, or divider
+          let lastSpace = notesString.substring(0, this.maximumCharacters).lastIndexOf(" ")
+          let lastNewline = notesString.substring(0, this.maximumCharacters).lastIndexOf("\n")
+          let lastDivider = notesString.substring(0, this.maximumCharacters).lastIndexOf(this.divider)
+          return Math.max(lastSpace, lastNewline, lastDivider)
         },
         isTruncated(notes) {
           let notesString = this.join(notes)
-          return !this.showAll && notesString.length > this.maximumCharacters
+          return !this.showAll && notesString.length > this.cutPosition(notesString)
         },
         replaceDivider(notes) {
           return notes.split(this.divider).join("<br>")
