@@ -64,7 +64,8 @@
 
     <!-- AltLabels -->
     <div v-if="item.altLabel && item.altLabel.de && item.altLabel.de.length">
-      {{ item.altLabel.de.join(", ") }}
+      <!-- FIXME: Workaround for altLabel.de sometimes being a string -->
+      {{ Array.isArray(item.altLabel.de) ? item.altLabel.de.join(", ") : item.altLabel.de }}
     </div>
 
     <!-- GND Mappings -->
