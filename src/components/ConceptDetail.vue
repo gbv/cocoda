@@ -78,25 +78,9 @@
       <auto-link :link="identifier" />
     </div>
 
-    <!-- GND Mappings -->
-    <div
-      v-if="settings.showGndMappings && gndMappings.length > 0"
-      class="conceptDetailGndMappings">
-      GND:
-      <item-name
-        v-for="(concept, index) in gndMappings"
-        v-if="concept != null"
-        :key="'gnd'+index"
-        :item="concept"
-        :show-text="false"
-        :show-tooltip="true"
-        font-size="sm"
-        @mouseover.native="hoverGnd(concept)" />
-    </div>
-
     <!--  -->
     <b-card
-      v-if="item.scopeNote && item.scopeNote.de && item.scopeNote.de.length > 0 || item.editorialNote && item.editorialNote.de && item.editorialNote.de.length || item.altLabel && item.altLabel.de && item.altLabel.de.length"
+      v-if="item.scopeNote && item.scopeNote.de && item.scopeNote.de.length > 0 || item.editorialNote && item.editorialNote.de && item.editorialNote.de.length || item.altLabel && item.altLabel.de && item.altLabel.de.length || item.GNDTERMS && item.GNDTERMS.length"
       :key="'conceptDetailNoteTabs'+iteration"
       no-body
       class="conceptDetailNoteTabs">
@@ -106,8 +90,8 @@
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, 'Scope'], [item.editorialNote, 'Editorial'], [item.altLabel, 'Register Entries']]"
-          v-if="notes != null && notes.de != null"
+          v-for="([notes, title], index) in [[item.scopeNote, 'Scope'], [item.editorialNote, 'Editorial'], [item.altLabel, 'Register Entries'], [{ de: item.GNDTERMS }, 'GND']]"
+          v-if="notes != null && notes.de != null && notes.de.length > 0"
           :key="'note'+index+'-'+iteration"
           :title="title"
           class="conceptDetailNotes">
@@ -274,50 +258,47 @@ export default {
       this.iteration += 1
     },
     loadGndMappings() {
+      // TODO: Refactoring necessary!
       this.gndMappings = []
       let itemBefore = this.item
-      if (!this.settings.showGndMappings || !this.item) return
+      if (!this.item) return
       // Load GND mappings from and to item
-      let vm = this
+      let promises = []
       for (let fromTo of ["from", "to"]) {
         let params = {}
         params[fromTo] = this.item.uri
-        this.$api.mappings(params).then(data => {
-          if (!vm.$util.compareConcepts(itemBefore, vm.item)) {
-            console.log("ConceptDetail: Item changed before GND mappings were loaded.")
-            return
-          }
+        promises.push(this.$api.mappings(params).then(results => [results, fromTo]))
+      }
+      Promise.all(promises).then(results => {
+        if (!this.$util.compareConcepts(itemBefore, this.item)) {
+          console.log("ConceptDetail: Item changed before GND mappings were loaded.")
+          return []
+        }
+        let gndConcepts = []
+        for (let [mappings, fromTo] of results) {
           let toFrom = fromTo == "from" ? "to" : "from"
-          for(let mapping of data) {
+          for(let mapping of mappings) {
             if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
-              vm.gndMappings = vm.gndMappings.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
+              gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
             }
           }
-        }).catch(error => {
-          console.log("ConceptDetail: Error when loading GND mappings:", error)
-        })
-      }
-    },
-    hoverGnd(concept) {
-      if(concept && !concept.prefLabel) {
-        // Load prefLabel to be shown as tooltip
-        let vm = this
-        this.$api.data({ uri: "http://bartoc.org/en/node/430" }, concept.uri)
-          .then(function(data) {
-            if (Array.isArray(data) && data.length > 0) {
-              // Add prefLabel to concept
-              vm.$set(concept, "prefLabel", data[0].prefLabel)
-            } else {
-              // TODO: - Error handling
-              vm.$set(concept, "prefLabel", { de: " " })
-            }
-            if (data.length > 1) {
-              console.log("For some reason, more than one set of properties was received for ", concept)
-            }
-          }).catch(function(error) {
-            console.log("Request failed", error)
-          })
-      }
+        }
+        console.log("GND: got", gndConcepts.length, "concepts", gndConcepts)
+        let promises = []
+        for (let concept of gndConcepts) {
+          promises.push(this.$api.objects.get(concept.uri, "http://bartoc.org/en/node/430"))
+        }
+        return Promise.all(promises)
+      }).then(results => {
+        console.log("GND: got concept results")
+        let gndTerms = []
+        for (let concept of results) {
+          if (concept && (concept.prefLabel.de || concept.prefLabel.en)) gndTerms.push(concept.prefLabel.de || concept.prefLabel.en)
+        }
+        itemBefore.GNDTERMS = gndTerms
+      }).catch(error => {
+        console.log("ConceptDetail: Error when loading GND mappings:", error)
+      })
     },
     copy(event) {
       let element = event.target
