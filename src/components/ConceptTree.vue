@@ -164,7 +164,7 @@ export default {
             x: false,
             y: true
           }
-          vm.$scrollTo(el, 200, options)
+          if (el) vm.$scrollTo(el, 200, options)
         }, 100)
       }).then(() => {
         console.log("chooseFromUri finished")
