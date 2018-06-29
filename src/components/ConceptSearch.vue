@@ -17,7 +17,9 @@
         @click.native="isOpen = searchQuery != ''"
         @keydown.down.native.prevent="onArrowDown"
         @keydown.up.native.prevent="onArrowUp"
-        @keyup.enter.native="onEnter"/>
+        @keyup.enter.native="onEnter"
+        @focus.native="isOpen = searchQuery != ''"
+        @blur.native="onBlur" />
       <div
         v-show="isOpen"
         class="searchfield-results">
@@ -32,7 +34,7 @@
           <li
             v-for="(result, i) in searchResult"
             :key="i"
-            :id="'searchResult' + i"
+            :id="uniqueID + '-searchResult-' + i"
             :class="{ 'searchfield-selected': i === searchSelected }"
             class="searchfield-results-item font-size-small"
             @click="chooseResult(result)"
@@ -88,10 +90,12 @@ export default {
       searchQuery: "",
       searchResult: [],
       isOpen: false,
+      isValid: false,
       loading: false,
       searchSelected: -1,
       preventHovering: false,
-      cancelToken: null
+      cancelToken: null,
+      uniqueID: null
     }
   },
   watch: {
@@ -109,6 +113,7 @@ export default {
         this.isOpen = true
         this.debouncedGetAnswer()
       }
+      this.isValid = false
     },
     /**
      * Clears the search field when vocabulary is changed.
@@ -125,6 +130,8 @@ export default {
   created: function () {
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)
+    // Create a unique ID for the DOM IDs
+    this.uniqueID = this.$util.generateID()
   },
   mounted() {
     // Add click event listener
@@ -141,6 +148,7 @@ export default {
      * @param {string[]} result - result array with label, description, and uri (in this order)
      */
     chooseResult: function (result) {
+      console.log("chose", result)
       let uri = _.last(result)
       /**
        * Event when the user has chosen a result.
@@ -149,9 +157,14 @@ export default {
        * @type {string} - uri that is chosen
        */
       this.$emit("chooseUri", uri)
-      this.searchQuery = ""
       this.isOpen = false
       this.searchSelected = -1
+      // Remove focus
+      if (document.activeElement != document.body) document.activeElement.blur()
+    },
+    onBlur() {
+      // Delay onBlur because it can interfere with chooseResult
+      _.delay(() => { this.isOpen = false }, 150)
     },
     /**
      * Loads autosuggest results from API.
@@ -167,9 +180,11 @@ export default {
         .then(function(data) {
           vm.loading = false
           vm.searchResult = _.zip(data[1], data[2], data[3])
+          vm.isValid = true
         })
         .catch(function(error) {
           vm.loading = false
+          vm.isValid = false
           vm.searchResult = [["Error! Could not reach the API. " + error]]
         })
     },
@@ -212,14 +227,14 @@ export default {
      * Scrolls the currently selected search result into view.
      */
     scrollSelectedIntoView() {
-      scrollIntoViewIfNeeded(document.getElementById("searchResult"+this.searchSelected))
+      scrollIntoViewIfNeeded(document.getElementById(this.uniqueID + "-searchResult-" + this.searchSelected))
     },
     /**
      * Handles an enter down event.
      */
     onEnter() {
       let chosenIndex
-      if (this.searchResult.length == 0) {
+      if (this.loading || !this.isValid || this.searchResult.length == 0) {
         return
       } else if (this.searchSelected < 0 || this.searchSelected >= this.searchResult.length) {
         chosenIndex = 0
