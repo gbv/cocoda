@@ -200,7 +200,7 @@ export default {
       iteration: 0,
       notesOptions: {
         divider: "∤",
-        maximumCharacters: 120,
+        maximumCharacters: 140,
         join(notes) {
           if (Array.isArray(notes)) {
             return notes.join(this.divider)
@@ -218,13 +218,15 @@ export default {
           return this.replaceDivider(notesString.substring(this.cutPosition(notesString)))
         },
         cutPosition(notesString) {
-          if (notesString.length - this.maximumCharacters <= 20) {
+          let re = new RegExp(this.divider, "g")
+          let maximumCharacters = this.maximumCharacters - (notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length * 10
+          if (notesString.length - maximumCharacters <= 20) {
             return notesString.length
           }
           // Go back from position maximumCharacters and find next space, newLine, or divider
-          let lastSpace = notesString.substring(0, this.maximumCharacters).lastIndexOf(" ")
-          let lastNewline = notesString.substring(0, this.maximumCharacters).lastIndexOf("\n")
-          let lastDivider = notesString.substring(0, this.maximumCharacters).lastIndexOf(this.divider)
+          let lastSpace = notesString.substring(0, maximumCharacters).lastIndexOf(" ")
+          let lastNewline = notesString.substring(0, maximumCharacters).lastIndexOf("\n")
+          let lastDivider = notesString.substring(0, maximumCharacters).lastIndexOf(this.divider)
           return Math.max(lastSpace, lastNewline, lastDivider)
         },
         isTruncated(notes) {
