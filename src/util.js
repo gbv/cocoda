@@ -141,9 +141,10 @@ function selectText(el){
 let getAllUris = object => {
   if (!object) return []
   let uris = [object.uri].concat(object.identifier || [])
+  // Generate several variants of URIs to work around inconsistencies
   uris = uris.concat(uris.map(uri => uri.startsWith("https") ? uri.replace("https", "http") : uri.replace("http", "https")))
   uris = uris.concat(uris.map(uri => uri.endsWith("/") ? uri.substring(0, uri.length - 1) : uri + "/"))
-  uris = uris.concat(uris.map(uri => uri.replace("/en/", "/de/")))
+  uris = uris.concat(uris.map(uri => uri.indexOf("/en/") != -1 ? uri.replace("/en/", "/de/") : uri.replace("/de/", "/en/")))
   return uris
 }
 

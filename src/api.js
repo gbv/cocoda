@@ -118,7 +118,7 @@ let objects = {
       if (this.map.has(schemeUri)) {
         scheme = this.map.get(schemeUri)
       } else {
-        console.warn("newApi/get No scheme found for", uri)
+        console.warn("newApi/get No scheme found for", uri, schemeUri)
         scheme = null
       }
       console.log("newApi/get, data with", scheme)
