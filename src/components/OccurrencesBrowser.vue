@@ -300,7 +300,7 @@ export default {
         }
         // Sort occurrences and only save top 10
         console.log(occurrences)
-        this.occurrences = occurrences.sort((a, b) => a.count < b.count).slice(0, 10)
+        this.occurrences = occurrences.sort((a, b) => parseInt(b.count) - parseInt(a.count)).slice(0, 10)
         console.log(this.occurrences)
         this.loading = false
         console.log("Occurrences loaded")
