@@ -210,7 +210,7 @@ export default {
       _.delay(function() {
         let successful = document.execCommand("copy")
         if (!successful) {
-          console.log("Copy to clipboard failed.")
+          console.warn("Copy to clipboard failed.")
         }
         window.getSelection().removeAllRanges()
       }, 50)

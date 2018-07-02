@@ -256,7 +256,7 @@ export default {
             vm.supportedSchemes = response.data
           })
           .catch(function(error) {
-            console.log(error)
+            console.error(error)
             // TODO: - Better error handling
             vm.supportedSchemes = {}
           })
@@ -287,7 +287,7 @@ export default {
             },
             cancelToken: this.cancelToken.token
           }).catch(error => {
-            console.log("Occurrences API Error:", error)
+            console.error("Occurrences API Error:", error)
             return { data: [] }
           }))
         }
@@ -305,7 +305,7 @@ export default {
         this.loading = false
         console.log("Occurrences loaded")
       }).catch(error => {
-        console.log("Occurrences Error:", error)
+        console.error("Occurrences Error:", error)
         this,occurrences = []
         this.loading = false
       })

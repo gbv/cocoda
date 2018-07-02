@@ -169,12 +169,12 @@ export default {
           let item = this.item
           if (!item.broader || item.broader.length == 0) {
             item.BROADERLOADED = true
-            console.log("broader: no broader concepts")
+            console.warn("broader: no broader concepts")
             return
           }
           if (item.broader.includes(null)) {
           // FIXME: Use broader endpoint to load broader instead
-            console.log("broader: null")
+            console.warn("broader: null")
             item.BROADERLOADED = true
             return
           } else {

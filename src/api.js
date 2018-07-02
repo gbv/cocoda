@@ -118,7 +118,7 @@ let objects = {
       if (this.map.has(schemeUri)) {
         scheme = this.map.get(schemeUri)
       } else {
-        console.log("newApi/get No scheme found for", uri)
+        console.warn("newApi/get No scheme found for", uri)
         scheme = null
       }
       console.log("newApi/get, data with", scheme)
@@ -129,13 +129,16 @@ let objects = {
             return object
           } else {
             // Apparently, object was loaded elsewhere in the meantime
-            console.log("newApi/get, data loaded, but couldn't save", uri)
+            console.warn("newApi/get, data loaded, but couldn't save", uri)
             return this.map.get(uri)
           }
         } else {
           return null
         }
-      }).catch(() => null)
+      }).catch(error => {
+        console.error(error)
+        return null
+      })
     }
   },
 
@@ -188,7 +191,7 @@ let objects = {
         console.log("newApi/top: saved", scheme)
         return scheme
       }).catch(error => {
-        console.log(error)
+        console.error(error)
         return null
       })
     }
@@ -207,7 +210,7 @@ let objects = {
       console.log("newApi/narrower: Immediately return")
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
-      console.log("newApi/narrower: No scheme found")
+      console.warn("newApi/narrower: No scheme found")
       return Promise.resolve(object)
     } else {
       // Load narrower
@@ -247,7 +250,7 @@ let objects = {
         object.narrower = util.sortConcepts(narrower)
         return object
       }).catch(error => {
-        console.log(error)
+        console.error(error)
         return null
       })
     }
@@ -266,7 +269,7 @@ let objects = {
       console.log("newApi/ancestors: Immediately return")
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
-      console.log("newApi/ancestors: No scheme found")
+      console.warn("newApi/ancestors: No scheme found")
       return Promise.resolve(object)
     } else {
       let scheme = object.inScheme[0]
@@ -300,7 +303,7 @@ let objects = {
         object.ancestors = ancestors
         return object
       }).catch(error => {
-        console.log(error)
+        console.error(error)
         return null
       })
     }
@@ -336,7 +339,7 @@ let objects = {
           return null
         }
       }).catch(error => {
-        console.log(error)
+        console.error(error)
         return null
       })
     }
@@ -425,7 +428,7 @@ for (let provider of config.terminologyProviders) {
             provider.voc = data
             saveSchemeAssociationForProvider(provider)
           } else {
-            console.log("Couldn't load schemes for provider", provider)
+            console.warn("Couldn't load schemes for provider", provider)
           }
         })
       // TODO: - error handling

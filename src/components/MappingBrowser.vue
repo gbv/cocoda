@@ -317,7 +317,7 @@ export default {
         // Load prefLabel to be shown as tooltip
         if (!concept.inScheme || concept.inScheme.length == 0) {
           // TODO: - Error handling
-          console.log("No scheme for", concept)
+          console.warn("No scheme for", concept)
           return
         }
 
@@ -339,7 +339,7 @@ export default {
       this.$api.mappings(params).then(data => {
         concept.MAPPINGS = data
       }).catch(function(error) {
-        console.log("API error (mappings):", error)
+        console.error("API error (mappings):", error)
       })
     }
   }

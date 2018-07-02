@@ -214,12 +214,12 @@ export default {
               vm.detail = data[0]
             }
             if (data.length > 1) {
-              console.log("For some reason, more than one set of properties was received for ", vm.item)
+              console.warn("For some reason, more than one set of properties was received for ", vm.item)
             }
             vm.loading = false
           }
         }).catch(function(error) {
-          console.log("Request failed", error)
+          console.error("Request failed", error)
           vm.loading = false
         })
 

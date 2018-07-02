@@ -170,7 +170,7 @@ export default {
         console.log("chooseFromUri finished")
         this.loading = false
       }).catch(error => {
-        console.log("chooseFromUri Error:", error)
+        console.error("chooseFromUri Error:", error)
         this.loading = false
       })
     },
