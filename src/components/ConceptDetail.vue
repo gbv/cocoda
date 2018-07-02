@@ -98,7 +98,8 @@
           <div class="conceptDetailNote">
             <span v-html="notesOptions.visiblePart(notes.de)" /><b-collapse
               :id="'note'+index"
-              tag="span">
+              tag="span"
+              class="no-transition">
               <span v-html="notesOptions.hiddenPart(notes.de)" />
             </b-collapse>
             <a
@@ -416,5 +417,8 @@ export default {
     -webkit-transition: none;
     transition: none;
     display: none;
+}
+.no-transition {
+    transition: none !important;
 }
 </style>
