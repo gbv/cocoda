@@ -59,12 +59,14 @@ let mappingTypes = [
     uri: "http://www.w3.org/2004/02/skos/core#exactMatch",
     prefLabel: { "en": "exact match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#closeMatch" } ],
+    RELEVANCE: "very high",
   },
   {
     notation: ["≈"],
     uri: "http://www.w3.org/2004/02/skos/core#closeMatch",
     prefLabel: { "en": "close match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
+    RELEVANCE: "high",
   },
   {
     notation: [">"],
@@ -72,24 +74,28 @@ let mappingTypes = [
     prefLabel: { "en": "broader match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
     related: [ { "uri": "http://www.w3.org/2004/02/skos/core#narrowMatch" } ],
+    RELEVANCE: "medium",
   },
   {
     notation: ["<"],
     uri: "http://www.w3.org/2004/02/skos/core#narrowMatch",
     prefLabel: { "en": "narrower match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    related: [ { "uri": "http://www.w3.org/2004/02/skos/core#broadMatch" } ]
+    related: [ { "uri": "http://www.w3.org/2004/02/skos/core#broadMatch" } ],
+    RELEVANCE: "medium",
   },
   {
     notation: ["~"],
     uri: "http://www.w3.org/2004/02/skos/core#relatedMatch",
     prefLabel: { "en": "related match" },
     broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
+    RELEVANCE: "low",
   },
   {
     notation: ["→"],
     uri: "http://www.w3.org/2004/02/skos/core#mappingRelation",
     prefLabel: { "en": "mapping relation" },
+    RELEVANCE: "medium",
   },
 ]
 

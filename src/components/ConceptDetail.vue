@@ -286,22 +286,42 @@ export default {
         for (let [mappings, fromTo] of results) {
           let toFrom = fromTo == "from" ? "to" : "from"
           for(let mapping of mappings) {
+            let startIndex = gndConcepts.length
             if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
               gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
+            }
+            // Save GND mapping type
+            while (startIndex < gndConcepts.length) {
+              gndConcepts[startIndex].GNDTYPE = this.$util.mappingTypeByType(mapping.type)
+              startIndex += 1
             }
           }
         }
         console.log("GND: got", gndConcepts.length, "concepts", gndConcepts)
         let promises = []
         for (let concept of gndConcepts) {
-          promises.push(this.$api.objects.get(concept.uri, "http://bartoc.org/en/node/430"))
+          promises.push(this.$api.objects.get(concept.uri, "http://bartoc.org/en/node/430").then(object => {
+            if (object) {
+              object.GNDTYPE = concept.GNDTYPE
+            }
+            return object
+          }))
         }
         return Promise.all(promises)
       }).then(results => {
         console.log("GND: got concept results")
         let gndTerms = []
-        for (let concept of results) {
-          if (concept && (concept.prefLabel.de || concept.prefLabel.en)) gndTerms.push(concept.prefLabel.de || concept.prefLabel.en)
+        let relevanceOrder = ["very high", "high", "medium", "low"]
+        for (let relevance of relevanceOrder) {
+          let term = `<strong>Relevance: ${relevance}</strong> - `
+          let terms = []
+          for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
+            if (concept && (concept.prefLabel.de || concept.prefLabel.en)) terms.push(concept.prefLabel.de || concept.prefLabel.en)
+          }
+          if (terms.length > 0) {
+            term = term + terms.join(", ")
+            gndTerms.push(term)
+          }
         }
         itemBefore.GNDTERMS = gndTerms
       }).catch(error => {
