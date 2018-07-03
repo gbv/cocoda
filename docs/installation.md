@@ -5,11 +5,11 @@ $ git clone https://github.com/gbv/cocoda.git
 $ cd cododa
 ```
 
-Then install required Node modules with [npm]() and run build:
+Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build:
 
 ```bash
 $ npm install
-$ npm build
+$ npm run build
 ```
 
 Files are created in directory `dist` to be served with any web server.
