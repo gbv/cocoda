@@ -111,6 +111,10 @@ export default {
         this.searchResult = ["Waiting for you to stop typing..."]
         this.loading = true
         this.isOpen = true
+        // Already cancel previous request
+        if (this.cancelToken != null) {
+          this.cancelToken.cancel("There was a newer search query.")
+        }
         this.debouncedGetAnswer()
       }
       this.isValid = false
@@ -176,16 +180,23 @@ export default {
         this.cancelToken.cancel("There was a newer search query.")
       }
       this.cancelToken = this.$api.token()
-      this.$api.suggest(this.voc, this.searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
+      let searchQuery = this.searchQuery
+      this.$api.suggest(this.voc, searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
         .then(function(data) {
-          vm.loading = false
-          vm.searchResult = _.zip(data[1], data[2], data[3])
-          vm.isValid = true
+          console.log(searchQuery, vm.searchQuery)
+          if (searchQuery == vm.searchQuery) {
+            vm.loading = false
+            vm.searchResult = _.zip(data[1], data[2], data[3])
+            vm.isValid = true
+          }
         })
         .catch(function(error) {
-          vm.loading = false
-          vm.isValid = false
-          vm.searchResult = [["Error! Could not reach the API. " + error]]
+          // Clean up if error was not related to cancellation
+          if (error.toString().toLowerCase().indexOf("cancel") == -1 && searchQuery == vm.searchQuery) {
+            vm.loading = false
+            vm.isValid = false
+            vm.searchResult = [["Error! Could not reach the API. " + error]]
+          }
         })
     },
     /**
