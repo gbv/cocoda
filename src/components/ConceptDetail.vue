@@ -220,7 +220,7 @@ export default {
         },
         cutPosition(notesString) {
           let re = new RegExp(this.divider, "g")
-          let maximumCharacters = this.maximumCharacters - Math.min((notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length, 5) * 10
+          let maximumCharacters = this.maximumCharacters - Math.min((notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length, 9) * 10
           if (notesString.length - maximumCharacters <= 20) {
             return notesString.length
           }
