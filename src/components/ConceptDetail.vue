@@ -384,8 +384,8 @@ export default {
 </style>
 
 <style lang="less">
-.conceptDetailNoteTabs {
-  border: none;
+.conceptDetailNoteTabs, .card {
+  border: none !important;
   & .tabs {
     box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
   }
