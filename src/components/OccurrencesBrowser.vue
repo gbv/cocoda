@@ -291,6 +291,20 @@ export default {
             return { data: [] }
           }))
         }
+        // Another request for co-occurrences between two specific concepts
+        if (uris.length == 2) {
+          let urisString = uris.join(" ")
+          promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
+            params: {
+              member: urisString,
+              threshold: 5
+            },
+            cancelToken: this.cancelToken.token
+          }).catch(error => {
+            console.error("Occurrences API Error:", error)
+            return { data: [] }
+          }))
+        }
         return Promise.all(promises)
       }).then(responses => {
         let occurrences = []
@@ -298,6 +312,21 @@ export default {
           let result = response.data
           occurrences = occurrences.concat(result)
         }
+        // Filter duplicates
+        let existingUris = []
+        let indexesToDelete = []
+        for (let i = 0; i < occurrences.length; i += 1) {
+          let occurrence = occurrences[i]
+          let uris = occurrence.memberSet.reduce((total, current) => total.concat(current.uri), []).sort().join(" ")
+          if (existingUris.includes(uris)) {
+            indexesToDelete.push(i)
+          } else {
+            existingUris.push(uris)
+          }
+        }
+        indexesToDelete.forEach(value => {
+          delete occurrences[value]
+        })
         // Sort occurrences and only save top 10
         console.log(occurrences)
         this.occurrences = occurrences.sort((a, b) => parseInt(b.count) - parseInt(a.count)).slice(0, 10)
