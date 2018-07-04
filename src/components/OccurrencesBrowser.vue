@@ -134,6 +134,7 @@ export default {
       cancelToken: null,
       supportedSchemes: null,
       loading: false,
+      loadingId: null,
       items: []
     }
   },
@@ -246,8 +247,9 @@ export default {
     },
     reloadOccurrences() {
       let vm = this
-      this.loading = true
       let promise
+      let currentId = this.$util.generateID()
+      this.loadingId = currentId
       if (!this.supportedSchemes) {
         // Load supported schemes
         // TODO: - Put this into API
@@ -258,16 +260,17 @@ export default {
           .catch(function(error) {
             console.error(error)
             // TODO: - Better error handling
-            vm.supportedSchemes = {}
+            vm.supportedSchemes = []
           })
       } else {
         promise = Promise.resolve()
       }
       promise.then(() => {
+        if (currentId != this.loadingId) return
         let uris = []
         let promises = []
-        for (let concept of [this.selectedLeft, this.selectedRight]) {
-          if (concept) {
+        for (let [scheme, concept] of [[this.schemeLeft, this.selectedLeft], [this.schemeRight, this.selectedRight]]) {
+          if (concept && this.isSupported(scheme)) {
             uris.push(concept.uri)
           }
         }
@@ -277,6 +280,7 @@ export default {
         if (this.loading && this.cancelToken != null) {
           this.cancelToken.cancel("Occurrences: There was a newer request.")
         }
+        this.loading = true
         this.cancelToken = this.$api.token()
         for (let uri of uris) {
           promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
@@ -302,11 +306,12 @@ export default {
             cancelToken: this.cancelToken.token
           }).catch(error => {
             console.error("Occurrences API Error:", error)
-            return { data: [] }
+            return null
           }))
         }
         return Promise.all(promises)
       }).then(responses => {
+        if (currentId != this.loadingId) return
         let occurrences = []
         for (let response of responses) {
           let result = response.data
@@ -347,6 +352,15 @@ export default {
         toScheme: data.item.toScheme,
         type: [this.$util.defaultMappingType.uri]
       }
+    },
+    isSupported(scheme) {
+      let supported = false
+      for (let supportedScheme of this.supportedSchemes) {
+        if (this.$util.compareSchemes(scheme, supportedScheme)) {
+          supported = true
+        }
+      }
+      return supported
     }
   }
 }
