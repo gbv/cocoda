@@ -403,15 +403,52 @@ let saveSchemeAssociationForProvider = function(provider) {
   }
   // Save assignment from scheme to provider
   for(let scheme of provider.voc) {
-    for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
+    let uris = util.getAllUris(scheme)
+    // Check if any of the scheme's URIs have already been saved
+    // Priorities can be set in the config file. Just add a new property "priority" to the providers. Default is 0.
+    let otherProvider
+    for (let uri of uris) {
+      if (Object.keys(schemeToTerminologyProvider).includes(uri)) {
+        otherProvider = schemeToTerminologyProvider[uri]
+        break
+      }
+    }
+    if (otherProvider) {
+      let prio = provider.priority || 0
+      let otherPrio = otherProvider.priority || 0
+      if (otherPrio > prio) {
+        // skip this scheme
+        continue
+      } else if (prio > otherPrio) {
+        // remove existing scheme from schemes and schemeToTerminologyProvider
+        let otherSchemeIndex = -1
+        for (let index = 0; index < schemes.length; index += 1) {
+          if (util.compareSchemes(scheme, schemes[index])) {
+            otherSchemeIndex = index
+            break
+          }
+        }
+        let otherUris = util.getAllUris(schemes[otherSchemeIndex])
+        delete schemes[otherSchemeIndex]
+        for (let uri of otherUris) {
+          delete schemeToTerminologyProvider[uri]
+        }
+      } else {
+        // same prio, show warning and skip
+        console.warn("Found two identical schemes from different providers with same priorities, skipping...", provider, otherProvider)
+        continue
+      }
+    }
+
+    for(let uri of uris) {
       schemeToTerminologyProvider[uri] = provider
     }
     // Add scheme specific custom properties
     scheme.DETAILSLOADED = false
     scheme.TOPCONCEPTS = [null]
     schemes.push(scheme)
-    // Test: Save scheme in new API
-    objects.save(scheme)
+    // Force save scheme in new API
+    objects.save(scheme, true)
   }
 }
 
