@@ -6,16 +6,7 @@
     <!-- Ancestors (display only broader concept by default, others can be expanded) -->
     <div class="conceptDetailAncestors">
       <div
-        v-b-tooltip.hover="'show all ancestors'"
-        v-show="!settings.showAllAncestors && !showAncestors && (settings.showSchemeInAncestors && item.ancestors.length > 1 || !settings.showSchemeInAncestors && item.ancestors.length > 2)"
-        class="conceptDetailAncestorsMore"
-        @click="showAncestors = true">
-        <font-awesome-icon
-          class="flipHorizontal"
-          icon="ellipsis-v" />
-      </div>
-      <div
-        v-show="settings.showSchemeInAncestors && (settings.showAllAncestors || showAncestors || item.ancestors.length <= 1)"
+        v-show="settings.showSchemeInAncestors"
         class="conceptDetailAncestorsItem">
         <item-name
           :item="scheme"
@@ -27,17 +18,27 @@
       <div
         v-for="(concept, index) in item.ancestors"
         v-if="concept != null"
-        v-show="showAncestors || settings.showAllAncestors || settings.showSchemeInAncestors && index == item.ancestors.length - 1 || !settings.showSchemeInAncestors && (item.ancestors.length <= 2 || index >= item.ancestors.length - 1)"
         :key="concept.uri"
         class="conceptDetailAncestorsItem" >
-        <font-awesome-icon
-          class="flipHorizontal"
-          icon="level-up-alt" />
-        <item-name
-          :item="concept"
-          :is-link="true"
-          font-size="small"
-          @click.native="chooseUri(concept, isLeft)" />
+        <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == item.ancestors.length - 1 || item.ancestors.length <= 3">
+          <font-awesome-icon
+            class="flipHorizontal"
+            icon="level-up-alt" />
+          <item-name
+            :item="concept"
+            :is-link="true"
+            font-size="small"
+            @click.native="chooseUri(concept, isLeft)" />
+        </span>
+        <span
+          v-b-tooltip.hover="'show all ancestors'"
+          v-else-if="index == 1"
+          class="conceptDetailAncestorsMore"
+          @click="showAncestors = true" >
+          <font-awesome-icon
+            class="flipHorizontal"
+            icon="ellipsis-v" />
+        </span>
       </div>
       <!-- Broader -->
       <!-- v-show="showAncestors || settings.showAllAncestors || settings.showSchemeInAncestors && index == item.broader.length - 1 || !settings.showSchemeInAncestors && (item.broader.length <= 2 || index >= item.broader.length - 1)" -->
