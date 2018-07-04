@@ -32,6 +32,13 @@
               @click="$refs.conceptTreeLeft.selected = null">
               <font-awesome-icon icon="info-circle" />
             </div>
+            <div
+              v-b-tooltip.hover="'clear scheme'"
+              v-show="schemeSelectedLeft != null"
+              class="schemeSelectInfo"
+              @click="clear(true)">
+              <font-awesome-icon icon="minus-circle" />
+            </div>
           </div>
           <!-- ConceptSearch -->
           <concept-search
@@ -150,6 +157,13 @@
               class="schemeSelectInfo"
               @click="$refs.conceptTreeRight.selected = null">
               <font-awesome-icon icon="info-circle" />
+            </div>
+            <div
+              v-b-tooltip.hover="'clear scheme'"
+              v-show="schemeSelectedRight != null"
+              class="schemeSelectInfo"
+              @click="clear(false)">
+              <font-awesome-icon icon="minus-circle" />
             </div>
           </div>
           <!-- ConceptSearch -->
@@ -283,6 +297,17 @@ export default {
         // Minimizer causes a refresh, therefore recheck item detail settings
         this.itemDetailSettings.left.showTopConceptsInScheme = this.$refs.conceptTreeLeft != null && this.$refs.conceptTreeLeft.$el.dataset.minimized == "1"
         this.itemDetailSettings.right.showTopConceptsInScheme = this.$refs.conceptTreeRight != null && this.$refs.conceptTreeRight.$el.dataset.minimized == "1"
+      }
+    },
+    clear(isLeft) {
+      if (isLeft) {
+        this.$refs.conceptTreeLeft.selected = null
+        this.conceptSelectedLeft = null
+        this.schemeSelectedLeft = null
+      } else {
+        this.$refs.conceptTreeRight.selected = null
+        this.conceptSelectedRight = null
+        this.schemeSelectedRight = null
       }
     },
     chooseUri(concept, isLeft) {
