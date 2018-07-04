@@ -66,21 +66,8 @@
       :is-highlighted="true"
       font-size="normal" />
 
-    <!-- URI and identifier -->
-    <div
-      v-for="(identifier, index) in [item.uri].concat(item.identifier)"
-      v-if="identifier != null"
-      :key="index"
-      :class="identifier.startsWith('http') ? 'conceptDetailUri' : 'conceptDetailIdentifier'">
-      <font-awesome-icon
-        :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
-        @dblclick="copy" />
-      <auto-link :link="identifier" />
-    </div>
-
     <!--  -->
     <b-card
-      v-if="item.scopeNote && item.scopeNote.de && item.scopeNote.de.length > 0 || item.editorialNote && item.editorialNote.de && item.editorialNote.de.length || item.altLabel && item.altLabel.de && item.altLabel.de.length || item.GNDTERMS && item.GNDTERMS.length"
       :key="'conceptDetailNoteTabs'+iteration"
       no-body
       class="conceptDetailNoteTabs">
@@ -113,10 +100,19 @@
           </div>
         </b-tab>
         <b-tab
-          v-if="false"
-          key="zzzzzzzzzz"
-          title="GND" >
-          GND terms
+          :key="'zzzzzzzzzz'+iteration"
+          title="IDs" >
+          <!-- URI and identifier -->
+          <div
+            v-for="(identifier, index) in [item.uri].concat(item.identifier)"
+            v-if="identifier != null"
+            :key="index"
+            :class="identifier.startsWith('http') ? 'conceptDetailUri' : 'conceptDetailIdentifier'">
+            <font-awesome-icon
+              :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
+              @dblclick="copy" />
+            <auto-link :link="identifier" />
+          </div>
         </b-tab>
       </b-tabs>
     </b-card>
