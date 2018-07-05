@@ -171,6 +171,7 @@ export default {
         },
         {
           key: "occurrences",
+          label: "(Co-)Occurrences",
           tdClass: "moColShort",
           thClass: "moColShort",
           sortable: true
