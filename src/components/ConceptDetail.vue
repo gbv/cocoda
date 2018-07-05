@@ -82,6 +82,7 @@
           v-if="notes != null && notes.de != null && notes.de.length > 0"
           :key="'note'+index+'-'+iteration"
           :title="title"
+          :active="title == 'GND' && !hasNotes(item)"
           class="conceptDetailNotes">
           <div class="conceptDetailNote">
             <span v-html="notesOptions.visiblePart(notes.de)" /><b-collapse
@@ -344,6 +345,15 @@ export default {
     notesShowMore(status, index) {
       this.notesOptions.showMore[index] = status
       this.iteration += 1
+    },
+    hasNotes(concept) {
+      let parts = ["scopeNote", "editorialNote", "altLabel"]
+      let hasNotes = false
+      for (let part of parts) {
+        hasNotes = hasNotes || (concept != null && concept[part] != null && concept[part].de != null && concept[part].de.length > 0)
+      }
+      console.log("hasNotes", hasNotes, concept)
+      return hasNotes
     }
   }
 }
