@@ -405,6 +405,13 @@ export default {
   min-width: @table-cell-width-wide;
 }
 
+.table-info {
+  background-color: @color-primary-1 !important;
+  & > td, & > td {
+    background-color: @color-primary-1 !important;
+  }
+}
+
 // Overwriting bootstrap styles has to be done in global scope
 .optionsDropdown {
   user-select: none;
