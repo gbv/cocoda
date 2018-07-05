@@ -232,4 +232,10 @@ function sortConcepts(data) {
 
 let generateID = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID }
+let delay = {
+  short: { show: 250, hide: 0 },
+  medium: { show: 500, hide: 0 },
+  long: { show: 1000, hide: 0 }
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay }

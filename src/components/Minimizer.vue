@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-b-tooltip.hover="minimized ? 'maximize component' : 'minimize component'"
+      v-b-tooltip.hover="{ title: minimized ? 'maximize component' : 'minimize component', delay: $util.delay.medium }"
       :class="minimized ? 'maximizeButton' : 'minimizeButton'"
       @click="toggleMinimize">
       <font-awesome-icon

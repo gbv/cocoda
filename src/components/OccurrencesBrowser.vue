@@ -61,7 +61,7 @@
           slot="actions"
           slot-scope="data">
           <font-awesome-icon
-            v-b-tooltip.hover="'convert to mapping'"
+            v-b-tooltip.hover="{ title: 'convert to mapping', delay: $util.delay.medium }"
             v-if="data.value"
             icon="edit"
             class="toMapping"

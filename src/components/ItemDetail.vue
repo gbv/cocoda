@@ -23,7 +23,7 @@
     </div>
     <!-- Previos and next buttons -->
     <div
-      v-b-tooltip.hover="prevConcepts.length > 0 ? 'previous concept' : ''"
+      v-b-tooltip.hover="{ title: prevConcepts.length > 0 ? 'previous concept' : '', delay: $util.delay.medium }"
       class="prevButton"
       @click="choosePrevious">
       <font-awesome-icon
@@ -31,7 +31,7 @@
         icon="chevron-left" />
     </div>
     <div
-      v-b-tooltip.hover="nextConcepts.length > 0 ? 'next concept' : ''"
+      v-b-tooltip.hover="{ title: nextConcepts.length > 0 ? 'next concept' : '', delay: $util.delay.medium }"
       class="nextButton"
       @click="chooseNext">
       <font-awesome-icon

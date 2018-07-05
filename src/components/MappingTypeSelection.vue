@@ -1,7 +1,7 @@
 <template>
   <div class="mappingTypes">
     <div
-      v-b-tooltip.hover.right="mappingType.prefLabel.en"
+      v-b-tooltip.hover.right="{ title: mappingType.prefLabel.en, delay: $util.delay.medium }"
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
       :class="{

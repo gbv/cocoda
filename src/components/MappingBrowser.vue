@@ -47,7 +47,7 @@
             slot="type"
             slot-scope="data">
             <span
-              v-b-tooltip.hover="data.value.prefLabel.en"
+              v-b-tooltip.hover="{ title: data.value.prefLabel.en, delay: $util.delay.medium }"
               v-if="data.value != null">
               {{ data.value.notation[0] }}
             </span>
@@ -56,7 +56,7 @@
             slot="actions"
             slot-scope="data">
             <font-awesome-icon
-              v-b-tooltip.hover="'edit mapping'"
+              v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
               icon="edit"
               class="editButton"
               @click="edit(data)" />

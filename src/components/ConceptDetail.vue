@@ -31,7 +31,7 @@
             @click.native="chooseUri(concept, isLeft)" />
         </span>
         <span
-          v-b-tooltip.hover="'show all ancestors'"
+          v-b-tooltip.hover="{ title: 'show all ancestors', delay: $util.delay.medium }"
           v-else-if="index == 1"
           class="conceptDetailAncestorsMore"
           @click="showAncestors = true" >

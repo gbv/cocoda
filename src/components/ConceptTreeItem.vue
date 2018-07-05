@@ -32,7 +32,7 @@
           :is-highlighted="isSelected" />
       </div>
       <div
-        v-b-tooltip.hover="'add to mapping'"
+        v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
         v-show="mapping.canAdd(concept, scheme, isLeft)"
         class="addToMapping"
         @click="mapping.add(concept, scheme, isLeft)"

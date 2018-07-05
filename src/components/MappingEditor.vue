@@ -2,7 +2,7 @@
   <div id="mappingEditor">
     <minimizer text="Mapping Editor" />
     <div
-      v-b-tooltip.hover="'Export mapping'"
+      v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
       class="mappingExport"
       @click="exportMapping()">
       <font-awesome-icon icon="share-square" />
@@ -49,7 +49,7 @@
       <div class="mappingButtons">
         <div class="mappingButtonsFiller" />
         <div
-          v-b-tooltip.hover="isAddButtonEnabled(isLeft) ? 'add selected concept' : ''"
+          v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add selected concept' : '', delay: $util.delay.medium }"
           :class="{ addButtonClickable: isAddButtonEnabled(isLeft), addButtonDisabled: !isAddButtonEnabled(isLeft) }"
           :id="'addButton'+index0"
           class="addButton"
@@ -57,7 +57,7 @@
           <font-awesome-icon icon="plus-circle" />
         </div>
         <div
-          v-b-tooltip.hover="isDeleteAllButtonEnabled(isLeft) ? 'delete all concepts' : ''"
+          v-b-tooltip.hover="{ title: isDeleteAllButtonEnabled(isLeft) ? 'delete all concepts' : '', delay: $util.delay.medium }"
           :class="{ deleteAllButtonClickable: isDeleteAllButtonEnabled(isLeft), deleteAllButtonDisabled: !isDeleteAllButtonEnabled(isLeft) }"
           class="deleteAllButton"
           @click="deleteAll(isLeft)" ><font-awesome-icon icon="trash-alt" /></div>

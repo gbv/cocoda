@@ -26,14 +26,14 @@
               :options="schemeOptions"
               class="schemeSelect" />
             <div
-              v-b-tooltip.hover="'show info about scheme'"
+              v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedLeft != null"
               class="schemeSelectInfo"
               @click="$refs.conceptTreeLeft.selected = null">
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
-              v-b-tooltip.hover="'clear scheme'"
+              v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedLeft != null"
               class="schemeSelectInfo"
               @click="clear(true)">
@@ -152,14 +152,14 @@
               :options="schemeOptions"
               class="schemeSelect" />
             <div
-              v-b-tooltip.hover="'show info about scheme'"
+              v-b-tooltip.hover="{ title: 'show info about scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedRight != null"
               class="schemeSelectInfo"
               @click="$refs.conceptTreeRight.selected = null">
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
-              v-b-tooltip.hover="'clear scheme'"
+              v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedRight != null"
               class="schemeSelectInfo"
               @click="clear(false)">
