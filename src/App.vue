@@ -405,7 +405,7 @@ html, body {
   display: flex;
 }
 .schemeSelect {
-  border: 0;
+  border: 0 !important;
   border-radius: 2px;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
   background-color: lighten(@color-primary-1, 15%) !important;
