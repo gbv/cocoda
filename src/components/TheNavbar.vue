@@ -2,10 +2,14 @@
   <b-navbar
     toggleable="md"
     type="dark">
-    <b-navbar-brand href="https://coli-conc.gbv.de">
+    <b-navbar-brand
+      v-for="(logo, index) in $config.logos || []"
+      :key="index"
+      :href="logo.url"
+      target="_blank">
       <img
-        src="../assets/coli-conc-logo.svg"
-        alt="coli-conc"
+        :src="'./static/' + logo.file"
+        :alt="logo.alt || 'logo'"
         height="40px" >
     </b-navbar-brand>
     <b-navbar-brand href="#">{{ title }}</b-navbar-brand>

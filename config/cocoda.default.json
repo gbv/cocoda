@@ -41,5 +41,17 @@
   "occurrenceProviders": [
     { "url": "//coli-conc.gbv.de/occurrences/api/" }
   ],
-  "language": "de"
+  "language": "de",
+  "logos": [
+    {
+      "file": "vzg-logo.svg",
+      "url": "https://www.gbv.de",
+      "alt": "Verbundzentrale des GBV"
+    },
+    {
+      "file": "coli-conc-logo.svg",
+      "url": "https://coli-conc.gbv.de",
+      "alt": "coli-conc"
+    }
+  ]
 }
