@@ -429,7 +429,7 @@ let saveSchemeAssociationForProvider = function(provider) {
           }
         }
         let otherUris = util.getAllUris(schemes[otherSchemeIndex])
-        delete schemes[otherSchemeIndex]
+        schemes.splice(otherSchemeIndex, 1)
         for (let uri of otherUris) {
           delete schemeToTerminologyProvider[uri]
         }
