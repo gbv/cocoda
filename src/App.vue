@@ -408,8 +408,8 @@ html, body {
   border: 0;
   border-radius: 2px;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
-  background-color: lighten(@color-primary-1, 15%);
-  color: @color-primary-4;
+  background-color: lighten(@color-primary-1, 15%) !important;
+  color: @color-primary-4 !important;
   &:extend(.font-heavy);
   flex: 1;
 }
