@@ -1,15 +1,15 @@
 <template>
+  <!-- :class="'font-size-'+(fontSize || 'normal')" -->
   <div
     v-if="item != null"
-    :class="'font-size-'+(fontSize || 'normal')"
+    :class="[{ 'itemNameHovered': isLink && isHovered, 'itemNameHighlighted': isHighlighted }, 'font-size-'+(fontSize || 'normal')]"
     class="itemName"
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
-    <notation-badge
+    <notation-text
       :item="item"
-      :class="{ 'badge-hovered': isLink && isHovered, 'badge-highlighted': isHighlighted && !(isHovered && isLink) }"
-      :id="tooltipDOMID"
-      :style="{ bottom: '2px' }" />
+      :class="{ 'font-heavy': showText }"
+      :id="tooltipDOMID" />
     <b-tooltip
       v-if="showTooltip && item.prefLabel"
       ref="tooltip"
@@ -18,7 +18,6 @@
     </b-tooltip>
     <prefLabel-text
       v-if="showText && item.prefLabel"
-      :class="{ 'label-hovered': isLink && isHovered, 'label-highlighted': isHighlighted && !(isHovered && isLink) }"
       :item="item" />
   </div>
 </template>
@@ -68,7 +67,7 @@ export default {
       default: false
     },
     /**
-     * Determines whether the badge is highlighted
+     * Determines whether the item is highlighted
      */
     isHighlighted: {
       type: Boolean,
@@ -108,7 +107,7 @@ export default {
     },
     trimTooltip(text) {
       if (text.length > 80) {
-        return text.substring(0,80) + "..."
+        return text.substring(0,75) + "..."
       } else {
         return text
       }
@@ -120,16 +119,16 @@ export default {
 import Vue from "vue"
 
 /**
- * Badge that displays an item's notation.
+ * Component that displays an item's notation.
  */
-Vue.component("notation-badge", {
+Vue.component("notation-text", {
   props: {
     item: {
       type: Object,
       default: null
     }
   },
-  template: "<b-badge v-if=\"item.notation && item.notation.length\">{{ item.notation[0] }}</b-badge>"
+  template: "<span v-if=\"item.notation && item.notation.length\">{{ item.notation[0] }}</span>"
 })
 
 /**
@@ -154,22 +153,11 @@ Vue.component("prefLabel-text", {
   display: inline;
   user-select: none;
 }
-.badge {
-  font-family: "Courier New", Courier, monospace;
-  position: relative;
-}
-.badge-hovered {
-  background-color: @color-secondary-2-4;
+.itemNameHovered {
   cursor: pointer;
+  text-decoration: underline;
 }
-.badge-highlighted {
-  background-color: @color-primary-4;
-}
-.label-hovered {
-  cursor: pointer;
-  color: @color-secondary-2-4;
-}
-.label-highlighted {
+.itemNameHighlighted {
   color: @color-primary-4;
   &:extend(.font-heavy);
 }
