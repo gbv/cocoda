@@ -10,6 +10,9 @@ install:
   - travis_retry npm ci
 script:
   - npm run lint
+  - if [[ -f "config/cocoda.$TRAVIS_BRANCH.json" ]]; then
+      cp "config/cocoda.$TRAVIS_BRANCH.json" config/cocoda.json;
+    fi
   - npm run build
   - mv dist dist-files # prevent styleguide:build overriding dist
   - npm run styleguide:build

@@ -1,0 +1,44 @@
+{
+  "terminologyProviders": [
+    { "url": "//api.dante.gbv.de/" },
+    { "url": "//coli-conc.gbv.de/api/" },
+    {
+      "voc": [ {
+        "uri": "http://bartoc.org/en/node/430",
+        "identifier": ["http://www.wikidata.org/entity/Q36578"],
+        "prefLabel": { "de": "Gemeinsame Normdatei" },
+        "notation": ["GND"],
+        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
+      } ],
+      "data": "//coli-conc.gbv.de/services/gnd.php",
+      "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}"
+    },
+    {
+      "voc": [ {
+        "uri": "http://bartoc.org/en/node/1940",
+        "identifier": ["http://www.wikidata.org/entity/2013"],
+        "prefLabel": { "de": "Wikidata", "en": "Wikidata" },
+        "notation": ["Wikidata"],
+        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
+      } ],
+      "data": "//coli-conc.gbv.de/services/wikidata/concept",
+      "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}"
+    }
+  ],
+  "favoriteTerminologyProviders": [
+    "http://uri.gbv.de/terminology/bk/",
+    "http://bartoc.org/de/node/745",
+    "http://uri.gbv.de/terminology/rvk/",
+    "http://bartoc.org/en/node/533",
+    "http://bartoc.org/en/node/430",
+    "http://dewey.info/scheme/edition/e23/",
+    "http://bartoc.org/en/node/241",
+    "http://bartoc.org/en/node/1940"
+  ],
+  "mappingProviders": [
+    { "url": "//coli-conc.gbv.de/api/mappings/" }
+  ],
+  "occurrenceProviders": [
+    { "url": "//coli-conc.gbv.de/occurrences/api/" }
+  ]
+}
