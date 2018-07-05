@@ -40,5 +40,6 @@
   ],
   "occurrenceProviders": [
     { "url": "//coli-conc.gbv.de/occurrences/api/" }
-  ]
+  ],
+  "language": "de"
 }

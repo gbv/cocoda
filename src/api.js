@@ -625,10 +625,16 @@ function top(scheme, properties = defaultProperties, cancelToken = null) {
  * Wrapper for axios.get.
  *
  * @param {string} endpoint - API endpoint to use
- * @param {axios.config} config - configuration object for axios call, usually contains params and cancelToken
+ * @param {axios.config} axiosConfig - configuration object for axios call, usually contains params and cancelToken
  */
-function get(url, config) {
-  return axios.get(url, config)
+function get(url, axiosConfig) {
+  if (!axiosConfig) {
+    axiosConfig = {
+      params: {}
+    }
+  }
+  axiosConfig.params.language = axiosConfig.params.language || config.language
+  return axios.get(url, axiosConfig)
     .then(function(response) {
       let data = response.data
       // Temporary fix for bug in DANTE dev-api
