@@ -27,7 +27,7 @@
               class="schemeSelect" />
             <div
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedLeft != null"
+              v-show="schemeSelectedLeft != null && conceptSelectedLeft != null"
               class="schemeSelectInfo"
               @click="$refs.conceptTreeLeft.selected = null">
               <font-awesome-icon icon="info-circle" />
@@ -153,7 +153,7 @@
               class="schemeSelect" />
             <div
               v-b-tooltip.hover="{ title: 'show info about scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedRight != null"
+              v-show="schemeSelectedRight != null && conceptSelectedRight != null"
               class="schemeSelectInfo"
               @click="$refs.conceptTreeRight.selected = null">
               <font-awesome-icon icon="info-circle" />
@@ -315,7 +315,7 @@ export default {
       let delay = 0
       // Support both URIs and objects
       if (typeof concept === "object") {
-        if (this.$util.isScheme(concept)) {
+        if (!this.$util.isConcept(concept)) {
           // Loading scheme by setting selected to null
           if (isLeft) {
             this.$refs.conceptTreeLeft.selected = null
