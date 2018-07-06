@@ -47,11 +47,29 @@ module.exports = {
       ]
     },
     {
+      name: "Guide",
+      content: "docs/guide.md",
+      sections: [
+        {
+          name: "Interface Description",
+          content: "docs/guide-interface.md"
+        },
+        {
+          name: "Browsing Terminologies",
+          content: "docs/guide-browsing.md"
+        },
+        {
+          name: "Mappings",
+          content: "docs/guide-mappings.md"
+        }
+      ]
+    },
+    {
       name: "Components",
       content: "docs/components.md",
       components: "src/components/*.vue"
     },
-   ],
+  ],
   showUsage: true,
   webpackConfig
 }

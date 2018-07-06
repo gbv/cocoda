@@ -21,10 +21,12 @@
       </b-button>
       <b-nav-item
         v-if="github"
-        :href="github"><font-awesome-icon :icon="['fab', 'github']" /> GitHub</b-nav-item>
+        :href="github"
+        target="_blank"><font-awesome-icon :icon="['fab', 'github']" /> GitHub</b-nav-item>
       <b-nav-item
         v-if="help"
-        :href="help">Help</b-nav-item>
+        :href="help"
+        target="_blank">Help</b-nav-item>
       <b-nav-item @click="$refs.settingsModal.show()">Settings</b-nav-item>
       <b-modal
         ref="settingsModal"
