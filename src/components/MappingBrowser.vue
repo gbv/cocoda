@@ -180,7 +180,7 @@ export default {
         if (conceptItem.concept == null) {
           continue
         }
-        let mappings = conceptItem.concept.MAPPINGS
+        let mappings = conceptItem.concept.MAPPINGS ? conceptItem.concept.MAPPINGS[conceptItem.fromTo] : null
         if (mappings == null) {
           // Load mappings
           this.loadMappings(conceptItem)
@@ -337,7 +337,10 @@ export default {
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
       this.$api.mappings(params).then(data => {
-        concept.MAPPINGS = data
+        if (!concept.MAPPINGS) {
+          concept.MAPPINGS = { from: null, to: null }
+        }
+        concept.MAPPINGS[conceptItem.fromTo] = data
       }).catch(function(error) {
         console.error("API error (mappings):", error)
       })
