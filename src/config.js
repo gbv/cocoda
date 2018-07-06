@@ -7,4 +7,8 @@ try {
 }
 let config = Object.assign({}, defaultConfig, userConfig)
 
+// load build info into config
+let buildInfo = require("../build/build-info.json")
+config.buildInfo = buildInfo
+
 export default config
