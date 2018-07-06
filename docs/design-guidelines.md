@@ -5,26 +5,22 @@ You can use the mentioned CSS classes in one of two ways:
 1. Add them to the classes list of your HTML element.
 2. Extend your CSS class using [LESS](http://lesscss.org): `&:extend(.font-heavy);`
 
-### Font Size
-Cocoda uses three font sizes:
-- 0.8em (CSS class `font-size-small`)
-- 1em (CSS class `font-size-normal`)
-- 1.2em (CSS class `font-size-large`, only to be used in navigation bar and component placeholders)
+### Fonts
 
-Use other font sizes for icons only, not for text.
+* **Font size** must only be set via one of the CSS classes `font-size-small`, `font-size-normal`, and `font-size-large`. The latter must only be use in the navigation bar and component placeholders.
 
-### Font Weight
-Cocoda uses two font weights:
-- 400 (CSS class `.font-normal`)
-- 700 (CSS class `.font-heavy`)
+* Use CSS class `font-heavy` for **bold font markup**.
 
 ### Colors
+
 For interface elements, there is a range of pre-defined colors available in `src/style/main.less`. For non-linked text, please use one of the following colors:
-- hsl(0, 0%, 13%) (CSS class `text-dark`)
-- hsl(0, 0%, 29%) (CSS class `text-grey`)
-- hsl(0, 0%, 45%) (CSS class `text-light-grey`)
+
+* CSS class `text-dark`
+* CSS class `text-grey`
+* CSS class `text-light-grey`
 
 ### Tables
+
 In main.less there are some predefined table styles to be used on bootstrap-vue tables. You can use it like this:
 
 ```html
