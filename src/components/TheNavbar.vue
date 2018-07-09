@@ -32,7 +32,7 @@
         centered
         size="md"
         title="Cocoda Settings">
-        <p v-if="$config.buildInfo.gitTag && $config.buildInfo.gitTag != ''">
+        <p v-if="$config.buildInfo.gitTag">
           Version: {{ $config.buildInfo.gitTag }}
         </p>
         <p v-if="$config.buildInfo.gitCommit && $config.buildInfo.gitCommitShort">
