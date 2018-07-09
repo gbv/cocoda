@@ -315,7 +315,7 @@ export default {
       let delay = 0
       // Support both URIs and objects
       if (typeof concept === "object") {
-        if (!this.$util.isConcept(concept)) {
+        if (this.$util.isScheme(concept)) {
           // Loading scheme by setting selected to null
           if (isLeft) {
             this.$refs.conceptTreeLeft.selected = null
