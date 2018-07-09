@@ -37,7 +37,7 @@
               v-show="schemeSelectedLeft != null"
               class="schemeSelectInfo"
               @click="clear(true)">
-              <font-awesome-icon icon="times-circle" />
+              <font-awesome-icon icon="minus-circle" />
             </div>
           </div>
           <!-- ConceptSearch -->
@@ -163,7 +163,7 @@
               v-show="schemeSelectedRight != null"
               class="schemeSelectInfo"
               @click="clear(false)">
-              <font-awesome-icon icon="times-circle" />
+              <font-awesome-icon icon="minus-circle" />
             </div>
           </div>
           <!-- ConceptSearch -->
