@@ -27,7 +27,7 @@
               class="schemeSelect" />
             <div
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedLeft != null && conceptSelectedLeft != null"
+              v-show="schemeSelectedLeft != null"
               class="schemeSelectInfo"
               @click="$refs.conceptTreeLeft.selected = null">
               <font-awesome-icon icon="info-circle" />
@@ -37,7 +37,7 @@
               v-show="schemeSelectedLeft != null"
               class="schemeSelectInfo"
               @click="clear(true)">
-              <font-awesome-icon icon="times-circle" />
+              <font-awesome-icon icon="minus-circle" />
             </div>
           </div>
           <!-- ConceptSearch -->
@@ -153,7 +153,7 @@
               class="schemeSelect" />
             <div
               v-b-tooltip.hover="{ title: 'show info about scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedRight != null && conceptSelectedRight != null"
+              v-show="schemeSelectedRight != null"
               class="schemeSelectInfo"
               @click="$refs.conceptTreeRight.selected = null">
               <font-awesome-icon icon="info-circle" />
@@ -163,7 +163,7 @@
               v-show="schemeSelectedRight != null"
               class="schemeSelectInfo"
               @click="clear(false)">
-              <font-awesome-icon icon="times-circle" />
+              <font-awesome-icon icon="minus-circle" />
             </div>
           </div>
           <!-- ConceptSearch -->

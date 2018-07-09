@@ -1,1 +1,0 @@
-Cocoda web application should be usable with any modern web browser. It requires at least HD resolution (1366×768) but FHD (1920×1080) or more is highly recommended. The most recent release of Cocoda can be used at <https://coli-conc.gbv.de/cocoda/>. It is also possible to [install](#installation) it on your own web server.

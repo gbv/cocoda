@@ -21,34 +21,10 @@
       </b-button>
       <b-nav-item
         v-if="github"
-        :href="github"
-        target="_blank"><font-awesome-icon :icon="['fab', 'github']" /> GitHub</b-nav-item>
+        :href="github"><font-awesome-icon :icon="['fab', 'github']" /> GitHub</b-nav-item>
       <b-nav-item
         v-if="help"
-        :href="help"
-        target="_blank">Help</b-nav-item>
-      <b-nav-item @click="$refs.settingsModal.show()">Settings</b-nav-item>
-      <b-modal
-        ref="settingsModal"
-        hide-footer
-        centered
-        size="md"
-        title="Cocoda Settings">
-        <p v-if="$config.buildInfo.gitTag && $config.buildInfo.gitTag != ''">
-          Version: {{ $config.buildInfo.gitTag }}
-        </p>
-        <p v-if="$config.buildInfo.gitCommit && $config.buildInfo.gitCommitShort">
-          Current Commit:
-          <a
-            :href="'https://github.com/gbv/cocoda/commit/' + $config.buildInfo.gitCommit"
-            target="_blank">
-            {{ $config.buildInfo.gitCommitShort }}
-          </a>
-        </p>
-        <p v-if="$config.buildInfo.buildDate">
-          Build Date: {{ $config.buildInfo.buildDate }}
-        </p>
-      </b-modal>
+        :href="help">Help</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>

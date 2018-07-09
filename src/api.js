@@ -446,7 +446,6 @@ let saveSchemeAssociationForProvider = function(provider) {
     // Add scheme specific custom properties
     scheme.DETAILSLOADED = false
     scheme.TOPCONCEPTS = [null]
-    scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
     schemes.push(scheme)
     // Force save scheme in new API
     objects.save(scheme, true)

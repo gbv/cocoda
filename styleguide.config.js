@@ -29,24 +29,6 @@ module.exports = {
       ]
     },
     {
-      name: "Manual",
-      content: "docs/guide.md",
-      sections: [
-        {
-          name: "User Interface",
-          content: "docs/guide-interface.md"
-        },
-        {
-          name: "Concepts",
-          content: "docs/guide-concepts.md"
-        },
-        {
-          name: "Mappings",
-          content: "docs/guide-mappings.md"
-        }
-      ]
-    },
-    {
       name: "Development",
       content: "CONTRIBUTING.md",
       sections: [
@@ -69,7 +51,7 @@ module.exports = {
       content: "docs/components.md",
       components: "src/components/*.vue"
     },
-  ],
+   ],
   showUsage: true,
   webpackConfig
 }

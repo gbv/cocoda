@@ -297,7 +297,7 @@ export default {
           }))
         }
         // Another request for co-occurrences between two specific concepts
-        if (uris.length == 2 && uris[0] != uris[1]) {
+        if (uris.length == 2) {
           let urisString = uris.join(" ")
           promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
             params: {
