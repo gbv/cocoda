@@ -29,24 +29,6 @@ module.exports = {
       ]
     },
     {
-      name: "Manual",
-      content: "docs/guide.md",
-      sections: [
-        {
-          name: "User Interface",
-          content: "docs/guide-interface.md"
-        },
-        {
-          name: "Concepts",
-          content: "docs/guide-concepts.md"
-        },
-        {
-          name: "Mappings",
-          content: "docs/guide-mappings.md"
-        }
-      ]
-    },
-    {
       name: "Development",
       content: "CONTRIBUTING.md",
       sections: [
@@ -61,6 +43,24 @@ module.exports = {
         {
           name: "Design Guidelines",
           content: "docs/design-guidelines.md"
+        }
+      ]
+    },
+    {
+      name: "Guide",
+      content: "docs/guide.md",
+      sections: [
+        {
+          name: "Interface Description",
+          content: "docs/guide-interface.md"
+        },
+        {
+          name: "Browsing Terminologies",
+          content: "docs/guide-browsing.md"
+        },
+        {
+          name: "Mappings",
+          content: "docs/guide-mappings.md"
         }
       ]
     },
