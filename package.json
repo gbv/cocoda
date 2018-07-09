@@ -5,9 +5,9 @@
   "author": "Stefan Peters <stefandesu@exo.pm>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "./build/build-info.sh && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "./build/build-info.sh && node build/build.js && mv ./build/build-info.backup.json ./build/build-info.json",
+    "build": "./build/build-info.sh && node build/build.js",
     "lint": "./node_modules/.bin/eslint ./src/*.{js,vue} ./src/**/*.{js,vue}",
     "fix": "./node_modules/.bin/eslint --fix ./src/*.{js,vue} ./src/**/*.{js,vue}",
     "lint-staged": "lint-staged",
