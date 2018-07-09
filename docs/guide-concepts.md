@@ -6,7 +6,7 @@ The left and right pane of cocoda user interface allow browsing in a concept sch
 
 * a **search field** to find concepts in a selected scheme by notation or label
 
-* a pane that shows **details** about the selected scheme or the selected concept
+* a pane that shows **details** about the selecetd scheme or the selected concept
 
 * a **concept tree** for hierarchical browsing if the selected scheme is a
   classification or taxonomy
