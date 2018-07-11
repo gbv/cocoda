@@ -374,9 +374,8 @@ html, body {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  /* TODO: - How much width and height do we need? */
-  min-width: 1200px;
-  min-height: 600px;
+  min-width: 1220px;
+  min-height: 680px;
 }
 .main {
   flex: 1;
