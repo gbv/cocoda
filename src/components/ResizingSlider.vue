@@ -117,16 +117,16 @@ export default {
   color: #777777;
 }
 .resizeSliderCocodaRed {
-  color: #B44D28;
+  color: #A71D1F;
 }
 .resizeSliderCol {
   cursor: col-resize;
   margin: 0 5px;
-  box-shadow: inset 1px 0 2px -1px;
+  box-shadow: inset 1px 0 1px -1px;
 }
 .resizeSliderRow {
   cursor: row-resize;
   margin: 5px 0;
-  box-shadow: inset 0 1px 2px -1px;
+  box-shadow: inset 0 1px 1px -1px;
 }
 </style>
