@@ -1,7 +1,7 @@
 <template>
   <div
     :class="'loader-' + size"
-    class="loader"/>
+    class="loader" />
 </template>
 
 <script>
@@ -20,9 +20,6 @@ export default {
       type: String,
       default: "md"
     }
-  },
-  data () {
-    return {}
   }
 }
 </script>

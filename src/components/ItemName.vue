@@ -1,5 +1,4 @@
 <template>
-  <!-- :class="'font-size-'+(fontSize || 'normal')" -->
   <div
     v-if="item != null"
     :class="[{ 'itemNameHovered': isLink && isHovered, 'itemNameHighlighted': isHighlighted }, 'font-size-'+(fontSize || 'normal')]"
@@ -11,13 +10,13 @@
       :class="{ 'font-heavy': showText }"
       :id="tooltipDOMID" />
     <b-tooltip
-      v-if="showTooltip && item.prefLabel"
+      v-if="showTooltip && item.prefLabel && (item.prefLabel.de || item.prefLabel.en)"
       ref="tooltip"
       :target="tooltipDOMID">
-      {{ trimTooltip(item.prefLabel.de ? item.prefLabel.de : item.prefLabel.en) }}
+      {{ trimTooltip(item.prefLabel.de || item.prefLabel.en) }}
     </b-tooltip>
     <prefLabel-text
-      v-if="showText && item.prefLabel"
+      v-if="showText"
       :item="item" />
   </div>
 </template>
@@ -76,7 +75,7 @@ export default {
   },
   data () {
     return {
-      tooltipDOMID: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      tooltipDOMID: this.$util.generateID(),
       isHoveredFromHere: false
     }
   },
@@ -88,10 +87,9 @@ export default {
   watch: {
     item: function() {
       // Force show tooltip when item has changed
-      let vm = this
-      _.delay(function() {
-        if (vm.isHoveredFromHere) {
-          vm.$refs.tooltip && vm.$refs.tooltip.$emit("open")
+      _.delay(() => {
+        if (this.isHoveredFromHere) {
+          this.$refs.tooltip && this.$refs.tooltip.$emit("open")
         }
       }, 50)
     }
@@ -128,7 +126,7 @@ Vue.component("notation-text", {
       default: null
     }
   },
-  template: "<span v-if=\"item.notation && item.notation.length\">{{ item.notation[0] }}</span>"
+  template: "<span v-if='item.notation && item.notation.length'>{{ item.notation[0] }}</span>"
 })
 
 /**
@@ -142,7 +140,16 @@ Vue.component("prefLabel-text", {
       default: null
     }
   },
-  template: "<span>{{ item.prefLabel.de || item.prefLabel.en || 'No Label' }}</span>"
+  computed: {
+    prefLabel() {
+      if (this.item.prefLabel && (this.item.prefLabel.de || this.item.prefLabel.en)) {
+        return this.item.prefLabel.de || this.item.prefLabel.en
+      } else {
+        return this.item.uri
+      }
+    }
+  },
+  template: "<span>{{ prefLabel }}</span>"
 })
 </script>
 

@@ -2,8 +2,8 @@
   <a
     v-if="isValidURL(link)"
     :href="link"
-    target="_blank">{{ text ? text : link }}</a>
-  <span v-else>{{ text ? text : link }}</span>
+    target="_blank">{{ text || link }}</a>
+  <span v-else>{{ text || link }}</span>
 </template>
 
 <script>
