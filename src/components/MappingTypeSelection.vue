@@ -85,7 +85,7 @@ export default {
 .mappingTypeSelected {
   background-color: @color-primary-4;
   color: @color-primary-1;
-  font-weight: bold;
+  &:extend(.font-heavy);
   &:hover {
     background-color: @color-primary-4;
     color: @color-primary-1;
