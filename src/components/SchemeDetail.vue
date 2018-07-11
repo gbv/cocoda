@@ -115,6 +115,7 @@ export default {
   },
   data () {
     return {
+      /** Image URLs for specific licenses */
       licenseBadges: {
         "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
         "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
@@ -128,12 +129,14 @@ export default {
   },
   watch: {
     item() {
-      // Scroll to top
+      // Scroll to top when item changed
+      // TODO: Move to ItemDetail?
       this.$el.parentElement.scrollTop = 0
     }
   },
   mounted() {
     // Scroll to top
+    // TODO: Move to ItemDetail?
     this.$el.parentElement.scrollTop = 0
   },
   methods: {
@@ -144,7 +147,7 @@ export default {
       }
       return {
         url: organisation[0].url,
-        label: organisation[0].prefLabel.de || organisation[0].prefLabel.en || "no name"
+        label: organisation[0].prefLabel.de || organisation[0].prefLabel.en || ""
       }
     }
   }

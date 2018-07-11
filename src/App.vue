@@ -299,6 +299,9 @@ export default {
         this.itemDetailSettings.right.showTopConceptsInScheme = this.$refs.conceptTreeRight != null && this.$refs.conceptTreeRight.$el.dataset.minimized == "1"
       }
     },
+    /**
+     * Completely clears the concept scheme browser on one side
+     */
     clear(isLeft) {
       if (isLeft) {
         this.$refs.conceptTreeLeft.selected = null

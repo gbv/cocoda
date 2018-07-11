@@ -5,16 +5,19 @@
     class="itemName"
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
+    <!-- Text for notation -->
     <notation-text
       :item="item"
       :class="{ 'font-heavy': showText }"
       :id="tooltipDOMID" />
+    <!-- Tooltip for prefLabel if only notation is shown -->
     <b-tooltip
       v-if="showTooltip && item.prefLabel && (item.prefLabel.de || item.prefLabel.en)"
       ref="tooltip"
       :target="tooltipDOMID">
       {{ trimTooltip(item.prefLabel.de || item.prefLabel.en) }}
     </b-tooltip>
+    <!-- Text for prefLabel -->
     <prefLabel-text
       v-if="showText"
       :item="item" />
@@ -75,7 +78,9 @@ export default {
   },
   data () {
     return {
+      /** Unique DOM ID for tooltip */
       tooltipDOMID: this.$util.generateID(),
+      /** Determines whether the item is hovered from inside (to show tooltip after prefLabel loaded) */
       isHoveredFromHere: false
     }
   },

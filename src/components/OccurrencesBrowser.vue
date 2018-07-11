@@ -1,9 +1,11 @@
 <template>
   <div id="occurrencesBrowser">
+    <!-- Minimizer allows component to get minimized -->
     <minimizer text="Occurrences Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
       class="defaultTableWrapper">
+      <!-- Occurrences table -->
       <b-table
         ref="occurrencesTable"
         :sort-desc="true"
@@ -74,6 +76,7 @@
         </span>
       </b-table>
     </div>
+    <!-- Full screen loading indicator -->
     <div
       v-if="loading"
       class="loadingFull">
@@ -129,16 +132,26 @@ export default {
   },
   data () {
     return {
+      /** Current list of occurrences */
       occurrences: [],
+      /** Reference to the current mapping */
       mapping: this.$root.$data.mapping,
+      /** Current axios cancel token */
       cancelToken: null,
+      /** List of supported schemes by occurrences-api */
       supportedSchemes: null,
+      /** Determines whether occurrences are loading */
       loading: false,
+      /** Unique loading ID for each request */
       loadingId: null,
+      /** Items for bootstrap table */
       items: []
     }
   },
   computed: {
+    /**
+     * Fields (columns) for bootstrap table
+     */
     fields() {
       return [
         {
@@ -192,7 +205,7 @@ export default {
       this.reloadIfChanged(newValue, oldValue)
     },
     occurrences() {
-      console.log("Occurrences changed", this.occurrences.slice())
+      // Rebuild items array when occurrences changed
       let items = []
       for (let occurrence of this.occurrences) {
         if (!occurrence || !occurrence.memberSet || occurrence.memberSet.length == 0 || occurrence.memberSet.length > 2) {
@@ -246,6 +259,7 @@ export default {
         this.reloadOccurrences()
       }
     },
+    /** Reloads occurrences from api */
     reloadOccurrences() {
       let vm = this
       let promise
@@ -334,17 +348,17 @@ export default {
           delete occurrences[value]
         })
         // Sort occurrences and only save top 10
-        console.log(occurrences)
         this.occurrences = occurrences.sort((a, b) => parseInt(b.count) - parseInt(a.count)).slice(0, 10)
-        console.log(this.occurrences)
         this.loading = false
-        console.log("Occurrences loaded")
       }).catch(error => {
         console.error("Occurrences Error:", error)
         this,occurrences = []
         this.loading = false
       })
     },
+    /**
+     * Converts a co-occurrence into a mapping and saves it as the current mapping
+     */
     toMapping(data) {
       this.mapping.jskos = {
         from: { "memberSet": [data.item.from] },
@@ -354,6 +368,7 @@ export default {
         type: [this.$util.defaultMappingType.uri]
       }
     },
+    /** Returns whether a scheme is supported by the occurrences-api */
     isSupported(scheme) {
       let supported = false
       for (let supportedScheme of this.supportedSchemes) {

@@ -1,5 +1,6 @@
 <template>
   <div id="mappingBrowser">
+    <!-- Minimizer allows component to get minimized -->
     <minimizer text="Mapping Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
@@ -7,6 +8,7 @@
       <div
         v-if="items.length > 0"
         class="defaultTableWrapper">
+        <!-- Mapping table -->
         <b-table
           ref="occurrencesTable"
           :items="items"
@@ -72,9 +74,11 @@
         v-else
         class="noItems font-heavy">No mappings available
       </div>
+      <!-- Mapping toolbar for options and infos -->
       <div
         class="mappingToolbar">
         <div>
+          <!-- Option dropdown menu -->
           <b-dropdown
             :text="selectedOption.label"
             dropup
@@ -91,6 +95,7 @@
           </b-dropdown>
         </div>
         <div />
+        <!-- Number of mappings in the table -->
         <div style="text-align: right;">{{ items.length }} mappings</div>
       </div>
     </div>
@@ -140,9 +145,11 @@ export default {
   },
   data () {
     return {
+      /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
-      columns: [],
+      /** Reference to current mapping */
       mapping: this.$root.$data.mapping,
+      /** Available options for mapping options */
       mappingOptions: {
         showAll: {
           id: "showAll",
@@ -159,10 +166,14 @@ export default {
           }
         }
       },
+      /** Currently selected option */
       selectedOption: null
     }
   },
   computed: {
+    /**
+     * List of items to be used in bootstrap table
+     */
     items() {
       let items = []
       let conceptList = [
@@ -230,6 +241,9 @@ export default {
       }
       return items
     },
+    /**
+     * List of fields (columns) to be used in bootstrap table
+     */
     fields() {
       return [
         {
@@ -280,9 +294,6 @@ export default {
     }
   },
   created() {
-    for (let i = 0; i < 30; i++) {
-      // this.items.push(this.sampleItem)
-    }
     // Set default selectedOption
     this.selectedOption = this.mappingOptions.showAll
   },
@@ -290,12 +301,6 @@ export default {
     this.$util.setupTableScrollSync()
   },
   methods: {
-    add() {
-      this.items.push(this.sampleItem)
-    },
-    remove() {
-      this.items.pop()
-    },
     edit(data) {
       this.mapping.jskos = this.$util.deepCopy(data.item.mapping)
       // Make sure concept object references are in sync

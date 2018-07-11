@@ -2,12 +2,14 @@
   <span
     class="searchfield"
     @mousemove="mousemove()">
+    <!-- Search icon -->
     <div
       class="searchIcon"
       @click="focusSearch" >
       <font-awesome-icon icon="search" />
     </div>
     <div class="searchInputWrapper">
+      <!-- Input field -->
       <b-form-input
         ref="searchInput"
         v-model="searchQuery"
@@ -20,6 +22,7 @@
         @keyup.enter.native="onEnter"
         @focus.native="isOpen = searchQuery != ''"
         @blur.native="onBlur" />
+      <!-- Results -->
       <div
         v-show="isOpen"
         class="searchfield-results">
@@ -87,14 +90,23 @@ export default {
   },
   data () {
     return {
+      // The current search query
       searchQuery: "",
+      // The current search result
       searchResult: [],
+      // Whether the results are shown
       isOpen: false,
+      // Whether the current results are valid
       isValid: false,
+      // Whether results are currently loading
       loading: false,
+      // Selected (hover or keyboard) search result
       searchSelected: -1,
+      // Whether to prevent hovering with the mouse (during keyboard navigation)
       preventHovering: false,
+      // Last axios cancel token
       cancelToken: null,
+      // A unique ID for the DOM (to prevent conflict with other instances of this component)
       uniqueID: null
     }
   },
@@ -104,6 +116,11 @@ export default {
      */
     searchQuery: function (newQuestion) {
       this.searchSelected = -1
+      // Already cancel previous request
+      if (this.cancelToken != null) {
+        this.cancelToken.cancel("There was a newer search query.")
+        this.cancelToken = null
+      }
       if (newQuestion == "") {
         this.loading = false
         this.isOpen = false
@@ -111,16 +128,13 @@ export default {
         this.searchResult = ["Waiting for you to stop typing..."]
         this.loading = true
         this.isOpen = true
-        // Already cancel previous request
-        if (this.cancelToken != null) {
-          this.cancelToken.cancel("There was a newer search query.")
-        }
+        // Get the result debounced to prevent too many API requests
         this.debouncedGetAnswer()
       }
       this.isValid = false
     },
     /**
-     * Clears the search field when vocabulary is changed.
+     * Clears the search field when scheme is changed.
      */
     voc: function(newValue, oldValue) {
       if (newValue != oldValue) {
@@ -152,7 +166,6 @@ export default {
      * @param {string[]} result - result array with label, description, and uri (in this order)
      */
     chooseResult: function (result) {
-      console.log("chose", result)
       let uri = _.last(result)
       /**
        * Event when the user has chosen a result.
@@ -177,13 +190,14 @@ export default {
       this.searchResult = ["Searching..."]
       var vm = this
       if (this.cancelToken != null) {
+        // FIXME: Is this needed when it is already canceled in the watcher?
         this.cancelToken.cancel("There was a newer search query.")
       }
+      // Generate new axios cancel token
       this.cancelToken = this.$api.token()
       let searchQuery = this.searchQuery
       this.$api.suggest(this.voc, searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
         .then(function(data) {
-          console.log(searchQuery, vm.searchQuery)
           if (searchQuery == vm.searchQuery) {
             vm.loading = false
             vm.searchResult = _.zip(data[1], data[2], data[3])
@@ -264,6 +278,9 @@ export default {
         this.searchSelected = i
       }
     },
+    /**
+     * Allows hovering when the mouse moves again
+     */
     mousemove() {
       this.preventHovering = false
     },

@@ -1,7 +1,9 @@
 <template>
   <div
     class="itemDetail font-size-small">
+    <!-- Minimizer allows component to get minimized -->
     <minimizer :text="type + ' Detail'" />
+    <!-- Include component depending on item type -->
     <div
       v-if="item != null"
       class="itemDetailContent">
@@ -16,6 +18,7 @@
     <div
       v-else-if="!loading"
       class="loadingFull font-size-normal font-heavy">Please select a scheme or concept.</div>
+    <!-- Full screen loading indicator -->
     <div
       v-if="loading"
       class="loadingFull">
@@ -88,7 +91,6 @@ export default {
     },
     /**
      * Settings - An object with a subset of the following properties:
-     * - showGndMappings: show all GND mappings in ConceptDetail (default false)
      * - showGndTerms: show GND terms in ConceptDetail (default true)
      * - showSchemeInAncestors: (default true)
      * - showTopConceptsInScheme: (default false)
@@ -104,13 +106,13 @@ export default {
     return {
       loading: false,
       defaultSettings: {
-        showGndMappings: false,
         showGndTerms: true,
         showSchemeInAncestors: true,
         showTopConceptsInScheme: false,
         showAllAncestors: false,
         showAllNotes: false
       },
+      /** History of selected items */
       prevConcepts: [],
       nextConcepts: []
     }
@@ -182,7 +184,6 @@ export default {
             for (let i = 0; i < item.broader.length; i += 1) {
               promises.push(this.$api.objects.get(item.broader[i].uri, item.inScheme[0].uri).then( broader => {
                 this.$set(item.broader, i, broader)
-                console.log("broader", i, "loaded")
               }))
             }
             Promise.all(promises).then(() => {
