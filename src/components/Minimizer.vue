@@ -97,7 +97,7 @@ export default {
 @import "../style/main.less";
 
 .minimizeButton, .maximizeButton {
-  &:extend(.utilityIcon);
+  &:extend(.utilityIcon all);
   right: 0px;
   top: 0px;
 }
