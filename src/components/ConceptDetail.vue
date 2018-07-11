@@ -3,7 +3,7 @@
     v-if="item != null"
     class="conceptDetail font-size-small">
 
-    <!-- Ancestors (display only broader concept by default, others can be expanded) -->
+    <!-- Ancestors / Broader -->
     <div class="conceptDetailAncestors">
       <div
         v-show="settings.showSchemeInAncestors"
@@ -41,7 +41,6 @@
         </span>
       </div>
       <!-- Broader -->
-      <!-- v-show="showAncestors || settings.showAllAncestors || settings.showSchemeInAncestors && index == item.broader.length - 1 || !settings.showSchemeInAncestors && (item.broader.length <= 2 || index >= item.broader.length - 1)" -->
       <div
         v-for="(concept) in (item.ancestors.length == 0 && item.BROADERLOADED ? item.broader : [])"
         v-if="concept != null"
@@ -67,7 +66,7 @@
       :is-highlighted="true"
       font-size="normal" />
 
-    <!--  -->
+    <!-- Notes and alternative labels -->
     <b-card
       :key="'conceptDetailNoteTabs'+iteration"
       no-body
