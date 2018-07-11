@@ -4,6 +4,7 @@
     :style="depth == 0 ? 'margin-left: 0px' : ''"
     :data-uri="concept.uri"
     class="conceptTreeItem">
+    <!-- Concept -->
     <div
       :class="{
         conceptBoxHovered: isHovered,
@@ -39,6 +40,7 @@
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"><font-awesome-icon icon="plus-circle" /></div>
     </div>
+    <!-- Concept's narrower if opened -->
     <div
       v-if="isOpen"
       class="conceptChildrenBox">
@@ -53,6 +55,7 @@
         :scheme="scheme"
         @selected="select($event)" />
     </div>
+    <!-- Small loading indicator when loading narrower -->
     <loading-indicator
       v-show="hasChildren && isOpen && concept.narrower.includes(null)"
       size="sm"
@@ -120,9 +123,12 @@ export default {
   },
   data () {
     return {
+      /** Determines whether to show loading indicator for narrower */
       loadingChildren: false,
+      /** Prevent double clicks */
       preventClick: false,
       preventClickArrow: false,
+      /** Current mapping */
       mapping: this.$root.$data.mapping
     }
   },
@@ -143,7 +149,6 @@ export default {
       return !this.concept.narrower || !this.concept.narrower.includes(null)
     }
   },
-  watch: {},
   methods: {
     /**
      * Triggers a hovered event.

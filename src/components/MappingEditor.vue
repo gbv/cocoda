@@ -1,5 +1,6 @@
 <template>
   <div id="mappingEditor">
+    <!-- Minimizer allows component to get minimized -->
     <minimizer text="Mapping Editor" />
     <div
       v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
@@ -7,12 +8,14 @@
       @click="exportMapping()">
       <font-awesome-icon icon="share-square" />
     </div>
+    <!-- Source and target sides for the mapping -->
     <div
       v-for="(isLeft, index0) in [true, false]"
       :key="index0"
       :style="{ order: index0 * 2 }"
       class="mappingEditorPart" >
       <div v-if="mapping.getScheme(isLeft) != null">
+        <!-- Show scheme only if different scheme is selected on that side -->
         <div
           class="mappingScheme font-heavy">
           <span v-if="showScheme(isLeft)">
@@ -20,7 +23,7 @@
           </span>
           <span v-else>&nbsp;</span>
         </div>
-
+        <!-- All concepts in mapping -->
         <ul class="mappingConceptList">
           <li
             v-for="(concept, index) in mapping.getConcepts(isLeft)"
@@ -30,6 +33,7 @@
               :is-link="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight)"
               :is-highlighted="$util.compareConcepts(concept, isLeft ? selectedLeft : selectedRight)"
               @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
+            <!-- Delete button for concept -->
             <div
               class="mappingConceptDelete font-size-small"
               @click="mapping.remove(concept, isLeft)">
@@ -41,11 +45,13 @@
       <div v-else >
         <div class="mappingNoConcepts">No Concepts</div>
       </div>
+      <!-- Reason why adding a concept is not possible -->
       <div
         v-if="!isAddButtonEnabled(isLeft)"
         class="addButtonDisabledReason">
         {{ addButtonDisabledReason(isLeft) }}
       </div>
+      <!-- Buttons (add, delete all) -->
       <div class="mappingButtons">
         <div class="mappingButtonsFiller" />
         <div
@@ -64,11 +70,13 @@
         <div class="mappingButtonsFiller" />
       </div>
     </div>
+    <!-- Selecting of mapping type (in between source and target sides via flex order) -->
     <div class="mappingTypeSelection">
       <mapping-type-selection
         v-show="schemeLeft != null || schemeRight != null"
         :mapping="mapping"/>
     </div>
+    <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
     <b-modal
       ref="exportModal"
       hide-footer
@@ -140,9 +148,15 @@ export default {
     }
   },
   computed: {
+    /**
+     * Returns a formatted version of the mapping
+     */
     mappingPretty() {
       return JSON.stringify(this.$util.cleanJSKOS(this.$util.deepCopy(this.mapping.jskos)), null, 2)
     },
+    /**
+     * Returns an encoded version of the mapping for export
+     */
     mappingEncoded() {
       return encodeURIComponent(JSON.stringify(this.$util.cleanJSKOS(this.$util.deepCopy(this.mapping.jskos))))
     }
@@ -151,11 +165,9 @@ export default {
     labelForScheme(scheme) {
       return scheme ? scheme.notation[0] : "&nbsp;"
     },
-    reverseMapping() {
-      if (!this.mapping.reverse()) {
-        alert("Reversion not possible")
-      }
-    },
+    /**
+     * Returns whether the add button should be enabled for a specific side
+     */
     isAddButtonEnabled(isLeft) {
       let concept = isLeft ? this.selectedLeft : this.selectedRight
       if (!this.mapping.checkScheme(isLeft ? this.schemeLeft : this.schemeRight, isLeft)) {
@@ -169,9 +181,15 @@ export default {
       }
       return true
     },
+    /**
+     * Returns whether the delete all button should be enabled for a specific side
+     */
     isDeleteAllButtonEnabled(isLeft) {
       return this.mapping.getConcepts(isLeft).length > 0
     },
+    /**
+     * Returns the reason why the add button is disabled
+     */
     addButtonDisabledReason(isLeft) {
       let concept = isLeft ? this.selectedLeft : this.selectedRight
       if (!this.mapping.checkScheme(isLeft ? this.schemeLeft : this.schemeRight, isLeft)) {
@@ -185,6 +203,9 @@ export default {
       }
       return "Other reason."
     },
+    /**
+     * Adds currently selected concept to mapping
+     */
     addToMapping(isLeft) {
       if (!this.isAddButtonEnabled(isLeft)) {
         return
@@ -192,17 +213,29 @@ export default {
       let concept = isLeft ? this.selectedLeft : this.selectedRight
       this.mapping.add(concept, isLeft ? this.schemeLeft : this.schemeRight, isLeft)
     },
+    /**
+     * Removes all concepts from one side of the mapping
+     */
     deleteAll(isLeft) {
       this.mapping.removeAll(isLeft)
     },
+    /**
+     * Returns whether to show the scheme's label for a specific side
+     */
     showScheme(isLeft) {
       let chosenScheme = isLeft ? this.schemeLeft : this.schemeRight
       let mappingScheme = this.mapping.getScheme(isLeft)
       return !this.$util.compareSchemes(chosenScheme, mappingScheme)
     },
+    /**
+     * Opens the export modal
+     */
     exportMapping() {
       this.$refs.exportModal.show()
     },
+    /**
+     * Exports the mapping to clipboard
+     */
     exportClipboard() {
       window.getSelection().removeAllRanges()
       this.$util.selectText(this.$refs.json)

@@ -193,12 +193,19 @@ export default {
   },
   data () {
     return {
-      gndMappings: [],
+      /** Temporarily show all ancestors if user clicked the ellipsis */
       showAncestors: false,
+      /** Force some elements to reload by incrementing this value to prevent showing old text */
       iteration: 0,
+      /**
+       * A helper object that deals with showing and truncating the notes and alternative labels
+       */
       notesOptions: {
         divider: "∤",
         maximumCharacters: 140,
+        /**
+         * Rejoin notes back together
+         */
         join(notes) {
           if (Array.isArray(notes)) {
             return notes.join(this.divider)
@@ -206,15 +213,24 @@ export default {
             return notes
           }
         },
+        /**
+         * Returns visible part of notes
+         */
         visiblePart(notes) {
           let notesString = this.join(notes)
           notesString = notesString.substring(0, this.cutPosition(notesString))
           return this.replaceDivider(notesString)
         },
+        /**
+         * Returns hidden part of notes
+         */
         hiddenPart(notes) {
           let notesString = this.join(notes)
           return this.replaceDivider(notesString.substring(this.cutPosition(notesString)))
         },
+        /**
+         * Returns the index between visible and hidden part of notes
+         */
         cutPosition(notesString) {
           let re = new RegExp(this.divider, "g")
           let maximumCharacters = this.maximumCharacters - Math.min((notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length, 9) * 10
@@ -227,10 +243,16 @@ export default {
           let lastDivider = notesString.substring(0, maximumCharacters).lastIndexOf(this.divider)
           return Math.max(lastSpace, lastNewline, lastDivider)
         },
+        /**
+         * Returns whether notes should be truncated
+         */
         isTruncated(notes) {
           let notesString = this.join(notes)
           return !this.showAll && notesString.length > this.cutPosition(notesString)
         },
+        /**
+         * Replaces dividers with line breaks
+         */
         replaceDivider(notes) {
           return notes.split(this.divider).join("<br>")
         }
@@ -239,15 +261,18 @@ export default {
   },
   watch: {
     item(newItem, oldItem) {
+      // Refresh component if item changed
       if(!this.$util.compareConcepts(newItem, oldItem)) {
         this.refresh()
       }
     },
     settings() {
+      // Refresh component if settings changed
       this.refresh()
     }
   },
   mounted() {
+    // Initial refresh
     this.refresh()
   },
   methods: {
@@ -255,18 +280,18 @@ export default {
       this.showAncestors = false
       // Scroll to top
       this.$el.parentElement.scrollTop = 0
-      // Load GND mappings
-      this.loadGndMappings()
+      // Load GND terms
+      this.loadGndTerms()
       // Reset notes
       this.notesOptions.showMore = {}
       this.notesOptions.showAll = this.settings.showAllNotes
+      // Increment iteration to force reload some elements
       this.iteration += 1
     },
-    loadGndMappings() {
+    loadGndTerms() {
       // TODO: Refactoring necessary!
-      this.gndMappings = []
-      let itemBefore = this.item
       if (!this.item) return
+      let itemBefore = this.item
       // Load GND mappings from and to item
       let promises = []
       for (let fromTo of ["from", "to"]) {
@@ -276,7 +301,7 @@ export default {
       }
       Promise.all(promises).then(results => {
         if (!this.$util.compareConcepts(itemBefore, this.item)) {
-          console.log("ConceptDetail: Item changed before GND mappings were loaded.")
+          // Abort if item changed in the meantime
           return []
         }
         let gndConcepts = []
@@ -287,14 +312,14 @@ export default {
             if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
               gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
             }
-            // Save GND mapping type
+            // Save GND mapping type to concept
             while (startIndex < gndConcepts.length) {
               gndConcepts[startIndex].GNDTYPE = this.$util.mappingTypeByType(mapping.type)
               startIndex += 1
             }
           }
         }
-        console.log("GND: got", gndConcepts.length, "concepts", gndConcepts)
+        // Load concept objects from API
         let promises = []
         for (let concept of gndConcepts) {
           promises.push(this.$api.objects.get(concept.uri, "http://bartoc.org/en/node/430").then(object => {
@@ -306,14 +331,16 @@ export default {
         }
         return Promise.all(promises)
       }).then(results => {
-        console.log("GND: got concept results")
+        // Assemble gndTerms array for display
         let gndTerms = []
         let relevanceOrder = ["very high", "high", "medium", "low"]
         for (let relevance of relevanceOrder) {
           let term = `<strong>Relevance: ${relevance}</strong> - `
           let terms = []
           for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
-            if (concept && (concept.prefLabel.de || concept.prefLabel.en)) terms.push(concept.prefLabel.de || concept.prefLabel.en)
+            if (concept && (concept.prefLabel.de || concept.prefLabel.en)) {
+              terms.push(_.escape(concept.prefLabel.de || concept.prefLabel.en))
+            }
           }
           if (terms.length > 0) {
             term = term + terms.join(", ")
@@ -325,6 +352,9 @@ export default {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })
     },
+    /**
+     * Copy to clipboard
+     */
     copy(event) {
       let element = event.target
       if (element.tagName.toLowerCase() == "path") {
@@ -341,17 +371,22 @@ export default {
         window.getSelection().removeAllRanges()
       }, 50)
     },
+    /**
+     * Enable show more for a specific note
+     */
     notesShowMore(status, index) {
       this.notesOptions.showMore[index] = status
       this.iteration += 1
     },
+    /**
+     * Determines whether a concept has notes (scopeNote, editorialNote, or altLabel)
+     */
     hasNotes(concept) {
       let parts = ["scopeNote", "editorialNote", "altLabel"]
       let hasNotes = false
       for (let part of parts) {
         hasNotes = hasNotes || (concept != null && concept[part] != null && concept[part].de != null && concept[part].de.length > 0)
       }
-      console.log("hasNotes", hasNotes, concept)
       return hasNotes
     }
   }

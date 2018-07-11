@@ -108,9 +108,7 @@ let objects = {
    * @returns a Promise of the desired object (or null if it wasn't found)
    */
   get(uri, schemeUri) {
-    console.log("newApi/get", uri, schemeUri)
     if (this.map.has(uri)) {
-      console.log("newApi/get Immediately return")
       return Promise.resolve(this.map.get(uri))
     } else {
       // TODO: Rethink all of this
@@ -121,7 +119,6 @@ let objects = {
         console.warn("newApi/get No scheme found for", uri, schemeUri)
         scheme = null
       }
-      console.log("newApi/get, data with", scheme)
       return data(scheme, uri).then(results => {
         if (results.length) {
           let object = results[0]
@@ -163,15 +160,12 @@ let objects = {
    */
   top(scheme) {
     if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
-      console.log("newApi/top: Immediately return")
       return Promise.resolve(scheme)
     } else {
       return top(scheme).then(results => {
         if (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null)) {
-          console.log("newApi/top: loaded elsewhere")
           return scheme
         }
-        console.log("newApi/top: loaded", results)
         let top = []
         for (let result of results) {
           let resultInMap = this.map.get(result.uri)
@@ -188,7 +182,6 @@ let objects = {
           concept.ancestors = []
         }
         scheme.TOPCONCEPTS = util.sortConcepts(top)
-        console.log("newApi/top: saved", scheme)
         return scheme
       }).catch(error => {
         console.error(error)
@@ -205,9 +198,7 @@ let objects = {
    * @returns a Promise with the updated object
    */
   narrower(object) {
-    console.log("narrower for", object)
     if (object.narrower && !object.narrower.includes(null)) {
-      console.log("newApi/narrower: Immediately return")
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
       console.warn("newApi/narrower: No scheme found")
@@ -218,10 +209,8 @@ let objects = {
       return narrower(scheme, object.uri).then(results => {
         if (object.narrower && !object.narrower.includes(null)) {
           // Apparrently, narrower were loaded elsewhere, so abort
-          console.log("newApi/narrower: loaded elsewhere")
           return object
         }
-        console.log("newApi/narrower: loaded")
         // Integrate resulting concepts into map
         let narrower = []
         for (let result of results) {
@@ -264,9 +253,7 @@ let objects = {
    * @returns a Promise with the updated object
    */
   ancestors(object) {
-    console.log("ancestors for", object)
     if (object.ancestors && !object.ancestors.includes(null)) {
-      console.log("newApi/ancestors: Immediately return")
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
       console.warn("newApi/ancestors: No scheme found")
@@ -276,10 +263,8 @@ let objects = {
       return ancestors(scheme, object.uri).then(results => {
         if (object.ancestors && !object.ancestors.includes(null)) {
           // Apparrently, ancestors were loaded elsewhere, so abort
-          console.log("newApi/ancestors: loaded elsewhere")
           return object
         }
-        console.log("newApi/ancestors: loaded")
         // Integrate resulting concepts into map
         let ancestors = []
         for (let result of results) {
@@ -317,12 +302,9 @@ let objects = {
    * @returns a Promise with the updated object
    */
   details(object) {
-    console.log("newApi/details", object)
     if (!object || object.DETAILSLOADED) {
-      console.log("newApi/details immeditately return")
       return Promise.resolve(object)
     } else {
-      console.log("newApi/details load")
       return data(object.inScheme ? object.inScheme[0] : object, object.uri, detailProperties).then(results => {
         if (results.length) {
           let detail = results[0]
@@ -333,7 +315,6 @@ let objects = {
             }
           }
           object.DETAILSLOADED = true
-          console.log("newApi/details loaded")
           return object
         } else {
           return null

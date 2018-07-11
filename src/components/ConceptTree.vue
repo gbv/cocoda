@@ -1,7 +1,9 @@
 <template>
   <div
     class="conceptTree" >
+    <!-- Minimizer allows the component to get minimized -->
     <minimizer text="Concept Tree" />
+    <!-- Show top concepts -->
     <div
       ref="conceptTreeItems"
       :class="{ scrollable: !loading }"
@@ -22,6 +24,7 @@
       class="loadingFull font-heavy">
       No Concept Tree Available
     </div>
+    <!-- Full screen loading indicator -->
     <div
       v-show="loading"
       ref="loadingFull"
@@ -111,7 +114,6 @@ export default {
       this.loading = true
 
       // 1. Get concept object
-      console.log("chooseFromUri: 1. Get concept object")
       this.$api.objects.get(uri, this.vocSelected.uri).then(concept => {
         if (this.chooseFromUriID != id) return
         if (concept == null) {
@@ -121,16 +123,13 @@ export default {
         }
         this.selected = concept
         // 2. Load ancestors
-        console.log("chooseFromUri: 2. Load ancestors", concept)
         return this.$api.objects.ancestors(concept)
       }).then(concept => {
         if (this.chooseFromUriID != id) return
         if (concept == null) return
         // 3. Load children for all ancestors
-        console.log("chooseFromUri: 3. Load children for all ancestors")
         let promises = [Promise.resolve(concept)]
         for (let ancestor of concept.ancestors) {
-          console.log("chooseFromUri: 3.1. Load children", ancestor)
           promises.push(this.$api.objects.narrower(ancestor))
         }
         // 3.2 If children were loaded before ancestors, then the children's ancestors property is set to [null]
@@ -145,12 +144,10 @@ export default {
         if (result == null) return
         let concept = result[0]
         // 4. Set all ancestors to open
-        console.log("chooseFromUri: 4. Set all ancestors to open")
         for (let ancestor of concept.ancestors) {
           ancestor.ISOPEN = true
         }
         // 5. Scroll to object in tree
-        console.log("chooseFromUri: 5. Scroll to object in tree")
         let vm = this
         _.delay(function() {
           if (vm.chooseFromUriID != id) return
@@ -167,7 +164,6 @@ export default {
           if (el) vm.$scrollTo(el, 200, options)
         }, 100)
       }).then(() => {
-        console.log("chooseFromUri finished")
         this.loading = false
       }).catch(error => {
         console.error("chooseFromUri Error:", error)

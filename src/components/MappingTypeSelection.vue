@@ -37,6 +37,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * Returns a mapping type object for the current mapping
+     */
     mappingTypeSelected() {
       let mapping = this.mapping ? this.mapping.jskos : null
       return this.$util.mappingTypeByType(mapping ? mapping.type : null)
