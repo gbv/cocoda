@@ -231,7 +231,7 @@ export default {
   align-items: center;
 }
 .prevButton, .nextButton {
-  &:extend(.utilityIcon);
+  &:extend(.utilityIcon all);
   top: 0px;
   font-size: 16px;
   padding-top: 1px;
