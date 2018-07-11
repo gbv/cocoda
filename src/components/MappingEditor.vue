@@ -65,7 +65,6 @@
       </div>
     </div>
     <div class="mappingTypeSelection">
-      <div class="mappingScheme font-heavy">&nbsp;</div>
       <mapping-type-selection
         v-show="schemeLeft != null || schemeRight != null"
         :mapping="mapping"/>
@@ -232,7 +231,12 @@ export default {
   flex: none;
   position: relative;
   order: 1;
-  margin-top: 1em;
+  margin-bottom: 28px;
+  & > div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 .mappingEditorPart {
   flex: 1;
