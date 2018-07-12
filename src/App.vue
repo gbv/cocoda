@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="text-dark color-primary-0-bg font-size-normal">
+    class="text-dark color-primary-0-bg fontSize-normal">
     <div class="alertsContainer">
       <b-alert
         v-for="(alert, index) in $root.$data.alerts"
@@ -73,7 +73,7 @@
             <div
               v-if="schemeSelectedLeft == null"
               class="mainComponent conceptBrowserItem placeholderComponent">
-              <p class="font-heavy">Scheme quick selection</p>
+              <p class="fontWeight-heavy">Scheme quick selection</p>
               <p
                 v-for="scheme in favoriteSchemes"
                 :key="scheme.uri">
@@ -120,7 +120,7 @@
               v-else
               class="placeholderComponentCenter"
             >
-              <div class="font-heavy font-size-large">Welcome to Cocoda!</div>
+              <div class="fontWeight-heavy fontSize-large">Welcome to Cocoda!</div>
             </div>
           </div>
           <!-- Slider -->
@@ -199,7 +199,7 @@
             <div
               v-if="schemeSelectedRight == null"
               class="mainComponent conceptBrowserItem placeholderComponent">
-              <p class="font-heavy">Scheme quick selection</p>
+              <p class="fontWeight-heavy">Scheme quick selection</p>
               <p
                 v-for="scheme in favoriteSchemes"
                 :key="scheme.uri">
@@ -407,12 +407,12 @@ html, body {
   display: flex;
 }
 .schemeSelect {
+  .m-borderRadius(2px);
   border: 0 !important;
-  border-radius: 2px;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
   background-color: lighten(@color-primary-1, 15%) !important;
   color: @color-primary-4 !important;
-  &:extend(.font-heavy);
+  &:extend(.fontWeight-heavy);
   flex: 1;
 }
 .schemeSelectInfo {
@@ -422,12 +422,12 @@ html, body {
   align-content: center;
   flex-direction: column;
   margin-left: 10px;
-  &:extend(.font-size-large);
-  color: @buttonColor;
+  &:extend(.fontSize-large);
+  color: @color-button;
   user-select: none;
   &:hover {
     cursor: pointer;
-    color: @buttonColorHover;
+    color: @color-button-hover;
   }
 }
 .conceptSearch {
@@ -497,14 +497,14 @@ a:hover {
 
 /* Overwrite the default to keep the scrollbar always visible */
 ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 9px;
-    height: 9px;
+  -webkit-appearance: none;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-thumb {
-    box-shadow: inset 0 0 5px 5px #AEAEAE;
-    border: solid 1px transparent;
-    border-radius: 6px;
+  .m-borderRadius(6px);
+  box-shadow: inset 0 0 5px 5px #AEAEAE;
+  border: solid 1px transparent;
 }
 
 </style>

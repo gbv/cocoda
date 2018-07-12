@@ -21,7 +21,7 @@
     </div>
     <div
       v-if="tree.length == 0 && !loading"
-      class="loadingFull font-heavy">
+      class="loadingFull fontWeight-heavy">
       No Concept Tree Available
     </div>
     <!-- Full screen loading indicator -->

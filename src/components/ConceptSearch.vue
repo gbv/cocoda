@@ -39,7 +39,7 @@
             :key="i"
             :id="uniqueID + '-searchResult-' + i"
             :class="{ 'searchfield-selected': i === searchSelected }"
-            class="searchfield-results-item font-size-small"
+            class="searchfield-results-item fontSize-small"
             @click="chooseResult(result)"
             @mouseover="mouseover(i)">
             <span v-html="highlightQueryInResult(result[0])"/>
@@ -321,10 +321,10 @@ export default {
   padding: 4px 0;
   text-align: center;
   left: 5px;
-  color: @buttonColor;
+  color: @color-button;
   &:hover {
     cursor: pointer;
-    color: @buttonColorHover;
+    color: @color-button-hover;
   }
 }
 
@@ -367,8 +367,8 @@ export default {
 }
 
 .searchfield-selected {
-  background-color: @color-primary-1;
-  color: @color-primary-4;
+  background-color: @color--conceptSearch-result-selected-background;
+  color: @color--conceptSearch-result-selected;
 }
 
 .loading {
@@ -376,7 +376,7 @@ export default {
   height: 50px;
   padding: 0px 0px 0px 12px;
   z-index: 100;
-  background-color: #ffffff55;
+  background-color: @color-loading-overlay-background;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -388,7 +388,8 @@ export default {
 
 // Has to be global to work
 .searchHighlight {
-  &:extend(.font-heavy);
+  &:extend(.fontWeight-heavy);
+  // TODO: Put into colors.less
   color: @color-secondary-2-4;
   .searchfield-selected & {
     color: darken(@color-secondary-2-4, 10%);

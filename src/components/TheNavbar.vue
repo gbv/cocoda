@@ -92,10 +92,10 @@ nav.navbar {
   padding: 4px 16px 4px 16px;
   height: 40px;
   background-color: @color-primary-0;
-  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 1px 2px 0 @color-shadow;
 }
 .navbar-dark .navbar-nav .nav-link, .btn-link, .navbar-brand {
-  color: hsla(100, 100%, 100%, 0.8) !important;
+  color: @color--theNavbar-text !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;

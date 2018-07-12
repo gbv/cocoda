@@ -1,27 +1,23 @@
 // Import colors
 @import "./colors.less";
 
-/* Define color scheme for text and background color */
-.text-dark { color: hsl(0, 0%, 13%) }
-.text-grey { color: hsl(0, 0%, 29%) }
-.text-light-grey { color: hsl(0, 0%, 45%) }
-.font-heavy { font-weight: 700 }
+// Import z-index values
+@import "./z-index.less";
 
-/* Define default font sizes */
-.font-size-small { font-size: 0.8rem }
-.font-size-normal { font-size: 1.0rem }
-.font-size-large { font-size: 1.2rem } /* only to be used in the navbar! */
+// Import text styles
+@import "./text-styles.less";
 
-/* Define button colors */
-@buttonColor: @color-primary-0;
-@buttonColorHover: @color-secondary-2-4;
-@buttonColorDisabled: fadeout(#777777, 80%);
+// Import utilities
+@import "./utilities.less";
+
+// Import mixins
+@import "./mixins.less";
 
 /* Define appearance of main components (boxes) */
 .mainComponent {
-  background-color: #ffffff;
+  .m-borderRadius(2px);
+  background-color: @color-background;
   margin: 2px;
-  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -53,22 +49,13 @@
   overflow: auto;
 }
 
-.flipHorizontal {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-.flipVertical {
-  -webkit-transform: scaleY(-1);
-  transform: scaleY(-1);
-}
-
 p {
   margin: 3px 0 !important;
 }
 
 .utilityIcon {
   cursor: pointer;
-  &:extend(.font-heavy);
+  &:extend(.fontWeight-heavy);
   position: absolute;
   font-size: 12px;
   right: 0px;
@@ -76,10 +63,10 @@ p {
   width: 24px;
   height: 24px;
   z-index: 250;
-  color: fadeout(@buttonColor, 70%);
-  background-color: fadeout(@buttonColorDisabled, 18%);
+  color: fadeout(@color-button, 70%);
+  background-color: fadeout(@color-button-disabled, 80%);
   &:hover {
-    color: fadeout(@buttonColor, 40%);
-    background-color: fadeout(@buttonColorDisabled, 15%);
+    color: fadeout(@color-button, 40%);
+    background-color: fadeout(@color-button-disabled, 60%);
   }
 }

@@ -110,19 +110,19 @@ export default {
 }
 .minimizedOverlay {
   cursor: pointer;
-  &:extend(.font-heavy);
-  &:extend(.font-size-normal);
+  &:extend(.fontWeight-heavy);
+  &:extend(.fontSize-normal);
   position: absolute;
   z-index: 200;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: white;
+  background-color: @color--minimizer-overlay-background;
   text-align: center;
   user-select: none;
   &:hover {
-    background-color: lighten(@color-primary-1, 17%);
+    background-color: @color--minimizer-overlay-background-hover;
   }
 }
 .minimizedOverlay > div {

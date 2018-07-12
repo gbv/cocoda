@@ -392,11 +392,11 @@ export default {
 }
 .toMapping {
   font-size: 12px;
-  color: @buttonColor;
+  color: @color-button;
   user-select: none;
   cursor: pointer;
   &:hover {
-    color: @buttonColorHover;
+    color: @color-button-hover;
   }
 }
 
