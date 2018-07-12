@@ -1,6 +1,6 @@
 <template>
   <div
-    class="itemDetail font-size-small">
+    class="itemDetail fontSize-small">
     <!-- Minimizer allows component to get minimized -->
     <minimizer :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
@@ -17,7 +17,7 @@
     </div>
     <div
       v-else-if="!loading"
-      class="loadingFull font-size-normal font-heavy">Please select a scheme or concept.</div>
+      class="loadingFull fontSize-normal fontWeight-heavy">Please select a scheme or concept.</div>
     <!-- Full screen loading indicator -->
     <div
       v-if="loading"

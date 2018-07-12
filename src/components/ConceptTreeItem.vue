@@ -291,34 +291,35 @@ export default {
   padding-left: 18px;
 }
 .addToMapping {
-  &:extend(.font-heavy);
+  &:extend(.fontWeight-heavy);
   position: absolute;
-  color: white;
+  color: @color--conceptTreeItem-addToMapping;
   top: 1px;
   right: 5px;
   opacity: 0.7;
   &:hover {
-    color: @color-secondary-2-0;
+    color: @color--conceptTreeItem-addToMapping-hover;
     opacity: 1.0;
   }
 }
 .conceptBoxSelected {
-  &:extend(.font-heavy);
-  background-color: @color-primary-1;
-  color: lighten(@color-primary-1, 10%);
+  &:extend(.fontWeight-heavy);
+  color: @color--conceptTreeItem-item-selected;
+  background-color: @color--conceptTreeItem-item-selected-background;
   & .arrowBox:hover {
-    background-color: @color-secondary-2-3;
+    background-color: @color--conceptTreeItem-item-hover-background;
   }
 }
 .conceptBoxHovered, .arrowBox:hover {
-  background-color: @color-secondary-2-3;
-  color: @color-primary-4;
+  background-color: @color--conceptTreeItem-item-hover-background;
+  color: @color--conceptTreeItem-item-hover;
 }
 .conceptBoxHovered.conceptBoxSelected {
-  background-color: @color-secondary-2-3;
-  color: lighten(@color-primary-1, 10%);
+  background-color: @color--conceptTreeItem-item-hover-background;
+  color: @color--conceptTreeItem-item-selected;
 }
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
+// TODO: Use font awesome or move somewhere else
 i {
   border: solid black;
   border-width: 0 2px 2px 0;

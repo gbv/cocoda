@@ -109,15 +109,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 .resizeSliderCol, .resizeSliderRow {
   flex: 0 1 3px;
 }
 .resizeSliderBlack {
-  color: #777777;
+  color: @color--resizingSlider-black;
 }
 .resizeSliderCocodaRed {
-  color: #A71D1F;
+  color: @color--resizingSlider-red;
 }
 .resizeSliderCol {
   cursor: col-resize;

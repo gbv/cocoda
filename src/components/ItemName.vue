@@ -1,14 +1,14 @@
 <template>
   <div
     v-if="item != null"
-    :class="[{ 'itemNameHovered': isLink && isHovered, 'itemNameHighlighted': isHighlighted }, 'font-size-'+(fontSize || 'normal')]"
+    :class="[{ 'itemNameHovered': isLink && isHovered, 'itemNameHighlighted': isHighlighted }, 'fontSize-'+(fontSize || 'normal')]"
     class="itemName"
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
     <!-- Text for notation -->
     <notation-text
       :item="item"
-      :class="{ 'font-heavy': showText }"
+      :class="{ 'fontWeight-heavy': showText }"
       :id="tooltipDOMID" />
     <!-- Tooltip for prefLabel if only notation is shown -->
     <b-tooltip
@@ -170,7 +170,7 @@ Vue.component("prefLabel-text", {
   text-decoration: underline;
 }
 .itemNameHighlighted {
-  color: @color-primary-4;
-  &:extend(.font-heavy);
+  color: @color--itemName-highlighted;
+  &:extend(.fontWeight-heavy);
 }
 </style>

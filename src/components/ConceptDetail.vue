@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="item != null"
-    class="conceptDetail font-size-small">
+    class="conceptDetail fontSize-small">
 
     <!-- Ancestors / Broader -->
     <div class="conceptDetailAncestors">
@@ -22,7 +22,7 @@
         class="conceptDetailAncestorsItem" >
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == item.ancestors.length - 1 || item.ancestors.length <= 3">
           <font-awesome-icon
-            class="flipHorizontal"
+            class="u-flip-horizontal"
             icon="level-up-alt" />
           <item-name
             :item="concept"
@@ -36,7 +36,7 @@
           class="conceptDetailAncestorsMore"
           @click="showAncestors = true" >
           <font-awesome-icon
-            class="flipHorizontal"
+            class="u-flip-horizontal"
             icon="ellipsis-v" />
         </span>
       </div>
@@ -122,14 +122,14 @@
     <div
       v-if="item.narrower && item.narrower.length > 0"
       class="conceptDetailNarrower">
-      <div class="font-heavy">Narrower Concepts:</div>
+      <div class="fontWeight-heavy">Narrower Concepts:</div>
       <div
         v-for="concept in item.narrower"
         v-if="concept != null"
         :key="concept.uri"
         class="conceptDetailNarrowerItem">
         <font-awesome-icon
-          class="flipHorizontal"
+          class="u-flip-horizontal"
           icon="level-down-alt" />
         <item-name
           :item="concept"
@@ -401,10 +401,10 @@ export default {
   & .conceptDetailAncestorsMore {
     width: 20px;
     padding-left: 2px;
-    color: @buttonColor;
+    color: @color-button;
     cursor: pointer;
     &:hover {
-      color: @buttonColorHover;
+      color: @color-button-hover;
     }
   }
 }
@@ -412,8 +412,8 @@ export default {
 .conceptDetailIdentifier, .conceptDetailUri {
   margin: 5px;
   & a {
+    .m-borderRadius(5px);
     background-color: lighten(@color-primary-1, 15%);
-    border-radius: 5px;
     padding: 0 3px;
   }
   & svg {
@@ -445,6 +445,8 @@ export default {
 </style>
 
 <style lang="less">
+@import "../style/main.less";
+
 .conceptDetailNoteTabs, .card {
   border: none !important;
   & .tabs {
@@ -462,9 +464,9 @@ export default {
     padding: 4px 12px 0px 12px;
   }
   & .card-body {
+    .m-borderRadius(0px 0px 5px 5px;);
     padding: 10px;
     background-color: rgba(0,0,0,0.02);
-    border-radius: 0px 0px 5px 5px;
     br {
       line-height: 24px;
     }

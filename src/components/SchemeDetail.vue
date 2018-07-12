@@ -1,6 +1,6 @@
 <template>
   <div
-    class="schemeDetail font-size-small">
+    class="schemeDetail fontSize-small">
 
     <!-- Name of scheme -->
     <item-name
@@ -51,14 +51,14 @@
     <div
       v-if="settings.showTopConceptsInScheme && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
       class="schemeDetailTop">
-      <div class="font-heavy">Top Concepts:</div>
+      <div class="fontWeight-heavy">Top Concepts:</div>
       <div
         v-for="concept in item.TOPCONCEPTS"
         v-if="concept != null"
         :key="concept.uri"
         class="schemeDetailTopItem">
         <font-awesome-icon
-          class="flipHorizontal"
+          class="u-flip-horizontal"
           icon="level-down-alt" />
         <item-name
           :item="concept"
@@ -164,8 +164,8 @@ export default {
 .schemeDetailIdentifier, .schemeDetailUri {
   margin: 5px;
   & a {
+    .m-borderRadius(5px);
     background-color: lighten(@color-primary-1, 15%);
-    border-radius: 5px;
     padding: 0 3px;
   }
 }

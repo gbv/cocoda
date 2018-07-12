@@ -72,7 +72,7 @@
       </div>
       <div
         v-else
-        class="noItems font-heavy">No mappings available
+        class="noItems fontWeight-heavy">No mappings available
       </div>
       <!-- Mapping toolbar for options and infos -->
       <div
@@ -384,11 +384,11 @@ export default {
 
 .editButton {
   font-size: 12px;
-  color: @buttonColor;
+  color: @color-button;
   user-select: none;
   cursor: pointer;
   &:hover {
-    color: @buttonColorHover;
+    color: @color-button-hover;
   }
 }
 
@@ -424,15 +424,15 @@ export default {
 .optionsDropdown {
   user-select: none;
   & > .btn {
-    &:extend(.font-size-small);
+    &:extend(.fontSize-small);
     padding: 0.1rem 0.4rem;
     margin-bottom: 2px;
-    background-color: @buttonColor;
-    border-color: @buttonColor;
+    background-color: @color-button;
+    border-color: @color-button;
   }
 
   & > .dropdown-menu {
-    &:extend(.font-size-small);
+    &:extend(.fontSize-small);
   }
 }
 </style>

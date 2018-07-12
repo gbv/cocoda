@@ -17,7 +17,7 @@
       <div v-if="mapping.getScheme(isLeft) != null">
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
-          class="mappingScheme font-heavy">
+          class="mappingScheme fontWeight-heavy">
           <span v-if="showScheme(isLeft)">
             {{ labelForScheme(mapping.getScheme(isLeft)) }}
           </span>
@@ -35,7 +35,7 @@
               @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
             <!-- Delete button for concept -->
             <div
-              class="mappingConceptDelete font-size-small"
+              class="mappingConceptDelete fontSize-small"
               @click="mapping.remove(concept, isLeft)">
               <font-awesome-icon icon="minus-circle" />
             </div>
@@ -362,9 +362,9 @@ export default {
   cursor: pointer;
   user-select: none;
   z-index: 60;
-  color: @buttonColor;
+  color: @color-button;
   &:hover {
-    color: @buttonColorHover;
+    color: @color-button-hover;
   }
 }
 
@@ -383,22 +383,22 @@ export default {
   user-select: none;
   margin: 0 10px;
   font-size: 1.5rem;
-  color: @buttonColor;
+  color: @color-button;
 }
 .addButtonDisabledReason {
   flex: 0 0 20px !important;
   margin: 0 auto;
-  &:extend(.text-light-grey);
-  &:extend(.font-size-small);
+  &:extend(.text-lightGrey);
+  &:extend(.fontSize-small);
 }
 .addButtonClickable, .deleteAllButtonClickable {
   cursor: pointer;
   &:hover {
-    color: @buttonColorHover;
+    color: @color-button-hover;
   }
 }
 .addButtonDisabled, .deleteAllButtonDisabled {
-  color: @buttonColorDisabled;
+  color: @color-button-disabled;
 }
 
 </style>
