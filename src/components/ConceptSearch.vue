@@ -289,16 +289,20 @@ export default {
       this.isOpen = this.searchQuery != ""
     },
     highlightQueryInResult(result) {
+      if (!this.searchQuery.length) {
+        return result
+      }
       // Find all occurrences of the search query and highlight them
-      let regex = new RegExp(this.searchQuery, "ig")
+      let searchQuery = this.searchQuery
+      let regex = new RegExp(searchQuery, "ig")
       let match = regex.exec(result), currentIndex = 0, newResult = ""
       while (match) {
         let index = match.index
         newResult += _.escape(result.slice(currentIndex, index))
                   + "<span class='searchHighlight'>"
-                  + _.escape(result.slice(index, index + this.searchQuery.length))
+                  + _.escape(result.slice(index, index + searchQuery.length))
                   + "</span>"
-        currentIndex = index + this.searchQuery.length
+        currentIndex = index + searchQuery.length
         match = regex.exec(result)
       }
       newResult += _.escape(result.slice(currentIndex))
