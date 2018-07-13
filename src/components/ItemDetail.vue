@@ -137,6 +137,7 @@ export default {
      * Refreshes data when item changes.
      */
     item: function(newItem, oldItem) {
+      this.$el.scrollTop = 0
       if (!this.$util.compareConcepts(newItem, oldItem)) {
         this.loadDetails()
         if (this.prevConcepts.length > 0 && this.$util.compareConcepts(newItem, _.last(this.prevConcepts))) {
@@ -157,6 +158,9 @@ export default {
   },
   created() {
     this.loadDetails()
+  },
+  mounted() {
+    this.$el.scrollTop = 0
   },
   methods: {
     loadDetails() {

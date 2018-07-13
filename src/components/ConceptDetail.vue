@@ -259,8 +259,6 @@ export default {
   methods: {
     refresh() {
       this.showAncestors = false
-      // Scroll to top
-      this.$el.parentElement.scrollTop = 0
       // Load GND terms
       this.loadGndTerms()
       // Reset notes

@@ -117,18 +117,6 @@ export default {
       }
     }
   },
-  watch: {
-    item() {
-      // Scroll to top when item changed
-      // TODO: Move to ItemDetail?
-      this.$el.parentElement.scrollTop = 0
-    }
-  },
-  mounted() {
-    // Scroll to top
-    // TODO: Move to ItemDetail?
-    this.$el.parentElement.scrollTop = 0
-  },
   methods: {
     licenseAttribution(detail) {
       let organisation = detail.creator || detail.publisher
