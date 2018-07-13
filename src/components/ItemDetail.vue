@@ -17,15 +17,11 @@
     </div>
     <div
       v-else-if="!loading"
-      class="loadingFull fontSize-normal fontWeight-heavy" >
+      class="fillAndCenter fontSize-normal fontWeight-heavy" >
       Please select a scheme or concept.
     </div>
     <!-- Full screen loading indicator -->
-    <div
-      v-if="loading"
-      class="loadingFull" >
-      <loading-indicator size="lg" />
-    </div>
+    <loading-indicator-full v-if="loading" />
     <!-- Previos and next buttons -->
     <div
       v-b-tooltip.hover="{ title: prevConcepts.length > 0 ? 'previous concept' : '', delay: $util.delay.medium }"
@@ -47,7 +43,7 @@
 </template>
 
 <script>
-import LoadingIndicator from "./LoadingIndicator"
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
@@ -60,7 +56,7 @@ import _ from "lodash"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicator, Minimizer, ConceptDetail, SchemeDetail, FontAwesomeIcon
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, FontAwesomeIcon
   },
   props: {
     /**
@@ -215,7 +211,7 @@ export default {
 .itemDetail {
   position: relative;
 }
-.itemDetail-content, .loadingFull {
+.itemDetail-content {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -225,13 +221,6 @@ export default {
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;
-}
-.loadingFull {
-  z-index: @zIndex-3;
-  background-color: @color-loading-overlay-background;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .itemDetail-prevButton, .itemDetail-nextButton {
   top: 0px;

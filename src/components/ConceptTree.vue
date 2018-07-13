@@ -21,21 +21,16 @@
     </div>
     <div
       v-if="tree.length == 0 && !loading"
-      class="loadingFull fontWeight-heavy" >
+      class="fillAndCenter fontWeight-heavy" >
       No Concept Tree Available
     </div>
     <!-- Full screen loading indicator -->
-    <div
-      v-show="loading"
-      ref="loadingFull"
-      class="loadingFull">
-      <loading-indicator size="lg" />
-    </div>
+    <loading-indicator-full v-if="loading" />
   </div>
 </template>
 
 <script>
-import LoadingIndicator from "./LoadingIndicator"
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import ConceptTreeItem from "./ConceptTreeItem"
 import Minimizer from "./Minimizer"
 import _ from "lodash"
@@ -46,7 +41,7 @@ import _ from "lodash"
 export default {
   name: "ConceptTree",
   components: {
-    LoadingIndicator, ConceptTreeItem, Minimizer
+    LoadingIndicatorFull, ConceptTreeItem, Minimizer
   },
   props: {
     /**
@@ -210,7 +205,7 @@ export default {
   margin-top: 10px;
   margin-bottom: 5px;
 }
-.conceptTreeItems, .loadingFull {
+.conceptTreeItems {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -219,12 +214,5 @@ export default {
 }
 .conceptTreeItems {
   padding: 2px 0px;
-}
-.loadingFull {
-  z-index: @zIndex-3;
-  background-color: @color-loading-overlay-background;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
