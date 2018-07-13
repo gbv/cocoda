@@ -351,7 +351,7 @@ export default {
   width: 100%;
   position: absolute;
   background-color: white;
-  z-index: 1000;
+  z-index: @zIndex-7;
 }
 
 .searchfield-results-list {
@@ -375,7 +375,7 @@ export default {
   width: 100%;
   height: 50px;
   padding: 0px 0px 0px 12px;
-  z-index: 100;
+  z-index: @zIndex-3;
   background-color: @color-loading-overlay-background;
   display: flex;
   justify-content: left;

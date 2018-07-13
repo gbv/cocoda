@@ -71,7 +71,7 @@ export default {
   top: 0;
   bottom: 0;
   text-align: center;
-  z-index: 50;
+  z-index: @zIndex-2;
   user-select: none;
 }
 .mappingType {

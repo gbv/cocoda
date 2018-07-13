@@ -307,7 +307,7 @@ export default {
       bottom: 0;
       margin: auto 0;
       cursor: pointer;
-      z-index: 50;
+      z-index: @zIndex-2;
       user-select: none;
       width: 12px;
       height: 12px;
@@ -341,7 +341,7 @@ export default {
   width: 1.6em;
   height: 1.6em;
   user-select: none;
-  z-index: 50;
+  z-index: @zIndex-2;
 }
 .mappingArrowReversible {
   cursor: pointer;
@@ -361,7 +361,7 @@ export default {
   bottom: 0;
   cursor: pointer;
   user-select: none;
-  z-index: 60;
+  z-index: @zIndex-2;
   color: @color-button;
   &:hover {
     color: @color-button-hover;
@@ -379,7 +379,7 @@ export default {
 
 .addButton, .deleteAllButton {
   flex: none;
-  z-index: 50;
+  z-index: @zIndex-2;
   user-select: none;
   margin: 0 10px;
   font-size: 1.5rem;
