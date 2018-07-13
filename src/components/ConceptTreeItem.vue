@@ -3,7 +3,7 @@
     v-if="concept != null"
     :style="depth == 0 ? 'margin-left: 0px' : ''"
     :data-uri="concept.uri"
-    class="conceptTreeItem">
+    class="conceptTreeItem" >
     <!-- Concept -->
     <div
       :class="{
@@ -11,24 +11,24 @@
         conceptBoxSelected: isSelected,
         'fontWeight-heavy': isSelected
       }"
-      class="conceptBox">
+      class="conceptBox" >
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="openByArrow(!isOpen)">
+        @click="openByArrow(!isOpen)" >
         <i
           :class="{
             right: !isOpen,
             down: isOpen,
             selected: isSelected
-        }"/>
+        }" />
       </div>
       <div
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
-        @click="onClick">
+        @click="onClick" >
         <item-name
           :item="concept"
           :is-highlighted="isSelected" />
@@ -39,12 +39,14 @@
         class="addToMapping fontWeight-heavy"
         @click="mapping.add(concept, scheme, isLeft)"
         @mouseover="hovering(concept)"
-        @mouseout="hovering(null)"><font-awesome-icon icon="plus-circle" /></div>
+        @mouseout="hovering(null)" >
+        <font-awesome-icon icon="plus-circle" />
+      </div>
     </div>
     <!-- Concept's narrower if opened -->
     <div
       v-if="isOpen"
-      class="conceptChildrenBox">
+      class="conceptChildrenBox" >
       <concept-tree-item
         v-for="(child, index) in concept.narrower"
         :key="index"

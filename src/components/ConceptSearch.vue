@@ -1,7 +1,7 @@
 <template>
   <span
     class="conceptSearch"
-    @mousemove="mousemove()">
+    @mousemove="mousemove()" >
     <!-- Search icon -->
     <div
       class="conceptSearch-icon button"
@@ -25,15 +25,15 @@
       <!-- Results -->
       <div
         v-show="isOpen"
-        class="conceptSearch-results">
+        class="conceptSearch-results" >
         <div
           v-if="loading"
-          class="conceptSearch-loading">
+          class="conceptSearch-loading" >
           <loading-indicator />
         </div>
         <ul
           v-else
-          class="conceptSearch-results-list">
+          class="conceptSearch-results-list" >
           <li
             v-for="(result, i) in searchResult"
             :key="i"
@@ -41,8 +41,8 @@
             :class="{ 'conceptSearch-selected': i === searchSelected }"
             class="conceptSearch-results-item fontSize-small"
             @click="chooseResult(result)"
-            @mouseover="mouseover(i)">
-            <span v-html="highlightQueryInResult(result[0])"/>
+            @mouseover="mouseover(i)" >
+            <span v-html="highlightQueryInResult(result[0])" />
           </li>
         </ul>
       </div>

@@ -17,18 +17,20 @@
     </div>
     <div
       v-else-if="!loading"
-      class="loadingFull fontSize-normal fontWeight-heavy">Please select a scheme or concept.</div>
+      class="loadingFull fontSize-normal fontWeight-heavy" >
+      Please select a scheme or concept.
+    </div>
     <!-- Full screen loading indicator -->
     <div
       v-if="loading"
-      class="loadingFull">
+      class="loadingFull" >
       <loading-indicator size="lg" />
     </div>
     <!-- Previos and next buttons -->
     <div
       v-b-tooltip.hover="{ title: prevConcepts.length > 0 ? 'previous concept' : '', delay: $util.delay.medium }"
       class="utilityButton itemDetail-prevButton"
-      @click="choosePrevious">
+      @click="choosePrevious" >
       <font-awesome-icon
         v-if="prevConcepts.length > 0"
         icon="chevron-left" />
@@ -36,7 +38,7 @@
     <div
       v-b-tooltip.hover="{ title: nextConcepts.length > 0 ? 'next concept' : '', delay: $util.delay.medium }"
       class="utilityButton itemDetail-nextButton"
-      @click="chooseNext">
+      @click="chooseNext" >
       <font-awesome-icon
         v-if="nextConcepts.length > 0"
         icon="chevron-right" />

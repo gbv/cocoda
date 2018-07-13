@@ -7,7 +7,7 @@
     <div
       ref="conceptTreeItems"
       :class="{ scrollable: !loading }"
-      class="conceptTreeItems">
+      class="conceptTreeItems" >
       <concept-tree-item
         v-for="(concept, index) in tree"
         :key="index"
@@ -21,7 +21,7 @@
     </div>
     <div
       v-if="tree.length == 0 && !loading"
-      class="loadingFull fontWeight-heavy">
+      class="loadingFull fontWeight-heavy" >
       No Concept Tree Available
     </div>
     <!-- Full screen loading indicator -->

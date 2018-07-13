@@ -1,11 +1,14 @@
 <template>
   <div
     v-if="item != null"
-    :class="[{
-      'itemName-hovered': isLink && isHovered,
-      'itemName-highlighted': isHighlighted,
-      'fontWeight-heavy': isHighlighted
-    }, 'fontSize-'+(fontSize || 'normal')]"
+    :class="[
+      {
+        'itemName-hovered': isLink && isHovered,
+        'itemName-highlighted': isHighlighted,
+        'fontWeight-heavy': isHighlighted
+      },
+      'fontSize-'+(fontSize || 'normal')
+    ]"
     class="itemName"
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
@@ -18,7 +21,7 @@
     <b-tooltip
       v-if="showTooltip && item.prefLabel && (item.prefLabel.de || item.prefLabel.en)"
       ref="tooltip"
-      :target="tooltipDOMID">
+      :target="tooltipDOMID" >
       {{ trimTooltip(item.prefLabel.de || item.prefLabel.en) }}
     </b-tooltip>
     <!-- Text for prefLabel -->

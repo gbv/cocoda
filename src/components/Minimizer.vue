@@ -4,7 +4,7 @@
       v-b-tooltip.hover="{ title: minimized ? 'maximize component' : 'minimize component', delay: $util.delay.medium }"
       :class="minimized ? 'maximizeButton' : 'minimizeButton'"
       class="utilityButton"
-      @click="toggleMinimize">
+      @click="toggleMinimize" >
       <font-awesome-icon
         :icon="minimized ? 'window-maximize' : 'window-minimize'" />
     </div>
@@ -12,7 +12,9 @@
       v-show="minimized"
       class="minimizedOverlay fontWeight-heavy fontSize-normal"
       @click="toggleMinimize" >
-      <div>{{ text }}</div>
+      <div>
+        {{ text }}
+      </div>
     </div>
   </div>
 </template>

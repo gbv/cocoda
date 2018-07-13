@@ -5,7 +5,7 @@
     <div
       v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
       class="button mappingExport"
-      @click="exportMapping()">
+      @click="exportMapping()" >
       <font-awesome-icon icon="share-square" />
     </div>
     <!-- Source and target sides for the mapping -->
@@ -17,7 +17,7 @@
       <div v-if="mapping.getScheme(isLeft) != null">
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
-          class="mappingScheme fontWeight-heavy">
+          class="mappingScheme fontWeight-heavy" >
           <span v-if="showScheme(isLeft)">
             {{ labelForScheme(mapping.getScheme(isLeft)) }}
           </span>
@@ -36,7 +36,7 @@
             <!-- Delete button for concept -->
             <div
               class="button mappingConceptDelete fontSize-small fontWeight-heavy"
-              @click="mapping.remove(concept, isLeft)">
+              @click="mapping.remove(concept, isLeft)" >
               <font-awesome-icon icon="minus-circle" />
             </div>
           </li>
@@ -48,7 +48,7 @@
       <!-- Reason why adding a concept is not possible -->
       <div
         v-if="!isAddButtonEnabled(isLeft)"
-        class="addButtonDisabledReason text-lightGrey fontSize-small">
+        class="addButtonDisabledReason text-lightGrey fontSize-small" >
         {{ addButtonDisabledReason(isLeft) }}
       </div>
       <!-- Buttons (add, delete all) -->
@@ -74,7 +74,7 @@
     <div class="mappingTypeSelection">
       <mapping-type-selection
         v-show="schemeLeft != null || schemeRight != null"
-        :mapping="mapping"/>
+        :mapping="mapping" />
     </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
     <b-modal
@@ -82,18 +82,24 @@
       hide-footer
       center
       size="lg"
-      title="Export Mapping">
+      title="Export Mapping" >
       <p><b-btn
         class="mt-3"
-        @click.stop.prevent="exportClipboard">Copy to clipboard</b-btn></p>
+        @click.stop.prevent="exportClipboard">
+        Copy to clipboard
+      </b-btn></p>
       <p><a
         :href="'data:text/json;charset=utf-8,' + mappingEncoded"
         download="mapping.json"
-        target="_blank">Download as .json file</a></p>
+        target="_blank" >
+        Download as .json file
+      </a></p>
       <div
         ref="json"
-        style="height: 600px; overflow: auto; margin-top: 20px;">
-        <pre ref="jsonPre">{{ mappingPretty }}</pre>
+        style="height: 600px; overflow: auto; margin-top: 20px;" >
+        <pre ref="jsonPre">
+          {{ mappingPretty }}
+        </pre>
       </div>
     </b-modal>
   </div>

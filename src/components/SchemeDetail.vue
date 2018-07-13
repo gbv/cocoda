@@ -12,27 +12,31 @@
     <!-- License -->
     <div
       v-if="item.license"
-      class="schemeDetail-license">
+      class="schemeDetail-license" >
       <span
         v-for="(license, index) in item.license"
-        :key="index">
+        :key="index" >
         <a
           :href="license.uri"
-          target="_blank">
+          target="_blank" >
           <img
             v-if="licenseBadges[license.uri]"
             :src="licenseBadges[license.uri]"
-            class="schemeDetail-licenseBadge">
-          <span v-else>{{ license.uri }}</span>
+            class="schemeDetail-licenseBadge" >
+          <span v-else>
+            {{ license.uri }}
+          </span>
         </a>
         <span v-if="licenseAttribution(item)">
           by <a
             v-if="license.uri.indexOf('by') >= 0 && licenseAttribution(item).url"
             :href="licenseAttribution(item).url"
-            target="_blank">
+            target="_blank" >
             <auto-link :link="licenseAttribution(item).label" />
           </a>
-          <span v-else><auto-link :link="licenseAttribution(item).label" /></span>
+          <span v-else>
+            <auto-link :link="licenseAttribution(item).label" />
+          </span>
         </span>
       </span>
     </div>
@@ -42,7 +46,7 @@
       v-for="(identifier, index) in [item.uri].concat(item.identifier)"
       v-if="identifier != null"
       :key="index"
-      :class="identifier.startsWith('http') ? 'schemeDetail-identifier' : 'schemeDetail-identifier'">
+      :class="identifier.startsWith('http') ? 'schemeDetail-identifier' : 'schemeDetail-identifier'" >
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
       <auto-link :link="identifier" />
     </div>
@@ -50,13 +54,15 @@
     <!-- Top Concepts -->
     <div
       v-if="settings.showTopConceptsInScheme && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
-      class="schemeDetail-top">
-      <div class="fontWeight-heavy">Top Concepts:</div>
+      class="schemeDetail-top" >
+      <div class="fontWeight-heavy">
+        Top Concepts:
+      </div>
       <div
         v-for="concept in item.TOPCONCEPTS"
         v-if="concept != null"
         :key="concept.uri"
-        class="schemeDetail-topItem">
+        class="schemeDetail-topItem" >
         <font-awesome-icon
           class="u-flip-horizontal"
           icon="level-down-alt" />
@@ -71,8 +77,9 @@
         v-if="item.TOPCONCEPTS.length != 0 && item.TOPCONCEPTS.includes(null)"
         size="sm" />
     </div>
-    <div v-else-if="settings.showTopConceptsInScheme">No top concepts</div>
-
+    <div v-else-if="settings.showTopConceptsInScheme">
+      No top concepts
+    </div>
   </div>
 </template>
 
