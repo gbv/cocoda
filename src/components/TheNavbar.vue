@@ -41,37 +41,18 @@
         Help
       </b-nav-item>
       <!-- Settings button -->
-      <b-nav-item @click="$refs.settingsModal.show()">
+      <b-nav-item @click="$refs.settings.show()">
         Settings
       </b-nav-item>
-      <!-- Settings modal (TODO: Move to separate component) -->
-      <b-modal
-        ref="settingsModal"
-        hide-footer
-        centered
-        size="md"
-        title="Cocoda Settings" >
-        <p v-if="$config.buildInfo.gitTag && $config.buildInfo.gitTag != ''">
-          Version: {{ $config.buildInfo.gitTag }}
-        </p>
-        <p v-if="$config.buildInfo.gitCommit && $config.buildInfo.gitCommitShort">
-          Current Commit:
-          <a
-            :href="'https://github.com/gbv/cocoda/commit/' + $config.buildInfo.gitCommit"
-            target="_blank" >
-            {{ $config.buildInfo.gitCommitShort }}
-          </a>
-        </p>
-        <p v-if="$config.buildInfo.buildDate">
-          Build Date: {{ $config.buildInfo.buildDate }}
-        </p>
-      </b-modal>
+      <!-- Settings modal -->
+      <the-settings ref="settings" />
     </b-navbar-nav>
   </b-navbar>
 </template>
 
 <script>
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import TheSettings from "./TheSettings"
 
 /**
  * The navigation bar.
@@ -79,7 +60,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 export default {
   name: "TheNavbar",
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon, TheSettings
   },
   data () {
     return {
