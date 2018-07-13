@@ -77,11 +77,7 @@
       </b-table>
     </div>
     <!-- Full screen loading indicator -->
-    <div
-      v-if="loading"
-      class="loadingFull">
-      <loading-indicator size="lg" />
-    </div>
+    <loading-indicator-full v-if="loading" />
   </div>
 </template>
 
@@ -91,7 +87,7 @@ import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-import LoadingIndicator from "./LoadingIndicator"
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import _ from "lodash"
 
 /**
@@ -99,7 +95,7 @@ import _ from "lodash"
  */
 export default {
   name: "OccurrencesBrowser",
-  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicator },
+  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicatorFull },
   props: {
     /**
      * The selected concept from the left hand concept browser.
@@ -392,20 +388,6 @@ export default {
 }
 .toMapping {
   font-size: 12px;
-}
-
-.loadingFull {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow-y: auto;
-  top: 0;
-  left: 0;
-  z-index: @zIndex-3;
-  background-color: @color-loading-overlay-background;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 </style>
