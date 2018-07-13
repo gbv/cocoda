@@ -117,29 +117,11 @@
     </b-card>
 
     <!-- Narrower concepts -->
-    <div
-      v-if="item.narrower && item.narrower.length > 0"
-      class="conceptDetail-narrower" >
-      <div class="fontWeight-heavy">Narrower Concepts:</div>
-      <div
-        v-for="concept in item.narrower"
-        v-if="concept != null"
-        :key="concept.uri"
-        class="conceptDetail-narrowerItem" >
-        <font-awesome-icon
-          class="u-flip-horizontal"
-          icon="level-down-alt" />
-        <item-name
-          :item="concept"
-          :is-link="true"
-          font-size="small"
-          @click.native="chooseUri(concept, isLeft)" />
-      </div>
-      <!-- Show LoadingIndicator when narrower exist, but are not loaded yet -->
-      <loading-indicator
-        v-if="item.narrower.length != 0 && item.narrower.includes(null)"
-        size="sm" />
-    </div>
+    <item-detail-narrower
+      :narrower="item.narrower"
+      :is-left="isLeft"
+      @chooseUri="chooseUri"
+    />
 
   </div>
 </template>
@@ -149,6 +131,7 @@ import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicator from "./LoadingIndicator"
+import ItemDetailNarrower from "./ItemDetailNarrower"
 import _ from "lodash"
 
 /**
@@ -157,7 +140,7 @@ import _ from "lodash"
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator
+    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator, ItemDetailNarrower
   },
   props: {
     /**
@@ -421,10 +404,6 @@ export default {
 .conceptDetail-note {
   padding: 0 5px;
   flex: 1;
-}
-
-.conceptDetail-narrower {
-  margin: 5px;
 }
 
 </style>
