@@ -6,7 +6,7 @@
     <!-- Include component depending on item type -->
     <div
       v-if="item != null"
-      class="itemDetailContent">
+      class="itemDetail-content">
       <component
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
@@ -27,7 +27,7 @@
     <!-- Previos and next buttons -->
     <div
       v-b-tooltip.hover="{ title: prevConcepts.length > 0 ? 'previous concept' : '', delay: $util.delay.medium }"
-      class="prevButton"
+      class="utilityButton itemDetail-prevButton"
       @click="choosePrevious">
       <font-awesome-icon
         v-if="prevConcepts.length > 0"
@@ -35,7 +35,7 @@
     </div>
     <div
       v-b-tooltip.hover="{ title: nextConcepts.length > 0 ? 'next concept' : '', delay: $util.delay.medium }"
-      class="nextButton"
+      class="utilityButton itemDetail-nextButton"
       @click="chooseNext">
       <font-awesome-icon
         v-if="nextConcepts.length > 0"
@@ -213,7 +213,7 @@ export default {
 .itemDetail {
   position: relative;
 }
-.itemDetailContent, .loadingFull {
+.itemDetail-content, .loadingFull {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -221,28 +221,26 @@ export default {
   top: 0;
   left: 0;
 }
-.itemDetailContent {
+.itemDetail-content {
   padding: 2px 8px 2px 8px;
 }
 .loadingFull {
   z-index: @zIndex-3;
-  background-color: #ffffff55;
+  background-color: @color-loading-overlay-background;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.prevButton, .nextButton {
-  &:extend(.utilityIcon all);
+.itemDetail-prevButton, .itemDetail-nextButton {
   top: 0px;
   font-size: 16px;
   padding-top: 1px;
   padding-left: 7px;
-  z-index: @zIndex-4;
 }
-.prevButton {
+.itemDetail-prevButton {
   right: 50px;
 }
-.nextButton {
+.itemDetail-nextButton {
   right: 25px;
 }
 

@@ -195,9 +195,6 @@ export default {
   position: relative;
   overflow-y: hidden;
 }
-.scrollable {
-  overflow-y: auto;
-}
 .conceptTreeNotLoading {
   padding: 2px 8px 2px 8px;
 }
@@ -225,7 +222,7 @@ export default {
 }
 .loadingFull {
   z-index: @zIndex-3;
-  background-color: #ffffff55;
+  background-color: @color-loading-overlay-background;
   display: flex;
   justify-content: center;
   align-items: center;

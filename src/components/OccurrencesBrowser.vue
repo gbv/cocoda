@@ -4,7 +4,7 @@
     <minimizer text="Occurrences Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
-      class="defaultTableWrapper">
+      class="table-wrapper">
       <!-- Occurrences table -->
       <b-table
         ref="occurrencesTable"
@@ -12,10 +12,10 @@
         :items="items"
         :fields="fields"
         sort-by="occurrences"
-        class="defaultTable"
+        class="table"
         small
-        thead-class="defaultTableHead"
-        tbody-class="defaultTableBody">
+        thead-class="table-head"
+        tbody-class="table-body">
         <span
           slot="from"
           slot-scope="data">
@@ -66,7 +66,7 @@
             v-b-tooltip.hover="{ title: 'convert to mapping', delay: $util.delay.medium }"
             v-if="data.value"
             icon="edit"
-            class="toMapping"
+            class="button toMapping"
             @click="toMapping(data)" />
         </span>
         <span
@@ -392,12 +392,6 @@ export default {
 }
 .toMapping {
   font-size: 12px;
-  color: @color-button;
-  user-select: none;
-  cursor: pointer;
-  &:hover {
-    color: @color-button-hover;
-  }
 }
 
 .loadingFull {
@@ -408,7 +402,7 @@ export default {
   top: 0;
   left: 0;
   z-index: @zIndex-3;
-  background-color: #ffffff55;
+  background-color: @color-loading-overlay-background;
   display: flex;
   justify-content: center;
   align-items: center;

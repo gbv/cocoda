@@ -214,7 +214,7 @@ let compareConcepts = function(concept1, concept2) {
 
 let setupTableScrollSync = function() {
   // Synchronize scrolling of header and body in all default tables
-  let tables = document.getElementsByClassName("defaultTable")
+  let tables = document.getElementsByClassName("table")
   for (let table of tables) {
     let thead = table.getElementsByTagName("thead")[0]
     let tbody = table.getElementsByTagName("tbody")[0]

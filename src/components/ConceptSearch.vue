@@ -1,14 +1,14 @@
 <template>
   <span
-    class="searchfield"
+    class="conceptSearch"
     @mousemove="mousemove()">
     <!-- Search icon -->
     <div
-      class="searchIcon"
+      class="conceptSearch-icon button"
       @click="focusSearch" >
       <font-awesome-icon icon="search" />
     </div>
-    <div class="searchInputWrapper">
+    <div class="conceptSearch-inputWrapper">
       <!-- Input field -->
       <b-form-input
         ref="searchInput"
@@ -25,21 +25,21 @@
       <!-- Results -->
       <div
         v-show="isOpen"
-        class="searchfield-results">
+        class="conceptSearch-results">
         <div
           v-if="loading"
-          class="loading">
+          class="conceptSearch-loading">
           <loading-indicator />
         </div>
         <ul
           v-else
-          class="searchfield-results-list">
+          class="conceptSearch-results-list">
           <li
             v-for="(result, i) in searchResult"
             :key="i"
             :id="uniqueID + '-searchResult-' + i"
-            :class="{ 'searchfield-selected': i === searchSelected }"
-            class="searchfield-results-item fontSize-small"
+            :class="{ 'conceptSearch-selected': i === searchSelected }"
+            class="conceptSearch-results-item fontSize-small"
             @click="chooseResult(result)"
             @mouseover="mouseover(i)">
             <span v-html="highlightQueryInResult(result[0])"/>
@@ -299,7 +299,7 @@ export default {
       while (match) {
         let index = match.index
         newResult += _.escape(result.slice(currentIndex, index))
-                  + "<span class='searchHighlight'>"
+                  + "<span class='conceptSearch-searchHighlight fontWeight-heavy'>"
                   + _.escape(result.slice(index, index + searchQuery.length))
                   + "</span>"
         currentIndex = index + searchQuery.length
@@ -315,63 +315,59 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.searchIcon {
+.conceptSearch {
+  position: relative;
+  height: 34px;
+}
+
+.conceptSearch-icon {
   position: absolute;
   margin: 0 auto;
   padding: 4px 0;
   text-align: center;
   left: 5px;
-  color: @color-button;
-  &:hover {
-    cursor: pointer;
-    color: @color-button-hover;
-  }
 }
 
-.searchfield {
-  position: relative;
-  height: 34px;
-}
-.searchInputWrapper {
+.conceptSearch-inputWrapper {
   margin-left: 28px;
   position: relative;
 }
-.searchInputWrapper > input {
+.conceptSearch-inputWrapper > input {
   border: 0;
-  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 1px 2px 0 @color-shadow;
 }
 
-.searchfield-results {
+.conceptSearch-results {
   padding: 0;
   margin: 0;
-  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 2px 4px 0 @color-shadow;
   height: auto;
   max-height: 250px;
   overflow: auto;
   width: 100%;
   position: absolute;
-  background-color: white;
+  background-color: @color-background;
   z-index: @zIndex-7;
 }
 
-.searchfield-results-list {
+.conceptSearch-results-list {
   padding: 0;
   margin: 0;
 }
 
-.searchfield-results-item {
+.conceptSearch-results-item {
   list-style: none;
   text-align: left;
   cursor: pointer;
   padding: 3px 0px 3px 12px;
 }
 
-.searchfield-selected {
+.conceptSearch-selected {
   background-color: @color--conceptSearch-result-selected-background;
   color: @color--conceptSearch-result-selected;
 }
 
-.loading {
+.conceptSearch-loading {
   width: 100%;
   height: 50px;
   padding: 0px 0px 0px 12px;
@@ -387,12 +383,10 @@ export default {
 @import "../style/main.less";
 
 // Has to be global to work
-.searchHighlight {
-  &:extend(.fontWeight-heavy);
-  // TODO: Put into colors.less
-  color: @color-secondary-2-4;
-  .searchfield-selected & {
-    color: darken(@color-secondary-2-4, 10%);
-  }
+.conceptSearch-searchHighlight {
+  color: @color--conceptSearch-searchHighlight;
+}
+.conceptSearch-selected .conceptSearch-searchHighlight {
+  color: @color--conceptSearch-searchHighlight-selected;
 }
 </style>

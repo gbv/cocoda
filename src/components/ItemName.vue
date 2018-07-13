@@ -1,7 +1,11 @@
 <template>
   <div
     v-if="item != null"
-    :class="[{ 'itemNameHovered': isLink && isHovered, 'itemNameHighlighted': isHighlighted }, 'fontSize-'+(fontSize || 'normal')]"
+    :class="[{
+      'itemName-hovered': isLink && isHovered,
+      'itemName-highlighted': isHighlighted,
+      'fontWeight-heavy': isHighlighted
+    }, 'fontSize-'+(fontSize || 'normal')]"
     class="itemName"
     @mouseover="mouseOver"
     @mouseout="mouseOut" >
@@ -165,12 +169,11 @@ Vue.component("prefLabel-text", {
   display: inline;
   user-select: none;
 }
-.itemNameHovered {
+.itemName-hovered {
   cursor: pointer;
   text-decoration: underline;
 }
-.itemNameHighlighted {
+.itemName-highlighted {
   color: @color--itemName-highlighted;
-  &:extend(.fontWeight-heavy);
 }
 </style>
