@@ -52,31 +52,13 @@
     </div>
 
     <!-- Top Concepts -->
-    <div
+    <item-detail-narrower
       v-if="settings.showTopConceptsInScheme && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
-      class="schemeDetail-top" >
-      <div class="fontWeight-heavy">
-        Top Concepts:
-      </div>
-      <div
-        v-for="concept in item.TOPCONCEPTS"
-        v-if="concept != null"
-        :key="concept.uri"
-        class="schemeDetail-topItem" >
-        <font-awesome-icon
-          class="u-flip-horizontal"
-          icon="level-down-alt" />
-        <item-name
-          :item="concept"
-          :is-link="true"
-          font-size="small"
-          @click.native="chooseUri(concept, isLeft)" />
-      </div>
-      <!-- Show LoadingIndicator when top concepts exist, but are not loaded yet -->
-      <loading-indicator
-        v-if="item.TOPCONCEPTS.length != 0 && item.TOPCONCEPTS.includes(null)"
-        size="sm" />
-    </div>
+      :narrower="item.TOPCONCEPTS"
+      :is-left="isLeft"
+      text="Top Concepts:"
+      @chooseUri="chooseUri"
+    />
     <div v-else-if="settings.showTopConceptsInScheme">
       No top concepts
     </div>
@@ -88,6 +70,7 @@ import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicator from "./LoadingIndicator"
+import ItemDetailNarrower from "./ItemDetailNarrower"
 
 /**
  * Component that displays a scheme's details (URI, notation, identifier, ...).
@@ -95,7 +78,7 @@ import LoadingIndicator from "./LoadingIndicator"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator
+    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator, ItemDetailNarrower
   },
   props: {
     /**
@@ -176,11 +159,6 @@ export default {
   background-color: @color-background-select;
   padding: 0 3px;
 }
-
-.schemeDetail-top {
-  margin: 5px;
-}
-
 .schemeDetail-licenseBadge {
   margin-bottom: 3px;
   height: 15px;
