@@ -149,7 +149,7 @@ import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicator from "./LoadingIndicator"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).

@@ -38,7 +38,7 @@
 import LoadingIndicator from "./LoadingIndicator"
 import ConceptTreeItem from "./ConceptTreeItem"
 import Minimizer from "./Minimizer"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * Component that represents a (navigatable) concept tree.

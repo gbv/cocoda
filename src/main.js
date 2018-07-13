@@ -25,7 +25,7 @@ Vue.prototype.$config = config
 import util from "./util"
 Vue.prototype.$util = util
 
-var _ = require("lodash")
+import _ from "lodash"
 
 // Add fontawesome
 // TODO: - Only import individual items, e.g.

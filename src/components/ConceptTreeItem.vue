@@ -70,7 +70,7 @@
 import LoadingIndicator from "./LoadingIndicator"
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * Component that represents one concept item in a ConceptTree and possibly its children.

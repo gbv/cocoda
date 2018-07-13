@@ -53,7 +53,7 @@
 <script>
 import LoadingIndicator from "./LoadingIndicator"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * Helper function that scrolls the search result when navigating with the keyboard.
