@@ -24,18 +24,18 @@
             <b-form-select
               v-model="schemeSelectedLeft"
               :options="schemeOptions"
-              class="schemeSelect" />
+              class="schemeSelect fontWeight-heavy" />
             <div
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedLeft != null && conceptSelectedLeft != null"
-              class="schemeSelectInfo"
+              class="button schemeSelectInfo fontSize-large"
               @click="$refs.conceptTreeLeft.selected = null">
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedLeft != null"
-              class="schemeSelectInfo"
+              class="button schemeSelectInfo fontSize-large"
               @click="clear(true)">
               <font-awesome-icon icon="times-circle" />
             </div>
@@ -150,18 +150,18 @@
             <b-form-select
               v-model="schemeSelectedRight"
               :options="schemeOptions"
-              class="schemeSelect" />
+              class="schemeSelect fontWeight-heavy" />
             <div
               v-b-tooltip.hover="{ title: 'show info about scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedRight != null && conceptSelectedRight != null"
-              class="schemeSelectInfo"
+              class="button schemeSelectInfo fontSize-large"
               @click="$refs.conceptTreeRight.selected = null">
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedRight != null"
-              class="schemeSelectInfo"
+              class="button schemeSelectInfo fontSize-large"
               @click="clear(false)">
               <font-awesome-icon icon="times-circle" />
             </div>
@@ -409,10 +409,9 @@ html, body {
 .schemeSelect {
   .m-borderRadius(2px);
   border: 0 !important;
-  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
-  background-color: lighten(@color-primary-1, 15%) !important;
+  box-shadow: 0 1px 2px 0 @color-shadow;
+  background-color: @color-background-select !important;
   color: @color-primary-4 !important;
-  &:extend(.fontWeight-heavy);
   flex: 1;
 }
 .schemeSelectInfo {
@@ -422,13 +421,6 @@ html, body {
   align-content: center;
   flex-direction: column;
   margin-left: 10px;
-  &:extend(.fontSize-large);
-  color: @color-button;
-  user-select: none;
-  &:hover {
-    cursor: pointer;
-    color: @color-button-hover;
-  }
 }
 .conceptSearch {
   margin: 5px 0 0 0;
@@ -461,11 +453,11 @@ html, body {
 .mappingToolItem {
   height: 0;
   flex: 3;
-  & > div {
-    height: 100%;
-  }
   min-height: 200px;
 }
+.mappingToolItem > div {
+    height: 100%;
+  }
 
 .placeholderComponent {
   text-align: center;
@@ -478,14 +470,6 @@ html, body {
   transform: translateY(-50%);
 }
 
-a:link, a:visited, a:active {
-  color: darken(@color-complement-4, 5%);
-}
-a:hover {
-  text-decoration: none;
-  color: @color-complement-3;
-}
-
 .alertsContainer {
   position: absolute;
   top: 20px;
@@ -493,18 +477,6 @@ a:hover {
   transform: translate(-50%, 0);
   z-index: @zIndex-8;
   width: 600px;
-}
-
-/* Overwrite the default to keep the scrollbar always visible */
-::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 9px;
-  height: 9px;
-}
-::-webkit-scrollbar-thumb {
-  .m-borderRadius(6px);
-  box-shadow: inset 0 0 5px 5px #AEAEAE;
-  border: solid 1px transparent;
 }
 
 </style>

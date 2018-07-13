@@ -7,16 +7,16 @@
       id="mappingBrowserWrapper">
       <div
         v-if="items.length > 0"
-        class="defaultTableWrapper">
+        class="table-wrapper">
         <!-- Mapping table -->
         <b-table
           ref="occurrencesTable"
           :items="items"
           :fields="fields"
-          class="defaultTable"
+          class="table"
           small
-          thead-class="defaultTableHead"
-          tbody-class="defaultTableBody">
+          thead-class="table-head"
+          tbody-class="table-body">
           <span
             slot="sourceConcepts"
             slot-scope="data">
@@ -60,7 +60,7 @@
             <font-awesome-icon
               v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
               icon="edit"
-              class="editButton"
+              class="button editButton"
               @click="edit(data)" />
           </span>
           <span
@@ -384,12 +384,6 @@ export default {
 
 .editButton {
   font-size: 12px;
-  color: @color-button;
-  user-select: none;
-  cursor: pointer;
-  &:hover {
-    color: @color-button-hover;
-  }
 }
 
 </style>
@@ -415,24 +409,23 @@ export default {
 
 .table-info {
   background-color: @color-primary-1 !important;
-  & > td, & > td {
-    background-color: @color-primary-1 !important;
-  }
+}
+.table-info > td, .table-info > td {
+  background-color: @color-primary-1 !important;
 }
 
 // Overwriting bootstrap styles has to be done in global scope
 .optionsDropdown {
   user-select: none;
-  & > .btn {
-    &:extend(.fontSize-small);
-    padding: 0.1rem 0.4rem;
-    margin-bottom: 2px;
-    background-color: @color-button;
-    border-color: @color-button;
-  }
-
-  & > .dropdown-menu {
-    &:extend(.fontSize-small);
-  }
+}
+.optionsDropdown > .btn {
+  .fontSize-small;
+  padding: 0.1rem 0.4rem;
+  margin-bottom: 2px;
+  background-color: @color-button;
+  border-color: @color-button;
+}
+.optionsDropdown > .dropdown-menu {
+  .fontSize-small;
 }
 </style>

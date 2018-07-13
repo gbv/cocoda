@@ -1,3 +1,5 @@
+// Imports // --------------------------------------------------
+
 // Import colors
 @import "./colors.less";
 
@@ -13,7 +15,8 @@
 // Import mixins
 @import "./mixins.less";
 
-/* Define appearance of main components (boxes) */
+// Main component style // --------------------------------------------------
+
 .mainComponent {
   .m-borderRadius(2px);
   background-color: @color-background;
@@ -21,15 +24,16 @@
   overflow: hidden;
 }
 
-/* Define default table style */
-.defaultTableWrapper {
+// Table styles // --------------------------------------------------
+
+.table-wrapper {
   position: relative;
   flex: 1 1 auto;
   height: 0;
   margin: 10px auto 5px auto;
   max-width: 97%;
 }
-.defaultTable {
+.table {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -37,36 +41,92 @@
   overflow: hidden;
   text-align: center;
 }
-.defaultTableHead {
+.table-head {
   display: block;
   flex: 0 0 auto;
   overflow-y: auto;
   overflow: hidden;
 }
-.defaultTableBody {
+.table-body {
   display: block;
   flex: 1 1 auto;
   overflow: auto;
 }
 
+// General styles // --------------------------------------------------
+
 p {
   margin: 3px 0 !important;
 }
+a:link, a:visited, a:active {
+  color: @color-link;
+}
+a:hover {
+  text-decoration: none;
+  color: @color-link-hover;
+}
 
-.utilityIcon {
+// Button styles // --------------------------------------------------
+
+.button {
   cursor: pointer;
-  &:extend(.fontWeight-heavy);
+  user-select: none;
+  color: @color-button;
+}
+.button:hover {
+  color: @color-button-hover;
+}
+.button-disabled {
+  user-select: none;
+  color: @color-button-disabled;
+}
+
+.utilityButton {
+  .fontWeight-heavy;
+  cursor: pointer;
+  user-select: none;
   position: absolute;
   font-size: 12px;
   right: 0px;
   top: 0px;
   width: 24px;
   height: 24px;
-  z-index: @zIndex-2;
+  z-index: @zIndex-4;
   color: fadeout(@color-button, 70%);
   background-color: fadeout(@color-button-disabled, 80%);
-  &:hover {
-    color: fadeout(@color-button, 40%);
-    background-color: fadeout(@color-button-disabled, 60%);
-  }
+}
+.utilityButton:hover {
+  color: fadeout(@color-button, 40%);
+  background-color: fadeout(@color-button-disabled, 60%);
+}
+
+// Other styles // --------------------------------------------------
+
+.scrollable {
+  overflow-y: auto;
+}
+
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
+.collapsing {
+  -webkit-transition: none;
+  transition: none;
+  display: none;
+}
+.no-transition {
+  transition: none !important;
+}
+
+/* Overwrite the default to keep the scrollbar always visible */
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  .m-borderRadius(6px);
+  box-shadow: inset 0 0 5px 5px #AEAEAE;
+  border: solid 1px transparent;
 }

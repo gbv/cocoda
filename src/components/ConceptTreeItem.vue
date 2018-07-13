@@ -8,7 +8,8 @@
     <div
       :class="{
         conceptBoxHovered: isHovered,
-        conceptBoxSelected: isSelected
+        conceptBoxSelected: isSelected,
+        'fontWeight-heavy': isSelected
       }"
       class="conceptBox">
       <div
@@ -35,7 +36,7 @@
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
         v-show="mapping.canAdd(concept, scheme, isLeft)"
-        class="addToMapping"
+        class="addToMapping fontWeight-heavy"
         @click="mapping.add(concept, scheme, isLeft)"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"><font-awesome-icon icon="plus-circle" /></div>
@@ -291,24 +292,22 @@ export default {
   padding-left: 18px;
 }
 .addToMapping {
-  &:extend(.fontWeight-heavy);
   position: absolute;
   color: @color--conceptTreeItem-addToMapping;
   top: 1px;
   right: 5px;
   opacity: 0.7;
-  &:hover {
-    color: @color--conceptTreeItem-addToMapping-hover;
-    opacity: 1.0;
-  }
+}
+.addToMapping:hover {
+  color: @color--conceptTreeItem-addToMapping-hover;
+  opacity: 1.0;
 }
 .conceptBoxSelected {
-  &:extend(.fontWeight-heavy);
   color: @color--conceptTreeItem-item-selected;
   background-color: @color--conceptTreeItem-item-selected-background;
-  & .arrowBox:hover {
-    background-color: @color--conceptTreeItem-item-hover-background;
-  }
+}
+.conceptBoxSelected .arrowBox:hover {
+  background-color: @color--conceptTreeItem-item-hover-background;
 }
 .conceptBoxHovered, .arrowBox:hover {
   background-color: @color--conceptTreeItem-item-hover-background;

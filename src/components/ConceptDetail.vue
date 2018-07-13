@@ -4,10 +4,9 @@
     class="conceptDetail fontSize-small">
 
     <!-- Ancestors / Broader -->
-    <div class="conceptDetailAncestors">
+    <div class="conceptDetail-ancestors">
       <div
-        v-show="settings.showSchemeInAncestors"
-        class="conceptDetailAncestorsItem">
+        v-show="settings.showSchemeInAncestors" >
         <item-name
           :item="scheme"
           :is-link="true"
@@ -18,8 +17,7 @@
       <div
         v-for="(concept, index) in item.ancestors"
         v-if="concept != null"
-        :key="concept.uri"
-        class="conceptDetailAncestorsItem" >
+        :key="concept.uri" >
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == item.ancestors.length - 1 || item.ancestors.length <= 3">
           <font-awesome-icon
             class="u-flip-horizontal"
@@ -33,7 +31,7 @@
         <span
           v-b-tooltip.hover="{ title: 'show all ancestors', delay: $util.delay.medium }"
           v-else-if="index == 1"
-          class="conceptDetailAncestorsMore"
+          class="conceptDetail-ancestors-more button"
           @click="showAncestors = true" >
           <font-awesome-icon
             class="u-flip-horizontal"
@@ -44,8 +42,7 @@
       <div
         v-for="(concept) in (item.ancestors.length == 0 && item.BROADERLOADED ? item.broader : [])"
         v-if="concept != null"
-        :key="concept.uri"
-        class="conceptDetailAncestorsItem" >
+        :key="concept.uri" >
         <font-awesome-icon
           icon="sort-up" />
         <item-name
@@ -68,9 +65,9 @@
 
     <!-- Notes and alternative labels -->
     <b-card
-      :key="'conceptDetailNoteTabs'+iteration"
+      :key="'conceptDetail-note-tabs'+iteration"
       no-body
-      class="conceptDetailNoteTabs">
+      class="conceptDetail-note-tabs">
       <b-tabs
         no-fade
         card>
@@ -82,8 +79,8 @@
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
-          class="conceptDetailNotes">
-          <div class="conceptDetailNote">
+          class="conceptDetail-notes">
+          <div class="conceptDetail-note">
             <span v-html="notesOptions.visiblePart(notes.de)" /><b-collapse
               :id="'note'+index"
               tag="span"
@@ -108,7 +105,7 @@
             v-for="(identifier, index) in [item.uri].concat(item.identifier)"
             v-if="identifier != null"
             :key="index"
-            :class="identifier.startsWith('http') ? 'conceptDetailUri' : 'conceptDetailIdentifier'">
+            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
             <font-awesome-icon
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
               @dblclick="copy" />
@@ -121,13 +118,13 @@
     <!-- Narrower concepts -->
     <div
       v-if="item.narrower && item.narrower.length > 0"
-      class="conceptDetailNarrower">
+      class="conceptDetail-narrower">
       <div class="fontWeight-heavy">Narrower Concepts:</div>
       <div
         v-for="concept in item.narrower"
         v-if="concept != null"
         :key="concept.uri"
-        class="conceptDetailNarrowerItem">
+        class="conceptDetail-narrowerItem">
         <font-awesome-icon
           class="u-flip-horizontal"
           icon="level-down-alt" />
@@ -396,49 +393,36 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.conceptDetailAncestors {
+.conceptDetail-ancestors {
   margin: 5px;
-  & .conceptDetailAncestorsMore {
-    width: 20px;
-    padding-left: 2px;
-    color: @color-button;
-    cursor: pointer;
-    &:hover {
-      color: @color-button-hover;
-    }
-  }
+}
+.conceptDetail-ancestors-more {
+  width: 20px;
+  padding-left: 2px;
 }
 
-.conceptDetailIdentifier, .conceptDetailUri {
-  margin: 5px;
-  & a {
-    .m-borderRadius(5px);
-    background-color: lighten(@color-primary-1, 15%);
-    padding: 0 3px;
-  }
-  & svg {
-    user-select: none;
-  }
+.conceptDetail-identifier {
+  margin: 0 5px;
+}
+.conceptDetail-identifier a {
+  .m-borderRadius(5px);
+  background-color: lighten(@color-primary-1, 15%);
+  padding: 0 3px;
+}
+.conceptDetail-identifier svg {
+  user-select: none;
 }
 
-.conceptDetailNotes {
+.conceptDetail-notes {
   margin-top: 0px;
   display: flex;
-  & .conceptDetailNoteIcon {
-    flex: none;
-    padding: 1px 3px;
-    height: 14px;
-  }
-  & .conceptDetailNote {
-    padding: 0 5px;
-    flex: 1;
-    & .conceptDetailNotePoint {
-      padding: 2px 0;
-    }
-  }
+}
+.conceptDetail-note {
+  padding: 0 5px;
+  flex: 1;
 }
 
-.conceptDetailNarrower {
+.conceptDetail-narrower {
   margin: 5px;
 }
 
@@ -447,41 +431,29 @@ export default {
 <style lang="less">
 @import "../style/main.less";
 
-.conceptDetailNoteTabs, .card {
+.conceptDetail-note-tabs {
   border: none !important;
-  & .tabs {
-    box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
-  }
-  & .card-header {
-    padding: 2px 10px 10px 10px;
-    background-color: white;
-    user-select: none;
-  }
-  & .card-header-tabs {
-    margin-bottom: -10px;
-  }
-  & .nav-link {
-    padding: 4px 12px 0px 12px;
-  }
-  & .card-body {
-    .m-borderRadius(0px 0px 5px 5px;);
-    padding: 10px;
-    background-color: rgba(0,0,0,0.02);
-    br {
-      line-height: 24px;
-    }
-  }
 }
-.collapsed > .when-opened,
-:not(.collapsed) > .when-closed {
-  display: none;
+.conceptDetail-note-tabs .tabs {
+  box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
 }
-.collapsing {
-    -webkit-transition: none;
-    transition: none;
-    display: none;
+.conceptDetail-note-tabs .card-header {
+  padding: 2px 10px 10px 10px;
+  background-color: @color-background;
+  user-select: none;
 }
-.no-transition {
-    transition: none !important;
+.conceptDetail-note-tabs .card-header-tabs {
+  margin-bottom: -10px;
+}
+.conceptDetail-note-tabs .nav-link {
+  padding: 4px 12px 0px 12px;
+}
+.conceptDetail-note-tabs .card-body {
+  .m-borderRadius(0px 0px 5px 5px;);
+  padding: 10px;
+  background-color: @color-background-card;
+}
+.conceptDetail-note-tabs .card-body br {
+  line-height: 24px;
 }
 </style>

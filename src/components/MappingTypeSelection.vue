@@ -6,6 +6,7 @@
       :key="mappingType.uri"
       :class="{
         mappingTypeSelected: (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
+        'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         mappingTypeHovered: (mappingType && mappingTypeHovered) && mappingType.uri == mappingTypeHovered.uri
       }"
       class="mappingType"
@@ -79,20 +80,19 @@ export default {
   font-family: "Courier New", Courier, monospace;
   cursor: pointer;
   box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
-  &:hover {
-    background-color: @color--mappingTypeSelection-hover-background;
-    color: @color--mappingTypeSelection-hover;
-  }
   margin-bottom: 5px;
+}
+.mappingType:hover {
+  background-color: @color--mappingTypeSelection-hover-background;
+  color: @color--mappingTypeSelection-hover;
 }
 .mappingTypeSelected {
   background-color: @color--mappingTypeSelection-selected-background;
   color: @color--mappingTypeSelection-selected;
-  &:extend(.fontWeight-heavy);
-  &:hover {
-    background-color: @color--mappingTypeSelection-selected-background;
-    color: @color--mappingTypeSelection-selected;
-  }
+}
+.mappingTypeSelected:hover {
+  background-color: @color--mappingTypeSelection-selected-background;
+  color: @color--mappingTypeSelection-selected;
 }
 
 </style>

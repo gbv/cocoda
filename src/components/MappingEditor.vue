@@ -4,7 +4,7 @@
     <minimizer text="Mapping Editor" />
     <div
       v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
-      class="mappingExport"
+      class="button mappingExport"
       @click="exportMapping()">
       <font-awesome-icon icon="share-square" />
     </div>
@@ -35,7 +35,7 @@
               @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
             <!-- Delete button for concept -->
             <div
-              class="mappingConceptDelete fontSize-small"
+              class="button mappingConceptDelete fontSize-small fontWeight-heavy"
               @click="mapping.remove(concept, isLeft)">
               <font-awesome-icon icon="minus-circle" />
             </div>
@@ -48,7 +48,7 @@
       <!-- Reason why adding a concept is not possible -->
       <div
         v-if="!isAddButtonEnabled(isLeft)"
-        class="addButtonDisabledReason">
+        class="addButtonDisabledReason text-lightGrey fontSize-small">
         {{ addButtonDisabledReason(isLeft) }}
       </div>
       <!-- Buttons (add, delete all) -->
@@ -56,7 +56,7 @@
         <div class="mappingButtonsFiller" />
         <div
           v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add selected concept' : '', delay: $util.delay.medium }"
-          :class="{ addButtonClickable: isAddButtonEnabled(isLeft), addButtonDisabled: !isAddButtonEnabled(isLeft) }"
+          :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
           :id="'addButton'+index0"
           class="addButton"
           @click="addToMapping(isLeft)" >
@@ -64,7 +64,7 @@
         </div>
         <div
           v-b-tooltip.hover="{ title: isDeleteAllButtonEnabled(isLeft) ? 'delete all concepts' : '', delay: $util.delay.medium }"
-          :class="{ deleteAllButtonClickable: isDeleteAllButtonEnabled(isLeft), deleteAllButtonDisabled: !isDeleteAllButtonEnabled(isLeft) }"
+          :class="{ button: isDeleteAllButtonEnabled(isLeft), 'button-disabled': !isDeleteAllButtonEnabled(isLeft) }"
           class="deleteAllButton"
           @click="deleteAll(isLeft)" ><font-awesome-icon icon="trash-alt" /></div>
         <div class="mappingButtonsFiller" />
@@ -265,11 +265,11 @@ export default {
   position: relative;
   order: 1;
   margin-bottom: 28px;
-  & > div {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+}
+.mappingTypeSelection > div {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .mappingEditorPart {
   flex: 1;
@@ -297,27 +297,20 @@ export default {
   height: 0;
   overflow: auto;
   list-style: none;
-  & > li {
-    position: relative;
-    margin: 5px 12px 5px 0;
-    & > .mappingConceptDelete {
-      position: absolute;
-      right: -10px;
-      top: -5px;
-      bottom: 0;
-      margin: auto 0;
-      cursor: pointer;
-      z-index: @zIndex-2;
-      user-select: none;
-      width: 12px;
-      height: 12px;
-      text-align: center;
-      font-weight: bold;
-      &:hover {
-        color: @color-secondary-2-4;
-      }
-    }
-  }
+}
+.mappingConceptList > li {
+  position: relative;
+  margin: 5px 12px 5px 0;
+}
+.mappingConceptDelete {
+  position: absolute;
+  right: -10px;
+  top: -5px;
+  bottom: 0;
+  margin: auto 0;
+  width: 12px;
+  height: 12px;
+  text-align: center;
 }
 .mappingConceptLink:hover {
   color: @color-primary-0;
@@ -329,27 +322,6 @@ export default {
   transform: translateX(-50%) translateY(-50%);
 }
 
-.mappingArrow {
-  position: absolute;
-  margin: auto auto;
-  text-align: center;
-  font-size: 1.6rem;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 1.6em;
-  height: 1.6em;
-  user-select: none;
-  z-index: @zIndex-2;
-}
-.mappingArrowReversible {
-  cursor: pointer;
-  &:hover {
-    color: @color-secondary-2-4;
-  }
-}
-
 .mappingExport {
   position: absolute;
   width: 24px;
@@ -359,13 +331,6 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  cursor: pointer;
-  user-select: none;
-  z-index: @zIndex-2;
-  color: @color-button;
-  &:hover {
-    color: @color-button-hover;
-  }
 }
 
 .mappingButtons {
@@ -379,26 +344,12 @@ export default {
 
 .addButton, .deleteAllButton {
   flex: none;
-  z-index: @zIndex-2;
-  user-select: none;
   margin: 0 10px;
   font-size: 1.5rem;
-  color: @color-button;
 }
 .addButtonDisabledReason {
   flex: 0 0 20px !important;
   margin: 0 auto;
-  &:extend(.text-lightGrey);
-  &:extend(.fontSize-small);
-}
-.addButtonClickable, .deleteAllButtonClickable {
-  cursor: pointer;
-  &:hover {
-    color: @color-button-hover;
-  }
-}
-.addButtonDisabled, .deleteAllButtonDisabled {
-  color: @color-button-disabled;
 }
 
 </style>

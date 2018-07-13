@@ -3,13 +3,14 @@
     <div
       v-b-tooltip.hover="{ title: minimized ? 'maximize component' : 'minimize component', delay: $util.delay.medium }"
       :class="minimized ? 'maximizeButton' : 'minimizeButton'"
+      class="utilityButton"
       @click="toggleMinimize">
       <font-awesome-icon
         :icon="minimized ? 'window-maximize' : 'window-minimize'" />
     </div>
     <div
       v-show="minimized"
-      class="minimizedOverlay"
+      class="minimizedOverlay fontWeight-heavy fontSize-normal"
       @click="toggleMinimize" >
       <div>{{ text }}</div>
     </div>
@@ -97,7 +98,6 @@ export default {
 @import "../style/main.less";
 
 .minimizeButton, .maximizeButton {
-  &:extend(.utilityIcon all);
   right: 0px;
   top: 0px;
 }
@@ -107,11 +107,10 @@ export default {
 .maximizeButton {
   padding-left: 6px;
   padding-top: 3px;
+  z-index: @zIndex-6;
 }
 .minimizedOverlay {
   cursor: pointer;
-  &:extend(.fontWeight-heavy);
-  &:extend(.fontSize-normal);
   position: absolute;
   z-index: @zIndex-5;
   top: 0;
@@ -121,9 +120,9 @@ export default {
   background-color: @color--minimizer-overlay-background;
   text-align: center;
   user-select: none;
-  &:hover {
-    background-color: @color--minimizer-overlay-background-hover;
-  }
+}
+.minimizedOverlay:hover {
+  background-color: @color--minimizer-overlay-background-hover;
 }
 .minimizedOverlay > div {
   position: absolute;

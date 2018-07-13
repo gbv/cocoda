@@ -12,7 +12,7 @@
     <!-- License -->
     <div
       v-if="item.license"
-      class="schemeDetailLicense">
+      class="schemeDetail-license">
       <span
         v-for="(license, index) in item.license"
         :key="index">
@@ -22,7 +22,7 @@
           <img
             v-if="licenseBadges[license.uri]"
             :src="licenseBadges[license.uri]"
-            class="licenseBadge">
+            class="schemeDetail-licenseBadge">
           <span v-else>{{ license.uri }}</span>
         </a>
         <span v-if="licenseAttribution(item)">
@@ -42,7 +42,7 @@
       v-for="(identifier, index) in [item.uri].concat(item.identifier)"
       v-if="identifier != null"
       :key="index"
-      :class="identifier.startsWith('http') ? 'schemeDetailUri' : 'schemeDetailIdentifier'">
+      :class="identifier.startsWith('http') ? 'schemeDetail-identifier' : 'schemeDetail-identifier'">
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
       <auto-link :link="identifier" />
     </div>
@@ -50,13 +50,13 @@
     <!-- Top Concepts -->
     <div
       v-if="settings.showTopConceptsInScheme && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
-      class="schemeDetailTop">
+      class="schemeDetail-top">
       <div class="fontWeight-heavy">Top Concepts:</div>
       <div
         v-for="concept in item.TOPCONCEPTS"
         v-if="concept != null"
         :key="concept.uri"
-        class="schemeDetailTopItem">
+        class="schemeDetail-topItem">
         <font-awesome-icon
           class="u-flip-horizontal"
           icon="level-down-alt" />
@@ -157,24 +157,24 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.schemeDetailLicense {
+.schemeDetail-license {
   margin-top: 5px;
 }
 
-.schemeDetailIdentifier, .schemeDetailUri {
-  margin: 5px;
-  & a {
-    .m-borderRadius(5px);
-    background-color: lighten(@color-primary-1, 15%);
-    padding: 0 3px;
-  }
-}
-
-.schemeDetailTop {
+.schemeDetail-identifier {
   margin: 5px;
 }
+.schemeDetail-identifier a {
+  .m-borderRadius(5px);
+  background-color: @color-background-select;
+  padding: 0 3px;
+}
 
-.licenseBadge {
+.schemeDetail-top {
+  margin: 5px;
+}
+
+.schemeDetail-licenseBadge {
   margin-bottom: 3px;
   height: 15px;
 }

@@ -2,6 +2,7 @@
   <a
     v-if="isValidURL(link)"
     :href="link"
+    class="u-textBreak"
     target="_blank">{{ text || link }}</a>
   <span v-else>{{ text || link }}</span>
 </template>
@@ -37,9 +38,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-a {
-  word-break: break-all;
-}
-</style>
