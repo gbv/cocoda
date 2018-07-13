@@ -57,22 +57,6 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import _ from "lodash"
 
 /**
- * Helper function that scrolls the search result when navigating with the keyboard.
- *
- * @param {element} target - DOM element to scroll to
- */
-function scrollIntoViewIfNeeded(target) {
-  var rect = target.getBoundingClientRect()
-  var parentRect = target.parentElement.parentElement.getBoundingClientRect()
-  if (rect.bottom > parentRect.bottom) {
-    target.scrollIntoView(false)
-  }
-  if (rect.top < parentRect.top) {
-    target.scrollIntoView()
-  }
-}
-
-/**
  * Component that represents a typeahead-enabled search field for concepts.
  */
 export default {
@@ -187,29 +171,24 @@ export default {
      * Loads autosuggest results from API.
      */
     getAnswer:  function () {
-      this.searchResult = ["Searching..."]
-      var vm = this
-      if (this.cancelToken != null) {
-        // FIXME: Is this needed when it is already canceled in the watcher?
-        this.cancelToken.cancel("There was a newer search query.")
-      }
+      this.searchResult = []
       // Generate new axios cancel token
       this.cancelToken = this.$api.token()
       let searchQuery = this.searchQuery
       this.$api.suggest(this.voc, searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
-        .then(function(data) {
-          if (searchQuery == vm.searchQuery) {
-            vm.loading = false
-            vm.searchResult = _.zip(data[1], data[2], data[3])
-            vm.isValid = true
+        .then((data) => {
+          if (searchQuery == this.searchQuery) {
+            this.loading = false
+            this.searchResult = _.zip(data[1], data[2], data[3])
+            this.isValid = true
           }
         })
-        .catch(function(error) {
+        .catch((error) => {
           // Clean up if error was not related to cancellation
-          if (error.toString().toLowerCase().indexOf("cancel") == -1 && searchQuery == vm.searchQuery) {
-            vm.loading = false
-            vm.isValid = false
-            vm.searchResult = [["Error! Could not reach the API. " + error]]
+          if (error.toString().toLowerCase().indexOf("cancel") == -1 && searchQuery == this.searchQuery) {
+            this.loading = false
+            this.isValid = false
+            this.searchResult = [["Error! Could not reach the API. " + error]]
           }
         })
     },
@@ -252,7 +231,15 @@ export default {
      * Scrolls the currently selected search result into view.
      */
     scrollSelectedIntoView() {
-      scrollIntoViewIfNeeded(document.getElementById(this.uniqueID + "-searchResult-" + this.searchSelected))
+      let target = document.getElementById(this.uniqueID + "-searchResult-" + this.searchSelected)
+      var rect = target.getBoundingClientRect()
+      var parentRect = target.parentElement.parentElement.getBoundingClientRect()
+      if (rect.bottom > parentRect.bottom) {
+        target.scrollIntoView(false)
+      }
+      if (rect.top < parentRect.top) {
+        target.scrollIntoView()
+      }
     },
     /**
      * Handles an enter down event.
@@ -271,11 +258,11 @@ export default {
     /**
      * Handles a mouseover down event.
      *
-     * @param {number} i - index of search result
+     * @param {number} index - index of search result
      */
-    mouseover(i) {
+    mouseover(index) {
       if (!this.preventHovering) {
-        this.searchSelected = i
+        this.searchSelected = index
       }
     },
     /**
@@ -329,8 +316,8 @@ export default {
 }
 
 .conceptSearch-inputWrapper {
-  margin-left: 28px;
   position: relative;
+  margin-left: 28px;
 }
 .conceptSearch-inputWrapper > input {
   border: 0;
@@ -338,15 +325,15 @@ export default {
 }
 
 .conceptSearch-results {
-  padding: 0;
-  margin: 0;
-  box-shadow: 0 2px 4px 0 @color-shadow;
+  position: absolute;
+  overflow: auto;
   height: auto;
   max-height: 250px;
-  overflow: auto;
   width: 100%;
-  position: absolute;
+  padding: 0;
+  margin: 0;
   background-color: @color-background;
+  box-shadow: 0 2px 4px 0 @color-shadow;
   z-index: @zIndex-7;
 }
 
@@ -380,7 +367,7 @@ export default {
 </style>
 
 <style lang="less">
-@import "../style/main.less";
+@import "../style/colors.less";
 
 // Has to be global to work
 .conceptSearch-searchHighlight {
