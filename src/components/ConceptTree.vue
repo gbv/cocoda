@@ -188,7 +188,9 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/main.less";
+
 .conceptTree {
   position: relative;
   overflow-y: hidden;
@@ -222,7 +224,7 @@ export default {
   padding: 2px 0px;
 }
 .loadingFull {
-  z-index: 100;
+  z-index: @zIndex-3;
   background-color: #ffffff55;
   display: flex;
   justify-content: center;

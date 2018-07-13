@@ -225,7 +225,7 @@ export default {
   padding: 2px 8px 2px 8px;
 }
 .loadingFull {
-  z-index: 100;
+  z-index: @zIndex-3;
   background-color: #ffffff55;
   display: flex;
   justify-content: center;
@@ -237,7 +237,7 @@ export default {
   font-size: 16px;
   padding-top: 1px;
   padding-left: 7px;
-  z-index: 199;
+  z-index: @zIndex-4;
 }
 .prevButton {
   right: 50px;

@@ -407,7 +407,7 @@ export default {
   overflow-y: auto;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: @zIndex-3;
   background-color: #ffffff55;
   display: flex;
   justify-content: center;

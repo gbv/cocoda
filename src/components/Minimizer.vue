@@ -113,7 +113,7 @@ export default {
   &:extend(.fontWeight-heavy);
   &:extend(.fontSize-normal);
   position: absolute;
-  z-index: 200;
+  z-index: @zIndex-5;
   top: 0;
   right: 0;
   bottom: 0;

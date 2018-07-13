@@ -491,7 +491,7 @@ a:hover {
   top: 20px;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 1000;
+  z-index: @zIndex-8;
   width: 600px;
 }
 
