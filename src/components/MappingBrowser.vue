@@ -4,10 +4,10 @@
     <minimizer text="Mapping Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
-      id="mappingBrowserWrapper">
+      id="mappingBrowserWrapper" >
       <div
         v-if="items.length > 0"
-        class="table-wrapper">
+        class="table-wrapper" >
         <!-- Mapping table -->
         <b-table
           ref="occurrencesTable"
@@ -16,10 +16,10 @@
           class="table"
           small
           thead-class="table-head"
-          tbody-class="table-body">
+          tbody-class="table-body" >
           <span
             slot="sourceConcepts"
-            slot-scope="data">
+            slot-scope="data" >
             <item-name
               v-for="concept in data.value"
               :key="concept.uri"
@@ -33,7 +33,7 @@
           </span>
           <span
             slot="targetConcepts"
-            slot-scope="data">
+            slot-scope="data" >
             <item-name
               v-for="concept in data.value"
               :key="concept.uri"
@@ -47,16 +47,16 @@
           </span>
           <span
             slot="type"
-            slot-scope="data">
+            slot-scope="data" >
             <span
               v-b-tooltip.hover="{ title: data.value.prefLabel.en, delay: $util.delay.medium }"
-              v-if="data.value != null">
+              v-if="data.value != null" >
               {{ data.value.notation[0] }}
             </span>
           </span>
           <span
             slot="actions"
-            slot-scope="data">
+            slot-scope="data" >
             <font-awesome-icon
               v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
               icon="edit"
@@ -65,38 +65,41 @@
           </span>
           <span
             slot="HEAD_actions"
-            slot-scope="data">
+            slot-scope="data" >
             <font-awesome-icon icon="toolbox" />
           </span>
         </b-table>
       </div>
       <div
         v-else
-        class="noItems fontWeight-heavy">No mappings available
+        class="noItems fontWeight-heavy" >
+        No mappings available
       </div>
       <!-- Mapping toolbar for options and infos -->
       <div
-        class="mappingToolbar">
+        class="mappingToolbar" >
         <div>
           <!-- Option dropdown menu -->
           <b-dropdown
             :text="selectedOption.label"
             dropup
             no-flip
-            class="optionsDropdown">
+            class="optionsDropdown" >
             <b-dropdown-item-button
               v-for="option in mappingOptions"
               :key="option.id"
               :disabled="!option.showCondition(vm)"
               href="#"
-              @click="selectedOption = option">
+              @click="selectedOption = option" >
               {{ option.label }}
             </b-dropdown-item-button>
           </b-dropdown>
         </div>
         <div />
         <!-- Number of mappings in the table -->
-        <div style="text-align: right;">{{ items.length }} mappings</div>
+        <div style="text-align: right;">
+          {{ items.length }} mappings
+        </div>
       </div>
     </div>
   </div>

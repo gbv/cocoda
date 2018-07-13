@@ -67,10 +67,10 @@
     <b-card
       :key="'conceptDetail-note-tabs'+iteration"
       no-body
-      class="conceptDetail-note-tabs">
+      class="conceptDetail-note-tabs" >
       <b-tabs
         no-fade
-        card>
+        card >
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <b-tab
@@ -79,12 +79,13 @@
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
-          class="conceptDetail-notes">
+          class="conceptDetail-notes" >
           <div class="conceptDetail-note">
-            <span v-html="notesOptions.visiblePart(notes.de)" /><b-collapse
+            <span v-html="notesOptions.visiblePart(notes.de)" />
+            <b-collapse
               :id="'note'+index"
               tag="span"
-              class="no-transition">
+              class="no-transition" >
               <span v-html="notesOptions.hiddenPart(notes.de)" />
             </b-collapse>
             <a
@@ -105,7 +106,7 @@
             v-for="(identifier, index) in [item.uri].concat(item.identifier)"
             v-if="identifier != null"
             :key="index"
-            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
+            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'" >
             <font-awesome-icon
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
               @dblclick="copy" />
@@ -118,13 +119,13 @@
     <!-- Narrower concepts -->
     <div
       v-if="item.narrower && item.narrower.length > 0"
-      class="conceptDetail-narrower">
+      class="conceptDetail-narrower" >
       <div class="fontWeight-heavy">Narrower Concepts:</div>
       <div
         v-for="concept in item.narrower"
         v-if="concept != null"
         :key="concept.uri"
-        class="conceptDetail-narrowerItem">
+        class="conceptDetail-narrowerItem" >
         <font-awesome-icon
           class="u-flip-horizontal"
           icon="level-down-alt" />

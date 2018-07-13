@@ -10,7 +10,7 @@
         mappingTypeHovered: (mappingType && mappingTypeHovered) && mappingType.uri == mappingTypeHovered.uri
       }"
       class="mappingType"
-      @click="choose(mappingType)">
+      @click="choose(mappingType)" >
       {{ mappingType.notation[0] }}
     </div>
   </div>

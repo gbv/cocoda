@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="text-dark color-primary-0-bg fontSize-normal">
+    class="text-dark color-primary-0-bg fontSize-normal" >
     <div class="alertsContainer">
       <b-alert
         v-for="(alert, index) in $root.$data.alerts"
@@ -9,7 +9,7 @@
         :variant="alert.variant"
         :show="!alert.dismissed"
         dismissible
-        @dismissed="alert.dismissed = true">
+        @dismissed="alert.dismissed = true" >
         {{ alert.text }}
       </b-alert>
     </div>
@@ -29,14 +29,14 @@
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedLeft != null && conceptSelectedLeft != null"
               class="button schemeSelectInfo fontSize-large"
-              @click="$refs.conceptTreeLeft.selected = null">
+              @click="$refs.conceptTreeLeft.selected = null" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedLeft != null"
               class="button schemeSelectInfo fontSize-large"
-              @click="clear(true)">
+              @click="clear(true)" >
               <font-awesome-icon icon="times-circle" />
             </div>
           </div>
@@ -72,14 +72,19 @@
             <!-- Placeholder -->
             <div
               v-if="schemeSelectedLeft == null"
-              class="mainComponent conceptBrowserItem placeholderComponent">
-              <p class="fontWeight-heavy">Scheme quick selection</p>
+              class="mainComponent conceptBrowserItem placeholderComponent" >
+              <p class="fontWeight-heavy">
+                Scheme quick selection
+              </p>
               <p
                 v-for="scheme in favoriteSchemes"
-                :key="scheme.uri">
-                ·<br><a
+                :key="scheme.uri" >
+                ·<br>
+                <a
                   href=""
-                  @click.prevent="schemeSelectedLeft = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
+                  @click.prevent="schemeSelectedLeft = scheme" >
+                  {{ scheme.prefLabel.de || scheme.prefLabel.en }}
+                </a>
               </p>
             </div>
           </div>
@@ -118,9 +123,10 @@
             <!-- Placeholder -->
             <div
               v-else
-              class="placeholderComponentCenter"
-            >
-              <div class="fontWeight-heavy fontSize-large">Welcome to Cocoda!</div>
+              class="placeholderComponentCenter" >
+              <div class="fontWeight-heavy fontSize-large">
+                Welcome to Cocoda!
+              </div>
             </div>
           </div>
           <!-- Slider -->
@@ -155,14 +161,14 @@
               v-b-tooltip.hover="{ title: 'show info about scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedRight != null && conceptSelectedRight != null"
               class="button schemeSelectInfo fontSize-large"
-              @click="$refs.conceptTreeRight.selected = null">
+              @click="$refs.conceptTreeRight.selected = null" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="schemeSelectedRight != null"
               class="button schemeSelectInfo fontSize-large"
-              @click="clear(false)">
+              @click="clear(false)" >
               <font-awesome-icon icon="times-circle" />
             </div>
           </div>
@@ -199,13 +205,18 @@
             <div
               v-if="schemeSelectedRight == null"
               class="mainComponent conceptBrowserItem placeholderComponent">
-              <p class="fontWeight-heavy">Scheme quick selection</p>
+              <p class="fontWeight-heavy">
+                Scheme quick selection
+              </p>
               <p
                 v-for="scheme in favoriteSchemes"
-                :key="scheme.uri">
-                ·<br><a
+                :key="scheme.uri" >
+                ·<br>
+                <a
                   href=""
-                  @click.prevent="schemeSelectedRight = scheme">{{ scheme.prefLabel.de || scheme.prefLabel.en }}</a>
+                  @click.prevent="schemeSelectedRight = scheme" >
+                  {{ scheme.prefLabel.de || scheme.prefLabel.en }}
+                </a>
               </p>
             </div>
           </div>

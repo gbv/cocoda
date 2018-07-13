@@ -3,7 +3,7 @@
     v-if="isValidURL(link)"
     :href="link"
     class="u-textBreak"
-    target="_blank">{{ text || link }}</a>
+    target="_blank" >{{ text || link }}</a>
   <span v-else>{{ text || link }}</span>
 </template>
 

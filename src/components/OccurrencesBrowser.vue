@@ -4,7 +4,7 @@
     <minimizer text="Occurrences Browser" />
     <div
       v-show="schemeLeft != null || schemeRight != null"
-      class="table-wrapper">
+      class="table-wrapper" >
       <!-- Occurrences table -->
       <b-table
         ref="occurrencesTable"
@@ -15,10 +15,10 @@
         class="table"
         small
         thead-class="table-head"
-        tbody-class="table-body">
+        tbody-class="table-body" >
         <span
           slot="from"
-          slot-scope="data">
+          slot-scope="data" >
           <item-name
             :item="data.value"
             :show-text="false"
@@ -29,7 +29,7 @@
         </span>
         <span
           slot="to"
-          slot-scope="data">
+          slot-scope="data" >
           <item-name
             :item="data.value"
             :show-text="false"
@@ -40,17 +40,17 @@
         </span>
         <span
           slot="fromScheme"
-          slot-scope="data">
+          slot-scope="data" >
           {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
         </span>
         <span
           slot="toScheme"
-          slot-scope="data">
+          slot-scope="data" >
           {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
         </span>
         <span
           slot="occurrences"
-          slot-scope="data">
+          slot-scope="data" >
           <span v-if="data.value == null">...</span>
           <span v-else-if="data.value == -1">-</span>
           <span v-else>
@@ -61,7 +61,7 @@
         </span>
         <span
           slot="actions"
-          slot-scope="data">
+          slot-scope="data" >
           <font-awesome-icon
             v-b-tooltip.hover="{ title: 'convert to mapping', delay: $util.delay.medium }"
             v-if="data.value"

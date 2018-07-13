@@ -1,47 +1,56 @@
 <template>
   <b-navbar
     toggleable="md"
-    type="dark">
+    type="dark" >
     <!-- Load logos from config -->
     <b-navbar-brand
       v-for="(logo, index) in $config.logos || []"
       :key="index"
       :href="logo.url"
-      target="_blank">
+      target="_blank" >
       <img
         :src="'./static/' + logo.file"
         :alt="logo.alt || 'logo'"
         height="40px" >
     </b-navbar-brand>
     <!-- Title -->
-    <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
+    <b-navbar-brand href="#">
+      {{ title }}
+    </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
       <!-- Login button -->
       <b-button
         variant="link"
-        disabled>
+        disabled >
         Login
       </b-button>
       <!-- GitHub button -->
       <b-nav-item
         v-if="github"
         :href="github"
-        target="_blank"><font-awesome-icon :icon="['fab', 'github']" /> GitHub</b-nav-item>
+        target="_blank" >
+        <font-awesome-icon :icon="['fab', 'github']" />
+        GitHub
+      </b-nav-item>
       <!-- Help button (links to documentation) -->
       <b-nav-item
         v-if="help"
         :href="help"
-        target="_blank">Help</b-nav-item>
+        target="_blank" >
+        Help
+      </b-nav-item>
       <!-- Settings button -->
-      <b-nav-item @click="$refs.settingsModal.show()">Settings</b-nav-item>
+      <b-nav-item @click="$refs.settingsModal.show()">
+        Settings
+      </b-nav-item>
       <!-- Settings modal (TODO: Move to separate component) -->
       <b-modal
         ref="settingsModal"
         hide-footer
         centered
         size="md"
-        title="Cocoda Settings">
+        title="Cocoda Settings" >
         <p v-if="$config.buildInfo.gitTag && $config.buildInfo.gitTag != ''">
           Version: {{ $config.buildInfo.gitTag }}
         </p>
@@ -49,7 +58,7 @@
           Current Commit:
           <a
             :href="'https://github.com/gbv/cocoda/commit/' + $config.buildInfo.gitCommit"
-            target="_blank">
+            target="_blank" >
             {{ $config.buildInfo.gitCommitShort }}
           </a>
         </p>
