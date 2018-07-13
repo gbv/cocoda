@@ -32,7 +32,7 @@
 </template>
 
 <script>
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.

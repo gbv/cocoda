@@ -52,7 +52,7 @@ import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).

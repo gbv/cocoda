@@ -110,7 +110,7 @@ import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import Minimizer from "./Minimizer"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * The mapping editor component.

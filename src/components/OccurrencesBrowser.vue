@@ -92,7 +92,7 @@ import Minimizer from "./Minimizer"
 import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicator from "./LoadingIndicator"
-var _ = require("lodash")
+import _ from "lodash"
 
 /**
  * The occurrences browser component.

@@ -235,7 +235,7 @@ import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
-var _ = require("lodash")
+import _ from "lodash"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
