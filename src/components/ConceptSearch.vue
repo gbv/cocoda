@@ -19,9 +19,10 @@
         @click.native="isOpen = searchQuery != ''"
         @keydown.down.native.prevent="onArrowDown"
         @keydown.up.native.prevent="onArrowUp"
+        @keydown.tab.native="closeResults"
         @keyup.enter.native="onEnter"
         @focus.native="isOpen = searchQuery != ''"
-        @blur.native="onBlur" />
+      />
       <!-- Results -->
       <div
         v-show="isOpen"
@@ -174,14 +175,13 @@ export default {
        * @type {string} - uri that is chosen
        */
       this.$emit("chooseUri", uri)
-      this.isOpen = false
+      this.closeResults()
       this.searchSelected = -1
       // Remove focus
       if (document.activeElement != document.body) document.activeElement.blur()
     },
-    onBlur() {
-      // Delay onBlur because it can interfere with chooseResult
-      _.delay(() => { this.isOpen = false }, 150)
+    closeResults() {
+      this.isOpen = false
     },
     /**
      * Loads autosuggest results from API.
