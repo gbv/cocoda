@@ -30,9 +30,9 @@
             :key="index" >
             <item-name
               :item="concept"
-              :is-link="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight)"
-              :is-highlighted="$util.compareConcepts(concept, isLeft ? selectedLeft : selectedRight)"
-              @click.native="$util.canConceptBeSelected(concept, isLeft ? schemeLeft : schemeRight) && chooseUri(concept, isLeft)" />
+              :is-link="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false])"
+              :is-highlighted="$util.compareConcepts(concept, isLeft ? selected.concept[true] : selected.concept[false])"
+              @click.native="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false]) && chooseUri(concept, isLeft)" />
             <!-- Delete button for concept -->
             <div
               class="button mappingConceptDelete fontSize-small fontWeight-heavy"
@@ -73,7 +73,7 @@
     <!-- Selecting of mapping type (in between source and target sides via flex order) -->
     <div class="mappingTypeSelection">
       <mapping-type-selection
-        v-show="schemeLeft != null || schemeRight != null"
+        v-show="selected.scheme[true] != null || selected.scheme[false] != null"
         :mapping="mapping" />
     </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
@@ -118,36 +118,6 @@ import _ from "lodash"
 export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, Minimizer, FontAwesomeIcon },
-  props: {
-    /**
-     * The selected concept from the left hand concept browser.
-     */
-    selectedLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected concept from the right hand concept browser.
-     */
-    selectedRight: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the left hand concept browser.
-     */
-    schemeLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the right hand concept browser.
-     */
-    schemeRight: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       mapping: this.$root.$data.mapping
@@ -175,8 +145,8 @@ export default {
      * Returns whether the add button should be enabled for a specific side
      */
     isAddButtonEnabled(isLeft) {
-      let concept = isLeft ? this.selectedLeft : this.selectedRight
-      if (!this.mapping.checkScheme(isLeft ? this.schemeLeft : this.schemeRight, isLeft)) {
+      let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
+      if (!this.mapping.checkScheme(isLeft ? this.selected.scheme[true] : this.selected.scheme[false], isLeft)) {
         return false
       }
       if (concept == null) {
@@ -197,8 +167,8 @@ export default {
      * Returns the reason why the add button is disabled
      */
     addButtonDisabledReason(isLeft) {
-      let concept = isLeft ? this.selectedLeft : this.selectedRight
-      if (!this.mapping.checkScheme(isLeft ? this.schemeLeft : this.schemeRight, isLeft)) {
+      let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
+      if (!this.mapping.checkScheme(isLeft ? this.selected.scheme[true] : this.selected.scheme[false], isLeft)) {
         return "Scheme does not match."
       }
       if (concept == null) {
@@ -216,8 +186,8 @@ export default {
       if (!this.isAddButtonEnabled(isLeft)) {
         return
       }
-      let concept = isLeft ? this.selectedLeft : this.selectedRight
-      this.mapping.add(concept, isLeft ? this.schemeLeft : this.schemeRight, isLeft)
+      let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
+      this.mapping.add(concept, isLeft ? this.selected.scheme[true] : this.selected.scheme[false], isLeft)
     },
     /**
      * Removes all concepts from one side of the mapping
@@ -229,7 +199,7 @@ export default {
      * Returns whether to show the scheme's label for a specific side
      */
     showScheme(isLeft) {
-      let chosenScheme = isLeft ? this.schemeLeft : this.schemeRight
+      let chosenScheme = isLeft ? this.selected.concept[true] : this.selected.concept[false]
       let mappingScheme = this.mapping.getScheme(isLeft)
       return !this.$util.compareSchemes(chosenScheme, mappingScheme)
     },

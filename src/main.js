@@ -1,5 +1,6 @@
 import Vue from "vue"
 import App from "./App"
+import store from "./store"
 
 Vue.config.productionTip = false
 
@@ -60,8 +61,36 @@ Vue.mixin({
   }
 })
 
+// Global mixin for selected schemes/concepts
+Vue.mixin({
+  computed: {
+    selected() {
+      return this.$store.state.selected
+    }
+  },
+  methods: {
+    setSelected(kind, isLeft, value) {
+      if (value) {
+        this.$store.commit({
+          type: "selected/set",
+          kind,
+          isLeft,
+          value
+        })
+      } else {
+        this.$store.commit({
+          type: "selected/clear",
+          kind,
+          isLeft
+        })
+      }
+    }
+  }
+})
+
 new Vue({
   el: "#app",
+  store,
   components: { App },
   data: {
     hoveredConcept: null,

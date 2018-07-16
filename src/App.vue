@@ -18,42 +18,48 @@
       <div class="flexbox-row">
 
         <!-- Concept components left side -->
-        <div class="browser">
+        <div
+          v-for="(isLeft, index) in [true, false]"
+          :key="'browser-'+index"
+          :class="{
+            order1: isLeft,
+            order5: !isLeft
+          }"
+          class="browser" >
           <!-- Concept scheme selection -->
           <div class="schemeSelectWrapper">
             <b-form-select
-              v-model="schemeSelectedLeft"
+              v-model="selected.scheme[isLeft]"
               :options="schemeOptions"
               class="schemeSelect fontWeight-heavy" />
             <div
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedLeft != null && conceptSelectedLeft != null"
+              v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
               class="button schemeSelectInfo fontSize-large"
-              @click="$refs.conceptTreeLeft.selected = null" >
+              @click="setSelected('concept', isLeft, null)" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedLeft != null"
+              v-show="selected.scheme[isLeft] != null"
               class="button schemeSelectInfo fontSize-large"
-              @click="clear(true)" >
+              @click="clear(isLeft)" >
               <font-awesome-icon icon="times-circle" />
             </div>
           </div>
           <!-- ConceptSearch -->
           <concept-search
-            v-show="schemeSelectedLeft != null"
-            :voc="schemeSelectedLeft"
+            v-show="selected.scheme[isLeft] != null"
+            :is-left="isLeft"
             class="conceptSearch"
-            @chooseUri="chooseUri(arguments[0], true)" />
+            @chooseUri="chooseUri(arguments[0], isLeft)" />
           <!-- ItemDetail and ConceptTree -->
           <div class="conceptBrowser">
             <!-- ItemDetail -->
             <item-detail
-              v-if="schemeSelectedLeft != null"
-              :item="conceptSelectedLeft || schemeSelectedLeft"
-              :is-left="true"
-              :scheme="schemeSelectedLeft"
+              v-if="selected.scheme[isLeft] != null"
+              :item="selected.concept[isLeft] || selected.scheme[isLeft]"
+              :is-left="isLeft"
               :settings="itemDetailSettings.left"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
               @chooseUri="chooseUri"
@@ -62,16 +68,14 @@
             <resizing-slider />
             <!-- ConceptTree -->
             <concept-tree
-              v-if="schemeSelectedLeft != null"
-              ref="conceptTreeLeft"
-              :voc-selected="schemeSelectedLeft"
-              :is-left="true"
+              v-if="selected.scheme[isLeft] != null"
+              :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
+              :is-left="isLeft"
               class="mainComponent conceptBrowserItem conceptBrowserItemTree"
-              @selectedConcept="conceptSelectedLeft = $event"
             />
             <!-- Placeholder -->
             <div
-              v-if="schemeSelectedLeft == null"
+              v-if="selected.scheme[isLeft] == null"
               class="mainComponent conceptBrowserItem placeholderComponent" >
               <p class="fontWeight-heavy">
                 Scheme quick selection
@@ -82,7 +86,7 @@
                 ·<br>
                 <a
                   href=""
-                  @click.prevent="schemeSelectedLeft = scheme" >
+                  @click.prevent="setSelected('scheme', isLeft, scheme)" >
                   {{ scheme.prefLabel.de || scheme.prefLabel.en }}
                 </a>
               </p>
@@ -91,18 +95,16 @@
         </div>
 
         <!-- Slider -->
-        <resizing-slider :is-column="true" />
+        <resizing-slider
+          :is-column="true"
+          class="order2" />
 
         <!-- Mapping tools and occurrences browser -->
-        <div class="mappingTool">
+        <div class="mappingTool order3">
           <div class="mappingToolItem mainComponent">
             <!-- MappingEditor -->
             <mapping-editor
-              v-if="schemeSelectedLeft || schemeSelectedRight"
-              :selected-left="conceptSelectedLeft"
-              :selected-right="conceptSelectedRight"
-              :scheme-left="schemeSelectedLeft"
-              :scheme-right="schemeSelectedRight"
+              v-if="selected.scheme[true] || selected.scheme[false]"
               @chooseUri="chooseUri"
             />
             <!-- Placeholder -->
@@ -113,11 +115,7 @@
           <div class="mappingToolItem mainComponent">
             <!-- MappingBrowser -->
             <mapping-browser
-              v-if="schemeSelectedLeft || schemeSelectedRight"
-              :selected-left="conceptSelectedLeft"
-              :selected-right="conceptSelectedRight"
-              :scheme-left="schemeSelectedLeft"
-              :scheme-right="schemeSelectedRight"
+              v-if="selected.scheme[true] || selected.scheme[false]"
               @chooseUri="chooseUri"
             />
             <!-- Placeholder -->
@@ -134,11 +132,7 @@
           <div class="mappingToolItem mainComponent">
             <!-- OccurrencesBrowser -->
             <occurrences-browser
-              v-if="schemeSelectedLeft || schemeSelectedRight"
-              :selected-left="conceptSelectedLeft"
-              :selected-right="conceptSelectedRight"
-              :scheme-left="schemeSelectedLeft"
-              :scheme-right="schemeSelectedRight"
+              v-if="selected.scheme[true] || selected.scheme[false]"
               @chooseUri="chooseUri"
             />
             <!-- Placeholder -->
@@ -147,80 +141,10 @@
         </div>
 
         <!-- Slider -->
-        <resizing-slider :is-column="true" />
+        <resizing-slider
+          :is-column="true"
+          class="order4" />
 
-        <!-- Concept components right side -->
-        <div class="browser">
-          <!-- Concept scheme selection -->
-          <div class="schemeSelectWrapper">
-            <b-form-select
-              v-model="schemeSelectedRight"
-              :options="schemeOptions"
-              class="schemeSelect fontWeight-heavy" />
-            <div
-              v-b-tooltip.hover="{ title: 'show info about scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedRight != null && conceptSelectedRight != null"
-              class="button schemeSelectInfo fontSize-large"
-              @click="$refs.conceptTreeRight.selected = null" >
-              <font-awesome-icon icon="info-circle" />
-            </div>
-            <div
-              v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
-              v-show="schemeSelectedRight != null"
-              class="button schemeSelectInfo fontSize-large"
-              @click="clear(false)" >
-              <font-awesome-icon icon="times-circle" />
-            </div>
-          </div>
-          <!-- ConceptSearch -->
-          <concept-search
-            v-show="schemeSelectedRight != null"
-            :voc="schemeSelectedRight"
-            class="conceptSearch"
-            @chooseUri="chooseUri(arguments[0], false)" />
-          <!-- ItemDetail and ConceptTree -->
-          <div class="conceptBrowser">
-            <!-- ItemDetail -->
-            <item-detail
-              v-if="schemeSelectedRight != null"
-              :item="conceptSelectedRight || schemeSelectedRight"
-              :is-left="false"
-              :scheme="schemeSelectedRight"
-              :settings="itemDetailSettings.right"
-              class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
-              @chooseUri="chooseUri"
-            />
-            <!-- Slider -->
-            <resizing-slider />
-            <!-- ConceptTree -->
-            <concept-tree
-              v-if="schemeSelectedRight != null"
-              ref="conceptTreeRight"
-              :voc-selected="schemeSelectedRight"
-              :is-left="false"
-              class="mainComponent conceptBrowserItem conceptBrowserItemTree"
-              @selectedConcept="conceptSelectedRight = $event"
-            />
-            <!-- Placeholder -->
-            <div
-              v-if="schemeSelectedRight == null"
-              class="mainComponent conceptBrowserItem placeholderComponent">
-              <p class="fontWeight-heavy">
-                Scheme quick selection
-              </p>
-              <p
-                v-for="scheme in favoriteSchemes"
-                :key="scheme.uri" >
-                ·<br>
-                <a
-                  href=""
-                  @click.prevent="schemeSelectedRight = scheme" >
-                  {{ scheme.prefLabel.de || scheme.prefLabel.en }}
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -258,10 +182,6 @@ export default {
   },
   data () {
     return {
-      conceptSelectedLeft: null,
-      conceptSelectedRight: null,
-      schemeSelectedLeft: null,
-      schemeSelectedRight: null,
       schemes: this.$api.schemes,
       itemDetailSettings: {
         left: {
@@ -300,14 +220,22 @@ export default {
         }
       }
       return schemes
+    },
+    // Using ref in v-for results in an array.
+    // FIXME: Should be removed after references to conceptTree are not needed anymore.
+    conceptTreeLeft() {
+      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
+    },
+    conceptTreeRight() {
+      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
     }
   },
   methods: {
     refresh(key) {
       if (key == "minimize") {
         // Minimizer causes a refresh, therefore recheck item detail settings
-        this.itemDetailSettings.left.showTopConceptsInScheme = this.$refs.conceptTreeLeft != null && this.$refs.conceptTreeLeft.$el.dataset.minimized == "1"
-        this.itemDetailSettings.right.showTopConceptsInScheme = this.$refs.conceptTreeRight != null && this.$refs.conceptTreeRight.$el.dataset.minimized == "1"
+        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft != null && this.conceptTreeLeft.$el.dataset.minimized == "1"
+        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight != null && this.conceptTreeRight.$el.dataset.minimized == "1"
       }
     },
     /**
@@ -315,13 +243,9 @@ export default {
      */
     clear(isLeft) {
       if (isLeft) {
-        this.$refs.conceptTreeLeft.selected = null
-        this.conceptSelectedLeft = null
-        this.schemeSelectedLeft = null
+        this.setSelected("scheme", true, null)
       } else {
-        this.$refs.conceptTreeRight.selected = null
-        this.conceptSelectedRight = null
-        this.schemeSelectedRight = null
+        this.setSelected("scheme", false, null)
       }
     },
     chooseUri(concept, isLeft) {
@@ -331,16 +255,12 @@ export default {
       if (typeof concept === "object") {
         if (this.$util.isScheme(concept)) {
           // Loading scheme by setting selected to null
-          if (isLeft) {
-            this.$refs.conceptTreeLeft.selected = null
-          } else {
-            this.$refs.conceptTreeRight.selected = null
-          }
+          this.setSelected("concept", isLeft, null)
           return
         }
         uri = concept.uri
         // Check if scheme needs to be selected as well
-        if (concept.inScheme && (isLeft && !this.schemeSelectedLeft || !isLeft && !this.schemeSelectedRight)) {
+        if (concept.inScheme && (isLeft && !this.selected.scheme[true] || !isLeft && !this.selected.scheme[false])) {
           let conceptScheme = concept.inScheme[0]
           let newScheme = null
           // Find in existing list of schemes
@@ -353,11 +273,7 @@ export default {
           if (newScheme) {
             // introduce delay so that the ConceptTree component has time to load
             delay = 200
-            if (isLeft) {
-              this.schemeSelectedLeft = newScheme
-            } else {
-              this.schemeSelectedRight = newScheme
-            }
+            this.setSelected("scheme", isLeft, newScheme)
           }
         }
       } else {
@@ -365,7 +281,7 @@ export default {
       }
       let vm = this
       _.delay(function() {
-        isLeft ? vm.$refs["conceptTreeLeft"].chooseFromUri(uri) : vm.$refs["conceptTreeRight"].chooseFromUri(uri)
+        isLeft ? vm.conceptTreeLeft.chooseFromUri(uri) : vm.conceptTreeRight.chooseFromUri(uri)
       }, delay)
     }
   },

@@ -12,12 +12,9 @@
         v-for="(concept, index) in tree"
         :key="index"
         :concept="concept"
-        :selected="selected"
         :depth="0"
         :index="index"
-        :is-left="isLeft"
-        :scheme="vocSelected"
-        @selected="selected = $event" />
+        :is-left="isLeft" />
     </div>
     <div
       v-if="tree.length == 0 && !loading"
@@ -45,13 +42,6 @@ export default {
   },
   props: {
     /**
-     * The currently selected scheme as an object.
-     */
-    vocSelected: {
-      type: Object,
-      default: null
-    },
-    /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
@@ -62,37 +52,36 @@ export default {
   data () {
     return {
       tree: [],
-      selected: null,
       loading: false,
       chooseFromUriID: null,
+    }
+  },
+  computed: {
+    schemeSelected() {
+      return this.selected.scheme[this.isLeft]
+    },
+    conceptSelected() {
+      return this.selected.concept[this.isLeft]
     }
   },
   watch: {
     /**
      * Resets the tree when new vocabulary is chosen.
      */
-    vocSelected: function(newValue, oldValue) {
+    schemeSelected: function(newValue, oldValue) {
       if (oldValue != newValue) {
         this.reset()
       }
     },
-    selected: function(newValue) {
-      /**
-       * Event when a concept is selected.
-       *
-       * @event selectedConcept
-       * @type {object}
-       */
-      this.$emit("selectedConcept", newValue)
-      // Load children for selected if it is a concept
-      if (this.$util.isConcept(this.selected)) {
-        this.$api.objects.narrower(this.selected)
+    conceptSelected() {
+      if (this.$util.isConcept(this.conceptSelected)) {
+        this.$api.objects.narrower(this.conceptSelected)
       }
     }
   },
   created() {
     // Reset tree if scheme is already chosen
-    if (this.vocSelected) {
+    if (this.schemeSelected) {
       this.reset()
     }
   },
@@ -109,14 +98,14 @@ export default {
       this.loading = true
 
       // 1. Get concept object
-      this.$api.objects.get(uri, this.vocSelected.uri).then(concept => {
+      this.$api.objects.get(uri, this.schemeSelected.uri).then(concept => {
         if (this.chooseFromUriID != id) return
         if (concept == null) {
           // Show error message for nonexisting concept
           this.$root.alert("Could not load concept. This is likely caused by conversion failure of a mapping.")
           return
         }
-        this.selected = concept
+        this.setSelected("concept", this.isLeft, concept)
         // 2. Load ancestors
         return this.$api.objects.ancestors(concept)
       }).then(concept => {
@@ -169,12 +158,13 @@ export default {
      * Resets the concept tree and loads top concepts for new vocabulary.
      */
     reset: function() {
+      console.log("ConceptTree: reset", this.isLeft, this.schemeSelected)
       this.tree = []
-      this.selected = null
+      this.setSelected("concept", this.isLeft, null)
       this.loading = true
       this.chooseFromUriID = null
-      this.$api.objects.top(this.vocSelected).then(() => {
-        this.tree = this.vocSelected.TOPCONCEPTS
+      this.$api.objects.top(this.schemeSelected).then(() => {
+        this.tree = this.schemeSelected.TOPCONCEPTS
         this.loading = false
       })
     }

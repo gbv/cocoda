@@ -8,10 +8,10 @@
       <div
         v-show="settings.showSchemeInAncestors" >
         <item-name
-          :item="scheme"
+          :item="selected.scheme[isLeft]"
           :is-link="true"
           font-size="small"
-          @click.native="chooseUri(scheme, isLeft)" />
+          @click.native="chooseUri(selected.scheme[isLeft], isLeft)" />
       </div>
       <!-- Ancestors -->
       <div
@@ -156,13 +156,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * Reference to the scheme
-     */
-    scheme: {
-      type: Object,
-      default: null
     },
     /**
      * Settings - see `ItemDetail`

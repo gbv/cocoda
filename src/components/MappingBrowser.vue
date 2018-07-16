@@ -3,7 +3,7 @@
     <!-- Minimizer allows component to get minimized -->
     <minimizer text="Mapping Browser" />
     <div
-      v-show="schemeLeft != null || schemeRight != null"
+      v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
       <div
         v-if="items.length > 0"
@@ -26,10 +26,10 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.canConceptBeSelected(concept, schemeLeft)"
-              :is-highlighted="$util.compareConcepts(concept, selectedLeft)"
+              :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
+              :is-highlighted="$util.compareConcepts(concept, selected.concept[true])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, schemeLeft) && chooseUri(concept, true)" />
+              @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && chooseUri(concept, true)" />
           </span>
           <span
             slot="targetConcepts"
@@ -40,10 +40,10 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.canConceptBeSelected(concept, schemeRight)"
-              :is-highlighted="$util.compareConcepts(concept, selectedRight)"
+              :is-link="$util.canConceptBeSelected(concept, selected.scheme[false])"
+              :is-highlighted="$util.compareConcepts(concept, selected.concept[false])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, schemeRight) && chooseUri(concept, false)" />
+              @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && chooseUri(concept, false)" />
           </span>
           <span
             slot="type"
@@ -116,36 +116,6 @@ import Minimizer from "./Minimizer"
 export default {
   name: "MappingBrowser",
   components: { ItemName, FontAwesomeIcon, Minimizer },
-  props: {
-    /**
-     * The selected concept from the left hand concept browser.
-     */
-    selectedLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected concept from the right hand concept browser.
-     */
-    selectedRight: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the left hand concept browser.
-     */
-    schemeLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the right hand concept browser.
-     */
-    schemeRight: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */
@@ -165,7 +135,7 @@ export default {
           id: "showSelected",
           label: "Show Only Mappings To Selected Scheme",
           showCondition(vm) {
-            return vm.schemeLeft != null && vm.schemeRight != null
+            return vm.selected.scheme[true] != null && vm.selected.scheme[false] != null
           }
         }
       },
@@ -181,11 +151,11 @@ export default {
       let items = []
       let conceptList = [
         {
-          concept: this.selectedLeft,
+          concept: this.selected.concept[true],
           fromTo: "from"
         },
         {
-          concept: this.selectedRight,
+          concept: this.selected.concept[false],
           fromTo: "to"
         }
       ]
@@ -212,21 +182,21 @@ export default {
               // Filter mappings depending on selected option
               if (this.selectedOption.id == this.mappingOptions.showSelected.id) {
                 // Only show if source and target schemes match with selected schemes
-                if(!this.$util.compareSchemes(mapping.fromScheme, this.schemeLeft) || !this.$util.compareSchemes(mapping.toScheme, this.schemeRight)) {
+                if(!this.$util.compareSchemes(mapping.fromScheme, this.selected.scheme[true]) || !this.$util.compareSchemes(mapping.toScheme, this.selected.scheme[false])) {
                   continue
                 }
               }
               // Highlight if selected concepts are in mapping and add inScheme to each concept
               let leftInSource = false
               for (let concept of item.sourceConcepts) {
-                if (this.selectedLeft && concept.uri == this.selectedLeft.uri) {
+                if (this.selected.concept[true] && concept.uri == this.selected.concept[true].uri) {
                   leftInSource = true
                 }
                 concept.inScheme = concept.inScheme || [mapping.fromScheme]
               }
               let rightInSource = false
               for (let concept of item.targetConcepts) {
-                if (this.selectedRight && concept.uri == this.selectedRight.uri) {
+                if (this.selected.concept[false] && concept.uri == this.selected.concept[false].uri) {
                   rightInSource = true
                 }
                 concept.inScheme = concept.inScheme || [mapping.toScheme]

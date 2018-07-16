@@ -10,7 +10,6 @@
       <component
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
-        :scheme="scheme"
         :is-left="isLeft"
         :settings="internalSettings"
         @chooseUri="chooseUri" />
@@ -79,13 +78,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * Reference to the scheme
-     */
-    scheme: {
-      type: Object,
-      default: null
     },
     /**
      * Settings - An object with a subset of the following properties:

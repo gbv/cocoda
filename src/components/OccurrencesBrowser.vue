@@ -3,7 +3,7 @@
     <!-- Minimizer allows component to get minimized -->
     <minimizer text="Occurrences Browser" />
     <div
-      v-show="schemeLeft != null || schemeRight != null"
+      v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       class="table-wrapper" >
       <!-- Occurrences table -->
       <b-table
@@ -23,9 +23,9 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="data.value && $util.canConceptBeSelected(data.value, schemeLeft)"
-            :is-highlighted="$util.compareConcepts(data.value, selectedLeft)"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, schemeLeft) && chooseUri(data.value, true)" />
+            :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
+            :is-highlighted="$util.compareConcepts(data.value, selected.concept[true])"
+            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && chooseUri(data.value, true)" />
         </span>
         <span
           slot="to"
@@ -34,9 +34,9 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="data.value && $util.canConceptBeSelected(data.value, schemeRight)"
-            :is-highlighted="$util.compareConcepts(data.value, selectedRight)"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, schemeRight) && chooseUri(data.value, false)" />
+            :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
+            :is-highlighted="$util.compareConcepts(data.value, selected.concept[false])"
+            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && chooseUri(data.value, false)" />
         </span>
         <span
           slot="fromScheme"
@@ -96,36 +96,6 @@ import _ from "lodash"
 export default {
   name: "OccurrencesBrowser",
   components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicatorFull },
-  props: {
-    /**
-     * The selected concept from the left hand concept browser.
-     */
-    selectedLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected concept from the right hand concept browser.
-     */
-    selectedRight: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the left hand concept browser.
-     */
-    schemeLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the right hand concept browser.
-     */
-    schemeRight: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       /** Current list of occurrences */
@@ -191,6 +161,13 @@ export default {
           sortable: false
         }
       ]
+    },
+    // Only for watching!
+    selectedLeft() {
+      return this.selected.concept[true]
+    },
+    selectedRight() {
+      return this.selected.concept[false]
     }
   },
   watch: {
@@ -215,10 +192,10 @@ export default {
         let fromTos = ["to", "from"]
         let fromToMap = []
         for (let member of occurrence.memberSet) {
-          if (this.$util.compareConcepts(member, this.selectedLeft)) {
+          if (this.$util.compareConcepts(member, this.selected.concept[true])) {
             fromToMap[member.uri] = "from"
             _.pull(fromTos, "from")
-          } else if (this.$util.compareConcepts(member, this.selectedRight)) {
+          } else if (this.$util.compareConcepts(member, this.selected.concept[false])) {
             fromToMap[member.uri] = "to"
             _.pull(fromTos, "to")
           }
@@ -280,7 +257,7 @@ export default {
         if (currentId != this.loadingId) return
         let uris = []
         let promises = []
-        for (let [scheme, concept] of [[this.schemeLeft, this.selectedLeft], [this.schemeRight, this.selectedRight]]) {
+        for (let [scheme, concept] of [[this.selected.scheme[true], this.selected.concept[true]], [this.selected.scheme[true], this.selected.concept[false]]]) {
           if (concept && this.isSupported(scheme)) {
             uris.push(concept.uri)
           }

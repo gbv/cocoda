@@ -35,9 +35,9 @@
       </div>
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
-        v-show="mapping.canAdd(concept, scheme, isLeft)"
+        v-show="mapping.canAdd(concept, selected.scheme[isLeft], isLeft)"
         class="addToMapping fontWeight-heavy"
-        @click="mapping.add(concept, scheme, isLeft)"
+        @click="mapping.add(concept, selected.scheme[isLeft], isLeft)"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)" >
         <font-awesome-icon icon="plus-circle" />
@@ -51,11 +51,9 @@
         v-for="(child, index) in concept.narrower"
         :key="index"
         :concept="child"
-        :selected="selected"
         :depth="depth + 1"
         :index="index"
         :is-left="isLeft"
-        :scheme="scheme"
         @selected="select($event)" />
     </div>
     <!-- Small loading indicator when loading narrower -->
@@ -89,13 +87,6 @@ export default {
       default: null
     },
     /**
-     * The currently selected concept.
-     */
-    selected: {
-      type: Object,
-      default: null
-    },
-    /**
      * The depth of the current item.
      */
     depth: {
@@ -115,13 +106,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * The currently selected scheme as an object.
-     */
-    scheme: {
-      type: Object,
-      default: null
     }
   },
   data () {
@@ -146,7 +130,7 @@ export default {
       return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.concept)
     },
     isSelected() {
-      return this.selected != null ? this.selected.uri == this.concept.uri : false
+      return this.selected.concept[this.isLeft] != null ? this.selected.concept[this.isLeft].uri == this.concept.uri : false
     },
     childrenLoaded() {
       return !this.concept.narrower || !this.concept.narrower.includes(null)
@@ -191,13 +175,7 @@ export default {
      * Triggers a selected event.
      */
     select(concept) {
-      /**
-       * Event that is triggered when concept is selected.
-       *
-       * @event selected
-       * @type {object} - concept object that is selected
-       */
-      this.$emit("selected", concept)
+      this.setSelected("concept", this.isLeft, concept)
     },
     /**
      * Deals with a click on a concept.
