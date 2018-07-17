@@ -5,6 +5,9 @@ console.log("objects module")
 
 // initial state
 const state = {
+  /**
+   * Maps URIs to objects (concept schemes and concepts).
+   */
   map: new Map()
 }
 
@@ -13,6 +16,14 @@ const mutations = {
 
 }
 
+/**
+ * Util wrapper to compare two URIs from state
+ * FIXME: Remove because it's only used in one place.
+ *
+ * @param {*} state
+ * @param {*} uri1
+ * @param {*} uri2
+ */
 function compare(state, uri1, uri2) {
   return util.compareObjects(state.map.get(uri1), state.map.get(uri2))
 }
@@ -20,7 +31,16 @@ function compare(state, uri1, uri2) {
 // actions
 const actions = {
 
-  save ({ state }, { object, force }) {
+  /**
+   * Saves an object into the map if it doesn't exist.
+   *
+   * Payload object: { object, force }
+   * - object: object to save in map
+   * - force: force saving if object already exists (default: false)
+   *
+   * @returns a boolean whether the object was saved
+   */
+  save ({ state }, { object, force = false }) {
     let uris = util.getAllUris(object)
     let save = true
     // First, check if any if the URIs is already in the map
@@ -29,10 +49,6 @@ const actions = {
     }
     // Only save if it was not found
     if (save) {
-      // Add to map
-      for (let uri of uris) {
-        state.map.set(uri, object)
-      }
       // Add all possible properties to ensure reactivity in Vue
       if (util.isConcept(object)) {
         object.DETAILSLOADED = false
@@ -83,10 +99,23 @@ const actions = {
         object.prefLabel = object.prefLabel || {}
         object.publisher = object.publisher || null
       }
+      // Add to map
+      for (let uri of uris) {
+        state.map.set(uri, object)
+      }
     }
     return save
   },
 
+  /**
+   * Returns a Promise of an object for an URI. Either gets it from the map or loads it using the API.
+   *
+   * Payload object: { uri, schemeUri }
+   * - uri: URI to get from map
+   * - schemeUri: URI from scheme if it's a concept (needed to determine provider if it's necessary to load from API)
+   *
+   * @returns a Promise of the desired object (or null if it wasn't found)
+   */
   get({ state, dispatch }, { uri, schemeUri }) {
     if (state.map.has(uri)) {
       return Promise.resolve(state.map.get(uri))
@@ -124,6 +153,14 @@ const actions = {
     }
   },
 
+  /**
+   * Loads top concepts for scheme
+   *
+   * Payload object: { scheme }
+   * - scheme: scheme to load top concepts for
+   *
+   * @returns a Promise with the updated scheme
+   */
   top({ state, dispatch }, { scheme }) {
     if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
       return Promise.resolve(scheme)
@@ -150,8 +187,10 @@ const actions = {
         }
         // Set ancestors to []
         for (let concept of top) {
+          // TODO: Use mutation
           concept.ancestors = []
         }
+        // TODO: Use mutation
         scheme.TOPCONCEPTS = util.sortConcepts(top)
         return scheme
       }).catch(error => {
@@ -161,6 +200,14 @@ const actions = {
     }
   },
 
+  /**
+   * Loads narrower concepts for an object if necessary.
+   *
+   * Payload object: { object }
+   * - object: object to load narrower for
+   *
+   * @returns a Promise with the updated object
+   */
   narrower({ state, dispatch }, { object }) {
     if (object.narrower && !object.narrower.includes(null)) {
       return Promise.resolve(object)
@@ -195,16 +242,20 @@ const actions = {
         // Set ancestors
         for (let child of narrower) {
           if (!object.ancestors || object.ancestors.includes(null)) {
+            // TODO: Use mutation
             child.ancestors = [null]
           } else {
+            // TODO: Use mutation
             child.ancestors = object.ancestors.concat([object])
           }
         }
         // Set broader
         for (let child of narrower) {
+          // TODO: Use mutation
           child.broader = [object]
         }
         // Save narrower
+        // TODO: Use mutation
         object.narrower = util.sortConcepts(narrower)
         return object
       }).catch(error => {
@@ -214,6 +265,14 @@ const actions = {
     }
   },
 
+  /**
+   * Loads ancestor concepts for an object if necessary
+   *
+   * Payload object: { object }
+   * - object: object to load ancestors for
+   *
+   * @returns a Promise with the updated object
+   */
   ancestors({ state, dispatch }, { object }) {
     if (object.ancestors && !object.ancestors.includes(null)) {
       return Promise.resolve(object)
@@ -247,11 +306,14 @@ const actions = {
         // Set ancestors and broader of ancestors
         let currentAncestors = []
         for (let ancestor of ancestors) {
+          // TODO: Use mutation
           ancestor.ancestors = currentAncestors.slice()
+          // TODO: Use mutation
           ancestor.broader = currentAncestors.length > 0 ? [currentAncestors[currentAncestors.length - 1]] : []
           currentAncestors.push(ancestor)
         }
         // Save ancestors
+        // TODO: Use mutation
         object.ancestors = ancestors
         return object
       }).catch(error => {
@@ -261,6 +323,14 @@ const actions = {
     }
   },
 
+  /**
+   * Loads detailed properties for an object if necessary
+   *
+   * Payload object: { object }
+   * - object: object to load details for
+   *
+   * @returns a Promise with the updated object
+   */
   details(context, { object }) {
     if (!object || object.DETAILSLOADED) {
       return Promise.resolve(object)
@@ -271,9 +341,11 @@ const actions = {
           // Integrate detail into object
           for (let prop of Object.keys(detail)) {
             if (object[prop] == null) {
+              // TODO: Use mutation
               object[prop] = detail[prop]
             }
           }
+          // TODO: Use mutation
           object.DETAILSLOADED = true
           return object
         } else {
