@@ -1,14 +1,28 @@
 import api from "../../api"
 import util from "../../util"
 
-console.log("objects module")
-
 // initial state
 const state = {
   /**
    * Maps URIs to objects (concept schemes and concepts).
    */
   map: new Map()
+}
+
+// getters
+const getters = {
+  /**
+   * Returns an object in the map if it exists
+   */
+  getObject: (state) => (object) => {
+    let uris = util.getAllUris(object)
+    for (let uri of uris) {
+      if (state.map.has(uri)) {
+        return state.map.get(uri)
+      }
+    }
+    return null
+  }
 }
 
 // mutations
@@ -363,6 +377,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 }

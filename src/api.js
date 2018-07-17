@@ -17,8 +17,6 @@ import config from "./config"
 import util from "./util"
 import store from "./store"
 
-console.log("beginning of api")
-
 /**
  * An object to provide all functionality in regards to objects (schemes, concepts)
  */
@@ -122,123 +120,19 @@ const allProperties = "*"
 
 let schemes = []
 
-// Initialize terminology providers
-let schemeToTerminologyProvider = {}
-/**
- * Uses schemeToTerminologyProvider to return the terminology provider for a specific scheme.
- *
- * @param {object} scheme
- */
-let terminologyProviderForScheme = function(scheme) {
-  let defaultProvider = config.terminologyProviders[0]
-  if (!scheme) return defaultProvider
-  for(let uri of [scheme.uri].concat(scheme.identifier || [])) {
-    // Workaround for http vs. https problem
-    let uri2
-    if (uri.substring(0, 5) == "https") {
-      uri2 = uri.replace("https", "http")
-    } else {
-      uri2 = uri.replace("http", "https")
-    }
-    for (let uri3 of [uri, uri2]) {
-      // Workaround for / vs. no / problem
-      let uri4
-      if (uri3.endsWith("/")) {
-        uri4 = uri3.substring(0, uri3.length - 1)
-      } else {
-        uri4 = uri3 + "/"
-      }
-      for (let uri5 of [uri3, uri4]) {
-        if (schemeToTerminologyProvider[uri5]) {
-          return schemeToTerminologyProvider[uri5]
-        }
-      }
-    }
-  }
-  // Default to the first terminology provider in config
-  return defaultProvider
-}
-/**
- * Saves the scheme to provider association for all schemes in provider.voc (need to be loaded before).
- *
- * @param {object} provider
- */
-let saveSchemeAssociationForProvider = function(provider) {
-  // Schemes need to be loaded first
-  if(!Array.isArray(provider.voc)) {
-    throw "Provider's vocabularies need to be loaded before using saveSchemeAssociationForProvider."
-  }
-  // Save assignment from scheme to provider
-  for(let scheme of provider.voc) {
-    let uris = util.getAllUris(scheme)
-    // Check if any of the scheme's URIs have already been saved
-    // Priorities can be set in the config file. Just add a new property "priority" to the providers. Default is 0.
-    let otherProvider
-    for (let uri of uris) {
-      if (Object.keys(schemeToTerminologyProvider).includes(uri)) {
-        otherProvider = schemeToTerminologyProvider[uri]
-        break
-      }
-    }
-    if (otherProvider) {
-      let prio = provider.priority || 0
-      let otherPrio = otherProvider.priority || 0
-      if (otherPrio > prio) {
-        // skip this scheme
-        continue
-      } else if (prio > otherPrio) {
-        // remove existing scheme from schemes and schemeToTerminologyProvider
-        let otherSchemeIndex = -1
-        for (let index = 0; index < schemes.length; index += 1) {
-          if (util.compareSchemes(scheme, schemes[index])) {
-            otherSchemeIndex = index
-            break
-          }
-        }
-        let otherUris = util.getAllUris(schemes[otherSchemeIndex])
-        schemes.splice(otherSchemeIndex, 1)
-        for (let uri of otherUris) {
-          delete schemeToTerminologyProvider[uri]
-        }
-      } else {
-        // same prio, show warning and skip
-        console.warn("Found two identical schemes from different providers with same priorities, skipping...", provider, otherProvider)
-        continue
-      }
-    }
-
-    for(let uri of uris) {
-      schemeToTerminologyProvider[uri] = provider
-    }
-    // Add scheme specific custom properties
-    scheme.DETAILSLOADED = false
-    scheme.TOPCONCEPTS = [null]
-    scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
-    schemes.push(scheme)
-    // Force save scheme in new API
-    // objects.save(scheme, true)
-    let object = scheme, force = true
-    store.dispatch({
-      type: "objects/save",
-      object,
-      force
-    })
-  }
-}
-
 function init() {
   // Prepare all terminology providers
   for (let provider of config.terminologyProviders) {
-    let url = provider.url || null
+    let url = provider.url || null, saveSchemePromise = Promise.resolve(null)
     if(!Array.isArray(provider.voc)) {
       // Load schemes
       let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
       if (vocEndpoint) {
-        get(vocEndpoint)
+        saveSchemePromise = get(vocEndpoint)
           .then(function(data) {
             if (Array.isArray(data)) {
               provider.voc = data
-              saveSchemeAssociationForProvider(provider)
+              return provider
             } else {
               console.warn("Couldn't load schemes for provider", provider)
             }
@@ -246,7 +140,7 @@ function init() {
         // TODO: - error handling
       }
     } else {
-      saveSchemeAssociationForProvider(provider)
+      saveSchemePromise = Promise.resolve(provider)
     }
     if (!provider.data) {
       provider.data = url ? url + "/data" : null
@@ -263,6 +157,47 @@ function init() {
     if (!provider.narrower) {
       provider.narrower = url ? url + "/narrower" : null
     }
+    // Save scheme in store and in schemes array
+    saveSchemePromise.then(provider => {
+      if (!provider || !provider.voc) return
+      provider.voc.forEach(scheme => {
+        // Set provider for scheme
+        scheme.PROVIDER = provider
+        // Add scheme specific custom properties
+        scheme.DETAILSLOADED = false
+        scheme.TOPCONCEPTS = [null]
+        scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
+        // Check if scheme is already in store
+        let otherScheme = store.getters["objects/getObject"](scheme), prio, otherPrio, override = false
+        // let otherScheme = null, prio, otherPrio
+        if (otherScheme) {
+          prio = provider.prio || 0
+          otherPrio = otherScheme.provider ? (otherScheme.provider.priority || 0) : -1
+          override = otherPrio < prio
+        }
+        if (!otherScheme || override){
+          if (override) {
+            // Find and remove scheme from schemes array
+            let otherSchemeIndex = -1
+            for (let index = 0; index < schemes.length; index += 1) {
+              if (util.compareSchemes(scheme, schemes[index])) {
+                otherSchemeIndex = index
+                break
+              }
+            }
+            schemes.splice(otherSchemeIndex, 1)
+          }
+          // Force save into store
+          store.dispatch({
+            type: "objects/save",
+            object: scheme,
+            force: true
+          })
+          // Save into schemes array
+          schemes.push(scheme)
+        }
+      })
+    })
   }
 }
 
@@ -282,7 +217,7 @@ function token() {
  * @param {axios.cancelToken} cancelToken
  */
 function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
-  let provider = terminologyProviderForScheme(scheme)
+  let provider = scheme.PROVIDER
   let url = provider ? provider.data : null
   if (!url) {
     return Promise.resolve([])
@@ -305,7 +240,7 @@ function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
  * @param {axios.cancelToken} cancelToken
  */
 function narrower(scheme, uri, properties = defaultProperties, cancelToken = null) {
-  let provider = terminologyProviderForScheme(scheme)
+  let provider = scheme.PROVIDER
   let url = provider ? provider.narrower : null
   if (!url) {
     return Promise.resolve([])
@@ -329,7 +264,7 @@ function narrower(scheme, uri, properties = defaultProperties, cancelToken = nul
  * @param {axios.cancelToken} cancelToken
  */
 function ancestors(scheme, uri, properties = defaultProperties, cancelToken = null) {
-  let provider = terminologyProviderForScheme(scheme)
+  let provider = scheme.PROVIDER
   let url = provider ? provider.ancestors : null
   if (!url) {
     return Promise.resolve([])
@@ -354,7 +289,7 @@ function ancestors(scheme, uri, properties = defaultProperties, cancelToken = nu
  * @param {*} cancelToken
  */
 function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", cancelToken = null) {
-  let provider = terminologyProviderForScheme(scheme)
+  let provider = scheme.PROVIDER
   let url = provider ? provider.suggest : null
   if (!url) {
     return Promise.resolve([])
@@ -382,7 +317,7 @@ function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", ca
  * @param {*} cancelToken
  */
 function top(scheme, properties = defaultProperties, cancelToken = null) {
-  let provider = terminologyProviderForScheme(scheme)
+  let provider = scheme.PROVIDER
   let url = provider ? provider.top : null
   if (!url || !scheme.uri) {
     return Promise.resolve([])
@@ -470,7 +405,5 @@ function mappings(params) {
     return response.data
   })
 }
-
-console.log("end of api")
 
 export default { init, data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, schemes, mappings, objects }
