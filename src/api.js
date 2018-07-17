@@ -15,14 +15,14 @@
 import axios from "axios"
 import config from "./config"
 import util from "./util"
+import store from "./store"
+
+console.log("beginning of api")
 
 /**
  * An object to provide all functionality in regards to objects (schemes, concepts)
  */
 let objects = {
-
-  // This maps object's URIs to their respective object
-  map: new Map(),
 
   /**
    * Saves an object into the map if it doesn't exist.
@@ -33,70 +33,11 @@ let objects = {
    * @returns a boolean whether the object was saved
    */
   save(object, force = false) {
-    let uris = util.getAllUris(object)
-    let save = true
-    // First, check if any if the URIs is already in the map
-    for (let uri of uris) {
-      save = save && (!this.map.has(uri) || force)
-    }
-    // Only save if it was not found
-    if (save) {
-      // Add to map
-      for (let uri of uris) {
-        this.map.set(uri, object)
-      }
-      // Add all possible properties to ensure reactivity in Vue
-      if (util.isConcept(object)) {
-        object.DETAILSLOADED = false
-        object.BROADERLOADED = false
-        object.GNDTERMS = null
-        object.ISOPEN = false
-        object.MAPPINGS = object.MAPPINGS || null
-        object.ancestors = object.ancestors || [null]
-        object.broader = object.broader || [null]
-        object.narrower = object.narrower || [null]
-        object.editorialNote = object.editorialNote || null
-        object.scopeNote = object.scopeNote || null
-        object.created = object.created || null
-        object.issued = object.issued || null
-        object.modified = object.modified || null
-        object.license = object.license || null
-        object.notation = object.notation || null
-        object.prefLabel = object.prefLabel || {}
-        object.publisher = object.publisher || null
-        if (!object.inScheme) {
-          object.inScheme = [scheme]
-        } else {
-          let inScheme = []
-          for (let scheme of object.inScheme) {
-            for (let uri of util.getAllUris(scheme)) {
-              let schemeInMap = this.map.get(uri)
-              let alreadyAdded = false
-              for (let schemeInScheme of inScheme) {
-                if (schemeInMap && this.compare(schemeInMap.uri, schemeInScheme.uri)) {
-                  alreadyAdded = true
-                }
-              }
-              if (!alreadyAdded && schemeInMap) {
-                inScheme.push(schemeInMap)
-              }
-            }
-          }
-          object.inScheme = inScheme
-        }
-      } else if (util.isScheme(object)) {
-        object.DETAILSLOADED = false
-        object.TOPCONCEPTS = object.TOPCONCEPTS || [null]
-        object.created = object.created || null
-        object.issued = object.issued || null
-        object.modified = object.modified || null
-        object.license = object.license || null
-        object.notation = object.notation || null
-        object.prefLabel = object.prefLabel || {}
-        object.publisher = object.publisher || null
-      }
-    }
-    return save
+    return store.dispatch({
+      type: "objects/save",
+      object,
+      force
+    })
   },
 
   /**
@@ -108,47 +49,11 @@ let objects = {
    * @returns a Promise of the desired object (or null if it wasn't found)
    */
   get(uri, schemeUri) {
-    if (this.map.has(uri)) {
-      return Promise.resolve(this.map.get(uri))
-    } else {
-      // TODO: Rethink all of this
-      let scheme
-      if (this.map.has(schemeUri)) {
-        scheme = this.map.get(schemeUri)
-      } else {
-        console.warn("newApi/get No scheme found for", uri, schemeUri)
-        scheme = null
-      }
-      return data(scheme, uri).then(results => {
-        if (results.length) {
-          let object = results[0]
-          if (this.save(object)) {
-            return object
-          } else {
-            // Apparently, object was loaded elsewhere in the meantime
-            console.warn("newApi/get, data loaded, but couldn't save", uri)
-            return this.map.get(uri)
-          }
-        } else {
-          return null
-        }
-      }).catch(error => {
-        console.error(error)
-        return null
-      })
-    }
-  },
-
-  /**
-   * Checks if two URIs are the same object
-   *
-   * @param {string} uri1
-   * @param {string} uri2
-   *
-   * @returns a boolean
-   */
-  compare(uri1, uri2) {
-    return util.compareObjects(this.map.get(uri1), this.map.get(uri2))
+    return store.dispatch({
+      type: "objects/get",
+      uri,
+      schemeUri
+    })
   },
 
   /**
@@ -159,35 +64,10 @@ let objects = {
    * @returns a Promise with the updated scheme
    */
   top(scheme) {
-    if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
-      return Promise.resolve(scheme)
-    } else {
-      return top(scheme).then(results => {
-        if (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null)) {
-          return scheme
-        }
-        let top = []
-        for (let result of results) {
-          let resultInMap = this.map.get(result.uri)
-          if (resultInMap) {
-            top.push(resultInMap)
-          } else {
-            // Save into map
-            this.save(result)
-            top.push(result)
-          }
-        }
-        // Set ancestors to []
-        for (let concept of top) {
-          concept.ancestors = []
-        }
-        scheme.TOPCONCEPTS = util.sortConcepts(top)
-        return scheme
-      }).catch(error => {
-        console.error(error)
-        return null
-      })
-    }
+    return store.dispatch({
+      type: "objects/top",
+      scheme
+    })
   },
 
   /**
@@ -198,51 +78,10 @@ let objects = {
    * @returns a Promise with the updated object
    */
   narrower(object) {
-    if (object.narrower && !object.narrower.includes(null)) {
-      return Promise.resolve(object)
-    } else if (!object.inScheme || object.inScheme.length == 0) {
-      console.warn("newApi/narrower: No scheme found")
-      return Promise.resolve(object)
-    } else {
-      // Load narrower
-      let scheme = object.inScheme[0]
-      return narrower(scheme, object.uri).then(results => {
-        if (object.narrower && !object.narrower.includes(null)) {
-          // Apparrently, narrower were loaded elsewhere, so abort
-          return object
-        }
-        // Integrate resulting concepts into map
-        let narrower = []
-        for (let result of results) {
-          let resultInMap = this.map.get(result.uri)
-          if (resultInMap) {
-            narrower.push(resultInMap)
-          } else {
-            // Save into map
-            this.save(result)
-            narrower.push(result)
-          }
-        }
-        // Set ancestors
-        for (let child of narrower) {
-          if (!object.ancestors || object.ancestors.includes(null)) {
-            child.ancestors = [null]
-          } else {
-            child.ancestors = object.ancestors.concat([object])
-          }
-        }
-        // Set broader
-        for (let child of narrower) {
-          child.broader = [object]
-        }
-        // Save narrower
-        object.narrower = util.sortConcepts(narrower)
-        return object
-      }).catch(error => {
-        console.error(error)
-        return null
-      })
-    }
+    return store.dispatch({
+      type: "objects/narrower",
+      object
+    })
   },
 
   /**
@@ -253,45 +92,10 @@ let objects = {
    * @returns a Promise with the updated object
    */
   ancestors(object) {
-    if (object.ancestors && !object.ancestors.includes(null)) {
-      return Promise.resolve(object)
-    } else if (!object.inScheme || object.inScheme.length == 0) {
-      console.warn("newApi/ancestors: No scheme found")
-      return Promise.resolve(object)
-    } else {
-      let scheme = object.inScheme[0]
-      return ancestors(scheme, object.uri).then(results => {
-        if (object.ancestors && !object.ancestors.includes(null)) {
-          // Apparrently, ancestors were loaded elsewhere, so abort
-          return object
-        }
-        // Integrate resulting concepts into map
-        let ancestors = []
-        for (let result of results) {
-          let resultInMap = this.map.get(result.uri)
-          if (resultInMap) {
-            ancestors.push(resultInMap)
-          } else {
-            // Save into map
-            this.save(result)
-            ancestors.push(result)
-          }
-        }
-        // Set ancestors and broader of ancestors
-        let currentAncestors = []
-        for (let ancestor of ancestors) {
-          ancestor.ancestors = currentAncestors.slice()
-          ancestor.broader = currentAncestors.length > 0 ? [currentAncestors[currentAncestors.length - 1]] : []
-          currentAncestors.push(ancestor)
-        }
-        // Save ancestors
-        object.ancestors = ancestors
-        return object
-      }).catch(error => {
-        console.error(error)
-        return null
-      })
-    }
+    return store.dispatch({
+      type: "objects/ancestors",
+      object
+    })
   },
 
   /**
@@ -302,28 +106,10 @@ let objects = {
    * @returns a Promise with the updated object
    */
   details(object) {
-    if (!object || object.DETAILSLOADED) {
-      return Promise.resolve(object)
-    } else {
-      return data(object.inScheme ? object.inScheme[0] : object, object.uri, detailProperties).then(results => {
-        if (results.length) {
-          let detail = results[0]
-          // Integrate detail into object
-          for (let prop of Object.keys(detail)) {
-            if (object[prop] == null) {
-              object[prop] = detail[prop]
-            }
-          }
-          object.DETAILSLOADED = true
-          return object
-        } else {
-          return null
-        }
-      }).catch(error => {
-        console.error(error)
-        return null
-      })
-    }
+    return store.dispatch({
+      type: "objects/details",
+      object
+    })
   }
 
 }
@@ -430,45 +216,53 @@ let saveSchemeAssociationForProvider = function(provider) {
     scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
     schemes.push(scheme)
     // Force save scheme in new API
-    objects.save(scheme, true)
+    // objects.save(scheme, true)
+    let object = scheme, force = true
+    store.dispatch({
+      type: "objects/save",
+      object,
+      force
+    })
   }
 }
 
-// Prepare all terminology providers
-for (let provider of config.terminologyProviders) {
-  let url = provider.url || null
-  if(!Array.isArray(provider.voc)) {
-    // Load schemes
-    let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
-    if (vocEndpoint) {
-      get(vocEndpoint)
-        .then(function(data) {
-          if (Array.isArray(data)) {
-            provider.voc = data
-            saveSchemeAssociationForProvider(provider)
-          } else {
-            console.warn("Couldn't load schemes for provider", provider)
-          }
-        })
-      // TODO: - error handling
+function init() {
+  // Prepare all terminology providers
+  for (let provider of config.terminologyProviders) {
+    let url = provider.url || null
+    if(!Array.isArray(provider.voc)) {
+      // Load schemes
+      let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
+      if (vocEndpoint) {
+        get(vocEndpoint)
+          .then(function(data) {
+            if (Array.isArray(data)) {
+              provider.voc = data
+              saveSchemeAssociationForProvider(provider)
+            } else {
+              console.warn("Couldn't load schemes for provider", provider)
+            }
+          })
+        // TODO: - error handling
+      }
+    } else {
+      saveSchemeAssociationForProvider(provider)
     }
-  } else {
-    saveSchemeAssociationForProvider(provider)
-  }
-  if (!provider.data) {
-    provider.data = url ? url + "/data" : null
-  }
-  if (!provider.suggest) {
-    provider.suggest = url ? url + "/suggest" : null
-  }
-  if (!provider.top) {
-    provider.top = url ? url + "/voc/top" : null
-  }
-  if (!provider.ancestors) {
-    provider.ancestors = url ? url + "/ancestors" : null
-  }
-  if (!provider.narrower) {
-    provider.narrower = url ? url + "/narrower" : null
+    if (!provider.data) {
+      provider.data = url ? url + "/data" : null
+    }
+    if (!provider.suggest) {
+      provider.suggest = url ? url + "/suggest" : null
+    }
+    if (!provider.top) {
+      provider.top = url ? url + "/voc/top" : null
+    }
+    if (!provider.ancestors) {
+      provider.ancestors = url ? url + "/ancestors" : null
+    }
+    if (!provider.narrower) {
+      provider.narrower = url ? url + "/narrower" : null
+    }
   }
 }
 
@@ -677,4 +471,6 @@ function mappings(params) {
   })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, schemes, mappings, objects }
+console.log("end of api")
+
+export default { init, data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, schemes, mappings, objects }

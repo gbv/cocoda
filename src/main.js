@@ -17,6 +17,8 @@ Vue.use(VueScrollTo)
 // Add api, use with this.$api in components
 import api from "./api"
 Vue.prototype.$api = api
+// Initialize api
+api.init()
 
 // Add config, use with this.$config in components
 import config from "./config"
