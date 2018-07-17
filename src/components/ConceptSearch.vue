@@ -152,13 +152,11 @@ export default {
      */
     chooseResult: function (result) {
       let uri = _.last(result)
-      /**
-       * Event when the user has chosen a result.
-       *
-       * @event chooseUri
-       * @type {string} - uri that is chosen
-       */
-      this.$emit("chooseUri", uri)
+      let concept = {
+        uri: uri,
+        inScheme: [this.selected.scheme[this.isLeft]]
+      }
+      this.setSelected("concept", this.isLeft, concept)
       this.closeResults()
       this.searchSelected = -1
       // Remove focus

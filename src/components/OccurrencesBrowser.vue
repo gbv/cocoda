@@ -25,7 +25,7 @@
             :show-tooltip="true"
             :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
             :is-highlighted="$util.compareConcepts(data.value, selected.concept[true])"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && chooseUri(data.value, true)" />
+            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && setSelected('concept', true, data.value)" />
         </span>
         <span
           slot="to"
@@ -36,7 +36,7 @@
             :show-tooltip="true"
             :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
             :is-highlighted="$util.compareConcepts(data.value, selected.concept[false])"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && chooseUri(data.value, false)" />
+            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
         </span>
         <span
           slot="fromScheme"

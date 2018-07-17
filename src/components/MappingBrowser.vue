@@ -29,7 +29,7 @@
               :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
               :is-highlighted="$util.compareConcepts(concept, selected.concept[true])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && chooseUri(concept, true)" />
+              @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && setSelected('concept', true, concept)" />
           </span>
           <span
             slot="targetConcepts"
@@ -43,7 +43,7 @@
               :is-link="$util.canConceptBeSelected(concept, selected.scheme[false])"
               :is-highlighted="$util.compareConcepts(concept, selected.concept[false])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && chooseUri(concept, false)" />
+              @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && setSelected('concept', false, concept)" />
           </span>
           <span
             slot="type"

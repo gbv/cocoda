@@ -57,7 +57,6 @@
       :narrower="item.TOPCONCEPTS"
       :is-left="isLeft"
       text="Top Concepts:"
-      @chooseUri="chooseUri"
     />
     <div v-else-if="settings.showTopConceptsInScheme">
       No top concepts

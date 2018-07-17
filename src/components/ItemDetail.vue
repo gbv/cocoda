@@ -12,7 +12,7 @@
         :item="item"
         :is-left="isLeft"
         :settings="internalSettings"
-        @chooseUri="chooseUri" />
+      />
     </div>
     <div
       v-else-if="!loading"
@@ -189,12 +189,16 @@ export default {
     },
     choosePrevious() {
       if (this.prevConcepts.length) {
-        this.chooseUri(_.last(this.prevConcepts), this.isLeft)
+        let object = _.last(this.prevConcepts)
+        object = this.$util.isScheme(object) ? null : object
+        this.setSelected("concept", this.isLeft, object)
       }
     },
     chooseNext() {
       if (this.nextConcepts.length) {
-        this.chooseUri(_.first(this.nextConcepts), this.isLeft)
+        let object = _.first(this.nextConcepts)
+        object = this.$util.isScheme(object) ? null : object
+        this.setSelected("concept", this.isLeft, object)
       }
     }
   }

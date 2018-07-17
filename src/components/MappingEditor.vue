@@ -32,7 +32,7 @@
               :item="concept"
               :is-link="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false])"
               :is-highlighted="$util.compareConcepts(concept, isLeft ? selected.concept[true] : selected.concept[false])"
-              @click.native="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false]) && chooseUri(concept, isLeft)" />
+              @click.native="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false]) && setSelected('concept', isLeft, concept)" />
             <!-- Delete button for concept -->
             <div
               class="button mappingConceptDelete fontSize-small fontWeight-heavy"

@@ -52,7 +52,7 @@
             v-show="selected.scheme[isLeft] != null"
             :is-left="isLeft"
             class="conceptSearch"
-            @chooseUri="chooseUri(arguments[0], isLeft)" />
+          />
           <!-- ItemDetail and ConceptTree -->
           <div class="conceptBrowser">
             <!-- ItemDetail -->
@@ -62,7 +62,6 @@
               :is-left="isLeft"
               :settings="itemDetailSettings.left"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
-              @chooseUri="chooseUri"
             />
             <!-- Slider -->
             <resizing-slider />
@@ -105,7 +104,6 @@
             <!-- MappingEditor -->
             <mapping-editor
               v-if="selected.scheme[true] || selected.scheme[false]"
-              @chooseUri="chooseUri"
             />
             <!-- Placeholder -->
 
@@ -116,7 +114,6 @@
             <!-- MappingBrowser -->
             <mapping-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
-              @chooseUri="chooseUri"
             />
             <!-- Placeholder -->
             <div
@@ -133,7 +130,6 @@
             <!-- OccurrencesBrowser -->
             <occurrences-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
-              @chooseUri="chooseUri"
             />
             <!-- Placeholder -->
 
@@ -159,7 +155,6 @@ import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
-import _ from "lodash"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
@@ -248,42 +243,6 @@ export default {
         this.setSelected("scheme", false, null)
       }
     },
-    chooseUri(concept, isLeft) {
-      let uri
-      let delay = 0
-      // Support both URIs and objects
-      if (typeof concept === "object") {
-        if (this.$util.isScheme(concept)) {
-          // Loading scheme by setting selected to null
-          this.setSelected("concept", isLeft, null)
-          return
-        }
-        uri = concept.uri
-        // Check if scheme needs to be selected as well
-        if (concept.inScheme && (isLeft && !this.selected.scheme[true] || !isLeft && !this.selected.scheme[false])) {
-          let conceptScheme = concept.inScheme[0]
-          let newScheme = null
-          // Find in existing list of schemes
-          for (let scheme of this.schemes) {
-            if (this.$util.compareSchemes(scheme, conceptScheme)) {
-              newScheme = scheme
-              break
-            }
-          }
-          if (newScheme) {
-            // introduce delay so that the ConceptTree component has time to load
-            delay = 200
-            this.setSelected("scheme", isLeft, newScheme)
-          }
-        }
-      } else {
-        uri = concept
-      }
-      let vm = this
-      _.delay(function() {
-        isLeft ? vm.conceptTreeLeft.chooseFromUri(uri) : vm.conceptTreeRight.chooseFromUri(uri)
-      }, delay)
-    }
   },
 }
 </script>

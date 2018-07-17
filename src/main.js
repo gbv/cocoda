@@ -41,18 +41,8 @@ import brands from "@fortawesome/fontawesome-free-brands"
 fontawesome.library.add(solid)
 fontawesome.library.add(brands)
 
-// Global mixin for choosing a concept by uri (emits the chooseUri event)
 Vue.mixin({
   methods: {
-    chooseUri(concept, isLeft = true) {
-      /**
-       * Event when the user has chosen a result.
-       *
-       * @event chooseUri
-       * @type {string} - uri that is chosen
-       */
-      this.$emit("chooseUri", concept, isLeft)
-    },
     toggleMinimize() {
       for (let child of this.$children) {
         child.toggleMinimize()

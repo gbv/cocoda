@@ -69,6 +69,7 @@ const actions = {
         object.BROADERLOADED = false
         object.GNDTERMS = null
         object.ISOPEN = false
+        object.INSTORE = true
         object.MAPPINGS = object.MAPPINGS || null
         object.ancestors = object.ancestors || [null]
         object.broader = object.broader || [null]

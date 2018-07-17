@@ -17,7 +17,7 @@
         :item="concept"
         :is-link="true"
         font-size="small"
-        @click.native="chooseUri(concept, isLeft)" />
+        @click.native="setSelected('concept', isLeft, concept)" />
     </div>
     <!-- Show LoadingIndicator when narrower exist, but are not loaded yet -->
     <loading-indicator

@@ -15,11 +15,11 @@
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="openByArrow(!isOpen)" >
+        @click="openByArrow(!concept.ISOPEN)" >
         <i
           :class="{
-            right: !isOpen,
-            down: isOpen,
+            right: !concept.ISOPEN,
+            down: concept.ISOPEN,
             selected: isSelected
         }" />
       </div>
@@ -45,7 +45,7 @@
     </div>
     <!-- Concept's narrower if opened -->
     <div
-      v-if="isOpen"
+      v-if="concept.ISOPEN"
       class="conceptChildrenBox" >
       <concept-tree-item
         v-for="(child, index) in concept.narrower"
@@ -58,7 +58,7 @@
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="hasChildren && isOpen && concept.narrower.includes(null)"
+      v-show="hasChildren && concept.ISOPEN && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -123,9 +123,6 @@ export default {
     hasChildren() {
       return !this.concept.narrower || this.concept.narrower.length != 0
     },
-    isOpen() {
-      return this.concept.ISOPEN ? true : false
-    },
     isHovered() {
       return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.concept)
     },
@@ -144,30 +141,18 @@ export default {
       this.$root.$data.hoveredConcept = concept
     },
     /**
-     * Sets the ISOPEN property of the concept, loads it's children and scrolls the concept further to the top.
-     *
-     * @param {boolean} isOpen - open status to be set to
-     */
-    open(isOpen) {
-      this.concept.ISOPEN = isOpen
-      if (isOpen && this.hasChildren) {
-        this.scrollTo()
-      }
-    },
-    /**
      * Calls open and prevents accidental double clicks.
      */
     openByArrow(isOpen) {
       if (this.preventClickArrow) {
         return
       }
+      this.concept.ISOPEN = isOpen
       this.loadChildren()
       this.preventClickArrow = true
-      let vm = this
-      _.delay(function() {
-        vm.open(isOpen)
-        _.delay(function() {
-          vm.preventClickArrow = false
+      _.delay(() => {
+        _.delay(() => {
+          this.preventClickArrow = false
         }, 200)
       }, 50)
     },
@@ -192,11 +177,10 @@ export default {
       } else if(this.hasChildren) {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
-        let vm = this
-        _.delay(function() {
-          vm.open(!vm.isOpen)
-          _.delay(function() {
-            vm.preventClick = false
+        _.delay(() => {
+          this.concept.ISOPEN = !this.concept.ISOPEN
+          _.delay(() => {
+            this.preventClick = false
           }, 200)
         }, 50)
       }
