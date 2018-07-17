@@ -158,7 +158,7 @@ export default {
     loadDetails() {
       this.loading = true
       // Get details from API
-      this.$api.objects.details(this.item).then(() => {
+      this.loadObjectDetails({ object: this.item }).then(() => {
         this.loading = false
         // If there are no ancestors, but broader, load concepts for broader
         if ((!this.item.ancestors || this.item.ancestors.length == 0) && !this.item.BROADERLOADED) {
@@ -176,7 +176,7 @@ export default {
           } else {
             let promises = []
             for (let i = 0; i < item.broader.length; i += 1) {
-              promises.push(this.$api.objects.get(item.broader[i].uri, item.inScheme[0].uri).then( broader => {
+              promises.push(this.getObject({ uri: item.broader[i].uri, schemeUri: item.inScheme[0].uri }).then( broader => {
                 this.$set(item.broader, i, broader)
               }))
             }

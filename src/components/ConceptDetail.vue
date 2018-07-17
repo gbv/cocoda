@@ -294,7 +294,10 @@ export default {
         // Load concept objects from API
         let promises = []
         for (let concept of gndConcepts) {
-          promises.push(this.$api.objects.get(concept.uri, "http://bartoc.org/en/node/430").then(object => {
+          promises.push(this.getObject({
+            uri: concept.uri,
+            schemeUri: "http://bartoc.org/en/node/430"
+          }).then(object => {
             if (object) {
               object.GNDTYPE = concept.GNDTYPE
             }

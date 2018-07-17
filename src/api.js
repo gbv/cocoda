@@ -17,101 +17,6 @@ import config from "./config"
 import util from "./util"
 import store from "./store"
 
-/**
- * An object to provide all functionality in regards to objects (schemes, concepts)
- */
-let objects = {
-
-  /**
-   * Saves an object into the map if it doesn't exist.
-   *
-   * @param {object} object - the object to be saved in the map
-   * @param {boolean} force - override object reference if true
-   *
-   * @returns a boolean whether the object was saved
-   */
-  save(object, force = false) {
-    return store.dispatch({
-      type: "objects/save",
-      object,
-      force
-    })
-  },
-
-  /**
-   * Returns a Promise of an object for an URI. Either gets it from the map or loads it using the API.
-   *
-   * @param {string} uri
-   * @param {string} schemeUri
-   *
-   * @returns a Promise of the desired object (or null if it wasn't found)
-   */
-  get(uri, schemeUri) {
-    return store.dispatch({
-      type: "objects/get",
-      uri,
-      schemeUri
-    })
-  },
-
-  /**
-   * Loads top concepts for scheme
-   *
-   * @param {object} scheme
-   *
-   * @returns a Promise with the updated scheme
-   */
-  top(scheme) {
-    return store.dispatch({
-      type: "objects/top",
-      scheme
-    })
-  },
-
-  /**
-   * Loads narrower concepts for an object if necessary.
-   *
-   * @param {object} object
-   *
-   * @returns a Promise with the updated object
-   */
-  narrower(object) {
-    return store.dispatch({
-      type: "objects/narrower",
-      object
-    })
-  },
-
-  /**
-   * Loads ancestor concepts for an object if necessary
-   *
-   * @param {object} object
-   *
-   * @returns a Promise with the updated object
-   */
-  ancestors(object) {
-    return store.dispatch({
-      type: "objects/ancestors",
-      object
-    })
-  },
-
-  /**
-   * Loads detailed properties for an object if necessary
-   *
-   * @param {object} object
-   *
-   * @returns a Promise with the updated object
-   */
-  details(object) {
-    return store.dispatch({
-      type: "objects/details",
-      object
-    })
-  }
-
-}
-
 /** Property sets */
 const minimumProperties = "-"
 const defaultProperties = "uri,prefLabel,notation,inScheme"
@@ -217,7 +122,7 @@ function token() {
  * @param {axios.cancelToken} cancelToken
  */
 function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
-  let provider = scheme.PROVIDER
+  let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.data : null
   if (!url) {
     return Promise.resolve([])
@@ -240,7 +145,7 @@ function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
  * @param {axios.cancelToken} cancelToken
  */
 function narrower(scheme, uri, properties = defaultProperties, cancelToken = null) {
-  let provider = scheme.PROVIDER
+  let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.narrower : null
   if (!url) {
     return Promise.resolve([])
@@ -264,7 +169,7 @@ function narrower(scheme, uri, properties = defaultProperties, cancelToken = nul
  * @param {axios.cancelToken} cancelToken
  */
 function ancestors(scheme, uri, properties = defaultProperties, cancelToken = null) {
-  let provider = scheme.PROVIDER
+  let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.ancestors : null
   if (!url) {
     return Promise.resolve([])
@@ -289,7 +194,7 @@ function ancestors(scheme, uri, properties = defaultProperties, cancelToken = nu
  * @param {*} cancelToken
  */
 function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", cancelToken = null) {
-  let provider = scheme.PROVIDER
+  let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.suggest : null
   if (!url) {
     return Promise.resolve([])
@@ -317,7 +222,7 @@ function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", ca
  * @param {*} cancelToken
  */
 function top(scheme, properties = defaultProperties, cancelToken = null) {
-  let provider = scheme.PROVIDER
+  let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.top : null
   if (!url || !scheme.uri) {
     return Promise.resolve([])
@@ -406,4 +311,4 @@ function mappings(params) {
   })
 }
 
-export default { init, data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, schemes, mappings, objects }
+export default { init, data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, schemes, mappings }

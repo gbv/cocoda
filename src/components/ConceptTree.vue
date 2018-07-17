@@ -75,7 +75,7 @@ export default {
     },
     conceptSelected() {
       if (this.$util.isConcept(this.conceptSelected)) {
-        this.$api.objects.narrower(this.conceptSelected)
+        this.loadNarrower({ object: this.conceptSelected })
       }
     }
   },
@@ -98,7 +98,7 @@ export default {
       this.loading = true
 
       // 1. Get concept object
-      this.$api.objects.get(uri, this.schemeSelected.uri).then(concept => {
+      this.getObject({ uri, schemeUri: this.schemeSelected.uri }).then(concept => {
         if (this.chooseFromUriID != id) return
         if (concept == null) {
           // Show error message for nonexisting concept
@@ -107,14 +107,14 @@ export default {
         }
         this.setSelected("concept", this.isLeft, concept)
         // 2. Load ancestors
-        return this.$api.objects.ancestors(concept)
+        return this.loadAncestors({ object: concept })
       }).then(concept => {
         if (this.chooseFromUriID != id) return
         if (concept == null) return
         // 3. Load children for all ancestors
         let promises = [Promise.resolve(concept)]
         for (let ancestor of concept.ancestors) {
-          promises.push(this.$api.objects.narrower(ancestor))
+          promises.push(this.loadNarrower({ object: ancestor }))
         }
         // 3.2 If children were loaded before ancestors, then the children's ancestors property is set to [null]
         if (concept.narrower && !concept.narrower.includes(null)) {
@@ -158,12 +158,11 @@ export default {
      * Resets the concept tree and loads top concepts for new vocabulary.
      */
     reset: function() {
-      console.log("ConceptTree: reset", this.isLeft, this.schemeSelected)
       this.tree = []
       this.setSelected("concept", this.isLeft, null)
       this.loading = true
       this.chooseFromUriID = null
-      this.$api.objects.top(this.schemeSelected).then(() => {
+      this.loadTop({ scheme: this.schemeSelected }).then(() => {
         this.tree = this.schemeSelected.TOPCONCEPTS
         this.loading = false
       })

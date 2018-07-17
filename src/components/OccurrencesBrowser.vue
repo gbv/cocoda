@@ -206,10 +206,10 @@ export default {
           items[items.length-1][fromTo+"Scheme"] = member.inScheme[0]
           // refresh member
           let index = items.length-1
-          this.$api.objects.get(member.uri, member.inScheme[0].uri).then(concept => {
+          this.getObject({ uri: member.uri, schemeUri: member.inScheme[0].uri }).then(concept => {
             if (!concept) {
               // if concept couldn't be loaded, at least try to load the member's scheme
-              return this.$api.objects.get(member.inScheme[0].uri)
+              return this.getObject({ uri: member.inScheme[0].uri })
             }
             this.items[index][fromTo] = concept
             this.items[index][fromTo+"Scheme"] = concept.inScheme[0]

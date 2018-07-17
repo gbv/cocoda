@@ -208,7 +208,7 @@ export default {
      */
     loadChildren() {
       this.loadingChildren = true
-      this.$api.objects.narrower(this.concept).then(concept => {
+      this.loadNarrower({ object: this.concept }).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
         if (concept.ISOPEN) {
