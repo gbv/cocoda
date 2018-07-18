@@ -82,6 +82,7 @@ const mutations = {
         }
       } else if (util.isScheme(object)) {
         object.DETAILSLOADED = false
+        object.INSTORE = true
         object.TOPCONCEPTS = object.TOPCONCEPTS || [null]
         object.created = object.created || null
         object.issued = object.issued || null
@@ -131,32 +132,36 @@ function isObjectInMap(map, object) {
 const actions = {
 
   /**
-   * Returns a Promise of an object for an URI. Either gets it from the map or loads it using the API.
+   * Returns a Promise of an object in the map for an object. Either gets it from the map or loads it using the API and adds it to the map.
    *
-   * Payload object: { uri, schemeUri }
-   * - uri: URI to get from map
-   * - schemeUri: URI from scheme if it's a concept (needed to determine provider if it's necessary to load from API)
+   * Payload object: { object, scheme }
+   * - object: object to get from the map or to load
+   * - scheme: scheme for concept (needed to determine provider if it's necessary to load from API)
+   * "scheme" is not needed when object has the property "isScheme".
+   * If just an URI is available, construct an object like this: { uri: "..." }.
    *
    * @returns a Promise of the desired object (or null if it wasn't found)
    */
-  get({ state, commit }, { uri, schemeUri }) {
-    if (state.map.has(uri)) {
-      return Promise.resolve(state.map.get(uri))
+  load({ state, commit, getters }, { object, scheme }) {
+    if (isObjectInMap(state.map, object)) {
+      return Promise.resolve(getters.get(object))
     } else {
-      // TODO: Rethink all of this
-      let scheme
-      if (state.map.has(schemeUri)) {
-        scheme = state.map.get(schemeUri)
+      let schemeInMap
+      scheme = scheme || (object.inScheme ? object.inScheme[0] : null)
+      if (scheme.INSTORE) {
+        schemeInMap = scheme
+      } else if (isObjectInMap(state.map, scheme)) {
+        schemeInMap = getters.get(scheme)
       } else {
-        console.warn("newApi/get No scheme found for", uri, schemeUri)
         scheme = null
+        console.warn("newApi/get No scheme found for", object)
       }
-      return api.data(scheme, uri).then(results => {
+      return api.data(schemeInMap, object.uri).then(results => {
         if (results.length) {
           let object = results[0]
           if (isObjectInMap(state.map, object)) {
-            console.warn("newApi/get, data loaded, but couldn't save", uri)
-            return state.map.get(uri)
+            console.warn("newApi/get, data loaded, but couldn't save", object)
+            return getters.get(object)
           } else {
             commit({
               type: "save",

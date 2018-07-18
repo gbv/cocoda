@@ -32,9 +32,9 @@ const selectedPlugin = store => {
           conceptInStore = store.getters["objects/get"](concept)
           if (!conceptInStore) {
             store.dispatch({
-              type: "objects/get",
-              uri: concept.uri,
-              schemeUri: scheme ? scheme.uri : null
+              type: "objects/load",
+              object: concept,
+              scheme: scheme
             }).then(concept => {
               store.commit({
                 type: "selected/set",

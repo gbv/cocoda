@@ -88,7 +88,7 @@ Vue.mixin({
       saveObject: "objects/save",
     }),
     ...mapActions({
-      getObject: "objects/get",
+      getObject: "objects/load",
       loadTop: "objects/top",
       loadNarrower: "objects/narrower",
       loadAncestors: "objects/ancestors",

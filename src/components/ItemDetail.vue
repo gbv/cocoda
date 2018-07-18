@@ -176,7 +176,7 @@ export default {
           } else {
             let promises = []
             for (let i = 0; i < item.broader.length; i += 1) {
-              promises.push(this.getObject({ uri: item.broader[i].uri, schemeUri: item.inScheme[0].uri }).then( broader => {
+              promises.push(this.getObject({ object: item.broader[i], scheme: item.inScheme[0] }).then( broader => {
                 this.$set(item.broader, i, broader)
               }))
             }

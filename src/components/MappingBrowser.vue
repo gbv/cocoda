@@ -299,7 +299,7 @@ export default {
           return
         }
 
-        this.getObject({ uri: concept.uri, schemeUri: concept.inScheme[0].uri }).then(result => {
+        this.getObject({ object: concept, scheme: concept.inScheme[0] }).then(result => {
           if (result && result.prefLabel) {
             this.$set(concept, "prefLabel", result.prefLabel)
           } else {

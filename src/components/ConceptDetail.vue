@@ -294,8 +294,8 @@ export default {
         let promises = []
         for (let concept of gndConcepts) {
           promises.push(this.getObject({
-            uri: concept.uri,
-            schemeUri: "http://bartoc.org/en/node/430"
+            object: concept,
+            scheme: { uri: "http://bartoc.org/en/node/430" }
           }).then(object => {
             if (object) {
               object.GNDTYPE = concept.GNDTYPE
