@@ -73,7 +73,7 @@ function init() {
         scheme.TOPCONCEPTS = [null]
         scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
         // Check if scheme is already in store
-        let otherScheme = store.getters["objects/getObject"](scheme), prio, otherPrio, override = false
+        let otherScheme = store.getters["objects/get"](scheme), prio, otherPrio, override = false
         // let otherScheme = null, prio, otherPrio
         if (otherScheme) {
           prio = provider.prio || 0
@@ -93,7 +93,7 @@ function init() {
             schemes.splice(otherSchemeIndex, 1)
           }
           // Force save into store
-          store.dispatch({
+          store.commit({
             type: "objects/save",
             object: scheme,
             force: true

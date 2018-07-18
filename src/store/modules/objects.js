@@ -14,7 +14,7 @@ const getters = {
   /**
    * Returns an object in the map if it exists
    */
-  getObject: (state) => (object) => {
+  get: (state) => (object) => {
     let uris = util.getAllUris(object)
     for (let uri of uris) {
       if (state.map.has(uri)) {
@@ -28,39 +28,16 @@ const getters = {
 // mutations
 const mutations = {
 
-}
-
-/**
- * Util wrapper to compare two URIs from state
- * FIXME: Remove because it's only used in one place.
- *
- * @param {*} state
- * @param {*} uri1
- * @param {*} uri2
- */
-function compare(state, uri1, uri2) {
-  return util.compareObjects(state.map.get(uri1), state.map.get(uri2))
-}
-
-// actions
-const actions = {
-
   /**
    * Saves an object into the map if it doesn't exist.
    *
    * Payload object: { object, force }
    * - object: object to save in map
    * - force: force saving if object already exists (default: false)
-   *
-   * @returns a boolean whether the object was saved
    */
-  save ({ state }, { object, force = false }) {
-    let uris = util.getAllUris(object)
-    let save = true
+  save (state, { object, force = false }) {
     // First, check if any if the URIs is already in the map
-    for (let uri of uris) {
-      save = save && (!state.map.has(uri) || force)
-    }
+    let save = !isObjectInMap(state.map, object) || force
     // Only save if it was not found
     if (save) {
       // Add all possible properties to ensure reactivity in Vue
@@ -115,12 +92,43 @@ const actions = {
         object.publisher = object.publisher || null
       }
       // Add to map
+      let uris = util.getAllUris(object)
       for (let uri of uris) {
         state.map.set(uri, object)
       }
     }
     return save
   },
+
+}
+
+/**
+ * Util wrapper to compare two URIs from state
+ * FIXME: Remove because it's only used in one place.
+ *
+ * @param {*} state
+ * @param {*} uri1
+ * @param {*} uri2
+ */
+function compare(state, uri1, uri2) {
+  return util.compareObjects(state.map.get(uri1), state.map.get(uri2))
+}
+
+/**
+ * Helper function that returns whether an object is already in the map.
+ */
+function isObjectInMap(map, object) {
+  let uris = util.getAllUris(object)
+  for (let uri of uris) {
+    if (map.has(uri)) {
+      return true
+    }
+  }
+  return false
+}
+
+// actions
+const actions = {
 
   /**
    * Returns a Promise of an object for an URI. Either gets it from the map or loads it using the API.
@@ -131,7 +139,7 @@ const actions = {
    *
    * @returns a Promise of the desired object (or null if it wasn't found)
    */
-  get({ state, dispatch }, { uri, schemeUri }) {
+  get({ state, commit }, { uri, schemeUri }) {
     if (state.map.has(uri)) {
       return Promise.resolve(state.map.get(uri))
     } else {
@@ -145,19 +153,17 @@ const actions = {
       }
       return api.data(scheme, uri).then(results => {
         if (results.length) {
-          let object = results[0], force = false
-          return dispatch({
-            type: "save",
-            object,
-            force
-          }).then((result) => {
-            if (result) {
-              return object
-            } else {
-              console.warn("newApi/get, data loaded, but couldn't save", uri)
-              return state.map.get(uri)
-            }
-          })
+          let object = results[0]
+          if (isObjectInMap(state.map, object)) {
+            console.warn("newApi/get, data loaded, but couldn't save", uri)
+            return state.map.get(uri)
+          } else {
+            commit({
+              type: "save",
+              object
+            })
+            return object
+          }
         } else {
           return null
         }
@@ -176,7 +182,7 @@ const actions = {
    *
    * @returns a Promise with the updated scheme
    */
-  top({ state, dispatch }, { scheme }) {
+  top({ state, commit }, { scheme }) {
     if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
       return Promise.resolve(scheme)
     } else {
@@ -192,7 +198,7 @@ const actions = {
           } else {
             // Save into map
             let object = result, force = false
-            dispatch({
+            commit({
               type: "save",
               object,
               force
@@ -223,7 +229,7 @@ const actions = {
    *
    * @returns a Promise with the updated object
    */
-  narrower({ state, dispatch }, { object }) {
+  narrower({ state, commit }, { object }) {
     if (object.narrower && !object.narrower.includes(null)) {
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
@@ -246,7 +252,7 @@ const actions = {
           } else {
             // Save into map
             let object = result, force = false
-            dispatch({
+            commit({
               type: "save",
               object,
               force
@@ -288,7 +294,7 @@ const actions = {
    *
    * @returns a Promise with the updated object
    */
-  ancestors({ state, dispatch }, { object }) {
+  ancestors({ state, commit }, { object }) {
     if (object.ancestors && !object.ancestors.includes(null)) {
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
@@ -310,7 +316,7 @@ const actions = {
           } else {
             // Save into map
             let object = result, force = false
-            dispatch({
+            commit({
               type: "save",
               object,
               force

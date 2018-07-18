@@ -18,7 +18,7 @@ const selectedPlugin = store => {
 
         // Set scheme if a concept is selected without the scheme
         if (state.selected.scheme[isLeft] == null) {
-          let schemeInStore = store.getters["objects/getObject"](scheme)
+          let schemeInStore = store.getters["objects/get"](scheme)
           store.commit({
             type: "selected/set",
             kind: "scheme",
@@ -29,7 +29,7 @@ const selectedPlugin = store => {
 
         // Check if concept is already in store and if not, load its data and set selected to that
         if (!concept.INSTORE) {
-          conceptInStore = store.getters["objects/getObject"](concept)
+          conceptInStore = store.getters["objects/get"](concept)
           if (!conceptInStore) {
             store.dispatch({
               type: "objects/get",

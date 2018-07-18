@@ -1,7 +1,7 @@
 import Vue from "vue"
 import App from "./App"
 import store from "./store"
-import { mapActions } from "vuex"
+import { mapActions, mapMutations } from "vuex"
 
 Vue.config.productionTip = false
 
@@ -84,8 +84,10 @@ Vue.mixin({
 // Global mixin for object actions
 Vue.mixin({
   methods: {
-    ...mapActions({
+    ...mapMutations({
       saveObject: "objects/save",
+    }),
+    ...mapActions({
       getObject: "objects/get",
       loadTop: "objects/top",
       loadNarrower: "objects/narrower",
