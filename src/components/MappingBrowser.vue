@@ -301,10 +301,20 @@ export default {
 
         this.getObject({ object: concept, scheme: concept.inScheme[0] }).then(result => {
           if (result && result.prefLabel) {
-            this.$set(concept, "prefLabel", result.prefLabel)
+            this.$store.commit({
+              type: "objects/set",
+              object: concept,
+              prop: "prefLabel",
+              value: result.prefLabel
+            })
           } else {
             // TODO: - Error handling
-            this.$set(concept, "prefLabel", { de: " " })
+            this.$store.commit({
+              type: "objects/set",
+              object: concept,
+              prop: "prefLabel",
+              value: { de: " " }
+            })
           }
         })
       }
@@ -315,10 +325,18 @@ export default {
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
       this.$api.mappings(params).then(data => {
-        if (!concept.MAPPINGS) {
-          concept.MAPPINGS = { from: null, to: null }
+        let mappings = concept.MAPPINGS
+        if (!mappings) {
+          // concept.MAPPINGS = { from: null, to: null }
+          mappings =  { from: null, to: null }
         }
-        concept.MAPPINGS[conceptItem.fromTo] = data
+        mappings[conceptItem.fromTo] = data
+        this.$store.commit({
+          type: "objects/set",
+          object: concept,
+          prop: "MAPPINGS",
+          value: mappings
+        })
       }).catch(function(error) {
         console.error("API error (mappings):", error)
       })

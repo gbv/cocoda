@@ -267,6 +267,7 @@ function get(url, axiosConfig) {
       data.forEach(element => {
         if (element !== null && typeof element === "object") {
           // For concepts, add custom properties
+          // FIXME: This is not needed anymore because Vuex is dealing with that.
           if(util.isConcept(element)) {
             element.ISOPEN = false
             element.DETAILSLOADED = false

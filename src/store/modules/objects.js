@@ -1,3 +1,4 @@
+import Vue from "vue"
 import api from "../../api"
 import util from "../../util"
 
@@ -38,6 +39,7 @@ const mutations = {
   save (state, { object, force = false }) {
     // First, check if any if the URIs is already in the map
     let save = !isObjectInMap(state.map, object) || force
+    // TODO: Force saving has side effects, like object references referring to an object not in map anymore.
     // Only save if it was not found
     if (save) {
       // Add all possible properties to ensure reactivity in Vue
@@ -100,6 +102,18 @@ const mutations = {
     }
     return save
   },
+
+  /**
+   * Sets a property for a value
+   *
+   * Payload object: { object, prop, value }
+   * - object: the object to be modified (has to be in the store already)
+   * - prop: the name of the property to be modified
+   * - value: the new value for the property
+   */
+  set (state, { object, prop, value }) {
+    Vue.set(object, prop, value)
+  }
 
 }
 
@@ -213,11 +227,19 @@ const actions = {
         }
         // Set ancestors to []
         for (let concept of top) {
-          // TODO: Use mutation
-          concept.ancestors = []
+          commit({
+            type: "set",
+            object: concept,
+            prop: "ancestors",
+            value: []
+          })
         }
-        // TODO: Use mutation
-        scheme.TOPCONCEPTS = util.sortConcepts(top)
+        commit({
+          type: "set",
+          object: scheme,
+          prop: "TOPCONCEPTS",
+          value: util.sortConcepts(top)
+        })
         return scheme
       }).catch(error => {
         console.error("top error:", error)
@@ -268,21 +290,37 @@ const actions = {
         // Set ancestors
         for (let child of narrower) {
           if (!object.ancestors || object.ancestors.includes(null)) {
-            // TODO: Use mutation
-            child.ancestors = [null]
+            commit({
+              type: "set",
+              object: child,
+              prop: "ancestors",
+              value: [null]
+            })
           } else {
-            // TODO: Use mutation
-            child.ancestors = object.ancestors.concat([object])
+            commit({
+              type: "set",
+              object: child,
+              prop: "ancestors",
+              value: object.ancestors.concat([object])
+            })
           }
         }
         // Set broader
         for (let child of narrower) {
-          // TODO: Use mutation
-          child.broader = [object]
+          commit({
+            type: "set",
+            object: child,
+            prop: "broader",
+            value: [object]
+          })
         }
         // Save narrower
-        // TODO: Use mutation
-        object.narrower = util.sortConcepts(narrower)
+        commit({
+          type: "set",
+          object,
+          prop: "narrower",
+          value: util.sortConcepts(narrower)
+        })
         return object
       }).catch(error => {
         console.error(error)
@@ -332,15 +370,27 @@ const actions = {
         // Set ancestors and broader of ancestors
         let currentAncestors = []
         for (let ancestor of ancestors) {
-          // TODO: Use mutation
-          ancestor.ancestors = currentAncestors.slice()
-          // TODO: Use mutation
-          ancestor.broader = currentAncestors.length > 0 ? [currentAncestors[currentAncestors.length - 1]] : []
+          commit({
+            type: "set",
+            object: ancestor,
+            prop: "ancestors",
+            value: currentAncestors.slice()
+          })
+          commit({
+            type: "set",
+            object: ancestor,
+            prop: "broader",
+            value: currentAncestors.length > 0 ? [currentAncestors[currentAncestors.length - 1]] : []
+          })
           currentAncestors.push(ancestor)
         }
         // Save ancestors
-        // TODO: Use mutation
-        object.ancestors = ancestors
+        commit({
+          type: "set",
+          object,
+          prop: "ancestors",
+          value: ancestors
+        })
         return object
       }).catch(error => {
         console.error(error)
@@ -357,7 +407,7 @@ const actions = {
    *
    * @returns a Promise with the updated object
    */
-  details(context, { object }) {
+  details({ commit }, { object }) {
     if (!object || object.DETAILSLOADED) {
       return Promise.resolve(object)
     } else {
@@ -367,12 +417,20 @@ const actions = {
           // Integrate detail into object
           for (let prop of Object.keys(detail)) {
             if (object[prop] == null) {
-              // TODO: Use mutation
-              object[prop] = detail[prop]
+              commit({
+                type: "set",
+                object,
+                prop,
+                value: detail[prop]
+              })
             }
           }
-          // TODO: Use mutation
-          object.DETAILSLOADED = true
+          commit({
+            type: "set",
+            object,
+            prop: "DETAILSLOADED",
+            value: true
+          })
           return object
         } else {
           return null

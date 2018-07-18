@@ -298,7 +298,12 @@ export default {
             scheme: { uri: "http://bartoc.org/en/node/430" }
           }).then(object => {
             if (object) {
-              object.GNDTYPE = concept.GNDTYPE
+              this.$store.commit({
+                type: "objects/set",
+                object,
+                prop: "GNDTYPE",
+                value: concept.GNDTYPE
+              })
             }
             return object
           }))
@@ -321,7 +326,12 @@ export default {
             gndTerms.push(term)
           }
         }
-        itemBefore.GNDTERMS = gndTerms
+        this.$store.commit({
+          type: "objects/set",
+          object: itemBefore,
+          prop: "GNDTERMS",
+          value: gndTerms
+        })
       }).catch(error => {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })

@@ -70,7 +70,12 @@ const selectedPlugin = store => {
             // If children were loaded before ancestors, then the children's ancestors property is set to [null]
             if (concept.narrower && !concept.narrower.includes(null)) {
               for (let child of concept.narrower) {
-                child.ancestors = concept.ancestors.concat([concept])
+                store.commit({
+                  type: "objects/set",
+                  object: child,
+                  prop: "ancestors",
+                  value: concept.ancestors.concat([concept])
+                })
               }
             }
             return Promise.all(promises)
@@ -80,7 +85,12 @@ const selectedPlugin = store => {
             // Set all ancestors to open
             // FIXME: This will be task of ConceptTree.
             for (let ancestor of concept.ancestors) {
-              ancestor.ISOPEN = true
+              store.commit({
+                type: "objects/set",
+                object: ancestor,
+                prop: "ISOPEN",
+                value: true
+              })
             }
           })
         }

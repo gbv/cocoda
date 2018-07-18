@@ -164,14 +164,24 @@ export default {
         if ((!this.item.ancestors || this.item.ancestors.length == 0) && !this.item.BROADERLOADED) {
           let item = this.item
           if (!item.broader || item.broader.length == 0) {
-            item.BROADERLOADED = true
+            this.$store.commit({
+              type: "objects/set",
+              object: item,
+              prop: "BROADERLOADED",
+              value: true
+            })
             console.warn("broader: no broader concepts")
             return
           }
           if (item.broader.includes(null)) {
           // FIXME: Use broader endpoint to load broader instead
             console.warn("broader: null")
-            item.BROADERLOADED = true
+            this.$store.commit({
+              type: "objects/set",
+              object: item,
+              prop: "BROADERLOADED",
+              value: true
+            })
             return
           } else {
             let promises = []
@@ -181,7 +191,12 @@ export default {
               }))
             }
             Promise.all(promises).then(() => {
-              item.BROADERLOADED = true
+              this.$store.commit({
+                type: "objects/set",
+                object: item,
+                prop: "BROADERLOADED",
+                value: true
+              })
             })
           }
         }

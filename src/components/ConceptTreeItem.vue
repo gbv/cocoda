@@ -147,7 +147,12 @@ export default {
       if (this.preventClickArrow) {
         return
       }
-      this.concept.ISOPEN = isOpen
+      this.$store.commit({
+        type: "objects/set",
+        object: this.concept,
+        prop: "ISOPEN",
+        value: isOpen
+      })
       this.loadChildren()
       this.preventClickArrow = true
       _.delay(() => {
@@ -178,7 +183,12 @@ export default {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
         _.delay(() => {
-          this.concept.ISOPEN = !this.concept.ISOPEN
+          this.$store.commit({
+            type: "objects/set",
+            object: this.concept,
+            prop: "ISOPEN",
+            value: !this.concept.ISOPEN
+          })
           _.delay(() => {
             this.preventClick = false
           }, 200)
