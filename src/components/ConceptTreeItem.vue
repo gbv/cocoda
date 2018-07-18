@@ -35,9 +35,14 @@
       </div>
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
-        v-show="mapping.canAdd(concept, selected.scheme[isLeft], isLeft)"
+        v-show="$store.getters['mapping/canAdd'](concept, selected.scheme[isLeft], isLeft)"
         class="addToMapping fontWeight-heavy"
-        @click="mapping.add(concept, selected.scheme[isLeft], isLeft)"
+        @click="$store.commit({
+          type: 'mapping/add',
+          concept,
+          scheme: selected.scheme[isLeft],
+          isLeft
+        })"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)" >
         <font-awesome-icon icon="plus-circle" />
@@ -115,8 +120,6 @@ export default {
       /** Prevent double clicks */
       preventClick: false,
       preventClickArrow: false,
-      /** Current mapping */
-      mapping: this.$root.$data.mapping
     }
   },
   computed: {

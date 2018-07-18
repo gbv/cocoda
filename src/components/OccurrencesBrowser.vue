@@ -100,8 +100,6 @@ export default {
     return {
       /** Current list of occurrences */
       occurrences: [],
-      /** Reference to the current mapping */
-      mapping: this.$root.$data.mapping,
       /** Current axios cancel token */
       cancelToken: null,
       /** List of supported schemes by occurrences-api */
@@ -333,13 +331,17 @@ export default {
      * Converts a co-occurrence into a mapping and saves it as the current mapping
      */
     toMapping(data) {
-      this.mapping.jskos = {
+      let mapping = {
         from: { "memberSet": [data.item.from] },
         to: { "memberSet": [data.item.to] },
         fromScheme: data.item.fromScheme,
         toScheme: data.item.toScheme,
         type: [this.$util.defaultMappingType.uri]
       }
+      this.$store.commit({
+        type: "mapping/set",
+        mapping
+      })
     },
     /** Returns whether a scheme is supported by the occurrences-api */
     isSupported(scheme) {

@@ -120,8 +120,6 @@ export default {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
-      /** Reference to current mapping */
-      mapping: this.$root.$data.mapping,
       /** Available options for mapping options */
       mappingOptions: {
         showAll: {
@@ -275,20 +273,25 @@ export default {
   },
   methods: {
     edit(data) {
-      this.mapping.jskos = this.$util.deepCopy(data.item.mapping)
+      let mapping = this.$util.deepCopy(data.item.mapping)
       // Make sure concept object references are in sync
-      this.mapping.jskos.from.memberSet = data.item.mapping.from.memberSet.slice()
-      if (this.mapping.jskos.to.memberSet) {
-        this.mapping.jskos.to.memberSet = data.item.mapping.to.memberSet.slice()
-      } else if (this.mapping.jskos.to.memberList) {
-        this.mapping.jskos.to.memberList = data.item.mapping.to.memberList.slice()
-      } else if (this.mapping.jskos.to.memberChoice) {
-        this.mapping.jskos.to.memberChoice = data.item.mapping.to.memberChoice.slice()
+      mapping.from.memberSet = data.item.mapping.from.memberSet.slice()
+      if (mapping.to.memberSet) {
+        mapping.to.memberSet = data.item.mapping.to.memberSet.slice()
+      } else if (mapping.to.memberList) {
+        mapping.to.memberList = data.item.mapping.to.memberList.slice()
+      } else if (mapping.to.memberChoice) {
+        mapping.to.memberChoice = data.item.mapping.to.memberChoice.slice()
       }
       // Load concept prefLabel for each concept in mapping if necessary
-      for (let concept of [].concat(this.mapping.jskos.from.memberSet, this.mapping.jskos.to.memberSet, this.mapping.jskos.to.memberList, this.mapping.jskos.to.memberChoice)) {
+      for (let concept of [].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice)) {
         this.hover(concept)
       }
+      // Save mapping
+      this.$store.commit({
+        type: "mapping/set",
+        mapping
+      })
     },
     hover(concept) {
       if(concept && !concept.prefLabel) {
