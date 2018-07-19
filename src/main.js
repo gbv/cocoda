@@ -21,10 +21,6 @@ Vue.prototype.$api = api
 // Initialize api
 store.dispatch("init")
 
-// Add config, use with this.$config in components
-import config from "./config"
-Vue.prototype.$config = config
-
 // Add util, use with this.$util in components
 import util from "./util"
 Vue.prototype.$util = util
@@ -112,6 +108,14 @@ Vue.mixin({
         countdown,
         variant
       })
+    }
+  }
+})
+
+Vue.mixin({
+  computed: {
+    config() {
+      return this.$store.state.config
     }
   }
 })

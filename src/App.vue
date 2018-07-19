@@ -201,7 +201,7 @@ export default {
     favoriteSchemes() {
       let schemes = []
       for (let scheme of this.$store.state.schemes) {
-        if (this.$config.favoriteTerminologyProviders.includes(scheme.uri)) {
+        if (this.config.favoriteTerminologyProviders.includes(scheme.uri)) {
           schemes.push(scheme)
         }
       }

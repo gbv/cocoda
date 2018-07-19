@@ -11,12 +11,20 @@ import actions from "./actions"
 Vue.use(Vuex)
 
 const state = {
-  schemes: []
+  schemes: [],
+  config: {}
 }
 
 const mutations = {
   setSchemes(state, { schemes }) {
     state.schemes = schemes
+  },
+  setConfig(state, { config, option, value }) {
+    if (config) {
+      state.config = config
+    } else {
+      state.config[option] = value
+    }
   }
 }
 
@@ -28,4 +36,5 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
+  strict: true
 })

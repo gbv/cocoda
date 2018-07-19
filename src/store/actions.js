@@ -4,6 +4,12 @@ import util from "../util"
 
 export default {
   init ({ commit, getters }) {
+    // Prepare config
+    commit({
+      type: "setConfig",
+      config
+    })
+
     let schemes = [], promises = []
     // Prepare all terminology providers
     for (let provider of config.terminologyProviders) {

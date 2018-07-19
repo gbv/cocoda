@@ -269,7 +269,7 @@ export default {
         this.loading = true
         this.cancelToken = this.$api.token()
         for (let uri of uris) {
-          promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
+          promises.push(axios.get(this.config.occurrenceProviders[0].url, {
             params: {
               member: uri,
               scheme: "*",
@@ -284,7 +284,7 @@ export default {
         // Another request for co-occurrences between two specific concepts
         if (uris.length == 2 && uris[0] != uris[1]) {
           let urisString = uris.join(" ")
-          promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
+          promises.push(axios.get(this.config.occurrenceProviders[0].url, {
             params: {
               member: urisString,
               threshold: 5
