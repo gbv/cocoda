@@ -12,7 +12,8 @@ Vue.use(Vuex)
 
 const state = {
   schemes: [],
-  config: {}
+  config: {},
+  hoveredConcept: null
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
     } else {
       state.config[option] = value
     }
+  },
+  setHovered(state, { concept }) {
+    state.hoveredConcept = concept
   }
 }
 

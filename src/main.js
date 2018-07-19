@@ -116,6 +116,17 @@ Vue.mixin({
   computed: {
     config() {
       return this.$store.state.config
+    },
+    hoveredConcept: {
+      get() {
+        return this.$store.state.hoveredConcept
+      },
+      set(concept) {
+        this.$store.commit({
+          type: "setHovered",
+          concept
+        })
+      }
     }
   }
 })
@@ -124,9 +135,5 @@ new Vue({
   el: "#app",
   store,
   components: { App },
-  data: {
-    hoveredConcept: null,
-    alerts: []
-  },
   template: "<App/>",
 })

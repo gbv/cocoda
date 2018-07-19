@@ -127,7 +127,7 @@ export default {
       return !this.concept.narrower || this.concept.narrower.length != 0
     },
     isHovered() {
-      return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.concept)
+      return this.$util.compareConcepts(this.hoveredConcept, this.concept)
     },
     isSelected() {
       return this.selected.concept[this.isLeft] != null ? this.selected.concept[this.isLeft].uri == this.concept.uri : false
@@ -141,7 +141,7 @@ export default {
      * Triggers a hovered event.
      */
     hovering(concept) {
-      this.$root.$data.hoveredConcept = concept
+      this.hoveredConcept = concept
     },
     /**
      * Calls open and prevents accidental double clicks.
