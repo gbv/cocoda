@@ -19,7 +19,7 @@ Vue.use(VueScrollTo)
 import api from "./api"
 Vue.prototype.$api = api
 // Initialize api
-api.init()
+store.dispatch("init")
 
 // Add config, use with this.$config in components
 import config from "./config"

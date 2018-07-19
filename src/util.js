@@ -258,4 +258,10 @@ let delay = {
   long: { show: 1000, hide: 0 }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay }
+let sortSchemes = schemes => {
+  return schemes.sort(
+    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
+  )
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }

@@ -15,96 +15,12 @@
 import axios from "axios"
 import config from "./config"
 import util from "./util"
-import store from "./store"
 
 /** Property sets */
 const minimumProperties = "-"
 const defaultProperties = "uri,prefLabel,notation,inScheme"
 const detailProperties =  "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote"
 const allProperties = "*"
-
-let schemes = []
-
-function init() {
-  // Prepare all terminology providers
-  for (let provider of config.terminologyProviders) {
-    let url = provider.url || null, saveSchemePromise = Promise.resolve(null)
-    if(!Array.isArray(provider.voc)) {
-      // Load schemes
-      let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
-      if (vocEndpoint) {
-        saveSchemePromise = get(vocEndpoint)
-          .then(function(data) {
-            if (Array.isArray(data)) {
-              provider.voc = data
-              return provider
-            } else {
-              console.warn("Couldn't load schemes for provider", provider)
-            }
-          })
-        // TODO: - error handling
-      }
-    } else {
-      saveSchemePromise = Promise.resolve(provider)
-    }
-    if (!provider.data) {
-      provider.data = url ? url + "/data" : null
-    }
-    if (!provider.suggest) {
-      provider.suggest = url ? url + "/suggest" : null
-    }
-    if (!provider.top) {
-      provider.top = url ? url + "/voc/top" : null
-    }
-    if (!provider.ancestors) {
-      provider.ancestors = url ? url + "/ancestors" : null
-    }
-    if (!provider.narrower) {
-      provider.narrower = url ? url + "/narrower" : null
-    }
-    // Save scheme in store and in schemes array
-    saveSchemePromise.then(provider => {
-      if (!provider || !provider.voc) return
-      provider.voc.forEach(scheme => {
-        // Set provider for scheme
-        scheme.PROVIDER = provider
-        // Add scheme specific custom properties
-        scheme.DETAILSLOADED = false
-        scheme.TOPCONCEPTS = [null]
-        scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
-        // Check if scheme is already in store
-        let otherScheme = store.getters["objects/get"](scheme), prio, otherPrio, override = false
-        // let otherScheme = null, prio, otherPrio
-        if (otherScheme) {
-          prio = provider.prio || 0
-          otherPrio = otherScheme.provider ? (otherScheme.provider.priority || 0) : -1
-          override = otherPrio < prio
-        }
-        if (!otherScheme || override){
-          if (override) {
-            // Find and remove scheme from schemes array
-            let otherSchemeIndex = -1
-            for (let index = 0; index < schemes.length; index += 1) {
-              if (util.compareSchemes(scheme, schemes[index])) {
-                otherSchemeIndex = index
-                break
-              }
-            }
-            schemes.splice(otherSchemeIndex, 1)
-          }
-          // Force save into store
-          store.commit({
-            type: "objects/save",
-            object: scheme,
-            force: true
-          })
-          // Save into schemes array
-          schemes.push(scheme)
-        }
-      })
-    })
-  }
-}
 
 /**
  * Returns a new axios CancelToken source
@@ -264,36 +180,6 @@ function get(url, axiosConfig) {
           }
         }
       }
-      data.forEach(element => {
-        if (element !== null && typeof element === "object") {
-          // For concepts, add custom properties
-          // FIXME: This is not needed anymore because Vuex is dealing with that.
-          if(util.isConcept(element)) {
-            element.ISOPEN = false
-            element.DETAILSLOADED = false
-            element.OCCURRENCES = null
-            element.MAPPINGS = null
-            element.ancestors = element.ancestors || [null]
-            element.narrower = element.narrower || [null]
-            element.editorialNote = element.editorialNote || null
-            // reorder scopeNotes and editorialNotes
-            if (element.scopeNote) {
-              for (let lang of Object.keys(element.scopeNote)) {
-                if (Array.isArray(element.scopeNote[lang])) {
-                  element.scopeNote[lang] = element.scopeNote[lang].sort()
-                }
-              }
-            }
-            if (element.editorialNote) {
-              for (let lang of Object.keys(element.editorialNote)) {
-                if (Array.isArray(element.editorialNote[lang])) {
-                  element.editorialNote[lang] = element.editorialNote[lang].sort()
-                }
-              }
-            }
-          }
-        }
-      })
       return data
     })
 }
@@ -312,4 +198,4 @@ function mappings(params) {
   })
 }
 
-export default { init, data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, schemes, mappings }
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, mappings }

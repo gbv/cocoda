@@ -160,16 +160,6 @@ import ResizingSlider from "./components/ResizingSlider"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 
 /**
- * Sorts data by German prefLabel with fallback to uri.
- */
-function sortData(data) {
-  // TODO: - Rethink way of sorting
-  return data.sort(
-    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
-  )
-}
-
-/**
  * The main application.
  */
 export default {
@@ -179,7 +169,6 @@ export default {
   },
   data () {
     return {
-      schemes: this.$api.schemes,
       itemDetailSettings: {
         left: {
           showTopConceptsInScheme: false
@@ -199,7 +188,7 @@ export default {
         { value: null, text: "Select a scheme", disabled: true }
       ]
       // Add from schemes
-      for (var scheme of sortData(this.schemes)) {
+      for (var scheme of this.$store.state.schemes) {
         // TODO: - Check if notation always has a single value (and why is it an array then?).
         // TODO: - Support other languages.
         // TODO: - Fallback if no German label is available.
@@ -211,7 +200,7 @@ export default {
     },
     favoriteSchemes() {
       let schemes = []
-      for (let scheme of this.schemes) {
+      for (let scheme of this.$store.state.schemes) {
         if (this.$config.favoriteTerminologyProviders.includes(scheme.uri)) {
           schemes.push(scheme)
         }
