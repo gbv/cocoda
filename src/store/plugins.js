@@ -102,4 +102,4 @@ const selectedPlugin = store => {
   })
 }
 
-export const plugins = [selectedPlugin]
+export default [selectedPlugin]
