@@ -7,9 +7,11 @@
         v-for="(alert, index) in $root.$data.alerts"
         :key="index"
         :variant="alert.variant"
-        :show="!alert.dismissed"
+        :show="alert.countdown || !alert.shouldCountdown"
         dismissible
-        @dismissed="alert.dismissed = true" >
+        fade
+        @dismissed="alert.countdown = 0"
+        @dismiss-count-down="alert.countdown = $event" >
         {{ alert.text }}
       </b-alert>
     </div>

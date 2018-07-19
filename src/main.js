@@ -113,11 +113,22 @@ new Vue({
      * @param {string} text
      * @param {string} variant
      */
-    alert(text, variant = "danger") {
-      this.alerts.push({
-        text: text,
-        variant: variant
-      })
+    alert({ text, variant = "danger", countdown = 5 }) {
+      let shouldCountdown = true
+      if (countdown == -1 || countdown == null) {
+        shouldCountdown = false
+      }
+      let alert = {
+        text,
+        variant,
+        countdown,
+        maxCountdown: countdown,
+        shouldCountdown,
+        countdownChanged: function(countdown) {
+          this.countdown = countdown
+        }
+      }
+      this.alerts.push(alert)
     }
   },
   template: "<App/>",
