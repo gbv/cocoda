@@ -4,14 +4,14 @@
     class="text-dark color-primary-0-bg fontSize-normal" >
     <div class="alertsContainer">
       <b-alert
-        v-for="(alert, index) in $root.$data.alerts"
+        v-for="(alert, index) in $store.state.alerts.alerts"
         :key="index"
         :variant="alert.variant"
         :show="alert.countdown || !alert.shouldCountdown"
-        dismissible
+        :dismissible="!alert.shouldCountdown"
         fade
-        @dismissed="alert.countdown = 0"
-        @dismiss-count-down="alert.countdown = $event" >
+        @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
+        @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })" >
         {{ alert.text }}
       </b-alert>
     </div>

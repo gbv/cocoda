@@ -95,6 +95,27 @@ Vue.mixin({
   }
 })
 
+// Global mixin for Vuex alerts
+Vue.mixin({
+  methods: {
+    /**
+     * Shows a bootstrap alert.
+     *
+     * @param {*} text - text to be shown
+     * @param {*} countdown - countdown seconds, 0 for no countdown
+     * @param {*} variant - a bootstrap variant, e.g. "danger", "warning", ...
+     */
+    alert(text, countdown, variant) {
+      this.$store.commit({
+        type: "alerts/add",
+        text,
+        countdown,
+        variant
+      })
+    }
+  }
+})
+
 new Vue({
   el: "#app",
   store,
@@ -102,34 +123,6 @@ new Vue({
   data: {
     hoveredConcept: null,
     alerts: []
-  },
-  methods: {
-    /**
-     * Shows a bootstrap alert with text and variant.
-     * Usage from any component: this.$root.alert(text, variant)
-     *
-     * This is actually shown by App.vue, so it has to implement the respective HTML and CSS for this.
-     *
-     * @param {string} text
-     * @param {string} variant
-     */
-    alert({ text, variant = "danger", countdown = 5 }) {
-      let shouldCountdown = true
-      if (countdown == -1 || countdown == null) {
-        shouldCountdown = false
-      }
-      let alert = {
-        text,
-        variant,
-        countdown,
-        maxCountdown: countdown,
-        shouldCountdown,
-        countdownChanged: function(countdown) {
-          this.countdown = countdown
-        }
-      }
-      this.alerts.push(alert)
-    }
   },
   template: "<App/>",
 })

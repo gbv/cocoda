@@ -7,8 +7,16 @@ const selectedPlugin = store => {
     if (mutation.type == "selected/set") {
       let isLeft = mutation.payload.isLeft
       if (mutation.payload.kind == "concept") {
-        let concept = mutation.payload.value,
-          conceptInStore,
+        let concept = mutation.payload.value
+        if (!concept) {
+          store.commit({
+            type: "alerts/add",
+            text: "The selected concept could not be loaded.",
+            variant: "warning",
+          })
+          return
+        }
+        let conceptInStore,
           scheme = concept.inScheme ? concept.inScheme[0] : null
 
         // Set scheme if a concept is selected without the scheme
