@@ -2,11 +2,19 @@
   <div id="mappingEditor">
     <!-- Minimizer allows component to get minimized -->
     <minimizer text="Mapping Editor" />
-    <div
-      v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
-      class="button mappingExport"
-      @click="exportMapping()" >
-      <font-awesome-icon icon="share-square" />
+    <div class="mappingEditorToolbar">
+      <div
+        v-b-tooltip.hover="{ title: 'Save mapping', delay: $util.delay.medium }"
+        class="button mappingEditorToolbarItem"
+        @click="alert('Not yet implemented.')" >
+        <font-awesome-icon icon="save" />
+      </div>
+      <div
+        v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
+        class="button mappingEditorToolbarItem"
+        @click="exportMapping()" >
+        <font-awesome-icon icon="share-square" />
+      </div>
     </div>
     <!-- Source and target sides for the mapping -->
     <div
@@ -304,15 +312,21 @@ export default {
   transform: translateX(-50%) translateY(-50%);
 }
 
-.mappingExport {
+.mappingEditorToolbar {
   position: absolute;
-  width: 24px;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   margin: 5px auto;
   left: 0;
   right: 0;
   bottom: 0;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+}
+.mappingEditorToolbarItem {
+  flex: 0;
+  margin: 0 5px;
 }
 
 .mappingButtons {
