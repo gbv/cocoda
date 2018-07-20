@@ -327,7 +327,7 @@ export default {
       let params = {}
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
-      this.$api.mappings(params).then(data => {
+      this.$api.getMappings(params).then(data => {
         let mappings = concept.MAPPINGS
         if (!mappings) {
           // concept.MAPPINGS = { from: null, to: null }

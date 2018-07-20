@@ -268,7 +268,7 @@ export default {
       for (let fromTo of ["from", "to"]) {
         let params = {}
         params[fromTo] = this.item.uri
-        promises.push(this.$api.mappings(params).then(results => [results, fromTo]))
+        promises.push(this.$api.getMappings(params).then(results => [results, fromTo]))
       }
       Promise.all(promises).then(results => {
         if (!this.$util.compareConcepts(itemBefore, this.item)) {

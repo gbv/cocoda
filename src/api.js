@@ -184,18 +184,24 @@ function get(url, axiosConfig) {
     })
 }
 
-function mappings(params) {
-  if (config.mappingProviders.length == 0) {
-    return Promise.resolve([])
+function getMappings(params) {
+  let promises = []
+  for (let provider of config.mappingProviders) {
+    let promise = axios.get(provider.url, {
+      params: params
+    }).then(response => response.data)
+    promises.push(promise)
   }
-  return axios.get(config.mappingProviders[0].url, {
-    params: params
-  }).then(response => {
-    for (let mapping of response.data) {
-      mapping.type = mapping.type || [util.defaultMappingType.uri]
+  return Promise.all(promises).then(results => {
+    let mappings = []
+    for (let result of results) {
+      for (let mapping of result) {
+        mapping.type = mapping.type || [util.defaultMappingType.uri]
+        mappings.push(mapping)
+      }
     }
-    return response.data
+    return mappings
   })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, mappings }
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings }
