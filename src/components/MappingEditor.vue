@@ -6,7 +6,7 @@
       <div
         v-b-tooltip.hover="{ title: 'Save mapping', delay: $util.delay.medium }"
         class="button mappingEditorToolbarItem"
-        @click="alert('Not yet implemented.')" >
+        @click="saveMapping" >
         <font-awesome-icon icon="save" />
       </div>
       <div
@@ -144,6 +144,15 @@ export default {
     }
   },
   methods: {
+    saveMapping() {
+      let mapping = this.$util.cleanJSKOS(this.$util.deepCopy(this.$store.state.mapping.mapping))
+      this.$api.saveMapping(mapping).then(() => {
+        this.$store.commit("mapping/setRefresh", true)
+        this.alert("Mapping was saved.", null, "success")
+      }).catch(error => {
+        this.alert(error, null, "danger")
+      })
+    },
     labelForScheme(scheme) {
       return scheme ? scheme.notation[0].toUpperCase() : "&nbsp;"
     },

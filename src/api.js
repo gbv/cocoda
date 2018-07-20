@@ -13,6 +13,7 @@
  */
 
 import axios from "axios"
+import localforage from "localforage"
 import config from "./config"
 import util from "./util"
 
@@ -192,6 +193,7 @@ function getMappings(params) {
     }).then(response => response.data)
     promises.push(promise)
   }
+  promises.push(getLocalMappings(params))
   return Promise.all(promises).then(results => {
     let mappings = []
     for (let result of results) {
@@ -204,4 +206,74 @@ function getMappings(params) {
   })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings }
+function getLocalMappings(params = {}) {
+  return localforage.getItem("mappings").then(mappings => mappings || []).catch(() => []).then(mappings => {
+    // Filter mappings according to params (support for from + to)
+    // TODO: - Support more parameters.
+    // TODO: - Move to its own things.
+    // TODO: - Support memberList and memberChoice.
+    if (params.from) {
+      mappings = mappings.filter(mapping => {
+        return null != mapping.from.memberSet.find(concept => {
+          return concept.uri == params.from
+        })
+      })
+    }
+    if (params.to) {
+      mappings = mappings.filter(mapping => {
+        return null != mapping.to.memberSet.find(concept => {
+          return concept.uri == params.to
+        })
+      })
+    }
+    return mappings
+  }).then(mappings => {
+    // Add "LOCAL = true" for all mappings.
+    // FIXME: Do this differently.
+    mappings.forEach(mapping => {
+      mapping.LOCAL = true
+    })
+    return mappings
+  })
+}
+
+function saveMapping(mapping) {
+  // Check for fromScheme and toScheme
+  // TODO: Update mapping if possible (might need an additional parameter).
+  if (!mapping.fromScheme || !mapping.toScheme) {
+    return Promise.reject("Can't save mapping: Missing fromScheme or toScheme.")
+  }
+
+  return getLocalMappings().then(mappings => {
+    mappings.push(mapping)
+    return localforage.setItem("mappings", mappings)
+  })
+}
+
+function removeMapping(mappingToRemove) {
+  // FIXME: Remove by identifier
+  let previousNumberOfMappings
+  return getLocalMappings().then(mappings => {
+    previousNumberOfMappings = mappings.length
+    let newMappings = []
+    for (let mapping of mappings) {
+      let remove = true
+      if (mapping.from.memberSet[0].uri != mappingToRemove.from.memberSet[0].uri) {
+        remove = false
+      }
+      let toUris1 = mapping.to.memberSet.reduce((total, current) => total.concat([current.uri]), []).sort()
+      let toUris2 = mappingToRemove.to.memberSet.reduce((total, current) => total.concat([current.uri]), []).sort()
+      if (!_.isEqual(toUris1, toUris2)) {
+        remove = false
+      }
+      if (!remove) {
+        newMappings.push(mapping)
+      }
+    }
+    return localforage.setItem("mappings", newMappings)
+  }).then(mappings => {
+    return previousNumberOfMappings > mappings.length
+  })
+}
+
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings, saveMapping, removeMapping }

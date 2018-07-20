@@ -57,11 +57,20 @@
           <span
             slot="actions"
             slot-scope="data" >
-            <font-awesome-icon
-              v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
-              icon="edit"
-              class="button editButton"
-              @click="edit(data)" />
+            <div class="mappingBrowserActions">
+              <font-awesome-icon
+                v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
+                icon="edit"
+                class="button editButton"
+                @click="edit(data)" />
+              <font-awesome-icon
+                v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+                v-if="data.item.mapping.LOCAL"
+                icon="trash-alt"
+                class="button editButton"
+                @click="removeMapping(data.item.mapping)"
+              />
+            </div>
           </span>
           <span
             slot="HEAD_actions"
@@ -99,6 +108,12 @@
         <!-- Number of mappings in the table -->
         <div style="text-align: right;">
           {{ items.length }} mappings
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: 'refresh mappings', delay: $util.delay.medium }"
+            icon="sync-alt"
+            class="button"
+            @click="refreshMappings"
+          />
         </div>
       </div>
     </div>
@@ -262,6 +277,17 @@ export default {
           sortable: false
         }
       ]
+    },
+    needsRefresh() {
+      return this.$store.state.mapping.mappingsNeedRefresh
+    }
+  },
+  watch: {
+    needsRefresh(refresh) {
+      if (refresh) {
+        this.refreshMappings()
+        this.$store.commit("mapping/setRefresh", false)
+      }
     }
   },
   created() {
@@ -343,6 +369,28 @@ export default {
       }).catch(function(error) {
         console.error("API error (mappings):", error)
       })
+    },
+    removeMapping(mapping) {
+      this.$api.removeMapping(mapping).then(success => {
+        if (success) {
+          this.alert("Mapping was deleted.", null, "success")
+          this.$store.commit("mapping/setRefresh", true)
+        } else {
+          this.alert("Mapping could not be deleted.", null, "danger")
+        }
+      })
+    },
+    refreshMappings() {
+      for (let concept of [this.selected.concept[true], this.selected.concept[false]]) {
+        if (concept) {
+          this.$store.commit({
+            type: "objects/set",
+            object: concept,
+            prop: "MAPPINGS",
+            value: null
+          })
+        }
+      }
     }
   }
 }
@@ -376,8 +424,14 @@ export default {
   flex: 1;
 }
 
+.mappingBrowserActions {
+  display: flex;
+  margin-top: 4px;
+}
 .editButton {
   font-size: 12px;
+  margin: 0 2px;
+  flex: 1;
 }
 
 </style>
