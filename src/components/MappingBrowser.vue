@@ -3,7 +3,7 @@
     <!-- Minimizer allows component to get minimized -->
     <minimizer text="Mapping Browser" />
     <div
-      v-show="schemeLeft != null || schemeRight != null"
+      v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
       <div
         v-if="items.length > 0"
@@ -26,10 +26,10 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.canConceptBeSelected(concept, schemeLeft)"
-              :is-highlighted="$util.compareConcepts(concept, selectedLeft)"
+              :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
+              :is-highlighted="$util.compareConcepts(concept, selected.concept[true])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, schemeLeft) && chooseUri(concept, true)" />
+              @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && setSelected('concept', true, concept)" />
           </span>
           <span
             slot="targetConcepts"
@@ -40,10 +40,10 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.canConceptBeSelected(concept, schemeRight)"
-              :is-highlighted="$util.compareConcepts(concept, selectedRight)"
+              :is-link="$util.canConceptBeSelected(concept, selected.scheme[false])"
+              :is-highlighted="$util.compareConcepts(concept, selected.concept[false])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, schemeRight) && chooseUri(concept, false)" />
+              @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && setSelected('concept', false, concept)" />
           </span>
           <span
             slot="type"
@@ -116,42 +116,10 @@ import Minimizer from "./Minimizer"
 export default {
   name: "MappingBrowser",
   components: { ItemName, FontAwesomeIcon, Minimizer },
-  props: {
-    /**
-     * The selected concept from the left hand concept browser.
-     */
-    selectedLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected concept from the right hand concept browser.
-     */
-    selectedRight: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the left hand concept browser.
-     */
-    schemeLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the right hand concept browser.
-     */
-    schemeRight: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
-      /** Reference to current mapping */
-      mapping: this.$root.$data.mapping,
       /** Available options for mapping options */
       mappingOptions: {
         showAll: {
@@ -165,7 +133,7 @@ export default {
           id: "showSelected",
           label: "Show Only Mappings To Selected Scheme",
           showCondition(vm) {
-            return vm.schemeLeft != null && vm.schemeRight != null
+            return vm.selected.scheme[true] != null && vm.selected.scheme[false] != null
           }
         }
       },
@@ -181,11 +149,11 @@ export default {
       let items = []
       let conceptList = [
         {
-          concept: this.selectedLeft,
+          concept: this.selected.concept[true],
           fromTo: "from"
         },
         {
-          concept: this.selectedRight,
+          concept: this.selected.concept[false],
           fromTo: "to"
         }
       ]
@@ -212,21 +180,21 @@ export default {
               // Filter mappings depending on selected option
               if (this.selectedOption.id == this.mappingOptions.showSelected.id) {
                 // Only show if source and target schemes match with selected schemes
-                if(!this.$util.compareSchemes(mapping.fromScheme, this.schemeLeft) || !this.$util.compareSchemes(mapping.toScheme, this.schemeRight)) {
+                if(!this.$util.compareSchemes(mapping.fromScheme, this.selected.scheme[true]) || !this.$util.compareSchemes(mapping.toScheme, this.selected.scheme[false])) {
                   continue
                 }
               }
               // Highlight if selected concepts are in mapping and add inScheme to each concept
               let leftInSource = false
               for (let concept of item.sourceConcepts) {
-                if (this.selectedLeft && concept.uri == this.selectedLeft.uri) {
+                if (this.selected.concept[true] && concept.uri == this.selected.concept[true].uri) {
                   leftInSource = true
                 }
                 concept.inScheme = concept.inScheme || [mapping.fromScheme]
               }
               let rightInSource = false
               for (let concept of item.targetConcepts) {
-                if (this.selectedRight && concept.uri == this.selectedRight.uri) {
+                if (this.selected.concept[false] && concept.uri == this.selected.concept[false].uri) {
                   rightInSource = true
                 }
                 concept.inScheme = concept.inScheme || [mapping.toScheme]
@@ -305,20 +273,25 @@ export default {
   },
   methods: {
     edit(data) {
-      this.mapping.jskos = this.$util.deepCopy(data.item.mapping)
+      let mapping = this.$util.deepCopy(data.item.mapping)
       // Make sure concept object references are in sync
-      this.mapping.jskos.from.memberSet = data.item.mapping.from.memberSet.slice()
-      if (this.mapping.jskos.to.memberSet) {
-        this.mapping.jskos.to.memberSet = data.item.mapping.to.memberSet.slice()
-      } else if (this.mapping.jskos.to.memberList) {
-        this.mapping.jskos.to.memberList = data.item.mapping.to.memberList.slice()
-      } else if (this.mapping.jskos.to.memberChoice) {
-        this.mapping.jskos.to.memberChoice = data.item.mapping.to.memberChoice.slice()
+      mapping.from.memberSet = data.item.mapping.from.memberSet.slice()
+      if (mapping.to.memberSet) {
+        mapping.to.memberSet = data.item.mapping.to.memberSet.slice()
+      } else if (mapping.to.memberList) {
+        mapping.to.memberList = data.item.mapping.to.memberList.slice()
+      } else if (mapping.to.memberChoice) {
+        mapping.to.memberChoice = data.item.mapping.to.memberChoice.slice()
       }
       // Load concept prefLabel for each concept in mapping if necessary
-      for (let concept of [].concat(this.mapping.jskos.from.memberSet, this.mapping.jskos.to.memberSet, this.mapping.jskos.to.memberList, this.mapping.jskos.to.memberChoice)) {
+      for (let concept of [].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice)) {
         this.hover(concept)
       }
+      // Save mapping
+      this.$store.commit({
+        type: "mapping/set",
+        mapping
+      })
     },
     hover(concept) {
       if(concept && !concept.prefLabel) {
@@ -329,12 +302,22 @@ export default {
           return
         }
 
-        this.$api.objects.get(concept.uri, concept.inScheme[0].uri).then(result => {
+        this.getObject({ object: concept, scheme: concept.inScheme[0] }).then(result => {
           if (result && result.prefLabel) {
-            this.$set(concept, "prefLabel", result.prefLabel)
+            this.$store.commit({
+              type: "objects/set",
+              object: concept,
+              prop: "prefLabel",
+              value: result.prefLabel
+            })
           } else {
             // TODO: - Error handling
-            this.$set(concept, "prefLabel", { de: " " })
+            this.$store.commit({
+              type: "objects/set",
+              object: concept,
+              prop: "prefLabel",
+              value: { de: " " }
+            })
           }
         })
       }
@@ -345,10 +328,18 @@ export default {
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
       this.$api.mappings(params).then(data => {
-        if (!concept.MAPPINGS) {
-          concept.MAPPINGS = { from: null, to: null }
+        let mappings = concept.MAPPINGS
+        if (!mappings) {
+          // concept.MAPPINGS = { from: null, to: null }
+          mappings =  { from: null, to: null }
         }
-        concept.MAPPINGS[conceptItem.fromTo] = data
+        mappings[conceptItem.fromTo] = data
+        this.$store.commit({
+          type: "objects/set",
+          object: concept,
+          prop: "MAPPINGS",
+          value: mappings
+        })
       }).catch(function(error) {
         console.error("API error (mappings):", error)
       })

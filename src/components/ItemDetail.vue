@@ -10,10 +10,9 @@
       <component
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
-        :scheme="scheme"
         :is-left="isLeft"
         :settings="internalSettings"
-        @chooseUri="chooseUri" />
+      />
     </div>
     <div
       v-else-if="!loading"
@@ -79,13 +78,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * Reference to the scheme
-     */
-    scheme: {
-      type: Object,
-      default: null
     },
     /**
      * Settings - An object with a subset of the following properties:
@@ -166,30 +158,45 @@ export default {
     loadDetails() {
       this.loading = true
       // Get details from API
-      this.$api.objects.details(this.item).then(() => {
+      this.loadObjectDetails({ object: this.item }).then(() => {
         this.loading = false
         // If there are no ancestors, but broader, load concepts for broader
         if ((!this.item.ancestors || this.item.ancestors.length == 0) && !this.item.BROADERLOADED) {
           let item = this.item
           if (!item.broader || item.broader.length == 0) {
-            item.BROADERLOADED = true
+            this.$store.commit({
+              type: "objects/set",
+              object: item,
+              prop: "BROADERLOADED",
+              value: true
+            })
             console.warn("broader: no broader concepts")
             return
           }
           if (item.broader.includes(null)) {
           // FIXME: Use broader endpoint to load broader instead
             console.warn("broader: null")
-            item.BROADERLOADED = true
+            this.$store.commit({
+              type: "objects/set",
+              object: item,
+              prop: "BROADERLOADED",
+              value: true
+            })
             return
           } else {
             let promises = []
             for (let i = 0; i < item.broader.length; i += 1) {
-              promises.push(this.$api.objects.get(item.broader[i].uri, item.inScheme[0].uri).then( broader => {
+              promises.push(this.getObject({ object: item.broader[i], scheme: item.inScheme[0] }).then( broader => {
                 this.$set(item.broader, i, broader)
               }))
             }
             Promise.all(promises).then(() => {
-              item.BROADERLOADED = true
+              this.$store.commit({
+                type: "objects/set",
+                object: item,
+                prop: "BROADERLOADED",
+                value: true
+              })
             })
           }
         }
@@ -197,12 +204,16 @@ export default {
     },
     choosePrevious() {
       if (this.prevConcepts.length) {
-        this.chooseUri(_.last(this.prevConcepts), this.isLeft)
+        let object = _.last(this.prevConcepts)
+        object = this.$util.isScheme(object) ? null : object
+        this.setSelected("concept", this.isLeft, object)
       }
     },
     chooseNext() {
       if (this.nextConcepts.length) {
-        this.chooseUri(_.first(this.nextConcepts), this.isLeft)
+        let object = _.first(this.nextConcepts)
+        object = this.$util.isScheme(object) ? null : object
+        this.setSelected("concept", this.isLeft, object)
       }
     }
   }

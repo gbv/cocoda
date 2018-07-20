@@ -8,10 +8,10 @@
       <div
         v-show="settings.showSchemeInAncestors" >
         <item-name
-          :item="scheme"
+          :item="selected.scheme[isLeft]"
           :is-link="true"
           font-size="small"
-          @click.native="chooseUri(scheme, isLeft)" />
+          @click.native="setSelected('concept', isLeft, null)" />
       </div>
       <!-- Ancestors -->
       <div
@@ -26,7 +26,7 @@
             :item="concept"
             :is-link="true"
             font-size="small"
-            @click.native="chooseUri(concept, isLeft)" />
+            @click.native="setSelected('concept', isLeft, concept)" />
         </span>
         <span
           v-b-tooltip.hover="{ title: 'show all ancestors', delay: $util.delay.medium }"
@@ -49,7 +49,7 @@
           :item="concept"
           :is-link="true"
           font-size="small"
-          @click.native="chooseUri(concept, isLeft)" />
+          @click.native="setSelected('concept', isLeft, concept)" />
       </div>
       <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
       <loading-indicator
@@ -120,7 +120,6 @@
     <item-detail-narrower
       :narrower="item.narrower"
       :is-left="isLeft"
-      @chooseUri="chooseUri"
     />
 
   </div>
@@ -156,13 +155,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * Reference to the scheme
-     */
-    scheme: {
-      type: Object,
-      default: null
     },
     /**
      * Settings - see `ItemDetail`
@@ -301,9 +293,17 @@ export default {
         // Load concept objects from API
         let promises = []
         for (let concept of gndConcepts) {
-          promises.push(this.$api.objects.get(concept.uri, "http://bartoc.org/en/node/430").then(object => {
+          promises.push(this.getObject({
+            object: concept,
+            scheme: { uri: "http://bartoc.org/en/node/430" }
+          }).then(object => {
             if (object) {
-              object.GNDTYPE = concept.GNDTYPE
+              this.$store.commit({
+                type: "objects/set",
+                object,
+                prop: "GNDTYPE",
+                value: concept.GNDTYPE
+              })
             }
             return object
           }))
@@ -326,7 +326,12 @@ export default {
             gndTerms.push(term)
           }
         }
-        itemBefore.GNDTERMS = gndTerms
+        this.$store.commit({
+          type: "objects/set",
+          object: itemBefore,
+          prop: "GNDTERMS",
+          value: gndTerms
+        })
       }).catch(error => {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })

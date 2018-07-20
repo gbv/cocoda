@@ -4,7 +4,7 @@
     type="dark" >
     <!-- Load logos from config -->
     <b-navbar-brand
-      v-for="(logo, index) in $config.logos || []"
+      v-for="(logo, index) in config.logos || []"
       :key="index"
       :href="logo.url"
       target="_blank" >

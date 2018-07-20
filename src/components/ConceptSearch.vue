@@ -66,11 +66,11 @@ export default {
   },
   props: {
     /**
-     * The scheme that should be searched.
+     * Tells the component on which side of the application it is.
      */
-    voc: {
-      type: Object,
-      default: null
+    isLeft: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -152,13 +152,11 @@ export default {
      */
     chooseResult: function (result) {
       let uri = _.last(result)
-      /**
-       * Event when the user has chosen a result.
-       *
-       * @event chooseUri
-       * @type {string} - uri that is chosen
-       */
-      this.$emit("chooseUri", uri)
+      let concept = {
+        uri: uri,
+        inScheme: [this.selected.scheme[this.isLeft]]
+      }
+      this.setSelected("concept", this.isLeft, concept)
       this.closeResults()
       this.searchSelected = -1
       // Remove focus
@@ -175,7 +173,7 @@ export default {
       // Generate new axios cancel token
       this.cancelToken = this.$api.token()
       let searchQuery = this.searchQuery
-      this.$api.suggest(this.voc, searchQuery, this.voc.notation[0], 100, undefined, this.cancelToken.token)
+      this.$api.suggest(this.selected.scheme[this.isLeft], searchQuery, this.selected.scheme[this.isLeft].notation[0], 100, undefined, this.cancelToken.token)
         .then((data) => {
           if (searchQuery == this.searchQuery) {
             this.loading = false

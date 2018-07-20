@@ -93,7 +93,7 @@ export default {
   },
   computed: {
     isHovered() {
-      return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.item)
+      return this.$util.compareConcepts(this.hoveredConcept, this.item)
     }
   },
   watch: {
@@ -109,11 +109,11 @@ export default {
   methods: {
     mouseOver() {
       this.isHoveredFromHere = true
-      this.$root.$data.hoveredConcept = this.item
+      this.hoveredConcept = this.item
     },
     mouseOut() {
       this.isHoveredFromHere = false
-      this.$root.$data.hoveredConcept = null
+      this.hoveredConcept = null
     },
     trimTooltip(text) {
       if (text.length > 80) {

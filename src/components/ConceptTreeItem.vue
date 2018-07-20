@@ -15,11 +15,11 @@
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="openByArrow(!isOpen)" >
+        @click="openByArrow(!concept.ISOPEN)" >
         <i
           :class="{
-            right: !isOpen,
-            down: isOpen,
+            right: !concept.ISOPEN,
+            down: concept.ISOPEN,
             selected: isSelected
         }" />
       </div>
@@ -35,9 +35,14 @@
       </div>
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
-        v-show="mapping.canAdd(concept, scheme, isLeft)"
+        v-show="$store.getters['mapping/canAdd'](concept, selected.scheme[isLeft], isLeft)"
         class="addToMapping fontWeight-heavy"
-        @click="mapping.add(concept, scheme, isLeft)"
+        @click="$store.commit({
+          type: 'mapping/add',
+          concept,
+          scheme: selected.scheme[isLeft],
+          isLeft
+        })"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)" >
         <font-awesome-icon icon="plus-circle" />
@@ -45,22 +50,20 @@
     </div>
     <!-- Concept's narrower if opened -->
     <div
-      v-if="isOpen"
+      v-if="concept.ISOPEN"
       class="conceptChildrenBox" >
       <concept-tree-item
         v-for="(child, index) in concept.narrower"
         :key="index"
         :concept="child"
-        :selected="selected"
         :depth="depth + 1"
         :index="index"
         :is-left="isLeft"
-        :scheme="scheme"
         @selected="select($event)" />
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="hasChildren && isOpen && concept.narrower.includes(null)"
+      v-show="hasChildren && concept.ISOPEN && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -89,13 +92,6 @@ export default {
       default: null
     },
     /**
-     * The currently selected concept.
-     */
-    selected: {
-      type: Object,
-      default: null
-    },
-    /**
      * The depth of the current item.
      */
     depth: {
@@ -115,13 +111,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    },
-    /**
-     * The currently selected scheme as an object.
-     */
-    scheme: {
-      type: Object,
-      default: null
     }
   },
   data () {
@@ -131,22 +120,17 @@ export default {
       /** Prevent double clicks */
       preventClick: false,
       preventClickArrow: false,
-      /** Current mapping */
-      mapping: this.$root.$data.mapping
     }
   },
   computed: {
     hasChildren() {
       return !this.concept.narrower || this.concept.narrower.length != 0
     },
-    isOpen() {
-      return this.concept.ISOPEN ? true : false
-    },
     isHovered() {
-      return this.$util.compareConcepts(this.$root.$data.hoveredConcept, this.concept)
+      return this.$util.compareConcepts(this.hoveredConcept, this.concept)
     },
     isSelected() {
-      return this.selected != null ? this.selected.uri == this.concept.uri : false
+      return this.selected.concept[this.isLeft] != null ? this.selected.concept[this.isLeft].uri == this.concept.uri : false
     },
     childrenLoaded() {
       return !this.concept.narrower || !this.concept.narrower.includes(null)
@@ -157,18 +141,7 @@ export default {
      * Triggers a hovered event.
      */
     hovering(concept) {
-      this.$root.$data.hoveredConcept = concept
-    },
-    /**
-     * Sets the ISOPEN property of the concept, loads it's children and scrolls the concept further to the top.
-     *
-     * @param {boolean} isOpen - open status to be set to
-     */
-    open(isOpen) {
-      this.concept.ISOPEN = isOpen
-      if (isOpen && this.hasChildren) {
-        this.scrollTo()
-      }
+      this.hoveredConcept = concept
     },
     /**
      * Calls open and prevents accidental double clicks.
@@ -177,13 +150,17 @@ export default {
       if (this.preventClickArrow) {
         return
       }
+      this.$store.commit({
+        type: "objects/set",
+        object: this.concept,
+        prop: "ISOPEN",
+        value: isOpen
+      })
       this.loadChildren()
       this.preventClickArrow = true
-      let vm = this
-      _.delay(function() {
-        vm.open(isOpen)
-        _.delay(function() {
-          vm.preventClickArrow = false
+      _.delay(() => {
+        _.delay(() => {
+          this.preventClickArrow = false
         }, 200)
       }, 50)
     },
@@ -191,13 +168,7 @@ export default {
      * Triggers a selected event.
      */
     select(concept) {
-      /**
-       * Event that is triggered when concept is selected.
-       *
-       * @event selected
-       * @type {object} - concept object that is selected
-       */
-      this.$emit("selected", concept)
+      this.setSelected("concept", this.isLeft, concept)
     },
     /**
      * Deals with a click on a concept.
@@ -214,11 +185,15 @@ export default {
       } else if(this.hasChildren) {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
-        let vm = this
-        _.delay(function() {
-          vm.open(!vm.isOpen)
-          _.delay(function() {
-            vm.preventClick = false
+        _.delay(() => {
+          this.$store.commit({
+            type: "objects/set",
+            object: this.concept,
+            prop: "ISOPEN",
+            value: !this.concept.ISOPEN
+          })
+          _.delay(() => {
+            this.preventClick = false
           }, 200)
         }, 50)
       }
@@ -230,7 +205,7 @@ export default {
      */
     loadChildren() {
       this.loadingChildren = true
-      this.$api.objects.narrower(this.concept).then(concept => {
+      this.loadNarrower({ object: this.concept }).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
         if (concept.ISOPEN) {

@@ -4,7 +4,7 @@ let isUpperCase = function(str) {
 
 let cleanJSKOS = function(jskos) {
   Object.keys(jskos).forEach(function(key) {
-    if (isUpperCase(key)) {
+    if (isUpperCase(key) || key.startsWith("_")) {
       delete jskos[key]
     } else {
       if (jskos[key] != null && typeof jskos[key] === "object") {
@@ -17,17 +17,37 @@ let cleanJSKOS = function(jskos) {
 let deepCopy = function(obj) {
   var clone = Array.isArray(obj) ? [] : {}
   for(var i in obj) {
-    if (i == "ancestors" || i == "narrower" || i == "broader" || i == "TOPCONCEPTS") {
+    if (i == "ancestors" || i == "narrower" || i == "broader" || i == "TOPCONCEPTS" || i == "MAPPINGS" || i == "PROVIDER") {
       // Remove circular structures, replace with [null] if it has elements
       if (obj[i] && Array.isArray(obj[i]) && obj[i].length > 0) {
         clone[i] = [null]
         continue
+      } else {
+        clone[i] = null
+        continue
       }
     }
-    if (obj[i] != null &&  typeof(obj[i]) == "object")
+    if (i == "inScheme") {
+      // Remove circular structur for inScheme and replace with new object consisting only of URI, notation, and prefLabel
+      let inScheme = []
+      for (let scheme of obj.inScheme) {
+        let newScheme = { uri: scheme.uri }
+        if (scheme.notation) {
+          newScheme.notation = scheme.notation
+        }
+        if (scheme.prefLabel) {
+          newScheme.prefLabel = scheme.prefLabel
+        }
+        inScheme.push(newScheme)
+      }
+      clone.inScheme = inScheme
+      continue
+    }
+    if (obj[i] != null &&  typeof(obj[i]) == "object") {
       clone[i] = deepCopy(obj[i])
-    else
+    } else {
       clone[i] = obj[i]
+    }
   }
   return clone
 }
@@ -238,4 +258,10 @@ let delay = {
   long: { show: 1000, hide: 0 }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay }
+let sortSchemes = schemes => {
+  return schemes.sort(
+    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
+  )
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }

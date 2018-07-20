@@ -3,7 +3,7 @@
     <!-- Minimizer allows component to get minimized -->
     <minimizer text="Occurrences Browser" />
     <div
-      v-show="schemeLeft != null || schemeRight != null"
+      v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       class="table-wrapper" >
       <!-- Occurrences table -->
       <b-table
@@ -23,9 +23,9 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="data.value && $util.canConceptBeSelected(data.value, schemeLeft)"
-            :is-highlighted="$util.compareConcepts(data.value, selectedLeft)"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, schemeLeft) && chooseUri(data.value, true)" />
+            :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
+            :is-highlighted="$util.compareConcepts(data.value, selected.concept[true])"
+            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && setSelected('concept', true, data.value)" />
         </span>
         <span
           slot="to"
@@ -34,9 +34,9 @@
             :item="data.value"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="data.value && $util.canConceptBeSelected(data.value, schemeRight)"
-            :is-highlighted="$util.compareConcepts(data.value, selectedRight)"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, schemeRight) && chooseUri(data.value, false)" />
+            :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
+            :is-highlighted="$util.compareConcepts(data.value, selected.concept[false])"
+            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
         </span>
         <span
           slot="fromScheme"
@@ -96,42 +96,10 @@ import _ from "lodash"
 export default {
   name: "OccurrencesBrowser",
   components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicatorFull },
-  props: {
-    /**
-     * The selected concept from the left hand concept browser.
-     */
-    selectedLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected concept from the right hand concept browser.
-     */
-    selectedRight: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the left hand concept browser.
-     */
-    schemeLeft: {
-      type: Object,
-      default: null
-    },
-    /**
-     * The selected scheme from the right hand concept browser.
-     */
-    schemeRight: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       /** Current list of occurrences */
       occurrences: [],
-      /** Reference to the current mapping */
-      mapping: this.$root.$data.mapping,
       /** Current axios cancel token */
       cancelToken: null,
       /** List of supported schemes by occurrences-api */
@@ -191,6 +159,13 @@ export default {
           sortable: false
         }
       ]
+    },
+    // Only for watching!
+    selectedLeft() {
+      return this.selected.concept[true]
+    },
+    selectedRight() {
+      return this.selected.concept[false]
     }
   },
   watch: {
@@ -215,10 +190,10 @@ export default {
         let fromTos = ["to", "from"]
         let fromToMap = []
         for (let member of occurrence.memberSet) {
-          if (this.$util.compareConcepts(member, this.selectedLeft)) {
+          if (this.$util.compareConcepts(member, this.selected.concept[true])) {
             fromToMap[member.uri] = "from"
             _.pull(fromTos, "from")
-          } else if (this.$util.compareConcepts(member, this.selectedRight)) {
+          } else if (this.$util.compareConcepts(member, this.selected.concept[false])) {
             fromToMap[member.uri] = "to"
             _.pull(fromTos, "to")
           }
@@ -229,10 +204,10 @@ export default {
           items[items.length-1][fromTo+"Scheme"] = member.inScheme[0]
           // refresh member
           let index = items.length-1
-          this.$api.objects.get(member.uri, member.inScheme[0].uri).then(concept => {
+          this.getObject({ object: member, scheme: member.inScheme[0] }).then(concept => {
             if (!concept) {
               // if concept couldn't be loaded, at least try to load the member's scheme
-              return this.$api.objects.get(member.inScheme[0].uri)
+              return this.getObject({ object: member.inScheme[0] })
             }
             this.items[index][fromTo] = concept
             this.items[index][fromTo+"Scheme"] = concept.inScheme[0]
@@ -280,7 +255,7 @@ export default {
         if (currentId != this.loadingId) return
         let uris = []
         let promises = []
-        for (let [scheme, concept] of [[this.schemeLeft, this.selectedLeft], [this.schemeRight, this.selectedRight]]) {
+        for (let [scheme, concept] of [[this.selected.scheme[true], this.selected.concept[true]], [this.selected.scheme[true], this.selected.concept[false]]]) {
           if (concept && this.isSupported(scheme)) {
             uris.push(concept.uri)
           }
@@ -294,7 +269,7 @@ export default {
         this.loading = true
         this.cancelToken = this.$api.token()
         for (let uri of uris) {
-          promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
+          promises.push(axios.get(this.config.occurrenceProviders[0].url, {
             params: {
               member: uri,
               scheme: "*",
@@ -309,7 +284,7 @@ export default {
         // Another request for co-occurrences between two specific concepts
         if (uris.length == 2 && uris[0] != uris[1]) {
           let urisString = uris.join(" ")
-          promises.push(axios.get(this.$config.occurrenceProviders[0].url, {
+          promises.push(axios.get(this.config.occurrenceProviders[0].url, {
             params: {
               member: urisString,
               threshold: 5
@@ -356,13 +331,17 @@ export default {
      * Converts a co-occurrence into a mapping and saves it as the current mapping
      */
     toMapping(data) {
-      this.mapping.jskos = {
+      let mapping = {
         from: { "memberSet": [data.item.from] },
         to: { "memberSet": [data.item.to] },
         fromScheme: data.item.fromScheme,
         toScheme: data.item.toScheme,
         type: [this.$util.defaultMappingType.uri]
       }
+      this.$store.commit({
+        type: "mapping/set",
+        mapping
+      })
     },
     /** Returns whether a scheme is supported by the occurrences-api */
     isSupported(scheme) {

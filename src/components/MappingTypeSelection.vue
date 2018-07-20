@@ -42,23 +42,16 @@ export default {
      * Returns a mapping type object for the current mapping
      */
     mappingTypeSelected() {
-      let mapping = this.mapping ? this.mapping.jskos : null
+      let mapping = this.mapping
       return this.$util.mappingTypeByType(mapping ? mapping.type : null)
     }
   },
   methods: {
     choose(mappingType) {
-      // Save in mapping
-      let mapping = this.mapping ? this.mapping.jskos : null
-      if (mapping) {
-        if (!mapping.type || !Array.isArray(mapping.type)) {
-          this.$set(mapping, "type", [])
-        }
-        if (mapping.type.length == 0) {
-          mapping.type.push(null)
-        }
-        this.$set(mapping.type, 0, mappingType.uri)
-      }
+      this.$store.commit({
+        type: "mapping/setType",
+        uri: mappingType.uri
+      })
     }
   }
 }

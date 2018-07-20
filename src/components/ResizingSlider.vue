@@ -35,8 +35,23 @@ export default {
     startResizing(event) {
       // Define all necessary values
       let slider = this.$el,
+        parent = slider.parentElement,
+        sliderStyle = window.getComputedStyle(slider),
+        sliderOrder = sliderStyle.getPropertyValue("order"),
+        previous, next
+      try {
+        sliderOrder = parseInt(sliderOrder)
+      } catch(error) {
+        sliderOrder = 0
+      }
+      // Siblings are different when CSS order is defined
+      if (sliderOrder > 0) {
+        previous = parent.querySelector(".order" + (sliderOrder - 1))
+        next = parent.querySelector(".order" + (sliderOrder + 1))
+      } else {
         previous = slider.previousElementSibling,
         next = slider.nextElementSibling
+      }
       // Skip minimized components and sliders
       while(previous && (previous.dataset.minimized == 1 || previous.classList.contains("resizeSliderRow") || previous.classList.contains("resizeSliderColumn"))) {
         previous = previous.previousElementSibling

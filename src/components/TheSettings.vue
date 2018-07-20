@@ -11,19 +11,19 @@
         href="https://github.com/gbv/cocoda/issues"
         target="_blank" >GitHub issue tracker</a>.
     </p>
-    <p v-if="$config.buildInfo.gitTag && $config.buildInfo.gitTag != ''">
-      Version: {{ $config.buildInfo.gitTag }}
+    <p v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
+      Version: {{ config.buildInfo.gitTag }}
     </p>
-    <p v-if="$config.buildInfo.gitCommit && $config.buildInfo.gitCommitShort">
+    <p v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
       Current Commit:
       <a
-        :href="'https://github.com/gbv/cocoda/commit/' + $config.buildInfo.gitCommit"
+        :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
         target="_blank" >
-        {{ $config.buildInfo.gitCommitShort }}
+        {{ config.buildInfo.gitCommitShort }}
       </a>
     </p>
-    <p v-if="$config.buildInfo.buildDate">
-      Build Date: {{ $config.buildInfo.buildDate }}
+    <p v-if="config.buildInfo.buildDate">
+      Build Date: {{ config.buildInfo.buildDate }}
     </p>
   </b-modal>
 </template>
