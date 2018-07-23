@@ -74,6 +74,9 @@ let mappingHash = function(mapping) {
       hash += concept.uri + ","
     }
   }
+  if (mapping.type && mapping.type.length) {
+    hash += `type:${mapping.type[0]}`
+  }
   return hash
 }
 
