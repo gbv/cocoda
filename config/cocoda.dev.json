@@ -35,6 +35,25 @@
     "http://bartoc.org/en/node/241",
     "http://bartoc.org/en/node/1940"
   ],
+  "favoriteConcepts": [
+    {
+      "uri": "http://dewey.info/class/612.112/e23/",
+      "notation": [
+        "612.112"
+      ],
+      "inScheme": [
+        {
+          "uri": "http://bartoc.org/en/node/241",
+          "notation": [
+            "DDC"
+          ]
+        }
+      ],
+      "prefLabel": {
+        "de": "Leukozyten (Weiße Blutkörperchen)"
+      }
+    }
+  ],
   "mappingProviders": [
     { "url": "//coli-conc.gbv.de/dev-api/mappings/" }
   ],

@@ -85,11 +85,27 @@
                 v-for="scheme in favoriteSchemes"
                 :key="scheme.uri" >
                 ·<br>
-                <a
-                  href=""
-                  @click.prevent="setSelected('scheme', isLeft, scheme)" >
-                  {{ scheme.prefLabel.de || scheme.prefLabel.en }}
-                </a>
+                <item-name
+                  :item="scheme"
+                  :is-link="true"
+                  class="button"
+                  @click.native="setSelected('scheme', isLeft, scheme)"
+                />
+              </p>
+              <br><br>
+              <p class="fontWeight-heavy">
+                Concept quick selection
+              </p>
+              <p
+                v-for="concept in config.favoriteConcepts"
+                :key="concept.uri" >
+                ·<br>
+                <item-name
+                  :item="concept"
+                  :is-link="true"
+                  class="button"
+                  @click.native="setSelected('concept', isLeft, concept)"
+                />
               </p>
             </div>
           </div>
@@ -158,6 +174,7 @@ import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import ItemName from "./components/ItemName"
 
 /**
  * The main application.
@@ -165,7 +182,7 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon, ItemName
   },
   data () {
     return {
