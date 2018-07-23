@@ -134,18 +134,18 @@ export default {
      * Returns a formatted version of the mapping
      */
     mappingPretty() {
-      return JSON.stringify(this.$util.cleanJSKOS(this.$util.deepCopy(this.$store.state.mapping.mapping)), null, 2)
+      return JSON.stringify(this.prepareMapping(), null, 2)
     },
     /**
      * Returns an encoded version of the mapping for export
      */
     mappingEncoded() {
-      return encodeURIComponent(JSON.stringify(this.$util.cleanJSKOS(this.$util.deepCopy(this.$store.state.mapping.mapping))))
+      return encodeURIComponent(JSON.stringify(this.prepareMapping()))
     }
   },
   methods: {
     saveMapping() {
-      let mapping = this.$util.cleanJSKOS(this.$util.deepCopy(this.$store.state.mapping.mapping))
+      let mapping = this.prepareMapping()
       if (!mapping.creator || mapping.creator.length == 0) {
         mapping.creator = ["You"]
       }
@@ -155,6 +155,13 @@ export default {
       }).catch(error => {
         this.alert(error, null, "danger")
       })
+    },
+    prepareMapping() {
+      let mapping = this.$util.deepCopy(this.$store.state.mapping.mapping)
+      mapping = this.$util.addMappingIdentifiers(mapping)
+      // TODO: Reduce to only the important properties
+      mapping = this.$util.cleanJSKOS(mapping)
+      return mapping
     },
     labelForScheme(scheme) {
       return scheme ? scheme.notation[0].toUpperCase() : "&nbsp;"
