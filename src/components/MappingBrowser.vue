@@ -233,8 +233,8 @@ export default {
         },
         {
           key: "type",
-          label: "",
-          sortable: false
+          label: "Type",
+          sortable: true
         },
         {
           key: "targetScheme",
