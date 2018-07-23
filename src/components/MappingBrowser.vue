@@ -80,12 +80,13 @@
         </b-table>
       </div>
       <div
-        v-else
+        v-else-if="loading == 0"
         class="noItems fontWeight-heavy" >
         No mappings available
       </div>
       <!-- Mapping toolbar for options and infos -->
       <div
+        v-if="loading == 0"
         class="mappingToolbar" >
         <div>
           <!-- Option dropdown menu -->
@@ -117,6 +118,8 @@
         </div>
       </div>
     </div>
+    <!-- Full screen loading indicator -->
+    <loading-indicator-full v-if="loading" />
   </div>
 </template>
 
@@ -124,17 +127,19 @@
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import Minimizer from "./Minimizer"
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 
 /**
  * The mapping browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, FontAwesomeIcon, Minimizer },
+  components: { ItemName, FontAwesomeIcon, Minimizer, LoadingIndicatorFull },
   data () {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
+      loading: 0,
       /** Available options for mapping options */
       mappingOptions: {
         showAll: {
@@ -353,6 +358,7 @@ export default {
       let params = {}
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
+      this.loading += 1
       this.$api.getMappings(params).then(data => {
         let mappings = concept.MAPPINGS
         if (!mappings) {
@@ -366,8 +372,10 @@ export default {
           prop: "MAPPINGS",
           value: mappings
         })
+        this.loading -= 1
       }).catch(function(error) {
         console.error("API error (mappings):", error)
+        this.loading -= 1
       })
     },
     removeMapping(mapping) {
