@@ -64,7 +64,7 @@
         :is-highlighted="true"
         font-size="normal" />
       <div
-        v-b-tooltip.hover="{ title: showAddToMappingButton ? 'add selected concept' : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: showAddToMappingButton ? 'add to mapping' : '', delay: $util.delay.medium }"
         :class="{ button: showAddToMappingButton, 'button-disabled': !showAddToMappingButton }"
         class="conceptDetail-name-addButton fontSize-large"
         @click="addToMapping" >
