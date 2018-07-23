@@ -62,21 +62,21 @@
               v-if="selected.scheme[isLeft] != null"
               :item="selected.concept[isLeft] || selected.scheme[isLeft]"
               :is-left="isLeft"
-              :settings="itemDetailSettings.left"
+              :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
             />
             <!-- Slider -->
             <resizing-slider />
             <!-- ConceptTree -->
             <concept-tree
-              v-if="selected.scheme[isLeft] != null"
+              v-show="selected.scheme[isLeft] != null"
               :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
               :is-left="isLeft"
               class="mainComponent conceptBrowserItem conceptBrowserItemTree"
             />
             <!-- Placeholder -->
             <div
-              v-if="selected.scheme[isLeft] == null"
+              v-show="selected.scheme[isLeft] == null"
               class="mainComponent conceptBrowserItem placeholderComponent" >
               <p class="fontWeight-heavy">
                 Scheme quick selection
@@ -224,21 +224,13 @@ export default {
       }
       return schemes
     },
-    // Using ref in v-for results in an array.
-    // FIXME: Should be removed after references to conceptTree are not needed anymore.
-    conceptTreeLeft() {
-      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
-    },
-    conceptTreeRight() {
-      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
-    }
   },
   methods: {
     refresh(key) {
       if (key == "minimize") {
         // Minimizer causes a refresh, therefore recheck item detail settings
-        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft != null && this.conceptTreeLeft.$el.dataset.minimized == "1"
-        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight != null && this.conceptTreeRight.$el.dataset.minimized == "1"
+        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft() != null && this.conceptTreeLeft().$el.dataset.minimized == "1"
+        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight() != null && this.conceptTreeRight().$el.dataset.minimized == "1"
       }
     },
     /**
@@ -250,6 +242,13 @@ export default {
       } else {
         this.setSelected("scheme", false, null)
       }
+    },
+    // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
+    conceptTreeLeft() {
+      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
+    },
+    conceptTreeRight() {
+      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
     },
   },
 }
