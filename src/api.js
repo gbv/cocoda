@@ -266,6 +266,9 @@ function removeMapping(mappingToRemove) {
       if (!_.isEqual(toUris1, toUris2)) {
         remove = false
       }
+      if (!_.isEqual(mapping.type, mappingToRemove.type)) {
+        remove = false
+      }
       if (!remove) {
         newMappings.push(mapping)
       }
