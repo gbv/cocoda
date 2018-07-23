@@ -128,6 +128,26 @@ Vue.mixin({
         })
       }
     }
+  },
+  methods: {
+    /**
+     * Sets the ISOPEN value for a concept on a specific side.
+     *
+     * @param {object} concept
+     * @param {boolean} isLeft
+     * @param {boolean} isOpen
+     */
+    open(concept, isLeft, isOpen) {
+      if (!concept) return
+      let open = Object.assign({}, concept.ISOPEN)
+      open[isLeft] = isOpen
+      this.$store.commit({
+        type: "objects/set",
+        object: concept,
+        prop: "ISOPEN",
+        value: open
+      })
+    }
   }
 })
 

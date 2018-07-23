@@ -15,11 +15,11 @@
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="openByArrow(!concept.ISOPEN)" >
+        @click="openByArrow(!concept.ISOPEN[isLeft])" >
         <i
           :class="{
-            right: !concept.ISOPEN,
-            down: concept.ISOPEN,
+            right: !concept.ISOPEN[isLeft],
+            down: concept.ISOPEN[isLeft],
             selected: isSelected
         }" />
       </div>
@@ -50,7 +50,7 @@
     </div>
     <!-- Concept's narrower if opened -->
     <div
-      v-if="concept.ISOPEN"
+      v-if="concept.ISOPEN[isLeft]"
       class="conceptChildrenBox" >
       <concept-tree-item
         v-for="(child, index) in concept.narrower"
@@ -63,7 +63,7 @@
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="hasChildren && concept.ISOPEN && concept.narrower.includes(null)"
+      v-show="hasChildren && concept.ISOPEN[isLeft] && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -150,12 +150,7 @@ export default {
       if (this.preventClickArrow) {
         return
       }
-      this.$store.commit({
-        type: "objects/set",
-        object: this.concept,
-        prop: "ISOPEN",
-        value: isOpen
-      })
+      this.open(this.concept, this.isLeft, isOpen)
       this.loadChildren()
       this.preventClickArrow = true
       _.delay(() => {
@@ -186,12 +181,7 @@ export default {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
         _.delay(() => {
-          this.$store.commit({
-            type: "objects/set",
-            object: this.concept,
-            prop: "ISOPEN",
-            value: !this.concept.ISOPEN
-          })
+          this.open(this.concept, this.isLeft, !this.concept.ISOPEN[this.isLeft])
           _.delay(() => {
             this.preventClick = false
           }, 200)
@@ -208,7 +198,7 @@ export default {
       this.loadNarrower({ object: this.concept }).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
-        if (concept.ISOPEN) {
+        if (concept.ISOPEN[this.isLeft]) {
           this.scrollTo()
         }
       })

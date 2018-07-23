@@ -96,6 +96,10 @@ export default {
             }
             if (fullyLoaded && this.shouldScroll) {
               this.shouldScroll = false
+              // Open ancestors
+              for (let ancestor of this.conceptSelected.ancestors) {
+                this.open(ancestor, this.isLeft, true)
+              }
               _.delay(() => {
                 // Don't scroll if concept changed in the meantime
                 if (this.shouldScroll) return

@@ -82,19 +82,6 @@ const selectedPlugin = store => {
               }
             }
             return Promise.all(promises)
-          }).then(result => {
-            if (result == null) return
-            let concept = result[0]
-            // Set all ancestors to open
-            // FIXME: This will be task of ConceptTree.
-            for (let ancestor of concept.ancestors) {
-              store.commit({
-                type: "objects/set",
-                object: ancestor,
-                prop: "ISOPEN",
-                value: true
-              })
-            }
           })
         }
       }
