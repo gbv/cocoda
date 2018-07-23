@@ -34,6 +34,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "localforage": "^1.7.2",
     "lodash": "^4.17.10",
+    "simple-sha1": "^2.1.1",
     "vue": "^2.5.2",
     "vue-scrollto": "^2.11.0",
     "vuex": "^3.0.1"

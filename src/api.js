@@ -198,7 +198,10 @@ function getMappings(params) {
     let mappings = []
     for (let result of results) {
       for (let mapping of result) {
+        // Add mapping type if not available
         mapping.type = mapping.type || [util.defaultMappingType.uri]
+        // Add JSKOS mapping identifiers
+        mapping = util.addMappingIdentifiers(mapping)
         mappings.push(mapping)
       }
     }
@@ -239,41 +242,38 @@ function getLocalMappings(params = {}) {
 
 function saveMapping(mapping) {
   // Check for fromScheme and toScheme
-  // TODO: Update mapping if possible (might need an additional parameter).
   if (!mapping.fromScheme || !mapping.toScheme) {
     return Promise.reject("Can't save mapping: Missing fromScheme or toScheme.")
   }
 
   return getLocalMappings().then(mappings => {
+    mapping = util.addMappingIdentifiers(mapping)
+    // Override local mappings with same members
+    // FIXME: This is only temporary to demonstrate local saving of mappings. The actual solution to this problem may be way more complicated.
+    mappings = mappings.filter(m => {
+      let findContentId = id => id.startsWith("urn:jskos:mapping:members:")
+      let id1 = m.identifier ? m.identifier.find(findContentId) : null
+      let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
+      return id1 == null || id2 == null || id1 != id2
+    })
+    // Add mapping
     mappings.push(mapping)
     return localforage.setItem("mappings", mappings)
   })
 }
 
-function removeMapping(mappingToRemove) {
-  // FIXME: Remove by identifier
-  let previousNumberOfMappings
+function removeMapping(mapping) {
+  let previousNumberOfMappings = 0
   return getLocalMappings().then(mappings => {
     previousNumberOfMappings = mappings.length
-    let newMappings = []
-    for (let mapping of mappings) {
-      let remove = true
-      if (mapping.from.memberSet[0].uri != mappingToRemove.from.memberSet[0].uri) {
-        remove = false
-      }
-      let toUris1 = mapping.to.memberSet.reduce((total, current) => total.concat([current.uri]), []).sort()
-      let toUris2 = mappingToRemove.to.memberSet.reduce((total, current) => total.concat([current.uri]), []).sort()
-      if (!_.isEqual(toUris1, toUris2)) {
-        remove = false
-      }
-      if (!_.isEqual(mapping.type, mappingToRemove.type)) {
-        remove = false
-      }
-      if (!remove) {
-        newMappings.push(mapping)
-      }
-    }
-    return localforage.setItem("mappings", newMappings)
+    // Remove by content identifier
+    mappings = mappings.filter(m => {
+      let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
+      let id1 = m.identifier ? m.identifier.find(findContentId) : null
+      let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
+      return id1 == null || id2 == null || id1 != id2
+    })
+    return localforage.setItem("mappings", mappings)
   }).then(mappings => {
     return previousNumberOfMappings > mappings.length
   })

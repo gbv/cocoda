@@ -1,3 +1,6 @@
+import identifiers from "./identifiers"
+let addMappingIdentifiers = identifiers.addMappingIdentifiers
+
 let isUpperCase = function(str) {
   return (/^[A-Z]*$/).test(str)
 }
@@ -271,4 +274,4 @@ let sortSchemes = schemes => {
   )
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }
+export default { addMappingIdentifiers, mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }

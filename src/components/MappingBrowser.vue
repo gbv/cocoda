@@ -190,7 +190,8 @@ export default {
           // Save mappings
           for (let mapping of mappings) {
             // Filter duplicate mappings
-            if (!hashList.includes(this.$util.mappingHash(mapping))) {
+            let hash = mapping.identifier ? mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:")) : null
+            if (!hash || !hashList.includes(hash)) {
               let item = {}
               item.mapping = mapping
               item.sourceScheme = mapping.fromScheme.notation[0]
@@ -225,7 +226,7 @@ export default {
               item.creator = mapping.creator && mapping.creator[0] || "?"
               item.type = this.$util.mappingTypeByType(mapping.type)
               items.push(item)
-              hashList.push(this.$util.mappingHash(mapping))
+              hashList.push(hash)
             }
           }
         }
