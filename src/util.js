@@ -19,8 +19,12 @@ let deepCopy = function(obj) {
   for(var i in obj) {
     if (i == "ancestors" || i == "narrower" || i == "broader" || i == "TOPCONCEPTS" || i == "MAPPINGS" || i == "PROVIDER") {
       // Remove circular structures, replace with [null] if it has elements
-      if (obj[i] && Array.isArray(obj[i]) && obj[i].length > 0) {
-        clone[i] = [null]
+      if (obj[i] && Array.isArray(obj[i])) {
+        if (obj[i].length > 0) {
+          clone[i] = [null]
+        } else {
+          clone[i] = []
+        }
         continue
       } else {
         clone[i] = null
