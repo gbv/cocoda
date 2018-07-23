@@ -146,6 +146,9 @@ export default {
   methods: {
     saveMapping() {
       let mapping = this.$util.cleanJSKOS(this.$util.deepCopy(this.$store.state.mapping.mapping))
+      if (!mapping.creator || mapping.creator.length == 0) {
+        mapping.creator = ["You"]
+      }
       this.$api.saveMapping(mapping).then(() => {
         this.$store.commit("mapping/setRefresh", true)
         this.alert("Mapping was saved.", null, "success")

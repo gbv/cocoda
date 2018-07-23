@@ -217,7 +217,7 @@ export default {
               if (leftInSource && rightInSource) {
                 item._rowVariant = "info"
               }
-              item.creator = mapping.creator || "?"
+              item.creator = mapping.creator && mapping.creator[0] || "?"
               item.type = this.$util.mappingTypeByType(mapping.type)
               items.push(item)
               hashList.push(this.$util.mappingHash(mapping))
