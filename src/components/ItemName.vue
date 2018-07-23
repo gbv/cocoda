@@ -138,7 +138,19 @@ Vue.component("notation-text", {
       default: null
     }
   },
-  template: "<span v-if='item.notation && item.notation.length'>{{ item.notation[0] }}</span>"
+  computed: {
+    notation() {
+      if (this.item.notation && this.item.notation.length) {
+        let notation = this.item.notation[0]
+        if (this.$util.isScheme(this.item)) {
+          return notation.toUpperCase()
+        }
+        return notation
+      }
+      return null
+    }
+  },
+  template: "<span v-if='notation'>{{ notation }}</span>"
 })
 
 /**
