@@ -58,10 +58,19 @@
     </div>
 
     <!-- Name of concept -->
-    <item-name
-      :item="item"
-      :is-highlighted="true"
-      font-size="normal" />
+    <div class="conceptDetail-name">
+      <item-name
+        :item="item"
+        :is-highlighted="true"
+        font-size="normal" />
+      <div
+        v-b-tooltip.hover="{ title: showAddToMappingButton ? 'add selected concept' : '', delay: $util.delay.medium }"
+        :class="{ button: showAddToMappingButton, 'button-disabled': !showAddToMappingButton }"
+        class="conceptDetail-name-addButton fontSize-large"
+        @click="addToMapping" >
+        <font-awesome-icon icon="plus-circle" />
+      </div>
+    </div>
 
     <!-- Notes and alternative labels -->
     <b-card
@@ -232,6 +241,11 @@ export default {
       }
     }
   },
+  computed: {
+    showAddToMappingButton() {
+      return this.$store.getters["mapping/canAdd"](this.item, (this.item.inScheme && this.item.inScheme[0]) || this.selected.scheme[this.isLeft], this.isLeft)
+    }
+  },
   watch: {
     item(newItem, oldItem) {
       // Refresh component if item changed
@@ -372,6 +386,14 @@ export default {
         hasNotes = hasNotes || (concept != null && concept[part] != null && concept[part].de != null && concept[part].de.length > 0)
       }
       return hasNotes
+    },
+    addToMapping() {
+      this.$store.commit({
+        type: "mapping/add",
+        concept: this.item,
+        scheme: (this.item.inScheme && this.item.inScheme[0]) || this.selected.scheme[this.isLeft],
+        isLeft: this.isLeft
+      })
     }
   }
 }
@@ -386,6 +408,15 @@ export default {
 .conceptDetail-ancestors-more {
   width: 20px;
   padding-left: 2px;
+}
+
+.conceptDetail-name {
+  position: relative;
+}
+.conceptDetail-name-addButton {
+  position: absolute;
+  right: -8px;
+  top: -1px;
 }
 
 .conceptDetail-identifier {
