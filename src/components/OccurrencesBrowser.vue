@@ -319,7 +319,7 @@ export default {
           delete occurrences[value]
         })
         // Sort occurrences and only save top 10
-        this.occurrences = occurrences.sort((a, b) => parseInt(b.count) - parseInt(a.count)).slice(0, 10)
+        this.occurrences = occurrences.sort((a, b) => parseInt(b.count || 0) - parseInt(a.count || 0)).slice(0, 10)
         this.loading = false
       }).catch(error => {
         console.error("Occurrences Error:", error)
