@@ -2,79 +2,76 @@
   <div id="occurrencesBrowser">
     <!-- Minimizer allows component to get minimized -->
     <minimizer text="Occurrences Browser" />
-    <div
+    <!-- Occurrences table -->
+    <flexible-table
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
-      class="table-wrapper" >
-      <!-- Occurrences table -->
-      <b-table
-        ref="occurrencesTable"
-        :sort-desc="true"
-        :items="items"
-        :fields="fields"
-        sort-by="occurrences"
-        class="table"
-        small
-        thead-class="table-head"
-        tbody-class="table-body" >
-        <span
-          slot="from"
-          slot-scope="data" >
-          <item-name
-            :item="data.value"
-            :show-text="false"
-            :show-tooltip="true"
-            :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
-            :is-highlighted="$util.compareConcepts(data.value, selected.concept[true])"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && setSelected('concept', true, data.value)" />
+      :sort-desc="true"
+      :items="items"
+      :fields="fields"
+      sort-by="occurrences" >
+      <span
+        slot="from"
+        slot-scope="data" >
+        <item-name
+          :item="data.value"
+          :show-text="false"
+          :show-tooltip="true"
+          :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
+          :is-highlighted="$util.compareConcepts(data.value, selected.concept[true])"
+          @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && setSelected('concept', true, data.value)" />
+      </span>
+      <span
+        slot="to"
+        slot-scope="data" >
+        <item-name
+          :item="data.value"
+          :show-text="false"
+          :show-tooltip="true"
+          :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
+          :is-highlighted="$util.compareConcepts(data.value, selected.concept[false])"
+          @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
+      </span>
+      <span
+        slot="fromScheme"
+        slot-scope="data" >
+        {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
+      </span>
+      <span
+        slot="toScheme"
+        slot-scope="data" >
+        {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
+      </span>
+      <span
+        slot="occurrences"
+        slot-scope="data" >
+        <span v-if="data.value == null">...</span>
+        <span v-else-if="data.value == -1">-</span>
+        <span v-else>
+          <auto-link
+            :link="data.value.url"
+            :text="String(data.value.count)" />
         </span>
-        <span
-          slot="to"
-          slot-scope="data" >
-          <item-name
-            :item="data.value"
-            :show-text="false"
-            :show-tooltip="true"
-            :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
-            :is-highlighted="$util.compareConcepts(data.value, selected.concept[false])"
-            @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
-        </span>
-        <span
-          slot="fromScheme"
-          slot-scope="data" >
-          {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
-        </span>
-        <span
-          slot="toScheme"
-          slot-scope="data" >
-          {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
-        </span>
-        <span
-          slot="occurrences"
-          slot-scope="data" >
-          <span v-if="data.value == null">...</span>
-          <span v-else-if="data.value == -1">-</span>
-          <span v-else>
-            <auto-link
-              :link="data.value.url"
-              :text="String(data.value.count)" />
-          </span>
-        </span>
-        <span
-          slot="actions"
-          slot-scope="data" >
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'convert to mapping', delay: $util.delay.medium }"
-            v-if="data.value"
-            icon="edit"
-            class="button toMapping"
-            @click="toMapping(data)" />
-        </span>
-        <span
-          slot="HEAD_actions"
-          slot-scope="data">
-          <font-awesome-icon icon="toolbox" />
-        </span>
-      </b-table>
+      </span>
+      <span
+        slot="actions"
+        slot-scope="data" >
+        <font-awesome-icon
+          v-b-tooltip.hover="{ title: 'convert to mapping', delay: $util.delay.medium }"
+          v-if="data.value"
+          icon="edit"
+          class="button toMapping"
+          @click="toMapping(data)" />
+      </span>
+      <span
+        slot="HEAD_actions"
+        slot-scope="data">
+        <font-awesome-icon icon="toolbox" />
+      </span>
+    </flexible-table>
+    <div
+      v-show="!loading && items.length == 0"
+      class="noItems fontWeight-heavy" >
+      No occurrences found
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
@@ -89,13 +86,14 @@ import axios from "axios"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import _ from "lodash"
+import FlexibleTable from "./FlexibleTable"
 
 /**
  * The occurrences browser component.
  */
 export default {
   name: "OccurrencesBrowser",
-  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicatorFull },
+  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicatorFull, FlexibleTable },
   data () {
     return {
       /** Current list of occurrences */
@@ -121,41 +119,43 @@ export default {
         {
           key: "fromScheme",
           label: "Scheme",
-          tdClass: "moColShort",
-          thClass: "moColShort",
+          width: "12%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "from",
           label: "Concept",
-          tdClass: "moColShort",
-          thClass: "moColShort",
+          width: "24%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "toScheme",
           label: "Scheme",
-          tdClass: "moColShort",
-          thClass: "moColShort",
+          width: "12%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "to",
           label: "Concept",
-          tdClass: "moColShort",
-          thClass: "moColShort",
+          width: "24%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "occurrences",
           label: "(Co-)Occurrences",
-          tdClass: "moColShort",
-          thClass: "moColShort",
+          width: "20%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "actions",
           label: "",
+          width: "8%",
+          minWidth: "",
           sortable: false
         }
       ]
@@ -223,6 +223,7 @@ export default {
   },
   mounted() {
     this.$util.setupTableScrollSync()
+    this.reloadOccurrences()
   },
   methods: {
     reloadIfChanged(newValue, oldValue) {
@@ -368,17 +369,9 @@ export default {
 .toMapping {
   font-size: 12px;
 }
+.noItems {
+  margin: 30px auto 5px auto;
+  flex: 5 0 auto;
+}
 
 </style>
-
-<style>
-.moColWide {
-  width: 200px;
-  min-width: 200px;
-}
-.moColShort {
-  width: 150px;
-  min-width: 100px;
-}
-</style>
-

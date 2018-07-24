@@ -5,38 +5,32 @@
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
-      <div
-        v-if="items.length > 0"
-        class="table-wrapper" >
-        <!-- Mapping table -->
-        <b-table
-          ref="occurrencesTable"
-          :items="items"
-          :fields="fields"
-          class="table"
-          small
-          thead-class="table-head"
-          tbody-class="table-body" >
+      <!-- Mapping table -->
+      <flexible-table
+        :items="items"
+        :fields="fields"
+        class="mappingBrowser-table" >
+        <span
+          slot="sourceConcepts"
+          slot-scope="{ value }" >
+          <item-name
+            v-for="concept in value"
+            :key="concept.uri"
+            :item="concept"
+            :show-text="false"
+            :show-tooltip="true"
+            :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
+            :is-highlighted="$util.compareConcepts(concept, selected.concept[true])"
+            @mouseover.native="hover(concept)"
+            @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && setSelected('concept', true, concept)" />
+        </span>
+        <span
+          slot="targetConcepts"
+          slot-scope="{ value }" >
           <span
-            slot="sourceConcepts"
-            slot-scope="data" >
+            v-for="concept in value"
+            :key="concept.uri">
             <item-name
-              v-for="concept in data.value"
-              :key="concept.uri"
-              :item="concept"
-              :show-text="false"
-              :show-tooltip="true"
-              :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
-              :is-highlighted="$util.compareConcepts(concept, selected.concept[true])"
-              @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && setSelected('concept', true, concept)" />
-          </span>
-          <span
-            slot="targetConcepts"
-            slot-scope="data" >
-            <item-name
-              v-for="concept in data.value"
-              :key="concept.uri"
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
@@ -44,43 +38,42 @@
               :is-highlighted="$util.compareConcepts(concept, selected.concept[false])"
               @mouseover.native="hover(concept)"
               @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && setSelected('concept', false, concept)" />
+            <br>
           </span>
+        </span>
+        <span
+          slot="type"
+          slot-scope="{ value }" >
           <span
-            slot="type"
-            slot-scope="data" >
-            <span
-              v-b-tooltip.hover="{ title: data.value.prefLabel.en, delay: $util.delay.medium }"
-              v-if="data.value != null" >
-              {{ data.value.notation[0] }}
-            </span>
+            v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }"
+            v-if="value != null" >
+            {{ value.notation[0] }}
           </span>
-          <span
-            slot="actions"
-            slot-scope="data" >
-            <div class="mappingBrowserActions">
-              <font-awesome-icon
-                v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
-                icon="edit"
-                class="button editButton"
-                @click="edit(data)" />
-              <font-awesome-icon
-                v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
-                v-if="data.item.mapping.LOCAL"
-                icon="trash-alt"
-                class="button editButton"
-                @click="removeMapping(data.item.mapping)"
-              />
-            </div>
-          </span>
-          <span
-            slot="HEAD_actions"
-            slot-scope="data" >
-            <font-awesome-icon icon="toolbox" />
-          </span>
-        </b-table>
-      </div>
+        </span>
+        <span
+          slot="actions"
+          slot-scope="data" >
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
+            icon="edit"
+            class="button mappingBrowser-toolbar-button"
+            @click="edit(data)" />
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+            v-if="data.item.mapping.LOCAL"
+            icon="trash-alt"
+            class="button mappingBrowser-toolbar-button"
+            @click="removeMapping(data.item.mapping)"
+          />
+        </span>
+        <span
+          slot="HEAD_actions"
+          slot-scope="data" >
+          <font-awesome-icon icon="toolbox" />
+        </span>
+      </flexible-table>
       <div
-        v-else-if="loading == 0"
+        v-show="loading == 0 && items.length == 0"
         class="noItems fontWeight-heavy" >
         No mappings available
       </div>
@@ -128,13 +121,14 @@ import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
+import FlexibleTable from "./FlexibleTable"
 
 /**
  * The mapping browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, FontAwesomeIcon, Minimizer, LoadingIndicatorFull },
+  components: { ItemName, FontAwesomeIcon, Minimizer, LoadingIndicatorFull, FlexibleTable },
   data () {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */
@@ -221,7 +215,7 @@ export default {
                 concept.inScheme = concept.inScheme || [mapping.toScheme]
               }
               if (leftInSource && rightInSource) {
-                item._rowVariant = "info"
+                item._rowClass = "mappingBrowser-table-row-match"
               }
               item.creator = mapping.creator && mapping.creator[0] || "?"
               item.type = this.$util.mappingTypeByType(mapping.type)
@@ -241,45 +235,49 @@ export default {
         {
           key: "sourceScheme",
           label: "Scheme",
-          tdClass: "mtColShort",
-          thClass: "mtColShort",
+          width: "10%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "sourceConcepts",
           label: "Concept",
-          tdClass: "mtColShort",
-          thClass: "mtColShort",
+          width: "22%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "type",
           label: "Type",
+          width: "8%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "targetScheme",
           label: "Scheme",
-          tdClass: "mtColShort",
-          thClass: "mtColShort",
+          width: "10%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "targetConcepts",
           label: "Concept",
-          tdClass: "mtColShort",
-          thClass: "mtColShort",
+          width: "22%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "creator",
-          tdClass: "mtColNormal",
-          thClass: "mtColNormal",
+          width: "20%",
+          minWidth: "",
           sortable: true
         },
         {
           key: "actions",
           label: "",
+          width: "8%",
+          minWidth: "",
           sortable: false
         }
       ]
@@ -418,10 +416,11 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.noItems {
-  margin: 30px auto 5px auto;
+.mappingBrowser-table {
+  flex: 1;
 }
 .noItems {
+  margin: 30px auto 5px auto;
   flex: 5 0 auto;
 }
 .mappingToolbar {
@@ -432,15 +431,8 @@ export default {
   width: 0;
   flex: 1;
 }
-
-.mappingBrowserActions {
-  display: flex;
-  margin-top: 4px;
-}
-.editButton {
+.mappingBrowser-toolbar-button {
   font-size: 12px;
-  margin: 0 2px;
-  flex: 1;
 }
 
 </style>
@@ -448,27 +440,8 @@ export default {
 <style lang="less">
 @import "../style/main.less";
 
-@table-cell-width: 120px;
-@table-cell-width-short: 70px;
-@table-cell-width-wide: 160px;
-.mtColNormal {
-  width: @table-cell-width * 3;
-  min-width: @table-cell-width;
-}
-.mtColShort {
-  width: @table-cell-width-short * 3;
-  min-width: @table-cell-width-short;
-}
-.mtColWide {
-  width: @table-cell-width-wide * 3;
-  min-width: @table-cell-width-wide;
-}
-
-.table-info {
-  background-color: @color-primary-1 !important;
-}
-.table-info > td, .table-info > td {
-  background-color: @color-primary-1 !important;
+.mappingBrowser-table-row-match {
+  background-color: @color-primary-1;
 }
 
 // Overwriting bootstrap styles has to be done in global scope
