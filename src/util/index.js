@@ -1,3 +1,6 @@
+import identifiers from "./identifiers"
+let addMappingIdentifiers = identifiers.addMappingIdentifiers
+
 let isUpperCase = function(str) {
   return (/^[A-Z]*$/).test(str)
 }
@@ -19,8 +22,12 @@ let deepCopy = function(obj) {
   for(var i in obj) {
     if (i == "ancestors" || i == "narrower" || i == "broader" || i == "TOPCONCEPTS" || i == "MAPPINGS" || i == "PROVIDER") {
       // Remove circular structures, replace with [null] if it has elements
-      if (obj[i] && Array.isArray(obj[i]) && obj[i].length > 0) {
-        clone[i] = [null]
+      if (obj[i] && Array.isArray(obj[i])) {
+        if (obj[i].length > 0) {
+          clone[i] = [null]
+        } else {
+          clone[i] = []
+        }
         continue
       } else {
         clone[i] = null
@@ -69,6 +76,9 @@ let mappingHash = function(mapping) {
     for (let concept of concepts) {
       hash += concept.uri + ","
     }
+  }
+  if (mapping.type && mapping.type.length) {
+    hash += `type:${mapping.type[0]}`
   }
   return hash
 }
@@ -264,4 +274,4 @@ let sortSchemes = schemes => {
   )
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }
+export default { addMappingIdentifiers, mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }

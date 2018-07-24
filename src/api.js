@@ -13,6 +13,7 @@
  */
 
 import axios from "axios"
+import localforage from "localforage"
 import config from "./config"
 import util from "./util"
 
@@ -184,18 +185,98 @@ function get(url, axiosConfig) {
     })
 }
 
-function mappings(params) {
-  if (config.mappingProviders.length == 0) {
-    return Promise.resolve([])
+function getMappings(params) {
+  let promises = []
+  for (let provider of config.mappingProviders) {
+    let promise = axios.get(provider.url, {
+      params: params
+    }).then(response => response.data)
+    promises.push(promise)
   }
-  return axios.get(config.mappingProviders[0].url, {
-    params: params
-  }).then(response => {
-    for (let mapping of response.data) {
-      mapping.type = mapping.type || [util.defaultMappingType.uri]
+  promises.push(getLocalMappings(params))
+  return Promise.all(promises).then(results => {
+    let mappings = []
+    for (let result of results) {
+      for (let mapping of result) {
+        // Add mapping type if not available
+        mapping.type = mapping.type || [util.defaultMappingType.uri]
+        // Add JSKOS mapping identifiers
+        mapping = util.addMappingIdentifiers(mapping)
+        mappings.push(mapping)
+      }
     }
-    return response.data
+    return mappings
   })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, mappings }
+function getLocalMappings(params = {}) {
+  return localforage.getItem("mappings").then(mappings => mappings || []).catch(() => []).then(mappings => {
+    // Filter mappings according to params (support for from + to)
+    // TODO: - Support more parameters.
+    // TODO: - Move to its own things.
+    // TODO: - Support memberList and memberChoice.
+    if (params.from) {
+      mappings = mappings.filter(mapping => {
+        return null != mapping.from.memberSet.find(concept => {
+          return concept.uri == params.from
+        })
+      })
+    }
+    if (params.to) {
+      mappings = mappings.filter(mapping => {
+        return null != mapping.to.memberSet.find(concept => {
+          return concept.uri == params.to
+        })
+      })
+    }
+    return mappings
+  }).then(mappings => {
+    // Add "LOCAL = true" for all mappings.
+    // FIXME: Do this differently.
+    mappings.forEach(mapping => {
+      mapping.LOCAL = true
+    })
+    return mappings
+  })
+}
+
+function saveMapping(mapping) {
+  // Check for fromScheme and toScheme
+  if (!mapping.fromScheme || !mapping.toScheme) {
+    return Promise.reject("Can't save mapping: Missing fromScheme or toScheme.")
+  }
+
+  return getLocalMappings().then(mappings => {
+    mapping = util.addMappingIdentifiers(mapping)
+    // Override local mappings with same members
+    // FIXME: This is only temporary to demonstrate local saving of mappings. The actual solution to this problem may be way more complicated.
+    mappings = mappings.filter(m => {
+      let findContentId = id => id.startsWith("urn:jskos:mapping:members:")
+      let id1 = m.identifier ? m.identifier.find(findContentId) : null
+      let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
+      return id1 == null || id2 == null || id1 != id2
+    })
+    // Add mapping
+    mappings.push(mapping)
+    return localforage.setItem("mappings", mappings)
+  })
+}
+
+function removeMapping(mapping) {
+  let previousNumberOfMappings = 0
+  return getLocalMappings().then(mappings => {
+    previousNumberOfMappings = mappings.length
+    // Remove by content identifier
+    mappings = mappings.filter(m => {
+      let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
+      let id1 = m.identifier ? m.identifier.find(findContentId) : null
+      let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
+      return id1 == null || id2 == null || id1 != id2
+    })
+    return localforage.setItem("mappings", mappings)
+  }).then(mappings => {
+    return previousNumberOfMappings > mappings.length
+  })
+}
+
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings, saveMapping, removeMapping }

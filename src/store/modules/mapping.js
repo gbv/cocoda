@@ -11,7 +11,8 @@ const state = {
     fromScheme: null,
     toScheme: null,
     type: [util.defaultMappingType.uri]
-  }
+  },
+  mappingsNeedRefresh: false,
 }
 
 // helper functions
@@ -184,7 +185,11 @@ const mutations = {
    */
   setType(state, { uri }) {
     state.mapping.type = [uri]
-  }
+  },
+
+  setRefresh(state, refresh) {
+    state.mappingsNeedRefresh = refresh
+  },
 }
 
 export default {

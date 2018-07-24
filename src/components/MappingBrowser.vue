@@ -57,11 +57,20 @@
           <span
             slot="actions"
             slot-scope="data" >
-            <font-awesome-icon
-              v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
-              icon="edit"
-              class="button editButton"
-              @click="edit(data)" />
+            <div class="mappingBrowserActions">
+              <font-awesome-icon
+                v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
+                icon="edit"
+                class="button editButton"
+                @click="edit(data)" />
+              <font-awesome-icon
+                v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+                v-if="data.item.mapping.LOCAL"
+                icon="trash-alt"
+                class="button editButton"
+                @click="removeMapping(data.item.mapping)"
+              />
+            </div>
           </span>
           <span
             slot="HEAD_actions"
@@ -71,12 +80,13 @@
         </b-table>
       </div>
       <div
-        v-else
+        v-else-if="loading == 0"
         class="noItems fontWeight-heavy" >
         No mappings available
       </div>
       <!-- Mapping toolbar for options and infos -->
       <div
+        v-if="loading == 0"
         class="mappingToolbar" >
         <div>
           <!-- Option dropdown menu -->
@@ -99,9 +109,17 @@
         <!-- Number of mappings in the table -->
         <div style="text-align: right;">
           {{ items.length }} mappings
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: 'refresh mappings', delay: $util.delay.medium }"
+            icon="sync-alt"
+            class="button"
+            @click="refreshMappings"
+          />
         </div>
       </div>
     </div>
+    <!-- Full screen loading indicator -->
+    <loading-indicator-full v-if="loading" />
   </div>
 </template>
 
@@ -109,17 +127,19 @@
 import ItemName from "./ItemName"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import Minimizer from "./Minimizer"
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 
 /**
  * The mapping browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, FontAwesomeIcon, Minimizer },
+  components: { ItemName, FontAwesomeIcon, Minimizer, LoadingIndicatorFull },
   data () {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
+      loading: 0,
       /** Available options for mapping options */
       mappingOptions: {
         showAll: {
@@ -170,7 +190,8 @@ export default {
           // Save mappings
           for (let mapping of mappings) {
             // Filter duplicate mappings
-            if (!hashList.includes(this.$util.mappingHash(mapping))) {
+            let hash = mapping.identifier ? mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:")) : null
+            if (!hash || !hashList.includes(hash)) {
               let item = {}
               item.mapping = mapping
               item.sourceScheme = mapping.fromScheme.notation[0]
@@ -202,10 +223,10 @@ export default {
               if (leftInSource && rightInSource) {
                 item._rowVariant = "info"
               }
-              item.creator = mapping.creator || "?"
+              item.creator = mapping.creator && mapping.creator[0] || "?"
               item.type = this.$util.mappingTypeByType(mapping.type)
               items.push(item)
-              hashList.push(this.$util.mappingHash(mapping))
+              hashList.push(hash)
             }
           }
         }
@@ -262,6 +283,17 @@ export default {
           sortable: false
         }
       ]
+    },
+    needsRefresh() {
+      return this.$store.state.mapping.mappingsNeedRefresh
+    }
+  },
+  watch: {
+    needsRefresh(refresh) {
+      if (refresh) {
+        this.refreshMappings()
+        this.$store.commit("mapping/setRefresh", false)
+      }
     }
   },
   created() {
@@ -327,7 +359,8 @@ export default {
       let params = {}
       let concept = conceptItem.concept
       params[conceptItem.fromTo] = concept.uri
-      this.$api.mappings(params).then(data => {
+      this.loading += 1
+      this.$api.getMappings(params).then(data => {
         let mappings = concept.MAPPINGS
         if (!mappings) {
           // concept.MAPPINGS = { from: null, to: null }
@@ -340,9 +373,33 @@ export default {
           prop: "MAPPINGS",
           value: mappings
         })
+        this.loading -= 1
       }).catch(function(error) {
         console.error("API error (mappings):", error)
+        this.loading -= 1
       })
+    },
+    removeMapping(mapping) {
+      this.$api.removeMapping(mapping).then(success => {
+        if (success) {
+          this.alert("Mapping was deleted.", null, "success")
+          this.$store.commit("mapping/setRefresh", true)
+        } else {
+          this.alert("Mapping could not be deleted.", null, "danger")
+        }
+      })
+    },
+    refreshMappings() {
+      for (let concept of [this.selected.concept[true], this.selected.concept[false]]) {
+        if (concept) {
+          this.$store.commit({
+            type: "objects/set",
+            object: concept,
+            prop: "MAPPINGS",
+            value: null
+          })
+        }
+      }
     }
   }
 }
@@ -376,8 +433,14 @@ export default {
   flex: 1;
 }
 
+.mappingBrowserActions {
+  display: flex;
+  margin-top: 4px;
+}
 .editButton {
   font-size: 12px;
+  margin: 0 2px;
+  flex: 1;
 }
 
 </style>
