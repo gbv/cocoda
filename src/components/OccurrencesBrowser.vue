@@ -8,7 +8,8 @@
       :sort-desc="true"
       :items="items"
       :fields="fields"
-      sort-by="occurrences" >
+      sort-by="occurrences"
+      @hover="hoveredMapping = $event && $event.mapping" >
       <span
         slot="from"
         slot-scope="data" >
@@ -57,7 +58,7 @@
         slot-scope="data" >
         <font-awesome-icon
           v-b-tooltip.hover="{ title: 'convert to mapping', delay: $util.delay.medium }"
-          v-if="data.value"
+          v-if="data.value && data.item.mapping"
           icon="edit"
           class="button toMapping"
           @click="toMapping(data)" />
@@ -211,9 +212,11 @@ export default {
             }
             this.items[index][fromTo] = concept
             this.items[index][fromTo+"Scheme"] = concept.inScheme[0]
+            this.addMappingToItem(this.items[index])
           }).then(scheme => {
             if (!scheme) return
             this.items[index][fromTo+"Scheme"] = scheme
+            this.addMappingToItem(this.items[index])
           })
         }
         items[items.length-1].actions = occurrence.memberSet.length > 1
@@ -328,20 +331,24 @@ export default {
         this.loading = false
       })
     },
+    addMappingToItem(item) {
+      let mapping = {
+        from: { "memberSet": [item.from] },
+        to: { "memberSet": [item.to] },
+        fromScheme: item.fromScheme,
+        toScheme: item.toScheme,
+        type: [this.$util.defaultMappingType.uri]
+      }
+      mapping = this.$util.addMappingIdentifiers(mapping)
+      item.mapping = mapping
+    },
     /**
      * Converts a co-occurrence into a mapping and saves it as the current mapping
      */
     toMapping(data) {
-      let mapping = {
-        from: { "memberSet": [data.item.from] },
-        to: { "memberSet": [data.item.to] },
-        fromScheme: data.item.fromScheme,
-        toScheme: data.item.toScheme,
-        type: [this.$util.defaultMappingType.uri]
-      }
       this.$store.commit({
         type: "mapping/set",
-        mapping
+        mapping: data.item.mapping
       })
     },
     /** Returns whether a scheme is supported by the occurrences-api */

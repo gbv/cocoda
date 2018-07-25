@@ -41,7 +41,9 @@
         v-for="(item, item_index) in sortedItems"
         :key="'ITEM' + item_index"
         :class="item._rowClass"
-        class="flexibleTable-row">
+        class="flexibleTable-row"
+        @mouseover="$emit('hover', item)"
+        @mouseout="$emit('hover', null)" >
         <div
           v-for="field in fields"
           :key="'ITEM_' + item_index + '_' + field.key"
@@ -230,6 +232,9 @@ export default {
 }
 .flexibleTable-body .flexibleTable-cell {
   border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell {
+  background-color: rgba(0,0,0,0.1);
 }
 .flexibleTable-cell-sort {
   margin-left: 2px;

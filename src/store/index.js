@@ -13,7 +13,8 @@ Vue.use(Vuex)
 const state = {
   schemes: [],
   config: {},
-  hoveredConcept: null
+  hoveredConcept: null,
+  hoveredMapping: null,
 }
 
 const mutations = {
@@ -27,9 +28,12 @@ const mutations = {
       state.config[option] = value
     }
   },
-  setHovered(state, { concept }) {
+  setHoveredConcept(state, { concept }) {
     state.hoveredConcept = concept
-  }
+  },
+  setHoveredMapping(state, { mapping }) {
+    state.hoveredMapping = mapping
+  },
 }
 
 export default new Vuex.Store({

@@ -123,11 +123,22 @@ Vue.mixin({
       },
       set(concept) {
         this.$store.commit({
-          type: "setHovered",
+          type: "setHoveredConcept",
           concept
         })
       }
-    }
+    },
+    hoveredMapping: {
+      get() {
+        return this.$store.state.hoveredMapping
+      },
+      set(mapping) {
+        this.$store.commit({
+          type: "setHoveredMapping",
+          mapping
+        })
+      }
+    },
   },
   methods: {
     /**

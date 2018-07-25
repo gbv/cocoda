@@ -9,7 +9,8 @@
       <flexible-table
         :items="items"
         :fields="fields"
-        class="mappingBrowser-table" >
+        class="mappingBrowser-table"
+        @hover="hoveredMapping = $event && $event.mapping" >
         <span
           slot="sourceConcepts"
           slot-scope="{ value }" >
