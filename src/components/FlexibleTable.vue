@@ -211,12 +211,18 @@ export default {
     }
   },
   methods: {
+    /**
+     * Style object for the whole table.
+     */
     tableStyle() {
       return {
         maxWidth: this.maxWidth,
         maxHeight: this.maxHeight
       }
     },
+    /**
+     * Style object for each cell.
+     */
     cellStyle(field) {
       let style = {}
       if (field.width != null) {
@@ -227,12 +233,19 @@ export default {
       }
       return style
     },
+    /**
+     * Capitalizes the first letter of a string.
+     */
     capitalizeFirst(string) {
       if (string.length == 0) {
         return string
       }
       return string[0].toUpperCase() + string.substring(1)
     },
+    /**
+     * Determines default table cell content.
+     * Objects and arrays won't be displayed.
+     */
     defaultCellContent(value) {
       if (typeof value === "object") {
         return value.id || value._id || value.uri || "Object"
@@ -240,7 +253,9 @@ export default {
         return value
       }
     },
-    // Sets the sorting preferences
+    /**
+     * Sets the sorting preferences.
+     */
     sort(field) {
       if (this.sorting.sortBy == field.key) {
         if (this.sorting.sortDirection == 0) {
