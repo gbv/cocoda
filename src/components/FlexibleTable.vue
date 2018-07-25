@@ -216,13 +216,13 @@ export default {
 }
 /* Cell styles */
 .flexibleTable-cell {
-  user-select: none;
-  cursor: pointer;
   padding: 4px 2px;
   overflow: hidden;
   flex: 1;
 }
 .flexibleTable-head .flexibleTable-cell {
+  user-select: none;
+  cursor: pointer;
   border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 .flexibleTable-head .flexibleTable-cell:hover {
