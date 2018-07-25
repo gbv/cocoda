@@ -20,15 +20,51 @@
             {{ field.label || capitalizeFirst(field.key) }}
             <span
               class="flexibleTable-cell-sort" >
-              <font-awesome-icon
+              <!--
+                SVG icon by FontAwesome
+                URL: https://fontawesome.com/icons/sort-up?style=solid
+                License: https://fontawesome.com/license/free
+               -->
+              <svg
                 v-if="sorting.sortBy == field.key && sorting.sortDirection == 1"
-                icon="sort-up" />
-              <font-awesome-icon
+                width="10px"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -60 320 512">
+                <path
+                  fill="currentColor"
+                  d="M279 224H41c-21.4 0-32.1-25.9-17-41L143 64c9.4-9.4 24.6-9.4 33.9 0l119 119c15.2 15.1 4.5 41-16.9 41z"/>
+              </svg>
+              <!--
+                SVG icon by FontAwesome
+                URL: https://fontawesome.com/icons/sort-down?style=solid
+                License: https://fontawesome.com/license/free
+               -->
+              <svg
                 v-else-if="sorting.sortBy == field.key && sorting.sortDirection == -1"
-                icon="sort-down" />
-              <font-awesome-icon
+                width="10px"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -60 320 512">
+                <path
+                  fill="currentColor"
+                  d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z"/>
+              </svg>
+              <!--
+                SVG icon by FontAwesome
+                URL: https://fontawesome.com/icons/sort?style=solid
+                License: https://fontawesome.com/license/free
+               -->
+              <svg
                 v-else-if="field.sortable"
-                icon="sort" />
+                width="10px"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -60 320 512">
+                <path
+                  fill="currentColor"
+                  d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"/>
+              </svg>
             </span>
           </slot>
         </div>
@@ -64,11 +100,8 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-
 export default {
   name: "FlexibleTable",
-  components: { FontAwesomeIcon },
   props: {
     /**
      * An array of field objects with the following properties:
