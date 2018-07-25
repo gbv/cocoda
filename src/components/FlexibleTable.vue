@@ -11,12 +11,25 @@
           :key="'HEAD_' + field.key"
           :style="cellStyle(field)"
           :class="field.class"
-          class="flexibleTable-cell" >
+          class="flexibleTable-cell"
+          @click="sort(field)" >
           <!-- Slot for head cell content. Override with <template slot="HEAD_key" slot-scope="{ field }"> -->
           <slot
             :name="'HEAD_' + field.key"
             :field="field">
             {{ field.label || capitalizeFirst(field.key) }}
+            <span
+              class="flexibleTable-cell-sort" >
+              <font-awesome-icon
+                v-if="sortBy == field.key && sortDirection == 1"
+                icon="sort-up" />
+              <font-awesome-icon
+                v-else-if="sortBy == field.key && sortDirection == -1"
+                icon="sort-down" />
+              <font-awesome-icon
+                v-else-if="field.sortable"
+                icon="sort" />
+            </span>
           </slot>
         </div>
       </div>
@@ -25,7 +38,7 @@
     <div class="flexibleTable-body">
       <!-- One row for each item -->
       <div
-        v-for="(item, item_index) in items"
+        v-for="(item, item_index) in sortedItems"
         :key="'ITEM' + item_index"
         :class="item._rowClass"
         class="flexibleTable-row">
@@ -49,8 +62,11 @@
 </template>
 
 <script>
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+
 export default {
   name: "FlexibleTable",
+  components: { FontAwesomeIcon },
   props: {
     /**
      * An array of field objects with the following properties:
@@ -59,6 +75,8 @@ export default {
      * - class: class name for the cell (optional)
      * - width: CSS width of the column (optional)
      * - minWidth: CSS minWidth of the column (optional)
+     * - sortable: true if this field should be sortable
+     * - compare: custom compare function for sorting this field
      */
     fields: {
       type: Array,
@@ -90,6 +108,27 @@ export default {
       type: String,
       default: "100%"
     },
+  },
+  data() {
+    return {
+      sortBy: null,
+      sortDirection: 0,
+    }
+  },
+  computed: {
+    sortedItems() {
+      if (this.sortDirection == 0 || !this.sortBy) {
+        return this.items
+      }
+      let items = this.items.slice()
+      let sortField = this.fields.find(f => f.key == this.sortBy)
+      let compare = sortField && sortField.compare || ((a, b) => a[this.sortBy] < b[this.sortBy])
+      items.sort(compare)
+      if (this.sortDirection == -1) {
+        items = items.reverse()
+      }
+      return items
+    }
   },
   mounted() {
     let table = this.$el
@@ -139,6 +178,20 @@ export default {
         return value
       }
     },
+    sort(field) {
+      if (this.sortBy == field.key) {
+        if (this.sortDirection == 0) {
+          this.sortDirection = 1
+        } else if (this.sortDirection == 1) {
+          this.sortDirection = -1
+        } else {
+          this.sortDirection = 0
+        }
+      } else {
+        this.sortBy = field.key
+        this.sortDirection = 1
+      }
+    },
   },
 }
 </script>
@@ -163,6 +216,8 @@ export default {
 }
 /* Cell styles */
 .flexibleTable-cell {
+  user-select: none;
+  cursor: pointer;
   padding: 4px 2px;
   overflow: hidden;
   flex: 1;
@@ -170,8 +225,14 @@ export default {
 .flexibleTable-head .flexibleTable-cell {
   border-bottom: 1px solid rgba(0,0,0,0.2);
 }
+.flexibleTable-head .flexibleTable-cell:hover {
+  color: rgba(0,0,0,0.5);
+}
 .flexibleTable-body .flexibleTable-cell {
   border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.flexibleTable-cell-sort {
+  margin-left: 2px;
 }
 /* Hide scrollbars in head */
 .flexibleTable-head {
