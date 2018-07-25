@@ -204,19 +204,19 @@ export default {
           items[items.length-1][fromTo] = member
           items[items.length-1][fromTo+"Scheme"] = member.inScheme[0]
           // refresh member
-          let index = items.length-1
+          let item =  items[items.length-1]
           this.getObject({ object: member, scheme: member.inScheme[0] }).then(concept => {
             if (!concept) {
               // if concept couldn't be loaded, at least try to load the member's scheme
               return this.getObject({ object: member.inScheme[0] })
             }
-            this.items[index][fromTo] = concept
-            this.items[index][fromTo+"Scheme"] = concept.inScheme[0]
-            this.addMappingToItem(this.items[index])
+            item[fromTo] = concept
+            item[fromTo+"Scheme"] = concept.inScheme[0]
+            this.addMappingToItem(item)
           }).then(scheme => {
             if (!scheme) return
-            this.items[index][fromTo+"Scheme"] = scheme
-            this.addMappingToItem(this.items[index])
+            item[fromTo+"Scheme"] = scheme
+            this.addMappingToItem(item)
           })
         }
         items[items.length-1].actions = occurrence.memberSet.length > 1
