@@ -141,7 +141,7 @@ export default {
       this.tree = []
       this.loading = true
       this.loadTop({ scheme: this.schemeSelected }).then(() => {
-        this.tree = this.schemeSelected.TOPCONCEPTS
+        this.tree = _.get(this, "schemeSelected.TOPCONCEPTS", [])
         this.loading = false
       })
     }
