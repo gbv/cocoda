@@ -21,10 +21,10 @@
             <span
               class="flexibleTable-cell-sort" >
               <font-awesome-icon
-                v-if="sortBy == field.key && sortDirection == 1"
+                v-if="sorting.sortBy == field.key && sorting.sortDirection == 1"
                 icon="sort-up" />
               <font-awesome-icon
-                v-else-if="sortBy == field.key && sortDirection == -1"
+                v-else-if="sorting.sortBy == field.key && sorting.sortDirection == -1"
                 icon="sort-down" />
               <font-awesome-icon
                 v-else-if="field.sortable"
@@ -110,29 +110,56 @@ export default {
       type: String,
       default: "100%"
     },
+    /**
+     * Key to sort table by (overridden by user choice).
+     */
+    sortBy: {
+      type: String,
+      default: null
+    },
+    /**
+     * Direction to sort table by (overridden by user choice).
+     * 0 - no sorting
+     * 1 - ascending
+     * -1 - descending
+     */
+    sortDirection: {
+      type: Number,
+      default: 1
+    },
   },
   data() {
     return {
-      sortBy: null,
-      sortDirection: 0,
+      // Contains the current sorting preferences.
+      sorting: {
+        sortBy: null,
+        sortDirection: 0,
+      },
     }
   },
   computed: {
+    /**
+     * Returns a sorted list of items according to the current sorting preferences.
+     */
     sortedItems() {
-      if (this.sortDirection == 0 || !this.sortBy) {
+      if (this.sorting.sortDirection == 0 || !this.sorting.sortBy) {
         return this.items
       }
       let items = this.items.slice()
-      let sortField = this.fields.find(f => f.key == this.sortBy)
-      let compare = sortField && sortField.compare || ((a, b) => a[this.sortBy] < b[this.sortBy])
+      let sortField = this.fields.find(f => f.key == this.sorting.sortBy)
+      let compare = sortField && sortField.compare || ((a, b) => a[this.sorting.sortBy] < b[this.sorting.sortBy])
       items.sort(compare)
-      if (this.sortDirection == -1) {
+      if (this.sorting.sortDirection == -1) {
         items = items.reverse()
       }
       return items
     }
   },
   mounted() {
+    // Set initial sorting preferences
+    this.sorting.sortBy = this.sortBy
+    this.sorting.sortDirection = this.sortDirection
+    // Prepare table
     let table = this.$el
     let thead = table.getElementsByClassName("flexibleTable-head")[0]
     let tbody = table.getElementsByClassName("flexibleTable-body")[0]
@@ -180,18 +207,19 @@ export default {
         return value
       }
     },
+    // Sets the sorting preferences
     sort(field) {
-      if (this.sortBy == field.key) {
-        if (this.sortDirection == 0) {
-          this.sortDirection = 1
-        } else if (this.sortDirection == 1) {
-          this.sortDirection = -1
+      if (this.sorting.sortBy == field.key) {
+        if (this.sorting.sortDirection == 0) {
+          this.sorting.sortDirection = 1
+        } else if (this.sorting.sortDirection == 1) {
+          this.sorting.sortDirection = -1
         } else {
-          this.sortDirection = 0
+          this.sorting.sortDirection = 0
         }
       } else {
-        this.sortBy = field.key
-        this.sortDirection = 1
+        this.sorting.sortBy = field.key
+        this.sorting.sortDirection = 1
       }
     },
   },
