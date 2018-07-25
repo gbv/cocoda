@@ -86,9 +86,10 @@
           :style="cellStyle(field)"
           :class="field.class"
           class="flexibleTable-cell">
-          <!-- Slot for cell content. Override with <template slot="HEAD_key" slot-scope="{ item }"> -->
+          <!-- Slot for cell content. Override with <template slot="HEAD_key" slot-scope="{ field, item, value }"> -->
           <slot
             :name="field.key"
+            :field="field"
             :item="item"
             :value="item[field.key]" >
             {{ defaultCellContent(item[field.key]) }}
