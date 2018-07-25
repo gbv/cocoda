@@ -358,7 +358,7 @@ export default {
       if (element.tagName.toLowerCase() == "path") {
         element = element.parentElement
       }
-      element = element.nextSibling
+      element = element.nextElementSibling
       window.getSelection().removeAllRanges()
       this.$util.selectText(element)
       _.delay(function() {
