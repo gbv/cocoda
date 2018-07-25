@@ -12,7 +12,7 @@
           :style="cellStyle(field)"
           :class="field.class"
           class="flexibleTable-cell"
-          @click="sort(field)" >
+          @click="field.sortable && sort(field)" >
           <!-- Slot for head cell content. Override with <template slot="HEAD_key" slot-scope="{ field }"> -->
           <slot
             :name="'HEAD_' + field.key"
