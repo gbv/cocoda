@@ -16,6 +16,14 @@
       </b-alert>
     </div>
     <the-navbar />
+    <!-- Swap sides button -->
+    <div
+      v-b-tooltip.hover="{ title:'swap sides', delay: $util.delay.medium }"
+      id="swapSides"
+      @click="swapSides" >
+      <font-awesome-icon icon="exchange-alt" />
+    </div>
+    <!-- Main -->
     <div class="main">
       <div class="flexbox-row">
 
@@ -175,6 +183,7 @@ import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import ItemName from "./components/ItemName"
+import _ from "lodash"
 
 /**
  * The main application.
@@ -249,6 +258,30 @@ export default {
     },
     conceptTreeRight() {
       return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
+    },
+    swapSides() {
+      let newSelected = {
+        scheme: {
+          true: this.selected.scheme[false],
+          false: this.selected.scheme[true]
+        },
+        concept: {
+          true: this.selected.concept[false],
+          false: this.selected.concept[true]
+        }
+      }
+      _.forOwn(newSelected, (value, kind) => {
+        _.forOwn(value, (value, isLeft) => {
+          let delay = 0
+          // Delay selection of concept
+          if (kind == "concept") {
+            delay = 200
+          }
+          _.delay(() => {
+            this.setSelected(kind, isLeft, value)
+          }, delay)
+        })
+      })
     },
   },
 }
@@ -372,4 +405,20 @@ html, body {
   width: 600px;
 }
 
+#swapSides {
+  position: absolute;
+  text-align: center;
+  font-size: 20px;
+  top: 6px;
+  width: 50px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  cursor: pointer;
+  user-select: none;
+  color: @color--theNavbar-text;
+}
+#swapSides:hover {
+  color: @color-primary-2;
+}
 </style>

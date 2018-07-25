@@ -30,6 +30,7 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import ConceptTreeItem from "./ConceptTreeItem"
 import Minimizer from "./Minimizer"
 import _ from "lodash"
+import { scroller } from "vue-scrollto/src/scrollTo"
 
 /**
  * Component that represents a (navigatable) concept tree.
@@ -54,6 +55,7 @@ export default {
       loading: false,
       currentSelectedConcept: null,
       shouldScroll: true,
+      scrollTo: scroller(),
     }
   },
   computed: {
@@ -113,7 +115,7 @@ export default {
                   x: false,
                   y: true
                 }
-                if (el) this.$scrollTo(el, 200, options)
+                if (el) this.scrollTo(el, 200, options)
                 this.loading = false
               }, 100)
             } else if (!fullyLoaded) {
