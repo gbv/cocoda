@@ -26,6 +26,8 @@
     <!-- Main -->
     <div class="main">
       <div class="flexbox-row">
+        <!-- Full screen loading indicator -->
+        <loading-indicator-full v-if="loading" />
 
         <!-- Concept components left side -->
         <div
@@ -184,6 +186,7 @@ import ResizingSlider from "./components/ResizingSlider"
 import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import ItemName from "./components/ItemName"
 import _ from "lodash"
+import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 
 /**
  * The main application.
@@ -191,10 +194,11 @@ import _ from "lodash"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon, ItemName
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon, ItemName, LoadingIndicatorFull
   },
   data () {
     return {
+      loading: false,
       itemDetailSettings: {
         left: {
           showTopConceptsInScheme: false
@@ -233,6 +237,79 @@ export default {
       }
       return schemes
     },
+    schemes() {
+      return this.$store.state.schemes
+    },
+  },
+  watch: {
+    schemes() {
+      // Check route to see if navigation is necessary
+      let query = this.$route.query
+      // Prepare application by selecting schemes and concepts from URL parameters.
+      let selected = {
+        scheme: {
+          true: query.schemeLeft,
+          false: query.schemeRight
+        },
+        concept: {
+          true: query.conceptLeft,
+          false: query.conceptRight
+        }
+      }
+      let promises = []
+      let setSelectedPromise = (kind, isLeft, scheme, conceptUri) => {
+        let object
+        if (kind == "concept") {
+          object = {
+            uri: conceptUri,
+            inScheme: [scheme]
+          }
+        } else {
+          object = scheme
+        }
+        this.setSelected(kind, isLeft, object)
+        return Promise.resolve()
+      }
+      for (let isLeft of [true, false]) {
+        let schemeUri = selected.scheme[isLeft]
+        if (schemeUri) {
+          // Select scheme
+          let scheme = this.$store.getters["objects/get"]({ uri: schemeUri })
+          if (!scheme) {
+            this.alert("Scheme from URL could not be found.", null, "danger")
+          } else {
+            promises.push(
+              setSelectedPromise("scheme", isLeft, scheme).then(() => {
+                // Introduce a short delay to make sure everything's loaded properly.
+                return new Promise(resolve => setTimeout(() => resolve(), 200))
+              }).then(() => {
+                let conceptUri = selected.concept[isLeft]
+                if (conceptUri) {
+                  // Select concept
+                  return setSelectedPromise("concept", isLeft, scheme, conceptUri)
+                }
+              })
+            )
+          }
+        }
+      }
+      if (promises.length) {
+        Promise.all(promises).then(() => {
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+          this.alert("There was an error loading data from URL.", null, "danger")
+        })
+      } else {
+        this.loading = false
+      }
+    }
+  },
+  created() {
+    // Set loading to true if schemes are not loaded yet.
+    if (!this.schemes.length) {
+      this.loading = true
+    }
   },
   methods: {
     refresh(key) {
