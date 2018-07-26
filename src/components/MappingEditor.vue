@@ -150,10 +150,11 @@ export default {
         mapping.creator = ["You"]
       }
       this.$api.saveMapping(mapping).then(() => {
-        this.$store.commit("mapping/setRefresh", true)
         this.alert("Mapping was saved.", null, "success")
       }).catch(error => {
         this.alert(error, null, "danger")
+      }).then(() => {
+        this.$store.commit("mapping/setRefresh", true)
       })
     },
     prepareMapping() {

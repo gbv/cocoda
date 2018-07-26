@@ -382,10 +382,10 @@ export default {
       this.$api.removeMapping(mapping).then(success => {
         if (success) {
           this.alert("Mapping was deleted.", null, "success")
-          this.$store.commit("mapping/setRefresh", true)
         } else {
           this.alert("Mapping could not be deleted.", null, "danger")
         }
+        this.$store.commit("mapping/setRefresh", true)
       })
     },
     refreshMappings() {
