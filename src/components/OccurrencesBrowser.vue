@@ -236,7 +236,6 @@ export default {
     },
     /** Reloads occurrences from api */
     reloadOccurrences() {
-      let vm = this
       let promise
       let currentId = this.$util.generateID()
       this.loadingId = currentId
@@ -244,13 +243,13 @@ export default {
         // Load supported schemes
         // TODO: - Put this into API
         promise = axios.get("//coli-conc.gbv.de/occurrences/api/voc")
-          .then(function(response) {
-            vm.supportedSchemes = response.data
+          .then(response => {
+            this.supportedSchemes = _.get(response, "data", [])
           })
-          .catch(function(error) {
+          .catch(error => {
             console.error(error)
             // TODO: - Better error handling
-            vm.supportedSchemes = []
+            this.supportedSchemes = []
           })
       } else {
         promise = Promise.resolve()
@@ -304,7 +303,7 @@ export default {
         if (currentId != this.loadingId) return
         let occurrences = []
         for (let response of responses) {
-          let result = response.data
+          let result = _.get(response, "data", [])
           occurrences = occurrences.concat(result)
         }
         // Filter duplicates

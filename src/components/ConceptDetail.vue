@@ -15,10 +15,10 @@
       </div>
       <!-- Ancestors -->
       <div
-        v-for="(concept, index) in item.ancestors"
+        v-for="(concept, index) in ancestors"
         v-if="concept != null"
         :key="concept.uri" >
-        <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == item.ancestors.length - 1 || item.ancestors.length <= 3">
+        <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
             class="u-flip-horizontal"
             icon="level-up-alt" />
@@ -40,7 +40,7 @@
       </div>
       <!-- Broader -->
       <div
-        v-for="(concept) in (item.ancestors.length == 0 && item.BROADERLOADED ? item.broader : [])"
+        v-for="(concept) in (ancestors.length == 0 && item.BROADERLOADED ? broader : [])"
         v-if="concept != null"
         :key="concept.uri" >
         <font-awesome-icon
@@ -53,7 +53,7 @@
       </div>
       <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
       <loading-indicator
-        v-if="item.ancestors.length != 0 && item.ancestors.includes(null) || item.ancestors.length == 0 && item.broader.length != 0 && !item.BROADERLOADED"
+        v-if="ancestors.length != 0 && ancestors.includes(null) || ancestors.length == 0 && broader.length != 0 && !item.BROADERLOADED"
         size="sm" />
     </div>
 
@@ -244,7 +244,13 @@ export default {
   computed: {
     showAddToMappingButton() {
       return this.$store.getters["mapping/canAdd"](this.item, (this.item.inScheme && this.item.inScheme[0]) || this.selected.scheme[this.isLeft], this.isLeft)
-    }
+    },
+    ancestors() {
+      return _.get(this.item, "ancestors", []) || []
+    },
+    broader() {
+      return _.get(this.item, "broader", []) || []
+    },
   },
   watch: {
     item(newItem, oldItem) {

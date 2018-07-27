@@ -82,6 +82,14 @@ const mutations = {
           }
           object.inScheme = inScheme
         }
+        // Set inScheme of all related nodes
+        for (let prop of ["ancestors", "broader", "narrower"]) {
+          if (object[prop] && !object[prop].includes(null)) {
+            for (let concept of object[prop]) {
+              concept.inScheme = concept.inScheme || object.inScheme
+            }
+          }
+        }
       } else if (util.isScheme(object)) {
         object.DETAILSLOADED = false
         object.INSTORE = true
@@ -162,7 +170,7 @@ const actions = {
     } else {
       let schemeInMap
       scheme = scheme || (object.inScheme ? object.inScheme[0] : null)
-      if (scheme.INSTORE) {
+      if (scheme && scheme.INSTORE) {
         schemeInMap = scheme
       } else if (isObjectInMap(state.map, scheme)) {
         schemeInMap = getters.get(scheme)

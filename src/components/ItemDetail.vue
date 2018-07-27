@@ -130,8 +130,8 @@ export default {
      */
     item: function(newItem, oldItem) {
       this.$el.scrollTop = 0
+      this.loadDetails()
       if (!this.$util.compareConcepts(newItem, oldItem)) {
-        this.loadDetails()
         if (this.prevConcepts.length > 0 && this.$util.compareConcepts(newItem, _.last(this.prevConcepts))) {
           // new item came from prevConcepts
           this.nextConcepts.unshift(oldItem)
