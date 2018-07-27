@@ -243,7 +243,7 @@ export default {
   },
   computed: {
     showAddToMappingButton() {
-      return this.$store.getters["mapping/canAdd"](this.item, (this.item.inScheme && this.item.inScheme[0]) || this.selected.scheme[this.isLeft], this.isLeft)
+      return this.$store.getters["mapping/canAdd"](this.item, _.get(this.item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
     },
     ancestors() {
       return _.get(this.item, "ancestors", []) || []

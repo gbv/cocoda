@@ -124,13 +124,13 @@ export default {
   },
   computed: {
     hasChildren() {
-      return !this.concept.narrower || this.concept.narrower.length != 0
+      return  _.get(this.concept, "narrower.length", 1) != 0
     },
     isHovered() {
       return this.$util.compareConcepts(this.hoveredConcept, this.concept)
     },
     isSelected() {
-      return this.selected.concept[this.isLeft] != null ? this.selected.concept[this.isLeft].uri == this.concept.uri : false
+      return this.$util.compareConcepts(this.selected.concept[this.isLeft], this.concept)
     },
     childrenLoaded() {
       return !this.concept.narrower || !this.concept.narrower.includes(null)

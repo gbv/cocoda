@@ -173,7 +173,7 @@ export default {
       // Generate new axios cancel token
       this.cancelToken = this.$api.token()
       let searchQuery = this.searchQuery
-      this.$api.suggest(this.selected.scheme[this.isLeft], searchQuery, this.selected.scheme[this.isLeft].notation[0], 100, undefined, this.cancelToken.token)
+      this.$api.suggest(this.selected.scheme[this.isLeft], searchQuery, _.get(this.selected.scheme[this.isLeft], "notation[0]"), 100, undefined, this.cancelToken.token)
         .then((data) => {
           if (searchQuery == this.searchQuery) {
             this.loading = false
