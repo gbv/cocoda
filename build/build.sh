@@ -17,6 +17,9 @@ cat > ./build/build-info.json <<EOL
 }
 EOL
 
+# make sure a cocoda.json file exists
+[ ! -e ./config/cocoda.json ] && echo -n "{}" > ./config/cocoda.json
+
 # build the app
 node build/build.js
 
