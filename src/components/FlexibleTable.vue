@@ -101,18 +101,22 @@
 </template>
 
 <script>
+/**
+ * Component that displays a flexible table. Usage is similar to that of [bootstrap-vue tables](https://bootstrap-vue.js.org/docs/components/table).
+ */
 export default {
   name: "FlexibleTable",
   props: {
     /**
      * An array of field objects with the following properties:
-     * - key: key for the field/column (required)
-     * - label: label for the column (optional, defaults to key with capitalized first letter)
-     * - class: class name for the cell (optional)
-     * - width: CSS width of the column (optional)
-     * - minWidth: CSS minWidth of the column (optional)
-     * - sortable: true if this field should be sortable
-     * - compare: custom compare function for sorting this field
+     *
+     * - `key`: key for the field/column (required)
+     * - `label`: label for the column (optional, defaults to key with capitalized first letter)
+     * - `class`: class name for the cell (optional)
+     * - `width`: CSS width of the column (optional)
+     * - `minWidth`: CSS minWidth of the column (optional)
+     * - `sortable`: true if this field should be sortable (optional, default false)
+     * - `compare`: custom compare function for sorting this field (optional)
      */
     fields: {
       type: Array,
@@ -123,8 +127,9 @@ export default {
      * By default, the raw content under the field keys are shown.
      * Use slots for a custom appearance.
      *
-     * Additional keys:
-     * - _rowClass: class for the row
+     * Additional keys (optional):
+     *
+     * - `_rowClass`: class for the row
      */
     items: {
       type: Array,
@@ -153,9 +158,10 @@ export default {
     },
     /**
      * Direction to sort table by (overridden by user choice).
-     * 0 - no sorting
-     * 1 - ascending
-     * -1 - descending
+     *
+     * `0` - no sorting,
+     * `1` - ascending,
+     * `-1` - descending
      */
     sortDirection: {
       type: Number,

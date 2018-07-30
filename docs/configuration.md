@@ -3,5 +3,9 @@ Default settings are given in file `config/cocoda.default.json`. To change the c
 * `terminologyProviders`
 * `mappingProviders`
 * `occurrenceProviders`
+* `favoriteTerminologyProviders`
+* `favoriteConcepts`
+* `language`
+* `logos`
 
-The application has to be rebuild to activate changes.
+The application has to be rebuilt to activate changes.

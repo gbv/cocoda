@@ -81,6 +81,7 @@ export default {
     },
     /**
      * Settings - An object with a subset of the following properties:
+     *
      * - showGndTerms: show GND terms in ConceptDetail (default true)
      * - showSchemeInAncestors: (default true)
      * - showTopConceptsInScheme: (default false)

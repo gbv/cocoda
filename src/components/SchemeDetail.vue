@@ -95,7 +95,7 @@ export default {
       default: true
     },
     /**
-     * Settings - see `ItemDetail`
+     * Settings - see [`ItemDetail`](#itemdetail).
      */
     settings: {
       type: Object,
