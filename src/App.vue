@@ -94,7 +94,7 @@
               <p
                 v-for="scheme in favoriteSchemes"
                 :key="scheme.uri" >
-                ·<br>
+                <br>
                 <item-name
                   :item="scheme"
                   :is-link="true"
@@ -109,7 +109,7 @@
               <p
                 v-for="concept in config.favoriteConcepts"
                 :key="concept.uri" >
-                ·<br>
+                <br>
                 <item-name
                   :item="concept"
                   :is-link="true"
@@ -463,8 +463,8 @@ html, body {
   }
 
 .placeholderComponent {
-  text-align: center;
-  padding-top: 50px;
+  text-align: left;
+  padding: 50px 20px 10px 30px;
 }
 .placeholderComponentCenter > div {
   text-align: center;
