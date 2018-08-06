@@ -148,7 +148,18 @@
               v-else
               class="placeholderComponentCenter" >
               <div class="fontWeight-heavy fontSize-large">
-                Welcome to Cocoda!
+                <p>Welcome to Cocoda!</p>
+                <p>
+                  <a
+                    href="https://gbv.github.io/cocoda/#manual"
+                    target="_blank">Manual</a> -
+                  <a
+                    href="https://gbv.github.io/cocoda/"
+                    target="_blank">Documentation</a> -
+                  <a
+                    href="https://github.com/gbv/cocoda"
+                    target="_blank">GitHub</a>
+                </p>
               </div>
             </div>
           </div>
