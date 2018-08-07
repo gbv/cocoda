@@ -72,7 +72,7 @@
 <script>
 import LoadingIndicator from "./LoadingIndicator"
 import ItemName from "./ItemName"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import _ from "lodash"
 
 /**

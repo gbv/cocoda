@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import TheSettings from "./TheSettings"
 
 /**

@@ -119,7 +119,7 @@
 
 <script>
 import ItemName from "./ItemName"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import FlexibleTable from "./FlexibleTable"

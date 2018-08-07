@@ -41,6 +41,6 @@ Cocoda uses [Font Awesome](https://fontawesome.com/) for some icons. You can use
 <font-awesome-icon icon="plus-circle" />
 ```
 
-Remember to import FontAwesome (`import FontAwesomeIcon from "@fortawesome/vue-fontawesome"`) and add it to your components list.
+Remember to import FontAwesome (`import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"`) and add it to your components list.
 
 As of now, all icons are available without importing them separately. But at some point in the future, we will only add those icons to the project that are needed to save same space. At that point, new icons will need to be imported in your components as well.

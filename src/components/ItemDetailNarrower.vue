@@ -29,7 +29,7 @@
 <script>
 import ItemName from "./ItemName"
 import LoadingIndicator from "./LoadingIndicator"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 
 /**
  * Component that displays narrower or top concepts for ItemDetail.
