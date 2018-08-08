@@ -35,12 +35,10 @@ For text buttons, there are predefined CSS classes in `src/style/main.less`. In 
 If you need to use z-index values, please use the predefined LESS variables in `src/style/z-index.less`.
 
 ### Icons
-Cocoda uses [Font Awesome](https://fontawesome.com/) for some icons. You can use any of their free icons (see their [icon gallery](https://fontawesome.com/icons?d=gallery&m=free)) like this:
+Cocoda uses [Font Awesome](https://fontawesome.com/) for some icons. You can use any of their free icons (see their [icon gallery](https://fontawesome.com/icons?d=gallery&s=brands,solid&m=free)) like this:
 
 ```html
 <font-awesome-icon icon="plus-circle" />
 ```
 
-Remember to import FontAwesome (`import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"`) and add it to your components list.
-
-As of now, all icons are available without importing them separately. But at some point in the future, we will only add those icons to the project that are needed to save same space. At that point, new icons will need to be imported in your components as well.
+As of now, all icons (solid, brands) are available without importing them separately. But at some point in the future, we will only add those icons to the project that are needed to save same space. At that point, new icons will need to be imported in your components as well.
