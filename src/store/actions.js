@@ -25,6 +25,11 @@ export default {
                 return provider
               } else {
                 console.warn("Couldn't load schemes for provider", provider)
+                commit({
+                  type: "alerts/add",
+                  text: `Could not load concept schemes for provider ${provider.url}. Please open an issue on GitHub.`,
+                  variant: "danger"
+                })
               }
             })
         // TODO: - error handling

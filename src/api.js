@@ -182,6 +182,9 @@ function get(url, axiosConfig) {
         }
       }
       return data
+    }).catch(error => {
+      console.log("API-Error:", error)
+      return null
     })
 }
 
