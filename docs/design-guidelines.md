@@ -21,7 +21,7 @@ For interface elements, there is a range of pre-defined colors available in `src
 
 ### Tables
 
-For tables, there is a custom table component called [FlexibleTable](#flexbiletable). It can be used very similarly to a [bootstrap-vue table](https://bootstrap-vue.js.org/docs/components/table). See components [MappingBrowser](#mappingbrowser) and [OccurrencesBrowser](#occurrencesbrowser) for examples of this in use.
+For tables, there is a custom table component called [vue-flexible-table](https://github.com/stefandesu/vue-flexible-table). It can be used very similarly to a [bootstrap-vue table](https://bootstrap-vue.js.org/docs/components/table). See components [MappingBrowser](#mappingbrowser) and [OccurrencesBrowser](#occurrencesbrowser) for examples of this in use.
 
 ### Buttons
 

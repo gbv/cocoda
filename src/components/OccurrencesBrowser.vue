@@ -86,7 +86,7 @@ import Minimizer from "./Minimizer"
 import axios from "axios"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import _ from "lodash"
-import FlexibleTable from "./FlexibleTable"
+import FlexibleTable from "vue-flexible-table"
 
 /**
  * The occurrences browser component.

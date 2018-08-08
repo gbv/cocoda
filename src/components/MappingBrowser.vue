@@ -121,7 +121,7 @@
 import ItemName from "./ItemName"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import FlexibleTable from "./FlexibleTable"
+import FlexibleTable from "vue-flexible-table"
 
 /**
  * The mapping browser component.
