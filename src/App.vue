@@ -369,6 +369,8 @@ export default {
           }, delay)
         })
       })
+      // Switch sides for mapping
+      this.$store.commit("mapping/switch")
     },
   },
 }

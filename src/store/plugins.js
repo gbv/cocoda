@@ -89,4 +89,16 @@ const selectedPlugin = store => {
   })
 }
 
-export default [selectedPlugin]
+/**
+ * Plugin that recalculates the mapping identifier for the current mapping on each change.
+ */
+const mappingIdentifierPlugin = store => {
+  store.subscribe((mutation) => {
+    // Check for selecting a concept
+    if (mutation.type.startsWith("mapping") && !mutation.type.endsWith("setIdentifier")) {
+      store.commit("mapping/setIdentifier")
+    }
+  })
+}
+
+export default [selectedPlugin, mappingIdentifierPlugin]

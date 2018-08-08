@@ -187,6 +187,19 @@ const mutations = {
     state.mapping.type = [uri]
   },
 
+  switch(state) {
+    Object.assign(state.mapping, {
+      from: state.mapping.to,
+      to: state.mapping.from,
+      fromScheme: state.mapping.toScheme,
+      toScheme: state.mapping.fromScheme
+    })
+  },
+
+  setIdentifier(state) {
+    state.mapping = util.addMappingIdentifiers(state.mapping)
+  },
+
   setRefresh(state, refresh) {
     state.mappingsNeedRefresh = refresh
   },
