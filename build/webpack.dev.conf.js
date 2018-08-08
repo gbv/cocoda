@@ -1,15 +1,15 @@
-'use strict'
-const utils = require('./utils')
-const webpack = require('webpack')
-const config = require('../config')
-const merge = require('webpack-merge')
-const path = require('path')
-const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const portfinder = require('portfinder')
+"use strict"
+const utils = require("./utils")
+const webpack = require("webpack")
+const config = require("../config")
+const merge = require("webpack-merge")
+const path = require("path")
+const baseWebpackConfig = require("./webpack.base.conf")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin")
+const VueLoaderPlugin = require("vue-loader/lib/plugin")
+const portfinder = require("portfinder")
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -23,10 +23,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    clientLogLevel: 'warning',
+    clientLogLevel: "warning",
     historyApiFallback: {
       rewrites: [
-        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
+        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, "index.html") },
       ],
     },
     hot: true,
@@ -47,23 +47,23 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env')
+      "process.env": require("../config/dev.env")
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
+      filename: "index.html",
+      template: "index.html",
       inject: true
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static'),
+        from: path.resolve(__dirname, "../static"),
         to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
+        ignore: [".*"]
       }
     ]),
     new VueLoaderPlugin()
@@ -87,8 +87,8 @@ module.exports = new Promise((resolve, reject) => {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
         onErrors: config.dev.notifyOnErrors
-        ? utils.createNotifierCallback()
-        : undefined
+          ? utils.createNotifierCallback()
+          : undefined
       }))
 
       resolve(devWebpackConfig)
