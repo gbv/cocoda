@@ -53,7 +53,6 @@
 
 <script>
 import LoadingIndicator from "./LoadingIndicator"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import _ from "lodash"
 
 /**
@@ -62,7 +61,7 @@ import _ from "lodash"
 export default {
   name: "ConceptSearch",
   components: {
-    LoadingIndicator, FontAwesomeIcon
+    LoadingIndicator
   },
   props: {
     /**

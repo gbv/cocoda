@@ -84,7 +84,6 @@ import ItemName from "./ItemName"
 import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import axios from "axios"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import _ from "lodash"
 import FlexibleTable from "./FlexibleTable"
@@ -94,7 +93,7 @@ import FlexibleTable from "./FlexibleTable"
  */
 export default {
   name: "OccurrencesBrowser",
-  components: { ItemName, AutoLink, Minimizer, FontAwesomeIcon, LoadingIndicatorFull, FlexibleTable },
+  components: { ItemName, AutoLink, Minimizer, LoadingIndicatorFull, FlexibleTable },
   data () {
     return {
       /** Current list of occurrences */

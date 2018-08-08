@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import TheSettings from "./TheSettings"
 
 /**
@@ -60,7 +59,7 @@ import TheSettings from "./TheSettings"
 export default {
   name: "TheNavbar",
   components: {
-    FontAwesomeIcon, TheSettings
+    TheSettings
   },
   data () {
     return {
