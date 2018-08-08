@@ -120,7 +120,6 @@
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import Minimizer from "./Minimizer"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import _ from "lodash"
 
 /**
@@ -128,7 +127,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, Minimizer, FontAwesomeIcon },
+  components: { ItemName, MappingTypeSelection, Minimizer },
   computed: {
     /**
      * Returns a formatted version of the mapping

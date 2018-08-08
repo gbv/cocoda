@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-
 /**
  * Adds minimizing functionality to another component.
  *
@@ -32,7 +30,6 @@ import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
  */
 export default {
   name: "Minimizer",
-  components: { FontAwesomeIcon },
   props: {
     /**
      * The text that is shown when minimized.

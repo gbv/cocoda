@@ -67,7 +67,6 @@
 <script>
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import LoadingIndicator from "./LoadingIndicator"
 import ItemDetailNarrower from "./ItemDetailNarrower"
 
@@ -77,7 +76,7 @@ import ItemDetailNarrower from "./ItemDetailNarrower"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, FontAwesomeIcon, LoadingIndicator, ItemDetailNarrower
+    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower
   },
   props: {
     /**

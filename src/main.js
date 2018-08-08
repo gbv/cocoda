@@ -28,13 +28,15 @@ Vue.prototype.$util = util
 
 // Add fontawesome
 // TODO: - Only import individual items, e.g.
-// import faSpinner from '@fortawesome/fontawesome-free-solid/faSpinner'
-// fontawesome.library.add(faSpinner)
-import fontawesome from "@fortawesome/fontawesome"
-import solid from "@fortawesome/fontawesome-free-solid"
-import brands from "@fortawesome/fontawesome-free-brands"
-fontawesome.library.add(solid)
-fontawesome.library.add(brands)
+// import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+// library.add(faSpinner)
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { fas } from "@fortawesome/free-solid-svg-icons"
+import { fab } from "@fortawesome/free-brands-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+library.add(fas)
+library.add(fab)
+Vue.component("font-awesome-icon", FontAwesomeIcon)
 
 Vue.mixin({
   methods: {

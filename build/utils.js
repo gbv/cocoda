@@ -1,11 +1,11 @@
-'use strict'
-const path = require('path')
-const config = require('../config')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const packageConfig = require('../package.json')
+"use strict"
+const path = require("path")
+const config = require("../config")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const packageConfig = require("../package.json")
 
 exports.assetsPath = function (_path) {
-  const assetsSubDirectory = process.env.NODE_ENV === 'production'
+  const assetsSubDirectory = process.env.NODE_ENV === "production"
     ? config.build.assetsSubDirectory
     : config.dev.assetsSubDirectory
 
@@ -16,14 +16,14 @@ exports.cssLoaders = function (options) {
   options = options || {}
 
   const cssLoader = {
-    loader: 'css-loader',
+    loader: "css-loader",
     options: {
       sourceMap: options.sourceMap
     }
   }
 
   const postcssLoader = {
-    loader: 'postcss-loader',
+    loader: "postcss-loader",
     options: {
       sourceMap: options.sourceMap
     }
@@ -35,7 +35,7 @@ exports.cssLoaders = function (options) {
 
     if (loader) {
       loaders.push({
-        loader: loader + '-loader',
+        loader: loader + "-loader",
         options: Object.assign({}, loaderOptions, {
           sourceMap: options.sourceMap
         })
@@ -47,10 +47,10 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: "vue-style-loader"
       })
     } else {
-      return ['vue-style-loader'].concat(loaders)
+      return ["vue-style-loader"].concat(loaders)
     }
   }
 
@@ -58,11 +58,11 @@ exports.cssLoaders = function (options) {
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    less: generateLoaders("less"),
+    sass: generateLoaders("sass", { indentedSyntax: true }),
+    scss: generateLoaders("sass"),
+    stylus: generateLoaders("stylus"),
+    styl: generateLoaders("stylus")
   }
 }
 
@@ -74,7 +74,7 @@ exports.styleLoaders = function (options) {
   for (const extension in loaders) {
     const loader = loaders[extension]
     output.push({
-      test: new RegExp('\\.' + extension + '$'),
+      test: new RegExp("\\." + extension + "$"),
       use: loader
     })
   }
@@ -83,19 +83,19 @@ exports.styleLoaders = function (options) {
 }
 
 exports.createNotifierCallback = () => {
-  const notifier = require('node-notifier')
+  const notifier = require("node-notifier")
 
   return (severity, errors) => {
-    if (severity !== 'error') return
+    if (severity !== "error") return
 
     const error = errors[0]
-    const filename = error.file && error.file.split('!').pop()
+    const filename = error.file && error.file.split("!").pop()
 
     notifier.notify({
       title: packageConfig.name,
-      message: severity + ': ' + error.name,
-      subtitle: filename || '',
-      icon: path.join(__dirname, 'logo.png')
+      message: severity + ": " + error.name,
+      subtitle: filename || "",
+      icon: path.join(__dirname, "logo.png")
     })
   }
 }

@@ -119,7 +119,6 @@
 
 <script>
 import ItemName from "./ItemName"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import FlexibleTable from "./FlexibleTable"
@@ -129,7 +128,7 @@ import FlexibleTable from "./FlexibleTable"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, FontAwesomeIcon, Minimizer, LoadingIndicatorFull, FlexibleTable },
+  components: { ItemName, Minimizer, LoadingIndicatorFull, FlexibleTable },
   data () {
     return {
       /** A separate reference to this (FIXME: Can this be removed?) */

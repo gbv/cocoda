@@ -46,7 +46,6 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import _ from "lodash"
 
 /**
@@ -55,7 +54,7 @@ import _ from "lodash"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, FontAwesomeIcon
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail
   },
   props: {
     /**

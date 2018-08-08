@@ -29,16 +29,11 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
-
 /**
  * The settings modal.
  */
 export default {
   name: "TheSettings",
-  components: {
-    FontAwesomeIcon
-  },
   methods: {
     show() {
       this.$refs.settingsModal.show()

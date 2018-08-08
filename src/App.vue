@@ -194,7 +194,6 @@ import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome"
 import ItemName from "./components/ItemName"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
@@ -205,7 +204,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, FontAwesomeIcon, ItemName, LoadingIndicatorFull
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, ItemName, LoadingIndicatorFull
   },
   data () {
     return {
