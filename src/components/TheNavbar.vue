@@ -33,6 +33,13 @@
         <font-awesome-icon :icon="['fab', 'github']" />
         GitHub
       </b-nav-item>
+      <!-- Feedback button -->
+      <b-nav-item
+        v-if="config.feedbackUrl"
+        class="feedbackButton"
+        @click="$refs.feedback.show()">
+        Feedback
+      </b-nav-item>
       <!-- Help button (links to documentation) -->
       <b-nav-item
         v-if="help"
@@ -46,6 +53,23 @@
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
+      <!-- Feedback modal -->
+      <b-modal
+        v-if="config.feedbackUrl"
+        ref="feedback"
+        centered
+        class="feedbackModal"
+        hide-footer
+        size="lg"
+        title="Feedback" >
+        <iframe
+          :src="config.feedbackUrl + '?embedded=true'"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0">
+          Loading...
+        </iframe>
+      </b-modal>
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -83,10 +107,36 @@ nav.navbar {
   background-color: @color-primary-0;
   box-shadow: 0 1px 2px 0 @color-shadow;
 }
-.navbar-dark .navbar-nav .nav-link, .btn-link, .navbar-brand {
+.navbar-dark .navbar-nav .nav-link, .btn-link {
+  color: @color--theNavbar-text;
+}
+.navbar-brand {
   color: @color--theNavbar-text !important;
+}
+.feedbackButton a.nav-link {
+  color: @color-complement-3 !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
+  color: @color--theNavbar-text;
+}
+</style>
+
+<style>
+.feedbackModal .modal-dialog {
+  height: 90%;
+}
+.feedbackModal .modal-content {
+  height: 100%;
+}
+.feedbackModal iframe {
+  overflow:hidden;
+  position:absolute;
+  height:100%;
+  width:100%;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
 }
 </style>

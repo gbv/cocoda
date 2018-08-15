@@ -160,6 +160,14 @@
                     href="https://github.com/gbv/cocoda"
                     target="_blank">GitHub</a>
                 </p>
+                <p v-if="config.feedbackUrl">
+                  <br>
+                  If you have any feedback, please use
+                  <a
+                    :href="config.feedbackUrl"
+                    target="_blank">this form</a>
+                  to submit it to us. Thank you!
+                </p>
               </div>
             </div>
           </div>
