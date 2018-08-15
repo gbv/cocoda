@@ -162,11 +162,11 @@
                 </p>
                 <p v-if="config.feedbackUrl">
                   <br>
-                  If you have any feedback, please use
                   <a
                     :href="config.feedbackUrl"
-                    target="_blank">this form</a>
-                  to submit it to us. Thank you!
+                    target="_blank">Feedback is welcome!</a>
+                  <br>
+                  Please report any questions, ideas or bugs!
                 </p>
               </div>
             </div>

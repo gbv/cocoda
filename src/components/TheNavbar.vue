@@ -19,20 +19,6 @@
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
-      <!-- Login button -->
-      <b-button
-        variant="link"
-        disabled >
-        Login
-      </b-button>
-      <!-- GitHub button -->
-      <b-nav-item
-        v-if="github"
-        :href="github"
-        target="_blank" >
-        <font-awesome-icon :icon="['fab', 'github']" />
-        GitHub
-      </b-nav-item>
       <!-- Feedback button -->
       <b-nav-item
         v-if="config.feedbackUrl"
@@ -46,6 +32,14 @@
         :href="help"
         target="_blank" >
         Help
+      </b-nav-item>
+      <!-- GitHub button -->
+      <b-nav-item
+        v-if="github"
+        :href="github"
+        target="_blank" >
+        <font-awesome-icon :icon="['fab', 'github']" />
+        GitHub
       </b-nav-item>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
