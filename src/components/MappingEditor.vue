@@ -58,14 +58,8 @@
       <div v-else >
         <div class="mappingNoConcepts">No Concepts</div>
       </div>
-      <!-- Reason why adding a concept is not possible -->
-      <div
-        v-if="!isAddButtonEnabled(isLeft)"
-        class="addButtonDisabledReason text-lightGrey fontSize-small" >
-        {{ addButtonDisabledReason(isLeft) }}
-      </div>
       <!-- Buttons (add, delete all) -->
-      <div class="mappingButtons">
+      <!-- <div class="mappingButtons">
         <div class="mappingButtonsFiller" />
         <div
           v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add selected concept' : '', delay: $util.delay.medium }"
@@ -75,13 +69,8 @@
           @click="addToMapping(isLeft)" >
           <font-awesome-icon icon="plus-circle" />
         </div>
-        <div
-          v-b-tooltip.hover="{ title: isDeleteAllButtonEnabled(isLeft) ? 'delete all concepts' : '', delay: $util.delay.medium }"
-          :class="{ button: isDeleteAllButtonEnabled(isLeft), 'button-disabled': !isDeleteAllButtonEnabled(isLeft) }"
-          class="deleteAllButton"
-          @click="deleteAll(isLeft)" ><font-awesome-icon icon="trash-alt" /></div>
         <div class="mappingButtonsFiller" />
-      </div>
+      </div> -->
     </div>
     <!-- Selecting of mapping type (in between source and target sides via flex order) -->
     <div class="mappingTypeSelection">
@@ -357,14 +346,10 @@ export default {
   flex: 1;
 }
 
-.addButton, .deleteAllButton {
+.addButton {
   flex: none;
   margin: 0 10px;
   font-size: 1.5rem;
-}
-.addButtonDisabledReason {
-  flex: 0 0 20px !important;
-  margin: 0 auto;
 }
 
 </style>
