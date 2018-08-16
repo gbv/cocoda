@@ -67,7 +67,7 @@ export default {
           // let otherScheme = null, prio, otherPrio
           if (otherScheme) {
             prio = provider.prio || 0
-            otherPrio = otherScheme.provider ? (otherScheme.provider.priority || 0) : -1
+            otherPrio = otherScheme.PROVIDER ? (otherScheme.PROVIDER.priority || 0) : -1
             override = otherPrio < prio
           }
           if (!otherScheme || override){
