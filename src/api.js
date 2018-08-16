@@ -110,7 +110,7 @@ function ancestors(scheme, uri, properties = defaultProperties, cancelToken = nu
  * @param {string} use - whether to include notations, labels, or both ("notation", "label", "notation,label")
  * @param {*} cancelToken
  */
-function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", cancelToken = null) {
+function suggest(scheme, search, limit = 0, use = "notation,label", cancelToken = null) {
   let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.suggest : null
   if (!url) {
@@ -121,7 +121,7 @@ function suggest(scheme, search, voc = "", limit = 0, use = "notation,label", ca
   return get(url, {
     params: {
       search: search,
-      voc: voc,
+      voc: scheme.uri,
       limit: limit,
       count: limit, // Some endpoints use count instead of limit
       use: use
