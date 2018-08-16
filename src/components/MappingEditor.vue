@@ -43,7 +43,7 @@
               @click.native="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false]) && setSelected('concept', isLeft, concept)" />
             <!-- Delete button for concept -->
             <div
-              class="button mappingConceptDelete fontSize-small fontWeight-heavy"
+              class="button mappingConceptDelete fontSize-large"
               @click="$store.commit({
                 type: 'mapping/remove',
                 concept,
@@ -302,13 +302,9 @@ export default {
 }
 .mappingConceptDelete {
   position: absolute;
-  right: -10px;
-  top: -5px;
-  bottom: 0;
-  margin: auto 0;
-  width: 12px;
-  height: 12px;
-  text-align: center;
+  right: -8px;
+  top: -1px;
+  text-align: right;
 }
 .mappingConceptLink:hover {
   color: @color-primary-0;

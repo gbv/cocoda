@@ -36,7 +36,7 @@
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
         v-show="$store.getters['mapping/canAdd'](concept, selected.scheme[isLeft], isLeft)"
-        class="addToMapping fontWeight-heavy"
+        class="addToMapping fontSize-large"
         @click="$store.commit({
           type: 'mapping/add',
           concept,
@@ -260,7 +260,7 @@ export default {
 .addToMapping {
   position: absolute;
   color: @color--conceptTreeItem-addToMapping;
-  top: 1px;
+  top: -3px;
   right: 5px;
   opacity: 0.7;
 }
