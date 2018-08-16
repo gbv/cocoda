@@ -19,6 +19,7 @@
     <!-- Swap sides button -->
     <div
       v-b-tooltip.hover="{ title:'swap sides', delay: $util.delay.medium }"
+      v-show="selected.scheme[true] || selected.scheme[false]"
       id="swapSides"
       @click="swapSides" >
       <font-awesome-icon icon="exchange-alt" />
