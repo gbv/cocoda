@@ -61,8 +61,9 @@
           </div>
           <!-- ConceptSearch -->
           <concept-search
-            v-show="selected.scheme[isLeft] != null"
+            v-if="selected.scheme[isLeft] != null"
             :is-left="isLeft"
+            :scheme="selected.scheme[isLeft]"
             class="conceptSearch"
           />
           <!-- ItemDetail and ConceptTree -->

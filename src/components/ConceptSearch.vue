@@ -70,6 +70,13 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
+    },
+    /**
+     * Currently selected scheme, needed to detect changes.
+     */
+    scheme: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -120,12 +127,14 @@ export default {
     /**
      * Clears the search field when scheme is changed.
      */
-    voc: function(newValue, oldValue) {
-      if (newValue != oldValue) {
+    scheme: function(newValue, oldValue) {
+      if (!this.$util.compareSchemes(oldValue, newValue)) {
         this.searchQuery = ""
         this.searchResult = []
         this.isOpen = false
+        this.isValid = false
         this.loading = false
+        this.searchSelected = -1
       }
     }
   },
