@@ -83,21 +83,12 @@
         v-if="loading == 0"
         class="mappingToolbar" >
         <div>
-          <!-- Option dropdown menu -->
-          <b-dropdown
-            :text="selectedOption.label"
-            dropup
-            no-flip
-            class="optionsDropdown" >
-            <b-dropdown-item-button
-              v-for="option in mappingOptions"
-              :key="option.id"
-              :disabled="!option.showCondition(vm)"
-              href="#"
-              @click="selectedOption = option" >
-              {{ option.label }}
-            </b-dropdown-item-button>
-          </b-dropdown>
+          <!-- Options -->
+          <b-form-checkbox
+            v-model="showAll"
+            style="user-select: none;">
+            all schemes
+          </b-form-checkbox>
         </div>
         <div />
         <!-- Number of mappings in the table -->
@@ -134,25 +125,8 @@ export default {
       /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
       loading: 0,
-      /** Available options for mapping options */
-      mappingOptions: {
-        showAll: {
-          id: "showAll",
-          label: "Show All Mappings",
-          showCondition() {
-            return true
-          }
-        },
-        showSelected: {
-          id: "showSelected",
-          label: "Show Only Mappings To Selected Scheme",
-          showCondition(vm) {
-            return vm.selected.scheme[true] != null && vm.selected.scheme[false] != null
-          }
-        }
-      },
-      /** Currently selected option */
-      selectedOption: null
+      /** Whether to show mappings from all schemes */
+      showAll: true,
     }
   },
   computed: {
@@ -192,8 +166,8 @@ export default {
               item.targetScheme = mapping.toScheme.notation[0].toUpperCase()
               item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
               item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
-              // Filter mappings depending on selected option
-              if (this.selectedOption.id == this.mappingOptions.showSelected.id) {
+              // Filter mappings depending on option
+              if (!this.showAll) {
                 // Only show if source and target schemes match with selected schemes
                 if(!this.$util.compareSchemes(mapping.fromScheme, this.selected.scheme[true]) || !this.$util.compareSchemes(mapping.toScheme, this.selected.scheme[false])) {
                   continue
@@ -293,10 +267,6 @@ export default {
         this.$store.commit("mapping/setRefresh", false)
       }
     }
-  },
-  created() {
-    // Set default selectedOption
-    this.selectedOption = this.mappingOptions.showAll
   },
   mounted() {
     this.$util.setupTableScrollSync()
@@ -444,18 +414,4 @@ export default {
   background-color: @color-primary-1;
 }
 
-// Overwriting bootstrap styles has to be done in global scope
-.optionsDropdown {
-  user-select: none;
-}
-.optionsDropdown > .btn {
-  .fontSize-small;
-  padding: 0.1rem 0.4rem;
-  margin-bottom: 2px;
-  background-color: @color-button;
-  border-color: @color-button;
-}
-.optionsDropdown > .dropdown-menu {
-  .fontSize-small;
-}
 </style>
