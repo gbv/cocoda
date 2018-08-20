@@ -1,3 +1,5 @@
+import router from "../router"
+
 /**
  * Plugin that performs operations when a concept was selected.
  */
@@ -101,4 +103,33 @@ const mappingIdentifierPlugin = store => {
   })
 }
 
-export default [selectedPlugin, mappingIdentifierPlugin]
+/**
+ * Plugin that sets URL parameters after selected scheme/concept/mapping changed.
+ */
+const routerParamPlugin = store => {
+  store.subscribe(mutation => {
+    const mutationTypes = [
+      "selected/clear",
+      "selected/set"
+    ]
+    if (mutationTypes.includes(mutation.type)) {
+      console.log("Refreshing router params")
+      // Push new route with selected schemes and concepts
+      let kinds = ["scheme", "concept"]
+      let sides = { true: "Left", false: "Right" }
+      let query = {}
+      for (let kind of kinds) {
+        for (let isLeft of [true, false]) {
+          let key = kind + sides[isLeft]
+          let object = store.state.selected[kind][isLeft]
+          if (object && object.uri) {
+            query[key] = object.uri
+          }
+        }
+      }
+      router.push({ query })
+    }
+  })
+}
+
+export default [selectedPlugin, mappingIdentifierPlugin, routerParamPlugin]
