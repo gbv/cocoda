@@ -260,7 +260,7 @@ export default {
 .addToMapping {
   position: absolute;
   color: @color--conceptTreeItem-addToMapping;
-  top: -3px;
+  top: -1px;
   right: 5px;
   opacity: 0.7;
 }
