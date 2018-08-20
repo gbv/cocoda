@@ -89,8 +89,13 @@
             style="user-select: none;">
             all schemes
           </b-form-checkbox>
+          <b-form-checkbox
+            v-model="showOnlyLocal"
+            style="user-select: none;">
+            only local mappings
+          </b-form-checkbox>
         </div>
-        <div />
+        <div style="flex: 1" />
         <!-- Number of mappings in the table -->
         <div style="text-align: right;">
           {{ items.length }} mappings
@@ -127,6 +132,8 @@ export default {
       loading: 0,
       /** Whether to show mappings from all schemes */
       showAll: true,
+      /** Whether to show only local mappings or all mappings */
+      showOnlyLocal: false,
     }
   },
   computed: {
@@ -170,6 +177,12 @@ export default {
               if (!this.showAll) {
                 // Only show if source and target schemes match with selected schemes
                 if(!this.$util.compareSchemes(mapping.fromScheme, this.selected.scheme[true]) || !this.$util.compareSchemes(mapping.toScheme, this.selected.scheme[false])) {
+                  continue
+                }
+              }
+              if (this.showOnlyLocal) {
+                // Hide non-local mappings
+                if (!mapping.LOCAL) {
                   continue
                 }
               }
@@ -398,8 +411,7 @@ export default {
   display: flex;
 }
 .mappingToolbar > div {
-  width: 0;
-  flex: 1;
+  flex: none;
 }
 .mappingBrowser-toolbar-button {
   font-size: 12px;
