@@ -1,19 +1,23 @@
 <template>
   <div>
     <div
-      v-b-tooltip.hover="{ title: minimized ? 'maximize component' : 'minimize component', delay: $util.delay.medium }"
-      :class="minimized ? 'maximizeButton' : 'minimizeButton'"
-      class="utilityButton"
+      v-b-tooltip.hover="{ title: 'minimize component', delay: $util.delay.medium }"
+      v-show="!minimized"
+      class="utilityButton minimizeButton"
       @click="toggleMinimize" >
-      <font-awesome-icon
-        :icon="minimized ? 'window-maximize' : 'window-minimize'" />
+      <font-awesome-icon icon="window-minimize" />
     </div>
     <div
       v-show="minimized"
-      class="minimizedOverlay fontWeight-heavy fontSize-normal"
+      class="minimizedOverlay text-lightGrey fontSize-normal"
       @click="toggleMinimize" >
       <div>
         {{ text }}
+        <div
+          v-b-tooltip.hover="{ title: 'maximize component', delay: $util.delay.medium }"
+          class="utilityButton maximizeButton" >
+          <font-awesome-icon icon="window-maximize" />
+        </div>
       </div>
     </div>
   </div>
@@ -96,7 +100,7 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.minimizeButton, .maximizeButton {
+.minimizeButton {
   right: 0px;
   top: 0px;
 }
@@ -104,9 +108,11 @@ export default {
   padding-left: 6px;
 }
 .maximizeButton {
-  padding-left: 6px;
   padding-top: 3px;
+  margin-left: 10px;
   z-index: @zIndex-6;
+  display: inline-block;
+  position: static;
 }
 .minimizedOverlay {
   cursor: pointer;
