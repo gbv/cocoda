@@ -45,9 +45,6 @@ const getters = {
    * @param {bool} isLeft - side of the mapping
    */
   canAdd: (state) => (concept, scheme, isLeft) => {
-    if(!getters.checkScheme(state)(scheme, isLeft)) {
-      return false
-    }
     if(concept == null) {
       return false
     }
@@ -117,20 +114,16 @@ const mutations = {
   add(state, { concept, scheme, isLeft }) {
     scheme = scheme || concept.inScheme && concept.inScheme[0]
     if (!scheme) return
-    if (getters.checkScheme(state)(scheme, isLeft)) {
-      state.mapping[helpers.fromToScheme(isLeft)] = scheme
-    } else {
-      return
-    }
     if (getters.added(state)(concept, isLeft)) {
       return
     }
     let fromTo = helpers.fromTo(isLeft)
-    if (fromTo == "from" && state.mapping.from.memberSet.length != 0) {
-      state.mapping.from.memberSet = [concept]
+    if ((fromTo == "from" && state.mapping.from.memberSet.length != 0) || !getters.checkScheme(state)(scheme, isLeft)) {
+      state.mapping[fromTo].memberSet = [concept]
     } else {
       state.mapping[fromTo].memberSet.push(concept)
     }
+    state.mapping[helpers.fromToScheme(isLeft)] = scheme
   },
 
   /**
