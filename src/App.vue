@@ -346,9 +346,13 @@ export default {
       let setSelectedPromise = (kind, isLeft, scheme, conceptUri) => {
         let object
         if (kind == "concept") {
-          object = {
-            uri: conceptUri,
-            inScheme: [scheme]
+          if (scheme && conceptUri) {
+            object = {
+              uri: conceptUri,
+              inScheme: [scheme]
+            }
+          } else {
+            object = null
           }
         } else {
           object = scheme
@@ -358,26 +362,21 @@ export default {
       }
       for (let isLeft of [true, false]) {
         let schemeUri = selected.scheme[isLeft]
-        if (schemeUri) {
-          // Select scheme
-          let scheme = this.$store.getters["objects/get"]({ uri: schemeUri })
-          if (!scheme) {
-            this.alert("Scheme from URL could not be found.", null, "danger")
-          } else {
-            promises.push(
-              setSelectedPromise("scheme", isLeft, scheme).then(() => {
-                // Introduce a short delay to make sure everything's loaded properly.
-                return new Promise(resolve => setTimeout(() => resolve(), 200))
-              }).then(() => {
-                let conceptUri = selected.concept[isLeft]
-                if (conceptUri) {
-                  // Select concept
-                  return setSelectedPromise("concept", isLeft, scheme, conceptUri)
-                }
-              })
-            )
-          }
+        // Select scheme
+        let scheme = schemeUri && this.$store.getters["objects/get"]({ uri: schemeUri })
+        if (schemeUri && !scheme) {
+          this.alert("Scheme from URL could not be found.", null, "danger")
         }
+        promises.push(
+          setSelectedPromise("scheme", isLeft, scheme).then(() => {
+            // Introduce a short delay to make sure everything's loaded properly.
+            return new Promise(resolve => setTimeout(() => resolve(), 200))
+          }).then(() => {
+            let conceptUri = selected.concept[isLeft]
+            // Select concept
+            return setSelectedPromise("concept", isLeft, scheme, conceptUri)
+          })
+        )
       }
       // Prepare application by selecting mapping from URL parameters.
       if (query["mapping.type"]) {
