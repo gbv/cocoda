@@ -8,6 +8,7 @@ const selectedPlugin = store => {
     // Check for selecting a concept
     if (mutation.type == "selected/set") {
       let isLeft = mutation.payload.isLeft
+      let noQueryRefresh = mutation.payload.noQueryRefresh
       if (mutation.payload.kind == "concept") {
         let concept = mutation.payload.value
         if (!concept) {
@@ -28,7 +29,8 @@ const selectedPlugin = store => {
             type: "selected/set",
             kind: "scheme",
             isLeft: isLeft,
-            value: schemeInStore
+            value: schemeInStore,
+            noQueryRefresh
           })
         }
 
@@ -45,7 +47,8 @@ const selectedPlugin = store => {
                 type: "selected/set",
                 kind: "concept",
                 isLeft: isLeft,
-                value: concept
+                value: concept,
+                noQueryRefresh
               })
             })
           } else {
@@ -53,7 +56,8 @@ const selectedPlugin = store => {
               type: "selected/set",
               kind: "concept",
               isLeft: isLeft,
-              value: conceptInStore
+              value: conceptInStore,
+              noQueryRefresh
             })
           }
         } else {
@@ -119,6 +123,9 @@ const routerParamPlugin = store => {
       "mapping/switch",
     ]
     if (mutationTypes.includes(mutation.type)) {
+      if (mutation.payload.noQueryRefresh) {
+        return
+      }
       // Add selected schemes and concepts
       let kinds = ["scheme", "concept"]
       let sides = { true: "Left", false: "Right" }

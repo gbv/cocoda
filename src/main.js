@@ -59,19 +59,21 @@ Vue.mixin({
     }
   },
   methods: {
-    setSelected(kind, isLeft, value) {
+    setSelected(kind, isLeft, value, noQueryRefresh = false) {
       if (value) {
         this.$store.commit({
           type: "selected/set",
           kind,
           isLeft,
-          value
+          value,
+          noQueryRefresh
         })
       } else {
         this.$store.commit({
           type: "selected/clear",
           kind,
-          isLeft
+          isLeft,
+          noQueryRefresh
         })
       }
     }

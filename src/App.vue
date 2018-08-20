@@ -263,6 +263,72 @@ export default {
   },
   watch: {
     schemes() {
+      this.loadFromParameters()
+    }
+  },
+  created() {
+    // Set loading to true if schemes are not loaded yet.
+    if (!this.schemes.length) {
+      this.loading = true
+    }
+    window.addEventListener("popstate", () => {
+      this.loadFromParameters()
+    })
+  },
+  methods: {
+    refresh(key) {
+      if (key == "minimize") {
+        // Minimizer causes a refresh, therefore recheck item detail settings
+        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft() != null && this.conceptTreeLeft().$el.dataset.minimized == "1"
+        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight() != null && this.conceptTreeRight().$el.dataset.minimized == "1"
+      }
+    },
+    /**
+     * Completely clears the concept scheme browser on one side
+     */
+    clear(isLeft) {
+      if (isLeft) {
+        this.setSelected("scheme", true, null)
+      } else {
+        this.setSelected("scheme", false, null)
+      }
+    },
+    // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
+    conceptTreeLeft() {
+      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
+    },
+    conceptTreeRight() {
+      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
+    },
+    swapSides() {
+      let newSelected = {
+        scheme: {
+          true: this.selected.scheme[false],
+          false: this.selected.scheme[true]
+        },
+        concept: {
+          true: this.selected.concept[false],
+          false: this.selected.concept[true]
+        }
+      }
+      _.forOwn(newSelected, (value, kind) => {
+        _.forOwn(value, (value, isLeft) => {
+          let delay = 0
+          // Delay selection of concept
+          if (kind == "concept") {
+            delay = 200
+          }
+          _.delay(() => {
+            this.setSelected(kind, isLeft, value)
+          }, delay)
+        })
+      })
+      // Switch sides for mapping
+      this.$store.commit("mapping/switch")
+    },
+    loadFromParameters() {
+      this.loading = true
+
       // Check route to see if navigation is necessary
       let query = this.$route.query
       // Prepare application by selecting schemes and concepts from URL parameters.
@@ -287,7 +353,7 @@ export default {
         } else {
           object = scheme
         }
-        this.setSelected(kind, isLeft, object)
+        this.setSelected(kind, isLeft, object, true)
         return Promise.resolve()
       }
       for (let isLeft of [true, false]) {
@@ -351,7 +417,8 @@ export default {
           return Promise.all(promises).then(() => {
             this.$store.commit({
               type: "mapping/set",
-              mapping
+              mapping,
+              noQueryRefresh: true
             })
           })
         })())
@@ -368,64 +435,6 @@ export default {
         this.loading = false
       }
     }
-  },
-  created() {
-    // Set loading to true if schemes are not loaded yet.
-    if (!this.schemes.length) {
-      this.loading = true
-    }
-  },
-  methods: {
-    refresh(key) {
-      if (key == "minimize") {
-        // Minimizer causes a refresh, therefore recheck item detail settings
-        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft() != null && this.conceptTreeLeft().$el.dataset.minimized == "1"
-        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight() != null && this.conceptTreeRight().$el.dataset.minimized == "1"
-      }
-    },
-    /**
-     * Completely clears the concept scheme browser on one side
-     */
-    clear(isLeft) {
-      if (isLeft) {
-        this.setSelected("scheme", true, null)
-      } else {
-        this.setSelected("scheme", false, null)
-      }
-    },
-    // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
-    conceptTreeLeft() {
-      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
-    },
-    conceptTreeRight() {
-      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
-    },
-    swapSides() {
-      let newSelected = {
-        scheme: {
-          true: this.selected.scheme[false],
-          false: this.selected.scheme[true]
-        },
-        concept: {
-          true: this.selected.concept[false],
-          false: this.selected.concept[true]
-        }
-      }
-      _.forOwn(newSelected, (value, kind) => {
-        _.forOwn(value, (value, isLeft) => {
-          let delay = 0
-          // Delay selection of concept
-          if (kind == "concept") {
-            delay = 200
-          }
-          _.delay(() => {
-            this.setSelected(kind, isLeft, value)
-          }, delay)
-        })
-      })
-      // Switch sides for mapping
-      this.$store.commit("mapping/switch")
-    },
   },
 }
 </script>
