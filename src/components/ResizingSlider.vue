@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      resizing: false
+      resizing: false,
+      savedValues: {}
     }
   },
   methods: {
@@ -78,6 +79,11 @@ export default {
         previousMinHeight = parseInt(previousStyle.getPropertyValue("min-height")),
         nextMinHeight = parseInt(nextStyle.getPropertyValue("min-height"))
 
+      this.savedValues.previousWidth = previousWidth
+      this.savedValues.nextWidth = nextWidth
+      this.savedValues.previousHeight = previousHeight
+      this.savedValues.nextHeight = nextHeight
+
       let vm = this
       // Prepare end of resizing
       function endResizing() {
@@ -111,6 +117,22 @@ export default {
           let newPreviousHeight = previousHeight + moved
           let newNextHeight = nextHeight - moved
           if (newPreviousHeight < previousMinHeight || newNextHeight < nextMinHeight) {
+            // Minimize previous/next component when resize is committed all the way.
+            if (newPreviousHeight <= 10 || newNextHeight <= 10) {
+              // Get minimizer component
+              let element = newPreviousHeight <= 10 ? previous : next
+              let minimizerElement = element.getElementsByClassName("minimizer")[0]
+              let minimizerComponent = minimizerElement.__vue__
+              if (minimizerComponent) {
+                // Restore saved values
+                previous.style.flex = vm.savedValues.previousHeight / totalHeight * totalFlex
+                next.style.flex = vm.savedValues.nextHeight / totalHeight * totalFlex
+                // Minimize
+                minimizerComponent.toggleMinimize()
+                // End resizing
+                endResizing()
+              }
+            }
             return
           }
           previous.style.flex = newPreviousHeight / totalHeight * totalFlex

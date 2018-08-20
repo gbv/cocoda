@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="minimizer">
     <div
       v-b-tooltip.hover="{ title: 'minimize component', delay: $util.delay.medium }"
       v-show="!minimized"
