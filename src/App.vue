@@ -313,6 +313,50 @@ export default {
           }
         }
       }
+      // Prepare application by selecting mapping from URL parameters.
+      if (query["mapping.type"]) {
+        let mapping = {
+          from: { "memberSet": [] },
+          to: { "memberSet": [] },
+          fromScheme: null,
+          toScheme: null,
+          type: [query["mapping.type"]] // TODO: Support multiples.
+        }
+        let directions = ["from", "to"]
+        promises.push((() => {
+          let promises = []
+          for (let direction of directions) {
+            // Set scheme
+            let scheme
+            if (query[`mapping.${direction}Scheme`]) {
+              scheme = this.$store.getters["objects/get"]({ uri: query[`mapping.${direction}Scheme`] })
+              mapping[`${direction}Scheme`] = scheme
+            }
+            // Set concepts
+            if (query[`mapping.${direction}`]) {
+              // Load mapping concepts
+              // TODO: Support multiples.
+              // TODO: Support mapping relations.
+              promises.push(this.$store.dispatch({
+                type: "objects/load",
+                object: { uri: query[`mapping.${direction}`] },
+                scheme: scheme
+              }).then(object => {
+                if (object) {
+                  mapping[direction].memberSet = [object]
+                }
+              }))
+            }
+          }
+          return Promise.all(promises).then(() => {
+            this.$store.commit({
+              type: "mapping/set",
+              mapping
+            })
+          })
+        })())
+      }
+
       if (promises.length) {
         Promise.all(promises).then(() => {
           this.loading = false

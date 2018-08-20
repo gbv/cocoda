@@ -119,7 +119,6 @@ const routerParamPlugin = store => {
       "mapping/switch",
     ]
     if (mutationTypes.includes(mutation.type)) {
-      console.log("Refreshing router params")
       // Add selected schemes and concepts
       let kinds = ["scheme", "concept"]
       let sides = { true: "Left", false: "Right" }
