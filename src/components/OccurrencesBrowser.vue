@@ -65,9 +65,7 @@
       </span>
       <span
         slot="HEAD_actions"
-        slot-scope="data">
-        <font-awesome-icon icon="toolbox" />
-      </span>
+        slot-scope="data" />
     </flexible-table>
     <div
       v-show="!loading && items.length == 0"
