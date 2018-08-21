@@ -303,6 +303,23 @@ function saveMapping(mapping) {
     })
     // Add mapping
     mappings.push(mapping)
+    // FIXME: This fixes old invalid mappings in local storage and should be removed later.
+    for (let mapping of mappings) {
+      if (mapping.creator) {
+        let creators = []
+        for (let creator of mapping.creator) {
+          if (typeof creator === "object") {
+            creators.push(creator)
+          } else {
+            creators.push({ prefLabel: { de: creator } })
+            console.log("Fixed mapping in local storage.")
+          }
+        }
+        if (creators.length) {
+          mapping.creator = creators
+        }
+      }
+    }
     return localforage.setItem("mappings", mappings)
   })
 }

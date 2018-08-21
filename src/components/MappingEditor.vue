@@ -135,7 +135,8 @@ export default {
     saveMapping() {
       let mapping = this.prepareMapping()
       if (!mapping.creator || mapping.creator.length == 0) {
-        mapping.creator = ["You"]
+        // TODO: - Get creator from settings
+        mapping.creator = [{ prefLabel: { de: "You" } }]
       }
       this.$api.saveMapping(mapping).then(() => {
         this.alert("Mapping was saved.", null, "success")
