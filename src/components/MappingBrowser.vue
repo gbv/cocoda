@@ -205,6 +205,9 @@ export default {
                 item._rowClass = "mappingBrowser-table-row-match"
               }
               item.creator = mapping.creator && mapping.creator[0] || "?"
+              if (typeof item.creator === "object") {
+                item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
+              }
               item.type = this.$util.mappingTypeByType(mapping.type)
               items.push(item)
               hashList.push(hash)
