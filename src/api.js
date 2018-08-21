@@ -51,6 +51,19 @@ function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
       properties: properties
     },
     cancelToken: cancelToken
+  }).then(results => {
+    for (let result of results) {
+      if (jskos.isConcept(result)) {
+        if (!jskos.validate.concept(result)) {
+          console.warn("API: Invalid JSKOS for concept", result)
+        }
+      } else {
+        if (!jskos.validate.scheme(result)) {
+          console.warn("API: Invalid JSKOS for scheme", result)
+        }
+      }
+    }
+    return results
   })
 }
 
@@ -75,6 +88,13 @@ function narrower(scheme, uri, properties = defaultProperties, cancelToken = nul
       limit: 10000
     },
     cancelToken: cancelToken
+  }).then(results => {
+    for (let result of results) {
+      if (!jskos.validate.concept(result)) {
+        console.warn("API: Invalid JSKOS for concept", result)
+      }
+    }
+    return results
   })
 }
 
@@ -98,6 +118,13 @@ function ancestors(scheme, uri, properties = defaultProperties, cancelToken = nu
       properties: properties
     },
     cancelToken: cancelToken
+  }).then(results => {
+    for (let result of results) {
+      if (!jskos.validate.concept(result)) {
+        console.warn("API: Invalid JSKOS for concept", result)
+      }
+    }
+    return results
   })
 }
 
@@ -152,6 +179,13 @@ function top(scheme, properties = defaultProperties, cancelToken = null) {
       limit: 10000
     },
     cancelToken: cancelToken
+  }).then(results => {
+    for (let result of results) {
+      if (!jskos.validate.concept(result)) {
+        console.warn("API: Invalid JSKOS for concept", result)
+      }
+    }
+    return results
   })
 }
 
@@ -207,6 +241,13 @@ function getMappings(params) {
         // Add JSKOS mapping identifiers
         mapping = jskos.addMappingIdentifiers(mapping)
         mappings.push(mapping)
+      }
+    }
+    return mappings
+  }).then(mappings => {
+    for (let mapping of mappings) {
+      if (!jskos.validate.mapping(mapping)) {
+        console.warn("API: Invalid JSKOS for mapping", mapping)
       }
     }
     return mappings
