@@ -6,6 +6,7 @@ const defaultSettings = {
   mappingBrowserOnlyLocal: false,
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
+  minimized: {},
 }
 
 // initial state

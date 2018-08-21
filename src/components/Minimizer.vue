@@ -4,13 +4,13 @@
       v-b-tooltip.hover="{ title: 'minimize component', delay: $util.delay.medium }"
       v-show="!minimized"
       class="utilityButton minimizeButton"
-      @click="toggleMinimize" >
+      @click="toggleMinimize()" >
       <font-awesome-icon icon="window-minimize" />
     </div>
     <div
       v-show="minimized"
       class="minimizedOverlay text-lightGrey fontSize-normal"
-      @click="toggleMinimize" >
+      @click="toggleMinimize()" >
       <div>
         {{ text }}
         <div
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import _ from "lodash"
+
 /**
  * Adds minimizing functionality to another component.
  *
@@ -45,16 +47,47 @@ export default {
   },
   data() {
     return {
-      minimized: false,
       previousFlex: "",
-      previousMinHeights: []
+      previousMinHeights: [],
+      minimizerHeight: "40px",
     }
   },
+  computed: {
+    parentComponentName() {
+      return this.$parent.$options.name + (this.$parent.isLeft != null ? "_" + this.$parent.isLeft : "")
+    },
+    minimized: {
+      get() {
+        return this.$settings.minimized[this.parentComponentName] || false
+      },
+      set(newValue) {
+        let minimized = _.cloneDeep(this.$settings.minimized)
+        minimized[this.parentComponentName] = newValue
+        this.$store.commit({
+          type: "settings/set",
+          prop: "minimized",
+          value: minimized
+        })
+      }
+    }
+  },
+  watch: {
+    minimized() {
+      this.refreshMinimize()
+    }
+  },
+  mounted() {
+    this.refreshMinimize()
+  },
   methods: {
-    toggleMinimize() {
-      let minimizerHeight = "40px"
-
-      this.minimized = !this.minimized
+    toggleMinimize(minimized = null) {
+      if (minimized != null) {
+        this.minimized = minimized
+      } else {
+        this.minimized = !this.minimized
+      }
+    },
+    refreshMinimize() {
       if (this.minimized) {
         this.previousMinHeights = []
       }
@@ -70,14 +103,14 @@ export default {
             element: current,
             minHeight: minHeight
           })
-          current.style.minHeight = minimizerHeight
-          current.style.maxHeight = minimizerHeight
+          current.style.minHeight = this.minimizerHeight
+          current.style.maxHeight = this.minimizerHeight
         }
       }
       let computedStyle = window.getComputedStyle(current)
       if (this.minimized) {
         this.previousFlex = computedStyle.getPropertyValue("flex")
-        current.style.flex = "0 1 " + minimizerHeight
+        current.style.flex = "0 1 " + this.minimizerHeight
         // Set data-minimized property to 1 so that it can be identified as minimized
         current.dataset.minimized = 1
         this.refresh("minimize")
