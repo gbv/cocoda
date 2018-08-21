@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import _ from "lodash"
 
 /**
  * Resizing slider.
@@ -32,8 +33,22 @@ export default {
       savedValues: {}
     }
   },
+  computed: {
+    flex() {
+      return this.$settings.flex || {}
+    }
+  },
+  watch: {
+    flex() {
+      this.refreshFlex()
+    }
+  },
+  mounted() {
+    // Set flex values on first mount
+    this.refreshFlex()
+  },
   methods: {
-    startResizing(event) {
+    getSiblings() {
       // Define all necessary values
       let slider = this.$el,
         parent = slider.parentElement,
@@ -60,6 +75,10 @@ export default {
       while(next && (next.dataset.minimized == 1 || next.classList.contains("resizeSliderRow") || next.classList.contains("resizeSliderColumn"))) {
         next = next.nextElementSibling
       }
+      return [previous, next]
+    },
+    startResizing(event) {
+      let [previous, next] = this.getSiblings()
       // If either previous or next is null, abort (e.g. when all other components are minimized)
       if (previous == null || next == null) {
         return
@@ -112,7 +131,9 @@ export default {
             return
           }
           previous.style.flex = newPreviousWidth / totalWidth * totalFlex
+          vm.saveFlex(previous)
           next.style.flex = newNextWidth / totalWidth * totalFlex
+          vm.saveFlex(next)
         } else {
           let newPreviousHeight = previousHeight + moved
           let newNextHeight = nextHeight - moved
@@ -126,7 +147,9 @@ export default {
               if (minimizerComponent) {
                 // Restore saved values
                 previous.style.flex = vm.savedValues.previousHeight / totalHeight * totalFlex
+                vm.saveFlex(previous)
                 next.style.flex = vm.savedValues.nextHeight / totalHeight * totalFlex
+                vm.saveFlex(next)
                 // Minimize
                 minimizerComponent.toggleMinimize()
                 // End resizing
@@ -136,12 +159,36 @@ export default {
             return
           }
           previous.style.flex = newPreviousHeight / totalHeight * totalFlex
+          vm.saveFlex(previous)
           next.style.flex = newNextHeight / totalHeight * totalFlex
+          vm.saveFlex(next)
         }
       }
       document.addEventListener("mousemove", onMouseMove)
       document.onmouseup = endResizing
-    }
+    },
+    saveFlex(element) {
+      if (element && element.id && element.style) {
+        let flex = _.cloneDeep(this.$settings.flex)
+        flex[element.id] = element.style.flex
+        this.$store.commit({
+          type: "settings/set",
+          prop: "flex",
+          value: flex
+        })
+      }
+    },
+    refreshFlex() {
+      let siblings = this.getSiblings()
+      for (let sibling of siblings) {
+        if (!sibling || !sibling.id) {
+          continue
+        }
+        if (this.flex[sibling.id] != null) {
+          sibling.style.flex = this.flex[sibling.id]
+        }
+      }
+    },
   }
 }
 </script>

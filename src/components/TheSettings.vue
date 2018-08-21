@@ -29,6 +29,13 @@
         Do not truncate notes in concept details.
       </b-form-checkbox>
     </p>
+    <p>
+      <b-button
+        variant="primary"
+        @click="resetFlex">
+        Reset component sizes
+      </b-button>
+    </p>
     <br>
     <p>
       For issues and suggestions, please use the
@@ -99,6 +106,17 @@ export default {
       }).then(() => {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", true)
+      })
+    },
+    resetFlex() {
+      let flex = _.cloneDeep(this.localSettings.flex)
+      _.forOwn(flex, (value, key) => {
+        flex[key] = ""
+      })
+      this.$store.commit({
+        type: "settings/set",
+        prop: "flex",
+        value: flex
       })
     },
   }

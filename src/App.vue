@@ -38,6 +38,7 @@
             order1: isLeft,
             order5: !isLeft
           }"
+          :id="'browserComponent_' + isLeft"
           class="browser" >
           <!-- Concept scheme selection -->
           <div class="schemeSelectWrapper">
@@ -75,6 +76,7 @@
               :item="selected.concept[isLeft] || selected.scheme[isLeft]"
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
+              :id="'itemDetailComponent_' + isLeft"
               class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
             />
             <!-- Slider -->
@@ -84,11 +86,13 @@
               v-show="selected.scheme[isLeft] != null"
               :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
               :is-left="isLeft"
+              :id="'conceptTreeComponent_' + isLeft"
               class="mainComponent conceptBrowserItem conceptBrowserItemTree"
             />
             <!-- Placeholder -->
             <div
               v-show="selected.scheme[isLeft] == null"
+              :id="'placeholderComponent' + isLeft"
               class="mainComponent conceptBrowserItem placeholderComponent" >
               <p class="fontWeight-heavy">
                 Scheme quick selection
@@ -129,8 +133,12 @@
           class="order2" />
 
         <!-- Mapping tools and occurrences browser -->
-        <div class="mappingTool order3">
-          <div class="mappingToolItem mainComponent">
+        <div
+          id="mappingTool"
+          class="mappingTool order3">
+          <div
+            id="mappingEditorComponent"
+            class="mappingToolItem mainComponent">
             <!-- MappingEditor -->
             <mapping-editor
               v-if="selected.scheme[true] || selected.scheme[false]"
@@ -140,7 +148,9 @@
           </div>
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
-          <div class="mappingToolItem mainComponent">
+          <div
+            id="mappingBrowserComponent"
+            class="mappingToolItem mainComponent">
             <!-- MappingBrowser -->
             <mapping-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
@@ -175,7 +185,9 @@
           </div>
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
-          <div class="mappingToolItem mainComponent">
+          <div
+            id="occurrencesBrowserComponent"
+            class="mappingToolItem mainComponent">
             <!-- OccurrencesBrowser -->
             <occurrences-browser
               v-if="selected.scheme[true] || selected.scheme[false]"

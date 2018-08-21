@@ -7,6 +7,7 @@ const defaultSettings = {
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
   minimized: {},
+  flex: {},
 }
 
 // initial state
