@@ -117,11 +117,10 @@ export default {
     },
     internalSettings() {
       // Merge prop settings and default settings
-      let settings = {}
-      for (let setting of Object.keys(this.defaultSettings)) {
-        settings[setting] = this.settings[setting] || this.defaultSettings[setting]
-      }
-      return settings
+      return Object.assign({}, this.defaultSettings, {
+        showAllAncestors: this.$settings.conceptDetailShowAllAncestors,
+        showAllNotes: this.$settings.conceptDetailDoNotTruncateNotes,
+      },this.settings)
     }
   },
   watch: {

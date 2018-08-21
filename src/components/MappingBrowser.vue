@@ -130,10 +130,6 @@ export default {
       /** A separate reference to this (FIXME: Can this be removed?) */
       vm: this,
       loading: 0,
-      /** Whether to show mappings from all schemes */
-      showAll: true,
-      /** Whether to show only local mappings or all mappings */
-      showOnlyLocal: false,
     }
   },
   computed: {
@@ -274,7 +270,31 @@ export default {
     },
     needsRefresh() {
       return this.$store.state.mapping.mappingsNeedRefresh
-    }
+    },
+    showAll: {
+      get() {
+        return this.$settings.mappingBrowserAllSchemes
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserAllSchemes",
+          value
+        })
+      }
+    },
+    showOnlyLocal: {
+      get() {
+        return this.$settings.mappingBrowserOnlyLocal
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserOnlyLocal",
+          value
+        })
+      }
+    },
   },
   watch: {
     needsRefresh(refresh) {
