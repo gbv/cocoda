@@ -21,23 +21,6 @@
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
-    <!-- Previos and next buttons -->
-    <div
-      v-b-tooltip.hover="{ title: prevConcepts.length > 0 ? 'previous concept' : '', delay: $util.delay.medium }"
-      class="utilityButton itemDetail-prevButton"
-      @click="choosePrevious" >
-      <font-awesome-icon
-        v-if="prevConcepts.length > 0"
-        icon="chevron-left" />
-    </div>
-    <div
-      v-b-tooltip.hover="{ title: nextConcepts.length > 0 ? 'next concept' : '', delay: $util.delay.medium }"
-      class="utilityButton itemDetail-nextButton"
-      @click="chooseNext" >
-      <font-awesome-icon
-        v-if="nextConcepts.length > 0"
-        icon="chevron-right" />
-    </div>
   </div>
 </template>
 
@@ -46,7 +29,6 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
-import _ from "lodash"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -102,9 +84,6 @@ export default {
         showAllAncestors: false,
         showAllNotes: false
       },
-      /** History of selected items */
-      prevConcepts: [],
-      nextConcepts: []
     }
   },
   computed: {
@@ -127,24 +106,9 @@ export default {
     /**
      * Refreshes data when item changes.
      */
-    item: function(newItem, oldItem) {
+    item: function() {
       this.$el.scrollTop = 0
       this.loadDetails()
-      if (!this.$jskos.compare(newItem, oldItem)) {
-        if (this.prevConcepts.length > 0 && this.$jskos.compare(newItem, _.last(this.prevConcepts))) {
-          // new item came from prevConcepts
-          this.nextConcepts.unshift(oldItem)
-          this.prevConcepts.pop()
-        } else if (this.nextConcepts.length > 0 && this.$jskos.compare(newItem, _.first(this.nextConcepts))) {
-          // new item came from nextConcepts
-          if (oldItem) this.prevConcepts.push(oldItem)
-          this.nextConcepts.shift()
-        } else {
-          // new item came from elsewhere
-          if (oldItem) this.prevConcepts.push(oldItem)
-          this.nextConcepts = []
-        }
-      }
     }
   },
   created() {
@@ -201,20 +165,6 @@ export default {
         }
       })
     },
-    choosePrevious() {
-      if (this.prevConcepts.length) {
-        let object = _.last(this.prevConcepts)
-        object = this.$jskos.isScheme(object) ? null : object
-        this.setSelected("concept", this.isLeft, object)
-      }
-    },
-    chooseNext() {
-      if (this.nextConcepts.length) {
-        let object = _.first(this.nextConcepts)
-        object = this.$jskos.isScheme(object) ? null : object
-        this.setSelected("concept", this.isLeft, object)
-      }
-    }
   }
 }
 </script>
@@ -235,18 +185,6 @@ export default {
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;
-}
-.itemDetail-prevButton, .itemDetail-nextButton {
-  top: 0px;
-  font-size: 16px;
-  padding-top: 1px;
-  padding-left: 7px;
-}
-.itemDetail-prevButton {
-  right: 50px;
-}
-.itemDetail-nextButton {
-  right: 25px;
 }
 
 </style>
