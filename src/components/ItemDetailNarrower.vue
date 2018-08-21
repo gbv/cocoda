@@ -44,7 +44,7 @@ export default {
      */
     narrower: {
       type: Array,
-      default: new Array([])
+      default: () => new Array([])
     },
     /**
      * The text to be displayed on the top.
