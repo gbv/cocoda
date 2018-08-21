@@ -2,7 +2,9 @@
   <div
     v-if="narrower && narrower.length > 0"
     class="itemDetailNarrower" >
-    <div class="fontWeight-heavy">
+    <div
+      v-if="text != null"
+      class="fontWeight-heavy">
       {{ text }}
     </div>
     <div
@@ -51,7 +53,7 @@ export default {
      */
     text: {
       type: String,
-      default: "Narrower Concepts:"
+      default: null
     },
     /**
      * Tells the component on which side of the application it is.
