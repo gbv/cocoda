@@ -215,7 +215,7 @@ export default {
         cutPosition(notesString) {
           let re = new RegExp(this.divider, "g")
           let maximumCharacters = this.maximumCharacters - Math.min((notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length, 9) * 10
-          if (notesString.length - maximumCharacters <= 20) {
+          if (this.showAll || notesString.length - maximumCharacters <= 20) {
             return notesString.length
           }
           // Go back from position maximumCharacters and find next space, newLine, or divider
