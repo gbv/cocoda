@@ -320,8 +320,12 @@ function saveMapping(mapping) {
         }
       }
     }
-    return localforage.setItem("mappings", mappings)
+    return saveMappings(mappings)
   })
+}
+
+function saveMappings(mappings) {
+  return localforage.setItem("mappings", mappings)
 }
 
 function removeMapping(mapping) {
@@ -341,4 +345,4 @@ function removeMapping(mapping) {
   })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings, saveMapping, removeMapping }
+export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings, getLocalMappings, saveMapping, saveMappings, removeMapping }
