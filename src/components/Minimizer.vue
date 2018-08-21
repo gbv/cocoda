@@ -143,14 +143,14 @@ export default {
 .maximizeButton {
   padding-top: 3px;
   margin-left: 10px;
-  z-index: @zIndex-6;
+  z-index: @zIndex-9;
   display: inline-block;
   position: static;
 }
 .minimizedOverlay {
   cursor: pointer;
   position: absolute;
-  z-index: @zIndex-5;
+  z-index: @zIndex-9;
   top: 0;
   right: 0;
   bottom: 0;
