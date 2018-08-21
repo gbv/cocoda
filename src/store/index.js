@@ -4,6 +4,7 @@ import selected from "./modules/selected"
 import objects from "./modules/objects"
 import mapping from "./modules/mapping"
 import alerts from "./modules/alerts"
+import settings from "./modules/settings"
 import plugins from "./plugins"
 // Root store
 import actions from "./actions"
@@ -36,12 +37,17 @@ const mutations = {
   },
 }
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
-    selected, objects, mapping, alerts
+    selected, objects, mapping, alerts, settings
   },
   plugins,
   state,
   mutations,
   actions,
 })
+
+// Load settings on first launch.
+store.dispatch("settings/load")
+
+export default store

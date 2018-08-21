@@ -126,6 +126,9 @@ Vue.mixin({
     config() {
       return this.$store.state.config
     },
+    $settings() {
+      return this.$store.state.settings.settings
+    },
     hoveredConcept: {
       get() {
         return this.$store.state.hoveredConcept
