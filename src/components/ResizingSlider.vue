@@ -128,6 +128,24 @@ export default {
           let newPreviousWidth = previousWidth + moved
           let newNextWidth = nextWidth - moved
           if (newPreviousWidth < previousMinWidth || newNextWidth < nextMinWidth) {
+            // Minimize previous/next component when resize is committed all the way.
+            if (newPreviousWidth <= 10 || newNextWidth <= 10) {
+              // Get minimizer component
+              let element = newPreviousWidth <= 10 ? previous : next
+              let minimizerElement = element.getElementsByClassName("minimizer")[0]
+              let minimizerComponent = minimizerElement.__vue__
+              if (minimizerComponent) {
+                // Restore saved values
+                previous.style.flex = vm.savedValues.previousWidth / totalWidth * totalFlex
+                vm.saveFlex(previous)
+                next.style.flex = vm.savedValues.nextWidth / totalWidth * totalFlex
+                vm.saveFlex(next)
+                // Minimize
+                minimizerComponent.toggleMinimize()
+                // End resizing
+                endResizing()
+              }
+            }
             return
           }
           previous.style.flex = newPreviousWidth / totalWidth * totalFlex
