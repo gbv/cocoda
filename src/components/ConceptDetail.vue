@@ -254,7 +254,7 @@ export default {
   watch: {
     item(newItem, oldItem) {
       // Refresh component if item changed
-      if(!this.$util.compareConcepts(newItem, oldItem)) {
+      if(!this.$jskos.compare(newItem, oldItem)) {
         this.refresh()
       }
     },
@@ -290,7 +290,7 @@ export default {
         promises.push(this.$api.getMappings(params).then(results => [results, fromTo]))
       }
       Promise.all(promises).then(results => {
-        if (!this.$util.compareConcepts(itemBefore, this.item)) {
+        if (!this.$jskos.compare(itemBefore, this.item)) {
           // Abort if item changed in the meantime
           return []
         }

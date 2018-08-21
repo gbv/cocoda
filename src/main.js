@@ -26,6 +26,10 @@ store.dispatch("init")
 import util from "./util"
 Vue.prototype.$util = util
 
+// Add jskos-tools, use with this.$jskos in components
+import jskos from "jskos-tools"
+Vue.prototype.$jskos = jskos
+
 // Add fontawesome
 // TODO: - Only import individual items, e.g.
 // import { faSpinner } from '@fortawesome/free-solid-svg-icons'

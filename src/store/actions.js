@@ -1,6 +1,6 @@
 import api from "../api"
 import config from "../config"
-import util from "../util"
+import jskos from "jskos-tools"
 
 export default {
   init ({ commit, getters }) {
@@ -75,7 +75,7 @@ export default {
             // Find and remove scheme from schemes array
               let otherSchemeIndex = -1
               for (let index = 0; index < schemes.length; index += 1) {
-                if (util.compareSchemes(scheme, schemes[index])) {
+                if (jskos.compare(scheme, schemes[index])) {
                   otherSchemeIndex = index
                   break
                 }
@@ -96,7 +96,7 @@ export default {
     }
     Promise.all(promises).then(() => {
       // Sort schemes
-      util.sortSchemes(schemes)
+      jskos.sortSchemes(schemes)
       // Commit schemes to store
       commit({
         type: "setSchemes",

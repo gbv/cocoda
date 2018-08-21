@@ -93,7 +93,7 @@ export default {
   },
   computed: {
     isHovered() {
-      return this.$util.compareConcepts(this.hoveredConcept, this.item)
+      return this.$jskos.compare(this.hoveredConcept, this.item)
     }
   },
   watch: {
@@ -142,7 +142,7 @@ Vue.component("notation-text", {
     notation() {
       if (this.item.notation && this.item.notation.length) {
         let notation = this.item.notation[0]
-        if (this.$util.isScheme(this.item)) {
+        if (this.$jskos.isScheme(this.item)) {
           return notation.toUpperCase()
         }
         return notation

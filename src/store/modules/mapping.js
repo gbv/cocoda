@@ -1,4 +1,5 @@
 import util from "../../util"
+import jskos from "jskos-tools"
 import _ from "lodash"
 
 // TODO: - Add support for memberChoice and maybe memberList.
@@ -63,7 +64,7 @@ const getters = {
   added: (state) => (concept, isLeft) => {
     let fromTo = helpers.fromTo(isLeft)
     let indexConcept = _.findIndex(state.mapping[fromTo].memberSet, c => {
-      return util.compareConcepts(c, concept)
+      return jskos.compare(c, concept)
     })
     return indexConcept != -1
   },
@@ -77,7 +78,7 @@ const getters = {
    */
   checkScheme: (state) => (scheme, isLeft) => {
     let actualScheme = getters.getScheme(state)(isLeft)
-    return actualScheme == null ? true : util.compareSchemes(actualScheme, scheme)
+    return actualScheme == null ? true : jskos.compare(actualScheme, scheme)
   },
 
   /**
@@ -136,7 +137,7 @@ const mutations = {
   remove(state, { concept, isLeft }) {
     let fromTo = helpers.fromTo(isLeft)
     let indexConcept = _.findIndex(state.mapping[fromTo].memberSet, c => {
-      return util.compareConcepts(c, concept)
+      return jskos.compare(c, concept)
     })
     if (indexConcept == -1) {
       return
@@ -190,7 +191,7 @@ const mutations = {
   },
 
   setIdentifier(state) {
-    state.mapping = util.addMappingIdentifiers(state.mapping)
+    state.mapping = jskos.addMappingIdentifiers(state.mapping)
   },
 
   setRefresh(state, refresh) {

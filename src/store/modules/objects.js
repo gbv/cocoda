@@ -1,6 +1,6 @@
 import Vue from "vue"
 import api from "../../api"
-import util from "../../util"
+import jskos from "jskos-tools"
 
 // initial state
 const state = {
@@ -16,7 +16,7 @@ const getters = {
    * Returns an object in the map if it exists
    */
   get: (state) => (object) => {
-    let uris = util.getAllUris(object)
+    let uris = jskos.getAllUris(object)
     for (let uri of uris) {
       if (state.map.has(uri)) {
         return state.map.get(uri)
@@ -43,7 +43,7 @@ const mutations = {
     // Only save if it was not found
     if (save) {
       // Add all possible properties to ensure reactivity in Vue
-      if (util.isConcept(object)) {
+      if (jskos.isConcept(object)) {
         object.DETAILSLOADED = false
         object.BROADERLOADED = false
         object.GNDTERMS = null
@@ -67,7 +67,7 @@ const mutations = {
         } else {
           let inScheme = []
           for (let scheme of object.inScheme) {
-            for (let uri of util.getAllUris(scheme)) {
+            for (let uri of jskos.getAllUris(scheme)) {
               let schemeInMap = state.map.get(uri)
               let alreadyAdded = false
               for (let schemeInScheme of inScheme) {
@@ -90,7 +90,7 @@ const mutations = {
             }
           }
         }
-      } else if (util.isScheme(object)) {
+      } else if (jskos.isScheme(object)) {
         object.DETAILSLOADED = false
         object.INSTORE = true
         object.TOPCONCEPTS = object.TOPCONCEPTS || [null]
@@ -103,7 +103,7 @@ const mutations = {
         object.publisher = object.publisher || null
       }
       // Add to map
-      let uris = util.getAllUris(object)
+      let uris = jskos.getAllUris(object)
       for (let uri of uris) {
         state.map.set(uri, object)
       }
@@ -134,14 +134,14 @@ const mutations = {
  * @param {*} uri2
  */
 function compare(state, uri1, uri2) {
-  return util.compareObjects(state.map.get(uri1), state.map.get(uri2))
+  return jskos.compare(state.map.get(uri1), state.map.get(uri2))
 }
 
 /**
  * Helper function that returns whether an object is already in the map.
  */
 function isObjectInMap(map, object) {
-  let uris = util.getAllUris(object)
+  let uris = jskos.getAllUris(object)
   for (let uri of uris) {
     if (map.has(uri)) {
       return true
@@ -246,7 +246,7 @@ const actions = {
           type: "set",
           object: scheme,
           prop: "TOPCONCEPTS",
-          value: util.sortConcepts(top)
+          value: jskos.sortConcepts(top)
         })
         return scheme
       }).catch(error => {
@@ -327,7 +327,7 @@ const actions = {
           type: "set",
           object,
           prop: "narrower",
-          value: util.sortConcepts(narrower)
+          value: jskos.sortConcepts(narrower)
         })
         return object
       }).catch(error => {

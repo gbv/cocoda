@@ -83,7 +83,7 @@ export default {
           this.currentSelectedConcept = concept
           this.shouldScroll = true
         }
-        if (this.$util.isConcept(concept)) {
+        if (this.$jskos.isConcept(concept)) {
           // Load concept's narrower
           if (!concept.narrower || concept.narrower.includes(null)) {
             this.loadNarrower({ object: concept })

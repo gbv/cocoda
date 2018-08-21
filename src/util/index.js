@@ -1,87 +1,4 @@
-import identifiers from "./identifiers"
-let addMappingIdentifiers = identifiers.addMappingIdentifiers
-
-let isUpperCase = function(str) {
-  return (/^[A-Z]*$/).test(str)
-}
-
-let cleanJSKOS = function(jskos) {
-  Object.keys(jskos).forEach(function(key) {
-    if (isUpperCase(key) || key.startsWith("_")) {
-      delete jskos[key]
-    } else {
-      if (jskos[key] != null && typeof jskos[key] === "object") {
-        jskos[key] = cleanJSKOS(jskos[key])
-      }
-    }
-  })
-  return jskos
-}
-let deepCopy = function(obj) {
-  var clone = Array.isArray(obj) ? [] : {}
-  for(var i in obj) {
-    if (i == "ancestors" || i == "narrower" || i == "broader" || i == "TOPCONCEPTS" || i == "MAPPINGS" || i == "PROVIDER") {
-      // Remove circular structures, replace with [null] if it has elements
-      if (obj[i] && Array.isArray(obj[i])) {
-        if (obj[i].length > 0) {
-          clone[i] = [null]
-        } else {
-          clone[i] = []
-        }
-        continue
-      } else {
-        clone[i] = null
-        continue
-      }
-    }
-    if (i == "inScheme") {
-      // Remove circular structur for inScheme and replace with new object consisting only of URI, notation, and prefLabel
-      let inScheme = []
-      for (let scheme of obj.inScheme) {
-        let newScheme = { uri: scheme.uri }
-        if (scheme.notation) {
-          newScheme.notation = scheme.notation
-        }
-        if (scheme.prefLabel) {
-          newScheme.prefLabel = scheme.prefLabel
-        }
-        inScheme.push(newScheme)
-      }
-      clone.inScheme = inScheme
-      continue
-    }
-    if (obj[i] != null &&  typeof(obj[i]) == "object") {
-      clone[i] = deepCopy(obj[i])
-    } else {
-      clone[i] = obj[i]
-    }
-  }
-  return clone
-}
-
-// Not the final implementation!
-let mappingHash = function(mapping) {
-  let hash = "mapping:"
-  for (let fromTo of ["from", "to"]) {
-    hash += fromTo + ":"
-    let concepts
-    if (mapping[fromTo].memberSet) {
-      hash += "memberSet:"
-      concepts = mapping[fromTo].memberSet
-    } else {
-      // TODO: - memberChoice should not be supported in from!
-      hash += "memberChoice:"
-      fromConcepts = mapping[fromTo].memberChoice
-    }
-    for (let concept of concepts) {
-      hash += concept.uri + ","
-    }
-  }
-  if (mapping.type && mapping.type.length) {
-    hash += `type:${mapping.type[0]}`
-  }
-  return hash
-}
+import jskos from "jskos-tools"
 
 let mappingTypes = [
   {
@@ -174,72 +91,12 @@ function selectText(el){
   }
 }
 
-let getAllUris = object => {
-  if (!object) return []
-  let uris = [object.uri].concat(object.identifier || [])
-  // Generate several variants of URIs to work around inconsistencies
-  uris = uris.concat(uris.map(uri => uri.startsWith("https") ? uri.replace("https", "http") : uri.replace("http", "https")))
-  uris = uris.concat(uris.map(uri => uri.endsWith("/") ? uri.substring(0, uri.length - 1) : uri + "/"))
-  uris = uris.concat(uris.map(uri => uri.indexOf("/en/") != -1 ? uri.replace("/en/", "/de/") : uri.replace("/de/", "/en/")))
-  return uris
-}
-
-let compareObjects = (object1, object2) => {
-  let object1uris = getAllUris(object1)
-  let object2uris = getAllUris(object2)
-  if (_.intersection(object1uris, object2uris).length > 0) {
-    return true
-  } else {
-    return false
-  }
-}
-
-let compareSchemes = function(scheme1, scheme2) {
-  if (!scheme1 || !scheme2) {
-    return false
-  }
-  // Combine and normalize URIs for comparison
-  let scheme1uris = [scheme1.uri].concat(scheme1.identifier || []).map(uri => uri.replace("https", "http").replace("/en/", "/de/"))
-  let scheme2uris = [scheme2.uri].concat(scheme2.identifier || []).map(uri => uri.replace("https", "http").replace("/en/", "/de/"))
-  let intersection = _.intersection(scheme1uris, scheme2uris)
-  if (intersection.length > 0) {
-    return true
-  }
-  return false
-}
-
-let isSchemeInList = function(scheme, schemes) {
-  if (!scheme || !schemes) {
-    return false
-  }
-  for (let s of schemes) {
-    if (compareSchemes(scheme, s)) {
-      return true
-    }
-  }
-  return false
-}
-
-let isConcept = function(object) {
-  return object && object.type && object.type.includes("http://www.w3.org/2004/02/skos/core#Concept")
-}
-let isScheme = function(object) {
-  return object && object.type && object.type.includes("http://www.w3.org/2004/02/skos/core#ConceptScheme")
-}
-
 let canConceptBeSelected = function(concept, scheme) {
   if (!concept.inScheme || concept.inScheme.length == 0) {
     return false
   }
   let conceptScheme = concept.inScheme[0]
-  return scheme == null || compareSchemes(conceptScheme, scheme)
-}
-
-let compareConcepts = function(concept1, concept2) {
-  if (!concept1 || !concept2) {
-    return concept1 == concept2
-  }
-  return concept1.uri === concept2.uri
+  return scheme == null || jskos.compare(conceptScheme, scheme)
 }
 
 let setupTableScrollSync = function() {
@@ -254,12 +111,6 @@ let setupTableScrollSync = function() {
   }
 }
 
-function sortConcepts(data) {
-  return data.sort(
-    (a, b) => (a.notation && b.notation ? a.notation[0] > b.notation[0] : a.uri > b.uri) ? 1 : -1
-  )
-}
-
 let generateID = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
 let delay = {
@@ -268,10 +119,4 @@ let delay = {
   long: { show: 1000, hide: 0 }
 }
 
-let sortSchemes = schemes => {
-  return schemes.sort(
-    (a, b) => (a.prefLabel.de && b.prefLabel.de ? a.prefLabel.de > b.prefLabel.de : a.uri > b.uri) ? 1 : -1
-  )
-}
-
-export default { addMappingIdentifiers, mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, cleanJSKOS, deepCopy, mappingHash, selectText, getAllUris, compareObjects, compareSchemes, isSchemeInList, isConcept, isScheme, canConceptBeSelected, compareConcepts, setupTableScrollSync, sortConcepts, generateID, delay, sortSchemes }
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay }

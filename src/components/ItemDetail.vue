@@ -109,7 +109,7 @@ export default {
   },
   computed: {
     type() {
-      if (this.$util.isConcept(this.item)) {
+      if (this.$jskos.isConcept(this.item)) {
         return "Concept"
       } else {
         return "Scheme"
@@ -131,12 +131,12 @@ export default {
     item: function(newItem, oldItem) {
       this.$el.scrollTop = 0
       this.loadDetails()
-      if (!this.$util.compareConcepts(newItem, oldItem)) {
-        if (this.prevConcepts.length > 0 && this.$util.compareConcepts(newItem, _.last(this.prevConcepts))) {
+      if (!this.$jskos.compare(newItem, oldItem)) {
+        if (this.prevConcepts.length > 0 && this.$jskos.compare(newItem, _.last(this.prevConcepts))) {
           // new item came from prevConcepts
           this.nextConcepts.unshift(oldItem)
           this.prevConcepts.pop()
-        } else if (this.nextConcepts.length > 0 && this.$util.compareConcepts(newItem, _.first(this.nextConcepts))) {
+        } else if (this.nextConcepts.length > 0 && this.$jskos.compare(newItem, _.first(this.nextConcepts))) {
           // new item came from nextConcepts
           if (oldItem) this.prevConcepts.push(oldItem)
           this.nextConcepts.shift()
@@ -205,14 +205,14 @@ export default {
     choosePrevious() {
       if (this.prevConcepts.length) {
         let object = _.last(this.prevConcepts)
-        object = this.$util.isScheme(object) ? null : object
+        object = this.$jskos.isScheme(object) ? null : object
         this.setSelected("concept", this.isLeft, object)
       }
     },
     chooseNext() {
       if (this.nextConcepts.length) {
         let object = _.first(this.nextConcepts)
-        object = this.$util.isScheme(object) ? null : object
+        object = this.$jskos.isScheme(object) ? null : object
         this.setSelected("concept", this.isLeft, object)
       }
     }

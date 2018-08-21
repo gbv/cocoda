@@ -18,7 +18,7 @@
           :show-text="false"
           :show-tooltip="true"
           :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
-          :is-highlighted="$util.compareConcepts(data.value, selected.concept[true])"
+          :is-highlighted="$jskos.compare(data.value, selected.concept[true])"
           @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && setSelected('concept', true, data.value)" />
       </span>
       <span
@@ -29,7 +29,7 @@
           :show-text="false"
           :show-tooltip="true"
           :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
-          :is-highlighted="$util.compareConcepts(data.value, selected.concept[false])"
+          :is-highlighted="$jskos.compare(data.value, selected.concept[false])"
           @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
       </span>
       <span
@@ -190,10 +190,10 @@ export default {
         let fromTos = ["to", "from"]
         let fromToMap = []
         for (let member of occurrence.memberSet) {
-          if (this.$util.compareConcepts(member, this.selected.concept[true])) {
+          if (this.$jskos.compare(member, this.selected.concept[true])) {
             fromToMap[member.uri] = "from"
             _.pull(fromTos, "from")
-          } else if (this.$util.compareConcepts(member, this.selected.concept[false])) {
+          } else if (this.$jskos.compare(member, this.selected.concept[false])) {
             fromToMap[member.uri] = "to"
             _.pull(fromTos, "to")
           }
@@ -337,7 +337,7 @@ export default {
         toScheme: item.toScheme,
         type: [this.$util.defaultMappingType.uri]
       }
-      mapping = this.$util.addMappingIdentifiers(mapping)
+      mapping = this.$jskos.addMappingIdentifiers(mapping)
       item.mapping = mapping
     },
     /**
@@ -353,7 +353,7 @@ export default {
     isSupported(scheme) {
       let supported = false
       for (let supportedScheme of this.supportedSchemes) {
-        if (this.$util.compareSchemes(scheme, supportedScheme)) {
+        if (this.$jskos.compare(scheme, supportedScheme)) {
           supported = true
         }
       }

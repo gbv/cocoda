@@ -21,7 +21,7 @@
             :show-text="false"
             :show-tooltip="true"
             :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
-            :is-highlighted="$util.compareConcepts(concept, selected.concept[true])"
+            :is-highlighted="$jskos.compare(concept, selected.concept[true])"
             @mouseover.native="hover(concept)"
             @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && setSelected('concept', true, concept)" />
         </span>
@@ -36,7 +36,7 @@
               :show-text="false"
               :show-tooltip="true"
               :is-link="$util.canConceptBeSelected(concept, selected.scheme[false])"
-              :is-highlighted="$util.compareConcepts(concept, selected.concept[false])"
+              :is-highlighted="$jskos.compare(concept, selected.concept[false])"
               @mouseover.native="hover(concept)"
               @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && setSelected('concept', false, concept)" />
             <br>
@@ -176,7 +176,7 @@ export default {
               // Filter mappings depending on option
               if (!this.showAll) {
                 // Only show if source and target schemes match with selected schemes
-                if(!this.$util.compareSchemes(mapping.fromScheme, this.selected.scheme[true]) || !this.$util.compareSchemes(mapping.toScheme, this.selected.scheme[false])) {
+                if(!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true]) || !this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
                   continue
                 }
               }
@@ -286,7 +286,7 @@ export default {
   },
   methods: {
     edit(data) {
-      let mapping = this.$util.deepCopy(data.item.mapping)
+      let mapping = this.$jskos.copyDeep(data.item.mapping)
       // Make sure concept object references are in sync
       mapping.from.memberSet = data.item.mapping.from.memberSet.slice()
       if (mapping.to.memberSet) {

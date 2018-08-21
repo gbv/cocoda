@@ -39,7 +39,7 @@
             <item-name
               :item="concept"
               :is-link="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false])"
-              :is-highlighted="$util.compareConcepts(concept, isLeft ? selected.concept[true] : selected.concept[false])"
+              :is-highlighted="$jskos.compare(concept, isLeft ? selected.concept[true] : selected.concept[false])"
               @click.native="$util.canConceptBeSelected(concept, isLeft ? selected.scheme[true] : selected.scheme[false]) && setSelected('concept', isLeft, concept)" />
             <!-- Delete button for concept -->
             <div
@@ -146,10 +146,10 @@ export default {
       })
     },
     prepareMapping() {
-      let mapping = this.$util.deepCopy(this.$store.state.mapping.mapping)
-      mapping = this.$util.addMappingIdentifiers(mapping)
+      let mapping = this.$jskos.copyDeep(this.$store.state.mapping.mapping)
+      mapping = this.$jskos.addMappingIdentifiers(mapping)
       // TODO: Reduce to only the important properties
-      mapping = this.$util.cleanJSKOS(mapping)
+      mapping = this.$jskos.clean(mapping)
       return mapping
     },
     labelForScheme(scheme) {
@@ -223,7 +223,7 @@ export default {
     showScheme(isLeft) {
       let chosenScheme = this.selected.scheme[isLeft]
       let mappingScheme = this.$store.getters["mapping/getScheme"](isLeft)
-      return !this.$util.compareSchemes(chosenScheme, mappingScheme)
+      return !this.$jskos.compare(chosenScheme, mappingScheme)
     },
     /**
      * Opens the export modal

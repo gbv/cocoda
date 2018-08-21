@@ -126,10 +126,10 @@ export default {
       return  _.get(this.concept, "narrower.length", 1) != 0
     },
     isHovered() {
-      return this.$util.compareConcepts(this.hoveredConcept, this.concept)
+      return this.$jskos.compare(this.hoveredConcept, this.concept)
     },
     isSelected() {
-      return this.$util.compareConcepts(this.selected.concept[this.isLeft], this.concept)
+      return this.$jskos.compare(this.selected.concept[this.isLeft], this.concept)
     },
     childrenLoaded() {
       return !this.concept.narrower || !this.concept.narrower.includes(null)

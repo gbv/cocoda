@@ -128,7 +128,7 @@ export default {
      * Clears the search field when scheme is changed.
      */
     scheme: function(newValue, oldValue) {
-      if (!this.$util.compareSchemes(oldValue, newValue)) {
+      if (!this.$jskos.compare(oldValue, newValue)) {
         this.searchQuery = ""
         this.searchResult = []
         this.isOpen = false

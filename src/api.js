@@ -16,6 +16,7 @@ import axios from "axios"
 import localforage from "localforage"
 import config from "./config"
 import util from "./util"
+import jskos from "jskos-tools"
 
 /** Property sets */
 const minimumProperties = "-"
@@ -204,7 +205,7 @@ function getMappings(params) {
         // Add mapping type if not available
         mapping.type = mapping.type || [util.defaultMappingType.uri]
         // Add JSKOS mapping identifiers
-        mapping = util.addMappingIdentifiers(mapping)
+        mapping = jskos.addMappingIdentifiers(mapping)
         mappings.push(mapping)
       }
     }
@@ -250,7 +251,7 @@ function saveMapping(mapping) {
   }
 
   return getLocalMappings().then(mappings => {
-    mapping = util.addMappingIdentifiers(mapping)
+    mapping = jskos.addMappingIdentifiers(mapping)
     // Override local mappings with same members
     // FIXME: This is only temporary to demonstrate local saving of mappings. The actual solution to this problem may be way more complicated.
     mappings = mappings.filter(m => {
