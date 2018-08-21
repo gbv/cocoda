@@ -8,7 +8,7 @@ const selectedPlugin = store => {
     // Check for selecting a concept
     if (mutation.type == "selected/set") {
       let isLeft = mutation.payload.isLeft
-      let noQueryRefresh = mutation.payload.noQueryRefresh
+      let noQueryRefresh = mutation.payload && mutation.payload.noQueryRefresh
       if (mutation.payload.kind == "concept") {
         let concept = mutation.payload.value
         if (!concept) {
@@ -123,7 +123,7 @@ const routerParamPlugin = store => {
       "mapping/switch",
     ]
     if (mutationTypes.includes(mutation.type)) {
-      if (mutation.payload.noQueryRefresh) {
+      if (mutation.payload && mutation.payload.noQueryRefresh) {
         return
       }
       // Add selected schemes and concepts
