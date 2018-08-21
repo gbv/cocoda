@@ -32,7 +32,9 @@ import _ from "lodash"
  * To add this to a component, it has to be of the CSS class "mainComponent" (or a child of it). Add this component to its component list and add the minimizer right under the root element of the component:
  * <minimizer text="Name of Component" />
  *
- * The root element of your component also has to have position: relative; in its CSS.
+ * If it's a vertical component:
+ * <minimizer :is-column="true" text="Name of Component" />
+ *
  */
 export default {
   name: "Minimizer",
@@ -43,26 +45,30 @@ export default {
     text: {
       type: String,
       default: "Minimized Component."
-    }
+    },
+    /**
+     * Determines whether the component is a vertical component.
+     */
+    isColumn: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
       previousFlex: "",
-      previousMinHeights: [],
-      minimizerHeight: "40px",
+      previousMinSizes: [],
+      minimizerSize: this.isColumn ? "80px" : "40px",
     }
   },
   computed: {
-    parentComponentName() {
-      return this.$parent.$options.name + (this.$parent.isLeft != null ? "_" + this.$parent.isLeft : "")
-    },
     minimized: {
       get() {
-        return this.$settings.minimized[this.parentComponentName] || false
+        return this.$settings.minimized[this.parentComponentName()] || false
       },
       set(newValue) {
         let minimized = _.cloneDeep(this.$settings.minimized)
-        minimized[this.parentComponentName] = newValue
+        minimized[this.parentComponentName()] = newValue
         this.$store.commit({
           type: "settings/set",
           prop: "minimized",
@@ -77,9 +83,12 @@ export default {
     }
   },
   mounted() {
-    this.refreshMinimize()
+    // this.refreshMinimize()
   },
   methods: {
+    parentComponentName() {
+      return this.$el ? this.$el.parentElement.id : "fallback"
+    },
     toggleMinimize(minimized = null) {
       if (minimized != null) {
         this.minimized = minimized
@@ -89,37 +98,52 @@ export default {
     },
     refreshMinimize() {
       if (this.minimized) {
-        this.previousMinHeights = []
+        this.previousMinSizes = []
       }
-      // Find mainComponent in DOM ancestors and set its height.
-      // On the way, make sure that no "min-height" property prevents minimizing.
+      // Find mainComponent in DOM ancestors and set its size.
+      // On the way, make sure that no "min-height" or "min-width" property prevents minimizing.
       let current = this.$el
       while (!current.classList.contains("mainComponent")) {
         current = current.parentElement
         if (this.minimized) {
           let computedStyle = window.getComputedStyle(current)
-          let minHeight = computedStyle.getPropertyValue("min-height")
-          this.previousMinHeights.push({
+          let minSize
+          if (this.isColumn) {
+            minSize = computedStyle.getPropertyValue("min-width")
+          } else {
+            minSize = computedStyle.getPropertyValue("min-height")
+          }
+          this.previousMinSizes.push({
             element: current,
-            minHeight: minHeight
+            minSize
           })
-          current.style.minHeight = this.minimizerHeight
-          current.style.maxHeight = this.minimizerHeight
+          if (this.isColumn) {
+            current.style.minWidth = this.minimizerSize
+            current.style.maxWidth = this.minimizerSize
+          } else {
+            current.style.minHeight = this.minimizerSize
+            current.style.maxHeight = this.minimizerSize
+          }
         }
       }
       let computedStyle = window.getComputedStyle(current)
       if (this.minimized) {
         this.previousFlex = computedStyle.getPropertyValue("flex")
-        current.style.flex = "0 1 " + this.minimizerHeight
+        current.style.flex = "0 1 " + this.minimizerSize
         // Set data-minimized property to 1 so that it can be identified as minimized
         current.dataset.minimized = 1
         this.refresh("minimize")
       } else {
         // Reset styles to previous
         current.style.flex = this.previousFlex
-        for (let previous of this.previousMinHeights) {
-          previous.element.style.minHeight = previous.minHeight
-          previous.element.style.maxHeight = ""
+        for (let previous of this.previousMinSizes) {
+          if (this.isColumn) {
+            previous.element.style.minWidth = previous.minSize
+            previous.element.style.maxWidth = ""
+          } else {
+            previous.element.style.minHeight = previous.minSize
+            previous.element.style.maxHeight = ""
+          }
         }
         // Reset data-minimized
         current.dataset.minimized = 0

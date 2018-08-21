@@ -39,7 +39,10 @@
             order5: !isLeft
           }"
           :id="'browserComponent_' + isLeft"
-          class="browser" >
+          class="browser mainComponent" >
+          <minimizer
+            :is-column="true"
+            text="Concept Scheme Browser" />
           <!-- Concept scheme selection -->
           <div class="schemeSelectWrapper">
             <b-form-select
@@ -219,6 +222,7 @@ import ResizingSlider from "./components/ResizingSlider"
 import ItemName from "./components/ItemName"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
+import Minimizer from "./components/Minimizer"
 
 /**
  * The main application.
@@ -226,7 +230,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, ItemName, LoadingIndicatorFull
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, ItemName, LoadingIndicatorFull, Minimizer
   },
   data () {
     return {
@@ -494,6 +498,7 @@ html, body {
   flex: none;
   padding: 2px;
   display: flex;
+  margin-right: 24px;
 }
 .schemeSelect {
   .m-borderRadius(2px);
