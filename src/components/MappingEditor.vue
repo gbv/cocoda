@@ -147,10 +147,8 @@ export default {
       })
     },
     prepareMapping() {
-      let mapping = this.$jskos.copyDeep(this.$store.state.mapping.mapping)
+      let mapping = this.$jskos.minifyMapping(this.$store.state.mapping.mapping)
       mapping = this.$jskos.addMappingIdentifiers(mapping)
-      // TODO: Reduce to only the important properties
-      mapping = this.$jskos.clean(mapping)
       return mapping
     },
     labelForScheme(scheme) {
