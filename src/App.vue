@@ -395,44 +395,41 @@ export default {
         )
       }
       // Prepare application by selecting mapping from URL parameters.
-      if (query["mapping.type"]) {
-        let mapping = {
-          from: { "memberSet": [] },
-          to: { "memberSet": [] },
-          fromScheme: null,
-          toScheme: null,
-          type: [query["mapping.type"]] // TODO: Support multiples.
+      if (query["mapping"]) {
+        let mappingFromQuery = null
+        try {
+          mappingFromQuery = JSON.parse(query["mapping"])
+        } catch(error) {
+          // do nothing
         }
         let directions = ["from", "to"]
+        let memberFields = ["memberSet", "memberList", "memberChoice"]
         promises.push((() => {
           let promises = []
           for (let direction of directions) {
-            // Set scheme
-            let scheme
-            if (query[`mapping.${direction}Scheme`]) {
-              scheme = this.$store.getters["objects/get"]({ uri: query[`mapping.${direction}Scheme`] })
-              mapping[`${direction}Scheme`] = scheme
-            }
-            // Set concepts
-            if (query[`mapping.${direction}`]) {
-              // Load mapping concepts
-              // TODO: Support multiples.
-              // TODO: Support mapping relations.
-              promises.push(this.$store.dispatch({
-                type: "objects/load",
-                object: { uri: query[`mapping.${direction}`] },
-                scheme: scheme
-              }).then(object => {
-                if (object) {
-                  mapping[direction].memberSet = [object]
-                }
-              }))
+            // Get scheme from store
+            let scheme = this.$store.getters["objects/get"](mappingFromQuery[`${direction}Scheme`])
+            // TODO: - Should scheme be set in mapping object? Would possibly caused scheme URI to change.
+            // mappingFromQuery[`${direction}Scheme`] = scheme
+            // TODO: - Show error if scheme does not exist?
+            for (let memberField of memberFields) {
+              if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
+              // Load data for each concept in mapping
+              _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
+                promises.push(this.$store.dispatch({
+                  type: "objects/load",
+                  object: concept,
+                  scheme: scheme
+                }).then(concept => {
+                  mappingFromQuery[direction][memberField][index] = concept
+                }))
+              })
             }
           }
           return Promise.all(promises).then(() => {
             this.$store.commit({
               type: "mapping/set",
-              mapping,
+              mapping: mappingFromQuery,
               noQueryRefresh: true
             })
           })

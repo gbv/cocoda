@@ -1,4 +1,5 @@
 import router from "../router"
+import jskos from "jskos-tools"
 
 /**
  * Plugin that performs operations when a concept was selected.
@@ -140,25 +141,7 @@ const routerParamPlugin = store => {
         }
       }
       // Add mapping
-      let mapping = store.state.mapping.mapping
-      // - Type
-      // TODO: Support multiples
-      if (mapping.type && mapping.type.length) {
-        query["mapping.type"] = mapping.type[0]
-      }
-      let directions = ["from", "to"]
-      for (let direction of directions) {
-        // - Members
-        // TODO: Support multiples
-        // TODO: Support relations (memberSet or memberChoice)
-        if (mapping[direction].memberSet.length) {
-          query[`mapping.${direction}`] = mapping[direction].memberSet[0].uri
-        }
-        // - Schemes
-        if (mapping[`${direction}Scheme`]) {
-          query[`mapping.${direction}Scheme`] = mapping[`${direction}Scheme`].uri
-        }
-      }
+      query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
       // Push route
       router.push({ query })
     }
