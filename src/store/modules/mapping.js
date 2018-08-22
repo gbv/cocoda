@@ -4,15 +4,18 @@ import _ from "lodash"
 
 // TODO: - Add support for memberChoice and maybe memberList.
 
+const emptyMapping = {
+  from: { "memberSet": [] },
+  to: { "memberSet": [] },
+  fromScheme: null,
+  toScheme: null,
+  type: [util.defaultMappingType.uri]
+}
+
 // initial state
 const state = {
-  mapping: {
-    from: { "memberSet": [] },
-    to: { "memberSet": [] },
-    fromScheme: null,
-    toScheme: null,
-    type: [util.defaultMappingType.uri]
-  },
+  mapping: jskos.copyDeep(emptyMapping),
+  original: null,
   mappingsNeedRefresh: false,
 }
 
@@ -161,14 +164,27 @@ const mutations = {
   },
 
   /**
-   * Sets the whole mapping to a new object
+   * Sets the whole mapping to a new object. If mapping is null or no mapping object is given, only the original is written.
+   * To clear out a mapping, use `empty`.
    *
-   * Payload object: { mapping }
-   * - mapping: the object to be saved as the new mapping
+   * Payload object: { mapping, original }
+   * - mapping: the object to be saved as the new mapping (default: not set)
+   * - original: reference to the original mapping (default: null)
    */
-  set(state, { mapping }) {
+  set(state, { mapping = null, original = null }) {
     // TODO: Run checks on new mapping object.
-    state.mapping = mapping
+    if (mapping) {
+      state.mapping = mapping
+    }
+    state.original = original
+  },
+
+  /**
+   * Empties the mapping object
+   */
+  empty(state) {
+    state.mapping = jskos.copyDeep(emptyMapping)
+    state.original = null
   },
 
   /**

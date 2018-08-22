@@ -324,7 +324,8 @@ export default {
       // Save mapping
       this.$store.commit({
         type: "mapping/set",
-        mapping
+        mapping,
+        original: data.item.mapping
       })
     },
     hover(concept) {

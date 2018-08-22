@@ -122,6 +122,7 @@ const routerParamPlugin = store => {
       "mapping/set",
       "mapping/setType",
       "mapping/switch",
+      "mapping/empty",
     ]
     if (mutationTypes.includes(mutation.type)) {
       if (mutation.payload && mutation.payload.noQueryRefresh) {

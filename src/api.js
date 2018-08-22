@@ -17,6 +17,7 @@ import localforage from "localforage"
 import config from "./config"
 import util from "./util"
 import jskos from "jskos-tools"
+import store from "./store"
 
 /** Property sets */
 const minimumProperties = "-"
@@ -290,6 +291,7 @@ function saveMapping(mapping) {
   if (!mapping.fromScheme || !mapping.toScheme) {
     return Promise.reject("Can't save mapping: Missing fromScheme or toScheme.")
   }
+  mapping.LOCAL = true
 
   return getLocalMappings().then(mappings => {
     mapping = jskos.addMappingIdentifiers(mapping)
@@ -341,7 +343,17 @@ function removeMapping(mapping) {
     })
     return localforage.setItem("mappings", mappings)
   }).then(mappings => {
-    return previousNumberOfMappings > mappings.length
+    let removed = previousNumberOfMappings > mappings.length
+    if (removed) {
+      // Check Vuex if original mapping was the same as deleted mapping; if yes, clear original mapping.
+      if (jskos.compareMappings(mapping, store.state.mapping.original)) {
+        store.commit({
+          type: "mapping/set",
+          original: null
+        })
+      }
+    }
+    return removed
   })
 }
 

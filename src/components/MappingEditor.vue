@@ -4,14 +4,42 @@
     <minimizer text="Mapping Editor" />
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: 'Save mapping', delay: $util.delay.medium }"
-        class="button mappingEditorToolbarItem"
+        v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
+        :class="{
+          button: canSaveMapping(),
+          'button-disabled': !canSaveMapping()
+        }"
+        class="mappingEditorToolbarItem"
         @click="saveMapping" >
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'Export mapping', delay: $util.delay.medium }"
-        class="button mappingEditorToolbarItem"
+        v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+        :class="{
+          button: canDeleteMapping(),
+          'button-disabled': !canDeleteMapping()
+        }"
+        class="mappingEditorToolbarItem"
+        @click="deleteMapping" >
+        <font-awesome-icon icon="trash-alt" />
+      </div>
+      <div
+        v-b-tooltip.hover="{ title: 'clear mapping', delay: $util.delay.medium }"
+        :class="{
+          button: canClearMapping(),
+          'button-disabled': !canClearMapping()
+        }"
+        class="mappingEditorToolbarItem"
+        @click="clearMapping" >
+        <font-awesome-icon icon="ban" />
+      </div>
+      <div
+        v-b-tooltip.hover="{ title: 'export mapping', delay: $util.delay.medium }"
+        :class="{
+          button: canExportMapping(),
+          'button-disabled': !canExportMapping()
+        }"
+        class="mappingEditorToolbarItem"
         @click="exportMapping()" >
         <font-awesome-icon icon="share-square" />
       </div>
@@ -102,6 +130,34 @@
         <pre ref="jsonPre">{{ mappingPretty }}</pre>
       </div>
     </b-modal>
+    <!-- Delete mapping modal -->
+    <b-modal
+      ref="deleteModal"
+      class="mappingEditor-deleteModal"
+      hide-footer
+      title="Delete Mapping" >
+      <b-button
+        variant="danger"
+        @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()" >
+        Delete original mapping and clear
+      </b-button>
+      <b-button
+        v-show="hasChangedFromOriginal"
+        variant="warning"
+        @click="deleteOriginalMapping() && $refs.deleteModal.hide()" >
+        Delete original mapping and keep changes
+      </b-button>
+      <b-button
+        variant="primary"
+        @click="clearMapping() && $refs.deleteModal.hide()" >
+        Keep original mapping and clear
+      </b-button>
+      <b-button
+        variant="secondary"
+        @click="$refs.deleteModal.hide()" >
+        Cancel
+      </b-button>
+    </b-modal>
   </div>
 </template>
 
@@ -129,25 +185,78 @@ export default {
      */
     mappingEncoded() {
       return encodeURIComponent(JSON.stringify(this.prepareMapping()))
-    }
+    },
+    hasChangedFromOriginal() {
+      if (!this.$store.state.mapping.mapping) {
+        return false
+      }
+      if (!this.$store.state.mapping.original) {
+        return true
+      }
+      return !this.$jskos.compareMappings(this.$store.state.mapping.original, this.$store.state.mapping.mapping)
+    },
   },
   methods: {
     saveMapping() {
+      if (!this.canSaveMapping()) return false
       let mapping = this.prepareMapping()
       if (!mapping.creator || mapping.creator.length == 0) {
         let creatorName = this.$settings.creator || "You"
         mapping.creator = [{ prefLabel: { de: creatorName } }]
       }
-      this.$api.saveMapping(mapping).then(() => {
+      this.$api.saveMapping(mapping).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
+        let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
+        this.$store.commit({
+          type: "mapping/set",
+          original: newMapping
+        })
       }).catch(error => {
         this.alert(error, null, "danger")
       }).then(() => {
         this.$store.commit("mapping/setRefresh", true)
       })
     },
-    prepareMapping() {
-      let mapping = this.$jskos.minifyMapping(this.$store.state.mapping.mapping)
+    deleteMapping() {
+      if (!this.canDeleteMapping()) return false
+      this.$refs.deleteModal.show()
+      return true
+    },
+    deleteOriginalMapping(clear = false) {
+      let mapping = this.prepareMapping(this.$store.state.mapping.original)
+      this.$api.removeMapping(mapping).then(() => {
+        this.alert("Mapping was deleted.", null, "success")
+      }).catch(error => {
+        this.alert(error, null, "danger")
+      }).then(() => {
+        this.$store.commit("mapping/setRefresh", true)
+        if (clear) {
+          this.clearMapping()
+        }
+      })
+      return true
+    },
+    clearMapping() {
+      if (!this.canClearMapping()) return false
+      this.$store.commit({
+        type: "mapping/empty"
+      })
+      return true
+    },
+    canSaveMapping() {
+      return (this.$store.state.mapping.original == null || this.hasChangedFromOriginal) && this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+    },
+    canDeleteMapping() {
+      return this.$store.state.mapping.original && this.$store.state.mapping.original.LOCAL
+    },
+    canClearMapping() {
+      return this.$store.state.mapping.mapping.fromScheme || this.$store.state.mapping.mapping.toScheme
+    },
+    canExportMapping() {
+      return this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+    },
+    prepareMapping(mapping = null) {
+      mapping = mapping || this.$jskos.minifyMapping(this.$store.state.mapping.mapping)
       mapping = this.$jskos.addMappingIdentifiers(mapping)
       return mapping
     },
@@ -228,6 +337,7 @@ export default {
      * Opens the export modal
      */
     exportMapping() {
+      if (!this.canExportMapping()) return false
       this.$refs.exportModal.show()
     },
     /**
@@ -243,7 +353,7 @@ export default {
         }
         window.getSelection().removeAllRanges()
       }, 50)
-    }
+    },
   }
 }
 </script>
@@ -317,7 +427,7 @@ export default {
 
 .mappingEditorToolbar {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   margin: 5px auto;
   left: 0;
@@ -326,6 +436,7 @@ export default {
   display: flex;
   justify-content:center;
   align-items:center;
+  z-index: @zIndex-2;
 }
 .mappingEditorToolbarItem {
   flex: 0;
@@ -345,6 +456,10 @@ export default {
   flex: none;
   margin: 0 10px;
   font-size: 1.5rem;
+}
+.mappingEditor-deleteModal button {
+  margin: 10px 0;
+  width: 100%;
 }
 
 </style>
