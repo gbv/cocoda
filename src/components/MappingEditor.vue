@@ -152,7 +152,7 @@ export default {
       return mapping
     },
     labelForScheme(scheme) {
-      return scheme ? scheme.notation[0].toUpperCase() : "&nbsp;"
+      return scheme && scheme.notation ? scheme.notation[0].toUpperCase() : " "
     },
     /**
      * Returns whether the add button should be enabled for a specific side

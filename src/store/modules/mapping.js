@@ -191,7 +191,10 @@ const mutations = {
   },
 
   setIdentifier(state) {
-    state.mapping = jskos.addMappingIdentifiers(state.mapping)
+    // Only set identifier if both fromScheme and toScheme are available
+    if (state.mapping.fromScheme && state.mapping.toScheme) {
+      state.mapping = jskos.addMappingIdentifiers(state.mapping)
+    }
   },
 
   setRefresh(state, refresh) {
