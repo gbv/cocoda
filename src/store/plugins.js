@@ -140,8 +140,10 @@ const routerParamPlugin = store => {
           }
         }
       }
-      // Add mapping
-      query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+      // Add mapping if either fromScheme or toScheme exists
+      if (store.state.mapping.mapping.fromScheme || store.state.mapping.mapping.toScheme) {
+        query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+      }
       // Push route
       router.push({ query })
     }
