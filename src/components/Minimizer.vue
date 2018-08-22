@@ -133,6 +133,16 @@ export default {
         // Set data-minimized property to 1 so that it can be identified as minimized
         current.dataset.minimized = 1
         this.refresh("minimize")
+        // Adjust z-index values of minimizers that might overlay the current minimizer
+        let zIndex = window.getComputedStyle(this.$el.getElementsByClassName("minimizedOverlay")[0]).getPropertyValue("z-index")
+        for (let element of current.getElementsByClassName("minimizer")) {
+          if (element != this.$el) {
+            let component = element.__vue__
+            if (component.minimized && window.getComputedStyle(element.getElementsByClassName("minimizedOverlay")[0]).getPropertyValue("z-index") >= zIndex) {
+              element.getElementsByClassName("minimizedOverlay")[0].style.zIndex = zIndex - 1
+            }
+          }
+        }
       } else {
         // Reset styles to previous
         current.style.flex = this.previousFlex
