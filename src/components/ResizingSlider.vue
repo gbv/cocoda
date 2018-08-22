@@ -133,6 +133,10 @@ export default {
               // Get minimizer component
               let element = newPreviousWidth <= 10 ? previous : next
               let minimizerElement = element.getElementsByClassName("minimizer")[0]
+              // Only continue if minimizerElement is one or two elements deep.
+              if (minimizerElement.parentElement != element && minimizerElement.parentElement.parentElement != element) {
+                return
+              }
               let minimizerComponent = minimizerElement.__vue__
               if (minimizerComponent) {
                 // Restore saved values
@@ -161,6 +165,10 @@ export default {
               // Get minimizer component
               let element = newPreviousHeight <= 10 ? previous : next
               let minimizerElement = element.getElementsByClassName("minimizer")[0]
+              // Only continue if minimizerElement is one or two elements deep.
+              if (minimizerElement.parentElement != element && minimizerElement.parentElement.parentElement != element) {
+                return
+              }
               let minimizerComponent = minimizerElement.__vue__
               if (minimizerComponent) {
                 // Restore saved values
