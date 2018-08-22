@@ -4,7 +4,9 @@
       v-b-tooltip.hover="{ title: 'minimize component', delay: $util.delay.medium }"
       v-show="!minimized"
       class="utilityButton minimizeButton"
-      @click="toggleMinimize()" >
+      @click="toggleMinimize()"
+      @mouseover="minimizeHovered = true"
+      @mouseout="minimizeHovered = false" >
       <font-awesome-icon icon="window-minimize" />
     </div>
     <div
@@ -20,6 +22,10 @@
         </div>
       </div>
     </div>
+    <!-- Overlay for minimize hover -->
+    <div
+      v-if="minimizeHovered"
+      class="minimizedHoverOverlay" />
   </div>
 </template>
 
@@ -59,6 +65,7 @@ export default {
       previousFlex: "",
       previousMinSizes: [],
       minimizerSize: this.isColumn ? "80px" : "40px",
+      minimizeHovered: false,
     }
   },
   computed: {
@@ -181,6 +188,17 @@ export default {
   display: inline-block;
   position: static;
 }
+// Overlay when minimize button is hovered
+.minimizedHoverOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: fadeout(@color--minimizer-overlay-background-hover, 50%);
+  z-index: @zIndex-3;
+}
+// Overlay when component is minimized
 .minimizedOverlay {
   cursor: pointer;
   position: absolute;
