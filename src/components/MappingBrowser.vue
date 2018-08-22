@@ -358,28 +358,30 @@ export default {
     },
     loadMappings(conceptItem) {
       // Get mappings
-      let params = {}
       let concept = conceptItem.concept
-      params[conceptItem.fromTo] = concept.uri
-      this.loading += 1
-      this.$api.getMappings(params).then(data => {
-        let mappings = concept.MAPPINGS
-        if (!mappings) {
-          // concept.MAPPINGS = { from: null, to: null }
-          mappings =  { from: null, to: null }
-        }
-        mappings[conceptItem.fromTo] = data
-        this.$store.commit({
-          type: "objects/set",
-          object: concept,
-          prop: "MAPPINGS",
-          value: mappings
+      let mappings = concept.MAPPINGS
+      if (!mappings) {
+        mappings =  { from: null, to: null }
+      }
+      // Load mappings in both directions
+      for (let fromTo of ["from", "to"]) {
+        let params = {}
+        params[fromTo] = concept.uri
+        this.loading += 1
+        this.$api.getMappings(params).then(data => {
+          mappings[fromTo] = data
+          this.$store.commit({
+            type: "objects/set",
+            object: concept,
+            prop: "MAPPINGS",
+            value: mappings
+          })
+          this.loading -= 1
+        }).catch(function(error) {
+          console.error("API error (mappings):", error)
+          this.loading -= 1
         })
-        this.loading -= 1
-      }).catch(function(error) {
-        console.error("API error (mappings):", error)
-        this.loading -= 1
-      })
+      }
     },
     removeMapping(mapping) {
       this.$api.removeMapping(mapping).then(success => {
