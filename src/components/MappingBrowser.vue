@@ -151,7 +151,7 @@ export default {
         if (conceptItem.concept == null) {
           continue
         }
-        let mappings = conceptItem.concept.MAPPINGS ? conceptItem.concept.MAPPINGS[conceptItem.fromTo] : null
+        let mappings = conceptItem.concept.MAPPINGS ? (conceptItem.concept.MAPPINGS.from || []).concat(conceptItem.concept.MAPPINGS.to || []) : null
         if (mappings == null) {
           // Load mappings
           this.loadMappings(conceptItem)
