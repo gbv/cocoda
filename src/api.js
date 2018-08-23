@@ -224,7 +224,7 @@ function get(url, axiosConfig) {
     })
 }
 
-function getMappings(params) {
+function getMappings(params, local = true) {
   let promises = []
   for (let provider of config.mappingProviders) {
     let promise = axios.get(provider.url, {
@@ -232,7 +232,9 @@ function getMappings(params) {
     }).then(response => response.data)
     promises.push(promise)
   }
-  promises.push(getLocalMappings(params))
+  if (local) {
+    promises.push(getLocalMappings(params))
+  }
   return Promise.all(promises).then(results => {
     let mappings = []
     for (let result of results) {

@@ -1,7 +1,5 @@
 import Vue from "vue"
-import App from "./App"
 import store from "./store"
-import router from "./router"
 import { mapActions, mapMutations } from "vuex"
 
 Vue.config.productionTip = false
@@ -172,12 +170,4 @@ Vue.mixin({
       })
     }
   }
-})
-
-new Vue({
-  el: "#app",
-  store,
-  router,
-  components: { App },
-  template: "<App/>",
 })
