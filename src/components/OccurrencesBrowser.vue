@@ -5,7 +5,7 @@
     <!-- Occurrences table -->
     <flexible-table
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
-      :sort-desc="true"
+      :sort-direction="-1"
       :items="items"
       :fields="fields"
       sort-by="occurrences"
@@ -31,16 +31,6 @@
           :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
           :is-highlighted="$jskos.compare(data.value, selected.concept[false])"
           @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
-      </span>
-      <span
-        slot="fromScheme"
-        slot-scope="data" >
-        {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
-      </span>
-      <span
-        slot="toScheme"
-        slot-scope="data" >
-        {{ data.value && data.value.notation ? data.value.notation[0].toUpperCase() : "" }}
       </span>
       <span
         slot="occurrences"
@@ -126,7 +116,8 @@ export default {
           label: "Concept",
           width: "24%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
         },
         {
           key: "toScheme",
@@ -140,14 +131,16 @@ export default {
           label: "Concept",
           width: "24%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
         },
         {
           key: "occurrences",
           label: "(Co-)Occurrences",
           width: "20%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a, b) => _.get(a, "occurrences.count", 0) - _.get(b, "occurrences.count", 0)
         },
         {
           key: "actions",
@@ -199,7 +192,7 @@ export default {
         for (let member of occurrence.memberSet) {
           let fromTo = fromToMap[member.uri] || fromTos.pop()
           items[items.length-1][fromTo] = member
-          items[items.length-1][fromTo+"Scheme"] = member.inScheme[0]
+          items[items.length-1][fromTo+"Scheme"] = _.get(member, "inScheme[0].notation[0]", "").toUpperCase()
           // refresh member
           let item =  items[items.length-1]
           this.getObject({ object: member, scheme: member.inScheme[0] }).then(concept => {
@@ -208,11 +201,11 @@ export default {
               return this.getObject({ object: member.inScheme[0] })
             }
             item[fromTo] = concept
-            item[fromTo+"Scheme"] = concept.inScheme[0]
+            item[fromTo+"Scheme"] = _.get(concept, "inScheme[0].notation[0]", "").toUpperCase()
             this.addMappingToItem(item)
           }).then(scheme => {
             if (!scheme) return
-            item[fromTo+"Scheme"] = scheme
+            item[fromTo+"Scheme"] = _.get(scheme, "notation[0]", "").toUpperCase()
             this.addMappingToItem(item)
           })
         }

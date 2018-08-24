@@ -228,14 +228,26 @@ export default {
           label: "Concept",
           width: "22%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
         },
         {
           key: "type",
           label: "Type",
           width: "8%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a ,b) => {
+            let labelA = _.get(a, "type.prefLabel.en", "")
+            let labelB = _.get(b, "type.prefLabel.en", "")
+            if (labelA < labelB) {
+              return -1
+            }
+            if (labelA > labelB) {
+              return 1
+            }
+            return 0
+          }
         },
         {
           key: "targetScheme",
@@ -249,7 +261,8 @@ export default {
           label: "Concept",
           width: "22%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
         },
         {
           key: "creator",

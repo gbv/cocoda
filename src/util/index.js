@@ -1,4 +1,5 @@
 import jskos from "jskos-tools"
+import _ from "lodash"
 
 let mappingTypes = [
   {
@@ -119,4 +120,26 @@ let delay = {
   long: { show: 1000, hide: 0 }
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay }
+/**
+ * Compare mappings by their first concept.
+ *
+ * @param {*} mapping1 - first mapping
+ * @param {*} mapping2 - second mapping
+ * @param {*} fromTo - side, either `from` or `to`
+ */
+let compareMappingsByConcepts = (mapping1, mapping2, fromTo) => {
+  let bundleFields = ["memberSet", "memberList", "memberChoice"], notation1, notation2
+  for (let field of bundleFields) {
+    notation1 = notation1 || _.get(mapping1, fromTo + "." + field + "[0].notation[0]")
+    notation2 = notation2 || _.get(mapping2, fromTo + "." + field + "[0].notation[0]")
+  }
+  if (notation1 == null || notation1 < notation2) {
+    return -1
+  }
+  if (notation2 == null || notation1 > notation2) {
+    return 1
+  }
+  return 0
+}
+
+export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts }
