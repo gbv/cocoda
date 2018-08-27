@@ -396,15 +396,25 @@ export default {
       }
       // Prepare application by selecting mapping from URL parameters.
       if (query["mapping"]) {
-        let mappingFromQuery = null
-        try {
-          mappingFromQuery = JSON.parse(query["mapping"])
-        } catch(error) {
-          // do nothing
-        }
+        let decodeMapping = new Promise(resolve => {
+          let mappingFromQuery = null
+          try {
+            mappingFromQuery = JSON.parse(query["mapping"])
+          } catch(error) {
+            // do nothing
+          }
+          resolve([mappingFromQuery])
+        })
+        let loadMapping = this.$api.getMappings({ identifier: query["mappingId"] || "" }).then(mappings => {
+          if (mappings.length) {
+            return [mappings[0], mappings[0]]
+          } else {
+            return decodeMapping
+          }
+        })
         let directions = ["from", "to"]
         let memberFields = ["memberSet", "memberList", "memberChoice"]
-        promises.push((() => {
+        promises.push(loadMapping.then(( [mappingFromQuery, original = null] ) => {
           let promises = []
           for (let direction of directions) {
             // Get scheme from store
@@ -430,10 +440,11 @@ export default {
             this.$store.commit({
               type: "mapping/set",
               mapping: mappingFromQuery,
+              original,
               noQueryRefresh: true
             })
           })
-        })())
+        }))
       }
 
       if (promises.length) {

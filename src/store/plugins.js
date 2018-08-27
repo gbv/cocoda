@@ -144,6 +144,10 @@ const routerParamPlugin = store => {
       // Add mapping if either fromScheme or toScheme exists
       if (store.state.mapping.mapping.fromScheme || store.state.mapping.mapping.toScheme) {
         query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+        // If an original mapping exists for the current mapping, save its identifier as well
+        if (store.state.mapping.original) {
+          query.mappingId = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+        }
       }
       // Push route
       router.push({ query })

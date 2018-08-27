@@ -275,6 +275,13 @@ function getLocalMappings(params = {}) {
         })
       })
     }
+    if (params.identifier) {
+      mappings = mappings.filter(mapping => {
+        return params.identifier.split("|").map(identifier => {
+          return (mapping.identifier || []).includes(identifier)
+        }).reduce((current, total) => current || total)
+      })
+    }
     return mappings
   }).then(mappings => {
     // Add "LOCAL = true" for all mappings.
