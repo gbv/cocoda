@@ -18,8 +18,13 @@ const mutations = {
       state["concept"][isLeft] = null
     }
   },
-  set (state, { kind, isLeft, value }) {
-    state[kind][isLeft] = value
+  set (state, { kind, isLeft, value, concept, scheme }) {
+    if (kind == "both") {
+      state["scheme"][isLeft] = scheme
+      state["concept"][isLeft] = concept
+    } else {
+      state[kind][isLeft] = value
+    }
   },
 }
 

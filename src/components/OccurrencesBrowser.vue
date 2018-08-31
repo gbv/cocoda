@@ -17,9 +17,9 @@
           :item="data.value"
           :show-text="false"
           :show-tooltip="true"
-          :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true])"
+          :is-link="data.value != null"
           :is-highlighted="$jskos.compare(data.value, selected.concept[true])"
-          @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[true]) && setSelected('concept', true, data.value)" />
+          @click.native="data.value && setSelected('concept', true, data.value)" />
       </span>
       <span
         slot="to"
@@ -28,9 +28,9 @@
           :item="data.value"
           :show-text="false"
           :show-tooltip="true"
-          :is-link="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false])"
+          :is-link="data.value != null"
           :is-highlighted="$jskos.compare(data.value, selected.concept[false])"
-          @click.native="data.value && $util.canConceptBeSelected(data.value, selected.scheme[false]) && setSelected('concept', false, data.value)" />
+          @click.native="data.value && setSelected('concept', false, data.value)" />
       </span>
       <span
         slot="occurrences"

@@ -10,8 +10,8 @@ const selectedPlugin = store => {
     if (mutation.type == "selected/set") {
       let isLeft = mutation.payload.isLeft
       let noQueryRefresh = mutation.payload && mutation.payload.noQueryRefresh
-      if (mutation.payload.kind == "concept") {
-        let concept = mutation.payload.value
+      if (mutation.payload.kind == "concept" || mutation.payload.kind == "both") {
+        let concept = mutation.payload.value || mutation.payload.concept
         if (!concept) {
           store.commit({
             type: "alerts/add",

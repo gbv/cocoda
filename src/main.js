@@ -4,6 +4,8 @@ import { mapActions, mapMutations } from "vuex"
 
 Vue.config.productionTip = false
 
+import _ from "lodash"
+
 // Import BootstrapVue and associated files
 import BootstrapVue from "bootstrap-vue"
 Vue.use(BootstrapVue)
@@ -62,6 +64,27 @@ Vue.mixin({
   },
   methods: {
     setSelected(kind, isLeft, value, noQueryRefresh = false) {
+      // Apply logic to selecting concepts (see discussion in #118).
+      if (kind == "concept" && value != null) {
+        let conceptScheme = this.$store.getters["objects/get"]({ uri: _.get(value, "inScheme[0].uri") })
+        if (this.selected.scheme[isLeft] == null || this.$jskos.compare(this.selected.scheme[isLeft], conceptScheme)) {
+          // If the scheme on the same side is null or the same as the concept's scheme, don't change anything.
+        } else if (this.$jskos.compare(this.selected.scheme[!isLeft], conceptScheme)) {
+          // Else, if the scheme on the other side matches the concept's scheme, change sides to that.
+          isLeft = !isLeft
+        } else {
+          // Else, don't change side, but also open the concept's scheme on that side.
+          this.$store.commit({
+            type: "selected/set",
+            kind: "both",
+            isLeft,
+            scheme: conceptScheme,
+            concept: value,
+            noQueryRefresh
+          })
+          return
+        }
+      }
       if (value) {
         this.$store.commit({
           type: "selected/set",

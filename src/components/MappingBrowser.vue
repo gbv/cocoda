@@ -20,10 +20,10 @@
             :item="concept"
             :show-text="false"
             :show-tooltip="true"
-            :is-link="$util.canConceptBeSelected(concept, selected.scheme[true])"
+            :is-link="true"
             :is-highlighted="$jskos.compare(concept, selected.concept[true])"
             @mouseover.native="hover(concept)"
-            @click.native="$util.canConceptBeSelected(concept, selected.scheme[true]) && setSelected('concept', true, concept)" />
+            @click.native="setSelected('concept', true, concept)" />
         </span>
         <span
           slot="targetConcepts"
@@ -35,10 +35,10 @@
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
-              :is-link="$util.canConceptBeSelected(concept, selected.scheme[false])"
+              :is-link="true"
               :is-highlighted="$jskos.compare(concept, selected.concept[false])"
               @mouseover.native="hover(concept)"
-              @click.native="$util.canConceptBeSelected(concept, selected.scheme[false]) && setSelected('concept', false, concept)" />
+              @click.native="setSelected('concept', false, concept)" />
             <br>
           </span>
         </span>
