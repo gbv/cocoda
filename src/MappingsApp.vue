@@ -119,7 +119,7 @@
           'mappingTable-short': mappings.length <= 2
         }"
       >
-        <b-row>
+        <b-row v-if="totalCount > 0">
           <b-col
             cols="12" >
             <b-pagination
@@ -146,7 +146,7 @@
             cols="12"
             class="text-center" >
             <p>{{ totalCount }} results</p>
-            <p v-if="downloadUrl">
+            <p v-if="downloadUrl && totalCount > 0">
               <a :href="downloadUrl + 'json'">
                 <font-awesome-icon icon="download" /> .json
               </a> |
