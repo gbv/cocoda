@@ -64,7 +64,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: "index.html",
-      chunks: ["mainApp"],
+      chunks: ["manifest", "vendor", "app"],
       inject: true,
       minify: {
         removeComments: true,
@@ -79,7 +79,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: "mappings.html",
       template: "mappings.html",
-      chunks: ["mappingsApp"],
+      chunks: ["manifest", "vendor", "mappingsApp"],
       inject: true,
       minify: {
         removeComments: true,
