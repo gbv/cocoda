@@ -327,9 +327,18 @@ export default {
         let
           fromScheme = item.mapping.fromScheme.uri,
           toScheme = item.mapping.toScheme.uri,
-          identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+          identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:")),
+          concepts = { from: "", to: "" }
+        for (let fromTo of Object.keys(concepts)) {
+          for (let bundle of ["memberSet", "memberChoice", "memberList"]) {
+            let uri = _.get(item.mapping, `${fromTo}.${bundle}[0].uri`)
+            if (uri) {
+              concepts[fromTo] = uri
+            }
+          }
+        }
         if (fromScheme && toScheme && identifier) {
-          window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}`)
+          window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`)
         } else {
           this.alert("Mapping could not be opened in Cocoda.", null, "danger")
         }
