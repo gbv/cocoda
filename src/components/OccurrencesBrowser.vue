@@ -18,7 +18,7 @@
           :show-text="false"
           :show-tooltip="true"
           :is-link="data.value != null"
-          :is-highlighted="$jskos.compare(data.value, selected.concept[true])"
+          :is-highlighted="$jskos.compare(data.value, selected.concept[true]) || $jskos.compare(data.value, selected.concept[false])"
           @click.native="data.value && setSelected('concept', true, data.value)" />
       </span>
       <span
@@ -29,7 +29,7 @@
           :show-text="false"
           :show-tooltip="true"
           :is-link="data.value != null"
-          :is-highlighted="$jskos.compare(data.value, selected.concept[false])"
+          :is-highlighted="$jskos.compare(data.value, selected.concept[false]) || $jskos.compare(data.value, selected.concept[true])"
           @click.native="data.value && setSelected('concept', false, data.value)" />
       </span>
       <span
