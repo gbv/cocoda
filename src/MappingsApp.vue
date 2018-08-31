@@ -29,14 +29,14 @@
               :state="sourceScheme == '' ? null : fromScheme != null"
               type="text"
               placeholder="scheme"
-              @keyup.enter.native="search" />
+              @keyup.enter.native="searchClicked" />
           </b-col>
           <b-col cols="5">
             <b-form-input
               v-model="sourceNotation"
               type="text"
               placeholder="notation"
-              @keyup.enter.native="search" />
+              @keyup.enter.native="searchClicked" />
           </b-col>
           <b-col cols="2">
             <b-button
@@ -58,14 +58,14 @@
               :state="targetScheme == '' ? null : toScheme != null"
               type="text"
               placeholder="scheme"
-              @keyup.enter.native="search" />
+              @keyup.enter.native="searchClicked" />
           </b-col>
           <b-col cols="5">
             <b-form-input
               v-model="targetNotation"
               type="text"
               placeholder="notation"
-              @keyup.enter.native="search" />
+              @keyup.enter.native="searchClicked" />
           </b-col>
           <b-col cols="2" />
         </b-row>
@@ -123,7 +123,7 @@
           <b-col
             cols="12" >
             <b-pagination
-              v-model="currentPage"
+              v-model="page"
               :total-rows="totalCount"
               :per-page="10"
               class="justify-content-center"
@@ -201,7 +201,16 @@ export default {
           title: "Open in Cocoda",
           icon: "share"
         }
-      ]
+      ],
+      // Properties for URL parameters
+      properties: {
+        sourceScheme: "fromScheme",
+        sourceNotation: "from",
+        targetScheme: "toScheme",
+        targetNotation: "to",
+        type: "type",
+        currentPage: "page",
+      }
     }
   },
   computed: {
@@ -234,17 +243,29 @@ export default {
           _.get(scheme, "notation[0]", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase()
       )
     },
+    page: {
+      get() {
+        return parseInt(this.currentPage) || 1
+      },
+      set(value) {
+        this.currentPage = value
+      }
+    },
   },
   watch: {
     schemes() {
       if (this.schemes) {
         this.loading = false
+        // Load search from parameters
+        this.loadFromParameters()
       } else {
         this.loading = true
       }
     },
-    currentPage() {
-      this.search()
+    currentPage(newValue) {
+      if (newValue) {
+        this.search()
+      }
     },
   },
   created() {
@@ -259,28 +280,69 @@ export default {
       console.warn("Error fetching mapping schemes:", error)
       this.schemes = []
     })
+    // Load from parameters on popstate (when using the browser's forward and backward buttons).
+    window.addEventListener("popstate", () => {
+      this.loadFromParameters()
+    })
   },
   methods: {
+    loadFromParameters() {
+      this.clear()
+      let query = this.$route.query
+      let search = false
+      _.forEach(this.properties, (value, key) => {
+        if (query[value] && query[value] != this[key]) {
+          this[key] = query[value]
+          search = true
+        }
+      })
+      if (search) {
+        // FIXME: saveToParameters will be called even with parameter save = false.
+        this.search(false)
+      }
+    },
+    saveToParameters() {
+      let query = {}
+      _.forEach(this.properties, (value, key) => {
+        if (this[key]) {
+          query[value] = this[key]
+        }
+      })
+      this.$router.push({ query })
+    },
     clearClicked() {
-      this.sourceNotation = ""
-      this.sourceScheme = ""
-      this.targetNotation = ""
-      this.targetScheme = ""
-      this.creator = ""
-      this.type = null
-      this.mappings = []
-      this.totalCount = 0
-      this.downloadUrl = null
+      this.clear()
+      this.saveToParameters()
     },
     swapClicked() {
       [this.sourceScheme, this.sourceNotation, this.targetScheme, this.targetNotation] = [this.targetScheme, this.targetNotation, this.sourceScheme, this.sourceNotation]
       this.searchClicked()
     },
     searchClicked() {
-      this.currentPage = 1
-      this.search()
+      if (this.currentPage == 1) {
+        this.search()
+      } else {
+        this.currentPage = 1
+        // Changing currentPage triggers this.search().
+      }
     },
-    search() {
+    clear() {
+      this.sourceNotation = ""
+      this.sourceScheme = ""
+      this.targetNotation = ""
+      this.targetScheme = ""
+      this.creator = ""
+      this.type = null
+      this.currentPage = 0
+      this.mappings = []
+      this.totalCount = 0
+      this.downloadUrl = null
+    },
+    search(save = true) {
+      // Save inputs to parameters
+      if (save) {
+        this.saveToParameters()
+      }
       // Set unique ID for this request
       let loadingId = this.$util.generateID()
       this.loadingId = loadingId
@@ -305,11 +367,11 @@ export default {
         params: {
           from, to, fromScheme, toScheme, type,
           limit: 10,
-          offset: (this.currentPage - 1) * 10,
+          offset: (this.page - 1) * 10,
         }
       }).then(({ data, headers }) => {
         if (this.loadingId == loadingId) {
-          this.mappings = data
+          this.mappings = data || []
           this.totalCount = parseInt(headers["x-total-count"])
           if (!this.totalCount) {
             this.totalCount = data.length
