@@ -90,7 +90,12 @@
           <b-form-checkbox
             v-model="showOnlyLocal"
             style="user-select: none;">
-            only local mappings
+            only local
+          </b-form-checkbox>
+          <b-form-checkbox
+            v-model="showReverse"
+            style="user-select: none;">
+            reverse
           </b-form-checkbox>
         </div>
         <div style="flex: 1" />
@@ -168,15 +173,21 @@ export default {
               item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
               item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
               // Filter mappings depending on option
-              if (!this.showAll) {
-                // Only show if source and target schemes match with selected schemes
-                if(!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true]) || !this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
+              if (!this.showAll && this.selected.scheme[true] != null && this.selected.scheme[false] != null) {
+                // Hide if schemes do not match at all
+                if((!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true]) || !this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) && (!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[false]) || !this.$jskos.compare(mapping.toScheme, this.selected.scheme[true]))) {
                   continue
                 }
               }
               if (this.showOnlyLocal) {
                 // Hide non-local mappings
                 if (!mapping.LOCAL) {
+                  continue
+                }
+              }
+              if (!this.showReverse) {
+                // Hide reverse mappings
+                if (!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true]) && !this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
                   continue
                 }
               }
@@ -302,6 +313,18 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingBrowserOnlyLocal",
+          value
+        })
+      }
+    },
+    showReverse: {
+      get() {
+        return this.$settings.mappingBrowserShowReverse
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserShowReverse",
           value
         })
       }

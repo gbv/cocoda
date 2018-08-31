@@ -4,6 +4,7 @@ const defaultSettings = {
   creator: "You",
   mappingBrowserAllSchemes: true,
   mappingBrowserOnlyLocal: false,
+  mappingBrowserShowReverse: true,
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
   minimized: {},
