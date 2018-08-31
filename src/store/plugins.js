@@ -130,11 +130,11 @@ const routerParamPlugin = store => {
       }
       // Add selected schemes and concepts
       let kinds = ["scheme", "concept"]
-      let sides = { true: "Left", false: "Right" }
+      let sides = { true: "from", false: "to" }
       let query = {}
       for (let kind of kinds) {
         for (let isLeft of [true, false]) {
-          let key = kind + sides[isLeft]
+          let key = sides[isLeft] + (kind == "scheme" ? "Scheme" : "")
           let object = store.state.selected[kind][isLeft]
           if (object && object.uri) {
             query[key] = object.uri
@@ -146,7 +146,7 @@ const routerParamPlugin = store => {
         query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
         // If an original mapping exists for the current mapping, save its identifier as well
         if (store.state.mapping.original) {
-          query.mappingId = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+          query.identifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
         }
       }
       // Push route

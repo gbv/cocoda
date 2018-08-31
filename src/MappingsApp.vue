@@ -329,7 +329,7 @@ export default {
           toScheme = item.mapping.toScheme.uri,
           identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
         if (fromScheme && toScheme && identifier) {
-          window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&mappingId=${identifier}&schemeLeft=${fromScheme}&schemeRight=${toScheme}`)
+          window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}`)
         } else {
           this.alert("Mapping could not be opened in Cocoda.", null, "danger")
         }

@@ -350,12 +350,12 @@ export default {
       // Prepare application by selecting schemes and concepts from URL parameters.
       let selected = {
         scheme: {
-          true: query.schemeLeft,
-          false: query.schemeRight
+          true: query.fromScheme,
+          false: query.toScheme
         },
         concept: {
-          true: query.conceptLeft,
-          false: query.conceptRight
+          true: query.from,
+          false: query.to
         }
       }
       let promises = []
@@ -405,7 +405,7 @@ export default {
           }
           resolve([mappingFromQuery])
         })
-        let loadMapping = this.$api.getMappings({ identifier: query["mappingId"] || "" }).then(mappings => {
+        let loadMapping = this.$api.getMappings({ identifier: query["identifier"] || "" }).then(mappings => {
           if (mappings.length) {
             return [mappings[0], mappings[0]]
           } else {
