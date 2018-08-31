@@ -191,7 +191,6 @@ export default {
           hashList.push(hash)
         }
       }
-      console.log(items)
       return items
     },
   },

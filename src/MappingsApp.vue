@@ -281,7 +281,6 @@ export default {
       this.search()
     },
     search() {
-      console.log(`From ${this.sourceScheme} ${this.sourceNotation} to ${this.targetScheme} ${this.targetNotation}, creator ${this.creator}, type ${this.type}`)
       // Set unique ID for this request
       let loadingId = this.$util.generateID()
       this.loadingId = loadingId
@@ -310,14 +309,11 @@ export default {
         }
       }).then(({ data, headers }) => {
         if (this.loadingId == loadingId) {
-          console.log(`Found ${data.length} mappings.`)
           this.mappings = data
           this.totalCount = parseInt(headers["x-total-count"])
           if (!this.totalCount) {
             this.totalCount = data.length
           }
-        } else {
-          console.log("New Request")
         }
       }).catch(() => null).then(() => {
         if (this.loadingId == loadingId) {
@@ -327,15 +323,16 @@ export default {
       })
     },
     tableClicked({ name, item }) {
-      console.log("Table clicked", name, item)
-      let
-        fromScheme = item.mapping.fromScheme.uri,
-        toScheme = item.mapping.toScheme.uri,
-        identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
-      if (fromScheme && toScheme && identifier) {
-        window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&mappingId=${identifier}&schemeLeft=${fromScheme}&schemeRight=${toScheme}`)
-      } else {
-        this.alert("Mapping could not be opened in Cocoda.", null, "danger")
+      if (name == "open") {
+        let
+          fromScheme = item.mapping.fromScheme.uri,
+          toScheme = item.mapping.toScheme.uri,
+          identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+        if (fromScheme && toScheme && identifier) {
+          window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&mappingId=${identifier}&schemeLeft=${fromScheme}&schemeRight=${toScheme}`)
+        } else {
+          this.alert("Mapping could not be opened in Cocoda.", null, "danger")
+        }
       }
     },
   },
