@@ -242,7 +242,8 @@ export default {
         right: {
           showTopConceptsInScheme: false
         }
-      }
+      },
+      loadFromParametersOnce: _.once(this.loadFromParameters),
     }
   },
   computed: {
@@ -279,8 +280,10 @@ export default {
   },
   watch: {
     schemes() {
-      this.loadFromParameters()
-    }
+      if (this.schemes.length) {
+        this.loadFromParametersOnce()
+      }
+    },
   },
   created() {
     // Set loading to true if schemes are not loaded yet.
