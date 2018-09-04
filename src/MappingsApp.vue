@@ -441,7 +441,6 @@ html, body {
   text-align: right;
 }
 .mappingTable {
-  margin-top: 30px;
   padding-bottom: 30px;
 }
 .mappingTable .flexibleTable-body {
