@@ -44,6 +44,15 @@
                 slot-scope="{ value }" >
                 {{ (parseInt(value) || "?").toLocaleString() }}
               </span>
+              <span
+                slot="actions"
+                slot-scope="{ item }" >
+                <font-awesome-icon
+                  v-b-tooltip.hover="{ title: 'Show Mappings', delay: $util.delay.medium }"
+                  icon="share"
+                  class="button"
+                  @click="showMappingsForConcordance(item.concordance)" />
+              </span>
             </flexible-table>
             <p style="text-align: right; font-weight: bold;">
               Total: {{ concordances.reduce((total, current) => {
@@ -129,18 +138,22 @@
                 <b-col cols="2" />
               </b-row>
               <b-row>
-                <b-col cols="2" />
-                <b-col cols="2">
+                <b-col
+                  cols="2"
+                  class="label">Concordance</b-col>
+                <b-col cols="4">
+                  <b-form-select
+                    v-model="concordance"
+                    :options="concordanceOptions" />
+                </b-col>
+                <b-col
+                  class="text-right"
+                  cols="4" >
                   <b-button
                     variant="danger"
                     @click="clearClicked" >
                     <font-awesome-icon icon="ban" /> Clear
                   </b-button>
-                </b-col>
-                <b-col cols="4" />
-                <b-col
-                  class="text-right"
-                  cols="2" >
                   <b-button
                     variant="primary"
                     @click="searchClicked" >
@@ -233,6 +246,7 @@ export default {
         }
       },
       type: null,
+      concordance: null,
       sourceScheme: "",
       sourceNotation: "",
       targetScheme: "",
@@ -253,6 +267,7 @@ export default {
         targetNotation: "to",
         creator: "creator",
         type: "type",
+        concordance: "concordance",
         currentPage: "page",
       }
     }
@@ -295,6 +310,21 @@ export default {
         this.currentPage = value
       }
     },
+    concordanceOptions() {
+      let options = [
+        { value: null, text: "all concordances" }
+      ]
+
+      for (let item of this.concordanceTableItems) {
+        let text = `${item.from} to ${item.to} (${item.description})`
+        options.push({
+          value: item.concordance.uri,
+          text
+        })
+      }
+
+      return options
+    },
     concordanceTableFields() {
       return [
         {
@@ -313,12 +343,11 @@ export default {
         },
         {
           key: "description",
-          width: "34%",
+          width: "30%",
           minWidth: "",
           sortable: true,
           align: "left",
         },
-
         {
           key: "creator",
           width: "20%",
@@ -326,7 +355,6 @@ export default {
           sortable: true,
           align: "left",
         },
-
         {
           key: "download",
           width: "12%",
@@ -334,7 +362,6 @@ export default {
           sortable: false,
           align: "left",
         },
-
         {
           key: "mappings",
           width: "14%",
@@ -342,6 +369,13 @@ export default {
           sortable: true,
           align: "right",
           compare: (a, b) => (parseInt(a.mappings) || 0) - (parseInt(b.mappings) || 0),
+        },
+        {
+          key: "actions",
+          label: "",
+          width: "4%",
+          sortable: false,
+          align: "right",
         },
       ]
     },
@@ -436,6 +470,7 @@ export default {
           query[value] = this[key]
         }
       })
+      query.tab = this.tab
       this.$router.push({ query })
     },
     clearClicked() {
@@ -461,6 +496,7 @@ export default {
       this.targetScheme = ""
       this.creator = ""
       this.type = null
+      this.concordance = null
       this.currentPage = 0
       this.mappings = []
       this.totalCount = 0
@@ -487,14 +523,15 @@ export default {
         toScheme = _.get(this.toScheme, "uri", ""),
         creator = this.creator,
         type = this.type || "",
+        partOf = this.concordance || "",
         enc = encodeURIComponent
       // Set download URL
       let baseUrl = this.config.mappingProviders[0].url
-      this.downloadUrl = `${baseUrl}?from=${enc(from)}&to=${enc(to)}&fromScheme=${enc(fromScheme)}&toScheme=${enc(toScheme)}&creator=${enc(creator)}&type=${enc(type)}&download=`
+      this.downloadUrl = `${baseUrl}?from=${enc(from)}&to=${enc(to)}&fromScheme=${enc(fromScheme)}&toScheme=${enc(toScheme)}&creator=${enc(creator)}&partOf=${enc(partOf)}&type=${enc(type)}&download=`
       // Find fromScheme/toScheme in schemes. FIXME: Use local suggest when typing!
       axios.get(baseUrl, {
         params: {
-          from, to, fromScheme, toScheme, type, creator,
+          from, to, fromScheme, toScheme, type, creator, partOf,
           limit: 10,
           offset: (this.page - 1) * 10,
         }
@@ -534,6 +571,14 @@ export default {
           this.alert("Mapping could not be opened in Cocoda.", null, "danger")
         }
       }
+    },
+    showMappingsForConcordance(concordance) {
+      // Change tab to mappings.
+      this.tab = 1
+      // Change concordance.
+      this.concordance = concordance.uri
+      // Search.
+      this.searchClicked()
     },
     nameOfDistribution(distribution) {
       let mimetype = distribution.mimetype
@@ -579,6 +624,7 @@ html, body {
   text-align: right;
 }
 .mappingTable {
+  margin-top: 15px;
   padding-bottom: 10px;
 }
 .mappingTable .flexibleTable-body {
