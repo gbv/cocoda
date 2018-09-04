@@ -95,7 +95,7 @@
           <b-form-checkbox
             v-model="showReverse"
             style="user-select: none;">
-            reverse
+            both sides
           </b-form-checkbox>
         </div>
         <div style="flex: 1" />
