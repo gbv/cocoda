@@ -72,14 +72,13 @@
         <b-row>
           <b-col
             cols="2"
-            class="label"><!-- Creator --></b-col>
+            class="label">Creator</b-col>
           <b-col cols="3">
-            <!-- <b-form-input
+            <b-form-input
               v-model="creator"
-              disabled
               type="text"
               placeholder="creator"
-              @keyup.enter.native="search" /> -->
+              @keyup.enter.native="searchClicked" />
           </b-col>
           <b-col
             cols="1"
@@ -208,6 +207,7 @@ export default {
         sourceNotation: "from",
         targetScheme: "toScheme",
         targetNotation: "to",
+        creator: "creator",
         type: "type",
         currentPage: "page",
       }
@@ -357,15 +357,16 @@ export default {
         to = this.targetNotation,
         fromScheme = _.get(this.fromScheme, "uri", ""),
         toScheme = _.get(this.toScheme, "uri", ""),
+        creator = this.creator,
         type = this.type || "",
         enc = encodeURIComponent
       // Set download URL
       let baseUrl = this.config.mappingProviders[0].url
-      this.downloadUrl = `${baseUrl}?from=${enc(from)}&to=${enc(to)}&fromScheme=${enc(fromScheme)}&toScheme=${enc(toScheme)}&type=${enc(type)}&download=`
+      this.downloadUrl = `${baseUrl}?from=${enc(from)}&to=${enc(to)}&fromScheme=${enc(fromScheme)}&toScheme=${enc(toScheme)}&creator=${enc(creator)}&type=${enc(type)}&download=`
       // Find fromScheme/toScheme in schemes. FIXME: Use local suggest when typing!
       axios.get(baseUrl, {
         params: {
-          from, to, fromScheme, toScheme, type,
+          from, to, fromScheme, toScheme, type, creator,
           limit: 10,
           offset: (this.page - 1) * 10,
         }
