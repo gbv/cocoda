@@ -350,7 +350,6 @@ export default {
     },
     loadFromParameters() {
       this.loading = true
-      console.log(JSON.stringify(this.$route.query))
 
       // Check route to see if navigation is necessary
       let query = this.$route.query
