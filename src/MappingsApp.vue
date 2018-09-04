@@ -575,9 +575,12 @@ export default {
     showMappingsForConcordance(concordance) {
       // Change tab to mappings.
       this.tab = 1
+      // Clear all other search parameters.
+      this.clear()
       // Change concordance.
       this.concordance = concordance.uri
       // Search.
+      this.currentPage = 1
       this.searchClicked()
     },
     nameOfDistribution(distribution) {
