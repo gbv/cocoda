@@ -101,6 +101,32 @@ Vue.mixin({
           noQueryRefresh
         })
       }
+    },
+    getRouterUrl(object, isLeft) {
+      let query = _.cloneDeep(this.$route.query)
+      let fromTo = isLeft ? "from" : "to"
+      if (jskos.isScheme(object) || !object.inScheme) {
+      // Consider object a scheme
+        query[fromTo] = ""
+        query[fromTo + "Scheme"] = object.uri
+      } else {
+      // Consider object a concept
+        let conceptScheme = this.$store.getters["objects/get"]({ uri: _.get(object, "inScheme[0].uri") })
+        if (this.selected.scheme[isLeft] == null || this.$jskos.compare(this.selected.scheme[isLeft], conceptScheme)) {
+        // If the scheme on the same side is null or the same as the concept's scheme, don't change anything.
+        } else if (this.$jskos.compare(this.selected.scheme[!isLeft], conceptScheme)) {
+        // Else, if the scheme on the other side matches the concept's scheme, change sides to that.
+          fromTo = fromTo == "from" ? "to" : "from"
+        }
+        query[fromTo + "Scheme"] = _.get(object, "inScheme[0].uri")
+        query[fromTo] = object.uri
+      }
+      // Build URL
+      let url = "/?"
+      _.forOwn(query, (value, key) => {
+        url += `${key}=${encodeURIComponent(value)}&`
+      })
+      return url.substring(0, url.length - 1)
     }
   }
 })

@@ -18,8 +18,8 @@
           :show-text="false"
           :show-tooltip="true"
           :is-link="data.value != null"
-          :is-highlighted="$jskos.compare(data.value, selected.concept[true]) || $jskos.compare(data.value, selected.concept[false])"
-          @click.native="data.value && setSelected('concept', true, data.value)" />
+          :is-left="true"
+          :is-highlighted="$jskos.compare(data.value, selected.concept[true]) || $jskos.compare(data.value, selected.concept[false])" />
       </span>
       <span
         slot="to"
@@ -29,8 +29,8 @@
           :show-text="false"
           :show-tooltip="true"
           :is-link="data.value != null"
-          :is-highlighted="$jskos.compare(data.value, selected.concept[false]) || $jskos.compare(data.value, selected.concept[true])"
-          @click.native="data.value && setSelected('concept', false, data.value)" />
+          :is-left="false"
+          :is-highlighted="$jskos.compare(data.value, selected.concept[false]) || $jskos.compare(data.value, selected.concept[true])" />
       </span>
       <span
         slot="occurrences"

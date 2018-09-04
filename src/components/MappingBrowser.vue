@@ -21,9 +21,9 @@
             :show-text="false"
             :show-tooltip="true"
             :is-link="true"
+            :is-left="true"
             :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-            @mouseover.native="hover(concept)"
-            @click.native="setSelected('concept', true, concept)" />
+            @mouseover.native="hover(concept)" />
         </span>
         <span
           slot="targetConcepts"
@@ -36,9 +36,9 @@
               :show-text="false"
               :show-tooltip="true"
               :is-link="true"
+              :is-left="false"
               :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
-              @mouseover.native="hover(concept)"
-              @click.native="setSelected('concept', false, concept)" />
+              @mouseover.native="hover(concept)" />
             <br>
           </span>
         </span>

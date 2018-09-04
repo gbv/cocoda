@@ -23,16 +23,17 @@
             selected: isSelected
         }" />
       </div>
-      <div
+      <a
+        :href="getRouterUrl(concept, isLeft)"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
-        @click="onClick" >
+        @click.stop.prevent="onClick" >
         <item-name
           :item="concept"
           :is-highlighted="isSelected" />
-      </div>
+      </a>
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
         v-show="$store.getters['mapping/canAdd'](concept, selected.scheme[isLeft], isLeft)"

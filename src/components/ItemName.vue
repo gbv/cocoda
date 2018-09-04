@@ -1,22 +1,30 @@
 <template>
   <div
     v-if="item != null"
-    :class="[
-      {
-        'itemName-hovered': isLink && isHovered,
-        'itemName-highlighted': isHighlighted,
-        'fontWeight-heavy': isHighlighted
-      },
-      'fontSize-'+(fontSize || 'normal')
-    ]"
     class="itemName"
     @mouseover="mouseOver"
-    @mouseout="mouseOut" >
-    <!-- Text for notation -->
-    <notation-text
-      :item="item"
-      :class="{ 'fontWeight-heavy': showText }"
-      :id="tooltipDOMID" />
+    @mouseout="mouseOut">
+    <div
+      :is="isLink ? 'router-link' : 'div'"
+      :to="getRouterUrl(item, isLeft)"
+      :class="[
+        {
+          'itemName-hovered': isLink && isHovered,
+          'itemName-highlighted': isHighlighted,
+          'fontWeight-heavy': isHighlighted
+        },
+        'fontSize-'+(fontSize || 'normal')
+    ]" >
+      <!-- Text for notation -->
+      <notation-text
+        :item="item"
+        :class="{ 'fontWeight-heavy': showText }"
+        :id="tooltipDOMID" />
+      <!-- Text for prefLabel -->
+      <prefLabel-text
+        v-if="showText"
+        :item="item" />
+    </div>
     <!-- Tooltip for prefLabel if only notation is shown -->
     <b-tooltip
       v-if="showTooltip && item.prefLabel && (item.prefLabel.de || item.prefLabel.en)"
@@ -24,10 +32,6 @@
       :target="tooltipDOMID" >
       {{ trimTooltip(item.prefLabel.de || item.prefLabel.en) }}
     </b-tooltip>
-    <!-- Text for prefLabel -->
-    <prefLabel-text
-      v-if="showText"
-      :item="item" />
   </div>
 </template>
 
@@ -67,6 +71,13 @@ export default {
     isLink: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Only for isLink: Side on which to open item.
+     */
+    isLeft: {
+      type: Boolean,
+      default: true
     },
     /**
      * Determines whether to show the concepts label as a tooltip.
@@ -184,11 +195,15 @@ Vue.component("prefLabel-text", {
   display: inline;
   user-select: none;
 }
+.itemName > * {
+  color: @color-text-dark !important;
+  display: inline;
+}
 .itemName-hovered {
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .itemName-highlighted {
-  color: @color--itemName-highlighted;
+  color: @color--itemName-highlighted !important;
 }
 </style>

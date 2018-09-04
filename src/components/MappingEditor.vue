@@ -67,8 +67,8 @@
             <item-name
               :item="concept"
               :is-link="true"
-              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-              @click.native="setSelected('concept', isLeft, concept)" />
+              :is-left="isLeft"
+              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
             <!-- Delete button for concept -->
             <div
               class="button mappingConceptDelete fontSize-large"

@@ -107,8 +107,8 @@
                 <item-name
                   :item="scheme"
                   :is-link="true"
-                  class="button"
-                  @click.native="setSelected('scheme', isLeft, scheme)"
+                  :is-left="isLeft"
+                  class="quickSelectionItem"
                 />
               </p>
               <br><br>
@@ -122,8 +122,8 @@
                 <item-name
                   :item="concept"
                   :is-link="true"
-                  class="button"
-                  @click.native="setSelected('concept', isLeft, concept)"
+                  :is-left="isLeft"
+                  class="quickSelectionItem"
                 />
               </p>
             </div>
@@ -284,6 +284,9 @@ export default {
         this.loadFromParametersOnce()
       }
     },
+    $route() {
+      this.loadFromParameters()
+    },
   },
   created() {
     // Set loading to true if schemes are not loaded yet.
@@ -347,6 +350,7 @@ export default {
     },
     loadFromParameters() {
       this.loading = true
+      console.log(JSON.stringify(this.$route.query))
 
       // Check route to see if navigation is necessary
       let query = this.$route.query
@@ -573,6 +577,9 @@ html, body {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+.quickSelectionItem > a > span {
+  color: @color-button !important;
 }
 
 .alertsContainer {

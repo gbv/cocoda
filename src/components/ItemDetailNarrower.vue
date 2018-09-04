@@ -18,8 +18,8 @@
       <item-name
         :item="concept"
         :is-link="true"
-        font-size="small"
-        @click.native="setSelected('concept', isLeft, concept)" />
+        :is-left="isLeft"
+        font-size="small" />
     </div>
     <!-- Show LoadingIndicator when narrower exist, but are not loaded yet -->
     <loading-indicator

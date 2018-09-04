@@ -10,8 +10,8 @@
         <item-name
           :item="selected.scheme[isLeft]"
           :is-link="true"
-          font-size="small"
-          @click.native="setSelected('concept', isLeft, null)" />
+          :is-left="isLeft"
+          font-size="small" />
       </div>
       <!-- Ancestors -->
       <div
@@ -25,8 +25,8 @@
           <item-name
             :item="concept"
             :is-link="true"
-            font-size="small"
-            @click.native="setSelected('concept', isLeft, concept)" />
+            :is-left="isLeft"
+            font-size="small" />
         </span>
         <span
           v-b-tooltip.hover="{ title: 'show all ancestors', delay: $util.delay.medium }"
@@ -48,8 +48,8 @@
         <item-name
           :item="concept"
           :is-link="true"
-          font-size="small"
-          @click.native="setSelected('concept', isLeft, concept)" />
+          :is-left="isLeft"
+          font-size="small" />
       </div>
       <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
       <loading-indicator
