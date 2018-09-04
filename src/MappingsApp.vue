@@ -182,7 +182,7 @@
                 <b-col
                   cols="12"
                   class="text-center" >
-                  <p>{{ totalCount }} results</p>
+                  <p>{{ totalCount.toLocaleString() }} results</p>
                   <p v-if="downloadUrl && totalCount > 0">
                     <a :href="downloadUrl + 'json'">
                       <font-awesome-icon icon="download" /> .json
