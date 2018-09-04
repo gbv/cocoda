@@ -398,7 +398,16 @@ export default {
       let concept = conceptItem.concept
       let mappings = concept.MAPPINGS
       if (!mappings) {
-        mappings =  { from: null, to: null }
+        mappings =  { from: [], to: [] }
+        // Save empty mappings to indicate that mappings are already loading.
+        this.$store.commit({
+          type: "objects/set",
+          object: concept,
+          prop: "MAPPINGS",
+          value: mappings
+        })
+      } else if (mappings.from != null && mappings.to != null) {
+        return
       }
       // Load mappings in both directions
       for (let fromTo of ["from", "to"]) {
