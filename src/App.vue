@@ -284,8 +284,29 @@ export default {
         this.loadFromParametersOnce()
       }
     },
-    $route() {
-      this.loadFromParameters()
+    $route({ query: toQuery }, { query: fromQuery }) {
+      // Only refresh when one of the scheme/concept parameters changed
+      let parameters = ["from", "fromScheme", "to", "toScheme"]
+      let refresh = false
+      for (let param of parameters) {
+        // Try to get objects for both URIs
+        let uri1 = fromQuery[param],
+          uri2 = toQuery[param],
+          object1 = this.$store.getters["objects/get"]({ uri: uri1 }),
+          object2 = this.$store.getters["objects/get"]({ uri: uri2 })
+        // Compare objects if they exist to prevent unnecessary reloads.
+        if (object1 && object2) {
+          if (!this.$jskos.compare(object1, object2)) {
+            refresh = true
+          }
+        // If at least one URI doesn't have an object, compare URIs directly.
+        } else if (uri1 != uri2) {
+          refresh = true
+        }
+      }
+      if (refresh) {
+        this.loadFromParameters()
+      }
     },
   },
   created() {
