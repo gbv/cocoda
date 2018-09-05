@@ -179,9 +179,9 @@
               </b-row>
               <b-row>
                 <b-col
-                  v-if="totalCount > 0"
                   cols="8" >
                   <b-pagination
+                    v-if="totalCount > 0"
                     v-model="page"
                     :total-rows="totalCount"
                     :per-page="10"
