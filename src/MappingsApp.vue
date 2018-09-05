@@ -597,13 +597,11 @@ export default {
 }
 </script>
 
-<style lang="less">
-@import "./style/main.less";
+<style lang="less" scoped>
+@import "./style/z-index.less";
+@import "./style/colors.less";
+@import "./style/text-styles.less";
 
-html, body {
-  height: 100%;
-  margin: 0;
-}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -614,35 +612,48 @@ html, body {
   position: relative;
 }
 
-.search {
+#app .search {
   margin-top: 30px;
 }
-.search > .row {
+#app .search > .row {
   margin-top: 5px;
 }
-.label {
+#app .label {
   height: 38px;
   line-height: 38px;
   font-weight: bold;
   text-align: right;
 }
-.mappingTable {
+#app .mappingTable {
   margin-top: 15px;
   padding-bottom: 10px;
 }
-.mappingTable .flexibleTable-body {
+#app .mappingTable .flexibleTable-body {
   padding-bottom: 20px;
 }
-.mappingTable-short .flexibleTable-body {
+#app .mappingTable-short .flexibleTable-body {
   padding-bottom: 40px;
 }
 
-.alertsContainer {
+#app .alertsContainer {
   position: absolute;
   top: 20px;
   left: 50%;
   transform: translate(-50%, 0);
   z-index: @zIndex-8;
   width: 600px;
+}
+
+#app .button {
+  cursor: pointer;
+  user-select: none;
+  color: @color-button;
+}
+#app .button:hover {
+  color: @color-button-hover;
+}
+#app .button-disabled {
+  user-select: none;
+  color: @color-button-disabled;
 }
 </style>
