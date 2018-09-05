@@ -433,7 +433,7 @@ export default {
           resolve([mappingFromQuery])
         })
         let loadMapping = this.$api.getMappings({ identifier: query["identifier"] || "" }).then(mappings => {
-          if (mappings.length) {
+          if (query["identifier"] && mappings.length) {
             return [mappings[0], mappings[0]]
           } else {
             return decodeMapping
