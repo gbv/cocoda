@@ -23,7 +23,6 @@
           card >
           <b-tab
             title="Concordances">
-            <h2>Concordances</h2>
             <flexible-table
               :fields="concordanceTableFields"
               :items="concordanceTableItems" >
@@ -64,7 +63,6 @@
             </p>
           </b-tab>
           <b-tab title="Mappings">
-            <h2>Search Mappings</h2>
             <b-container class="search">
               <b-row>
                 <b-col
@@ -607,13 +605,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 900px;
-  margin: 30px auto;
-  padding: 40px 20px;
+  margin: 10px auto;
+  padding: 20px 20px;
   position: relative;
 }
 
 #app .search {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 #app .search > .row {
   margin-top: 5px;
@@ -627,12 +625,6 @@ export default {
 #app .mappingTable {
   margin-top: 15px;
   padding-bottom: 10px;
-}
-#app .mappingTable .flexibleTable-body {
-  padding-bottom: 20px;
-}
-#app .mappingTable-short .flexibleTable-body {
-  padding-bottom: 40px;
 }
 
 #app .alertsContainer {
@@ -655,5 +647,14 @@ export default {
 #app .button-disabled {
   user-select: none;
   color: @color-button-disabled;
+}
+</style>
+
+<style>
+#app .mappingTable .flexibleTable-body {
+  padding-bottom: 20px;
+}
+#app .mappingTable-short .flexibleTable-body {
+  padding-bottom: 40px !important;
 }
 </style>
