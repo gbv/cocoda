@@ -511,7 +511,7 @@ export default {
         if (this.loadingId == loadingId) {
           this.loading = true
         }
-      }, 100)
+      }, 150)
       // Parameters
       let
         from = this.sourceNotation,
