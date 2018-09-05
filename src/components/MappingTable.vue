@@ -50,7 +50,7 @@
         v-for="(action, index) in actions"
         :key="index"
         :icon="action.icon"
-        class="button mappingBrowser-toolbar-button"
+        class="button"
         @click="$emit('click', { name: action.name, item: data.item })" />
     </span>
     <span
@@ -203,6 +203,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../style/colors.less";
 
+.button {
+  cursor: pointer;
+  user-select: none;
+  color: @color-button;
+}
+.button:hover {
+  color: @color-button-hover;
+}
 </style>

@@ -6,11 +6,11 @@ Vue.config.productionTip = false
 
 import _ from "lodash"
 
-// Import BootstrapVue and associated files
+// Import BootstrapVue
 import BootstrapVue from "bootstrap-vue"
 Vue.use(BootstrapVue)
-import "bootstrap/dist/css/bootstrap.css"
-import "bootstrap-vue/dist/bootstrap-vue.css"
+// Note: bootstrap css files are imported only for the app.js entry point.
+// mappingsApp imports the files directly in mappings.html.
 
 // Add vue-scrollto
 var VueScrollTo = require("vue-scrollto")

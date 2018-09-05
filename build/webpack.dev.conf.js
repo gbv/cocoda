@@ -73,6 +73,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         ignore: [".*"]
       }
     ]),
+    // copy bootstrap files (for use in mappings.html)
+    new CopyWebpackPlugin([
+      {
+        from: "node_modules/bootstrap/dist/css/bootstrap.css",
+        to: path.join(config.dev.assetsSubDirectory, "css")
+      },
+      {
+        from: "node_modules/bootstrap-vue/dist/bootstrap-vue.css",
+        to: path.join(config.dev.assetsSubDirectory, "css")
+      },
+    ]),
     new VueLoaderPlugin()
   ]
 })
