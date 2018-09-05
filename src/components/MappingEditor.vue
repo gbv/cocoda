@@ -200,10 +200,8 @@ export default {
     saveMapping() {
       if (!this.canSaveMapping()) return false
       let mapping = this.prepareMapping()
-      if (!mapping.creator || mapping.creator.length == 0) {
-        let creatorName = this.$settings.creator || "You"
-        mapping.creator = [{ prefLabel: { de: creatorName } }]
-      }
+      let creatorName = this.$settings.creator || "You"
+      mapping.creator = [{ prefLabel: { de: creatorName } }]
       this.$api.saveMapping(mapping).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
