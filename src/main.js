@@ -122,7 +122,7 @@ Vue.mixin({
         query[fromTo] = object.uri
       }
       // Build URL
-      let url = "/?"
+      let url = "?"
       _.forOwn(query, (value, key) => {
         url += `${key}=${encodeURIComponent(value)}&`
       })
