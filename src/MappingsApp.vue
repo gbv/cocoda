@@ -167,18 +167,6 @@
                 'mappingTable-short': mappings.length <= 2
               }"
             >
-              <b-row v-if="totalCount > 0">
-                <b-col
-                  cols="12" >
-                  <b-pagination
-                    v-model="page"
-                    :total-rows="totalCount"
-                    :per-page="10"
-                    class="justify-content-center"
-                    style="user-select: none;"
-                    size="sm" />
-                </b-col>
-              </b-row>
               <b-row>
                 <b-col cols="12">
                   <mapping-table
@@ -191,8 +179,19 @@
               </b-row>
               <b-row>
                 <b-col
-                  cols="12"
-                  class="text-center" >
+                  v-if="totalCount > 0"
+                  cols="8" >
+                  <b-pagination
+                    v-model="page"
+                    :total-rows="totalCount"
+                    :per-page="10"
+                    class="justify-content-begin"
+                    style="user-select: none;"
+                    size="sm" />
+                </b-col>
+                <b-col
+                  cols="4"
+                  class="text-right" >
                   <p>{{ totalCount.toLocaleString() }} results</p>
                   <p v-if="downloadUrl && totalCount > 0">
                     <a :href="downloadUrl + 'json'">
