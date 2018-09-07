@@ -106,14 +106,14 @@ export default {
       return [
         {
           key: "fromScheme",
-          label: "Scheme",
+          label: "",
           width: "12%",
           minWidth: "",
           sortable: true
         },
         {
           key: "from",
-          label: "Concept",
+          label: "from",
           width: "24%",
           minWidth: "",
           sortable: true,
@@ -121,14 +121,14 @@ export default {
         },
         {
           key: "toScheme",
-          label: "Scheme",
+          label: "",
           width: "12%",
           minWidth: "",
           sortable: true
         },
         {
           key: "to",
-          label: "Concept",
+          label: "to",
           width: "24%",
           minWidth: "",
           sortable: true,
@@ -136,7 +136,7 @@ export default {
         },
         {
           key: "occurrences",
-          label: "(Co-)Occurrences",
+          label: "count",
           width: "20%",
           minWidth: "",
           sortable: true,
