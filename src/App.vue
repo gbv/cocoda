@@ -40,9 +40,7 @@
           }"
           :id="'browserComponent_' + isLeft"
           class="browser mainComponent" >
-          <minimizer
-            :is-column="true"
-            text="Concept Scheme Browser" />
+          <minimizer :is-column="true" />
           <!-- Concept scheme selection -->
           <div class="schemeSelectWrapper">
             <b-form-select

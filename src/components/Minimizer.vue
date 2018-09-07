@@ -50,7 +50,7 @@ export default {
      */
     text: {
       type: String,
-      default: "Minimized Component."
+      default: ""
     },
     /**
      * Determines whether the component is a vertical component.
@@ -64,7 +64,7 @@ export default {
     return {
       previousFlex: "",
       previousMinSizes: [],
-      minimizerSize: this.isColumn ? "80px" : "40px",
+      minimizerSize: "40px",
       minimizeHovered: false,
     }
   },
@@ -182,8 +182,6 @@ export default {
   padding-left: 6px;
 }
 .maximizeButton {
-  padding-top: 3px;
-  margin-left: 10px;
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
@@ -209,6 +207,7 @@ export default {
   left: 0;
   background-color: @color--minimizer-overlay-background;
   text-align: center;
+  letter-spacing: 0.5em;
   user-select: none;
 }
 .minimizedOverlay:hover {
