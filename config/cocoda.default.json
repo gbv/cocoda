@@ -55,7 +55,8 @@
     }
   ],
   "mappingProviders": [
-    { "url": "//coli-conc.gbv.de/api/mappings/" }
+    { "url": "//coli-conc.gbv.de/api/mappings/" },
+    { "url": "//coli-conc.gbv.de/services/wikidata/mapping" }
   ],
   "occurrenceProviders": [
     { "url": "//coli-conc.gbv.de/occurrences/api/" }
