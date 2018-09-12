@@ -168,8 +168,8 @@ export default {
             if (!hash || !hashList.includes(hash)) {
               let item = {}
               item.mapping = mapping
-              item.sourceScheme = mapping.fromScheme.notation[0].toUpperCase()
-              item.targetScheme = mapping.toScheme.notation[0].toUpperCase()
+              item.sourceScheme = (mapping.fromScheme.notation || ["?"])[0]
+              item.targetScheme = (mapping.toScheme.notation || ["?"])[0]
               item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
               item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
               // Filter mappings depending on option
