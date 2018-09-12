@@ -224,6 +224,12 @@ function get(url, axiosConfig) {
     })
 }
 
+// utility function
+function getNestedValue (obj, path) {
+  return path.split(".").reduce(
+    (o, key) => (o && o[key] !== "undefined") ? o[key] : undefined, obj)
+}
+
 function getMappings(params, local = true) {
   let promises = []
   for (let provider of config.mappingProviders) {
@@ -244,6 +250,13 @@ function getMappings(params, local = true) {
         // Add JSKOS mapping identifiers
         mapping = jskos.addMappingIdentifiers(mapping)
         mappings.push(mapping)
+        // Add fromScheme and toScheme if missing
+        if (!mapping.fromScheme) {
+          mapping.fromScheme = getNestedValue(mapping, "from.memberSet.0.inScheme")
+        }
+        if (!mapping.toScheme) {
+          mapping.toScheme = getNestedValue(mapping, "to.memberSet.0.inScheme")
+        }
       }
     }
     return mappings
