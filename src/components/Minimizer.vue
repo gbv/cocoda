@@ -177,6 +177,9 @@ export default {
 .minimizeButton {
   right: 0px;
   top: 0px;
+  background: @color-primary-0;
+  color: @color--theNavbar-text;
+  border-radius: 0 0 0 5px;
 }
 .minimizeButton {
   padding-left: 6px;

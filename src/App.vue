@@ -513,10 +513,10 @@ html, body {
 .flexbox-row {
   display: flex;
   position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 5px;
-  right: 5px;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   margin: auto auto;
 }
 

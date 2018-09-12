@@ -1,10 +1,8 @@
 <template>
   <div
     :class="{
-      resizeSliderCol: isColumn,
-      resizeSliderRow: !isColumn,
-      resizeSliderCocodaRed: cocodaRed,
-      resizeSliderBlack: !cocodaRed
+      resizingSliderCol: isColumn,
+      resizingSliderRow: !isColumn
     }"
     @mousedown="startResizing" />
 </template>
@@ -19,10 +17,6 @@ export default {
   name: "ResizingSlider",
   props: {
     isColumn: {
-      type: Boolean,
-      default: false
-    },
-    cocodaRed: {
       type: Boolean,
       default: false
     }
@@ -69,10 +63,10 @@ export default {
         next = slider.nextElementSibling
       }
       // Skip minimized components and sliders
-      while(previous && (previous.dataset.minimized == 1 || previous.classList.contains("resizeSliderRow") || previous.classList.contains("resizeSliderColumn"))) {
+      while(previous && (previous.dataset.minimized == 1 || previous.classList.contains("resizingSliderRow") || previous.classList.contains("resizingSliderColumn"))) {
         previous = previous.previousElementSibling
       }
-      while(next && (next.dataset.minimized == 1 || next.classList.contains("resizeSliderRow") || next.classList.contains("resizeSliderColumn"))) {
+      while(next && (next.dataset.minimized == 1 || next.classList.contains("resizingSliderRow") || next.classList.contains("resizingSliderColumn"))) {
         next = next.nextElementSibling
       }
       return [previous, next]
@@ -222,23 +216,19 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.resizeSliderCol, .resizeSliderRow {
+.resizingSliderCol, .resizingSliderRow {
+  background-color: @color--resizingSlider;
+  margin: 0;
   flex: 0 1 3px;
 }
-.resizeSliderBlack {
-  color: @color--resizingSlider-black;
-}
-.resizeSliderCocodaRed {
-  color: @color--resizingSlider-red;
-}
-.resizeSliderCol {
+.resizingSliderCol {
   cursor: col-resize;
-  margin: 0 5px;
-  box-shadow: inset 1px 0 1px -1px;
+  border-left: 1px solid @color--resizingSlider;
+  border-right: 1px solid @color--resizingSlider;
 }
-.resizeSliderRow {
+.resizingSliderRow {
   cursor: row-resize;
-  margin: 5px 0;
-  box-shadow: inset 0 1px 1px -1px;
+  border-bottom: 1px solid @color--resizingSlider;
+  border-top: 1px solid @color--resizingSlider;
 }
 </style>
