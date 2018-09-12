@@ -1,8 +1,7 @@
 // Base colors // --------------------------------------------------
 
 @color-primary-0: rgb(88, 128, 187);
-@color-secondary-1-0: rgb(110, 95, 194);
-@color-secondary-2-0: rgb(255, 225, 107);
+@color-highlight: rgb(255, 225, 107);
 @color-complement-0: rgb(255, 200, 107);
 
 // Adjusted base colors // --------------------------------------------------
@@ -11,16 +10,9 @@
 @color-primary-2: lighten(@color-primary-0, 12%);
 @color-primary-3: darken(@color-primary-0, 12%);
 @color-primary-4: darken(@color-primary-0, 14%);
+@color-primary-5: lighten(@color-primary-0, 40%);
 
-@color-secondary-1-1: lighten(@color-secondary-1-0, 24%);
-@color-secondary-1-2: lighten(@color-secondary-1-0, 12%);
-@color-secondary-1-3: darken(@color-secondary-1-0, 12);
-@color-secondary-1-4: darken(@color-secondary-1-0, 24%);
-
-@color-secondary-2-1: lighten(@color-secondary-2-0, 24%);
-@color-secondary-2-2: lighten(@color-secondary-2-0, 12%);
-@color-secondary-2-3: darken(@color-secondary-2-0, 12%);
-@color-secondary-2-4: darken(@color-secondary-2-0, 24%);
+@color-highlight-darker: darken(@color-highlight, 24%);
 
 @color-complement-1: lighten(@color-complement-0, 24%);
 @color-complement-2: lighten(@color-complement-0, 12%);
@@ -32,24 +24,18 @@
 @color-text-dark: rgb(33, 33, 33);
 @color-text-grey: rgb(74, 74, 74);
 @color-text-lightGrey: rgb(115, 115, 115);
+@color-primary-text: rgba(255, 255, 255, 0.8);
 
 // Button colors // --------------------------------------------------
 
 @color-button: @color-primary-0;
-@color-button-hover: @color-secondary-2-4;
+@color-button-hover: @color-highlight-darker;
 @color-button-disabled: rgb(228, 228, 228);
-
-// Subtle button colors // --------------------------------------------------
-
-@color-subtleButton: rgb(252, 252, 252);
-@color-subtleButton-hover: darken(@color-subtleButton, 5%);
-@color-subtleButton-text: fadeout(@color-button, 70%);
-@color-subtleButton-hover-text: fadeout(@color-button, 40%);
 
 // General colors // --------------------------------------------------
 
 @color-background: rgb(255, 255, 255);
-@color-background-select: lighten(@color-primary-1, 15%);
+@color-background-select: @color-primary-5;
 @color-background-card: rgba(0, 0, 0, 0.02);
 
 @color-table-info-background: @color-primary-1;
@@ -58,36 +44,33 @@
 
 @color-shadow: rgba(0, 0, 0, 0.2);
 
-@color-link: darken(@color-complement-4, 5%);
-@color-link-hover: @color-complement-3;
+@color-link: @color-primary-0;
+@color-link-hover: @color-primary-2;
 
 // Component specific colors // --------------------------------------------------
 
-@color--itemName-highlighted: @color-primary-4;
-
 @color--conceptSearch-result-selected: @color-primary-4;
 @color--conceptSearch-result-selected-background: @color-primary-1;
-@color--conceptSearch-searchHighlight: @color-secondary-2-4;
-@color--conceptSearch-searchHighlight-selected: darken(@color-secondary-2-4, 10%);
+@color--conceptSearch-searchHighlight: @color-highlight-darker;
+@color--conceptSearch-searchHighlight-selected: @color-highlight-darker;
+
+@color--itemName-highlighted: @color-text-grey;
+@color--itemName-highlighted-background: @color-highlight;
 
 @color--conceptTreeItem-addToMapping: @color-background;
-@color--conceptTreeItem-addToMapping-hover: @color-secondary-2-0;
-@color--conceptTreeItem-item-selected: lighten(@color-primary-1, 10%);
-@color--conceptTreeItem-item-selected-background: @color-primary-1;
+@color--conceptTreeItem-addToMapping-hover: @color-highlight;
 @color--conceptTreeItem-item-hover: @color-primary-4;
-@color--conceptTreeItem-item-hover-background: @color-secondary-2-3;
+@color--conceptTreeItem-item-hover-background: @color-highlight;
 
 @color--loadingIndicator-border: rgb(243, 243, 243);
 @color--loadingIndicator-border-top: rgb(52, 152, 219);
 
-@color--mappingTypeSelection-hover: @color-primary-4;
-@color--mappingTypeSelection-hover-background: @color-primary-1;
-@color--mappingTypeSelection-selected: @color-primary-1;
-@color--mappingTypeSelection-selected-background: @color-primary-4;
+@color--mappingTypeSelection: @color-primary-text;
+@color--mappingTypeSelection-background: @color-primary-0;
+@color--mappingTypeSelection-selected: @color-text-grey;
+@color--mappingTypeSelection-selected-background: @color-highlight;
 
-@color--minimizer-overlay-background: rgb(255, 255, 255);
-@color--minimizer-overlay-background-hover: lighten(@color-primary-1, 17%);
+@color--minimizer-overlay-background: @color-primary-5;
+@color--minimizer-overlay-background-hover: @color-highlight;
 
 @color--resizingSlider: @color-primary-0;
-
-@color--theNavbar-text: rgba(255, 255, 255, 0.8);

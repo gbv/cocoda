@@ -22,7 +22,6 @@
       <!-- Feedback button -->
       <b-nav-item
         v-if="config.feedbackUrl"
-        class="feedbackButton"
         @click="$refs.feedback.show()">
         Feedback
       </b-nav-item>
@@ -102,17 +101,14 @@ nav.navbar {
   box-shadow: 0 1px 2px 0 @color-shadow;
 }
 .navbar-dark .navbar-nav .nav-link, .btn-link {
-  color: @color--theNavbar-text;
+  color: @color-primary-text;
 }
 .navbar-brand {
-  color: @color--theNavbar-text !important;
-}
-.feedbackButton a.nav-link {
-  color: @color-complement-3 !important;
+  color: @color-primary-text !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
-  color: @color--theNavbar-text;
+  color: @color-primary-text;
 }
 </style>
 

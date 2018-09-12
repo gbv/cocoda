@@ -270,8 +270,7 @@ export default {
   opacity: 1.0;
 }
 .conceptBoxSelected {
-  color: @color--conceptTreeItem-item-selected;
-  background-color: @color--conceptTreeItem-item-selected-background;
+  background-color: @color--itemName-highlighted-background;
 }
 .conceptBoxSelected .arrowBox:hover {
   background-color: @color--conceptTreeItem-item-hover-background;
@@ -282,7 +281,6 @@ export default {
 }
 .conceptBoxHovered.conceptBoxSelected {
   background-color: @color--conceptTreeItem-item-hover-background;
-  color: @color--conceptTreeItem-item-selected;
 }
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 // TODO: Use font awesome or move somewhere else

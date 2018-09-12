@@ -428,8 +428,6 @@ export default {
   margin: 0 5px;
 }
 .conceptDetail-identifier a {
-  .m-borderRadius(5px);
-  background-color: lighten(@color-primary-1, 15%);
   padding: 0 3px;
 }
 .conceptDetail-identifier svg {
@@ -451,7 +449,9 @@ export default {
 @import "../style/main.less";
 
 .conceptDetail-note-tabs {
-  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
 }
 .conceptDetail-note-tabs .tabs {
   box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);

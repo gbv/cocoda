@@ -529,7 +529,7 @@ html, body {
 }
 .schemeSelectWrapper {
   flex: none;
-  padding: 2px;
+  padding: 3px;
   display: flex;
   margin-right: 24px;
 }
@@ -620,7 +620,7 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: @color--theNavbar-text;
+  color: @color-primary-text;
 }
 #swapSides:hover {
   color: @color-primary-2;

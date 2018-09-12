@@ -178,7 +178,7 @@ export default {
   right: 0px;
   top: 0px;
   background: @color-primary-0;
-  color: @color--theNavbar-text;
+  color: @color-primary-text;
   border-radius: 0 0 0 5px;
 }
 .minimizeButton {
@@ -188,6 +188,7 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
+  color: @color-primary-0;
 }
 // Overlay when minimize button is hovered
 .minimizedHoverOverlay {

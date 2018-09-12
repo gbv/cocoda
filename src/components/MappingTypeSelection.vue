@@ -69,21 +69,15 @@ export default {
   user-select: none;
 }
 .mappingType {
-  .m-borderRadius(5px);
+  .m-borderRadius(4px);
   font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 1px 2px 0 hsla(0, 0%, 0%, 0.2);
   margin-bottom: 5px;
+  background-color: @color--mappingTypeSelection-background;
+  color: @color--mappingTypeSelection;
 }
-.mappingType:hover {
-  background-color: @color--mappingTypeSelection-hover-background;
-  color: @color--mappingTypeSelection-hover;
-}
-.mappingTypeSelected {
-  background-color: @color--mappingTypeSelection-selected-background;
-  color: @color--mappingTypeSelection-selected;
-}
-.mappingTypeSelected:hover {
+.mappingTypeSelected, .mappingType:hover {
   background-color: @color--mappingTypeSelection-selected-background;
   color: @color--mappingTypeSelection-selected;
 }
