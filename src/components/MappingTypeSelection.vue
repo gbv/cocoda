@@ -61,7 +61,7 @@ export default {
 @import "../style/main.less";
 
 .mappingTypes {
-  width: 25px;
+  width: 60px;
   top: 0;
   bottom: 0;
   text-align: center;
@@ -69,17 +69,17 @@ export default {
   user-select: none;
 }
 .mappingType {
+  .button;
   .m-borderRadius(4px);
-  font-family: "Courier New", Courier, monospace;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 2px;
   font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 5px;
-  background-color: @color--mappingTypeSelection-background;
-  color: @color--mappingTypeSelection;
 }
 .mappingTypeSelected, .mappingType:hover {
-  background-color: @color--mappingTypeSelection-selected-background;
-  color: @color--mappingTypeSelection-selected;
+  background-color: @color-highlight;
+  color: @color-text-grey;
 }
 
 </style>

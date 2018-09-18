@@ -102,6 +102,7 @@
     </div>
     <!-- Selecting of mapping type (in between source and target sides via flex order) -->
     <div class="mappingTypeSelection">
+      <div><span>&nbsp;</span></div>
       <mapping-type-selection
         v-show="selected.scheme[true] != null || selected.scheme[false] != null"
         :mapping="$store.state.mapping.mapping" />
@@ -363,18 +364,15 @@ export default {
   position: relative;
   overflow: hidden;
   display: flex;
-  min-height: 200px;
 }
 .mappingTypeSelection {
   flex: none;
   position: relative;
   order: 1;
-  margin-bottom: 28px;
-}
-.mappingTypeSelection > div {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  margin-bottom: 32px;
+  margin-top: 5px;
+  border-left: 1px solid @color-light-line;
+  border-right: 1px solid @color-light-line;
 }
 .mappingEditorPart {
   flex: 1;

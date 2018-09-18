@@ -580,7 +580,7 @@ html, body {
 .mappingToolItem {
   height: 0;
   flex: 3;
-  min-height: 200px;
+  min-height: 165px;
 }
 .mappingToolItem > div {
     height: 100%;
