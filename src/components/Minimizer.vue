@@ -17,7 +17,7 @@
         {{ text }}
         <div
           v-b-tooltip.hover="{ title: 'maximize component', delay: $util.delay.medium }"
-          class="utilityButton maximizeButton" >
+          class="maximizeButton" >
           <font-awesome-icon icon="window-maximize" />
         </div>
       </div>
@@ -189,6 +189,7 @@ export default {
   display: inline-block;
   position: static;
   color: @color-primary-0;
+  font-size: 0.85rem;
 }
 // Overlay when minimize button is hovered
 .minimizedHoverOverlay {
@@ -197,7 +198,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: fadeout(@color--minimizer-overlay-background-hover, 50%);
+  background-color: fadeout(@color-primary-0, 75%);
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized
@@ -211,7 +212,7 @@ export default {
   left: 0;
   background-color: @color--minimizer-overlay-background;
   text-align: center;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.3em;
   user-select: none;
 }
 .minimizedOverlay:hover {

@@ -219,7 +219,7 @@ export default {
 .resizingSliderCol, .resizingSliderRow {
   background-color: @color--resizingSlider;
   margin: 0;
-  flex: 0 1 3px;
+  flex: 0 1 2px;
 }
 .resizingSliderCol {
   cursor: col-resize;
