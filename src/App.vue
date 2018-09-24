@@ -579,12 +579,20 @@ html, body {
 }
 .mappingToolItem {
   height: 0;
-  flex: 3;
   min-height: 165px;
 }
 .mappingToolItem > div {
-    height: 100%;
-  }
+  height: 100%;
+}
+#mappingEditorComponent {
+  flex: 1
+}
+#mappingBrowserComponent {
+  flex: 2;
+}
+#occurrencesBrowserComponent {
+  flex: 2;
+}
 
 .placeholderComponent {
   text-align: left;
