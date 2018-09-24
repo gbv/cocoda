@@ -13,6 +13,7 @@
  */
 
 import axios from "axios"
+import _ from "lodash"
 import localforage from "localforage"
 import config from "./config"
 import util from "./util"
@@ -224,12 +225,6 @@ function get(url, axiosConfig) {
     })
 }
 
-// utility function
-function getNestedValue (obj, path) {
-  return path.split(".").reduce(
-    (o, key) => (o && o[key] !== "undefined") ? o[key] : undefined, obj)
-}
-
 function getMappings(params, local = true) {
   let promises = []
   for (let provider of config.mappingProviders) {
@@ -252,10 +247,10 @@ function getMappings(params, local = true) {
         mappings.push(mapping)
         // Add fromScheme and toScheme if missing
         if (!mapping.fromScheme) {
-          mapping.fromScheme = getNestedValue(mapping, "from.memberSet.0.inScheme")
+          mapping.fromScheme = _.get(mapping, "from.memberSet[0].inScheme")
         }
         if (!mapping.toScheme) {
-          mapping.toScheme = getNestedValue(mapping, "to.memberSet.0.inScheme")
+          mapping.toScheme = _.get(mapping, "to.memberSet[0].inScheme")
         }
       }
     }
