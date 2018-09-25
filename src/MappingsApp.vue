@@ -23,6 +23,42 @@
           card >
           <b-tab
             title="Concordances">
+            <div style="display: flex;">
+              <div
+                v-for="field in concordanceTableFields"
+                :key="field.key"
+                :style="'padding: 0px 10px 0px 0px; flex: 0 0 ' + field.width" >
+                <b-input
+                  v-if="field.key == 'from'"
+                  v-model="filter.from"
+                  type="text"
+                  style="width: 80%; display: inline-block;"
+                  size="sm"
+                  placeholder="from" />
+                <b-input
+                  v-if="field.key == 'to'"
+                  v-model="filter.to"
+                  type="text"
+                  style="width: 80%; display: inline-block;"
+                  size="sm"
+                  placeholder="to" />
+                <b-input
+                  v-if="field.key == 'creator'"
+                  v-model="filter.creator"
+                  type="text"
+                  style="width: 80%; display: inline-block;"
+                  size="sm"
+                  placeholder="creator" />
+                <span
+                  v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
+                  v-if="filter[field.key] != null"
+                  icon="times"
+                  class="button"
+                  @click="filter[field.key] = ''">
+                  x
+                </span>
+              </div>
+            </div>
             <flexible-table
               :fields="concordanceTableFields"
               :items="concordanceTableItems" >
@@ -54,8 +90,8 @@
               </span>
             </flexible-table>
             <p style="text-align: right; font-weight: bold;">
-              Total: {{ concordances.reduce((total, current) => {
-                return total + parseInt(current.extent) || 0
+              Total: {{ concordanceTableItems.reduce((total, current) => {
+                return total + parseInt(current.mappings) || 0
               }, 0).toLocaleString() }}
             </p>
             <p>
@@ -266,7 +302,13 @@ export default {
         type: "type",
         concordance: "concordance",
         currentPage: "page",
-      }
+      },
+      // Filter for concordance table
+      filter: {
+        from: "",
+        to: "",
+        creator: "",
+      },
     }
   },
   computed: {
@@ -405,7 +447,9 @@ export default {
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
-        items.push(item)
+        if (item.from.toLowerCase().startsWith(this.filter.from.toLowerCase()) && item.to.toLowerCase().startsWith(this.filter.to.toLowerCase()) && item.creator.toLowerCase().startsWith(this.filter.creator.toLowerCase())) {
+          items.push(item)
+        }
       }
       return items
     },
