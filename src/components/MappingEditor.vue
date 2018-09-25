@@ -120,7 +120,7 @@
         Copy to clipboard
       </b-btn></p>
       <p><a
-        :href="'data:text/json;charset=utf-8,' + mappingEncoded"
+        :href="'data:application/json;charset=utf-8,' + mappingEncoded"
         download="mapping.json"
         target="_blank" >
         Download as .json file

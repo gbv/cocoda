@@ -51,13 +51,13 @@
         :key="index">
         {{ download.label }} ({{ download.mappings.length }}):
         <a
-          :href="'data:text/json;charset=utf-8,' + download.ndjson"
+          :href="'data:application/x-ndjson;charset=utf-8,' + download.ndjson"
           :download="download.filename + '.ndjson'"
           target="_blank" >
           JSKOS
         </a>
         <a
-          :href="'data:text/json;charset=utf-8,' + download.csv"
+          :href="'data:text/csv;charset=utf-8,' + download.csv"
           :download="download.filename + '.csv'"
           target="_blank" >
           CSV
