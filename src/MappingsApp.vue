@@ -326,6 +326,7 @@ export default {
       return [
         {
           key: "from",
+          label: "from",
           width: "10%",
           minWidth: "",
           sortable: true,
@@ -333,6 +334,7 @@ export default {
         },
         {
           key: "to",
+          label: "to",
           width: "10%",
           minWidth: "",
           sortable: true,
@@ -340,6 +342,7 @@ export default {
         },
         {
           key: "description",
+          label: "description",
           width: "30%",
           minWidth: "",
           sortable: true,
@@ -347,6 +350,7 @@ export default {
         },
         {
           key: "creator",
+          label: "creator",
           width: "20%",
           minWidth: "",
           sortable: true,
@@ -354,6 +358,7 @@ export default {
         },
         {
           key: "download",
+          label: "download",
           width: "12%",
           minWidth: "",
           sortable: false,
@@ -361,6 +366,7 @@ export default {
         },
         {
           key: "mappings",
+          label: "mappings",
           width: "14%",
           minWidth: "",
           sortable: true,
