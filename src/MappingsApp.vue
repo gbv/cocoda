@@ -327,7 +327,7 @@ export default {
         {
           key: "from",
           label: "from",
-          width: "10%",
+          width: "8%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -335,7 +335,7 @@ export default {
         {
           key: "to",
           label: "to",
-          width: "10%",
+          width: "8%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -343,7 +343,7 @@ export default {
         {
           key: "description",
           label: "description",
-          width: "30%",
+          width: "28%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -351,7 +351,15 @@ export default {
         {
           key: "creator",
           label: "creator",
-          width: "20%",
+          width: "18%",
+          minWidth: "",
+          sortable: true,
+          align: "left",
+        },
+        {
+          key: "date",
+          label: "date",
+          width: "10%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -359,7 +367,7 @@ export default {
         {
           key: "download",
           label: "download",
-          width: "12%",
+          width: "11%",
           minWidth: "",
           sortable: false,
           align: "left",
@@ -367,7 +375,7 @@ export default {
         {
           key: "mappings",
           label: "mappings",
-          width: "14%",
+          width: "13%",
           minWidth: "",
           sortable: true,
           align: "right",
@@ -390,6 +398,7 @@ export default {
         item.to = _.get(concordance, "toScheme.notation[0]", "-")
         item.description = _.get(concordance, "scopeNote.de[0]") || _.get(concordance, "scopeNote.en[0]") || "-"
         item.creator = _.get(concordance, "creator[0].prefLabel.de") || _.get(concordance, "creator[0].prefLabel.en") || "-"
+        item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
         items.push(item)
