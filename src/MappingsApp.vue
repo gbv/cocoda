@@ -66,7 +66,7 @@
             <b-container class="search">
               <b-row>
                 <b-col
-                  cols="2"
+                  cols="3"
                   class="label">Source</b-col>
                 <b-col cols="3">
                   <b-form-input
@@ -76,7 +76,7 @@
                     placeholder="scheme"
                     @keyup.enter.native="searchClicked" />
                 </b-col>
-                <b-col cols="5">
+                <b-col cols="4">
                   <b-form-input
                     v-model="sourceNotation"
                     type="text"
@@ -95,7 +95,7 @@
               </b-row>
               <b-row>
                 <b-col
-                  cols="2"
+                  cols="3"
                   class="label">Target</b-col>
                 <b-col cols="3">
                   <b-form-input
@@ -105,7 +105,7 @@
                     placeholder="scheme"
                     @keyup.enter.native="searchClicked" />
                 </b-col>
-                <b-col cols="5">
+                <b-col cols="4">
                   <b-form-input
                     v-model="targetNotation"
                     type="text"
@@ -116,9 +116,9 @@
               </b-row>
               <b-row>
                 <b-col
-                  cols="2"
+                  cols="3"
                   class="label">Creator</b-col>
-                <b-col cols="3">
+                <b-col cols="2">
                   <b-form-input
                     v-model="creator"
                     type="text"
@@ -126,9 +126,9 @@
                     @keyup.enter.native="searchClicked" />
                 </b-col>
                 <b-col
-                  cols="1"
+                  cols="2"
                   class="label">Type</b-col>
-                <b-col cols="4">
+                <b-col cols="3">
                   <b-select
                     v-model="type"
                     :options="typeOptions" />
@@ -137,7 +137,7 @@
               </b-row>
               <b-row>
                 <b-col
-                  cols="2"
+                  cols="3"
                   class="label">Concordance</b-col>
                 <b-col cols="4">
                   <b-form-select
@@ -146,16 +146,16 @@
                 </b-col>
                 <b-col
                   class="text-right"
-                  cols="4" >
+                  cols="3" >
                   <b-button
                     variant="danger"
                     @click="clearClicked" >
-                    <font-awesome-icon icon="ban" /> Clear
+                    <font-awesome-icon icon="ban" /><span class="d-none d-lg-inline"> Clear</span>
                   </b-button>
                   <b-button
                     variant="primary"
                     @click="searchClicked" >
-                    <font-awesome-icon icon="search" /> Search
+                    <font-awesome-icon icon="search" /><span class="d-none d-md-inline"> Search</span>
                   </b-button>
                 </b-col>
                 <b-col cols="2" />
@@ -618,8 +618,8 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 900px;
-  margin: 10px auto;
+  min-width: 600px;
+  max-width: 1200px;
   padding: 20px 20px;
   position: relative;
 }
