@@ -235,6 +235,12 @@
                     </a> |
                     <a :href="downloadUrl + 'ndjson'">
                       <font-awesome-icon icon="download" /> .ndjson
+                    </a> |
+                    <a :href="downloadUrl + 'csv'">
+                      <font-awesome-icon icon="download" /> .csv
+                    </a> |
+                    <a :href="downloadUrl + 'tsv'">
+                      <font-awesome-icon icon="download" /> .tsv
                     </a>
                   </p>
                 </b-col>
