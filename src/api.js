@@ -16,7 +16,6 @@ import axios from "axios"
 import _ from "lodash"
 import localforage from "localforage"
 import config from "./config"
-import util from "./util"
 import jskos from "jskos-tools"
 import store from "./store"
 
@@ -241,7 +240,7 @@ function getMappings(params, local = true) {
     for (let result of results) {
       for (let mapping of result) {
         // Add mapping type if not available
-        mapping.type = mapping.type || [util.defaultMappingType.uri]
+        mapping.type = mapping.type || [jskos.defaultMappingType.uri]
         // Add JSKOS mapping identifiers
         mapping = jskos.addMappingIdentifiers(mapping)
         mappings.push(mapping)

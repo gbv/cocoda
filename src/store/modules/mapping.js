@@ -1,4 +1,3 @@
-import util from "../../util"
 import jskos from "jskos-tools"
 import _ from "lodash"
 
@@ -9,7 +8,7 @@ const emptyMapping = {
   to: { "memberSet": [] },
   fromScheme: null,
   toScheme: null,
-  type: [util.defaultMappingType.uri]
+  type: [jskos.defaultMappingType.uri]
 }
 
 // initial state

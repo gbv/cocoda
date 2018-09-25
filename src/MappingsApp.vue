@@ -317,7 +317,7 @@ export default {
         text: "all types",
         value: null
       }]
-      for (let type of this.$util.mappingTypes) {
+      for (let type of this.$jskos.mappingTypes) {
         options.push({
           text: `${type.notation[0]} ${type.prefLabel.en}`,
           value: type.uri

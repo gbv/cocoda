@@ -326,7 +326,7 @@ export default {
         to: { "memberSet": [item.to] },
         fromScheme: item.fromScheme,
         toScheme: item.toScheme,
-        type: [this.$util.defaultMappingType.uri]
+        type: [this.$jskos.defaultMappingType.uri]
       }
       mapping = this.$jskos.addMappingIdentifiers(mapping)
       item.mapping = mapping

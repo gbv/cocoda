@@ -152,7 +152,7 @@ export default {
           for (let mapping of download.mappings) {
             let from = _.get(mapping, "from.memberSet[0].notation[0]")
             let to = _.get(mapping, "to.memberSet[0].notation[0]")
-            let type = this.$util.mappingTypeByUri(_.get(mapping, "type[0]"))
+            let type = this.$jskos.mappingTypeByUri(_.get(mapping, "type[0]"))
             if (from && to && type) {
               csv += `${from},${to},${type.short}\n`
             }

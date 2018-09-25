@@ -304,7 +304,7 @@ export default {
             }
             // Save GND mapping type to concept
             while (startIndex < gndConcepts.length) {
-              gndConcepts[startIndex].GNDTYPE = this.$util.mappingTypeByType(mapping.type)
+              gndConcepts[startIndex].GNDTYPE = this.$jskos.mappingTypeByType(mapping.type)
               startIndex += 1
             }
           }

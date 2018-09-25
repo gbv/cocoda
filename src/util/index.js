@@ -1,80 +1,6 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 
-let mappingTypes = [
-  {
-    notation: ["="],
-    uri: "http://www.w3.org/2004/02/skos/core#exactMatch",
-    prefLabel: { "en": "exact match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#closeMatch" } ],
-    RELEVANCE: "very high",
-    short: "exact",
-  },
-  {
-    notation: ["≈"],
-    uri: "http://www.w3.org/2004/02/skos/core#closeMatch",
-    prefLabel: { "en": "close match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    RELEVANCE: "high",
-    short: "close",
-  },
-  {
-    notation: [">"],
-    uri: "http://www.w3.org/2004/02/skos/core#broadMatch",
-    prefLabel: { "en": "broader match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    related: [ { "uri": "http://www.w3.org/2004/02/skos/core#narrowMatch" } ],
-    RELEVANCE: "medium",
-    short: "broad",
-  },
-  {
-    notation: ["<"],
-    uri: "http://www.w3.org/2004/02/skos/core#narrowMatch",
-    prefLabel: { "en": "narrower match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    related: [ { "uri": "http://www.w3.org/2004/02/skos/core#broadMatch" } ],
-    RELEVANCE: "medium",
-    short: "narrow",
-  },
-  {
-    notation: ["~"],
-    uri: "http://www.w3.org/2004/02/skos/core#relatedMatch",
-    prefLabel: { "en": "related match" },
-    broader: [ { "uri": "http://www.w3.org/2004/02/skos/core#mappingRelation" } ],
-    RELEVANCE: "low",
-    short: "related",
-  },
-  {
-    notation: ["→"],
-    uri: "http://www.w3.org/2004/02/skos/core#mappingRelation",
-    prefLabel: { "en": "mapping relation" },
-    RELEVANCE: "medium",
-    short: "",
-  },
-]
-
-let mappingTypeByUri = function(uri) {
-  for(let mappingType of mappingTypes) {
-    if (uri == mappingType.uri) {
-      return mappingType
-    }
-  }
-  return null
-}
-
-let mappingTypeByType = function(type, defaultType = defaultMappingType) {
-  let uri
-  if (Array.isArray(type) && type.length > 0) {
-    uri = type[0]
-  } else {
-    // FIXME: This is a workaround for the type being a string instead of an array.
-    uri = type
-  }
-  return mappingTypeByUri(uri) || defaultType
-}
-
-let defaultMappingType = mappingTypeByUri("http://www.w3.org/2004/02/skos/core#mappingRelation")
-
 // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
 function selectText(el){
   var sel, range
@@ -148,4 +74,4 @@ let compareMappingsByConcepts = (mapping1, mapping2, fromTo) => {
   return 0
 }
 
-export default { mappingTypes, defaultMappingType, mappingTypeByUri, mappingTypeByType, selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts }

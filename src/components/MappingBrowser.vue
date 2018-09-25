@@ -213,7 +213,7 @@ export default {
               if (typeof item.creator === "object") {
                 item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
               }
-              item.type = this.$util.mappingTypeByType(mapping.type)
+              item.type = this.$jskos.mappingTypeByType(mapping.type)
               items.push(item)
               hashList.push(hash)
             }

@@ -33,7 +33,7 @@ export default {
   },
   data () {
     return {
-      mappingTypes: this.$util.mappingTypes,
+      mappingTypes: this.$jskos.mappingTypes,
       mappingTypeHovered: null
     }
   },
@@ -43,7 +43,7 @@ export default {
      */
     mappingTypeSelected() {
       let mapping = this.mapping
-      return this.$util.mappingTypeByType(mapping ? mapping.type : null)
+      return this.$jskos.mappingTypeByType(mapping ? mapping.type : null)
     }
   },
   methods: {
