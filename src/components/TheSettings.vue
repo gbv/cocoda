@@ -37,25 +37,37 @@
       </b-button>
     </p>
     <br>
-    <p>
-      For issues and suggestions, please use the
+    <div v-if="dlAllMappings">
+      <h5>Download Local Mappings</h5>
       <a
-        href="https://github.com/gbv/cocoda/issues"
-        target="_blank" >GitHub issue tracker</a>.
-    </p>
-    <p v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
-      Version: {{ config.buildInfo.gitTag }}
-    </p>
-    <p v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-      Current Commit:
-      <a
-        :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+        :href="'data:text/json;charset=utf-8,' + dlAllMappings"
+        download="mappings.ndjson"
         target="_blank" >
-        {{ config.buildInfo.gitCommitShort }}
+        Download all {{ dlAllMappings.split("\n").length }} mappings as JSKOS
       </a>
-    </p>
-    <p v-if="config.buildInfo.buildDate">
-      Build Date: {{ config.buildInfo.buildDate }}
+    </div>
+    <br>
+    <p>
+      <span>
+        For issues and suggestions, please use the
+        <a
+          href="https://github.com/gbv/cocoda/issues"
+          target="_blank" >GitHub issue tracker</a>.
+      </span>
+      <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
+        Version: {{ config.buildInfo.gitTag }}<br>
+      </span>
+      <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
+        Current Commit:
+        <a
+          :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+          target="_blank" >
+          {{ config.buildInfo.gitCommitShort }}
+        </a><br>
+      </span>
+      <span v-if="config.buildInfo.buildDate">
+        Build Date: {{ config.buildInfo.buildDate }}<br>
+      </span>
     </p>
   </b-modal>
 </template>
@@ -72,6 +84,7 @@ export default {
     return {
       localSettings: null,
       creatorRewritten: false,
+      dlAllMappings: null,
     }
   },
   watch: {
@@ -90,6 +103,10 @@ export default {
     show() {
       this.$refs.settingsModal.show()
       this.localSettings = _.cloneDeep(this.$settings)
+      // Set download data variables
+      this.$api.getLocalMappings().then(mappings => {
+        this.dlAllMappings = mappings.map(mapping => JSON.stringify(this.$jskos.minifyMapping(mapping))).join("\n")
+      })
     },
     rewriteCreator() {
       // 1. Load all local mappings directly from API
