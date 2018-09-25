@@ -98,7 +98,9 @@ const mutations = {
         object.issued = object.issued || null
         object.modified = object.modified || null
         object.license = object.license || null
-        object.notation = object.notation || null
+        // Save all notations as uppercase
+        // FIXME: This should rather be fixed in backend.
+        object.notation = object.notation.map(notation => notation.toUpperCase()) || null
         object.prefLabel = object.prefLabel || {}
         object.publisher = object.publisher || null
       }
