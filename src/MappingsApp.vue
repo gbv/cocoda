@@ -327,15 +327,16 @@ export default {
         {
           key: "from",
           label: "from",
-          width: "8%",
+          width: "13%",
           minWidth: "",
           sortable: true,
           align: "left",
+          titleClass: "test",
         },
         {
           key: "to",
           label: "to",
-          width: "8%",
+          width: "9%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -343,7 +344,7 @@ export default {
         {
           key: "description",
           label: "description",
-          width: "28%",
+          width: "24%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -351,7 +352,7 @@ export default {
         {
           key: "creator",
           label: "creator",
-          width: "18%",
+          width: "16%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -359,6 +360,7 @@ export default {
         {
           key: "date",
           label: "date",
+          titleClass: "d-none d-md-inline",
           width: "10%",
           minWidth: "",
           sortable: true,
@@ -367,6 +369,7 @@ export default {
         {
           key: "download",
           label: "download",
+          titleClass: "d-none d-lg-inline",
           width: "11%",
           minWidth: "",
           sortable: false,
@@ -375,6 +378,7 @@ export default {
         {
           key: "mappings",
           label: "mappings",
+          titleClass: "d-none d-lg-inline",
           width: "13%",
           minWidth: "",
           sortable: true,

@@ -104,14 +104,14 @@ export default {
       return [
         {
           key: "sourceScheme",
-          label: "Scheme",
+          label: "",
           width: "10%",
           minWidth: "",
           sortable: false
         },
         {
           key: "sourceConcepts",
-          label: "Concept",
+          label: "from",
           width: "22%",
           minWidth: "",
           sortable: false,
@@ -119,7 +119,7 @@ export default {
         },
         {
           key: "type",
-          label: "Type",
+          label: "",
           width: "8%",
           minWidth: "",
           sortable: false,
@@ -137,14 +137,14 @@ export default {
         },
         {
           key: "targetScheme",
-          label: "Scheme",
+          label: "",
           width: "10%",
           minWidth: "",
           sortable: false
         },
         {
           key: "targetConcepts",
-          label: "Concept",
+          label: "to",
           width: "22%",
           minWidth: "",
           sortable: false,
@@ -152,6 +152,7 @@ export default {
         },
         {
           key: "creator",
+          label: "creator",
           width: "20%",
           minWidth: "",
           sortable: false
