@@ -149,6 +149,16 @@ Vue.component("notation-text", {
       default: null
     }
   },
+  data() {
+    return {
+      ddc: {
+        uri : "http://dewey.info/scheme/edition/e23/",
+        identifier : [
+          "http://bartoc.org/en/node/241"
+        ]
+      }
+    }
+  },
   computed: {
     notation() {
       if (this.item.notation && this.item.notation.length) {
@@ -159,9 +169,19 @@ Vue.component("notation-text", {
         return notation
       }
       return null
-    }
+    },
+    fill() {
+      let fill = ""
+      // For DDC only: fill notation with trailing zeros
+      if (this.$jskos.compare(this.ddc, _.get(this, "item.inScheme[0]"))) {
+        while (this.notation.length + fill.length < 3) {
+          fill += "0"
+        }
+      }
+      return fill
+    },
   },
-  template: "<span v-if='notation'>{{ notation }}</span>"
+  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-veryLightGrey'>{{ fill }}</span></span>"
 })
 
 /**
