@@ -121,6 +121,9 @@ export default {
     show() {
       this.$refs.settingsModal.show()
       this.localSettings = _.cloneDeep(this.$settings)
+      this.refreshDownloads()
+    },
+    refreshDownloads() {
       // Set download data variables
       this.dlAllMappings = null
       this.dlMappings = []
@@ -174,6 +177,7 @@ export default {
       }).then(() => {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", true)
+        this.refreshDownloads()
       })
     },
     resetFlex() {
