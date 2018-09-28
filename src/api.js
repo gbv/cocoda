@@ -229,7 +229,7 @@ function getMappings(params, local = true) {
   for (let provider of config.mappingProviders) {
     let promise = axios.get(provider.url, {
       params: params
-    }).then(response => response.data)
+    }).then(response => response.data).catch(() => [])
     promises.push(promise)
   }
   if (local) {
