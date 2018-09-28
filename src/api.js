@@ -256,9 +256,15 @@ function getMappings(params, local = true) {
     return mappings
   }).then(mappings => {
     for (let mapping of mappings) {
+      // Validate mapping
       if (!jskos.validate.mapping(mapping)) {
         console.warn("API: Invalid JSKOS for mapping", mapping)
       }
+      // Set fromScheme/toScheme to the one from Vuex store if possible
+      let fromScheme = store.getters["objects/get"](mapping.fromScheme)
+      mapping.fromScheme = fromScheme || mapping.fromScheme
+      let toScheme = store.getters["objects/get"](mapping.toScheme)
+      mapping.toScheme = toScheme || mapping.toScheme
     }
     return mappings
   })
