@@ -98,7 +98,7 @@
               The list of concordances is <a :href="`${concordancesUrl}?download=ndjson`">also available in JSKOS format</a>.
             </p>
           </b-tab>
-          <b-tab title="Mappings">
+          <b-tab title="Search Mappings">
             <b-container class="search">
               <b-row>
                 <b-col
