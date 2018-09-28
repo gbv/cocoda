@@ -1,7 +1,9 @@
 <template>
   <div id="mappingEditor">
     <!-- Minimizer allows component to get minimized -->
-    <minimizer text="Mapping Editor" />
+    <minimizer
+      ref="minimizer"
+      text="Mapping Editor" />
     <div class="mappingEditorToolbar">
       <div
         v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
@@ -195,6 +197,12 @@ export default {
         return true
       }
       return !this.$jskos.compareMappings(this.$store.state.mapping.original, this.$store.state.mapping.mapping)
+    },
+  },
+  watch: {
+    mappingEncoded() {
+      // When mapping changed, maximize MappingEditor.
+      this.$refs.minimizer.toggleMinimize(false)
     },
   },
   methods: {
