@@ -248,7 +248,7 @@ export default {
         if (currentId != this.loadingId) return
         let uris = []
         let promises = []
-        for (let [scheme, concept] of [[this.selected.scheme[true], this.selected.concept[true]], [this.selected.scheme[true], this.selected.concept[false]]]) {
+        for (let [scheme, concept] of [[this.selected.scheme[true], this.selected.concept[true]], [this.selected.scheme[false], this.selected.concept[false]]]) {
           if (concept && this.isSupported(scheme)) {
             uris.push(concept.uri)
           }
