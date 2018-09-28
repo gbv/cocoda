@@ -149,8 +149,10 @@ export default {
           // Download as JSKOS/ndjson
           download.ndjson = download.mappings.map(mapping => JSON.stringify(this.$jskos.minifyMapping(mapping))).join("\n")
           // Download as CSV
-          let csv = "\"fromNotation\",\"toNotation\",\"type\"\n"
-          let mappingToCSV = this.$jskos.mappingToCSV()
+          let csv = "\"fromNotation\",\"toNotation\",\"type\"\r\n"
+          let mappingToCSV = this.$jskos.mappingToCSV({
+            lineTerminator: "\r\n"
+          })
           for (let mapping of download.mappings) {
             csv += mappingToCSV(mapping)
           }
