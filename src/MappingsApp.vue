@@ -84,7 +84,7 @@
                 slot-scope="{ item }" >
                 <font-awesome-icon
                   v-b-tooltip.hover="{ title: 'Show Mappings', delay: $util.delay.medium }"
-                  icon="share"
+                  icon="external-link-square-alt"
                   class="button"
                   @click="showMappingsForConcordance(item.concordance)" />
               </span>
@@ -295,7 +295,7 @@ export default {
         {
           name: "open",
           title: "Open in Cocoda",
-          icon: "share"
+          icon: "external-link-alt"
         }
       ],
       // Properties for URL parameters
