@@ -33,6 +33,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.1",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",
+    "file-saver": "^2.0.0-rc.3",
     "jquery": "^3.3.1",
     "jskos-tools": "^0.1.8",
     "localforage": "^1.7.2",

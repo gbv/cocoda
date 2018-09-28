@@ -40,9 +40,8 @@
     <div v-if="dlAllMappings">
       <h5>Download Local Mappings</h5>
       <a
-        :href="'data:text/json;charset=utf-8,' + dlAllMappings"
-        download="mappings.ndjson"
-        target="_blank" >
+        href=""
+        @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
         Download all {{ dlAllMappings.split("\n").length }} mappings as JSKOS
       </a>
       <br><br>
@@ -51,15 +50,13 @@
         :key="index">
         {{ download.label }} ({{ download.mappings.length }}):
         <a
-          :href="'data:application/x-ndjson;charset=utf-8,' + download.ndjson"
-          :download="download.filename + '.ndjson'"
-          target="_blank" >
+          href=""
+          @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)" >
           JSKOS
         </a>
         <a
-          :href="'data:text/csv;charset=utf-8,' + download.csv"
-          :download="download.filename + '.csv'"
-          target="_blank" >
+          href=""
+          @click.prevent="downloadFile(download.filename + '.csv', download.csv)" >
           CSV
         </a>
         <br>
@@ -93,6 +90,7 @@
 
 <script>
 import _ from "lodash"
+import FileSaver from "file-saver"
 
 /**
  * The settings modal.
@@ -189,6 +187,10 @@ export default {
         value: flex
       })
     },
+    downloadFile(filename, contents) {
+      var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
+      FileSaver.saveAs(blob, filename)
+    }
   }
 }
 </script>
