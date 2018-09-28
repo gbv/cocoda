@@ -63,10 +63,10 @@ export default {
         next = slider.nextElementSibling
       }
       // Skip minimized components and sliders
-      while(previous && (previous.dataset.minimized == 1 || previous.classList.contains("resizingSliderRow") || previous.classList.contains("resizingSliderColumn"))) {
+      while(previous && (previous.classList.contains("resizingSliderRow") || previous.classList.contains("resizingSliderColumn"))) {
         previous = previous.previousElementSibling
       }
-      while(next && (next.dataset.minimized == 1 || next.classList.contains("resizingSliderRow") || next.classList.contains("resizingSliderColumn"))) {
+      while(next && (next.classList.contains("resizingSliderRow") || next.classList.contains("resizingSliderColumn"))) {
         next = next.nextElementSibling
       }
       return [previous, next]
@@ -90,12 +90,22 @@ export default {
         previousMinWidth = parseInt(previousStyle.getPropertyValue("min-width")),
         nextMinWidth = parseInt(nextStyle.getPropertyValue("min-width")),
         previousMinHeight = parseInt(previousStyle.getPropertyValue("min-height")),
-        nextMinHeight = parseInt(nextStyle.getPropertyValue("min-height"))
+        nextMinHeight = parseInt(nextStyle.getPropertyValue("min-height")),
+        previousMinimized = parseInt(_.get(previous, "dataset.minimized")) || 0,
+        nextMinimized = parseInt(_.get(next, "dataset.minimized")) || 0
 
-      this.savedValues.previousWidth = previousWidth
-      this.savedValues.nextWidth = nextWidth
-      this.savedValues.previousHeight = previousHeight
-      this.savedValues.nextHeight = nextHeight
+      // Do not allow resizing between two minimized components.
+      if (previousMinimized + nextMinimized == 2) {
+        return
+      }
+
+      // Only save values if both components are not minimized.
+      if (previousMinimized + nextMinimized == 0) {
+        this.savedValues.previousWidth = previousWidth
+        this.savedValues.nextWidth = nextWidth
+        this.savedValues.previousHeight = previousHeight
+        this.savedValues.nextHeight = nextHeight
+      }
 
       let vm = this
       // Prepare end of resizing
@@ -121,11 +131,11 @@ export default {
         if (vm.isColumn) {
           let newPreviousWidth = previousWidth + moved
           let newNextWidth = nextWidth - moved
-          if (newPreviousWidth < previousMinWidth || newNextWidth < nextMinWidth) {
-            // Minimize previous/next component when resize is committed all the way.
-            if (newPreviousWidth <= 10 || newNextWidth <= 10) {
+          if (newPreviousWidth < previousMinWidth || newNextWidth < nextMinWidth  || previousMinimized + nextMinimized == 1) {
+            // Minimize/maximize previous/next component when resize is committed all the way.
+            if (newPreviousWidth <= 10 || newNextWidth <= 10 || newPreviousWidth >= previousMinWidth * 3 && previousMinimized == 1 || newNextWidth >= nextMinWidth * 3 && nextMinimized == 1) {
               // Get minimizer component
-              let element = newPreviousWidth <= 10 ? previous : next
+              let element = newPreviousWidth <= 10 || previousMinimized == 1 ? previous : next
               let minimizerElement = element.getElementsByClassName("minimizer")[0]
               // Only continue if minimizerElement is one or two elements deep.
               if (minimizerElement.parentElement != element && minimizerElement.parentElement.parentElement != element) {
@@ -138,7 +148,7 @@ export default {
                 vm.saveFlex(previous)
                 next.style.flex = vm.savedValues.nextWidth / totalWidth * totalFlex
                 vm.saveFlex(next)
-                // Minimize
+                // Minimize/maximize
                 minimizerComponent.toggleMinimize()
                 // End resizing
                 endResizing()
@@ -153,11 +163,11 @@ export default {
         } else {
           let newPreviousHeight = previousHeight + moved
           let newNextHeight = nextHeight - moved
-          if (newPreviousHeight < previousMinHeight || newNextHeight < nextMinHeight) {
-            // Minimize previous/next component when resize is committed all the way.
-            if (newPreviousHeight <= 10 || newNextHeight <= 10) {
+          if (newPreviousHeight < previousMinHeight || newNextHeight < nextMinHeight || previousMinimized + nextMinimized == 1) {
+            // Minimize/maximize previous/next component when resize is committed all the way.
+            if (newPreviousHeight <= 10 || newNextHeight <= 10 || newPreviousHeight >= previousMinHeight * 3 && previousMinimized == 1 || newNextHeight >= nextMinHeight * 3 && nextMinimized == 1) {
               // Get minimizer component
-              let element = newPreviousHeight <= 10 ? previous : next
+              let element = newPreviousHeight <= 10 || previousMinimized == 1 ? previous : next
               let minimizerElement = element.getElementsByClassName("minimizer")[0]
               // Only continue if minimizerElement is one or two elements deep.
               if (minimizerElement.parentElement != element && minimizerElement.parentElement.parentElement != element) {
@@ -170,7 +180,7 @@ export default {
                 vm.saveFlex(previous)
                 next.style.flex = vm.savedValues.nextHeight / totalHeight * totalFlex
                 vm.saveFlex(next)
-                // Minimize
+                // Minimize/maximize
                 minimizerComponent.toggleMinimize()
                 // End resizing
                 endResizing()
