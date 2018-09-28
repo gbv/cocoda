@@ -149,16 +149,9 @@ export default {
           download.ndjson = download.mappings.map(mapping => JSON.stringify(this.$jskos.minifyMapping(mapping))).join("\n")
           // Download as CSV
           let csv = "\"fromNotation\",\"toNotation\",\"type\"\n"
+          let mappingToCSV = this.$jskos.mappingToCSV()
           for (let mapping of download.mappings) {
-            let from = _.get(mapping, "from.memberSet[0].notation[0]")
-            let to = _.get(mapping, "to.memberSet[0].notation[0]")
-            let type = this.$jskos.mappingTypeByUri(_.get(mapping, "type[0]"))
-            if (from && to && type) {
-              // Escape " characters in from and to
-              from = from.replace("\"", "\"\"")
-              to = to.replace("\"", "\"\"")
-              csv += `"${from}","${to}","${type.short}"\n`
-            }
+            csv += mappingToCSV(mapping)
           }
           download.csv = csv
           // Label
