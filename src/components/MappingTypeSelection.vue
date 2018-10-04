@@ -1,5 +1,8 @@
 <template>
-  <div class="mappingTypes">
+  <div
+    class="mappingTypes"
+    @mouseover="hovered = true"
+    @mouseout="hovered = false" >
     <div
       v-b-tooltip.hover.right="{ title: mappingType.prefLabel.en, delay: $util.delay.medium }"
       v-for="mappingType in mappingTypes"
@@ -9,6 +12,7 @@
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         mappingTypeHovered: (mappingType && mappingTypeHovered) && mappingType.uri == mappingTypeHovered.uri
       }"
+      :style="`display: ${((mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri) || hovered ? 'inline-block' : 'none'};`"
       class="mappingType"
       @click="choose(mappingType)" >
       {{ mappingType.notation[0] }}
@@ -33,6 +37,7 @@ export default {
   },
   data () {
     return {
+      hovered: false,
       mappingTypes: this.$jskos.mappingTypes,
       mappingTypeHovered: null
     }
@@ -61,19 +66,18 @@ export default {
 @import "../style/main.less";
 
 .mappingTypes {
-  width: 60px;
-  top: 0;
-  bottom: 0;
+  width: 72px;
   text-align: center;
   z-index: @zIndex-2;
   user-select: none;
+  font-size: 1.25rem;
 }
 .mappingType {
   .button;
   .m-borderRadius(4px);
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   margin: 2px;
   font-weight: bold;
 }
