@@ -63,6 +63,19 @@
       </span>
     </div>
     <br>
+    <div>
+      <h5>Upload Local Mappings</h5>
+      <b-form-file
+        ref="fileUpload"
+        v-model="uploadedFile"
+        :state="Boolean(uploadedFile)"
+        placeholder="Choose a file..."
+        accept=".ndjson" />
+      <p>
+        {{ uploadedFileStatus }}
+      </p>
+    </div>
+    <br>
     <p>
       <span>
         For issues and suggestions, please use the
@@ -103,6 +116,8 @@ export default {
       creatorRewritten: false,
       dlAllMappings: null,
       dlMappings: [],
+      uploadedFile: null,
+      uploadedFileStatus: "",
     }
   },
   watch: {
@@ -115,7 +130,50 @@ export default {
         this.creatorRewritten = false
       },
       deep: true
-    }
+    },
+    uploadedFile() {
+      if (this.uploadedFile) {
+        let reader = new FileReader()
+        reader.onloadend = evt => {
+          let numberOfMappings, lines, importResult
+          this.$api.getLocalMappings().then(localMappings => {
+            numberOfMappings = localMappings.length
+            let contents = evt.target.result
+            lines = contents.split("\n")
+            importResult = {
+              imported: 0,
+              skipped: 0,
+              error: 0,
+              empty: 0,
+            }
+            let promise = Promise.resolve([])
+            for (let line of lines) {
+              if (line === "") {
+                importResult.empty += 1
+                continue
+              }
+              try {
+                let mapping = JSON.parse(line)
+                promise = promise.then(() => {
+                  return this.$api.saveMapping(mapping)
+                })
+              } catch(error) {
+                importResult.error += 1
+              }
+            }
+            return promise
+          }).then(result => {
+            let newNumberOfMappings = result.length
+            importResult.imported = newNumberOfMappings - numberOfMappings
+            importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
+            this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
+            this.$refs.fileUpload.reset()
+            this.$store.commit("mapping/setRefresh", true)
+          })
+        }
+        reader.readAsText(this.uploadedFile)
+      }
+    },
   },
   methods: {
     show() {
