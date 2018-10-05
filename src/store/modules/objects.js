@@ -167,6 +167,7 @@ const actions = {
    * @returns a Promise of the desired object (or null if it wasn't found)
    */
   load({ state, commit, getters }, { object, scheme }) {
+    if (!object) return Promise.resolve(null)
     if (isObjectInMap(state.map, object)) {
       return Promise.resolve(getters.get(object))
     } else {
