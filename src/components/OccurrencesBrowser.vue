@@ -316,7 +316,7 @@ export default {
         this.loading = false
       }).catch(error => {
         console.error("Occurrences Error:", error)
-        this,occurrences = []
+        this.occurrences = []
         this.loading = false
       })
     },
