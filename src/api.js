@@ -272,23 +272,49 @@ function getMappings(params, local = true) {
 
 function getLocalMappings(params = {}) {
   return localforage.getItem("mappings").then(mappings => mappings || []).catch(() => []).then(mappings => {
+    if (params.direction == "both") {
+      params.mode = "or"
+    }
     // Filter mappings according to params (support for from + to)
     // TODO: - Support more parameters.
     // TODO: - Move to its own things.
     // TODO: - Support memberList and memberChoice.
-    if (params.from) {
+    // TODO: - Clean all this up.
+    if (params.mode == "or") {
       mappings = mappings.filter(mapping => {
-        return null != mapping.from.memberSet.find(concept => {
+        let fromInFrom = null != mapping.from.memberSet.find(concept => {
           return concept.uri == params.from
         })
-      })
-    }
-    if (params.to) {
-      mappings = mappings.filter(mapping => {
-        return null != mapping.to.memberSet.find(concept => {
+        let fromInTo = null != mapping.to.memberSet.find(concept => {
+          return concept.uri == params.from
+        })
+        let toInFrom = null != mapping.from.memberSet.find(concept => {
           return concept.uri == params.to
         })
+        let toInTo = null != mapping.to.memberSet.find(concept => {
+          return concept.uri == params.to
+        })
+        return (params.direction == "forward" && (fromInFrom || toInTo)) ||
+          (params.direction == "backward" && (fromInTo || toInFrom)) ||
+          (params.direction == "both" && (fromInFrom || fromInTo || toInFrom || toInTo))
       })
+    } else {
+      if (params.from) {
+        mappings = mappings.filter(mapping => {
+          let target = params.direction == "backward" ? "to" : "from"
+          return null != mapping[target].memberSet.find(concept => {
+            return concept.uri == params.from
+          })
+        })
+      }
+      if (params.to) {
+        mappings = mappings.filter(mapping => {
+          let target = params.direction == "backward" ? "from" : "to"
+          return null != mapping[target].memberSet.find(concept => {
+            return concept.uri == params.to
+          })
+        })
+      }
     }
     if (params.identifier) {
       mappings = mappings.filter(mapping => {
