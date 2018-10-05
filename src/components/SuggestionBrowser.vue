@@ -70,6 +70,15 @@
           </span>
         </span>
         <span
+          slot="source"
+          slot-scope="{ value }" >
+          <span
+            v-b-tooltip.hover="{ title: value != truncateText(value) ? value : '', delay: $util.delay.medium }"
+            v-if="value != null" >
+            {{ truncateText(value) }}
+          </span>
+        </span>
+        <span
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
@@ -439,8 +448,8 @@ export default {
             if (typeof item.creator === "object") {
               item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
             }
-            let creator = item.creator.length <= 8 ? item.creator : item.creator.substring(0, 6) + "..."
-            item.source = `${item.source}: ${creator}`
+            // let creator = item.creator.length <= 8 ? item.creator : item.creator.substring(0, 6) + "..."
+            item.source = `${item.source}: ${item.creator}`
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             items.push(item)
           }
@@ -451,6 +460,13 @@ export default {
         console.log(error)
         // this.loading = 0
       })
+    },
+    truncateText(text, characters = 15) {
+      if (text.length > characters) {
+        return text.substring(0, characters - 3) + "..."
+      } else {
+        return text
+      }
     },
     edit(data) {
       let mapping = this.$jskos.copyDeep(data.item.mapping)
