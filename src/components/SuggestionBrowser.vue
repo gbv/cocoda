@@ -82,6 +82,12 @@
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
+            v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
+            v-if="canSave(data.item.mapping)"
+            icon="save"
+            class="button mappingBrowser-toolbar-button"
+            @click="saveMapping(data.item.mapping)" />
+          <font-awesome-icon
             v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
             icon="edit"
             class="button mappingBrowser-toolbar-button"
@@ -145,6 +151,8 @@ export default {
       },
       /** List of supported schemes by occurrences-api */
       occurrencesSupportedSchemes: null,
+      /** List of identifiers of all local mappings (used in `canSave`) */
+      localMappingIdentifiers: [],
     }
   },
   computed: {
@@ -241,6 +249,7 @@ export default {
           prop: "suggestionBrowserLocal",
           value
         })
+        // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
       }
     },
@@ -255,6 +264,7 @@ export default {
           prop: "suggestionBrowserServer",
           value
         })
+        // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
       }
     },
@@ -269,6 +279,7 @@ export default {
           prop: "suggestionBrowserCatalog",
           value
         })
+        // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
       }
     },
@@ -296,6 +307,12 @@ export default {
   },
   methods: {
     internalReload(force = false) {
+      // Reload local mapping identifiers
+      // TODO: Do this differently!
+      this.$api.getLocalMappings(params).then(mappings => {
+        this.localMappingIdentifiers = mappings.reduce((all, current) => all.concat(current.identifier || []), [])
+      })
+
       let items = []
       let promises = []
       // TODO: Make sure old requests are canceled.
@@ -549,6 +566,7 @@ export default {
         } else {
           this.alert("Mapping could not be deleted.", null, "danger")
         }
+        // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
       })
     },
@@ -644,7 +662,32 @@ export default {
         }
       }
       return supported
-    }
+    },
+    /** Saving of mappigns */
+    canSave(mapping) {
+      if (!mapping || mapping.LOCAL || !mapping.fromScheme || !mapping.toScheme) {
+        return false
+      }
+      // TODO: Do this differently to prevent going through all local mappings on each reload.
+      if (!mapping.identifier) {
+        mapping = this.$jskos.addMappingIdentifiers(mapping)
+      }
+      let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:content"))
+      if (!id) {
+        return false
+      }
+      if (this.localMappingIdentifiers.includes(id)) {
+        return false
+      }
+      return true
+    },
+    saveMapping(mapping) {
+      this.loading = 1
+      this.$api.saveMapping(mapping).then(() => {
+        // Refresh list of mappings/suggestions.
+        this.$store.commit("mapping/setRefresh", true)
+      })
+    },
   }
 }
 </script>
