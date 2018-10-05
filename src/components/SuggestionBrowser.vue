@@ -88,6 +88,17 @@
         <span
           slot="HEAD_actions"
           slot-scope="data" />
+        <span
+          slot="count"
+          slot-scope="data" >
+          <span v-if="data.item.occurrence == null" />
+          <span v-else-if="data.item.occurrence.count == -1">-</span>
+          <span v-else>
+            <auto-link
+              :link="data.item.occurrence.url"
+              :text="String(data.item.occurrence.count)" />
+          </span>
+        </span>
       </flexible-table>
       <div
         v-show="loading == 0 && items.length == 0"
@@ -102,6 +113,7 @@
 
 <script>
 import ItemName from "./ItemName"
+import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import FlexibleTable from "vue-flexible-table"
@@ -113,7 +125,7 @@ import axios from "axios"
  */
 export default {
   name: "SuggestionBrowser",
-  components: { ItemName, Minimizer, LoadingIndicatorFull, FlexibleTable },
+  components: { ItemName, AutoLink, Minimizer, LoadingIndicatorFull, FlexibleTable },
   data () {
     return {
       loading: 0,
