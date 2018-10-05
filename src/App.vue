@@ -150,10 +150,10 @@
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
           <div
-            id="mappingBrowserComponent"
+            id="suggestionBrowserComponent"
             class="mappingToolItem mainComponent">
-            <!-- MappingBrowser -->
-            <mapping-browser
+            <!-- SuggestionBrowser -->
+            <suggestion-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
             />
             <!-- Placeholder -->
@@ -184,18 +184,6 @@
               </div>
             </div>
           </div>
-          <!-- Slider -->
-          <resizing-slider :cocoda-red="true" />
-          <div
-            id="occurrencesBrowserComponent"
-            class="mappingToolItem mainComponent">
-            <!-- OccurrencesBrowser -->
-            <occurrences-browser
-              v-if="selected.scheme[true] || selected.scheme[false]"
-            />
-            <!-- Placeholder -->
-
-          </div>
         </div>
 
         <!-- Slider -->
@@ -213,6 +201,7 @@ import TheNavbar from "./components/TheNavbar"
 import MappingEditor from "./components/MappingEditor"
 import OccurrencesBrowser from "./components/OccurrencesBrowser"
 import MappingBrowser from "./components/MappingBrowser"
+import SuggestionBrowser from "./components/SuggestionBrowser"
 import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
@@ -228,7 +217,7 @@ import Minimizer from "./components/Minimizer"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, ResizingSlider, ItemName, LoadingIndicatorFull, Minimizer
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, SuggestionBrowser, ResizingSlider, ItemName, LoadingIndicatorFull, Minimizer
   },
   data () {
     return {
@@ -592,6 +581,9 @@ html, body {
 }
 #occurrencesBrowserComponent {
   flex: 2;
+}
+#suggestionBrowserComponent {
+  flex: 4;
 }
 
 .placeholderComponent {

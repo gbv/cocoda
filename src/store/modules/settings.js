@@ -7,6 +7,9 @@ const defaultSettings = {
   mappingBrowserShowReverse: true,
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
+  suggestionBrowserLocal: true,
+  suggestionBrowserServer: true,
+  suggestionBrowserCatalog: true,
   minimized: {},
   flex: {},
 }
