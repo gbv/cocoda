@@ -110,6 +110,9 @@
         v-show="selected.scheme[true] != null || selected.scheme[false] != null"
         :mapping="$store.state.mapping.mapping" />
     </div>
+    <div class="mappingEditor-creator">
+      {{ creatorName }}
+    </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
     <b-modal
       ref="exportModal"
@@ -199,6 +202,11 @@ export default {
       }
       return !this.$jskos.compareMappings(this.$store.state.mapping.original, this.$store.state.mapping.mapping)
     },
+    creatorName() {
+      return _.get(this.$store.state.mapping, "mapping.creator[0].prefLabel.de")
+        || _.get(this.$store.state.mapping, "mapping.creator[0].prefLabel.en")
+        || this.$store.state.settings.creator
+    },
   },
   watch: {
     mappingEncoded() {
@@ -209,9 +217,12 @@ export default {
   methods: {
     saveMapping() {
       if (!this.canSaveMapping()) return false
+      // Change creator of mapping.
+      this.$store.commit({
+        type: "mapping/setCreator",
+        creator: [{ prefLabel: { de: this.$settings.creator || "" } }]
+      })
       let mapping = this.prepareMapping()
-      let creatorName = this.$settings.creator || ""
-      mapping.creator = [{ prefLabel: { de: creatorName } }]
       this.$api.saveMapping(mapping).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
@@ -462,6 +473,12 @@ export default {
 }
 .mappingButtonsFiller {
   flex: 1;
+}
+
+.mappingEditor-creator {
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
 }
 
 .addButton {

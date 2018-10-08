@@ -196,6 +196,16 @@ const mutations = {
     state.mapping.type = [uri]
   },
 
+  /**
+   * Sets the creator for the mapping.
+   *
+   * Payload object: { creator }
+   * - creator: the creator object
+   */
+  setCreator(state, { creator }) {
+    state.mapping.creator = creator
+  },
+
   switch(state) {
     Object.assign(state.mapping, {
       from: state.mapping.to,
