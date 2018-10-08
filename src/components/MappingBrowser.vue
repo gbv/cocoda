@@ -661,7 +661,7 @@ export default {
         return _.isEqual(item.options.params, options.params)
       })
       if (resultsFromCache) {
-        return Promise.resolve(resultsFromCache)
+        return Promise.resolve(resultsFromCache.results)
       }
       return axios.get(this.config.occurrenceProviders[0].url, options).then(results => {
         this.occurrencesCache.push({
