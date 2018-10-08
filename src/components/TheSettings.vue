@@ -75,6 +75,28 @@
         {{ uploadedFileStatus }}
       </p>
     </div>
+    <div>
+      <h5>Delete Local Mappings</h5>
+      <b-button
+        :disabled="!dlAllMappings"
+        variant="danger"
+        hide-footer
+        @click="deleteMappingsButtons = true" >
+        Delete all local mappings
+      </b-button>
+      <p
+        v-if="deleteMappingsButtons">
+        This action cannot be undone! Are you sure?
+        <b-button
+          variant="danger"
+          size="sm"
+          @click="deleteMappings" >Yes</b-button>
+        <b-button
+          variant="success"
+          size="sm"
+          @click="deleteMappingsButtons = false" >No</b-button>
+      </p>
+    </div>
     <br>
     <p>
       <span>
@@ -118,6 +140,7 @@ export default {
       dlMappings: [],
       uploadedFile: null,
       uploadedFileStatus: "",
+      deleteMappingsButtons: false,
     }
   },
   watch: {
@@ -168,6 +191,7 @@ export default {
             importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
             this.$refs.fileUpload.reset()
+            this.refreshDownloads()
             this.$store.commit("mapping/setRefresh", true)
           })
         }
@@ -254,7 +278,17 @@ export default {
     downloadFile(filename, contents) {
       var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
       FileSaver.saveAs(blob, filename)
-    }
+    },
+    deleteMappings() {
+      this.$api.saveMappings([]).then(mappings => {
+        if (mappings.length) {
+          console.warn("Error when deleting mappings.")
+        }
+        this.$store.commit("mapping/setRefresh", true)
+        this.refreshDownloads()
+        this.deleteMappingsButtons = false
+      })
+    },
   }
 }
 </script>
