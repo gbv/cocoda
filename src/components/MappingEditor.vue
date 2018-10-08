@@ -1,5 +1,7 @@
 <template>
-  <div id="mappingEditor">
+  <div
+    id="mappingEditor"
+    :class="canSaveMapping() ? 'mappingEditor-notSaved' : (canExportMapping() ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <!-- Minimizer allows component to get minimized -->
     <minimizer
       ref="minimizer"
@@ -371,6 +373,15 @@ export default {
   position: relative;
   overflow: hidden;
   display: flex;
+}
+.mappingEditor-cantSave {
+  border: 1px solid #ffffff00;
+}
+.mappingEditor-notSaved {
+  border: 1px solid #ff3333cc;
+}
+.mappingEditor-saved {
+  border: 1px solid #33ff33cc;
 }
 .mappingTypeSelection {
   flex: none;
