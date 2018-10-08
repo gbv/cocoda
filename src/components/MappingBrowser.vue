@@ -10,17 +10,17 @@
         <b-form-checkbox
           v-model="showLocal"
           class="mappingBrowser-setting" >
-          local ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
+          <b>[L]</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showServer"
           class="mappingBrowser-setting" >
-          jskos-server
+          <b>[S]</b>erver
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showCatalog"
           class="mappingBrowser-setting" >
-          catalog
+          <b>[C]</b>atalog
         </b-form-checkbox>
       </div>
       <!-- Mapping table -->
@@ -71,11 +71,11 @@
         </span>
         <span
           slot="source"
-          slot-scope="{ value }" >
+          slot-scope="data" >
           <span
-            v-b-tooltip.hover="{ title: value != truncateText(value) ? value : '', delay: $util.delay.medium }"
-            v-if="value != null" >
-            {{ truncateText(value) }}
+            v-b-tooltip.hover="{ title: data.item.creator != truncateText(data.item.creator) ? data.item.creator : '', delay: $util.delay.medium }"
+            v-if="data.item.creator != null" >
+            <b>{{ data.item.sourceShort }}</b> {{ truncateText(data.item.creator) }}
           </span>
         </span>
         <span
@@ -361,7 +361,7 @@ export default {
           for (let mapping of mappings) {
             let item = {}
             item.mapping = mapping
-            item.source = "local"
+            item.sourceShort = "[L]"
             items.push(item)
           }
           return items
@@ -375,7 +375,7 @@ export default {
           for (let mapping of mappings) {
             let item = {}
             item.mapping = mapping
-            item.source = "server"
+            item.sourceShort = "[S]"
             items.push(item)
           }
           return items
@@ -390,7 +390,7 @@ export default {
             if (!occurrence) continue
             let item = {}
             item.occurrence = occurrence
-            item.source = "catalog"
+            item.sourceShort = "[C]"
             let mapping = {}
             mapping.from = _.get(occurrence, "memberSet[0]")
             this.loadNotation(mapping.from)
@@ -478,7 +478,7 @@ export default {
               item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
             }
             // let creator = item.creator.length <= 8 ? item.creator : item.creator.substring(0, 6) + "..."
-            item.source = `${item.source}: ${item.creator}`
+            item.source = `${item.sourceShort} ${item.creator}`
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             items.push(item)
           }
@@ -490,7 +490,7 @@ export default {
         // this.loading = 0
       })
     },
-    truncateText(text, characters = 15) {
+    truncateText(text, characters = 10) {
       if (text.length > characters) {
         return text.substring(0, characters - 3) + "..."
       } else {
