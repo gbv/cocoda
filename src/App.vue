@@ -150,10 +150,10 @@
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
           <div
-            id="suggestionBrowserComponent"
+            id="mappingBrowserComponent"
             class="mappingToolItem mainComponent">
-            <!-- SuggestionBrowser -->
-            <suggestion-browser
+            <!-- MappingBrowser -->
+            <mapping-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
             />
             <!-- Placeholder -->
@@ -199,9 +199,7 @@
 <script>
 import TheNavbar from "./components/TheNavbar"
 import MappingEditor from "./components/MappingEditor"
-import OccurrencesBrowser from "./components/OccurrencesBrowser"
 import MappingBrowser from "./components/MappingBrowser"
-import SuggestionBrowser from "./components/SuggestionBrowser"
 import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
@@ -217,7 +215,7 @@ import Minimizer from "./components/Minimizer"
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, OccurrencesBrowser, MappingBrowser, SuggestionBrowser, ResizingSlider, ItemName, LoadingIndicatorFull, Minimizer
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, MappingBrowser, ResizingSlider, ItemName, LoadingIndicatorFull, Minimizer
   },
   data () {
     return {
@@ -582,7 +580,7 @@ html, body {
 #occurrencesBrowserComponent {
   flex: 2;
 }
-#suggestionBrowserComponent {
+#mappingBrowserComponent {
   flex: 4;
 }
 
