@@ -62,6 +62,40 @@
               <font-awesome-icon icon="times-circle" />
             </div>
           </div>
+          <!-- Concept and concept scheme quick selection -->
+          <div
+            v-show="selected.scheme[isLeft] == null"
+            class="placeholderComponent" >
+            <p class="fontWeight-heavy">
+              Scheme quick selection
+            </p>
+            <p
+              v-for="scheme in favoriteSchemes"
+              :key="scheme.uri" >
+              <br>
+              <item-name
+                :item="scheme"
+                :is-link="true"
+                :is-left="isLeft"
+                class="quickSelectionItem"
+              />
+            </p>
+            <br><br>
+            <p class="fontWeight-heavy">
+              Concept quick selection
+            </p>
+            <p
+              v-for="concept in config.favoriteConcepts"
+              :key="concept.uri" >
+              <br>
+              <item-name
+                :item="concept"
+                :is-link="true"
+                :is-left="isLeft"
+                class="quickSelectionItem"
+              />
+            </p>
+          </div>
           <!-- ConceptSearch -->
           <concept-search
             v-if="selected.scheme[isLeft] != null"
@@ -70,10 +104,11 @@
             class="conceptSearch"
           />
           <!-- ItemDetail and ConceptTree -->
-          <div class="conceptBrowser">
+          <div
+            v-if="selected.scheme[isLeft] != null"
+            class="conceptBrowser">
             <!-- ItemDetail -->
             <item-detail
-              v-if="selected.scheme[isLeft] != null"
               :item="selected.concept[isLeft] || selected.scheme[isLeft]"
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
@@ -84,47 +119,11 @@
             <resizing-slider />
             <!-- ConceptTree -->
             <concept-tree
-              v-show="selected.scheme[isLeft] != null"
               :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
               :is-left="isLeft"
               :id="'conceptTreeComponent_' + isLeft"
               class="mainComponent conceptBrowserItem conceptBrowserItemTree"
             />
-            <!-- Placeholder -->
-            <div
-              v-show="selected.scheme[isLeft] == null"
-              :id="'placeholderComponent' + isLeft"
-              class="mainComponent conceptBrowserItem placeholderComponent" >
-              <p class="fontWeight-heavy">
-                Scheme quick selection
-              </p>
-              <p
-                v-for="scheme in favoriteSchemes"
-                :key="scheme.uri" >
-                <br>
-                <item-name
-                  :item="scheme"
-                  :is-link="true"
-                  :is-left="isLeft"
-                  class="quickSelectionItem"
-                />
-              </p>
-              <br><br>
-              <p class="fontWeight-heavy">
-                Concept quick selection
-              </p>
-              <p
-                v-for="concept in config.favoriteConcepts"
-                :key="concept.uri" >
-                <br>
-                <item-name
-                  :item="concept"
-                  :is-link="true"
-                  :is-left="isLeft"
-                  class="quickSelectionItem"
-                />
-              </p>
-            </div>
           </div>
         </div>
 
