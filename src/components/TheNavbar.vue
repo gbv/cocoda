@@ -42,7 +42,8 @@
       </b-nav-item>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
-        Settings
+        <font-awesome-icon icon="user" />
+        Settings<span v-if="creatorName"> ({{ creatorName }})</span>
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
@@ -87,7 +88,12 @@ export default {
       /** The link to help page. */
       help: "https://gbv.github.io/cocoda/"
     }
-  }
+  },
+  computed: {
+    creatorName() {
+      return this.$settings.creator
+    },
+  },
 }
 </script>
 
