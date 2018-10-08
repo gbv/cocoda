@@ -153,6 +153,7 @@ export default {
       occurrencesSupportedSchemes: null,
       /** List of identifiers of all local mappings (used in `canSave`) */
       localMappingIdentifiers: [],
+      occurrencesCache: [],
     }
   },
   computed: {
@@ -600,7 +601,7 @@ export default {
           return []
         }
         for (let uri of uris) {
-          promises.push(axios.get(this.config.occurrenceProviders[0].url, {
+          promises.push(this.getOccurrences({
             params: {
               member: uri,
               scheme: "*",
@@ -614,7 +615,7 @@ export default {
         // Another request for co-occurrences between two specific concepts
         if (uris.length == 2 && uris[0] != uris[1]) {
           let urisString = uris.join(" ")
-          promises.push(axios.get(this.config.occurrenceProviders[0].url, {
+          promises.push(this.getOccurrences({
             params: {
               member: urisString,
               threshold: 5
@@ -651,6 +652,23 @@ export default {
       }).catch(error => {
         console.error("Occurrences Error:", error)
         return []
+      })
+    },
+    /** Wrapper around axios.get for loading occurrences */
+    getOccurrences(options) {
+      // Use local cache.
+      let resultsFromCache = this.occurrencesCache.find(item => {
+        return _.isEqual(item.options.params, options.params)
+      })
+      if (resultsFromCache) {
+        return Promise.resolve(resultsFromCache)
+      }
+      return axios.get(this.config.occurrenceProviders[0].url, options).then(results => {
+        this.occurrencesCache.push({
+          options,
+          results
+        })
+        return results
       })
     },
     /** Returns whether a scheme is supported by the occurrences-api */
