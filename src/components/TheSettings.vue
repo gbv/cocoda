@@ -6,20 +6,6 @@
     size="md"
     title="Cocoda Settings" >
     <p v-if="localSettings">
-      <b>Creator for mappings</b>
-      <b-form-input
-        v-model="localSettings.creator"
-        type="text"
-        placeholder="Enter your name"/>
-    </p>
-    <p>
-      <b-button
-        :variant="creatorRewritten ? 'success' : 'warning'"
-        @click="rewriteCreator">
-        Rewrite creator for all local mappings
-      </b-button>
-    </p>
-    <p v-if="localSettings">
       <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
         Always show all ancestors in concept details.
       </b-form-checkbox>
@@ -37,6 +23,20 @@
       </b-button>
     </p>
     <br>
+    <p v-if="localSettings">
+      <b>Creator for mappings</b>
+      <b-form-input
+        v-model="localSettings.creator"
+        type="text"
+        placeholder="Enter your name"/>
+    </p>
+    <p>
+      <b-button
+        :variant="creatorRewritten ? 'success' : 'warning'"
+        @click="rewriteCreator">
+        Rewrite creator for all local mappings
+      </b-button>
+    </p>
     <div v-if="dlAllMappings">
       <h5>Download Local Mappings</h5>
       <a
