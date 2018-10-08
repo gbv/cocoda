@@ -1,7 +1,7 @@
 import localforage from "localforage"
 
 const defaultSettings = {
-  creator: "You",
+  creator: "",
   mappingBrowserAllSchemes: true,
   mappingBrowserOnlyLocal: false,
   mappingBrowserShowReverse: true,

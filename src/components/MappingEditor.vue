@@ -210,7 +210,7 @@ export default {
     saveMapping() {
       if (!this.canSaveMapping()) return false
       let mapping = this.prepareMapping()
-      let creatorName = this.$settings.creator || "You"
+      let creatorName = this.$settings.creator || ""
       mapping.creator = [{ prefLabel: { de: creatorName } }]
       this.$api.saveMapping(mapping).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
