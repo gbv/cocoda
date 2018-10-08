@@ -10,7 +10,7 @@
         <b-form-checkbox
           v-model="showLocal"
           class="mappingBrowser-setting" >
-          local
+          local ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showServer"
@@ -158,6 +158,8 @@ export default {
       /** List of identifiers of all local mappings (used in `canSave`) */
       localMappingIdentifiers: [],
       occurrencesCache: [],
+      localMappingsTotal: 0,
+      localMappingsCurrent: 0,
     }
   },
   computed: {
@@ -316,6 +318,7 @@ export default {
       // TODO: Do this differently!
       this.$api.getLocalMappings(params).then(mappings => {
         this.localMappingIdentifiers = mappings.reduce((all, current) => all.concat(current.identifier || []), [])
+        this.localMappingsTotal = mappings.length
       })
 
       let items = []
@@ -353,6 +356,7 @@ export default {
       // 1. Local
       if (this.showLocal) {
         promises.push(this.$api.getLocalMappings(params).then(mappings => {
+          this.localMappingsCurrent = mappings.length
           let items = []
           for (let mapping of mappings) {
             let item = {}
