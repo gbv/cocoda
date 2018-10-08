@@ -82,16 +82,20 @@
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
-            v-if="canSave(data.item.mapping)"
-            icon="save"
-            class="button mappingBrowser-toolbar-button"
-            @click="saveMapping(data.item.mapping)" />
-          <font-awesome-icon
             v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
             icon="edit"
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save mapping' : '', delay: $util.delay.medium }"
+            v-if="!data.item.mapping.LOCAL"
+            :class="{
+              ['button']: canSave(data.item.mapping),
+              ['button-disabled']: !canSave(data.item.mapping)
+            }"
+            icon="save"
+            class="mappingBrowser-toolbar-button"
+            @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
             v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
             v-if="data.item.mapping.LOCAL"
