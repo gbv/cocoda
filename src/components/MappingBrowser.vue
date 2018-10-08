@@ -420,12 +420,15 @@ export default {
       }
 
       Promise.all(promises).then(results => {
+        let maxLength = 18
         let lengths = results.map(result => result.length)
         let totalLength = lengths.reduce((total, value) => total + value)
-        let truncateResults = totalLength > results.length * 5
+        let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
+        let lengthPerSet = parseInt(maxLength / (results.length - zeroCount))
+        let truncateResults = totalLength > maxLength && zeroCount < (results.length - 1)
         for (let result of results) {
           if (truncateResults) {
-            result = result.slice(0, 5)
+            result = result.slice(0, lengthPerSet)
           }
           for (let item of result) {
             let mapping = item.mapping
