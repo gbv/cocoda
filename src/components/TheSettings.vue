@@ -64,7 +64,7 @@
     </div>
     <br>
     <div>
-      <h5>Upload Local Mappings</h5>
+      <h5>Upload Local Mappings (JSKOS)</h5>
       <b-form-file
         ref="fileUpload"
         v-model="uploadedFile"
