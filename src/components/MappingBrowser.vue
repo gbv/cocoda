@@ -430,7 +430,7 @@ export default {
       Promise.all(promises).then(results => {
         let maxLength = 18
         let lengths = results.map(result => result.length)
-        let totalLength = lengths.reduce((total, value) => total + value)
+        let totalLength = lengths.reduce((total, value) => total + value, 0)
         let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
         let lengthPerSet = parseInt(maxLength / (results.length - zeroCount))
         let truncateResults = totalLength > maxLength && zeroCount < (results.length - 1)
@@ -701,7 +701,7 @@ export default {
       if (!mapping.identifier) {
         mapping = this.$jskos.addMappingIdentifiers(mapping)
       }
-      let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:content"))
+      let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:members"))
       if (!id) {
         return false
       }
