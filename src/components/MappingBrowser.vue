@@ -82,12 +82,12 @@
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'edit mapping', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: 'save and edit', delay: $util.delay.medium }"
             icon="edit"
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save mapping' : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save as mapping' : '', delay: $util.delay.medium }"
             v-if="!data.item.mapping.LOCAL"
             :class="{
               ['button']: canSave(data.item.mapping),
@@ -526,11 +526,13 @@ export default {
         this.hover(concept)
       }
       // Save mapping
-      let original = mapping.LOCAL ? data.item.mapping : null
-      this.$store.commit({
-        type: "mapping/set",
-        mapping,
-        original
+      // let original = mapping.LOCAL ? data.item.mapping : null
+      this.saveMapping(mapping).then(() => {
+        this.$store.commit({
+          type: "mapping/set",
+          mapping,
+          original: mapping
+        })
       })
     },
     hover(concept) {
@@ -725,9 +727,10 @@ export default {
     },
     saveMapping(mapping) {
       this.loading = 1
-      this.$api.saveMapping(mapping).then(() => {
+      return this.$api.saveMapping(mapping).then(mapping => {
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
+        return mapping
       })
     },
   }

@@ -1,7 +1,7 @@
 <template>
   <div
     id="mappingEditor"
-    :class="canSaveMapping() ? 'mappingEditor-notSaved' : (canExportMapping() ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
+    :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <!-- Minimizer allows component to get minimized -->
     <minimizer
       ref="minimizer"
@@ -10,8 +10,8 @@
       <div
         v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
         :class="{
-          button: canSaveMapping(),
-          'button-disabled': !canSaveMapping()
+          button: canSaveMapping,
+          'button-disabled': !canSaveMapping
         }"
         class="mappingEditorToolbarItem"
         @click="saveMapping" >
@@ -20,8 +20,8 @@
       <div
         v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
         :class="{
-          button: canDeleteMapping(),
-          'button-disabled': !canDeleteMapping()
+          button: canDeleteMapping,
+          'button-disabled': !canDeleteMapping
         }"
         class="mappingEditorToolbarItem"
         @click="deleteMapping" >
@@ -30,8 +30,8 @@
       <div
         v-b-tooltip.hover="{ title: 'clear mapping', delay: $util.delay.medium }"
         :class="{
-          button: canClearMapping(),
-          'button-disabled': !canClearMapping()
+          button: canClearMapping,
+          'button-disabled': !canClearMapping
         }"
         class="mappingEditorToolbarItem"
         @click="clearMapping" >
@@ -40,8 +40,8 @@
       <div
         v-b-tooltip.hover="{ title: 'export mapping', delay: $util.delay.medium }"
         :class="{
-          button: canExportMapping(),
-          'button-disabled': !canExportMapping()
+          button: canExportMapping,
+          'button-disabled': !canExportMapping
         }"
         class="mappingEditorToolbarItem"
         @click="exportMapping()" >
@@ -181,6 +181,18 @@ export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, Minimizer },
   computed: {
+    canSaveMapping() {
+      return (this.$store.state.mapping.original == null || this.hasChangedFromOriginal) && this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+    },
+    canDeleteMapping() {
+      return this.$store.state.mapping.original && this.$store.state.mapping.original.LOCAL
+    },
+    canClearMapping() {
+      return this.$store.state.mapping.mapping.fromScheme || this.$store.state.mapping.mapping.toScheme
+    },
+    canExportMapping() {
+      return this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+    },
     /**
      * Returns a formatted version of the mapping
      */
@@ -219,15 +231,19 @@ export default {
         scheme: this.selected.scheme[false]
       })
     },
+    canSaveMapping(newValue, oldValue) {
+      if (!oldValue && newValue) {
+      // Change creator of mapping.
+        this.$store.commit({
+          type: "mapping/setCreator",
+          creator: [{ prefLabel: { de: this.$settings.creator || "" } }]
+        })
+      }
+    }
   },
   methods: {
     saveMapping() {
-      if (!this.canSaveMapping()) return false
-      // Change creator of mapping.
-      this.$store.commit({
-        type: "mapping/setCreator",
-        creator: [{ prefLabel: { de: this.$settings.creator || "" } }]
-      })
+      if (!this.canSaveMapping) return false
       let mapping = this.prepareMapping()
       this.$api.saveMapping(mapping).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
@@ -243,7 +259,7 @@ export default {
       })
     },
     deleteMapping() {
-      if (!this.canDeleteMapping()) return false
+      if (!this.canDeleteMapping) return false
       this.$refs.deleteModal.show()
       return true
     },
@@ -262,23 +278,11 @@ export default {
       return true
     },
     clearMapping() {
-      if (!this.canClearMapping()) return false
+      if (!this.canClearMapping) return false
       this.$store.commit({
         type: "mapping/empty"
       })
       return true
-    },
-    canSaveMapping() {
-      return (this.$store.state.mapping.original == null || this.hasChangedFromOriginal) && this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
-    },
-    canDeleteMapping() {
-      return this.$store.state.mapping.original && this.$store.state.mapping.original.LOCAL
-    },
-    canClearMapping() {
-      return this.$store.state.mapping.mapping.fromScheme || this.$store.state.mapping.mapping.toScheme
-    },
-    canExportMapping() {
-      return this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
     },
     prepareMapping(mapping = null) {
       mapping = mapping || this.$jskos.minifyMapping(this.$store.state.mapping.mapping)
@@ -362,7 +366,7 @@ export default {
      * Opens the export modal
      */
     exportMapping() {
-      if (!this.canExportMapping()) return false
+      if (!this.canExportMapping) return false
       this.$refs.exportModal.show()
     },
     /**
