@@ -482,6 +482,61 @@ export default {
         let truncateResults = totalLength > maxLength && zeroCount < (results.length - 1)
         for (let result of results) {
           let source = result.source || "unknown"
+          // Sort the results
+          result.items = result.items.sort((a, b) => {
+            if (source == "catalog") {
+              // Sort catalog items by occurrences decending
+              return _.get(b, "occurrence.count", 0) - _.get(a, "occurrence.count", 0)
+            } else {
+              // Sort mappings
+              // TODO: - Put into utils/jskos-tools.
+              const includes = (list, concept) => {
+                for (let item of list) {
+                  if (this.$jskos.compare(item, concept)) {
+                    return true
+                  }
+                }
+                return false
+              }
+              // TODO: - Put into utils/jskos-tools.
+              const concepts = (mapping, isLeft) => {
+                let fromTo = isLeft ? "from" : "to"
+                return _.get(mapping, `${fromTo}.memberSet`) || _.get(mapping, `${fromTo}.memberChoice`) || _.get(mapping, `${fromTo}.memberList`) || []
+              }
+              let points = {
+                a: 10, b: 10
+              }
+              _.forOwn({ a, b }, ({ mapping }, key) => {
+                let conceptsLeft = concepts(mapping, true)
+                let conceptsRight = concepts(mapping, false)
+                // Left concept is on left side of mapping.
+                if (includes(conceptsLeft, this.selected.concept[true])) {
+                  points[key] -= 6
+                }
+                // Right concept is on right side of mapping.
+                if (includes(conceptsRight, this.selected.concept[false])) {
+                  points[key] -= 4
+                }
+                // Right concept is on left side of mapping.
+                if (includes(conceptsLeft, this.selected.concept[false])) {
+                  points[key] -= 3
+                }
+                // Left concept is on right side of mapping.
+                if (includes(conceptsRight, this.selected.concept[true])) {
+                  points[key] -= 2
+                }
+                // Left scheme matches left side of mapping.
+                if (this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true])) {
+                  points[key] -= 1
+                }
+                // Right scheme matches right side of mapping.
+                if (this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
+                  points[key] -= 1
+                }
+              })
+              return points.a - points.b
+            }
+          })
           // Truncate if necessary (and don't truncate local mappings)
           let wasTruncated = false
           let maxLengthForThis = _.get(this.showMoreValues, `[${source}]`, 1) * lengthPerSet
