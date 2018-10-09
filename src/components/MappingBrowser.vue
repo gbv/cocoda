@@ -70,7 +70,7 @@
           </span>
         </span>
         <span
-          slot="source"
+          slot="creator"
           slot-scope="data" >
           <span
             v-b-tooltip.hover="{ title: data.item.creator != truncateText(data.item.creator) ? data.item.creator : '', delay: $util.delay.medium }"
@@ -223,7 +223,7 @@ export default {
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
         },
         {
-          key: "source",
+          key: "creator",
           label: "source",
           width: "20%",
           minWidth: "",
@@ -234,7 +234,18 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: true
+          sortable: true,
+          compare: (a, b) => {
+            let first = _.get(a, "occurrence.count", -1)
+            let second = _.get(b, "occurrence.count", -1)
+            if (first < second) {
+              return -1
+            }
+            if (first > second) {
+              return 1
+            }
+            return 0
+          }
         },
         {
           key: "actions",
