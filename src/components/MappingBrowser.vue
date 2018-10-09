@@ -10,17 +10,17 @@
         <b-form-checkbox
           v-model="showLocal"
           class="mappingBrowser-setting" >
-          <b>[L]</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
+          <b>L</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showServer"
           class="mappingBrowser-setting" >
-          <b>[S]</b>erver
+          <b>S</b>erver
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showCatalog"
           class="mappingBrowser-setting" >
-          <b>[C]</b>atalog
+          <b>C</b>atalog
         </b-form-checkbox>
       </div>
       <!-- Mapping table -->
