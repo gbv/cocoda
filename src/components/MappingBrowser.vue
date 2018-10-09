@@ -108,6 +108,15 @@
           slot="HEAD_actions"
           slot-scope="data" />
         <span
+          slot="ITEM_ROW"
+          slot-scope="{ value }" >
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: `show more (${value})`, delay: $util.delay.medium }"
+            icon="ellipsis-h"
+            class="button"
+            @click="showMore(value)" />
+        </span>
+        <span
           slot="count"
           slot-scope="data" >
           <span v-if="data.item.occurrence == null" />
@@ -166,6 +175,7 @@ export default {
       occurrencesCache: [],
       localMappingsTotal: 0,
       localMappingsCurrent: 0,
+      showMoreValues: {},
     }
   },
   computed: {
@@ -350,6 +360,10 @@ export default {
         // No change in concepts, not reloading.
         return
       }
+      if (!force) {
+        // Either concept or scheme changed => reset showMoreValues.
+        this.showMoreValues = {}
+      }
       this.loading = 1
 
       this.previousSelected = {}
@@ -404,6 +418,7 @@ export default {
             items.push(item)
           }
           return {
+            source: "server",
             items
           }
         }))
@@ -452,6 +467,7 @@ export default {
             }
           }
           return {
+            source: "catalog",
             items
           }
         }))
@@ -465,9 +481,13 @@ export default {
         let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
         let truncateResults = totalLength > maxLength && zeroCount < (results.length - 1)
         for (let result of results) {
+          let source = result.source || "unknown"
           // Truncate if necessary (and don't truncate local mappings)
-          if (truncateResults && result.source != "local") {
-            result.items = result.items.slice(0, lengthPerSet)
+          let wasTruncated = false
+          let maxLengthForThis = _.get(this.showMoreValues, `[${source}]`, 1) * lengthPerSet
+          if (truncateResults && source != "local" && result.items.length > maxLengthForThis) {
+            result.items = result.items.slice(0, maxLengthForThis)
+            wasTruncated = true
           }
           for (let item of result.items) {
             let mapping = item.mapping
@@ -514,6 +534,14 @@ export default {
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             items.push(item)
           }
+          // Add extra row if truncated
+          if (wasTruncated) {
+            items.push({
+              "_wholeRow": true,
+              "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
+              value: source,
+            })
+          }
         }
         this.items = items
         this.loading = 0
@@ -521,6 +549,10 @@ export default {
         console.log(error)
         // this.loading = 0
       })
+    },
+    showMore(value) {
+      this.showMoreValues[value] = _.get(this.showMoreValues, `[${value}]`, 1) + 1
+      this.$store.commit("mapping/setRefresh", true)
     },
     truncateText(text, characters = 10) {
       if (text.length > characters) {
@@ -794,6 +826,9 @@ export default {
 
 .mappingBrowser-table-row-match {
   background-color: @color-primary-1;
+}
+.mappingBrowser-table-row-showMore {
+  height: 24px;
 }
 
 </style>
