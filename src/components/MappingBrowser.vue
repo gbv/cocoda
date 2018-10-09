@@ -386,7 +386,10 @@ export default {
             item.sourceShort = "[L]"
             items.push(item)
           }
-          return items
+          return {
+            source: "local",
+            items
+          }
         }))
       }
 
@@ -400,7 +403,9 @@ export default {
             item.sourceShort = "[S]"
             items.push(item)
           }
-          return items
+          return {
+            items
+          }
         }))
       }
 
@@ -446,22 +451,25 @@ export default {
               items.push(item)
             }
           }
-          return items
+          return {
+            items
+          }
         }))
       }
 
       Promise.all(promises).then(results => {
-        let maxLength = 18
-        let lengths = results.map(result => result.length)
+        let maxLength = 20
+        let lengthPerSet = 5
+        let lengths = results.map(result => result.items.length)
         let totalLength = lengths.reduce((total, value) => total + value, 0)
         let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
-        let lengthPerSet = parseInt(maxLength / (results.length - zeroCount))
         let truncateResults = totalLength > maxLength && zeroCount < (results.length - 1)
         for (let result of results) {
-          if (truncateResults) {
-            result = result.slice(0, lengthPerSet)
+          // Truncate if necessary (and don't truncate local mappings)
+          if (truncateResults && result.source != "local") {
+            result.items = result.items.slice(0, lengthPerSet)
           }
-          for (let item of result) {
+          for (let item of result.items) {
             let mapping = item.mapping
             item.sourceScheme = _.get(mapping, "fromScheme.notation[0]", "?")
             item.targetScheme = _.get(mapping, "toScheme.notation[0]", "?")
