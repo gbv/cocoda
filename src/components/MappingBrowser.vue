@@ -189,14 +189,14 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: true
+          sortable: false
         },
         {
           key: "sourceConcepts",
           label: "from",
           width: "20%",
           minWidth: "",
-          sortable: true,
+          sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
         },
         {
@@ -204,7 +204,7 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: true,
+          sortable: false,
           compare: (a ,b) => {
             let labelA = _.get(a, "type.prefLabel.en", "")
             let labelB = _.get(b, "type.prefLabel.en", "")
@@ -222,14 +222,14 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: true
+          sortable: false
         },
         {
           key: "targetConcepts",
           label: "to",
           width: "20%",
           minWidth: "",
-          sortable: true,
+          sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
         },
         {
@@ -237,14 +237,14 @@ export default {
           label: "source",
           width: "20%",
           minWidth: "",
-          sortable: true
+          sortable: false
         },
         {
           key: "count",
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: true,
+          sortable: false,
           compare: (a, b) => {
             let first = _.get(a, "occurrence.count", -1)
             let second = _.get(b, "occurrence.count", -1)
