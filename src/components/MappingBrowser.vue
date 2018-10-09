@@ -150,8 +150,14 @@ export default {
       loading: 0,
       items: [],
       previousSelected: {
-        [true]: null,
-        [false]: null,
+        concept: {
+          [true]: null,
+          [false]: null,
+        },
+        scheme: {
+          [true]: null,
+          [false]: null,
+        }
       },
       /** List of supported schemes by occurrences-api */
       occurrencesSupportedSchemes: null,
@@ -329,15 +335,20 @@ export default {
         // No selected concepts, not reloading.
         return
       }
-      if (this.$jskos.compare(this.selected.concept[true], this.previousSelected[true]) && this.$jskos.compare(this.selected.concept[false], this.previousSelected[false]) && !force) {
+      if (this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) && this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) && this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) && this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false]) && !force) {
         // No change in concepts, not reloading.
         return
       }
       this.loading = 1
 
-      this.previousSelected = {
+      this.previousSelected = {}
+      this.previousSelected.concept = {
         [true]: this.selected.concept[true] ? { uri: this.selected.concept[true].uri } : null,
         [false]: this.selected.concept[false] ? { uri: this.selected.concept[false].uri } : null,
+      }
+      this.previousSelected.scheme = {
+        [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
+        [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
       }
 
       // Prepare params
@@ -397,7 +408,7 @@ export default {
             if (mapping.from) {
               mapping.from = { memberSet: [mapping.from] }
             } else {
-              mapping.from = { memberSet: [] }
+              mapping.from = null
             }
             mapping.fromScheme = this.$store.getters["objects/get"](_.get(occurrence, "memberSet[0].inScheme[0]"))
             mapping.to = _.get(occurrence, "memberSet[1]")
@@ -412,6 +423,7 @@ export default {
             if (!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true]) && !this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
               [mapping.from, mapping.fromScheme, mapping.to, mapping.toScheme] = [mapping.to, mapping.toScheme, mapping.from, mapping.fromScheme]
             }
+            mapping.toScheme = mapping.toScheme || this.selected.scheme[false]
             mapping.type = [this.$jskos.defaultMappingType.uri]
             mapping = this.$jskos.addMappingIdentifiers(mapping)
             if (occurrence.database) {
@@ -442,13 +454,14 @@ export default {
             let mapping = item.mapping
             item.sourceScheme = _.get(mapping, "fromScheme.notation[0]", "?")
             item.targetScheme = _.get(mapping, "toScheme.notation[0]", "?")
+            // TODO: Use Vuex getters.
             item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
             item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []
-            // Set source/targetScheme to empty string if there are no concepts on that side.
-            if (item.sourceConcepts.length == 0) {
+            // Set source/targetScheme to empty string if from/to is null.
+            if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
               item.sourceScheme = ""
             }
-            if (item.targetConcepts.length == 0) {
+            if (!_.get(mapping, "to") && item.targetConcepts.length == 0) {
               item.targetScheme = ""
             }
             // Skip if there are no concepts.

@@ -89,7 +89,7 @@ const getters = {
    * @param {bool} isLeft - side of the mapping
    */
   getConcepts: (state) => (isLeft) => {
-    return state.mapping[helpers.fromTo(isLeft)].memberSet
+    return state.mapping[helpers.fromTo(isLeft)].memberSet || state.mapping[helpers.fromTo(isLeft)].memberList || state.mapping[helpers.fromTo(isLeft)].memberChoice || []
   },
 
   /**
@@ -145,7 +145,7 @@ const mutations = {
       return
     }
     state.mapping[fromTo].memberSet.splice(indexConcept, 1)
-    if (state.mapping[fromTo].memberSet.length == 0) {
+    if (state.mapping[fromTo].memberSet.length == 0 && fromTo == "from") {
       state.mapping[helpers.fromToScheme(isLeft)] = null
     }
   },
@@ -204,6 +204,19 @@ const mutations = {
    */
   setCreator(state, { creator }) {
     state.mapping.creator = creator
+  },
+
+  /**
+   * Sets the fromScheme or toScheme for the mapping if that side has no concepts.
+   *
+   * Payload object: { isLeft, scheme }
+   * - isLeft: side on which to set scheme
+   * - scheme: the scheme object
+   */
+  setScheme(state, { isLeft = true, scheme }) {
+    if (getters.getConcepts(state)(isLeft).length == 0) {
+      state.mapping[helpers.fromToScheme(isLeft)] = scheme
+    }
   },
 
   switch(state) {

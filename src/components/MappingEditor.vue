@@ -54,7 +54,7 @@
       :key="index0"
       :style="{ order: index0 * 2 }"
       class="mappingEditorPart" >
-      <div v-if="$store.getters['mapping/getScheme'](isLeft) != null">
+      <div v-if="$store.getters['mapping/getScheme'](isLeft) != null && $store.getters['mapping/getConcepts'](isLeft).length">
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
           class="mappingScheme fontWeight-heavy" >
@@ -212,6 +212,12 @@ export default {
     mappingEncoded() {
       // When mapping changed, maximize MappingEditor.
       this.$refs.minimizer.toggleMinimize(false)
+      // Set toScheme on every change (mutation will do nothing if there are concepts in the mapping).
+      this.$store.commit({
+        type: "mapping/setScheme",
+        isLeft: false,
+        scheme: this.selected.scheme[false]
+      })
     },
   },
   methods: {

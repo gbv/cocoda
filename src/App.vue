@@ -414,13 +414,14 @@ export default {
           } catch(error) {
             // do nothing
           }
-          resolve([mappingFromQuery])
+          resolve(mappingFromQuery)
         })
         let loadMapping = this.$api.getMappings({ identifier: query["identifier"] || "" }).then(mappings => {
           if (query["identifier"] && mappings.length) {
-            return [mappings[0], mappings[0]]
+            // Found original mapping.
+            return decodeMapping.then(mapping => [mapping, mappings[0]])
           } else {
-            return decodeMapping
+            return decodeMapping.then(mapping => [mapping])
           }
         })
         let directions = ["from", "to"]

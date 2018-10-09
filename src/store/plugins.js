@@ -7,8 +7,8 @@ import jskos from "jskos-tools"
 const selectedPlugin = store => {
   store.subscribe((mutation, state) => {
     // Check for selecting a concept
+    let isLeft = _.get(mutation, "payload.isLeft")
     if (mutation.type == "selected/set") {
-      let isLeft = mutation.payload.isLeft
       let noQueryRefresh = mutation.payload && mutation.payload.noQueryRefresh
       if (mutation.payload.kind == "concept" || mutation.payload.kind == "both") {
         let concept = mutation.payload.value || mutation.payload.concept
@@ -89,6 +89,18 @@ const selectedPlugin = store => {
               }
             }
             return Promise.all(promises)
+          })
+        }
+      }
+    }
+    if (_.get(mutation, "payload.kind") == "scheme") {
+      if (!isLeft) {
+        // When changing scheme on right side AND the mapping is empty on the right side, set mapping's toScheme.
+        if (store.getters["mapping/getConcepts"](isLeft).length == 0) {
+          store.commit({
+            type: "mapping/setScheme",
+            isLeft,
+            scheme: mutation.payload.value
           })
         }
       }
