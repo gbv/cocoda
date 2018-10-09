@@ -345,14 +345,18 @@ function saveMapping(mapping) {
     mapping = jskos.addMappingIdentifiers(mapping)
     // Override local mappings with same members
     // FIXME: This is only temporary to demonstrate local saving of mappings. The actual solution to this problem may be way more complicated.
-    mappings = mappings.filter(m => {
+    let index = mappings.findIndex(m => {
       let findContentId = id => id.startsWith("urn:jskos:mapping:members:")
       let id1 = m.identifier ? m.identifier.find(findContentId) : null
       let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
-      return id1 == null || id2 == null || id1 != id2
+      return id1 === id2
     })
     // Add mapping
-    mappings.push(mapping)
+    if (index >= 0) {
+      mappings[index] = mapping
+    } else {
+      mappings.push(mapping)
+    }
     // FIXME: This fixes old invalid mappings in local storage and should be removed later.
     for (let mapping of mappings) {
       if (mapping.creator) {
