@@ -4,9 +4,7 @@ Mappings can be managed with:
 
 * a **mapping editor** to create and modify individual mappings
 
-* a **mapping browser** that lists existing mappings
-
-* an **occurrences browser** that lists occurrences and co-occurrences of selected concepts as mapping recommendations
+* a **mapping browser** that lists existing mappings (from local storage or a mapping provider) as well as mapping recommendations (currently occurrences and co-occurrences of selected concepts)
 
 ### Mapping Editor
 
@@ -14,8 +12,15 @@ To add a concept to the mapping, you first have to select the concept (by clicki
 
 ### Mapping Browser
 
-The mapping browser shows exisiting mappings for selected concepts from source and target scheme. Right now, these mappings are loaded from the different mapping providers given in the config file as well as from your local browser storage. Currently, only one mapping provider is available which serves all mappings from [here](http://coli-conc.gbv.de/concordances/). By default, it will show mappings to/from all schemes no matter which scheme is selected on the other side, but you can restrict this by changing the option in the bottom right from "Show All Mappings" to "Show Only Mappings to Selected Scheme". You can edit an existing mapping by clicking on the edit button at the far right of a row.
+The mapping browser shows existing mappings as well as mapping recommendations for selected concepts from the source and target schemes. At the top of the pane, it is possible to select and deselect different sources. Currently available are:
 
-### Occurrences Browser
+- Local: mappings saved in local storage.
+- Server: mappings loaded from different mapping providers given in the config file (currently only one provider is available which contains all mappings listed [here](http://coli-conc.gbv.de/concordances/)).
+- Catalog: mapping recommendations based on occurrences and co-occurrences of the selected concepts with other concepts from a library catalog. Right now, it takes the data from the [GVK](https://gso.gbv.de/), but in the future it will be possible to choose from several catalogs. Clicking on the number of occurrences will open a link to the catalog.
 
-The occurrences browser shows both occurrences of the selected concepts and co-occurrences with other concepts from a library catalog. Right now, it takes the data from the [GVK](https://gso.gbv.de/), but in the future it will be possible to choose from several catalogs. For single concept occurrences, the concept is listed alone in a row, for co-occurrences two concepts whose notations are used together are listed together in one row. Clicking on the number of occurrences will open a link to the catalog. By clicking on the button at the far right of a row, you can convert a co-occurrence into a mapping to be shown in the mapping editor.
+<!--By default, it will show mappings to/from all schemes no matter which scheme is selected on the other side, but you can restrict this by changing the option in the bottom right from "Show All Mappings" to "Show Only Mappings to Selected Scheme". -->
+
+For each mapping or mapping recommendation, there are some available actions on the right of each row:
+- Edit: saves the mapping or recommendation to local storage and loads it into MappingEditor for editing.
+- Save: saves the mapping or recommendation to local storage (not available for local mappings or if it's already in local storage).
+- Delete: deletes a mapping (currently only available for local mappings).
