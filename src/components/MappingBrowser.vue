@@ -109,9 +109,10 @@
           slot-scope="data" />
         <span
           slot="ITEM_ROW"
-          slot-scope="{ value }" >
+          slot-scope="{ item, value }" >
           <font-awesome-icon
             v-b-tooltip.hover="{ title: `show more (${value})`, delay: $util.delay.medium }"
+            v-if="item.type == 'more'"
             icon="ellipsis-h"
             class="button"
             @click="showMore(value)" />
@@ -595,10 +596,18 @@ export default {
               "_wholeRow": true,
               "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
               value: source,
+              type: "more",
             })
           }
+          // Add separator row
+          items.push({
+            "_wholeRow": true,
+            "_rowClass": "mappingBrowser-separatorRow",
+            type: "separator",
+          })
         }
-        this.items = items
+        // Remove last item (unnecessary separator)
+        this.items = items.slice(0, items.length - 1)
         this.loading = 0
       }).catch(error => {
         console.log(error)
@@ -884,6 +893,9 @@ export default {
 }
 .mappingBrowser-table-row-showMore {
   height: 24px;
+}
+.mappingBrowser-separatorRow {
+  height: 5px;
 }
 
 </style>
