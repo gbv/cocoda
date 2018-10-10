@@ -246,10 +246,10 @@ function getMappings(params, local = true) {
         mappings.push(mapping)
         // Add fromScheme and toScheme if missing
         if (!mapping.fromScheme) {
-          mapping.fromScheme = _.get(mapping, "from.memberSet[0].inScheme")
+          mapping.fromScheme = _.get(mapping, "from.memberSet[0].inScheme[0]")
         }
         if (!mapping.toScheme) {
-          mapping.toScheme = _.get(mapping, "to.memberSet[0].inScheme")
+          mapping.toScheme = _.get(mapping, "to.memberSet[0].inScheme[0]")
         }
       }
     }
