@@ -213,7 +213,6 @@ Vue.component("prefLabel-text", {
 
 .itemName {
   display: inline;
-  user-select: none;
 }
 .itemName > * {
   color: @color-text-dark !important;
