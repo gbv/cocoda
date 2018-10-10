@@ -66,7 +66,7 @@
           <span
             v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }"
             v-if="value != null" >
-            {{ value.notation[0] }}
+            {{ $util.notation(value) }}
           </span>
         </span>
         <span
@@ -561,8 +561,8 @@ export default {
           // Add items
           for (let item of result.items) {
             let mapping = item.mapping
-            item.sourceScheme = _.get(mapping, "fromScheme.notation[0]", "?")
-            item.targetScheme = _.get(mapping, "toScheme.notation[0]", "?")
+            item.sourceScheme = this.$util.notation(_.get(mapping, "fromScheme")) || "?"
+            item.targetScheme = this.$util.notation(_.get(mapping, "toScheme")) || "?"
             // TODO: Use Vuex getters.
             item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
             item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []
@@ -593,9 +593,8 @@ export default {
               concept.inScheme = _.get(concept, "inScheme") || [mapping.toScheme]
             }
             // Load the prefLabels for all concepts that don't have a notation
-            // TODO: - Use helper function to get notation
             for (let concept of [].concat(item.sourceConcepts, item.targetConcepts)) {
-              if (!concept.notation || concept.notation.length == 0) {
+              if (!this.$util.notation(concept)) {
                 this.hover(concept)
               }
             }

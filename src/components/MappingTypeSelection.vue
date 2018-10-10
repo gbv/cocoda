@@ -15,7 +15,7 @@
       :style="`display: ${((mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri) || hovered ? 'inline-block' : 'none'};`"
       class="mappingType"
       @click="choose(mappingType)" >
-      {{ mappingType.notation[0] }}
+      {{ $util.notation(mappingType) }}
     </div>
   </div>
 </template>

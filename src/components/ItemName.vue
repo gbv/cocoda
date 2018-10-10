@@ -21,16 +21,16 @@
         :item="item"
         :class="{ 'fontWeight-heavy': showText }" />
       <!-- Text for prefLabel -->
-      <prefLabel-text
-        v-if="showText || !notation"
-        :item="item" />
+      <span v-if="showText || !notation">
+        {{ $util.prefLabel(item) }}
+      </span>
     </div>
     <!-- Tooltip for prefLabel if only notation is shown -->
     <b-tooltip
-      v-if="showTooltip && item.prefLabel && (item.prefLabel.de || item.prefLabel.en)"
+      v-if="showTooltip && $util.prefLabel(item)"
       ref="tooltip"
       :target="tooltipDOMID" >
-      {{ trimTooltip(item.prefLabel.de || item.prefLabel.en) }}
+      {{ trimTooltip($util.prefLabel(item)) }}
     </b-tooltip>
   </div>
 </template>
@@ -106,16 +106,8 @@ export default {
     isHovered() {
       return this.$jskos.compare(this.hoveredConcept, this.item)
     },
-    // TODO: - Use (currently not existing) helper function from utils.
     notation() {
-      if (this.item.notation && this.item.notation.length) {
-        let notation = this.item.notation[0]
-        if (this.$jskos.isScheme(this.item)) {
-          return notation.toUpperCase()
-        }
-        return notation
-      }
-      return null
+      return this.$util.notation(this.item)
     },
   },
   watch: {
@@ -147,7 +139,6 @@ export default {
   }
 }
 
-// TODO: - Move badge and prefLabel text to its own components.
 import Vue from "vue"
 
 /**
@@ -171,16 +162,8 @@ Vue.component("notation-text", {
     }
   },
   computed: {
-    // TODO: - Refactor into utils.
     notation() {
-      if (this.item.notation && this.item.notation.length) {
-        let notation = this.item.notation[0]
-        if (this.$jskos.isScheme(this.item)) {
-          return notation.toUpperCase()
-        }
-        return notation
-      }
-      return null
+      return this.$util.notation(this.item)
     },
     fill() {
       let fill = ""
@@ -196,29 +179,6 @@ Vue.component("notation-text", {
   template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-veryLightGrey'>{{ fill }}</span></span>"
 })
 
-/**
- * Displays an item's prefLabel (German over English).
- */
-Vue.component("prefLabel-text", {
-  introduction: "display a prefLabel (German over English)",
-  props: {
-    item: {
-      type: Object,
-      default: null
-    }
-  },
-  computed: {
-    // TODO: - Refactor into utils and add fallback to other languages.
-    prefLabel() {
-      if (this.item.prefLabel && (this.item.prefLabel.de || this.item.prefLabel.en)) {
-        return this.item.prefLabel.de || this.item.prefLabel.en
-      } else {
-        return this.item.uri
-      }
-    }
-  },
-  template: "<span>{{ prefLabel }}</span>"
-})
 </script>
 
 <style lang="less" scoped>

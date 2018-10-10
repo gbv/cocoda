@@ -240,9 +240,9 @@ export default {
           }
           download.csv = csv
           // Label
-          download.label = _.get(download, "fromScheme.notation[0]", "?") + " to " + _.get(download, "toScheme.notation[0]", "?")
+          download.label = (this.$util.notation(_.get(download, "fromScheme")) || "?") + " to " + (this.$util.notation(_.get(download, "toScheme")) || "?")
           // Filename
-          download.filename = `${_.get(download, "fromScheme.notation[0]", "?")}_to_${_.get(download, "toScheme.notation[0]", "?")}_${this.localSettings.creator}`
+          download.filename = `${this.$util.notation(_.get(download, "fromScheme")) || "?"}_to_${this.$util.notation(_.get(download, "toScheme")) || "?"}_${this.localSettings.creator}`
         }
       })
     },

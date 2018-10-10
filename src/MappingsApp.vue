@@ -325,7 +325,7 @@ export default {
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
-          text: `${type.notation[0]} ${type.prefLabel.en}`,
+          text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
           value: type.uri
         })
       }
@@ -446,8 +446,8 @@ export default {
       let items = []
       for (let concordance of this.concordances) {
         let item = { concordance }
-        item.from = _.get(concordance, "fromScheme.notation[0]", "-")
-        item.to = _.get(concordance, "toScheme.notation[0]", "-")
+        item.from = this.$util.notation(_.get(concordance, "fromScheme")) || "-"
+        item.to = this.$util.notation(_.get(concordance, "toScheme")) || "-"
         item.description = _.get(concordance, "scopeNote.de[0]") || _.get(concordance, "scopeNote.en[0]") || "-"
         item.creator = _.get(concordance, "creator[0].prefLabel.de") || _.get(concordance, "creator[0].prefLabel.en") || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""

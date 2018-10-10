@@ -39,7 +39,7 @@
       <span
         v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }"
         v-if="value != null" >
-        {{ value.notation[0] }}
+        {{ $util.notation(value) }}
       </span>
     </span>
     <span
@@ -179,8 +179,8 @@ export default {
         if (!this.hideDuplicates || !hash || !hashList.includes(hash)) {
           let item = {}
           item.mapping = mapping
-          item.sourceScheme = mapping.fromScheme.notation[0].toUpperCase()
-          item.targetScheme = mapping.toScheme.notation[0].toUpperCase()
+          item.sourceScheme = this.$util.notation(mapping.fromScheme)
+          item.targetScheme = this.$util.notation(mapping.toScheme)
           item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
           item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
           item.creator = mapping.creator && mapping.creator[0] || "?"
