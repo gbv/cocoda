@@ -592,6 +592,13 @@ export default {
               }
               concept.inScheme = _.get(concept, "inScheme") || [mapping.toScheme]
             }
+            // Load the prefLabels for all concepts that don't have a notation
+            // TODO: - Use helper function to get notation
+            for (let concept of [].concat(item.sourceConcepts, item.targetConcepts)) {
+              if (!concept.notation || concept.notation.length == 0) {
+                this.hover(concept)
+              }
+            }
             item._rowClass = ""
             if (leftInSource && rightInSource) {
               item._rowClass = "mappingBrowser-table-row-match"

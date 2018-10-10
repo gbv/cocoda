@@ -14,15 +14,15 @@
           'fontWeight-heavy': isHighlighted
         },
         'fontSize-'+(fontSize || 'normal')
-    ]" >
+      ]"
+      :id="tooltipDOMID" >
       <!-- Text for notation -->
       <notation-text
         :item="item"
-        :class="{ 'fontWeight-heavy': showText }"
-        :id="tooltipDOMID" />
+        :class="{ 'fontWeight-heavy': showText }" />
       <!-- Text for prefLabel -->
       <prefLabel-text
-        v-if="showText"
+        v-if="showText || !notation"
         :item="item" />
     </div>
     <!-- Tooltip for prefLabel if only notation is shown -->
@@ -105,7 +105,18 @@ export default {
   computed: {
     isHovered() {
       return this.$jskos.compare(this.hoveredConcept, this.item)
-    }
+    },
+    // TODO: - Use (currently not existing) helper function from utils.
+    notation() {
+      if (this.item.notation && this.item.notation.length) {
+        let notation = this.item.notation[0]
+        if (this.$jskos.isScheme(this.item)) {
+          return notation.toUpperCase()
+        }
+        return notation
+      }
+      return null
+    },
   },
   watch: {
     item: function() {
@@ -160,6 +171,7 @@ Vue.component("notation-text", {
     }
   },
   computed: {
+    // TODO: - Refactor into utils.
     notation() {
       if (this.item.notation && this.item.notation.length) {
         let notation = this.item.notation[0]
@@ -196,6 +208,7 @@ Vue.component("prefLabel-text", {
     }
   },
   computed: {
+    // TODO: - Refactor into utils and add fallback to other languages.
     prefLabel() {
       if (this.item.prefLabel && (this.item.prefLabel.de || this.item.prefLabel.en)) {
         return this.item.prefLabel.de || this.item.prefLabel.en
