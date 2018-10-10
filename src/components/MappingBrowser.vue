@@ -618,8 +618,7 @@ export default {
             })
           }
         }
-        // Remove last item (unnecessary separator)
-        this.items = items.slice(0, items.length - 1)
+        this.items = items
         this.loading = 0
       }).catch(error => {
         console.log(error)
