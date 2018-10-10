@@ -557,6 +557,8 @@ export default {
             result.items = result.items.slice(0, maxLengthForThis)
             wasTruncated = true
           }
+          let addSeparator = items.length > 0
+          // Add items
           for (let item of result.items) {
             let mapping = item.mapping
             item.sourceScheme = _.get(mapping, "fromScheme.notation[0]", "?")
@@ -590,8 +592,13 @@ export default {
               }
               concept.inScheme = _.get(concept, "inScheme") || [mapping.toScheme]
             }
+            item._rowClass = ""
             if (leftInSource && rightInSource) {
               item._rowClass = "mappingBrowser-table-row-match"
+            }
+            if (addSeparator) {
+              item._rowClass += " mappingBrowser-separatorRow"
+              addSeparator = false
             }
             item.creator = mapping.creator && mapping.creator[0] || "?"
             if (typeof item.creator === "object") {
@@ -610,12 +617,6 @@ export default {
               type: "more",
             })
           }
-          // Add separator row
-          items.push({
-            "_wholeRow": true,
-            "_rowClass": "mappingBrowser-separatorRow",
-            type: "separator",
-          })
         }
         // Remove last item (unnecessary separator)
         this.items = items.slice(0, items.length - 1)
@@ -906,7 +907,7 @@ export default {
   height: 24px;
 }
 .mappingBrowser-separatorRow {
-  height: 5px;
+  border-top: 1px solid black;
 }
 
 </style>
