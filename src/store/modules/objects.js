@@ -59,7 +59,7 @@ const mutations = {
         object.issued = object.issued || null
         object.modified = object.modified || null
         object.license = object.license || null
-        object.notation = object.notation || null
+        object.notation = object.notation || []
         object.prefLabel = object.prefLabel || {}
         object.publisher = object.publisher || null
         if (!object.inScheme) {
