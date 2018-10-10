@@ -71,12 +71,17 @@
         </span>
         <span
           slot="creator"
-          slot-scope="data" >
+          slot-scope="{ item }" >
           <span
-            v-b-tooltip.hover="{ title: data.item.creator != truncateText(data.item.creator) ? data.item.creator : '', delay: $util.delay.medium }"
-            v-if="data.item.creator != null" >
-            <b>{{ data.item.sourceShort }}</b> {{ truncateText(data.item.creator) }}
+            v-b-tooltip.hover="{ title: item.creator != truncateText(item.creator) ? item.creator : '', delay: $util.delay.medium }"
+            v-if="item.creator != null" >
+            {{ truncateText(item.creator) }}
           </span>
+        </span>
+        <span
+          slot="source"
+          slot-scope="{ item }" >
+          <b>{{ item.sourceShort }}</b>
         </span>
         <span
           slot="actions"
@@ -235,8 +240,8 @@ export default {
         },
         {
           key: "creator",
-          label: "source",
-          width: "20%",
+          label: "creator",
+          width: "16%",
           minWidth: "",
           sortable: false
         },
@@ -257,6 +262,13 @@ export default {
             }
             return 0
           }
+        },
+        {
+          key: "source",
+          label: "",
+          width: "4%",
+          minWidth: "",
+          sortable: false
         },
         {
           key: "actions",
@@ -398,7 +410,7 @@ export default {
           for (let mapping of mappings) {
             let item = {}
             item.mapping = mapping
-            item.sourceShort = "[L]"
+            item.sourceShort = "L"
             items.push(item)
           }
           return {
@@ -415,7 +427,7 @@ export default {
           for (let mapping of mappings) {
             let item = {}
             item.mapping = mapping
-            item.sourceShort = "[S]"
+            item.sourceShort = "S"
             items.push(item)
           }
           return {
@@ -433,7 +445,7 @@ export default {
             if (!occurrence) continue
             let item = {}
             item.occurrence = occurrence
-            item.sourceShort = "[C]"
+            item.sourceShort = "C"
             let mapping = {}
             mapping.from = _.get(occurrence, "memberSet[0]")
             this.loadNotation(mapping.from)
@@ -585,7 +597,6 @@ export default {
             if (typeof item.creator === "object") {
               item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
             }
-            // let creator = item.creator.length <= 8 ? item.creator : item.creator.substring(0, 6) + "..."
             item.source = `${item.sourceShort} ${item.creator}`
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             items.push(item)
