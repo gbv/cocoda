@@ -82,7 +82,7 @@ let compareMappingsByConcepts = (mapping1, mapping2, fromTo) => {
  * @param {*} item - a JSKOS Item
  */
 let notation = (item) => {
-  if (item.notation && item.notation.length) {
+  if (item && item.notation && item.notation.length) {
     let notation = item.notation[0]
     if (jskos.isScheme(item)) {
       return notation.toUpperCase()
