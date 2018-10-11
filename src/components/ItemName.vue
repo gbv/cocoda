@@ -5,11 +5,11 @@
     @mouseover="mouseOver"
     @mouseout="mouseOut">
     <div
-      :is="isLink ? 'router-link' : 'div'"
+      :is="isValidLink ? 'router-link' : 'div'"
       :to="getRouterUrl(item, isLeft)"
       :class="[
         {
-          'itemName-hovered': isLink && isHovered,
+          'itemName-hovered': isValidLink && isHovered,
           'itemName-highlighted': isHighlighted,
           'fontWeight-heavy': isHighlighted
         },
@@ -108,6 +108,14 @@ export default {
     },
     notation() {
       return this.$util.notation(this.item)
+    },
+    isValidLink() {
+      if (!this.isLink) {
+        return false
+      }
+      // Check if scheme is available.
+      let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]"))
+      return scheme != null
     },
   },
   watch: {
