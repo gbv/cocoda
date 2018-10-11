@@ -547,7 +547,15 @@ export default {
                   points[key] -= 1
                 }
               })
-              return points.a - points.b
+              if (points.a - points.b != 0) {
+                return points.a - points.b
+              }
+              // If the points are equal, sort by concepts (first from, then to).
+              let value = this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
+              if (value != 0) {
+                return value
+              }
+              return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
             }
           })
           // Truncate if necessary (and don't truncate local mappings)
