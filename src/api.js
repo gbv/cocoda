@@ -202,7 +202,13 @@ function get(url, axiosConfig) {
       params: {}
     }
   }
-  axiosConfig.params.language = axiosConfig.params.language || config.language
+  // FIXME: - Remove this distinction of DANTE after it has implemented multiple languages.
+  if (url.includes("dante")) {
+    axiosConfig.params.language = axiosConfig.params.language || config.language
+  } else {
+    // TODO: - Add more languages.
+    axiosConfig.params.language = "de,en,es,nl,it,pl,ru,cs,jp"
+  }
   return axios.get(url, axiosConfig)
     .then(function(response) {
       let data = response.data
