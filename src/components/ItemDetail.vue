@@ -133,7 +133,6 @@ export default {
               prop: "BROADERLOADED",
               value: true
             })
-            console.warn("broader: no broader concepts")
             return
           }
           if (item.broader.includes(null)) {

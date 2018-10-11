@@ -183,7 +183,6 @@ const actions = {
         if (results.length) {
           let object = results[0]
           if (isObjectInMap(state.map, object)) {
-            console.warn("newApi/get, data loaded, but couldn't save", object)
             return getters.get(object)
           } else {
             commit({
