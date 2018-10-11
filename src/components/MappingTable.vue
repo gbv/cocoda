@@ -10,7 +10,7 @@
         :key="concept.uri"
         :item="concept"
         :show-text="false"
-        :show-tooltip="true"
+        :show-tooltip="showTooltip"
         :is-link="false"
         :is-highlighted="false"
         @mouseover.native="() => null"
@@ -25,7 +25,7 @@
         <item-name
           :item="concept"
           :show-text="false"
-          :show-tooltip="true"
+          :show-tooltip="showTooltip"
           :is-link="false"
           :is-highlighted="false"
           @mouseover.native="() => null"
@@ -89,6 +89,13 @@ export default {
     actions: {
       type: Array,
       default: () => []
+    },
+    /**
+     * Whether to show a tooltip with prefLabels for concepts.
+     */
+    showTooltip: {
+      type: Boolean,
+      default: true
     },
   },
   data () {

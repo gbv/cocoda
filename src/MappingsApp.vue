@@ -209,6 +209,7 @@
                     v-show="mappings.length"
                     :mappings="mappings"
                     :actions="actions"
+                    :show-tooltip="false"
                     :hide-duplicates="false"
                     @click="tableClicked" />
                 </b-col>
