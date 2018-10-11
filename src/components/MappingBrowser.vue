@@ -569,8 +569,8 @@ export default {
           // Add items
           for (let item of result.items) {
             let mapping = item.mapping
-            item.sourceScheme = this.$util.notation(_.get(mapping, "fromScheme")) || "?"
-            item.targetScheme = this.$util.notation(_.get(mapping, "toScheme")) || "?"
+            item.sourceScheme = this.$util.notation(_.get(mapping, "fromScheme"), "scheme") || "?"
+            item.targetScheme = this.$util.notation(_.get(mapping, "toScheme"), "scheme") || "?"
             // TODO: Use Vuex getters.
             item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
             item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []

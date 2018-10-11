@@ -291,7 +291,7 @@ export default {
       return mapping
     },
     labelForScheme(scheme) {
-      return this.$util.notation(scheme)
+      return this.$util.notation(scheme, "scheme")
     },
     /**
      * Returns whether the add button should be enabled for a specific side
