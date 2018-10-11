@@ -329,30 +329,11 @@ export default {
       return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
     },
     swapSides() {
-      let newSelected = {
-        scheme: {
-          true: this.selected.scheme[false],
-          false: this.selected.scheme[true]
-        },
-        concept: {
-          true: this.selected.concept[false],
-          false: this.selected.concept[true]
-        }
-      }
-      _.forOwn(newSelected, (value, kind) => {
-        _.forOwn(value, (value, isLeft) => {
-          let delay = 0
-          // Delay selection of concept
-          if (kind == "concept") {
-            delay = 200
-          }
-          _.delay(() => {
-            this.setSelected(kind, isLeft, value)
-          }, delay)
-        })
-      })
-      // Switch sides for mapping
-      this.$store.commit("mapping/switch")
+      let query = this.$route.query
+      query = Object.assign(query, { from: query.to, fromScheme: query.toScheme, to: query.from, toScheme: query.fromScheme })
+      // Question: Reverse mapping or not? (see also: issue #158)
+      this.$router.push({ query })
+      this.loadFromParameters()
     },
     loadFromParameters() {
       this.loading = true
