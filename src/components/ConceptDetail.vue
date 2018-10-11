@@ -329,6 +329,8 @@ export default {
         }
         return Promise.all(promises)
       }).then(results => {
+        // Filter out all null values
+        results = results.filter(concept => concept != null)
         // Assemble gndTerms array for display
         let gndTerms = []
         let relevanceOrder = ["very high", "high", "medium", "low"]
