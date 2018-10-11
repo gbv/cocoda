@@ -207,6 +207,7 @@ import ItemName from "./components/ItemName"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
+import { refreshRouter } from "./store/plugins"
 
 /**
  * The main application.
@@ -462,6 +463,7 @@ export default {
       if (promises.length) {
         Promise.all(promises).then(() => {
           this.loading = false
+          refreshRouter(this.$store)
         }).catch(() => {
           this.loading = false
           this.alert("There was an error loading data from URL.", null, "danger")

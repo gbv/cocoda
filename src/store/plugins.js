@@ -121,6 +121,35 @@ const mappingIdentifierPlugin = store => {
 }
 
 /**
+ * Helper function that refreshes the router with the current mapping and selected concepts/schemes.
+ */
+const refreshRouter = (store) => {
+  // Add selected schemes and concepts
+  let kinds = ["scheme", "concept"]
+  let sides = { true: "from", false: "to" }
+  let query = {}
+  for (let kind of kinds) {
+    for (let isLeft of [true, false]) {
+      let key = sides[isLeft] + (kind == "scheme" ? "Scheme" : "")
+      let object = store.state.selected[kind][isLeft]
+      if (object && object.uri) {
+        query[key] = object.uri
+      }
+    }
+  }
+  // Add mapping if either fromScheme or toScheme exists
+  if (store.state.mapping.mapping.fromScheme || store.state.mapping.mapping.toScheme) {
+    query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+    // If an original mapping exists for the current mapping, save its identifier as well
+    if (store.state.mapping.original) {
+      query.identifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+    }
+  }
+  // Push route
+  router.push({ query })
+}
+
+/**
  * Plugin that sets URL parameters after selected scheme/concept/mapping changed.
  */
 const routerParamPlugin = store => {
@@ -140,31 +169,10 @@ const routerParamPlugin = store => {
       if (mutation.payload && mutation.payload.noQueryRefresh) {
         return
       }
-      // Add selected schemes and concepts
-      let kinds = ["scheme", "concept"]
-      let sides = { true: "from", false: "to" }
-      let query = {}
-      for (let kind of kinds) {
-        for (let isLeft of [true, false]) {
-          let key = sides[isLeft] + (kind == "scheme" ? "Scheme" : "")
-          let object = store.state.selected[kind][isLeft]
-          if (object && object.uri) {
-            query[key] = object.uri
-          }
-        }
-      }
-      // Add mapping if either fromScheme or toScheme exists
-      if (store.state.mapping.mapping.fromScheme || store.state.mapping.mapping.toScheme) {
-        query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
-        // If an original mapping exists for the current mapping, save its identifier as well
-        if (store.state.mapping.original) {
-          query.identifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
-        }
-      }
-      // Push route
-      router.push({ query })
+      refreshRouter(store)
     }
   })
 }
 
-export default [selectedPlugin, mappingIdentifierPlugin, routerParamPlugin]
+let plugins = [selectedPlugin, mappingIdentifierPlugin, routerParamPlugin]
+export { plugins, refreshRouter }

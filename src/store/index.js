@@ -5,7 +5,7 @@ import objects from "./modules/objects"
 import mapping from "./modules/mapping"
 import alerts from "./modules/alerts"
 import settings from "./modules/settings"
-import plugins from "./plugins"
+import { plugins } from "./plugins"
 // Root store
 import actions from "./actions"
 
