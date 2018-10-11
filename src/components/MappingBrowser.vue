@@ -197,6 +197,7 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
+          align: "left",
           sortable: false
         },
         {
@@ -204,6 +205,7 @@ export default {
           label: "from",
           width: "20%",
           minWidth: "",
+          align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
         },
@@ -230,6 +232,7 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
+          align: "left",
           sortable: false
         },
         {
@@ -237,6 +240,7 @@ export default {
           label: "to",
           width: "20%",
           minWidth: "",
+          align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
         },
@@ -245,6 +249,7 @@ export default {
           label: "creator",
           width: "16%",
           minWidth: "",
+          align: "left",
           sortable: false
         },
         {
@@ -252,6 +257,7 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
+          align: "right",
           sortable: false,
           compare: (a, b) => {
             let first = _.get(a, "occurrence.count", -1)
