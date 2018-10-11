@@ -10,17 +10,19 @@
         <b-form-checkbox
           v-model="showLocal"
           class="mappingBrowser-setting" >
-          <b>L</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
+          Local ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
         </b-form-checkbox>
         <b-form-checkbox
-          v-model="showServer"
+          v-for="provider in config.mappingProviders"
+          :key="provider.url"
+          v-model="showProvider[provider.url]"
           class="mappingBrowser-setting" >
-          <b>S</b>erver
+          {{ $util.prefLabel(provider) || $util.notation(provider) }}
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showCatalog"
           class="mappingBrowser-setting" >
-          <b>C</b>atalog
+          Catalog
         </b-form-checkbox>
       </div>
       <!-- Mapping table -->
@@ -300,20 +302,26 @@ export default {
         this.$store.commit("mapping/setRefresh", true)
       }
     },
-    // show server mappings
-    showServer: {
-      get() {
-        return this.$settings.mappingBrowserServer
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserServer",
-          value
+    // show provider mappings
+    showProvider() {
+      let object = {}
+      // Define setter and getter for each mapping provider separately.
+      for (let provider of this.config.mappingProviders) {
+        Object.defineProperty(object, provider.url, {
+          get: () => {
+            return this.$settings.mappingBrowserProvider[provider.url]
+          },
+          set: (value) => {
+            this.$store.commit({
+              type: "settings/set",
+              prop: "mappingBrowserProvider",
+              value: Object.assign({}, this.$settings.mappingBrowserProvider, { [provider.url]: value })
+            })
+            this.$store.commit("mapping/setRefresh", true)
+          }
         })
-        // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", true)
       }
+      return object
     },
     // show catalog suggestions/occurrences
     showCatalog: {
@@ -421,20 +429,22 @@ export default {
       }
 
       // 2. Server
-      if (this.showServer) {
-        promises.push(this.$api.getMappings(params, false).then(mappings => {
-          let items = []
-          for (let mapping of mappings) {
-            let item = {}
-            item.mapping = mapping
-            item.sourceShort = "S"
-            items.push(item)
-          }
-          return {
-            source: "server",
-            items
-          }
-        }))
+      for (let provider of this.config.mappingProviders) {
+        if (this.showProvider[provider.url]) {
+          promises.push(this.$api.getMappings(params, false, [provider]).then(mappings => {
+            let items = []
+            for (let mapping of mappings) {
+              let item = {}
+              item.mapping = mapping
+              item.sourceShort = this.$util.notation(provider)
+              items.push(item)
+            }
+            return {
+              source: this.$util.prefLabel(provider),
+              items
+            }
+          }))
+        }
       }
 
       // 3. Catalog

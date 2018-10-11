@@ -8,7 +8,7 @@ const defaultSettings = {
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
   mappingBrowserLocal: true,
-  mappingBrowserServer: true,
+  mappingBrowserProvider: {},
   mappingBrowserCatalog: true,
   minimized: {},
   flex: {},

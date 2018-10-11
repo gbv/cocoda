@@ -230,9 +230,9 @@ function get(url, axiosConfig) {
     })
 }
 
-function getMappings(params, local = true) {
+function getMappings(params, local = true, providers = config.mappingProviders) {
   let promises = []
-  for (let provider of config.mappingProviders) {
+  for (let provider of providers) {
     let promise = axios.get(provider.url, {
       params: params
     }).then(response => response.data).catch(() => [])
