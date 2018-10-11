@@ -856,7 +856,7 @@ export default {
       if (!mapping.identifier) {
         mapping = this.$jskos.addMappingIdentifiers(mapping)
       }
-      let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:members"))
+      let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:content"))
       if (!id) {
         return false
       }

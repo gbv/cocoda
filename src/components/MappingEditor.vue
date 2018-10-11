@@ -245,7 +245,8 @@ export default {
     saveMapping() {
       if (!this.canSaveMapping) return false
       let mapping = this.prepareMapping()
-      this.$api.saveMapping(mapping).then(mappings => {
+      let original = this.$store.state.mapping.original
+      this.$api.saveMapping(mapping, original).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
         this.$store.commit({

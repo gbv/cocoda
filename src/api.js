@@ -340,7 +340,8 @@ function getLocalMappings(params = {}) {
   })
 }
 
-function saveMapping(mapping) {
+function saveMapping(mapping, original) {
+  original = original || {}
   // Check for fromScheme and toScheme
   if (!mapping.fromScheme || !mapping.toScheme) {
     return Promise.reject("Can't save mapping: Missing fromScheme or toScheme.")
@@ -349,20 +350,15 @@ function saveMapping(mapping) {
 
   return getLocalMappings().then(mappings => {
     mapping = jskos.addMappingIdentifiers(mapping)
-    // Override local mappings with same members
-    // FIXME: This is only temporary to demonstrate local saving of mappings. The actual solution to this problem may be way more complicated.
-    let index = mappings.findIndex(m => {
-      let findContentId = id => id.startsWith("urn:jskos:mapping:members:")
+    // Filter out original mapping and other local mappings with the same content identifier.
+    mappings = mappings.filter(m => {
+      let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
       let id1 = m.identifier ? m.identifier.find(findContentId) : null
-      let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
-      return id1 === id2
+      let id2 = (original.identifier || []).find(findContentId)
+      let id3 = (mapping.identifier || []).find(findContentId)
+      return id1 != id2 && id1 != id3
     })
-    // Add mapping
-    if (index >= 0) {
-      mappings[index] = mapping
-    } else {
-      mappings.push(mapping)
-    }
+    mappings.push(mapping)
     // FIXME: This fixes old invalid mappings in local storage and should be removed later.
     for (let mapping of mappings) {
       if (mapping.creator) {
