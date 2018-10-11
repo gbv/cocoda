@@ -18,7 +18,7 @@
         "uri": "http://bartoc.org/en/node/1940",
         "identifier": ["http://www.wikidata.org/entity/2013"],
         "prefLabel": { "de": "Wikidata", "en": "Wikidata" },
-        "notation": ["Wikidata"],
+        "notation": ["WD"],
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
       } ],
       "data": "//coli-conc.gbv.de/services/wikidata/concept",
