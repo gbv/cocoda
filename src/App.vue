@@ -399,7 +399,7 @@ export default {
           }
           resolve(mappingFromQuery)
         })
-        let loadMapping = this.$api.getMappings({ identifier: query["identifier"] || "" }).then(mappings => {
+        let loadMapping = this.$api.getLocalMappings({ identifier: query["identifier"] || "" }).then(mappings => {
           if (query["identifier"] && mappings.length) {
             // Found original mapping.
             return decodeMapping.then(mapping => [mapping, mappings[0]])
