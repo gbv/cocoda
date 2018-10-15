@@ -44,9 +44,10 @@
           <!-- Concept scheme selection -->
           <div class="schemeSelectWrapper">
             <b-form-select
-              v-model="selected.scheme[isLeft]"
+              :value="selected.scheme[isLeft]"
               :options="schemeOptions"
-              class="schemeSelect fontWeight-heavy" />
+              class="schemeSelect fontWeight-heavy"
+              @change="setSelected('concept', isLeft, null); setSelected('scheme', isLeft, $event)" />
             <div
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
