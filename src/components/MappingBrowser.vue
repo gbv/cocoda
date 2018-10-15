@@ -415,6 +415,7 @@ export default {
       // Prepare params
       let params = {
         direction: "both",
+        mode: "or",
       }
       let from = _.get(this, "selected.concept[true]")
       let to = _.get(this, "selected.concept[false]")
