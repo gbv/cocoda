@@ -29,6 +29,7 @@
       <flexible-table
         :items="items"
         :fields="fields"
+        :hide-header="true"
         class="mappingBrowser-table"
         @hover="hoveredMapping = $event && $event.mapping" >
         <span
