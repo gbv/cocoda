@@ -235,7 +235,16 @@ function getMappings(params, local = true, providers = config.mappingProviders) 
   for (let provider of providers) {
     let promise = axios.get(provider.url, {
       params: params
-    }).then(response => response.data).catch(() => [])
+    }).then(response => response.data).catch(() => []).then(mappings => {
+      // Filter exact duplicates from result
+      let newMappings = []
+      for (let mapping of mappings) {
+        if (!newMappings.find(m => _.isEqual(m, mapping))) {
+          newMappings.push(mapping)
+        }
+      }
+      return newMappings
+    })
     promises.push(promise)
   }
   if (local) {
