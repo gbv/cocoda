@@ -931,7 +931,7 @@ export default {
 @import "../style/main.less";
 
 .mappingBrowser-table-row-match {
-  background-color: @color-primary-1;
+  background-color: @color-table-highlight-background-1;
 }
 .mappingBrowser-table-row-showMore {
   height: 24px;
