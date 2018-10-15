@@ -55,8 +55,16 @@
     }
   ],
   "mappingProviders": [
-    { "url": "//coli-conc.gbv.de/api/mappings/" },
-    { "url": "//coli-conc.gbv.de/services/wikidata/mapping" }
+    {
+      "url": "//coli-conc.gbv.de/dev-api/mappings/",
+      "notation": ["S"],
+      "prefLabel": { "de": "Server", "en": "Server" }
+    },
+    {
+      "url": "//coli-conc.gbv.de/services/wikidata/mapping",
+      "notation": ["W"],
+      "prefLabel": { "de": "Wikidata", "en": "Wikidata" }
+    }
   ],
   "occurrenceProviders": [
     { "url": "//coli-conc.gbv.de/occurrences/api/" }
