@@ -8,7 +8,7 @@
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
       :class="{
-        mappingTypeSelected: (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
+        mappingTypeSelected: hovered && (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         mappingTypeHovered: (mappingType && mappingTypeHovered) && mappingType.uri == mappingTypeHovered.uri
       }"
@@ -71,6 +71,7 @@ export default {
   z-index: @zIndex-2;
   user-select: none;
   font-size: 1.25rem;
+  padding: 10px 0;
 }
 .mappingType {
   .button;
@@ -81,9 +82,11 @@ export default {
   margin: 2px;
   font-weight: bold;
 }
-.mappingTypeSelected, .mappingType:hover {
+.mappingTypeSelected {
+  background-color: @color-highlight-light;
+}
+.mappingType:hover {
   background-color: @color-highlight;
   color: @color-text-grey;
 }
-
 </style>
