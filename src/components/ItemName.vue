@@ -113,8 +113,10 @@ export default {
       if (!this.isLink) {
         return false
       }
-      // Check if scheme is available.
-      let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]"))
+      // Only mention schemes so that computed property refreshes after schemes are loaded.
+      this.$store.state.schemes
+      // Check if scheme (or item itself) is available.
+      let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]")) || this.$store.getters["objects/get"](this.item)
       return scheme != null
     },
   },
