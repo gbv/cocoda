@@ -82,24 +82,25 @@
         card >
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
+        <!-- TODO: Move dealing with language ("notes.de || notes.en") somewhere else. -->
         <b-tab
           v-for="([notes, title], index) in [[item.scopeNote, 'Scope'], [item.editorialNote, 'Editorial'], [item.altLabel, 'Register Entries'], [{ de: item.GNDTERMS }, 'GND']]"
-          v-if="notes != null && notes.de != null && notes.de.length > 0"
+          v-if="notes != null && (notes.de || notes.en) != null && (notes.de || notes.en).length > 0"
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
           class="conceptDetail-notes" >
           <div class="conceptDetail-note">
-            <span v-html="notesOptions.visiblePart(notes.de)" />
+            <span v-html="notesOptions.visiblePart((notes.de || notes.en))" />
             <b-collapse
               :id="'note'+index"
               tag="span"
               class="no-transition" >
-              <span v-html="notesOptions.hiddenPart(notes.de)" />
+              <span v-html="notesOptions.hiddenPart((notes.de || notes.en))" />
             </b-collapse>
             <a
               v-b-toggle="'note'+index"
-              v-if="notesOptions.isTruncated(notes.de)"
+              v-if="notesOptions.isTruncated((notes.de || notes.en))"
               href=""
               @click.prevent >
               <span class="when-opened">show less</span>
