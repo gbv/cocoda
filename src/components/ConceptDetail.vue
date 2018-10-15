@@ -285,28 +285,30 @@ export default {
       let itemBefore = this.item
       // Load GND mappings from and to item
       let promises = []
-      for (let fromTo of ["from", "to"]) {
-        let params = {}
-        params[fromTo] = this.item.uri
-        promises.push(this.$api.getMappings(params).then(results => [results, fromTo]))
+      let params = {
+        direction: "both",
+        from: this.item.uri,
       }
+      promises.push(this.$api.getMappings(params))
       Promise.all(promises).then(results => {
         if (!this.$jskos.compare(itemBefore, this.item)) {
           // Abort if item changed in the meantime
           return []
         }
         let gndConcepts = []
-        for (let [mappings, fromTo] of results) {
-          let toFrom = fromTo == "from" ? "to" : "from"
-          for(let mapping of mappings) {
-            let startIndex = gndConcepts.length
-            if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
-              gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
-            }
-            // Save GND mapping type to concept
-            while (startIndex < gndConcepts.length) {
-              gndConcepts[startIndex].GNDTYPE = this.$jskos.mappingTypeByType(mapping.type)
-              startIndex += 1
+        for (let mappings of results) {
+          for (let fromTo of ["from", "to"]) {
+            let toFrom = fromTo == "from" ? "to" : "from"
+            for(let mapping of mappings) {
+              let startIndex = gndConcepts.length
+              if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
+                gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
+              }
+              // Save GND mapping type to concept
+              while (startIndex < gndConcepts.length) {
+                gndConcepts[startIndex].GNDTYPE = this.$jskos.mappingTypeByType(mapping.type)
+                startIndex += 1
+              }
             }
           }
         }
