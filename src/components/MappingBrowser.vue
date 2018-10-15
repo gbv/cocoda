@@ -185,6 +185,8 @@ export default {
       localMappingsTotal: 0,
       localMappingsCurrent: 0,
       showMoreValues: {},
+      /** Unique ID for each reload */
+      loadingId: null,
     }
   },
   computed: {
@@ -369,6 +371,7 @@ export default {
   },
   methods: {
     internalReload(force = false) {
+
       // Reload local mapping identifiers
       // TODO: Do this differently!
       this.$api.getLocalMappings(params).then(mappings => {
@@ -378,7 +381,6 @@ export default {
 
       let items = []
       let promises = []
-      // TODO: Make sure old requests are canceled.
 
       if (!this.selected.concept[true] && !this.selected.concept[false]) {
         // No selected concepts, not reloading.
@@ -392,7 +394,13 @@ export default {
         // Either concept or scheme changed => reset showMoreValues.
         this.showMoreValues = {}
       }
+
       this.loading = 1
+
+      // Set unique ID for this request
+      let loadingId = this.$util.generateID()
+      this.loadingId = loadingId
+      // Question/TODO: - Use axios cancel tokens to remove old requests?
 
       this.previousSelected = {}
       this.previousSelected.concept = {
@@ -420,7 +428,9 @@ export default {
       // 1. Local
       if (this.showLocal) {
         promises.push(this.$api.getLocalMappings(params).then(mappings => {
-          this.localMappingsCurrent = mappings.length
+          if (this.loadingId == loadingId) {
+            this.localMappingsCurrent = mappings.length
+          }
           let items = []
           for (let mapping of mappings) {
             let item = {}
@@ -504,6 +514,7 @@ export default {
       }
 
       Promise.all(promises).then(results => {
+        if (this.loadingId != loadingId) return
         let maxLength = 20
         let lengthPerSet = 5
         let lengths = results.map(result => result.items.length)
@@ -649,11 +660,12 @@ export default {
             })
           }
         }
-        this.items = items
-        this.loading = 0
-      }).catch(error => {
-        console.log(error)
-        // this.loading = 0
+      }).catch(() => null).finally(() => {
+        if (this.loadingId == loadingId) {
+          this.items = items
+          this.loadingId = null
+          this.loading = 0
+        }
       })
     },
     showMore(value) {
