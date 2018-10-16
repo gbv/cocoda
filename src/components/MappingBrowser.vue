@@ -318,7 +318,11 @@ export default {
       for (let provider of this.config.mappingProviders) {
         Object.defineProperty(object, provider.url, {
           get: () => {
-            return this.$settings.mappingBrowserProvider[provider.url]
+            let result = this.$settings.mappingBrowserProvider[provider.url]
+            if (result == null) {
+              return true
+            }
+            return result
           },
           set: (value) => {
             this.$store.commit({
