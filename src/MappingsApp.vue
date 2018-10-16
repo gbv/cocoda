@@ -89,11 +89,16 @@
                   @click="showMappingsForConcordance(item.concordance)" />
               </span>
             </flexible-table>
-            <p style="text-align: right; font-weight: bold;">
-              Total: {{ concordanceTableItems.reduce((total, current) => {
-                return total + parseInt(current.mappings) || 0
-              }, 0).toLocaleString() }}
-            </p>
+            <div style="display: flex;">
+              <p style="font-weight: bold; flex: 1;">
+                {{ concordanceTableItems.length }} concordances
+              </p>
+              <p style="text-align: right; font-weight: bold;">
+                Total: {{ concordanceTableItems.reduce((total, current) => {
+                  return total + parseInt(current.mappings) || 0
+                }, 0).toLocaleString() }}
+              </p>
+            </div>
             <p>
               The list of concordances is <a :href="`${concordancesUrl}?download=ndjson`">also available in JSKOS format</a>.
             </p>
