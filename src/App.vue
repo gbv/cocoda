@@ -397,12 +397,22 @@ export default {
           } catch(error) {
             // do nothing
           }
-          resolve(mappingFromQuery)
+          if (_.isEqual(mappingFromQuery, {})) {
+            resolve(null)
+          } else {
+            resolve(mappingFromQuery)
+          }
         })
-        let loadMapping = this.$api.getLocalMappings({ identifier: query["identifier"] || "" }).then(mappings => {
+        let loadMapping = (query["identifier"] ? this.$api.getMappings({ identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
           if (query["identifier"] && mappings.length) {
             // Found original mapping.
-            return decodeMapping.then(mapping => [mapping, mappings[0]])
+            return decodeMapping.then(mapping => {
+              if (mapping) {
+                return [mapping, mappings[0]]
+              } else {
+                return [mappings[0], mappings[0]]
+              }
+            })
           } else {
             return decodeMapping.then(mapping => [mapping])
           }
@@ -446,8 +456,9 @@ export default {
         Promise.all(promises).then(() => {
           this.loading = false
           refreshRouter(this.$store)
-        }).catch(() => {
+        }).catch((error) => {
           this.loading = false
+          console.log(error)
           this.alert("There was an error loading data from URL.", null, "danger")
         })
       } else {
