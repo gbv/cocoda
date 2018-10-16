@@ -643,9 +643,9 @@ export default {
               item._rowClass += " mappingBrowser-separatorRow"
               addSeparator = false
             }
-            item.creator = mapping.creator && mapping.creator[0] || "?"
+            item.creator = mapping.creator && mapping.creator[0] || ""
             if (typeof item.creator === "object") {
-              item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
+              item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || ""
             }
             item.source = `${item.sourceShort} ${item.creator}`
             item.type = this.$jskos.mappingTypeByType(mapping.type)
