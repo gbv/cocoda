@@ -182,7 +182,7 @@ export default {
   components: { ItemName, MappingTypeSelection, Minimizer },
   computed: {
     canSaveMapping() {
-      return (this.$store.state.mapping.original == null || this.hasChangedFromOriginal) && this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+      return (this.$store.state.mapping.original == null || this.hasChangedFromOriginal || !this.$store.state.mapping.original.LOCAL) && this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
     },
     canDeleteMapping() {
       return this.$store.state.mapping.original && this.$store.state.mapping.original.LOCAL
