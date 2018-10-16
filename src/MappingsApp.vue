@@ -638,7 +638,7 @@ export default {
           }
         }
         if (fromScheme && toScheme && identifier) {
-          window.open(`https://gbv.github.io/cocoda/dev/?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`)
+          window.open(`${this.config.cocodaBaseUrl || "/"}?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`)
         } else {
           this.alert("Mapping could not be opened in Cocoda.", null, "danger")
         }
