@@ -100,6 +100,7 @@
           <!-- ConceptSearch -->
           <concept-search
             v-if="selected.scheme[isLeft] != null"
+            :ref="isLeft ? 'conceptSearchLeft' : 'conceptSearchRight'"
             :is-left="isLeft"
             :scheme="selected.scheme[isLeft]"
             class="conceptSearch"
@@ -263,6 +264,10 @@ export default {
     schemes() {
       return this.$store.state.schemes
     },
+    // Needed to watch for changes in the left concept.
+    selectedConceptLeft() {
+      return this.selected.concept[true]
+    },
   },
   watch: {
     schemes() {
@@ -293,6 +298,21 @@ export default {
       if (refresh) {
         this.loadFromParameters()
       }
+    },
+    /**
+     * This watches the selected concept on the left side and inserts its prefLabel into the search field on the right. This is a first step at helping the user find possible mapping matches from the target system.
+     */
+    selectedConceptLeft: {
+      handler(newValue, oldValue) {
+        if (_.isEqual(_.get(newValue, "prefLabel"), _.get(oldValue, "prefLabel"))) {
+          return
+        }
+        let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, this.$store.state.config.language, false)
+        // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
+        let regexResult = /^[\s\w]*\w/.exec(prefLabel)
+        this.$refs.conceptSearchRight[0].setSearchQuery(regexResult ? regexResult[0] : "")
+      },
+      deep: true
     },
   },
   created() {

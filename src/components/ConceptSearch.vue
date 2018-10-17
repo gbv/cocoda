@@ -300,7 +300,13 @@ export default {
       }
       newResult += _.escape(result.slice(currentIndex))
       return newResult
-    }
+    },
+    setSearchQuery(query, isOpen = false) {
+      this.searchQuery = query
+      _.delay(() => {
+        this.isOpen = isOpen
+      }, 50)
+    },
   },
 }
 </script>
