@@ -98,7 +98,10 @@ let notation = (item, type) => {
  * @param {*} item - a JSKOS Item
  * @param {*} language - a language tag, will default to the one in config, then English, then whatever other language is available.
  */
-let prefLabel = (item, language) => {
+let prefLabel = (item, language, fallbackToUri = true) => {
+  if(!item) {
+    return ""
+  }
   let fallbackLanguage = "en"
   if (!language) {
     language = store.state.config.language || fallbackLanguage
@@ -117,7 +120,7 @@ let prefLabel = (item, language) => {
       }
     }
   }
-  if (item.uri) {
+  if (fallbackToUri && item.uri) {
     return item.uri
   }
   return ""
