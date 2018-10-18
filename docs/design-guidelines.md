@@ -11,6 +11,8 @@ You can use the mentioned CSS classes in one of two ways:
 
 * Use CSS class `fontWeight-heavy` for **bold font markup**.
 
+* Other font sizes may be used for FontAwesome icons.
+
 ### Colors
 
 For interface elements, there is a range of pre-defined colors available in `src/style/colors.less`. For non-linked text, please use one of the following colors:
@@ -18,10 +20,11 @@ For interface elements, there is a range of pre-defined colors available in `src
 * CSS class `text-dark`
 * CSS class `text-grey`
 * CSS class `text-lightGrey`
+* CSS class `text-veryLightGrey`
 
 ### Tables
 
-For tables, there is a custom table component called [vue-flexible-table](https://github.com/stefandesu/vue-flexible-table). It can be used very similarly to a [bootstrap-vue table](https://bootstrap-vue.js.org/docs/components/table). See components [MappingBrowser](#mappingbrowser) and [OccurrencesBrowser](#occurrencesbrowser) for examples of this in use.
+For tables, there is a custom table component called [vue-flexible-table](https://github.com/stefandesu/vue-flexible-table). It can be used very similarly to a [bootstrap-vue table](https://bootstrap-vue.js.org/docs/components/table). See the [MappingBrowser](#mappingbrowser) component for an example of this in use.
 
 ### Buttons
 
