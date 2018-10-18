@@ -43,12 +43,13 @@ const mutations = {
     // Only save if it was not found
     if (save) {
       // Add all possible properties to ensure reactivity in Vue
+      // 1. General properties
+      object.DETAILSLOADED = false
+      object.INSTORE = true
       if (jskos.isConcept(object)) {
-        object.DETAILSLOADED = false
         object.BROADERLOADED = false
         object.GNDTERMS = null
         object.ISOPEN = { true: false, false: false }
-        object.INSTORE = true
         object.MAPPINGS = object.MAPPINGS || null
         object.ancestors = object.ancestors || [null]
         object.broader = object.broader || [null]
@@ -91,8 +92,6 @@ const mutations = {
           }
         }
       } else if (jskos.isScheme(object)) {
-        object.DETAILSLOADED = false
-        object.INSTORE = true
         object.TOPCONCEPTS = object.TOPCONCEPTS || [null]
         object.created = object.created || null
         object.issued = object.issued || null
