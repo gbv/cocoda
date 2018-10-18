@@ -257,6 +257,7 @@ export default {
         this.alert(error, null, "danger")
       }).then(() => {
         this.$store.commit("mapping/setRefresh", true)
+        this.clearMapping()
       })
     },
     deleteMapping() {
