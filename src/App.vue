@@ -268,6 +268,9 @@ export default {
     selectedConceptLeft() {
       return this.selected.concept[true]
     },
+    selectedSchemeRight() {
+      return this.selected.scheme[false]
+    }
   },
   watch: {
     schemes() {
@@ -307,15 +310,20 @@ export default {
         if (_.isEqual(_.get(newValue, "prefLabel"), _.get(oldValue, "prefLabel"))) {
           return
         }
-        let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, this.$store.state.config.language, false)
-        // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
-        let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
-        if (this.$refs.conceptSearchRight && this.$refs.conceptSearchRight.length) {
-          this.$refs.conceptSearchRight[0].setSearchQuery(regexResult ? regexResult[0] : "")
-        }
+        this.insertPrefLabel()
       },
       deep: true
     },
+    /**
+     * Insert prefLabel into target search field if the scheme on the right changes.
+     */
+    selectedSchemeRight(newValue, oldValue) {
+      if (!this.$jskos.compare(newValue, oldValue)) {
+        _.delay(() => {
+          this.insertPrefLabel()
+        }, 50)
+      }
+    }
   },
   created() {
     // Set loading to true if schemes are not loaded yet.
@@ -327,6 +335,14 @@ export default {
     })
   },
   methods: {
+    insertPrefLabel() {
+      let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, this.$store.state.config.language, false)
+      // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
+      let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
+      if (this.$refs.conceptSearchRight && this.$refs.conceptSearchRight.length) {
+        this.$refs.conceptSearchRight[0].setSearchQuery(regexResult ? regexResult[0] : "")
+      }
+    },
     refresh(key) {
       if (key == "minimize") {
         // Minimizer causes a refresh, therefore recheck item detail settings
