@@ -218,7 +218,6 @@ export default {
       if (!this.original) {
         return true
       }
-      console.log()
       return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
