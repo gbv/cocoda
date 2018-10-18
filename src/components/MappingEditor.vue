@@ -181,17 +181,23 @@ export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, Minimizer },
   computed: {
+    mapping() {
+      return this.$store.state.mapping.mapping
+    },
+    original() {
+      return this.$store.state.mapping.original
+    },
     canSaveMapping() {
-      return (this.$store.state.mapping.original == null || this.hasChangedFromOriginal || !this.$store.state.mapping.original.LOCAL) && this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+      return (this.original == null || this.hasChangedFromOriginal || !this.original.LOCAL) && this.mapping.fromScheme && this.mapping.toScheme
     },
     canDeleteMapping() {
-      return this.$store.state.mapping.original && this.$store.state.mapping.original.LOCAL
+      return this.original && this.original.LOCAL
     },
     canClearMapping() {
-      return this.$store.state.mapping.mapping.fromScheme || this.$store.state.mapping.mapping.toScheme
+      return this.mapping.fromScheme || this.mapping.toScheme
     },
     canExportMapping() {
-      return this.$store.state.mapping.mapping.fromScheme && this.$store.state.mapping.mapping.toScheme
+      return this.mapping.fromScheme && this.mapping.toScheme
     },
     /**
      * Returns a formatted version of the mapping
@@ -206,17 +212,18 @@ export default {
       return encodeURIComponent(JSON.stringify(this.prepareMapping()))
     },
     hasChangedFromOriginal() {
-      if (!this.$store.state.mapping.mapping) {
+      if (!this.mapping) {
         return false
       }
-      if (!this.$store.state.mapping.original) {
+      if (!this.original) {
         return true
       }
-      return !this.$jskos.compareMappings(this.$store.state.mapping.original, this.$store.state.mapping.mapping)
+      console.log()
+      return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
-      return _.get(this.$store.state.mapping, "mapping.creator[0].prefLabel.de")
-        || _.get(this.$store.state.mapping, "mapping.creator[0].prefLabel.en")
+      return _.get(this.mapping, "creator[0].prefLabel.de")
+        || _.get(this.mapping, "creator[0].prefLabel.en")
         || this.$store.state.settings.creator
     },
   },
@@ -245,7 +252,7 @@ export default {
     saveMapping() {
       if (!this.canSaveMapping) return false
       let mapping = this.prepareMapping()
-      let original = this.$store.state.mapping.original
+      let original = this.original
       this.$api.saveMapping(mapping, original).then(mappings => {
         this.alert("Mapping was saved.", null, "success")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
@@ -266,7 +273,7 @@ export default {
       return true
     },
     deleteOriginalMapping(clear = false) {
-      let mapping = this.prepareMapping(this.$store.state.mapping.original)
+      let mapping = this.prepareMapping(this.original)
       this.$api.removeMapping(mapping).then(() => {
         this.alert("Mapping was deleted.", null, "success")
       }).catch(error => {
@@ -287,7 +294,7 @@ export default {
       return true
     },
     prepareMapping(mapping = null) {
-      mapping = mapping || this.$jskos.minifyMapping(this.$store.state.mapping.mapping)
+      mapping = mapping || this.$jskos.minifyMapping(this.mapping)
       mapping = this.$jskos.addMappingIdentifiers(mapping)
       return mapping
     },
