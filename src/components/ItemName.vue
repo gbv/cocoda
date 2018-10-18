@@ -207,8 +207,6 @@ Vue.component("notation-text", {
 }
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
-  background: @color--itemName-highlighted-background;
-  box-shadow: 0px 0px 5px @color--itemName-highlighted-background;
 }
 .itemName-highlighted:hover {
   background: @color--itemName-highlighted-background;
