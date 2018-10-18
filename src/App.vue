@@ -309,7 +309,7 @@ export default {
         }
         let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, this.$store.state.config.language, false)
         // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
-        let regexResult = /^[\s\w]*\w/.exec(prefLabel)
+        let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
         if (this.$refs.conceptSearchRight && this.$refs.conceptSearchRight.length) {
           this.$refs.conceptSearchRight[0].setSearchQuery(regexResult ? regexResult[0] : "")
         }
