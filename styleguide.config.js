@@ -61,6 +61,10 @@ module.exports = {
         {
           name: "Design Guidelines",
           content: "docs/design-guidelines.md"
+        },
+        {
+          name: "Releasing a New Version",
+          content: "docs/releasing.md"
         }
       ]
     },
