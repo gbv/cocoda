@@ -208,7 +208,4 @@ Vue.component("notation-text", {
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
 }
-.itemName-highlighted:hover {
-  background: @color--itemName-highlighted-background;
-}
 </style>
