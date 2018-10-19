@@ -178,8 +178,10 @@ const mutations = {
       state.mapping = mapping
     }
     // Save a minified version of the original with identifiers and the LOCAL property.
-    state.original = jskos.addMappingIdentifiers(jskos.minifyMapping(original))
-    state.original.LOCAL = original.LOCAL
+    if (original) {
+      state.original = jskos.addMappingIdentifiers(jskos.minifyMapping(original))
+      state.original.LOCAL = original.LOCAL
+    }
   },
 
   /**
