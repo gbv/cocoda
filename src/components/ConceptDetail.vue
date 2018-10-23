@@ -2,22 +2,22 @@
   <div
     v-if="item != null"
     class="conceptDetail fontSize-small">
-
+    <!-- inScheme -->
+    <div
+      v-show="settings.showSchemeInAncestors"
+      class="conceptDetail-scheme" >
+      <item-name
+        :item="selected.scheme[isLeft]"
+        :is-link="true"
+        :is-left="isLeft"
+        font-size="normal" />
+    </div>
     <!-- Ancestors / Broader -->
     <div class="conceptDetail-ancestors">
       <div
-        v-show="settings.showSchemeInAncestors" >
-        <item-name
-          :item="selected.scheme[isLeft]"
-          :is-link="true"
-          :is-left="isLeft"
-          font-size="small" />
-      </div>
-      <!-- Ancestors -->
-      <div
         v-for="(concept, index) in ancestors"
         v-if="concept != null"
-        :key="concept.uri" >
+        :key="concept.uri">
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
             class="u-flip-horizontal"
@@ -412,12 +412,16 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
+.conceptDetail-scheme {
+  margin-top: 5px;
+}
+
 .conceptDetail-ancestors {
   margin: 5px;
+  padding-left: 5px;
 }
 .conceptDetail-ancestors-more {
   width: 20px;
-  padding-left: 2px;
 }
 
 .conceptDetail-name {
