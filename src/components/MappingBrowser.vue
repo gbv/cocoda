@@ -10,19 +10,21 @@
         <b-form-checkbox
           v-model="showLocal"
           class="mappingBrowser-setting" >
-          Local ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
+          <b>L</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
         </b-form-checkbox>
         <b-form-checkbox
           v-for="provider in config.mappingProviders"
           :key="provider.url"
           v-model="showProvider[provider.url]"
           class="mappingBrowser-setting" >
-          {{ $util.prefLabel(provider) || $util.notation(provider) }}
+          <provider-name :provider="provider" />
         </b-form-checkbox>
         <b-form-checkbox
+          v-for="provider in config.occurrenceProviders"
+          :key="provider.notation[0]"
           v-model="showCatalog"
           class="mappingBrowser-setting" >
-          Catalog
+          <provider-name :provider="provider" />
         </b-form-checkbox>
       </div>
       <!-- Mapping table -->
@@ -149,6 +151,7 @@
 
 <script>
 import ItemName from "./ItemName"
+import ProviderName from "./ProviderName"
 import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
@@ -161,7 +164,7 @@ import axios from "axios"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, Minimizer, LoadingIndicatorFull, FlexibleTable },
+  components: { ItemName, ProviderName, AutoLink, Minimizer, LoadingIndicatorFull, FlexibleTable },
   data () {
     return {
       loading: 0,
@@ -470,13 +473,14 @@ export default {
 
       // 3. Catalog
       if (this.showCatalog) {
+        let provider = this.config.occurrenceProviders[0]
         promises.push(this.loadOccurrences().then(occurrences => {
           let items = []
           for (let occurrence of occurrences) {
             if (!occurrence) continue
             let item = {}
             item.occurrence = occurrence
-            item.sourceShort = "C"
+            item.sourceShort = this.$util.notation(provider)
             let mapping = {}
             mapping.from = _.get(occurrence, "memberSet[0]")
             this.loadNotation(mapping.from)
