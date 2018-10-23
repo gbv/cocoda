@@ -64,31 +64,35 @@
           <span v-else>&nbsp;</span>
         </div>
         <!-- All concepts in mapping -->
-        <ul class="mappingConceptList">
-          <li
-            v-for="(concept, index) in $store.getters['mapping/getConcepts'](isLeft)"
-            :key="index" >
-            <item-name
-              :item="concept"
-              :is-link="true"
-              :is-left="isLeft"
-              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
-            <!-- Delete button for concept -->
-            <div
-              class="button mappingConceptDelete fontSize-large"
-              @click="$store.commit({
-                type: 'mapping/remove',
-                concept,
-                isLeft
-              })"
-            >
-              <font-awesome-icon icon="minus-circle" />
-            </div>
-          </li>
-        </ul>
+        <div class="mappingConceptList">
+          <ul>
+            <li
+              v-for="(concept, index) in $store.getters['mapping/getConcepts'](isLeft)"
+              :key="index" >
+              <item-name
+                :item="concept"
+                :is-link="true"
+                :is-left="isLeft"
+                :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
+                font-size="large"
+              />
+              <!-- Delete button for concept -->
+              <span
+                class="button mappingConceptDelete fontSize-large"
+                @click="$store.commit({
+                  type: 'mapping/remove',
+                  concept,
+                  isLeft
+                })"
+              >
+                <font-awesome-icon icon="minus-circle" />
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div v-else >
-        <div class="mappingNoConcepts">No Concepts</div>
+        <div class="mappingNoConcepts fontSize-large">no concept</div>
       </div>
       <!-- Buttons (add, delete all) -->
       <!-- <div class="mappingButtons">
@@ -440,21 +444,23 @@ export default {
   margin: 0 0 5px 0;
 }
 .mappingConceptList {
-  padding: 0 0 0 5px;
   flex: 1;
   height: 0;
   overflow: auto;
-  list-style: none;
 }
-.mappingConceptList > li {
+.mappingConceptList > ul {
+  list-style: none;
+  padding: 0 0 0 5px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.mappingConceptList > ul > li {
   position: relative;
   margin: 5px 12px 5px 0;
 }
 .mappingConceptDelete {
-  position: absolute;
-  right: -8px;
-  top: -1px;
-  text-align: right;
+  padding-bottom: 0.45rem;
 }
 .mappingConceptLink:hover {
   color: @color-primary-0;
