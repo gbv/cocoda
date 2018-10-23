@@ -51,14 +51,14 @@
             <div
               v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
-              class="button schemeSelectInfo fontSize-large"
+              class="button schemeSelectInfo"
               @click="setSelected('concept', isLeft, null)" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null"
-              class="button schemeSelectInfo fontSize-large"
+              class="button schemeSelectInfo"
               @click="clear(isLeft)" >
               <font-awesome-icon icon="times-circle" />
             </div>
@@ -557,9 +557,11 @@ html, body {
   .m-borderRadius(2px);
   border: 0 !important;
   box-shadow: 0 1px 2px 0 @color-shadow;
-  background-color: @color-background-select !important;
   color: @color-primary-4 !important;
   flex: 1;
+}
+.schemeSelect.form-control {
+  .fontSize-normal;
 }
 .schemeSelectInfo {
   flex: none;

@@ -142,7 +142,6 @@ export default {
 }
 .schemeDetail-identifier a {
   .m-borderRadius(5px);
-  background-color: @color-background-select;
   padding: 0 3px;
 }
 .schemeDetail-licenseBadge {
