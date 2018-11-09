@@ -389,7 +389,18 @@ export default {
       let promises = []
 
       if (!this.selected.concept[true] && !this.selected.concept[false]) {
-        // No selected concepts, not reloading.
+        // No selected concepts, not reloading and clearing items+previosSelected.
+        this.items = items
+        this.previousSelected = {
+          scheme: {
+            [true]: null,
+            [false]: null
+          },
+          concept: {
+            [true]: null,
+            [false]: null
+          }
+        }
         return
       }
       if (this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) && this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) && this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) && this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false]) && !force) {
