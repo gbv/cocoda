@@ -538,7 +538,7 @@ export default {
         let lengths = results.map(result => result.items.length)
         // let totalLength = lengths.reduce((total, value) => total + value, 0)
         let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
-        let truncateResults = zeroCount < (results.length - 1)
+        let truncateResults = zeroCount < (results.length - 1) && !this.$settings.mappingBrowserShowAll
         for (let result of results) {
           let source = result.source || "unknown"
           // Sort the results

@@ -15,6 +15,11 @@
         Do not truncate notes in concept details.
       </b-form-checkbox>
     </p>
+    <p v-if="localSettings">
+      <b-form-checkbox v-model="localSettings.mappingBrowserShowAll">
+        Always show all mappings and suggestions in mapping browser.
+      </b-form-checkbox>
+    </p>
     <p>
       <b-button
         variant="primary"

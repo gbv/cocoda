@@ -12,6 +12,7 @@ const defaultSettings = {
   mappingBrowserCatalog: true,
   minimized: {},
   flex: {},
+  mappingBrowserShowAll: false,
 }
 
 // initial state
