@@ -9,6 +9,11 @@
       <font-awesome-icon icon="search" />
     </div>
     <div class="conceptSearch-inputWrapper">
+      <div
+        v-if="isOpen && !loading"
+        class="conceptSearch-resultCount fontSize-small" >
+        {{ searchResult.length }} results
+      </div>
       <!-- Input field -->
       <b-form-input
         ref="searchInput"
@@ -325,6 +330,13 @@ export default {
   padding: 4px 0;
   text-align: center;
   left: 5px;
+}
+
+.conceptSearch-resultCount {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+  user-select: none;
 }
 
 .conceptSearch-inputWrapper {
