@@ -534,12 +534,11 @@ export default {
 
       Promise.all(promises).then(results => {
         if (this.loadingId != loadingId) return
-        let maxLength = 20
         let lengthPerSet = 5
         let lengths = results.map(result => result.items.length)
-        let totalLength = lengths.reduce((total, value) => total + value, 0)
+        // let totalLength = lengths.reduce((total, value) => total + value, 0)
         let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
-        let truncateResults = totalLength > maxLength && zeroCount < (results.length - 1)
+        let truncateResults = zeroCount < (results.length - 1)
         for (let result of results) {
           let source = result.source || "unknown"
           // Sort the results
