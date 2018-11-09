@@ -32,14 +32,14 @@
                   v-if="field.key == 'from'"
                   v-model="filter.from"
                   type="text"
-                  style="width: 80%; display: inline-block;"
+                  style="width: 55%; display: inline-block;"
                   size="sm"
                   placeholder="from" />
                 <b-input
                   v-if="field.key == 'to'"
                   v-model="filter.to"
                   type="text"
-                  style="width: 80%; display: inline-block;"
+                  style="width: 75%; display: inline-block;"
                   size="sm"
                   placeholder="to" />
                 <b-input
@@ -53,10 +53,18 @@
                   v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
                   v-if="filter[field.key] != null"
                   icon="times"
-                  class="button"
+                  class="button d-none d-md-inline-block"
                   @click="filter[field.key] = ''">
                   x
                 </span>
+                <b-button
+                  v-if="field.key == 'from'"
+                  class="d-none d-lg-inline-block"
+                  variant="link"
+                  size="sm"
+                  @click="[filter.from, filter.to] = [filter.to, filter.from]" >
+                  <font-awesome-icon icon="exchange-alt" />
+                </b-button>
               </div>
             </div>
             <flexible-table
