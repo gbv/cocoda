@@ -15,7 +15,7 @@
     </b-navbar-brand>
     <!-- Title -->
     <b-navbar-brand href="#">
-      {{ title }}
+      {{ config.title }}
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
@@ -27,15 +27,15 @@
       </b-nav-item>
       <!-- Help button (links to documentation) -->
       <b-nav-item
-        v-if="help"
-        :href="help"
+        v-if="config.helpUrl"
+        :href="config.helpUrl"
         target="_blank" >
         Help
       </b-nav-item>
       <!-- GitHub button -->
       <b-nav-item
-        v-if="github"
-        :href="github"
+        v-if="config.githubUrl"
+        :href="config.githubUrl"
         target="_blank" >
         <font-awesome-icon :icon="['fab', 'github']" />
         GitHub
@@ -78,16 +78,6 @@ export default {
   name: "TheNavbar",
   components: {
     TheSettings
-  },
-  data () {
-    return {
-      /** The title text displayed in the top left corner. */
-      title: "Cocoda Prototype",
-      /** The link to the GitHub project. */
-      github: "https://github.com/gbv/cocoda",
-      /** The link to help page. */
-      help: "https://gbv.github.io/cocoda/"
-    }
   },
   computed: {
     creatorName() {
