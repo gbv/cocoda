@@ -149,7 +149,7 @@ export default {
       }
     },
     dragStart(event) {
-      event.dataTransfer.setData("uri", this.item.uri)
+      event.dataTransfer.setData("text", this.item.uri)
     },
   }
 }

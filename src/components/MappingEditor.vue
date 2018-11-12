@@ -402,7 +402,7 @@ export default {
     },
     drop(isLeft, event) {
       event.preventDefault()
-      let uri = event.dataTransfer.getData("uri")
+      let uri = event.dataTransfer.getData("text")
       let object = this.$store.getters["objects/get"]({ uri })
       if (this.$jskos.isConcept(object)) {
         // Add concept to mapping
