@@ -2,6 +2,8 @@
   <div
     v-if="item != null"
     class="itemName"
+    draggable="true"
+    @dragstart="dragStart"
     @mouseover="mouseOver"
     @mouseout="mouseOut">
     <div
@@ -145,7 +147,10 @@ export default {
       } else {
         return text
       }
-    }
+    },
+    dragStart(event) {
+      event.dataTransfer.setData("uri", this.item.uri)
+    },
   }
 }
 
