@@ -67,7 +67,9 @@
           <div
             v-show="selected.scheme[isLeft] == null"
             class="placeholderComponent" >
-            <p class="fontWeight-heavy">
+            <p
+              v-if="favoriteSchemes && favoriteSchemes.length"
+              class="fontWeight-heavy" >
               Scheme quick selection
             </p>
             <p
@@ -82,7 +84,9 @@
               />
             </p>
             <br><br>
-            <p class="fontWeight-heavy">
+            <p
+              v-if="config.favoriteConcepts && config.favoriteConcepts.length"
+              class="fontWeight-heavy" >
               Concept quick selection
             </p>
             <p
