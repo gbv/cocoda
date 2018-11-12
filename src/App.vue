@@ -258,11 +258,14 @@ export default {
     },
     favoriteSchemes() {
       let schemes = []
-      for (let scheme of this.$store.state.schemes) {
-        if (this.config.favoriteTerminologyProviders.includes(scheme.uri)) {
+      for (let uri of this.config.favoriteTerminologyProviders) {
+        let scheme = this.$store.getters["objects/get"]({ uri })
+        if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
           schemes.push(scheme)
         }
       }
+      // This does nothing except for triggering a refresh for this computed property when the list of schemes has changed.
+      this.schemes
       return schemes
     },
     schemes() {
