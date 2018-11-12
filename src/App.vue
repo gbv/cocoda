@@ -277,6 +277,13 @@ export default {
       if (this.schemes.length) {
         this.loadFromParametersOnce()
       }
+      // Load favorite concepts into Vuex
+      for (let concept of this.config.favoriteConcepts) {
+        this.$store.dispatch({
+          type: "objects/load",
+          object: concept
+        })
+      }
     },
     $route({ query: toQuery }, { query: fromQuery }) {
       // Only refresh when one of the scheme/concept parameters changed
