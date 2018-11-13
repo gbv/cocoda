@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="concept != null"
-    :style="depth == 0 ? 'margin-left: 0px' : ''"
+    :style="`margin-left: ${depth * 10}px`"
     :data-uri="concept.uri"
     class="conceptTreeItem" >
     <!-- Concept -->
@@ -45,19 +45,6 @@
         @mouseout="hovering(null)" >
         <font-awesome-icon icon="plus-circle" />
       </div>
-    </div>
-    <!-- Concept's narrower if opened -->
-    <div
-      v-if="concept.ISOPEN[isLeft]"
-      class="conceptChildrenBox" >
-      <concept-tree-item
-        v-for="(child, index) in concept.narrower"
-        :key="index"
-        :concept="child"
-        :depth="depth + 1"
-        :index="index"
-        :is-left="isLeft"
-        @selected="select($event)" />
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
@@ -246,9 +233,6 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.conceptTreeItem {
-  margin-left: 10px;
-}
 .conceptBox {
   display: flex;
   position: relative;

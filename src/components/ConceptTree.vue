@@ -8,15 +8,15 @@
       ref="conceptTreeItems"
       class="conceptTreeItems scrollable" >
       <concept-tree-item
-        v-for="(concept, index) in tree"
+        v-for="(concept, index) in items"
         :key="index"
         :concept="concept"
-        :depth="0"
+        :depth="(concept && concept.ancestors && concept.ancestors.length) || 0"
         :index="index"
         :is-left="isLeft" />
     </div>
     <div
-      v-if="tree.length == 0 && !loading"
+      v-if="items.length == 0 && !loading"
       class="fillAndCenter fontWeight-heavy" >
       No Concept Tree Available
     </div>
@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-      tree: [],
+      topConcepts: [],
       loading: false,
       currentSelectedConcept: null,
       shouldScroll: true,
@@ -64,6 +64,15 @@ export default {
     },
     conceptSelected() {
       return this.selected.concept[this.isLeft]
+    },
+    items() {
+      let items = []
+      for (let concept of this.topConcepts) {
+        items.push(concept)
+        let children = this.children(concept)
+        items = items.concat(children)
+      }
+      return items
     }
   },
   watch: {
@@ -140,13 +149,23 @@ export default {
      * Resets the concept tree and loads top concepts for new vocabulary.
      */
     reset: function() {
-      this.tree = []
+      this.topConcepts = []
       this.loading = true
       this.loadTop({ scheme: this.schemeSelected }).then(() => {
-        this.tree = _.get(this, "schemeSelected.TOPCONCEPTS", [])
+        this.topConcepts = _.get(this, "schemeSelected.TOPCONCEPTS", [])
         this.loading = false
       })
-    }
+    },
+    children(concept) {
+      let items = []
+      if (concept && concept.ISOPEN[this.isLeft]) {
+        for (let child of concept.narrower) {
+          items.push(child)
+          items = items.concat(this.children(child))
+        }
+      }
+      return items
+    },
   }
 }
 
