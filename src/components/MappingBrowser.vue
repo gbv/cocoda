@@ -203,7 +203,8 @@ export default {
           width: "8%",
           minWidth: "",
           align: "left",
-          sortable: false
+          sortable: false,
+          class: "fontSize-small"
         },
         {
           key: "sourceConcepts",
@@ -238,7 +239,8 @@ export default {
           width: "8%",
           minWidth: "",
           align: "left",
-          sortable: false
+          sortable: false,
+          class: "fontSize-small"
         },
         {
           key: "targetConcepts",
