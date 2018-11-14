@@ -109,7 +109,7 @@
             v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
             v-if="data.item.mapping.LOCAL"
             icon="trash-alt"
-            class="button mappingBrowser-toolbar-button"
+            class="button-delete mappingBrowser-toolbar-button"
             @click="removeMapping(data.item.mapping)"
           />
         </span>

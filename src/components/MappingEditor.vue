@@ -20,7 +20,7 @@
       <div
         v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
         :class="{
-          button: canDeleteMapping,
+          'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
         }"
         class="mappingEditorToolbarItem"
@@ -80,7 +80,7 @@
               />
               <!-- Delete button for concept -->
               <span
-                class="button mappingConceptDelete fontSize-large"
+                class="button-delete fontSize-large"
                 @click="$store.commit({
                   type: 'mapping/remove',
                   concept,
@@ -94,7 +94,9 @@
         </div>
       </div>
       <div v-else >
-        <div class="mappingNoConcepts fontSize-large">no concept</div>
+        <div 
+          v-b-tooltip.hover="'no concept (empty mapping)'" 
+          class="mappingNoConcepts">∅</div>
       </div>
       <!-- Buttons (add, delete all) -->
       <!-- <div class="mappingButtons">
@@ -478,13 +480,12 @@ export default {
   position: relative;
   margin: 5px 12px 5px 0;
 }
-.mappingConceptDelete {
-  padding-bottom: 0.45rem;
-}
 .mappingConceptLink:hover {
   color: @color-primary-0;
 }
 .mappingNoConcepts {
+  .fontSize-large();
+  .fontWeight-heavy();
   position: absolute;
   top: 50%;
   left: 50%;
