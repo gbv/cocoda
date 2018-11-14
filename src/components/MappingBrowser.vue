@@ -48,13 +48,18 @@
             @mouseover.native="hover(concept)" />
         </span>
         <span
-          slot="sourceLabels"
+          slot="sourceConceptsLong"
           slot-scope="{ value }" >
-          <div
+          <item-name
             v-for="concept in value"
-            :key="concept.uri">
-            {{ $util.prefLabel(concept, null, false) }}
-          </div>
+            :key="concept.uri"
+            :item="concept"
+            :show-text="true"
+            :show-tooltip="false"
+            :is-link="true"
+            :is-left="true"
+            :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
+            @mouseover.native="hover(concept)" />
         </span>
         <span
           slot="targetConcepts"
@@ -74,13 +79,21 @@
           </span>
         </span>
         <span
-          slot="targetLabels"
+          slot="targetConceptsLong"
           slot-scope="{ value }" >
-          <div
+          <span
             v-for="concept in value"
             :key="concept.uri">
-            {{ $util.prefLabel(concept, null, false) }}
-          </div>
+            <item-name
+              :item="concept"
+              :show-text="true"
+              :show-tooltip="false"
+              :is-link="true"
+              :is-left="false"
+              :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
+              @mouseover.native="hover(concept)" />
+            <br>
+          </span>
         </span>
         <span
           slot="type"
@@ -231,13 +244,18 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
+          class: "mappingBrowser-table-concepts"
         },
         {
-          key: "sourceLabels",
-          label: "",
-          width: "15%",
-          class: "mappingBrowser-table-label"
+          key: "sourceConceptsLong",
+          label: "from",
+          width: "25%",
+          minWidth: "",
+          align: "left",
+          sortable: false,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
+          class: "mappingBrowser-table-conceptsLong"
         },
         {
           key: "type",
@@ -273,13 +291,18 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
+          class: "mappingBrowser-table-concepts"
         },
         {
-          key: "targetLabels",
-          label: "",
-          width: "15%",
-          class: "mappingBrowser-table-label"
+          key: "targetConceptsLong",
+          label: "to",
+          width: "25%",
+          minWidth: "",
+          align: "left",
+          sortable: false,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
+          class: "mappingBrowser-table-conceptsLong"
         },
         {
           key: "creator",
@@ -662,8 +685,8 @@ export default {
               this.hover(concept, _.get(mapping, "toScheme"))
             }
             // Save concepts as xLabels attribute as well
-            item.sourceLabels = item.sourceConcepts
-            item.targetLabels = item.targetConcepts
+            item.sourceConceptsLong = item.sourceConcepts
+            item.targetConceptsLong = item.targetConcepts
             // Set source/targetScheme to empty string if from/to is null.
             if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
               item.sourceScheme = ""
@@ -1017,7 +1040,10 @@ export default {
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {
   display: none;
 }
-.mappingBrowser-table[max-width~="700px"] .mappingBrowser-table-label {
+.mappingBrowser-table[max-width~="700px"] .mappingBrowser-table-conceptsLong {
+  display: none;
+}
+.mappingBrowser-table[min-width~="700px"] .mappingBrowser-table-concepts {
   display: none;
 }
 
