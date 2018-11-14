@@ -936,20 +936,24 @@ export default {
     },
     /** Wrapper around axios.get for loading occurrences */
     getOccurrences(options) {
-      // Use local cache.
-      let resultsFromCache = this.occurrencesCache.find(item => {
-        return _.isEqual(item.options.params, options.params)
-      })
-      if (resultsFromCache) {
-        return Promise.resolve(resultsFromCache.results)
-      }
-      return axios.get(this.config.occurrenceProviders[0].url, options).then(results => {
-        this.occurrencesCache.push({
-          options,
-          results
+      if (this.config.occurrenceProviders && this.config.occurrenceProviders.length) {
+        // Use local cache.
+        let resultsFromCache = this.occurrencesCache.find(item => {
+          return _.isEqual(item.options.params, options.params)
         })
-        return results
-      })
+        if (resultsFromCache) {
+          return Promise.resolve(resultsFromCache.results)
+        }
+        return axios.get(this.config.occurrenceProviders[0].url, options).then(results => {
+          this.occurrencesCache.push({
+            options,
+            results
+          })
+          return results
+        })
+      } else {
+        return Promise.resolve([])
+      }
     },
     /** Returns whether a scheme is supported by the occurrences-api */
     occurrencesIsSupported(scheme) {
