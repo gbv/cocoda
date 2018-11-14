@@ -34,7 +34,8 @@
         @click.stop.prevent="onClick" >
         <item-name
           :item="concept"
-          :is-highlighted="isSelected" />
+          :is-highlighted="isSelected"
+          :prevent-external-hover="true" />
       </a>
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
@@ -99,6 +100,7 @@ export default {
   },
   data () {
     return {
+      isHoveredFromHere: false,
       /** Determines whether to show loading indicator for narrower */
       loadingChildren: false,
       /** Prevent double clicks */
@@ -111,7 +113,8 @@ export default {
       return  _.get(this.concept, "narrower.length", 1) != 0
     },
     isHovered() {
-      return this.$jskos.compare(this.hoveredConcept, this.concept)
+      // return this.$jskos.compare(this.hoveredConcept, this.concept)
+      return this.isHoveredFromHere
     },
     isSelected() {
       return this.$jskos.compare(this.selected.concept[this.isLeft], this.concept)
@@ -126,6 +129,7 @@ export default {
      */
     hovering(concept) {
       this.hoveredConcept = concept
+      this.isHoveredFromHere = concept != null
     },
     /**
      * Calls open and prevents accidental double clicks.

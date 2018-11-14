@@ -94,6 +94,14 @@ export default {
     isHighlighted: {
       type: Boolean,
       default: false
+    },
+    /**
+     * If true, this ItemName will not be hovered if the same concept is hovered elsewhere.
+     * Use this option if ItemName is used in large quantities, otherwise there will be a substantial performance penalty.
+     */
+    preventExternalHover: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -106,7 +114,7 @@ export default {
   },
   computed: {
     isHovered() {
-      return this.$jskos.compare(this.hoveredConcept, this.item)
+      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.hoveredConcept, this.item))
     },
     notation() {
       return this.$util.notation(this.item)
