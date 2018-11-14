@@ -70,7 +70,7 @@
     {
       "url": "//coli-conc.gbv.de/occurrences/api/",
       "notation": ["O"],
-      "prefLabel": { "de": "Occurrences", "en": "vOrkommen" }
+      "prefLabel": { "en": "Occurrences", "de": "Vorkommen" }
     }
   ],
   "language": "de",
