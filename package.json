@@ -33,6 +33,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.1",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",
+    "css-element-queries": "^1.1.1",
     "file-saver": "^2.0.0-rc.3",
     "jquery": "^3.3.1",
     "jskos-tools": "^0.1.15",
@@ -40,7 +41,7 @@
     "lodash": "^4.17.10",
     "simple-sha1": "^2.1.1",
     "vue": "^2.5.17",
-    "vue-flexible-table": "^0.2.3",
+    "vue-flexible-table": "^0.2.4",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.11.0",
     "vuex": "^3.0.1"

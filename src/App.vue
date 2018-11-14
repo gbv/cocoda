@@ -215,6 +215,10 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
 
+// Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
+const ElementQueries = require("css-element-queries/src/ElementQueries")
+ElementQueries.listen()
+
 /**
  * The main application.
  */

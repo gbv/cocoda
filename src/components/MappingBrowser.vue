@@ -48,6 +48,15 @@
             @mouseover.native="hover(concept)" />
         </span>
         <span
+          slot="sourceLabels"
+          slot-scope="{ value }" >
+          <div
+            v-for="concept in value"
+            :key="concept.uri">
+            {{ $util.prefLabel(concept, null, false) }}
+          </div>
+        </span>
+        <span
           slot="targetConcepts"
           slot-scope="{ value }" >
           <span
@@ -63,6 +72,15 @@
               @mouseover.native="hover(concept)" />
             <br>
           </span>
+        </span>
+        <span
+          slot="targetLabels"
+          slot-scope="{ value }" >
+          <div
+            v-for="concept in value"
+            :key="concept.uri">
+            {{ $util.prefLabel(concept, null, false) }}
+          </div>
         </span>
         <span
           slot="type"
@@ -200,7 +218,7 @@ export default {
         {
           key: "sourceScheme",
           label: "",
-          width: "8%",
+          width: "4%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -209,16 +227,22 @@ export default {
         {
           key: "sourceConcepts",
           label: "from",
-          width: "20%",
+          width: "10%",
           minWidth: "",
           align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
         },
         {
+          key: "sourceLabels",
+          label: "",
+          width: "15%",
+          class: "mappingBrowser-table-label"
+        },
+        {
           key: "type",
           label: "",
-          width: "8%",
+          width: "4%",
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
@@ -236,7 +260,7 @@ export default {
         {
           key: "targetScheme",
           label: "",
-          width: "8%",
+          width: "4%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -245,24 +269,31 @@ export default {
         {
           key: "targetConcepts",
           label: "to",
-          width: "20%",
+          width: "10%",
           minWidth: "",
           align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
         },
         {
+          key: "targetLabels",
+          label: "",
+          width: "15%",
+          class: "mappingBrowser-table-label"
+        },
+        {
           key: "creator",
           label: "creator",
-          width: "16%",
+          width: "8%",
           minWidth: "",
           align: "left",
-          sortable: false
+          sortable: false,
+          class: "mappingBrowser-table-creator"
         },
         {
           key: "count",
           label: "",
-          width: "8%",
+          width: "4%",
           minWidth: "",
           align: "right",
           sortable: false,
@@ -281,14 +312,14 @@ export default {
         {
           key: "source",
           label: "",
-          width: "4%",
+          width: "2%",
           minWidth: "",
           sortable: false
         },
         {
           key: "actions",
           label: "",
-          width: "8%",
+          width: "4%",
           minWidth: "",
           sortable: false
         }
@@ -622,6 +653,17 @@ export default {
             // TODO: Use Vuex getters.
             item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
             item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []
+            // Load prefLabels for all concepts
+            // TODO: Optimize by loading multiple concepts simultaneously (#107)
+            for (let concept of item.sourceConcepts) {
+              this.hover(concept, _.get(mapping, "fromScheme"))
+            }
+            for (let concept of item.targetConcepts) {
+              this.hover(concept, _.get(mapping, "toScheme"))
+            }
+            // Save concepts as xLabels attribute as well
+            item.sourceLabels = item.sourceConcepts
+            item.targetLabels = item.targetConcepts
             // Set source/targetScheme to empty string if from/to is null.
             if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
               item.sourceScheme = ""
@@ -724,16 +766,16 @@ export default {
         })
       })
     },
-    hover(concept) {
+    hover(concept, scheme) {
       if(concept && !concept.prefLabel) {
         // Load prefLabel to be shown as tooltip
-        if (!concept.inScheme || concept.inScheme.length == 0) {
+        if ((!concept.inScheme || concept.inScheme.length == 0) && !scheme) {
           // TODO: - Error handling
           console.warn("No scheme for", concept)
           return
         }
 
-        this.getObject({ object: concept, scheme: concept.inScheme[0] }).then(result => {
+        this.getObject({ object: concept, scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
           if (result && result.prefLabel) {
             this.$store.commit({
               type: "objects/set",
@@ -970,6 +1012,13 @@ export default {
 }
 .mappingBrowser-separatorRow {
   border-top: 1px solid black;
+}
+
+.mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {
+  display: none;
+}
+.mappingBrowser-table[max-width~="700px"] .mappingBrowser-table-label {
+  display: none;
 }
 
 </style>
