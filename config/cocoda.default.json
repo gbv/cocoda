@@ -21,7 +21,7 @@
         "notation": ["WD"],
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
       } ],
-      "data": "//coli-conc.gbv.de/services/wikidata/concept",
+      "data": "//coli-conc.gbv.de/services/wikidata/data",
       "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}"
     }
   ],
