@@ -22,6 +22,7 @@
           v-model="tab"
           card >
           <b-tab
+            :disabled="!loading && concordances.length == 0"
             title="Concordances">
             <div style="display: flex;">
               <div
@@ -187,9 +188,15 @@
               <b-row>
                 <b-col
                   cols="3"
-                  class="label">Concordance</b-col>
+                  class="label">
+                  <span
+                    v-if="concordances.length > 0" >
+                    Concordance
+                  </span>
+                </b-col>
                 <b-col cols="4">
                   <b-form-select
+                    v-if="concordances.length > 0"
                     v-model="concordance"
                     :options="concordanceOptions" />
                 </b-col>
@@ -519,6 +526,11 @@ export default {
     }).catch(error => {
       console.warn("Error fetching mapping schemes:", error)
       this.concordances = []
+    }).finally(() => {
+      // If there are no concordances, jump to second tab.
+      if (this.concordances.length == 0 && this.tab == 0) {
+        this.tab = 1
+      }
     })
     // Load from parameters on popstate (when using the browser's forward and backward buttons).
     window.addEventListener("popstate", () => {
