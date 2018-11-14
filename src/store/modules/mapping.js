@@ -181,6 +181,8 @@ const mutations = {
     if (original) {
       state.original = jskos.addMappingIdentifiers(jskos.minifyMapping(original))
       state.original.LOCAL = original.LOCAL
+    } else if (!mapping) {
+      state.original = null
     }
   },
 
