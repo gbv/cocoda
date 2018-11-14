@@ -22,6 +22,8 @@ For interface elements, there is a range of pre-defined colors available in `src
 * CSS class `text-lightGrey`
 * CSS class `text-veryLightGrey`
 
+Colors can be overridden using a custom user file in `src/style/user-colors.less`.
+
 ### Tables
 
 For tables, there is a custom table component called [vue-flexible-table](https://github.com/stefandesu/vue-flexible-table). It can be used very similarly to a [bootstrap-vue table](https://bootstrap-vue.js.org/docs/components/table). See the [MappingBrowser](#mappingbrowser) component for an example of this in use.
