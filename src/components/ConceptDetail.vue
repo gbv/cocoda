@@ -110,7 +110,7 @@
         </b-tab>
         <b-tab
           :key="'zzzzzzzzzz'+iteration"
-          title="IDs" >
+          title="Info" >
           <!-- URI and identifier -->
           <div
             v-for="(identifier, index) in [item.uri].concat(item.identifier)"
@@ -121,6 +121,11 @@
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
               @dblclick="copy" />
             <auto-link :link="identifier" />
+          </div>
+          <div
+            v-if="item.creator && item.creator.length"
+            class="conceptDetail-identifier" >
+            <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
           </div>
         </b-tab>
       </b-tabs>
