@@ -145,6 +145,7 @@ function suggest(scheme, search, limit = 0, use = "notation,label", cancelToken 
   if (!url) {
     return Promise.resolve([])
   }
+  let types = store.state.settings.settings.typesForSchemes[Object.keys(store.state.settings.settings.typesForSchemes).find(key => jskos.compare(scheme, { uri: key }))] || []
   // Support for URL template with {searchTerms}
   url = url.replace("{searchTerms}", search)
   return get(url, {
@@ -153,7 +154,8 @@ function suggest(scheme, search, limit = 0, use = "notation,label", cancelToken 
       voc: scheme.uri,
       limit: limit,
       count: limit, // Some endpoints use count instead of limit
-      use: use
+      use: use,
+      type: types.join("|"),
     },
     cancelToken: cancelToken
   })
@@ -187,6 +189,33 @@ function top(scheme, properties = defaultProperties, cancelToken = null) {
       }
     }
     return results
+  })
+}
+
+/**
+ * Loads types of a scheme.
+ *
+ * @param {object} scheme - scheme for which this request is about
+ * @param {boolean} force - force reload from server (default false)
+ * @param {axios.cancelToken} cancelToken
+ */
+function types(scheme, force = false, cancelToken = null) {
+  if (!force && scheme.types != null) {
+    return Promise.resolve(scheme.types)
+  }
+  let provider = scheme ? scheme.PROVIDER : null
+  let types = provider ? provider.types : null
+  if (!types) {
+    return Promise.resolve([])
+  }
+  if (Array.isArray(types)) {
+    return Promise.resolve(types)
+  }
+  return get(types, {
+    params: {
+      uri: scheme.uri,
+    },
+    cancelToken: cancelToken
   })
 }
 
@@ -420,4 +449,4 @@ function removeMapping(mapping) {
   })
 }
 
-export default { data, narrower, ancestors, suggest, top, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings, getLocalMappings, saveMapping, saveMappings, removeMapping }
+export default { data, narrower, ancestors, suggest, top, types, get, minimumProperties, defaultProperties, detailProperties, allProperties, token, getMappings, getLocalMappings, saveMapping, saveMappings, removeMapping }

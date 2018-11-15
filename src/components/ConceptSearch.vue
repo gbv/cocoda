@@ -106,6 +106,12 @@ export default {
       uniqueID: null
     }
   },
+  computed: {
+    // Only for watcher
+    typesForSchemes() {
+      return this.$settings.typesForSchemes
+    },
+  },
   watch: {
     /**
      * Deals with query changes.
@@ -141,7 +147,11 @@ export default {
         this.loading = false
         this.searchSelected = -1
       }
-    }
+    },
+    typesForSchemes() {
+      // Request answer again after types changed.
+      this.getAnswer()
+    },
   },
   created: function () {
     // To limit API requests during typing, we defer the function call.

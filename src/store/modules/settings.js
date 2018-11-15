@@ -13,6 +13,7 @@ const defaultSettings = {
   minimized: {},
   flex: {},
   mappingBrowserShowAll: false,
+  typesForSchemes: {},
 }
 
 // initial state
