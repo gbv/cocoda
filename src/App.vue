@@ -433,14 +433,27 @@ export default {
         if (schemeUri && !scheme) {
           this.alert("Scheme from URL could not be found.", null, "danger")
         }
-        promises.push(
-          setSelectedPromise("scheme", isLeft, scheme).then(() => {
+        let promise = Promise.resolve()
+        // Check if same scheme is already selected
+        let currentScheme = this.selected.scheme[isLeft]
+        if (!this.$jskos.compare(scheme, currentScheme)) {
+          // Only select scheme if current scheme is different
+          promise = setSelectedPromise("scheme", isLeft, scheme).then(() => {
             // Introduce a short delay to make sure everything's loaded properly.
             return new Promise(resolve => setTimeout(() => resolve(), 200))
-          }).then(() => {
+          })
+        }
+        promises.push(
+          promise.then(() => {
             let conceptUri = selected.concept[isLeft]
             // Select concept
-            return setSelectedPromise("concept", isLeft, scheme, conceptUri)
+            // Check if same concept is already selected
+            let currentConcept = this.selected.concept[isLeft]
+            if (!this.$jskos.compare({ uri: conceptUri }, currentConcept)) {
+              return setSelectedPromise("concept", isLeft, scheme, conceptUri)
+            } else {
+              return Promise.resolve()
+            }
           })
         )
       }

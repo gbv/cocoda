@@ -8,10 +8,11 @@
       ref="conceptTreeItems"
       class="conceptTreeItems scrollable" >
       <concept-tree-item
-        v-for="(concept, index) in items"
+        v-for="({ concept, depth, isSelected }, index) in items"
         :key="index"
         :concept="concept"
-        :depth="(concept && concept.ancestors && concept.ancestors.length) || 0"
+        :depth="depth"
+        :is-selected="isSelected"
         :index="index"
         :is-left="isLeft" />
     </div>
@@ -66,11 +67,19 @@ export default {
       return this.selected.concept[this.isLeft]
     },
     items() {
-      let items = []
+      let concepts = []
       for (let concept of this.topConcepts) {
-        items.push(concept)
+        concepts.push(concept)
         let children = this.children(concept)
-        items = items.concat(children)
+        concepts = concepts.concat(children)
+      }
+      let items = []
+      for (let concept of concepts) {
+        items.push({
+          concept,
+          depth: (concept && concept.ancestors && concept.ancestors.length) || 0,
+          isSelected: this.$jskos.compare(this.conceptSelected, concept),
+        })
       }
       return items
     }

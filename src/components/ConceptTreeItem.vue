@@ -24,7 +24,6 @@
         }" />
       </div>
       <a
-        :href="getRouterUrl(concept, isLeft)"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         draggable="true"
@@ -39,7 +38,7 @@
       </a>
       <div
         v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
-        v-show="$store.getters['mapping/canAdd'](concept, selected.scheme[isLeft], isLeft)"
+        v-show="canAddToMapping"
         class="addToMapping fontSize-large"
         @click="addConcept($store)"
         @mouseover="hovering(concept)"
@@ -96,7 +95,14 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    }
+    },
+    /**
+     * Tells the component whether the item is selected.
+     */
+    isSelected: {
+      type: Boolean,
+      default: false
+    },
   },
   data () {
     return {
@@ -106,6 +112,7 @@ export default {
       /** Prevent double clicks */
       preventClick: false,
       preventClickArrow: false,
+      canAddToMapping: false,
     }
   },
   computed: {
@@ -115,9 +122,6 @@ export default {
     isHovered() {
       // return this.$jskos.compare(this.hoveredConcept, this.concept)
       return this.isHoveredFromHere
-    },
-    isSelected() {
-      return this.$jskos.compare(this.selected.concept[this.isLeft], this.concept)
     },
     childrenLoaded() {
       return !this.concept.narrower || !this.concept.narrower.includes(null)
@@ -130,6 +134,8 @@ export default {
     hovering(concept) {
       this.hoveredConcept = concept
       this.isHoveredFromHere = concept != null
+      // Set canAddToMapping
+      this.canAddToMapping = this.$store.getters["mapping/canAdd"](this.concept, this.selected.scheme[this.isLeft], this.isLeft)
     },
     /**
      * Calls open and prevents accidental double clicks.

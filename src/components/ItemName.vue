@@ -8,7 +8,7 @@
     @mouseout="mouseOut">
     <div
       :is="isValidLink ? 'router-link' : 'div'"
-      :to="getRouterUrl(item, isLeft)"
+      :to="url"
       :class="[
         {
           'itemName-hovered': isValidLink && isHovered,
@@ -109,7 +109,9 @@ export default {
       /** Unique DOM ID for tooltip */
       tooltipDOMID: this.$util.generateID(),
       /** Determines whether the item is hovered from inside (to show tooltip after prefLabel loaded) */
-      isHoveredFromHere: false
+      isHoveredFromHere: false,
+      url: "",
+      isValidLink: false,
     }
   },
   computed: {
@@ -118,16 +120,6 @@ export default {
     },
     notation() {
       return this.$util.notation(this.item)
-    },
-    isValidLink() {
-      if (!this.isLink) {
-        return false
-      }
-      // Only mention schemes so that computed property refreshes after schemes are loaded.
-      this.$store.state.schemes
-      // Check if scheme (or item itself) is available.
-      let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]")) || this.$store.getters["objects/get"](this.item)
-      return scheme != null
     },
   },
   watch: {
@@ -144,6 +136,18 @@ export default {
     mouseOver() {
       this.isHoveredFromHere = true
       this.hoveredConcept = this.item
+      // Set URL
+      this.url = this.getRouterUrl(this.item, this.isLeft)
+      // Set isValidLink
+      if (!this.isLink) {
+        this.isValidLink = false
+      } else {
+        // Only mention schemes so that computed property refreshes after schemes are loaded.
+        this.$store.state.schemes
+        // Check if scheme (or item itself) is available.
+        let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]")) || this.$store.getters["objects/get"](this.item)
+        this.isValidLink = scheme != null
+      }
     },
     mouseOut() {
       this.isHoveredFromHere = false
