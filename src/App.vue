@@ -660,9 +660,6 @@ html, body {
   top: 50%;
   transform: translateY(-50%);
 }
-.quickSelectionItem > a > span {
-  color: @color-button !important;
-}
 
 .alertsContainer {
   position: absolute;
