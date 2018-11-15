@@ -36,7 +36,7 @@ const mutations = {
    * - object: object to save in map
    * - force: force saving if object already exists (default: false)
    */
-  save (state, { object, force = false }) {
+  save (state, { object, force = false, scheme }) {
     // First, check if any if the URIs is already in the map
     let save = !isObjectInMap(state.map, object) || force
     // TODO: Force saving has side effects, like object references referring to an object not in map anymore.
@@ -47,24 +47,24 @@ const mutations = {
       object.DETAILSLOADED = false
       object.INSTORE = true
       if (jskos.isConcept(object)) {
-        object.BROADERLOADED = false
-        object.GNDTERMS = null
-        object.ISOPEN = { true: false, false: false }
-        object.MAPPINGS = object.MAPPINGS || null
-        object.ancestors = object.ancestors || [null]
-        object.broader = object.broader || [null]
-        object.narrower = object.narrower || [null]
-        object.editorialNote = object.editorialNote || null
-        object.scopeNote = object.scopeNote || null
-        object.created = object.created || null
-        object.issued = object.issued || null
-        object.modified = object.modified || null
-        object.license = object.license || null
-        object.notation = object.notation || []
-        object.prefLabel = object.prefLabel || {}
-        object.publisher = object.publisher || null
+        Vue.set(object, "BROADERLOADED", false)
+        Vue.set(object, "GNDTERMS", null)
+        Vue.set(object, "ISOPEN", { true: false, false: false })
+        Vue.set(object, "MAPPINGS", object.MAPPINGS || null)
+        Vue.set(object, "ancestors", object.ancestors || [null])
+        Vue.set(object, "broader", object.broader || [null])
+        Vue.set(object, "narrower", object.narrower || [null])
+        Vue.set(object, "editorialNote", object.editorialNote || null)
+        Vue.set(object, "scopeNote", object.scopeNote || null)
+        Vue.set(object, "created", object.created || null)
+        Vue.set(object, "issued", object.issued || null)
+        Vue.set(object, "modified", object.modified || null)
+        Vue.set(object, "license", object.license || null)
+        Vue.set(object, "notation", object.notation || [])
+        Vue.set(object, "prefLabel", object.prefLabel || {})
+        Vue.set(object, "publisher", object.publisher || null)
         if (!object.inScheme) {
-          object.inScheme = [scheme]
+          Vue.set(object, "inScheme", [scheme])
         } else {
           let inScheme = []
           for (let scheme of object.inScheme) {
@@ -92,14 +92,15 @@ const mutations = {
           }
         }
       } else if (jskos.isScheme(object)) {
-        object.TOPCONCEPTS = object.TOPCONCEPTS || [null]
-        object.created = object.created || null
-        object.issued = object.issued || null
-        object.modified = object.modified || null
-        object.license = object.license || null
-        object.notation = object.notation || []
-        object.prefLabel = object.prefLabel || {}
-        object.publisher = object.publisher || null
+        Vue.set(object, "TOPCONCEPTS", object.TOPCONCEPTS || [null])
+        Vue.set(object, "created", object.created || null)
+        Vue.set(object, "issued", object.issued || null)
+        Vue.set(object, "modified", object.modified || null)
+        Vue.set(object, "license", object.license || null)
+        Vue.set(object, "notation", object.notation || [])
+        Vue.set(object, "prefLabel", object.prefLabel || {})
+        Vue.set(object, "publisher", object.publisher || null)
+        Vue.set(object, "types", object.types || null)
       }
       // Add to map
       let uris = jskos.getAllUris(object)
@@ -186,7 +187,8 @@ const actions = {
           } else {
             commit({
               type: "save",
-              object
+              object,
+              scheme
             })
             return object
           }
@@ -227,7 +229,8 @@ const actions = {
             commit({
               type: "save",
               object,
-              force
+              force,
+              scheme
             })
             top.push(result)
           }
@@ -289,7 +292,8 @@ const actions = {
             commit({
               type: "save",
               object,
-              force
+              force,
+              scheme
             })
             narrower.push(result)
           }
@@ -369,7 +373,8 @@ const actions = {
             commit({
               type: "save",
               object,
-              force
+              force,
+              scheme
             })
             ancestors.push(result)
           }
