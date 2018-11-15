@@ -53,7 +53,7 @@ function data(scheme, uri, properties = defaultProperties, cancelToken = null) {
     },
     cancelToken: cancelToken
   }).then(results => {
-    for (let result of results) {
+    for (let result of results || []) {
       if (jskos.isConcept(result)) {
         if (!jskos.validate.concept(result)) {
           console.warn("API: Invalid JSKOS for concept", result)
