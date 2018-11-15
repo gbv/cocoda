@@ -94,8 +94,8 @@
         </div>
       </div>
       <div v-else >
-        <div 
-          v-b-tooltip.hover="'no concept (empty mapping)'" 
+        <div
+          v-b-tooltip.hover="'no concept (empty mapping)'"
           class="mappingNoConcepts">∅</div>
       </div>
       <!-- Buttons (add, delete all) -->
@@ -231,7 +231,7 @@ export default {
     creatorName() {
       return _.get(this.mapping, "creator[0].prefLabel.de")
         || _.get(this.mapping, "creator[0].prefLabel.en")
-        || this.$store.state.settings.creator
+        || this.$store.state.settings.settings.creator
     },
   },
   watch: {
