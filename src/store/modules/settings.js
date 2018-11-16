@@ -1,4 +1,5 @@
 import localforage from "localforage"
+import nodersa from "node-rsa"
 
 const defaultSettings = {
   creator: "",
@@ -41,6 +42,14 @@ const actions = {
   load({ commit }) {
     localforage.getItem("settings").then(settings => {
       let newSettings = Object.assign({}, defaultSettings, settings || {})
+      // Create new key pair if necessary
+      if (!newSettings.key) {
+        let key = new nodersa({b: 512})
+        newSettings.key = {
+          private: key.exportKey("private"),
+          public: key.exportKey("public")
+        }
+      }
       commit({
         type: "save",
         settings: newSettings

@@ -220,3 +220,17 @@ Vue.mixin({
     }
   }
 })
+
+// Mixin for RSA key
+import nodersa from "node-rsa"
+
+Vue.mixin({
+  computed: {
+    key() {
+      let key = new nodersa()
+      key.importKey(this.$settings.key.public, "public")
+      key.importKey(this.$settings.key.private, "private")
+      return key
+    }
+  }
+})

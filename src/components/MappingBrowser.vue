@@ -963,6 +963,13 @@ export default {
     },
     saveMapping(mapping) {
       this.loading = 1
+      mapping = this.$jskos.minifyMapping(mapping)
+      if (!mapping.creator || !mapping.creator.length) {
+        mapping.creator = [{
+          prefLabel: { de: this.$store.state.settings.settings.creator }
+        }]
+      }
+      mapping.creator[0].publicKey = this.$settings.key.public
       return this.$api.saveMapping(mapping).then(mapping => {
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)

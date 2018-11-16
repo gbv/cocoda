@@ -103,6 +103,25 @@
       </p>
     </div>
     <br>
+    <div v-if="this.$settings.key">
+      <h5>Local RSA Public Key</h5>
+      <pre>{{ this.$settings.key.public }}</pre>
+      <h5>Local RSA Private Key</h5>
+      Save this private key in a save place to make sure you can regain access to your mappings.
+      <pre>{{ this.$settings.key.private }}</pre>
+      <h5>Import Private Key</h5>
+      <b-form-textarea
+        v-model="keyToImport"
+        :rows="3"
+        :max-rows="3"
+        placeholder="Paste -----BEGIN RSA PRIVATE KEY----- [...] -----END RSA PRIVATE KEY----- here." />
+      <b-button
+        :variant="keyImported ? 'success' : 'warning'"
+        @click="importPrivateKey">
+        {{ keyImported ? "Key Successfully Imported!" : "Import Private Key" }}
+      </b-button>
+    </div>
+    <br>
     <p>
       <span>
         For issues and suggestions, please use the
@@ -131,6 +150,7 @@
 <script>
 import _ from "lodash"
 import FileSaver from "file-saver"
+import nodersa from "node-rsa"
 
 /**
  * The settings modal.
@@ -146,6 +166,8 @@ export default {
       uploadedFile: null,
       uploadedFileStatus: "",
       deleteMappingsButtons: false,
+      keyImported: false,
+      keyToImport: "",
     }
   },
   watch: {
@@ -203,12 +225,16 @@ export default {
         reader.readAsText(this.uploadedFile)
       }
     },
+    keyToImport() {
+      this.keyImported = false
+    },
   },
   methods: {
     show() {
       this.$refs.settingsModal.show()
       this.localSettings = _.cloneDeep(this.$settings)
       this.refreshDownloads()
+      this.keyImported = false
     },
     refreshDownloads() {
       // Set download data variables
@@ -294,6 +320,25 @@ export default {
         this.deleteMappingsButtons = false
       })
     },
+    importPrivateKey() {
+      let reply = prompt("Importing will override the existing key. If you have saved mappings using the current key, you will lose access to those mappings. The previous key will not be recoverable. To continue, please type \"YES\".")
+      if (reply == "YES") {
+        try {
+          let key = new nodersa()
+          key.importKey(this.keyToImport, "private")
+          this.localSettings.key = {
+            private: key.exportKey("private"),
+            public: key.exportKey("public")
+          }
+          this.keyToImport = ""
+          _.delay(() => {
+            this.keyImported = true
+          }, 100)
+        } catch (error) {
+          alert("There was an error importing the key, please check if you pasted it correctly.")
+        }
+      }
+    }
   }
 }
 </script>

@@ -39,6 +39,7 @@
     "jskos-tools": "^0.1.15",
     "localforage": "^1.7.2",
     "lodash": "^4.17.10",
+    "node-rsa": "^1.0.1",
     "simple-sha1": "^2.1.1",
     "vue": "^2.5.17",
     "vue-flexible-table": "^0.2.4",

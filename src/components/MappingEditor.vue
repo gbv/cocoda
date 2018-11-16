@@ -254,7 +254,10 @@ export default {
       // Set creator when saving.
       this.$store.commit({
         type: "mapping/setCreator",
-        creator: [{ prefLabel: { de: this.creatorName } }]
+        creator: [{
+          prefLabel: { de: this.creatorName },
+          publicKey: this.$settings.key.public,
+        }]
       })
       let mapping = this.prepareMapping()
       let original = this.original
