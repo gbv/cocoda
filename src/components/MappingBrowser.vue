@@ -8,11 +8,6 @@
       <!-- Settings -->
       <div id="mappingBrowser-settings">
         <b-form-checkbox
-          v-model="showLocal"
-          class="mappingBrowser-setting" >
-          <b>L</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
-        </b-form-checkbox>
-        <b-form-checkbox
           v-for="provider in config.mappingProviders"
           :key="provider.url"
           v-model="showProvider[provider.url]"
@@ -220,6 +215,7 @@ export default {
       showMoreValues: {},
       /** Unique ID for each reload */
       loadingId: null,
+      refreshTimer: null,
     }
   },
   computed: {
@@ -499,26 +495,6 @@ export default {
         params["to"] = to.uri
       }
 
-      // 1. Local
-      if (this.showLocal) {
-        promises.push(this.$api.getLocalMappings(params).then(mappings => {
-          if (this.loadingId == loadingId) {
-            this.localMappingsCurrent = mappings.length
-          }
-          let items = []
-          for (let mapping of mappings) {
-            let item = {}
-            item.mapping = mapping
-            item.sourceShort = "L"
-            items.push(item)
-          }
-          return {
-            source: "local",
-            items
-          }
-        }))
-      }
-
       // 2. Server
       for (let provider of this.config.mappingProviders) {
         if (this.showProvider[provider.url]) {
@@ -750,6 +726,11 @@ export default {
           this.items = items
           this.loadingId = null
           this.loading = 0
+          // Refresh every 5 seconds
+          window.clearInterval(this.refreshTimer)
+          this.refreshTimer = setInterval(() => {
+            this.$store.commit("mapping/setRefresh", true)
+          }, 5000)
         }
       })
     },
@@ -779,14 +760,11 @@ export default {
       for (let concept of [].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice)) {
         this.hover(concept)
       }
-      // Save mapping
-      // let original = mapping.LOCAL ? data.item.mapping : null
-      this.saveMapping(mapping).then(() => {
-        this.$store.commit({
-          type: "mapping/set",
-          mapping,
-          original: mapping
-        })
+      // Set mapping
+      this.$store.commit({
+        type: "mapping/set",
+        mapping,
+        original: mapping
       })
     },
     hover(concept, scheme) {

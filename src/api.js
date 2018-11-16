@@ -259,7 +259,7 @@ function get(url, axiosConfig) {
     })
 }
 
-function getMappings(params, local = true, providers = config.mappingProviders) {
+function getMappings(params, local = false, providers = config.mappingProviders) {
   let promises = []
   for (let provider of providers) {
     let promise = axios.get(provider.url, {
@@ -378,48 +378,39 @@ function getLocalMappings(params = {}) {
   })
 }
 
-function saveMapping(mapping, original) {
-  original = original || {}
+function saveMapping(mapping) {
   // Check for fromScheme and toScheme
   if (!mapping.fromScheme || !mapping.toScheme) {
     return Promise.reject("Can't save mapping: Missing fromScheme or toScheme.")
   }
-  mapping.LOCAL = true
 
-  return getLocalMappings().then(mappings => {
-    mapping = jskos.addMappingIdentifiers(mapping)
-    // Filter out original mapping and other local mappings with the same content identifier.
-    mappings = mappings.filter(m => {
-      let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
-      let id1 = m.identifier ? m.identifier.find(findContentId) : null
-      let id2 = (original.identifier || []).find(findContentId)
-      let id3 = (mapping.identifier || []).find(findContentId)
-      return id1 != id2 && id1 != id3
-    })
-    mappings.push(mapping)
-    // FIXME: This fixes old invalid mappings in local storage and should be removed later.
-    for (let mapping of mappings) {
-      if (mapping.creator) {
-        let creators = []
-        for (let creator of mapping.creator) {
-          if (typeof creator === "object") {
-            creators.push(creator)
-          } else {
-            creators.push({ prefLabel: { de: creator } })
-            console.log("Fixed mapping in local storage.")
-          }
-        }
-        if (creators.length) {
-          mapping.creator = creators
-        }
-      }
+  mapping = jskos.minifyMapping(mapping)
+  mapping = jskos.addMappingIdentifiers(mapping)
+  let provider = config.mappingProviders[0]
+  if (!provider) {
+    return Promise.reject("No mapping provider found.")
+  }
+  return axios.post(provider.url, {
+    mapping
+  }).then(({ data }) => {
+    if (data.ok) {
+      // Mapping was saved
+      return [data.mapping]
+    } else {
+      // Mapping could not be saved
+      return null
     }
-    return saveMappings(mappings)
   })
 }
 
 function saveMappings(mappings) {
-  return localforage.setItem("mappings", mappings)
+  let promises = []
+  for (let mapping of mappings) {
+    promises.push(saveMapping(mapping))
+  }
+  return Promise.all(promises).then(results => {
+    return _.flattenDeep(results)
+  })
 }
 
 function removeMapping(mapping) {

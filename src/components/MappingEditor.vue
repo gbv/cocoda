@@ -229,9 +229,7 @@ export default {
       return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
-      return _.get(this.mapping, "creator[0].prefLabel.de")
-        || _.get(this.mapping, "creator[0].prefLabel.en")
-        || this.$store.state.settings.settings.creator
+      return this.$store.state.settings.settings.creator || ""
     },
   },
   watch: {
@@ -245,19 +243,19 @@ export default {
         scheme: this.selected.scheme[false]
       })
     },
-    canSaveMapping(newValue, oldValue) {
-      if (!oldValue && newValue) {
-      // Change creator of mapping.
-        this.$store.commit({
-          type: "mapping/setCreator",
-          creator: [{ prefLabel: { de: this.$settings.creator || "" } }]
-        })
-      }
-    }
   },
   methods: {
     saveMapping() {
       if (!this.canSaveMapping) return false
+      if (!this.creatorName || this.creatorName == "") {
+        this.alert("Please set your name in Settings (top right of the page).")
+        return false
+      }
+      // Set creator when saving.
+      this.$store.commit({
+        type: "mapping/setCreator",
+        creator: [{ prefLabel: { de: this.creatorName } }]
+      })
       let mapping = this.prepareMapping()
       let original = this.original
       this.$api.saveMapping(mapping, original).then(mappings => {
@@ -267,11 +265,12 @@ export default {
           type: "mapping/set",
           original: newMapping
         })
+      }).then(() => {
+        this.clearMapping()
       }).catch(error => {
         this.alert(error, null, "danger")
-      }).then(() => {
+      }).finally(() => {
         this.$store.commit("mapping/setRefresh", true)
-        this.clearMapping()
       })
     },
     deleteMapping() {
