@@ -34,6 +34,15 @@
         class="mappingBrowser-table"
         @hover="hoveredMapping = $event && $event.mapping" >
         <span
+          slot="sourceScheme"
+          slot-scope="{ value }" >
+          <item-name
+            :item="value"
+            :show-text="false"
+            :show-tooltip="true"
+            font-size="sm" />
+        </span>
+        <span
           slot="sourceConcepts"
           slot-scope="{ value }" >
           <item-name
@@ -60,6 +69,15 @@
             :is-left="true"
             :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
             @mouseover.native="hover(concept)" />
+        </span>
+        <span
+          slot="targetScheme"
+          slot-scope="{ value }" >
+          <item-name
+            :item="value"
+            :show-text="false"
+            :show-tooltip="true"
+            font-size="sm" />
         </span>
         <span
           slot="targetConcepts"
@@ -671,8 +689,10 @@ export default {
           // Add items
           for (let item of result.items) {
             let mapping = item.mapping
-            item.sourceScheme = this.$util.notation(_.get(mapping, "fromScheme"), "scheme") || "?"
-            item.targetScheme = this.$util.notation(_.get(mapping, "toScheme"), "scheme") || "?"
+            item.sourceScheme = _.get(mapping, "fromScheme")
+            item.sourceScheme = this.$store.getters["objects/get"](item.sourceScheme) || item.sourceScheme
+            item.targetScheme = _.get(mapping, "toScheme")
+            item.targetScheme = this.$store.getters["objects/get"](item.targetScheme) || item.targetScheme
             // TODO: Use Vuex getters.
             item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
             item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []
@@ -689,10 +709,10 @@ export default {
             item.targetConceptsLong = item.targetConcepts
             // Set source/targetScheme to empty string if from/to is null.
             if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
-              item.sourceScheme = ""
+              item.sourceScheme = null
             }
             if (!_.get(mapping, "to") && item.targetConcepts.length == 0) {
-              item.targetScheme = ""
+              item.targetScheme = null
             }
             // Skip if there are no concepts.
             if (item.sourceConcepts.length + item.targetConcepts.length == 0) {

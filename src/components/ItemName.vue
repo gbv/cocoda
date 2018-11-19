@@ -133,7 +133,7 @@ export default {
     }
   },
   created() {
-    if (!this.preventExternalHover) {
+    if (!this.preventExternalHover && this.isLink) {
       this.isValidLink = true
     }
   },
