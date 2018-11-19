@@ -348,9 +348,6 @@ export default {
     if (!this.schemes.length) {
       this.loading = true
     }
-    window.addEventListener("popstate", () => {
-      this.loadFromParameters()
-    })
   },
   methods: {
     insertPrefLabel() {

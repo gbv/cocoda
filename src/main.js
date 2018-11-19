@@ -107,7 +107,7 @@ Vue.mixin({
       let fromTo = isLeft ? "from" : "to"
       if (jskos.isScheme(object) || !object.inScheme) {
       // Consider object a scheme
-        query[fromTo] = ""
+        delete query[fromTo]
         query[fromTo + "Scheme"] = object.uri
       } else {
       // Consider object a concept
