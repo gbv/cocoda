@@ -127,6 +127,21 @@
             class="conceptDetail-identifier" >
             <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
           </div>
+          <div
+            v-if="item.created"
+            class="conceptDetail-identifier" >
+            <b>Created:</b> {{ item.created }}
+          </div>
+          <div
+            v-if="item.modified"
+            class="conceptDetail-identifier" >
+            <b>Created:</b> {{ item.modified }}
+          </div>
+          <div
+            v-if="item.definition"
+            class="conceptDetail-identifier" >
+            <b>Definition:</b> {{ $util.definition(item).join(", ") }}
+          </div>
         </b-tab>
       </b-tabs>
     </b-card>

@@ -93,32 +93,49 @@ let notation = (item, type) => {
 }
 
 /**
- * Returns the primary label for a JSKOS Item. If there is no label, it will return the URI. If there is no URI, it will return an empty string.
+ * Returns the content of a language map for a JSKOS Item.
  *
  * @param {*} item - a JSKOS Item
  * @param {*} language - a language tag, will default to the one in config, then English, then whatever other language is available.
  */
-let prefLabel = (item, language, fallbackToUri = true) => {
+let lmContent = (item, prop, language) => {
   if(!item) {
-    return ""
+    return null
   }
   let fallbackLanguage = "en"
   if (!language) {
     language = store.state.config.language || fallbackLanguage
   }
-  if (item.prefLabel) {
-    if (item.prefLabel[language]) {
-      return item.prefLabel[language]
+  if (item[prop]) {
+    if (item[prop][language]) {
+      return item[prop][language]
     }
-    if (item.prefLabel[fallbackLanguage]) {
-      return item.prefLabel[fallbackLanguage]
+    if (item[prop][fallbackLanguage]) {
+      return item[prop][fallbackLanguage]
     }
     // Fallback for the fallback: iterate through languages and choose the first one found.
-    for (let language of Object.keys(item.prefLabel)) {
+    for (let language of Object.keys(item[prop])) {
       if (language != "-") {
-        return item.prefLabel[language]
+        return item[prop][language]
       }
     }
+  }
+  return null
+}
+
+/**
+ * Returns the prefLabel of a JSKOS Item. If there is no label, it will return the URI. If there is no URI, it will return an empty string.
+ *
+ * For parameters, see also lmContent above.
+ *
+ * @param {*} item
+ * @param {*} language
+ * @param {*} fallbackToUri - return URI if no prefLabel can be found
+ */
+let prefLabel = (item, language, fallbackToUri = true) => {
+  let content = lmContent(item, "prefLabel", language)
+  if (content) {
+    return content
   }
   if (fallbackToUri && item.uri) {
     return item.uri
@@ -126,4 +143,15 @@ let prefLabel = (item, language, fallbackToUri = true) => {
   return ""
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, prefLabel }
+let definition = (item, language) => {
+  let content = lmContent(item, "definition", language)
+  if (!content) {
+    return []
+  }
+  if (_.isString(content)) {
+    content = [content]
+  }
+  return content
+}
+
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, lmContent, prefLabel, definition }
