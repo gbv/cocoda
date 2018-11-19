@@ -120,6 +120,11 @@ const mutations = {
    * - value: the new value for the property
    */
   set (state, { object, prop, value }) {
+    // Set property for both object parameter and same object in store.
+    let objectInStore = getters.get(state)(object)
+    if (objectInStore) {
+      Vue.set(objectInStore, prop, value)
+    }
     Vue.set(object, prop, value)
   }
 

@@ -113,6 +113,7 @@ export default {
       preventClick: false,
       preventClickArrow: false,
       canAddToMapping: false,
+      interval: null,
     }
   },
   computed: {
@@ -136,6 +137,16 @@ export default {
       this.isHoveredFromHere = concept != null
       // Set canAddToMapping
       this.canAddToMapping = this.$store.getters["mapping/canAdd"](this.concept, this.selected.scheme[this.isLeft], this.isLeft)
+      // Check whether mouse is still in element.
+      window.clearInterval(this.interval)
+      if (concept != null) {
+        this.interval = setInterval(() => {
+          if (!this.isMouseOver()) {
+            this.isHoveredFromHere = false
+            window.clearInterval(this.interval)
+          }
+        }, 500)
+      }
     },
     /**
      * Calls open and prevents accidental double clicks.

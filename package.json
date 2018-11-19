@@ -42,7 +42,7 @@
     "node-rsa": "^1.0.1",
     "simple-sha1": "^2.1.1",
     "vue": "^2.5.17",
-    "vue-flexible-table": "^0.2.4",
+    "vue-flexible-table": "^0.2.5",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.11.0",
     "vuex": "^3.0.1"

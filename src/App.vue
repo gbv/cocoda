@@ -348,9 +348,13 @@ export default {
     if (!this.schemes.length) {
       this.loading = true
     }
-    window.addEventListener("popstate", () => {
-      this.loadFromParameters()
-    })
+    document.onmousemove = event => {
+      this.$store.commit({
+        type: "setMousePosition",
+        x: event.pageX,
+        y: event.pageY
+      })
+    }
   },
   methods: {
     insertPrefLabel() {

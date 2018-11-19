@@ -16,6 +16,10 @@ const state = {
   config: {},
   hoveredConcept: null,
   hoveredMapping: null,
+  mousePosition: {
+    x: 0,
+    y: 0
+  }
 }
 
 const mutations = {
@@ -35,6 +39,9 @@ const mutations = {
   setHoveredMapping(state, { mapping }) {
     state.hoveredMapping = mapping
   },
+  setMousePosition(state, { x, y }) {
+    state.mousePosition = { x, y }
+  }
 }
 
 const store = new Vuex.Store({
