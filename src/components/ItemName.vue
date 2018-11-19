@@ -111,6 +111,7 @@ export default {
       isHoveredFromHere: false,
       url: "",
       isValidLink: false,
+      interval: null,
     }
   },
   computed: {
@@ -131,6 +132,11 @@ export default {
       }, 50)
     }
   },
+  created() {
+    if (!this.preventExternalHover) {
+      this.isValidLink = true
+    }
+  },
   methods: {
     mouseOver() {
       this.isHoveredFromHere = true
@@ -147,10 +153,19 @@ export default {
         let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]")) || this.$store.getters["objects/get"](this.item)
         this.isValidLink = scheme != null
       }
+      // Check whether mouse is still in element.
+      window.clearInterval(this.interval)
+      this.interval = setInterval(() => {
+        if (!this.isMouseOver()) {
+          this.isHoveredFromHere = false
+          window.clearInterval(this.interval)
+        }
+      }, 500)
     },
     mouseOut() {
       this.isHoveredFromHere = false
       this.hoveredConcept = null
+      window.clearInterval(this.interval)
     },
     trimTooltip(text) {
       if (text.length > 80) {

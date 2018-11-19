@@ -348,6 +348,13 @@ export default {
     if (!this.schemes.length) {
       this.loading = true
     }
+    document.onmousemove = event => {
+      this.$store.commit({
+        type: "setMousePosition",
+        x: event.pageX,
+        y: event.pageY
+      })
+    }
   },
   methods: {
     insertPrefLabel() {

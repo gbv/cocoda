@@ -217,6 +217,17 @@ Vue.mixin({
         prop: "ISOPEN",
         value: open
       })
+    },
+    /**
+     * Uses the mouse position to determine whether it is hovering over an element.
+     */
+    isMouseOver(element) {
+      if (!element) {
+        element = this.$el
+      }
+      let { x, y } = this.$store.state.mousePosition
+      let rect = element.getBoundingClientRect()
+      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
     }
   }
 })
