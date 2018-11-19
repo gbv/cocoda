@@ -2,7 +2,6 @@
   <div
     v-if="item != null"
     class="itemName"
-    draggable="true"
     @dragstart="dragStart"
     @mouseover="mouseOver"
     @mouseout="mouseOut">
