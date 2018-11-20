@@ -135,7 +135,7 @@
           <div
             v-if="item.modified"
             class="conceptDetail-identifier" >
-            <b>Created:</b> {{ item.modified }}
+            <b>Modified:</b> {{ item.modified }}
           </div>
           <div
             v-if="item.definition"
