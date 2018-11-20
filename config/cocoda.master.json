@@ -1,29 +1,79 @@
 {
-  "terminologyProviders": [
-    { "url": "//api.dante.gbv.de/" },
-    { "url": "//coli-conc.gbv.de/api/" },
+  "registries": [
     {
-      "voc": [ {
+      "notation": ["D"],
+      "prefLabel": {
+        "en": "DANTE"
+      },
+      "baseUrl": "//api.dante.gbv.de/",
+      "plugin": "jskos-api"
+    },
+    {
+      "notation": ["J"],
+      "prefLabel": {
+        "en": "JSKOS Server"
+      },
+      "baseUrl": "//coli-conc.gbv.de/api/",
+      "plugin": "jskos-api"
+    },
+    {
+      "notation": ["GND"],
+      "prefLabel": {
+        "de": "Gemeinsame Normdatei",
+        "en": "Integrated Authority File"
+      },
+      "schemes": [ {
         "uri": "http://bartoc.org/en/node/430",
         "identifier": ["http://www.wikidata.org/entity/Q36578"],
-        "prefLabel": { "de": "Gemeinsame Normdatei" },
+        "prefLabel": { "de": "Gemeinsame Normdatei", "en": "Integrated Authority File" },
         "notation": ["GND"],
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
       } ],
       "data": "//coli-conc.gbv.de/services/gnd.php",
       "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
-      "types": "//ws.gbv.de/suggest/gnd/types"
+      "types": "//ws.gbv.de/suggest/gnd/types",
+      "plugin": "jskos-api"
     },
     {
-      "voc": [ {
+      "notation": ["WD"],
+      "prefLabel": {
+        "en": "Wikidata"
+      },
+      "schemes": [ {
         "uri": "http://bartoc.org/en/node/1940",
         "identifier": ["http://www.wikidata.org/entity/2013"],
-        "prefLabel": { "de": "Wikidata", "en": "Wikidata" },
+        "prefLabel": { "en": "Wikidata" },
         "notation": ["WD"],
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
       } ],
       "data": "//coli-conc.gbv.de/services/wikidata/data/",
-      "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}"
+      "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}",
+      "plugin": "jskos-api"
+    },
+    {
+      "notation": ["O"],
+      "prefLabel": {
+        "de": "Vorkommen",
+        "en": "Occurrences"
+      },
+      "occurrences": "//coli-conc.gbv.de/occurrences/api/",
+      "plugin": "jskos-occurrences"
+    },
+    {
+      "notation": ["R"],
+      "prefLabel": {
+        "en": "Registry"
+      },
+      "mappings": "//coli-conc.gbv.de/api/mappings/",
+      "plugin": "jskos-mappings"
+    },
+    {
+      "notation": ["W"],
+      "prefLabel": {
+        "en": "Wikidata"
+      },
+      "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
+      "plugin": "jskos-mappings"
     }
   ],
   "favoriteTerminologyProviders": [
@@ -55,25 +105,6 @@
       }
     }
   ],
-  "mappingProviders": [
-    {
-      "url": "//coli-conc.gbv.de/api/mappings/",
-      "notation": ["R"],
-      "prefLabel": { "de": "Registry", "en": "Registry" }
-    },
-    {
-      "url": "//coli-conc.gbv.de/services/wikidata/mappings/",
-      "notation": ["W"],
-      "prefLabel": { "de": "Wikidata", "en": "Wikidata" }
-    }
-  ],
-  "occurrenceProviders": [
-    {
-      "url": "//coli-conc.gbv.de/occurrences/api/",
-      "notation": ["O"],
-      "prefLabel": { "en": "Occurrences", "de": "Vorkommen" }
-    }
-  ],
   "language": "de",
   "logos": [
     {
@@ -87,6 +118,9 @@
       "alt": "coli-conc"
     }
   ],
+  "title": "Cocoda Mapping Tool",
+  "githubUrl": "https://github.com/gbv/cocoda",
+  "helpUrl": "https://gbv.github.io/cocoda/",
   "feedbackUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdwJrYIL6oj7LLFA9qCZb7SwZImp72Bi_1iIL1d_h1Pbu8_vg/viewform",
   "cocodaBaseUrl": "//coli-conc.gbv.de/cocoda/"
 }
