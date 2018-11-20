@@ -114,7 +114,7 @@ Vue.mixin({
         let conceptScheme = this.$store.getters["objects/get"]({ uri: _.get(object, "inScheme[0].uri") })
         if (this.selected.scheme[isLeft] == null || this.$jskos.compare(this.selected.scheme[isLeft], conceptScheme)) {
         // If the scheme on the same side is null or the same as the concept's scheme, don't change anything.
-        } else if (this.$jskos.compare(this.selected.scheme[!isLeft], conceptScheme)) {
+        } else if (this.$jskos.compare(this.selected.scheme[!isLeft], conceptScheme) || this.selected.scheme[!isLeft] == null) {
         // Else, if the scheme on the other side matches the concept's scheme, change sides to that.
           fromTo = fromTo == "from" ? "to" : "from"
         }
