@@ -51,13 +51,13 @@
       "plugin": "jskos-api"
     },
     {
-      "notation": ["O"],
+      "notation": ["L"],
       "prefLabel": {
-        "de": "Vorkommen",
-        "en": "Occurrences"
+        "de": "Lokal",
+        "en": "Local"
       },
-      "occurrences": "//coli-conc.gbv.de/occurrences/api/",
-      "plugin": "jskos-occurrences"
+      "mappings": "...",
+      "plugin": "local-mappings"
     },
     {
       "notation": ["R"],
@@ -74,6 +74,15 @@
       },
       "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
       "plugin": "jskos-mappings"
+    },
+    {
+      "notation": ["O"],
+      "prefLabel": {
+        "de": "Vorkommen",
+        "en": "Occurrences"
+      },
+      "occurrences": "//coli-conc.gbv.de/occurrences/api/",
+      "plugin": "jskos-occurrences"
     }
   ],
   "favoriteTerminologyProviders": [
