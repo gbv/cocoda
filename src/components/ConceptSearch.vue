@@ -387,9 +387,10 @@ export default {
     },
     setSearchQuery(query, isOpen = false) {
       this.searchQuery = query
-      _.delay(() => {
+      // Wait for nextTick before setting isOpen to override the searchQuery watcher
+      this.$nextTick(() => {
         this.isOpen = isOpen
-      }, 50)
+      })
     },
     loadTypes(item) {
       // Load types for scheme
