@@ -335,20 +335,23 @@ export default {
         // Load concept objects from API
         let promises = []
         for (let concept of gndConcepts) {
-          promises.push(this.getObject({
-            object: concept,
-            scheme: { uri: "http://bartoc.org/en/node/430" }
-          }).then(object => {
-            if (object) {
-              this.$store.commit({
-                type: "objects/set",
-                object,
-                prop: "GNDTYPE",
-                value: concept.GNDTYPE
-              })
-            }
-            return object
-          }))
+          // Only add GND concepts that are different from the item.
+          if (!this.$jskos.compare(concept, itemBefore)) {
+            promises.push(this.getObject({
+              object: concept,
+              scheme: { uri: "http://bartoc.org/en/node/430" }
+            }).then(object => {
+              if (object) {
+                this.$store.commit({
+                  type: "objects/set",
+                  object,
+                  prop: "GNDTYPE",
+                  value: concept.GNDTYPE
+                })
+              }
+              return object
+            }))
+          }
         }
         return Promise.all(promises)
       }).then(results => {
