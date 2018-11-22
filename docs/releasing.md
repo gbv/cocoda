@@ -45,7 +45,11 @@ Use the following step-by-step guide to preprare and create a new Cocoda release
   git push
   ```
 
-1. (Don't forget to switch back to dev to not accidentally work on dev afterwards: `git checkout dev`)
+1. Don't forget to switch back to dev to not accidentally work on master afterwards:
+
+  ```bash
+  git checkout dev
+  ```
 
 1. Either wait for the cronjob to update the deployed master branch from GitHub or trigger the update manually (if using [cocoda-services](https://github.com/gbv/cocoda-services), just type `./update.sh cocoda`).
 
