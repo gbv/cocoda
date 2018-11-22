@@ -80,6 +80,11 @@
             @mouseover="mouseover(i)" >
             <span v-html="highlightQueryInResult(result[0])" />
           </li>
+          <li
+            v-if="searchResult.length == 0"
+            class="conceptSearch-results-item fontSize-small" >
+            No results...
+          </li>
         </ul>
       </div>
     </div>
@@ -209,6 +214,7 @@ export default {
     },
     typesForSchemes() {
       // Request answer again after types changed.
+      this.loading = true
       this.getAnswer()
     },
   },
