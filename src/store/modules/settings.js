@@ -18,20 +18,33 @@ const defaultSettings = {
 
 // initial state
 const state = {
-  settings: defaultSettings
+  settings: defaultSettings,
+  loaded: false,
 }
 
 // mutations
 const mutations = {
 
   save(state, { settings }) {
-    state.settings = settings
-    localforage.setItem("settings", settings)
+    if (state.loaded) {
+      state.settings = settings
+      localforage.setItem("settings", settings)
+    } else {
+      console.warn("Tried to save settings before they were loaded.")
+    }
   },
 
   set(state, { prop, value }) {
-    state.settings[prop] = value
-    localforage.setItem("settings", state.settings)
+    if (state.loaded) {
+      state.settings[prop] = value
+      localforage.setItem("settings", state.settings)
+    } else {
+      console.warn("Tried to save settings before they were loaded.")
+    }
+  },
+
+  loaded(state, { loaded = true }) {
+    state.loaded = loaded
   }
 
 }
@@ -41,6 +54,9 @@ const actions = {
   load({ commit }) {
     localforage.getItem("settings").then(settings => {
       let newSettings = Object.assign({}, defaultSettings, settings || {})
+      commit({
+        type: "loaded"
+      })
       commit({
         type: "save",
         settings: newSettings
