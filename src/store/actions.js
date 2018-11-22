@@ -2,6 +2,16 @@ import api from "../api"
 import config from "../config"
 import jskos from "jskos-tools"
 
+const addEndpoint = (url, endpoint) => {
+  if (url.slice(-1) == "/") {
+    url = url.slice(0, -1)
+  }
+  if (endpoint[0] == "/") {
+    endpoint = endpoint.substring(1)
+  }
+  return url + "/" + endpoint
+}
+
 export default {
   init ({ commit, getters }) {
     // Prepare config
@@ -16,7 +26,7 @@ export default {
       let url = provider.url || null, saveSchemePromise = Promise.resolve(null)
       if(!Array.isArray(provider.voc)) {
       // Load schemes
-        let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : url + "/voc"
+        let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : addEndpoint(url, "/voc")
         if (vocEndpoint) {
           saveSchemePromise = api.get(vocEndpoint)
             .then(function(data) {
@@ -37,20 +47,20 @@ export default {
       } else {
         saveSchemePromise = Promise.resolve(provider)
       }
-      if (!provider.data) {
-        provider.data = url ? url + "/data" : null
+      if (!provider.data && url) {
+        provider.data = addEndpoint(url, "/data")
       }
-      if (!provider.suggest) {
-        provider.suggest = url ? url + "/suggest" : null
+      if (!provider.suggest && url) {
+        provider.suggest = addEndpoint(url, "/suggest")
       }
-      if (!provider.top) {
-        provider.top = url ? url + "/voc/top" : null
+      if (!provider.top && url) {
+        provider.top = addEndpoint(url, "/voc/top")
       }
-      if (!provider.ancestors) {
-        provider.ancestors = url ? url + "/ancestors" : null
+      if (!provider.ancestors && url) {
+        provider.ancestors = addEndpoint(url, "/ancestors")
       }
-      if (!provider.narrower) {
-        provider.narrower = url ? url + "/narrower" : null
+      if (!provider.narrower && url) {
+        provider.narrower = addEndpoint(url, "/narrower")
       }
       // Save scheme in store and in schemes array
       promises.push(saveSchemePromise.then(provider => {

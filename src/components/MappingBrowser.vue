@@ -784,7 +784,7 @@ export default {
       this.$store.commit({
         type: "mapping/set",
         mapping,
-        original: mapping
+        original: mapping.LOCAL ? mapping : null
       })
     },
     hover(concept, scheme) {
@@ -991,9 +991,12 @@ export default {
       }
       mapping.creator[0].publicKey = this.$settings.key.public
       return this.$api.saveMapping(mapping).then(mapping => {
+        return mapping
+      }).catch(() => {
+        return null
+      }).finally(() => {
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
-        return mapping
       })
     },
   }
