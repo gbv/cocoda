@@ -801,13 +801,21 @@ export default {
       }
       // Save mapping
       // let original = mapping.LOCAL ? data.item.mapping : null
-      this.saveMapping(mapping).then(() => {
+      if (this.canSave(mapping)) {
+        this.saveMapping(mapping).then(() => {
+          this.$store.commit({
+            type: "mapping/set",
+            mapping,
+            original: mapping
+          })
+        })
+      } else {
         this.$store.commit({
           type: "mapping/set",
           mapping,
-          original: mapping
+          original: mapping.LOCAL ? mapping : null
         })
-      })
+      }
     },
     hover(concept, scheme) {
       if(concept && !concept.prefLabel) {
@@ -1006,9 +1014,12 @@ export default {
     saveMapping(mapping) {
       this.loading = 1
       return this.$api.saveMapping(mapping).then(mapping => {
+        return mapping
+      }).catch(() => {
+        return null
+      }).finally(() => {
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
-        return mapping
       })
     },
   }
