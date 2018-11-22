@@ -51,25 +51,6 @@
       <auto-link :link="identifier" />
     </div>
 
-    <!-- Types -->
-    <div v-if="item.types && item.types.length">
-      <br>
-      <div class="schemeDetail-types fontWeight-heavy">Types:</div>
-      <b-form-checkbox-group
-        id="schemeDetail-typeCheckboxes"
-        v-model="selectedTypes"
-        stacked
-        size="sm" >
-        <b-form-checkbox
-          v-for="type in item.types"
-          :key="type.uri"
-          :value="type.uri"
-          class="schemeDetail-typeCheckbox" >
-          {{ $util.prefLabel(type) }}
-        </b-form-checkbox>
-      </b-form-checkbox-group>
-    </div>
-
     <!-- Top Concepts -->
     <item-detail-narrower
       v-if="settings.showTopConceptsInScheme && item.TOPCONCEPTS && item.TOPCONCEPTS.length > 0"
@@ -134,40 +115,6 @@ export default {
       },
     }
   },
-  computed: {
-    selectedTypes: {
-      get() {
-        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this.item, { uri: key }))
-        return this.$settings.typesForSchemes[key]
-      },
-      set(newValue) {
-        if (!Array.isArray(newValue)) {
-          return
-        }
-        // Save types to settings
-        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this.item, { uri: key })) || this.item.uri
-        let typesForSchemes = _.cloneDeep(this.$settings.typesForSchemes)
-        // Prevent infinite loop when stored value is equal to new value
-        if (_.isEqual(newValue, typesForSchemes[key])) {
-          return
-        }
-        typesForSchemes[key] = newValue
-        this.$store.commit({
-          type: "settings/set",
-          prop: "typesForSchemes",
-          value: typesForSchemes
-        })
-      }
-    },
-  },
-  watch: {
-    item() {
-      let item = this.item
-      if (item != null) {
-        this.loadTypes(item)
-      }
-    },
-  },
   methods: {
     licenseAttribution(detail) {
       let organisation = detail.creator || detail.publisher
@@ -178,28 +125,6 @@ export default {
         url: organisation[0].url,
         label: organisation[0].prefLabel.de || organisation[0].prefLabel.en || ""
       }
-    },
-    loadTypes(item) {
-      // Load types for scheme
-      let promise
-      if (item.types && Array.isArray(item.types) && !item.types.includes(null)) {
-        promise = Promise.resolve(item.types)
-      } else {
-        promise = this.$api.types(item, true).then(types => {
-          this.$store.commit({
-            type: "objects/set",
-            object: item,
-            prop: "types",
-            value: types
-          })
-          return types
-        })
-      }
-      promise.then(types => {
-        if (!this.selectedTypes) {
-          this.selectedTypes = types.map(type => type.uri)
-        }
-      })
     },
   }
 }

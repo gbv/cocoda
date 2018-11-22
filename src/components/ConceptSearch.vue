@@ -14,6 +14,36 @@
         class="conceptSearch-resultCount fontSize-small" >
         {{ searchResult.length }} results
       </div>
+      <div
+        v-if="scheme.types && scheme.types.length"
+        :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
+        :disabled="filterPopoverShow"
+        class="conceptSearch-filter button" >
+        <font-awesome-icon icon="filter" />
+      </div>
+      <!-- Filter Popover -->
+      <b-popover
+        v-if="scheme.types && scheme.types.length"
+        :target="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
+        :show.sync="filterPopoverShow"
+        triggers="click"
+        placement="auto" >
+        <div ref="filterPopover">
+          <b-form-checkbox-group
+            v-model="selectedTypes"
+            class="conceptSearch-filterCheckboxes"
+            stacked
+            size="sm" >
+            <b-form-checkbox
+              v-for="type in scheme.types"
+              :key="type.uri"
+              :value="type.uri"
+              class="conceptSearch-filterCheckbox" >
+              {{ $util.prefLabel(type) }}
+            </b-form-checkbox>
+          </b-form-checkbox-group>
+        </div>
+      </b-popover>
       <!-- Input field -->
       <b-form-input
         ref="searchInput"
@@ -103,13 +133,39 @@ export default {
       // Last axios cancel token
       cancelToken: null,
       // A unique ID for the DOM (to prevent conflict with other instances of this component)
-      uniqueID: null
+      uniqueID: null,
+      // Show/hide types popover
+      filterPopoverShow: false,
     }
   },
   computed: {
     // Only for watcher
     typesForSchemes() {
       return this.$settings.typesForSchemes
+    },
+    selectedTypes: {
+      get() {
+        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this.scheme, { uri: key }))
+        return this.$settings.typesForSchemes[key]
+      },
+      set(newValue) {
+        if (!Array.isArray(newValue)) {
+          return
+        }
+        // Save types to settings
+        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this.scheme, { uri: key })) || this.scheme.uri
+        let typesForSchemes = _.cloneDeep(this.$settings.typesForSchemes)
+        // Prevent infinite loop when stored value is equal to new value
+        if (_.isEqual(newValue, typesForSchemes[key])) {
+          return
+        }
+        typesForSchemes[key] = newValue
+        this.$store.commit({
+          type: "settings/set",
+          prop: "typesForSchemes",
+          value: typesForSchemes
+        })
+      }
     },
   },
   watch: {
@@ -146,6 +202,9 @@ export default {
         this.isValid = false
         this.loading = false
         this.searchSelected = -1
+      }
+      if (newValue != null) {
+        this.loadTypes(newValue)
       }
     },
     typesForSchemes() {
@@ -219,9 +278,13 @@ export default {
      * @param {object} evt - event object for the click
      */
     handleClickOutside(evt) {
-      if (!this.$el.contains(evt.target)) {
+      if (!this.filterPopoverShow && !this.$el.contains(evt.target)) {
         this.isOpen = false
         this.searchSelected = -1
+      }
+      // Handle types popover
+      if (this.$refs.filterPopover && !this.$refs.filterPopover.contains(evt.target)) {
+        this.filterPopoverShow = false
       }
     },
     /**
@@ -322,6 +385,28 @@ export default {
         this.isOpen = isOpen
       }, 50)
     },
+    loadTypes(item) {
+      // Load types for scheme
+      let promise
+      if (item.types && Array.isArray(item.types) && !item.types.includes(null)) {
+        promise = Promise.resolve(item.types)
+      } else {
+        promise = this.$api.types(item, true).then(types => {
+          this.$store.commit({
+            type: "objects/set",
+            object: item,
+            prop: "types",
+            value: types
+          })
+          return types
+        })
+      }
+      promise.then(types => {
+        if (!this.selectedTypes) {
+          this.selectedTypes = types.map(type => type.uri)
+        }
+      })
+    },
   },
 }
 </script>
@@ -345,7 +430,15 @@ export default {
 .conceptSearch-resultCount {
   position: absolute;
   top: 8px;
-  right: 5px;
+  right: 27px;
+  user-select: none;
+}
+.conceptSearch-filter {
+  position: absolute;
+  top: 9px;
+  right: 2px;
+  width: 20px;
+  font-size: 0.8em;
   user-select: none;
 }
 
@@ -397,6 +490,9 @@ export default {
   display: flex;
   justify-content: left;
   align-items: center;
+}
+.conceptSearch-filterCheckboxes {
+  height: auto !important;
 }
 </style>
 
