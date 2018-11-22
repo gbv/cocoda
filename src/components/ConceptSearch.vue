@@ -467,7 +467,7 @@ export default {
   margin: 0;
   background-color: @color-background;
   box-shadow: 0 2px 4px 0 @color-shadow;
-  z-index: @zIndex-7;
+  z-index: @zIndex-10;
 }
 
 .conceptSearch-results-list {
