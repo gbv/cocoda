@@ -6,15 +6,15 @@
         "en": "DANTE"
       },
       "baseUrl": "//api.dante.gbv.de/",
-      "plugin": "jskos-api"
+      "plugin": "concept-api"
     },
     {
       "notation": ["J"],
       "prefLabel": {
         "en": "JSKOS Server"
       },
-      "baseUrl": "//coli-conc.gbv.de/api/",
-      "plugin": "jskos-api"
+      "baseUrl": "//coli-conc.gbv.de/dev-api/",
+      "plugin": "concept-api"
     },
     {
       "notation": ["GND"],
@@ -32,7 +32,7 @@
       "data": "//coli-conc.gbv.de/services/gnd.php",
       "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
       "types": "//ws.gbv.de/suggest/gnd/types",
-      "plugin": "jskos-api"
+      "plugin": "concept-api"
     },
     {
       "notation": ["WD"],
@@ -48,7 +48,7 @@
       } ],
       "data": "//coli-conc.gbv.de/services/wikidata/data/",
       "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}",
-      "plugin": "jskos-api"
+      "plugin": "concept-api"
     },
     {
       "notation": ["L"],
@@ -64,8 +64,8 @@
       "prefLabel": {
         "en": "Registry"
       },
-      "mappings": "//coli-conc.gbv.de/api/mappings/",
-      "plugin": "jskos-mappings"
+      "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
+      "plugin": "mappings-api"
     },
     {
       "notation": ["W"],
@@ -73,7 +73,7 @@
         "en": "Wikidata"
       },
       "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
-      "plugin": "jskos-mappings"
+      "plugin": "mappings-api"
     },
     {
       "notation": ["O"],
@@ -82,9 +82,10 @@
         "en": "Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
-      "plugin": "jskos-occurrences"
+      "plugin": "occurrences-api"
     }
   ],
+  "registryMode": "override",
   "favoriteTerminologyProviders": [
     "http://uri.gbv.de/terminology/bk/",
     "http://bartoc.org/en/node/18785",
