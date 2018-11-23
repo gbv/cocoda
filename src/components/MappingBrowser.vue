@@ -140,7 +140,7 @@
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'save and edit', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save and edit' : 'edit', delay: $util.delay.medium }"
             icon="edit"
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
@@ -746,6 +746,8 @@ export default {
             if (addSeparator) {
               item._rowClass += " mappingBrowser-separatorRow"
               addSeparator = false
+              // Add class to previous item
+              _.last(items)._rowClass += " mappingBrowser-beforeSeparatorRow"
             }
             item.creator = mapping.creator && mapping.creator[0] || ""
             if (typeof item.creator === "object") {
@@ -1068,8 +1070,12 @@ export default {
 .mappingBrowser-table-row-showMore {
   height: 24px;
 }
+.mappingBrowser-beforeSeparatorRow {
+  padding-bottom: 10px !important;
+}
 .mappingBrowser-separatorRow {
   border-top: 1px solid black;
+  padding-top: 10px !important;
 }
 
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {

@@ -177,7 +177,7 @@ export default {
 .minimizeButton {
   right: 0px;
   top: 0px;
-  background: @color-primary-0;
+  background: @color-button-faded;
   color: @color-primary-text;
   border-radius: 0 0 0 5px;
 }
@@ -188,7 +188,7 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: @color-primary-0;
+  color: @color-button-faded;
   font-size: 0.85rem;
 }
 // Overlay when minimize button is hovered
@@ -198,7 +198,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: fadeout(@color-primary-0, 75%);
+  background-color: fadeout(@color--resizingSlider, 75%);
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized

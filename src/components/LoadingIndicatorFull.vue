@@ -29,6 +29,7 @@ export default {
 
 .loadingIndicatorFull {
   z-index: @zIndex-8 !important;
+  background-color: @color-loading-overlay-background;
 }
 .loadingIndicatorFull-text, .loadingIndicatorFull-indicator {
   flex: none;

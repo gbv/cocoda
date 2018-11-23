@@ -427,15 +427,16 @@ export default {
   position: relative;
   overflow: hidden;
   display: flex;
+  border: 1px solid @color-background;
 }
 .mappingEditor-cantSave {
-  border: 1px solid #ffffff00;
+  background-color: @color-background;
 }
 .mappingEditor-notSaved {
-  border: 1px solid #ff3333cc;
+  background-color: #ff000004;
 }
 .mappingEditor-saved {
-  border: 1px solid #33ff33cc;
+  background-color: #00ff0004;
 }
 .mappingTypeSelection {
   flex: none;

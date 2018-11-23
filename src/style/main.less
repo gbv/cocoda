@@ -139,6 +139,14 @@ a:hover {
   border: solid 1px transparent;
 }
 
+// Override bootstrap styles
+.custom-control-label:before{
+  background-color: @color-primary-5 !important;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+  background-color: @color-button !important;
+}
+
 // Orders
 .order1 {
   order: 1;
