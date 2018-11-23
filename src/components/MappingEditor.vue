@@ -8,7 +8,7 @@
       text="Mapping Editor" />
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveMapping ? 'save mapping' : '', delay: $util.delay.medium }"
         :class="{
           button: canSaveMapping,
           'button-disabled': !canSaveMapping
@@ -18,7 +18,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteMapping ? 'delete mapping' : '', delay: $util.delay.medium }"
         :class="{
           'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
@@ -28,7 +28,7 @@
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'clear mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canClearMapping ? 'clear mapping' : '', delay: $util.delay.medium }"
         :class="{
           button: canClearMapping,
           'button-disabled': !canClearMapping
@@ -38,7 +38,7 @@
         <font-awesome-icon icon="ban" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'export mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canExportMapping ? 'export mapping' : '', delay: $util.delay.medium }"
         :class="{
           button: canExportMapping,
           'button-disabled': !canExportMapping
