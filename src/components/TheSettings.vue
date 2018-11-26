@@ -124,6 +124,13 @@
       <span v-if="config.buildInfo.buildDate">
         Build Date: {{ config.buildInfo.buildDate }}<br>
       </span>
+      <span v-if="config.impressumUrl">
+        <a
+          :href="config.impressumUrl"
+          target="_blank" >
+          Impressum
+        </a>
+      </span>
     </p>
   </b-modal>
 </template>
