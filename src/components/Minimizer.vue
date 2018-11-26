@@ -11,14 +11,14 @@
     </div>
     <div
       v-show="minimized"
-      class="minimizedOverlay text-lightGrey fontSize-normal"
+      class="minimizedOverlay text-lightGrey fontWeight-heavy fontSize-normal"
       @click="toggleMinimize()" >
       <div>
         {{ text }}
         <div
           v-b-tooltip.hover="{ title: 'maximize component', delay: $util.delay.medium }"
           class="maximizeButton" >
-          <font-awesome-icon icon="window-maximize" />
+          <font-awesome-icon icon="plus-square" />
         </div>
       </div>
     </div>
@@ -188,8 +188,8 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: @color-button-faded;
-  font-size: 0.85rem;
+  color: @color-button-slightlyFaded;
+  font-size: 1rem;
 }
 // Overlay when minimize button is hovered
 .minimizedHoverOverlay {
@@ -212,7 +212,7 @@ export default {
   left: 0;
   background-color: @color--minimizer-overlay-background;
   text-align: center;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   user-select: none;
 }
 .minimizedOverlay:hover {
