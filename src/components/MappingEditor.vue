@@ -121,6 +121,9 @@
     <div class="mappingEditor-creator">
       {{ creatorName }}
     </div>
+    <div class="mappingEditor-title fontSize-large">
+      Mapping Editor
+    </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
     <b-modal
       ref="exportModal"
@@ -524,6 +527,12 @@ export default {
   position: absolute;
   bottom: 2px;
   right: 5px;
+}
+.mappingEditor-title {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .addButton {

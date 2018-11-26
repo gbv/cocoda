@@ -651,7 +651,7 @@ html, body {
   flex: 2;
 }
 #mappingBrowserComponent {
-  flex: 4;
+  flex: 2;
 }
 
 .placeholderComponent {
