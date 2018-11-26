@@ -2,7 +2,9 @@
   <div
     v-if="item != null"
     class="itemName"
+    draggable="true"
     @dragstart="dragStart"
+    @dragend="dragEnd"
     @mouseover="mouseOver"
     @mouseout="mouseOut">
     <div
@@ -176,6 +178,10 @@ export default {
     },
     dragStart(event) {
       event.dataTransfer.setData("text", this.item.uri)
+      this.draggedConcept = this.item
+    },
+    dragEnd() {
+      this.draggedConcept = null
     },
   }
 }

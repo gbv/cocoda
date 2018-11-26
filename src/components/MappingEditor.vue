@@ -53,6 +53,10 @@
       v-for="(isLeft, index0) in [true, false]"
       :key="index0"
       :style="{ order: index0 * 2 }"
+      :class="{
+        'mappingEditorPart-noConcepts': $store.getters['mapping/getScheme'](isLeft) == null || !$store.getters['mapping/getConcepts'](isLeft).length,
+        'mappingEditorPart-dropTarget': draggedConcept != null,
+      }"
       class="mappingEditorPart"
       @dragover="dragOver"
       @drop="drop(isLeft, $event)" >
@@ -94,9 +98,20 @@
         </div>
       </div>
       <div v-else >
-        <div
-          v-b-tooltip.hover="'no concept (empty mapping)'"
-          class="mappingNoConcepts">∅</div>
+        <div class="mappingNoConcepts fontSize-small text-lightGrey">
+          <div v-if="draggedConcept == null">Add or drag a concept here.<br><br></div>
+          <div
+            v-else
+            class="fontWeight-heavy">Drop concept here.</div>
+          <div
+            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add concept to mapping' : '', delay: $util.delay.medium }"
+            v-if="draggedConcept == null"
+            :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
+            class="mappingEditor-addButton"
+            @click="addToMapping(isLeft)" >
+            <font-awesome-icon icon="plus-circle" />
+          </div>
+        </div>
       </div>
       <!-- Buttons (add, delete all) -->
       <!-- <div class="mappingButtons">
@@ -446,12 +461,13 @@ export default {
   position: relative;
   order: 1;
   margin: auto 0;
+  padding-top: 20px;
   transform: translateY(-12px);
 }
 .mappingEditorPart {
   flex: 1;
   width: 0;
-  padding: 10px 5px 5px 10px;
+  padding: 25px 0px 25px 5px;
   margin-right: 5px;
   display: flex;
   flex-direction: column;
@@ -462,6 +478,17 @@ export default {
   height: 0;
   display: flex;
   flex-direction: column;
+}
+.mappingEditorPart-noConcepts > div {
+  border: 1px dashed lightGrey;
+  border-radius: 10px;
+}
+.mappingEditorPart-dropTarget > div {
+  border: 1px dashed green;
+  border-radius: 10px;
+}
+.mappingEditor-addButton {
+  font-size: 1.8em;
 }
 .mappingScheme {
   text-align: center;
@@ -488,12 +515,11 @@ export default {
   color: @color-primary-0;
 }
 .mappingNoConcepts {
-  .fontSize-large();
-  .fontWeight-heavy();
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  text-align: center;
 }
 
 .mappingEditorToolbar {

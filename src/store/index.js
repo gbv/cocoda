@@ -15,6 +15,7 @@ const state = {
   schemes: [],
   config: {},
   hoveredConcept: null,
+  draggedConcept: null,
   hoveredMapping: null,
   mousePosition: {
     x: 0,
@@ -35,6 +36,9 @@ const mutations = {
   },
   setHoveredConcept(state, { concept }) {
     state.hoveredConcept = concept
+  },
+  setDraggedConcept(state, { concept }) {
+    state.draggedConcept = concept
   },
   setHoveredMapping(state, { mapping }) {
     state.hoveredMapping = mapping

@@ -28,6 +28,7 @@
         class="labelBox"
         draggable="true"
         @dragstart="dragStart(concept, $event)"
+        @dragend="dragEnd()"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
         @click.stop.prevent="onClick" >
@@ -245,6 +246,11 @@ export default {
     dragStart(concept, event) {
       // FIXME: This is now duplicate code with ItemName because the a tag here prevents the dragStart function in ItemName to work properly. It would be good to find a better solution, but it seems to work for now.
       event.dataTransfer.setData("text", concept.uri)
+      this.draggedConcept = concept
+    },
+    dragEnd() {
+      // FIXME: This is now duplicate code with ItemName because the a tag here prevents the dragStart function in ItemName to work properly. It would be good to find a better solution, but it seems to work for now.
+      this.draggedConcept = null
     },
   }
 }
