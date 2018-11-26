@@ -93,18 +93,22 @@ export default {
 nav.navbar {
   padding: 4px 16px 4px 16px;
   height: 40px;
-  background-color: @color-primary-0;
+  background-color: @color-primary-5;
   box-shadow: 0 1px 2px 0 @color-shadow;
+  border-bottom: 2px solid @color--resizingSlider;
 }
 .navbar-dark .navbar-nav .nav-link, .btn-link {
-  color: @color-primary-text;
+  color: @color-text-dark;
+}
+.navbar-dark .navbar-nav .nav-link:hover, .btn-link:hover {
+  color: @color-text-lightGrey;
 }
 .navbar-brand {
-  color: @color-primary-text !important;
+  color: @color-text-dark !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
-  color: @color-primary-text;
+  color: @color-text-lightGrey;
 }
 </style>
 

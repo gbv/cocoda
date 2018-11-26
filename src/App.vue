@@ -685,9 +685,9 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: @color-primary-text;
+  color: @color-button;
 }
 #swapSides:hover {
-  color: @color-primary-2;
+  color: @color-button-hover;
 }
 </style>
