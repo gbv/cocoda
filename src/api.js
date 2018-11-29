@@ -142,6 +142,7 @@ function ancestors(scheme, uri, properties = defaultProperties, cancelToken = nu
 function suggest(scheme, search, limit = 0, use = "notation,label", cancelToken = null) {
   let provider = scheme ? scheme.PROVIDER : null
   let url = provider ? provider.suggest : null
+  use
   if (!url) {
     return Promise.resolve([])
   }
@@ -154,7 +155,6 @@ function suggest(scheme, search, limit = 0, use = "notation,label", cancelToken 
       voc: scheme.uri,
       limit: limit,
       count: limit, // Some endpoints use count instead of limit
-      use: use,
       type: types.join("|"),
     },
     cancelToken: cancelToken
