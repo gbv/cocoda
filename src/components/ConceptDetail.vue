@@ -29,7 +29,7 @@
             font-size="small" />
         </span>
         <span
-          v-b-tooltip.hover="{ title: 'show all ancestors', delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
           v-else-if="index == 1"
           class="conceptDetail-ancestors-more button"
           @click="showAncestors = true" >
@@ -64,7 +64,7 @@
         :is-highlighted="true"
         font-size="normal" />
       <div
-        v-b-tooltip.hover="{ title: showAddToMappingButton ? 'add to mapping' : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: showAddToMappingButton ? $t('general.addToMapping') : '', delay: $util.delay.medium }"
         :class="{ button: showAddToMappingButton, 'button-disabled': !showAddToMappingButton }"
         class="conceptDetail-name-addButton fontSize-large"
         @click="addToMapping" >
@@ -84,7 +84,7 @@
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <!-- TODO: Move dealing with language ("notes.de || notes.en") somewhere else. -->
         <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, 'Scope'], [item.editorialNote, 'Editorial'], [item.altLabel, 'Register Entries'], [{ de: item.GNDTERMS }, 'GND']]"
+          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.GNDTERMS }, $t('conceptDetail.gnd')]]"
           v-if="notes != null && (notes.de || notes.en) != null && (notes.de || notes.en).length > 0"
           :key="'note'+index+'-'+iteration"
           :title="title"
@@ -103,14 +103,14 @@
               v-if="notesOptions.isTruncated((notes.de || notes.en))"
               href=""
               @click.prevent >
-              <span class="when-opened">show less</span>
-              <span class="when-closed">show more</span>
+              <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
+              <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
             </a>
           </div>
         </b-tab>
         <b-tab
           :key="'zzzzzzzzzz'+iteration"
-          title="Info" >
+          :title="$t('conceptDetail.info')" >
           <!-- URI and identifier -->
           <div
             v-for="(identifier, index) in [item.uri].concat(item.identifier)"
@@ -130,17 +130,17 @@
           <div
             v-if="item.created"
             class="conceptDetail-identifier" >
-            <b>Created:</b> {{ item.created }}
+            <b>{{ $t("conceptDetail.created") }}:</b> {{ item.created }}
           </div>
           <div
             v-if="item.modified"
             class="conceptDetail-identifier" >
-            <b>Modified:</b> {{ item.modified }}
+            <b>{{ $t("conceptDetail.modified") }}:</b> {{ item.modified }}
           </div>
           <div
             v-if="item.definition"
             class="conceptDetail-identifier" >
-            <b>Definition:</b> {{ $util.definition(item).join(", ") }}
+            <b>{{ $t("conceptDetail.definition") }}:</b> {{ $util.definition(item).join(", ") }}
           </div>
         </b-tab>
       </b-tabs>
@@ -359,9 +359,9 @@ export default {
         results = results.filter(concept => concept != null)
         // Assemble gndTerms array for display
         let gndTerms = []
-        let relevanceOrder = ["very high", "high", "medium", "low"]
+        let relevanceOrder = [this.$t("conceptDetail.relevanceVeryHigh"), this.$t("conceptDetail.relevanceHigh"), this.$t("conceptDetail.relevanceMedium"), this.$t("conceptDetail.relevanceLow")]
         for (let relevance of relevanceOrder) {
-          let term = `<strong>Relevance: ${relevance}</strong> - `
+          let term = `<strong>${this.$t("conceptDetail.relevance")}: ${relevance}</strong> - `
           let terms = []
           for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
             if (concept && (concept.prefLabel.de || concept.prefLabel.en)) {

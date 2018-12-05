@@ -116,6 +116,10 @@
     }
   ],
   "language": "de",
+  "languages": {
+    "de": "Deutsch",
+    "en": "English"
+  },
   "logos": [
     {
       "file": "coli-conc-logo.svg",

@@ -19,18 +19,29 @@
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
+      <b-nav-item-dropdown
+        :text="config.languages[$i18n.locale] || '?'"
+        right>
+        <b-dropdown-item
+          v-for="(label, language) in config.languages"
+          :key="language"
+          href="#"
+          @click="$i18n.locale = language">
+          {{ label }}
+        </b-dropdown-item>
+      </b-nav-item-dropdown>
       <!-- Feedback button -->
       <b-nav-item
         v-if="config.feedbackUrl"
         @click="$refs.feedback.show()">
-        Feedback
+        {{ $t("navbar.feedback") }}
       </b-nav-item>
       <!-- Help button (links to documentation) -->
       <b-nav-item
         v-if="config.helpUrl"
         :href="config.helpUrl"
         target="_blank" >
-        Help
+        {{ $t("navbar.help") }}
       </b-nav-item>
       <!-- GitHub button -->
       <b-nav-item
@@ -38,12 +49,12 @@
         :href="config.githubUrl"
         target="_blank" >
         <font-awesome-icon :icon="['fab', 'github']" />
-        GitHub
+        {{ $t("navbar.github") }}
       </b-nav-item>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
         <font-awesome-icon icon="user" />
-        Settings<span v-if="creatorName"> ({{ creatorName }})</span>
+        {{ $t("navbar.settings") }}<span v-if="creatorName"> ({{ creatorName }})</span>
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
@@ -61,7 +72,7 @@
           frameborder="0"
           marginheight="0"
           marginwidth="0">
-          Loading...
+          {{ $t("navbar.settingsLoading") }}
         </iframe>
       </b-modal>
     </b-navbar-nav>
@@ -97,12 +108,6 @@ nav.navbar {
   box-shadow: 0 1px 2px 0 @color-shadow;
   border-bottom: 2px solid @color--resizingSlider;
 }
-.navbar-dark .navbar-nav .nav-link, .btn-link {
-  color: @color-text-dark;
-}
-.navbar-dark .navbar-nav .nav-link:hover, .btn-link:hover {
-  color: @color-text-lightGrey;
-}
 .navbar-brand {
   color: @color-text-dark !important;
 }
@@ -112,7 +117,15 @@ nav.navbar {
 }
 </style>
 
-<style>
+<style lang="less">
+@import "../style/main.less";
+
+.nav-link, .nav-link > span, .btn-link {
+  color: @color-text-dark !important;
+}
+.nav-link:hover, .btn-link:hover {
+  color: @color-text-lightGrey !important;
+}
 .feedbackModal .modal-dialog {
   height: 90%;
 }

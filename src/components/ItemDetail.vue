@@ -17,7 +17,7 @@
     <div
       v-else-if="!loading"
       class="fillAndCenter fontSize-normal fontWeight-heavy" >
-      Please select a scheme or concept.
+      {{ $t("itemDetail.pleaseSelect") }}
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />

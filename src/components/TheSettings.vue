@@ -1,53 +1,53 @@
 <template>
   <b-modal
     ref="settingsModal"
+    :title="$t('settings.title')"
     hide-footer
     centered
-    size="md"
-    title="Cocoda Settings" >
+    size="md" >
     <p v-if="localSettings">
       <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
-        Always show all ancestors in concept details.
+        {{ $t("settings.showAllAncestors") }}
       </b-form-checkbox>
     </p>
     <p v-if="localSettings">
       <b-form-checkbox v-model="localSettings.conceptDetailDoNotTruncateNotes">
-        Do not truncate notes in concept details.
+        {{ $t("settings.truncateNotes") }}
       </b-form-checkbox>
     </p>
     <p v-if="localSettings">
       <b-form-checkbox v-model="localSettings.mappingBrowserShowAll">
-        Always show all mappings and suggestions in mapping browser.
+        {{ $t("settings.showAll") }}
       </b-form-checkbox>
     </p>
     <p>
       <b-button
         variant="primary"
         @click="resetFlex">
-        Reset component sizes
+        {{ $t("settings.resetSizes") }}
       </b-button>
     </p>
     <br>
     <p v-if="localSettings">
-      <b>Creator for mappings</b>
+      <b>{{ $t("settings.creator") }}</b>
       <b-form-input
         v-model="localSettings.creator"
-        type="text"
-        placeholder="Enter your name"/>
+        :placeholder="$t('settings.creatorPlaceholder')"
+        type="text" />
     </p>
     <p>
       <b-button
         :variant="creatorRewritten ? 'success' : 'warning'"
         @click="rewriteCreator">
-        Rewrite creator for all local mappings
+        {{ $t("settings.creatorRewrite") }}
       </b-button>
     </p>
     <div v-if="dlAllMappings">
-      <h5>Download Local Mappings</h5>
+      <h5>{{ $t("settings.localDownload") }}</h5>
       <a
         href=""
         @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
-        Download all {{ dlAllMappings.split("\n").length }} mappings as JSKOS
+        {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
       </a>
       <br><br>
       <span
@@ -69,52 +69,52 @@
     </div>
     <br>
     <div>
-      <h5>Upload Local Mappings (JSKOS)</h5>
+      <h5>{{ $t("settings.localUpload") }}</h5>
       <b-form-file
         ref="fileUpload"
         v-model="uploadedFile"
         :state="Boolean(uploadedFile)"
-        placeholder="Choose a file..."
+        :placeholder="$t('settings.localUploadPlaceholder')"
         accept=".ndjson" />
       <p>
         {{ uploadedFileStatus }}
       </p>
     </div>
     <div>
-      <h5>Delete Local Mappings</h5>
+      <h5>{{ $t("settings.localDeleteTitle") }}</h5>
       <b-button
         :disabled="!dlAllMappings"
         variant="danger"
         hide-footer
         @click="deleteMappingsButtons = true" >
-        Delete all local mappings
+        {{ $t("settings.localDeleteText") }}
       </b-button>
       <p
         v-if="deleteMappingsButtons">
-        This action cannot be undone! Are you sure?
+        {{ $t("settings.localDeleteSure") }}
         <b-button
           variant="danger"
           size="sm"
-          @click="deleteMappings" >Yes</b-button>
+          @click="deleteMappings" >{{ $t("general.yes") }}</b-button>
         <b-button
           variant="success"
           size="sm"
-          @click="deleteMappingsButtons = false" >No</b-button>
+          @click="deleteMappingsButtons = false" >{{ $t("general.no") }}</b-button>
       </p>
     </div>
     <br>
     <p>
       <span>
-        For issues and suggestions, please use the
+        {{ $t("settings.suggestions1") }}
         <a
           href="https://github.com/gbv/cocoda/issues"
-          target="_blank" >GitHub issue tracker</a>.
+          target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
       </span>
       <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
-        Version: {{ config.buildInfo.gitTag }}<br>
+        {{ $t("settings.version") }}: {{ config.buildInfo.gitTag }}<br>
       </span>
       <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-        Current Commit:
+        {{ $t("settings.currentCommit") }}:
         <a
           :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
           target="_blank" >
@@ -122,13 +122,13 @@
         </a><br>
       </span>
       <span v-if="config.buildInfo.buildDate">
-        Build Date: {{ config.buildInfo.buildDate }}<br>
+        {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}<br>
       </span>
       <span v-if="config.impressumUrl">
         <a
           :href="config.impressumUrl"
           target="_blank" >
-          Impressum
+          {{ $t("settings.impressum") }}
         </a>
       </span>
     </p>

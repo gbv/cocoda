@@ -14,6 +14,7 @@ const defaultSettings = {
   flex: {},
   mappingBrowserShowAll: false,
   typesForSchemes: {},
+  locale: "",
 }
 
 // initial state

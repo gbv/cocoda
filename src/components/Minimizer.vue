@@ -1,7 +1,7 @@
 <template>
   <div class="minimizer">
     <div
-      v-b-tooltip.hover="{ title: 'minimize component', delay: $util.delay.medium }"
+      v-b-tooltip.hover="{ title: $t('minimizer.minimize'), delay: $util.delay.medium }"
       v-show="!minimized"
       class="utilityButton minimizeButton"
       @click="toggleMinimize()"
@@ -16,7 +16,7 @@
       <div>
         {{ text }}
         <div
-          v-b-tooltip.hover="{ title: 'maximize component', delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('minimizer.maximize'), delay: $util.delay.medium }"
           class="maximizeButton" >
           <font-awesome-icon icon="plus-square" />
         </div>

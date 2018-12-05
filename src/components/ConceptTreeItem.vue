@@ -38,7 +38,7 @@
           :prevent-external-hover="true" />
       </a>
       <div
-        v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
+        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         v-show="canAddToMapping"
         class="addToMapping fontSize-large"
         @click="addConcept($store)"

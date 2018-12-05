@@ -5,10 +5,10 @@
     <!-- Minimizer allows component to get minimized -->
     <minimizer
       ref="minimizer"
-      text="Mapping Editor" />
+      :text="$t('mappingEditor.title')" />
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: canSaveMapping ? 'save mapping' : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canSaveMapping,
           'button-disabled': !canSaveMapping
@@ -18,7 +18,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canDeleteMapping ? 'delete mapping' : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : '', delay: $util.delay.medium }"
         :class="{
           'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
@@ -28,7 +28,7 @@
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canClearMapping ? 'clear mapping' : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canClearMapping,
           'button-disabled': !canClearMapping
@@ -38,7 +38,7 @@
         <font-awesome-icon icon="ban" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canExportMapping ? 'export mapping' : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.exportMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canExportMapping,
           'button-disabled': !canExportMapping
@@ -99,12 +99,12 @@
       </div>
       <div v-else >
         <div class="mappingNoConcepts fontSize-small text-lightGrey">
-          <div v-if="draggedConcept == null">Add or drag a concept here.<br><br></div>
+          <div v-if="draggedConcept == null">{{ $t("mappingEditor.placeholder") }}<br><br></div>
           <div
             v-else
-            class="fontWeight-heavy">Drop concept here.</div>
+            class="fontWeight-heavy">{{ $t("mappingEditor.placeholderDragging") }}</div>
           <div
-            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add concept to mapping' : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
             v-if="draggedConcept == null"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
@@ -137,25 +137,25 @@
       {{ creatorName }}
     </div>
     <div class="mappingEditor-title fontSize-large">
-      Mapping Editor
+      {{ $t("mappingEditor.title") }}
     </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
     <b-modal
       ref="exportModal"
+      :title="$t('mappingEditor.exportTitle')"
       hide-footer
       center
-      size="lg"
-      title="Export Mapping" >
+      size="lg" >
       <p><b-btn
         class="mt-3"
         @click.stop.prevent="exportClipboard">
-        Copy to clipboard
+        {{ $t("mappingEditor.exportClipboard") }}
       </b-btn></p>
       <p><a
         :href="'data:application/json;charset=utf-8,' + mappingEncoded"
         download="mapping.json"
         target="_blank" >
-        Download as .json file
+        {{ $t("mappingEditor.exportJson") }}
       </a></p>
       <div
         ref="json"
@@ -166,29 +166,29 @@
     <!-- Delete mapping modal -->
     <b-modal
       ref="deleteModal"
+      :title="$t('mappingEditor.deleteTitle')"
       class="mappingEditor-deleteModal"
-      hide-footer
-      title="Delete Mapping" >
+      hide-footer >
       <b-button
         variant="danger"
         @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()" >
-        Delete original mapping and clear
+        {{ $t("mappingEditor.deleteAndClear") }}
       </b-button>
       <b-button
         v-show="hasChangedFromOriginal"
         variant="warning"
         @click="deleteOriginalMapping() && $refs.deleteModal.hide()" >
-        Delete original mapping and keep changes
+        {{ $t("mappingEditor.deleteAndKeep") }}
       </b-button>
       <b-button
         variant="primary"
         @click="clearMapping() && $refs.deleteModal.hide()" >
-        Keep original mapping and clear
+        {{ $t("mappingEditor.keepAndClear") }}
       </b-button>
       <b-button
         variant="secondary"
         @click="$refs.deleteModal.hide()" >
-        Cancel
+        {{ $t("mappingEditor.cancel") }}
       </b-button>
     </b-modal>
   </div>
@@ -279,7 +279,7 @@ export default {
       let mapping = this.prepareMapping()
       let original = this.original
       this.$api.saveMapping(mapping, original).then(mappings => {
-        this.alert("Mapping was saved.", null, "success")
+        this.alert(this.$t("alerts.mappingSaved"), null, "success")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
         this.$store.commit({
           type: "mapping/set",
@@ -300,7 +300,7 @@ export default {
     deleteOriginalMapping(clear = false) {
       let mapping = this.prepareMapping(this.original)
       this.$api.removeMapping(mapping).then(() => {
-        this.alert("Mapping was deleted.", null, "success")
+        this.alert(this.$t("alerts.mappingDeleted"), null, "success")
       }).catch(error => {
         this.alert(error, null, "danger")
       }).then(() => {
@@ -350,6 +350,7 @@ export default {
     },
     /**
      * Returns the reason why the add button is disabled
+     * TODO: Remove.
      */
     addButtonDisabledReason(isLeft) {
       let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]

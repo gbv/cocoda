@@ -2,6 +2,7 @@ import Vue from "vue"
 import App from "../App"
 import store from "../store"
 import router from "../router"
+import i18n from "../util/i18n"
 
 require("../main")
 import "bootstrap/dist/css/bootstrap.css"
@@ -13,4 +14,5 @@ new Vue({
   router,
   components: { App },
   template: "<App/>",
+  i18n,
 })

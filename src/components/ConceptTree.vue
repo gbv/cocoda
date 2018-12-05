@@ -2,7 +2,7 @@
   <div
     class="conceptTree" >
     <!-- Minimizer allows the component to get minimized -->
-    <minimizer text="Concept Tree" />
+    <minimizer :text="$t('conceptTree.title')" />
     <!-- Show top concepts -->
     <div
       ref="conceptTreeItems"
@@ -19,7 +19,7 @@
     <div
       v-if="items.length == 0 && !loading"
       class="fillAndCenter fontWeight-heavy" >
-      No Concept Tree Available
+      {{ $t("conceptTree.noTree") }}
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />

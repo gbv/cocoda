@@ -12,7 +12,7 @@
       <div
         v-if="isOpen && !loading"
         class="conceptSearch-resultCount fontSize-small" >
-        {{ searchResult.length }} results
+        {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
       <div
         v-if="scheme.types && scheme.types.length"
@@ -48,9 +48,9 @@
       <b-form-input
         ref="searchInput"
         v-model="searchQuery"
+        :placeholder="$t('search.placeholder')"
         size="sm"
         type="search"
-        placeholder="Type to search..."
         @click.native="isOpen = searchQuery != ''"
         @keydown.down.native.prevent="onArrowDown"
         @keydown.up.native.prevent="onArrowUp"
@@ -83,7 +83,7 @@
           <li
             v-if="searchResult.length == 0"
             class="conceptSearch-results-item fontSize-small" >
-            No results...
+            {{ $t("search.noResults") }}
           </li>
         </ul>
       </div>

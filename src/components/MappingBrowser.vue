@@ -1,7 +1,7 @@
 <template>
   <div id="mappingBrowser">
     <!-- Minimizer allows component to get minimized -->
-    <minimizer text="Mapping Browser" />
+    <minimizer :text="$t('mappingBrowser.title')" />
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
@@ -140,12 +140,12 @@
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save and edit' : 'edit', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
             icon="edit"
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save as mapping' : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
             v-if="!data.item.mapping.LOCAL"
             :class="{
               ['button']: canSave(data.item.mapping),
@@ -155,7 +155,7 @@
             class="mappingBrowser-toolbar-button"
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: $util.delay.medium }"
             v-if="data.item.mapping.LOCAL"
             icon="trash-alt"
             class="button-delete mappingBrowser-toolbar-button"
@@ -169,7 +169,7 @@
           slot="ITEM_ROW"
           slot-scope="{ item, value }" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: `show more (${value})`, delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: `${$t('mappingBrowser.showMore')} (${value})`, delay: $util.delay.medium }"
             v-if="item.type == 'more'"
             icon="ellipsis-h"
             class="button"
@@ -190,7 +190,7 @@
       <div
         v-show="loading == 0 && items.length == 0"
         class="noItems fontWeight-heavy" >
-        No mappings available
+        {{ $t("mappingBrowser.noMappings") }}
       </div>
     </div>
     <!-- Full screen loading indicator -->
@@ -257,7 +257,7 @@ export default {
         },
         {
           key: "sourceConcepts",
-          label: "from",
+          label: this.$t("mappingBrowser.from"),
           width: "10%",
           minWidth: "",
           align: "left",
@@ -267,7 +267,7 @@ export default {
         },
         {
           key: "sourceConceptsLong",
-          label: "from",
+          label: this.$t("mappingBrowser.from"),
           width: "25%",
           minWidth: "",
           align: "left",
@@ -304,7 +304,7 @@ export default {
         },
         {
           key: "targetConcepts",
-          label: "to",
+          label: this.$t("mappingBrowser.to"),
           width: "10%",
           minWidth: "",
           align: "left",
@@ -314,7 +314,7 @@ export default {
         },
         {
           key: "targetConceptsLong",
-          label: "to",
+          label: this.$t("mappingBrowser.to"),
           width: "25%",
           minWidth: "",
           align: "left",
@@ -324,7 +324,7 @@ export default {
         },
         {
           key: "creator",
-          label: "creator",
+          label: this.$t("mappingBrowser.creator"),
           width: "8%",
           minWidth: "",
           align: "left",
@@ -873,9 +873,9 @@ export default {
     removeMapping(mapping) {
       this.$api.removeMapping(mapping).then(success => {
         if (success) {
-          this.alert("Mapping was deleted.", null, "success")
+          this.alert(this.$t("alerts.mappingDeleted"), null, "success")
         } else {
-          this.alert("Mapping could not be deleted.", null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)

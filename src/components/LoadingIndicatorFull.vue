@@ -4,7 +4,7 @@
       size="lg"
       class="loadingIndicatorFull-indicator" />
     <div class="loadingIndicatorFull-text fontWeight-heavy">
-      Loading...
+      {{ $t("general.loading") }}
     </div>
   </div>
 </template>

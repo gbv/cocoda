@@ -59,7 +59,7 @@
       text="Top Concepts:"
     />
     <div v-else-if="settings.showTopConceptsInScheme">
-      No top concepts
+      {{ $t("schemeDetail.noTopConcepts") }}
     </div>
   </div>
 </template>
