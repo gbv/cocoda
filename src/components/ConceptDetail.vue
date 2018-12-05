@@ -358,9 +358,10 @@ export default {
         results = results.filter(concept => concept != null)
         // Assemble gndTerms array for display
         let gndTerms = []
-        let relevanceOrder = [this.$t("conceptDetail.relevanceVeryHigh"), this.$t("conceptDetail.relevanceHigh"), this.$t("conceptDetail.relevanceMedium"), this.$t("conceptDetail.relevanceLow")]
+        // Use this.$parent.$t instead of this.$t to prevent a rare, very weird bug.
+        let relevanceOrder = [this.$parent.$t("conceptDetail.relevanceVeryHigh"), this.$parent.$t("conceptDetail.relevanceHigh"), this.$parent.$t("conceptDetail.relevanceMedium"), this.$parent.$t("conceptDetail.relevanceLow")]
         for (let relevance of relevanceOrder) {
-          let term = `<strong>${this.$t("conceptDetail.relevance")}: ${relevance}</strong> - `
+          let term = `<strong>${this.$parent.$t("conceptDetail.relevance")}: ${relevance}</strong> - `
           let terms = []
           for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
             if (concept && (this.$util.prefLabel(concept))) {

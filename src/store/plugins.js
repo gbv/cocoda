@@ -71,7 +71,7 @@ const selectedPlugin = store => {
             if (concept == null) return
             // Load children for all ancestors
             let promises = [Promise.resolve(concept)]
-            for (let ancestor of concept.ancestors) {
+            for (let ancestor of concept.ancestors || []) {
               promises.push(store.dispatch({
                 type: "objects/narrower",
                 object: ancestor
@@ -79,7 +79,7 @@ const selectedPlugin = store => {
             }
             // If children were loaded before ancestors, then the children's ancestors property is set to [null]
             if (concept.narrower && !concept.narrower.includes(null)) {
-              for (let child of concept.narrower) {
+              for (let child of concept.narrower || []) {
                 store.commit({
                   type: "objects/set",
                   object: child,

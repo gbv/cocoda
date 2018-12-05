@@ -29,6 +29,7 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
+import _ from "lodash"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -147,8 +148,8 @@ export default {
             return
           } else {
             let promises = []
-            for (let i = 0; i < item.broader.length; i += 1) {
-              promises.push(this.getObject({ object: item.broader[i], scheme: item.inScheme[0] }).then( broader => {
+            for (let i = 0; i < (item.broader && item.broader.length) || 0; i += 1) {
+              promises.push(this.getObject({ object: item.broader[i], scheme: _.get(item, "inScheme[0]") }).then( broader => {
                 this.$set(item.broader, i, broader)
               }))
             }
