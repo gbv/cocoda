@@ -247,8 +247,7 @@ export default {
       return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
-      return _.get(this.mapping, "creator[0].prefLabel.de")
-        || _.get(this.mapping, "creator[0].prefLabel.en")
+      return this.$util.prefLabel(_.get(this.mapping, "creator[0]"))
         || this.$store.state.settings.settings.creator
     },
   },

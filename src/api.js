@@ -18,6 +18,7 @@ import localforage from "localforage"
 import config from "./config"
 import jskos from "jskos-tools"
 import store from "./store"
+import i18n from "./util/i18n"
 
 /** Property sets */
 const minimumProperties = "-"
@@ -236,7 +237,7 @@ function get(url, axiosConfig) {
     axiosConfig.params.language = axiosConfig.params.language || config.language
   } else {
     // TODO: - Add more languages.
-    axiosConfig.params.language = "de,en,es,nl,it,pl,ru,cs,jp"
+    axiosConfig.params.language = `${i18n.locale},de,en,es,nl,it,pl,ru,cs,jp`
   }
   return axios.get(url, axiosConfig)
     .then(function(response) {

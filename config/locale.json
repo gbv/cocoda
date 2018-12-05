@@ -215,9 +215,9 @@
       "relevanceLow": "niedrig",
       "info": "Info",
       "registerEntries": "Registereinträge",
-      "editorial": "",
-      "scope": "",
-      "gnd": ""
+      "editorial": "Editorial",
+      "scope": "Scope",
+      "gnd": "GND"
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte"

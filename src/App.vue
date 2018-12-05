@@ -251,11 +251,8 @@ export default {
       ]
       // Add from schemes
       for (var scheme of this.$store.state.schemes) {
-        // TODO: - Check if notation always has a single value (and why is it an array then?).
-        // TODO: - Support other languages.
-        // TODO: - Fallback if no German label is available.
         options.push(
-          { value: scheme, text: scheme.prefLabel.de || scheme.prefLabel.en || "" }
+          { value: scheme, text: this.$util.prefLabel(scheme) }
         )
       }
       return options
@@ -385,7 +382,7 @@ export default {
   },
   methods: {
     insertPrefLabel() {
-      let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, this.$store.state.config.language, false)
+      let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       if (this.$refs.conceptSearchRight && this.$refs.conceptSearchRight.length) {

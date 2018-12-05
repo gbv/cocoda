@@ -82,25 +82,24 @@
         card >
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
-        <!-- TODO: Move dealing with language ("notes.de || notes.en") somewhere else. -->
         <b-tab
           v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.GNDTERMS }, $t('conceptDetail.gnd')]]"
-          v-if="notes != null && (notes.de || notes.en) != null && (notes.de || notes.en).length > 0"
+          v-if="notes != null && $util.lmContent(notes) != null && $util.lmContent(notes).length > 0"
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
           class="conceptDetail-notes" >
           <div class="conceptDetail-note">
-            <span v-html="notesOptions.visiblePart((notes.de || notes.en))" />
+            <span v-html="notesOptions.visiblePart($util.lmContent(notes))" />
             <b-collapse
               :id="'note'+index"
               tag="span"
               class="no-transition" >
-              <span v-html="notesOptions.hiddenPart((notes.de || notes.en))" />
+              <span v-html="notesOptions.hiddenPart($util.lmContent(notes))" />
             </b-collapse>
             <a
               v-b-toggle="'note'+index"
-              v-if="notesOptions.isTruncated((notes.de || notes.en))"
+              v-if="notesOptions.isTruncated($util.lmContent(notes))"
               href=""
               @click.prevent >
               <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
@@ -364,8 +363,8 @@ export default {
           let term = `<strong>${this.$t("conceptDetail.relevance")}: ${relevance}</strong> - `
           let terms = []
           for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
-            if (concept && (concept.prefLabel.de || concept.prefLabel.en)) {
-              terms.push(_.escape(concept.prefLabel.de || concept.prefLabel.en))
+            if (concept && (this.$util.prefLabel(concept))) {
+              terms.push(_.escape(this.$util.prefLabel(concept)))
             }
           }
           if (terms.length > 0) {

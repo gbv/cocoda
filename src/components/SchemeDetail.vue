@@ -123,7 +123,7 @@ export default {
       }
       return {
         url: organisation[0].url,
-        label: organisation[0].prefLabel.de || organisation[0].prefLabel.en || ""
+        label: this.$util.prefLabel(organisation[0])
       }
     },
   }

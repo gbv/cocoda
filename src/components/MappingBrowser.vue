@@ -751,7 +751,7 @@ export default {
             }
             item.creator = mapping.creator && mapping.creator[0] || ""
             if (typeof item.creator === "object") {
-              item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || ""
+              item.creator = this.$util.prefLabel(item.creator)
             }
             item.source = `${item.sourceShort} ${item.creator}`
             item.type = this.$jskos.mappingTypeByType(mapping.type)

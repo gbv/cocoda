@@ -37,7 +37,7 @@
       slot="type"
       slot-scope="{ value }" >
       <span
-        v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $util.prefLabel(value), delay: $util.delay.medium }"
         v-if="value != null" >
         {{ $util.notation(value) }}
       </span>

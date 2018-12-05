@@ -4,7 +4,7 @@
     @mouseover="hovered = true"
     @mouseout="hovered = false" >
     <div
-      v-b-tooltip.hover.right="{ title: mappingType.prefLabel.en, delay: $util.delay.medium }"
+      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType), delay: $util.delay.medium }"
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
       :class="{
