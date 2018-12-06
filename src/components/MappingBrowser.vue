@@ -325,7 +325,7 @@ export default {
         {
           key: "creator",
           label: this.$t("mappingBrowser.creator"),
-          width: "8%",
+          width: "10%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -352,8 +352,8 @@ export default {
         },
         {
           key: "source",
-          label: "",
-          width: "2%",
+          label: this.$t("mappingBrowser.source"),
+          width: "6%",
           minWidth: "",
           sortable: false
         },

@@ -89,7 +89,8 @@
       "noMappings": "No mappings available",
       "from": "From",
       "to": "To",
-      "creator": "Creator"
+      "creator": "Creator",
+      "source": "Source"
     },
     "minimizer": {
       "minimize": "minimize component",
@@ -239,7 +240,8 @@
       "noMappings": "Keine Mappings verfügbar",
       "from": "Von",
       "to": "Zu",
-      "creator": "Ersteller"
+      "creator": "Ersteller",
+      "source": "Quelle"
     },
     "minimizer": {
       "minimize": "Komponente ausblenden",
