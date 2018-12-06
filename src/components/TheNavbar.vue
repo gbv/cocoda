@@ -53,8 +53,8 @@
       </b-nav-item>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
-        <font-awesome-icon icon="user" />
-        {{ $t("navbar.settings") }}<span v-if="creatorName"> ({{ creatorName }})</span>
+        <font-awesome-icon icon="cog" />
+        {{ creatorName || $t("navbar.settings") }}
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
