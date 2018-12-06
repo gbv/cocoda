@@ -237,7 +237,7 @@ function get(url, axiosConfig) {
     axiosConfig.params.language = axiosConfig.params.language || config.language
   } else {
     // TODO: - Add more languages.
-    axiosConfig.params.language = `${i18n.locale},de,en,es,nl,it,pl,ru,cs,jp`
+    axiosConfig.params.language = `${i18n.locale},de,en,es,nl,it,fi,pl,ru,cs,jp`
   }
   return axios.get(url, axiosConfig)
     .then(function(response) {
