@@ -5,10 +5,10 @@
     <!-- Minimizer allows component to get minimized -->
     <minimizer
       ref="minimizer"
-      text="Mapping Editor" />
+      :text="$t('mappingEditor.title')" />
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: 'save mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canSaveMapping,
           'button-disabled': !canSaveMapping
@@ -18,7 +18,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : '', delay: $util.delay.medium }"
         :class="{
           'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
@@ -28,7 +28,7 @@
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'clear mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canClearMapping,
           'button-disabled': !canClearMapping
@@ -38,7 +38,7 @@
         <font-awesome-icon icon="ban" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: 'export mapping', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.exportMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canExportMapping,
           'button-disabled': !canExportMapping
@@ -53,6 +53,10 @@
       v-for="(isLeft, index0) in [true, false]"
       :key="index0"
       :style="{ order: index0 * 2 }"
+      :class="{
+        'mappingEditorPart-noConcepts': $store.getters['mapping/getScheme'](isLeft) == null || !$store.getters['mapping/getConcepts'](isLeft).length,
+        'mappingEditorPart-dropTarget': draggedConcept != null,
+      }"
       class="mappingEditorPart"
       @dragover="dragOver"
       @drop="drop(isLeft, $event)" >
@@ -94,9 +98,20 @@
         </div>
       </div>
       <div v-else >
-        <div
-          v-b-tooltip.hover="'no concept (empty mapping)'"
-          class="mappingNoConcepts">∅</div>
+        <div class="mappingNoConcepts fontSize-small text-lightGrey">
+          <div v-if="draggedConcept == null">{{ $t("mappingEditor.placeholder") }}<br><br></div>
+          <div
+            v-else
+            class="fontWeight-heavy">{{ $t("mappingEditor.placeholderDragging") }}</div>
+          <div
+            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
+            v-if="draggedConcept == null"
+            :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
+            class="mappingEditor-addButton"
+            @click="addToMapping(isLeft)" >
+            <font-awesome-icon icon="plus-circle" />
+          </div>
+        </div>
       </div>
       <!-- Buttons (add, delete all) -->
       <!-- <div class="mappingButtons">
@@ -121,23 +136,26 @@
     <div class="mappingEditor-creator">
       {{ creatorName }}
     </div>
+    <div class="mappingEditor-title fontSize-large">
+      {{ $t("mappingEditor.title") }}
+    </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
     <b-modal
       ref="exportModal"
+      :title="$t('mappingEditor.exportTitle')"
       hide-footer
       center
-      size="lg"
-      title="Export Mapping" >
+      size="lg" >
       <p><b-btn
         class="mt-3"
         @click.stop.prevent="exportClipboard">
-        Copy to clipboard
+        {{ $t("mappingEditor.exportClipboard") }}
       </b-btn></p>
       <p><a
         :href="'data:application/json;charset=utf-8,' + mappingEncoded"
         download="mapping.json"
         target="_blank" >
-        Download as .json file
+        {{ $t("mappingEditor.exportJson") }}
       </a></p>
       <div
         ref="json"
@@ -148,29 +166,29 @@
     <!-- Delete mapping modal -->
     <b-modal
       ref="deleteModal"
+      :title="$t('mappingEditor.deleteTitle')"
       class="mappingEditor-deleteModal"
-      hide-footer
-      title="Delete Mapping" >
+      hide-footer >
       <b-button
         variant="danger"
         @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()" >
-        Delete original mapping and clear
+        {{ $t("mappingEditor.deleteAndClear") }}
       </b-button>
       <b-button
         v-show="hasChangedFromOriginal"
         variant="warning"
         @click="deleteOriginalMapping() && $refs.deleteModal.hide()" >
-        Delete original mapping and keep changes
+        {{ $t("mappingEditor.deleteAndKeep") }}
       </b-button>
       <b-button
         variant="primary"
         @click="clearMapping() && $refs.deleteModal.hide()" >
-        Keep original mapping and clear
+        {{ $t("mappingEditor.keepAndClear") }}
       </b-button>
       <b-button
         variant="secondary"
         @click="$refs.deleteModal.hide()" >
-        Cancel
+        {{ $t("mappingEditor.cancel") }}
       </b-button>
     </b-modal>
   </div>
@@ -229,7 +247,8 @@ export default {
       return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
-      return this.$store.state.settings.settings.creator || ""
+      return this.$util.prefLabel(_.get(this.mapping, "creator[0]"))
+        || this.$store.state.settings.settings.creator
     },
   },
   watch: {
@@ -262,7 +281,7 @@ export default {
       let mapping = this.prepareMapping()
       let original = this.original
       this.$api.saveMapping(mapping, original).then(mappings => {
-        this.alert("Mapping was saved.", null, "success")
+        this.alert(this.$t("alerts.mappingSaved"), null, "success")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
         this.$store.commit({
           type: "mapping/set",
@@ -284,7 +303,7 @@ export default {
     deleteOriginalMapping(clear = false) {
       let mapping = this.prepareMapping(this.original)
       this.$api.removeMapping(mapping).then(() => {
-        this.alert("Mapping was deleted.", null, "success")
+        this.alert(this.$t("alerts.mappingDeleted"), null, "success")
       }).catch(error => {
         this.alert(error, null, "danger")
       }).then(() => {
@@ -334,6 +353,7 @@ export default {
     },
     /**
      * Returns the reason why the add button is disabled
+     * TODO: Remove.
      */
     addButtonDisabledReason(isLeft) {
       let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
@@ -429,27 +449,29 @@ export default {
   position: relative;
   overflow: hidden;
   display: flex;
+  border: 1px solid @color-background;
 }
 .mappingEditor-cantSave {
-  border: 1px solid #ffffff00;
+  background-color: @color-background;
 }
 .mappingEditor-notSaved {
-  border: 1px solid #ff3333cc;
+  background-color: #ff000004;
 }
 .mappingEditor-saved {
-  border: 1px solid #33ff33cc;
+  background-color: #00ff0004;
 }
 .mappingTypeSelection {
   flex: none;
   position: relative;
   order: 1;
   margin: auto 0;
+  padding-top: 20px;
   transform: translateY(-12px);
 }
 .mappingEditorPart {
   flex: 1;
   width: 0;
-  padding: 10px 5px 5px 10px;
+  padding: 25px 0px 25px 5px;
   margin-right: 5px;
   display: flex;
   flex-direction: column;
@@ -460,6 +482,17 @@ export default {
   height: 0;
   display: flex;
   flex-direction: column;
+}
+.mappingEditorPart-noConcepts > div {
+  border: 1px dashed lightGrey;
+  border-radius: 10px;
+}
+.mappingEditorPart-dropTarget > div {
+  border: 1px dashed green;
+  border-radius: 10px;
+}
+.mappingEditor-addButton {
+  font-size: 1.8em;
 }
 .mappingScheme {
   text-align: center;
@@ -486,12 +519,11 @@ export default {
   color: @color-primary-0;
 }
 .mappingNoConcepts {
-  .fontSize-large();
-  .fontWeight-heavy();
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  text-align: center;
 }
 
 .mappingEditorToolbar {
@@ -525,6 +557,12 @@ export default {
   position: absolute;
   bottom: 2px;
   right: 5px;
+}
+.mappingEditor-title {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .addButton {

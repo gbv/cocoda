@@ -32,7 +32,9 @@
 
 // Button colors // --------------------------------------------------
 
-@color-button: @color-primary-0;
+@color-button: #555555;
+@color-button-slightlyFaded: fadeout(@color-button, 40%);
+@color-button-faded: fadeout(@color-button, 80%);
 @color-button-hover: @color-highlight-darker;
 @color-button-disabled: rgb(228, 228, 228);
 @color-button-delete: rgb(194, 0, 0);
@@ -44,6 +46,7 @@
 @color-background-card: rgba(0, 0, 0, 0.02);
 
 @color-table-info-background: @color-primary-1;
+@color-table-highlight-background-0: lighten(@color-primary-0, 30%);
 @color-table-highlight-background-1: lighten(@color-primary-0, 34%);
 
 @color-loading-overlay-background: rgba(255, 255, 255, 0.6);
@@ -55,20 +58,22 @@
 
 @color-light-line: rgba(0, 0, 0, 0.125);
 
+@color-transparent: rgba(1, 1, 1, 0);
+
 // Component specific colors // --------------------------------------------------
 
 @color--conceptSearch-result-selected: @color-primary-4;
-@color--conceptSearch-result-selected-background: @color-primary-1;
+@color--conceptSearch-result-selected-background: @color-primary-5;
 @color--conceptSearch-searchHighlight: @color-highlight-darker;
 @color--conceptSearch-searchHighlight-selected: @color-highlight-darker;
 
 @color--itemName-highlighted: @color-text-grey;
-@color--itemName-highlighted-background: @color-highlight;
+@color--itemName-highlighted-background: @color-table-highlight-background-0;
 
 @color--conceptTreeItem-addToMapping: @color-background;
 @color--conceptTreeItem-addToMapping-hover: @color-highlight-light;
 @color--conceptTreeItem-item-hover: @color-primary-4;
-@color--conceptTreeItem-item-hover-background: @color-highlight;
+@color--conceptTreeItem-item-hover-background: @color-table-highlight-background-1;
 
 @color--loadingIndicator-border: rgb(243, 243, 243);
 @color--loadingIndicator-border-top: rgb(52, 152, 219);
@@ -76,7 +81,7 @@
 @color--minimizer-overlay-background: @color-primary-5;
 @color--minimizer-overlay-background-hover: @color-primary-1;
 
-@color--resizingSlider: @color-primary-0;
+@color--resizingSlider: #B34D28;
 
 // Import user colors to override colors
 @import (optional) "./user-colors.less";

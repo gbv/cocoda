@@ -1,7 +1,7 @@
 <template>
   <div class="minimizer">
     <div
-      v-b-tooltip.hover="{ title: 'minimize component', delay: $util.delay.medium }"
+      v-b-tooltip.hover="{ title: $t('minimizer.minimize'), delay: $util.delay.medium }"
       v-show="!minimized"
       class="utilityButton minimizeButton"
       @click="toggleMinimize()"
@@ -11,14 +11,14 @@
     </div>
     <div
       v-show="minimized"
-      class="minimizedOverlay text-lightGrey fontSize-normal"
+      class="minimizedOverlay text-lightGrey fontWeight-heavy fontSize-normal"
       @click="toggleMinimize()" >
       <div>
         {{ text }}
         <div
-          v-b-tooltip.hover="{ title: 'maximize component', delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('minimizer.maximize'), delay: $util.delay.medium }"
           class="maximizeButton" >
-          <font-awesome-icon icon="window-maximize" />
+          <font-awesome-icon icon="plus-square" />
         </div>
       </div>
     </div>
@@ -177,7 +177,7 @@ export default {
 .minimizeButton {
   right: 0px;
   top: 0px;
-  background: @color-primary-0;
+  background: @color-button-faded;
   color: @color-primary-text;
   border-radius: 0 0 0 5px;
 }
@@ -188,8 +188,8 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: @color-primary-0;
-  font-size: 0.85rem;
+  color: @color-button-slightlyFaded;
+  font-size: 1rem;
 }
 // Overlay when minimize button is hovered
 .minimizedHoverOverlay {
@@ -198,7 +198,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: fadeout(@color-primary-0, 75%);
+  background-color: fadeout(@color--resizingSlider, 75%);
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized
@@ -212,7 +212,7 @@ export default {
   left: 0;
   background-color: @color--minimizer-overlay-background;
   text-align: center;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   user-select: none;
 }
 .minimizedOverlay:hover {

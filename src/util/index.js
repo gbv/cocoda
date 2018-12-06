@@ -1,6 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import store from "../store"
+import i18n from "./i18n"
 
 // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
 function selectText(el){
@@ -102,21 +103,27 @@ let lmContent = (item, prop, language) => {
   if(!item) {
     return null
   }
+  let object
+  if (prop) {
+    object = item[prop]
+  } else {
+    object = item
+  }
   let fallbackLanguage = "en"
   if (!language) {
-    language = store.state.config.language || fallbackLanguage
+    language = i18n.locale || store.state.config.language || fallbackLanguage
   }
-  if (item[prop]) {
-    if (item[prop][language]) {
-      return item[prop][language]
+  if (object) {
+    if (object[language]) {
+      return object[language]
     }
-    if (item[prop][fallbackLanguage]) {
-      return item[prop][fallbackLanguage]
+    if (object[fallbackLanguage]) {
+      return object[fallbackLanguage]
     }
     // Fallback for the fallback: iterate through languages and choose the first one found.
-    for (let language of Object.keys(item[prop])) {
+    for (let language of Object.keys(object)) {
       if (language != "-") {
-        return item[prop][language]
+        return object[language]
       }
     }
   }
@@ -137,7 +144,7 @@ let prefLabel = (item, language, fallbackToUri = true) => {
   if (content) {
     return content
   }
-  if (fallbackToUri && item.uri) {
+  if (fallbackToUri && item && item.uri) {
     return item.uri
   }
   return ""

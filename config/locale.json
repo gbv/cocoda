@@ -1,0 +1,256 @@
+{
+  "en": {
+    "general": {
+      "welcome": "Welcome to Cocoda!",
+      "manual": "Manual",
+      "documentation": "Documentation",
+      "github": "GitHub",
+      "feedback": "Feedback is welcome!",
+      "feedback2": "Please report any questions, ideas or bugs!",
+      "swapSides": "swap sides",
+      "showSchemeInfo": "show info about scheme",
+      "clearScheme": "clear scheme",
+      "addToMapping": "add to mapping",
+      "yes": "Yes",
+      "no": "No",
+      "loading": "Loading...",
+      "cancel": "Cancel"
+    },
+    "navbar": {
+      "feedback": "Feedback",
+      "help": "Help",
+      "github": "GitHub",
+      "settings": "Settings",
+      "settingsLoading": "@:general.loading"
+    },
+    "schemeSelection": {
+      "title": "Select a scheme",
+      "schemeQuick": "Scheme quick selection",
+      "conceptQuick": "Concept quick selection"
+    },
+    "search": {
+      "placeholder": "Type to search...",
+      "results": "result | results",
+      "noResults": "No results..."
+    },
+    "conceptDetail": {
+      "showAllAncestors": "show all ancestors",
+      "showLess": "show less",
+      "showMore": "show more",
+      "created": "Created",
+      "modified": "Modified",
+      "definition": "Definition",
+      "relevance": "Relevance",
+      "relevanceVeryHigh": "very high",
+      "relevanceHigh": "high",
+      "relevanceMedium": "medium",
+      "relevanceLow": "low",
+      "info": "Info",
+      "registerEntries": "Register Entries",
+      "editorial": "Editorial",
+      "scope": "Scope",
+      "gnd": "GND"
+    },
+    "schemeDetail": {
+      "noTopConcepts": "No top concepts"
+    },
+    "conceptTree": {
+      "title": "Concept Tree",
+      "noTree": "No Tree Available"
+    },
+    "itemDetail": {
+      "pleaseSelect": "Please select a scheme or concept."
+    },
+    "mappingEditor": {
+      "title": "Mapping Editor",
+      "placeholder": "Add or drag a concept here.",
+      "placeholderDragging": "Drop concept here.",
+      "saveMapping": "save mapping",
+      "deleteMapping": "delete mapping",
+      "clearMapping": "clear mapping",
+      "exportMapping": "export mapping",
+      "addConcept": "add concept to mapping",
+      "exportTitle": "Export Mapping",
+      "exportClipboard": "Copy to clipboard",
+      "exportJson": "Download as .json file",
+      "deleteTitle": "Delete Mapping",
+      "deleteAndClear": "Delete original mapping and clear",
+      "deleteAndKeep": "Delete original mapping and keep changes",
+      "keepAndClear": "Keep original mapping and clear",
+      "cancel": "@:general.cancel"
+    },
+    "mappingBrowser": {
+      "title": "Mapping Browser",
+      "edit": "edit",
+      "saveAndEdit": "save and edit",
+      "saveAsMapping": "save as mapping",
+      "delete": "delete",
+      "showMore": "@:conceptDetail.showMore",
+      "noMappings": "No mappings available",
+      "from": "From",
+      "to": "To",
+      "creator": "Creator",
+      "source": "Source"
+    },
+    "minimizer": {
+      "minimize": "minimize component",
+      "maximize": "maximize component"
+    },
+    "settings": {
+      "title": "Cocoda @:navbar.settings",
+      "showAllAncestors": "Always show all ancestors in concept details.",
+      "truncateNotes": "Do not truncate notes in concept details.",
+      "showAll": "Always show all mappings and suggestions in mapping browser.",
+      "resetSizes": "Reset component sizes",
+      "creator": "Creator for mappings",
+      "creatorPlaceholder": "Enter your name",
+      "creatorRewrite": "Rewrite creator for all local mappings",
+      "localDownload": "Download Local Mappings",
+      "localDownloadJskos": "Download all {0} mappings as JSKOS",
+      "localUpload": "Upload Local Mappings (JSKOS)",
+      "localUploadPlaceholder": "Choose a file...",
+      "localDeleteTitle": "Delete Local Mappings",
+      "localDeleteText": "Delete all local mappings",
+      "localDeleteSure": "This action cannot be undone! Are you sure?",
+      "suggestions1": "For issues and suggestions, please use the",
+      "suggestions2": "GitHub issue tracker",
+      "suggestions3": ".",
+      "version": "Version",
+      "currentCommit": "Current Commit",
+      "buildDate": "Build Date",
+      "impressum": "Impressum"
+    },
+    "alerts": {
+      "mappingDeleted": "Mapping was deleted.",
+      "mappingNotDeleted": "Mapping could not be deleted.",
+      "mappingSaved": "Mapping was saved."
+    }
+  },
+  "de": {
+    "general": {
+      "welcome": "Willkommen bei Cocoda!",
+      "manual": "Anleitung",
+      "documentation": "Dokumentation",
+      "github": "GitHub",
+      "feedback": "Feedback ist willkommen!",
+      "feedback2": "Wir freuen uns über Fragen und Ideen!",
+      "yes": "Ja",
+      "no": "Nein",
+      "swapSides": "Seiten tauschen",
+      "showSchemeInfo": "zeige Info über Vokabular",
+      "clearScheme": "Vokabular entfernen",
+      "addToMapping": "zu Mapping hinzufügen",
+      "loading": "Lade...",
+      "cancel": "Abbrechen"
+    },
+    "navbar": {
+      "feedback": "Feedback",
+      "help": "Hilfe",
+      "github": "GitHub",
+      "settings": "Einstellungen",
+      "settingsLoading": "@:general.loading"
+    },
+    "schemeSelection": {
+      "title": "Wähle ein Vokabular",
+      "schemeQuick": "Vokabular Schnellwahl",
+      "conceptQuick": "Konzept Schnellwahl"
+    },
+    "search": {
+      "placeholder": "Tippen zum Suchen...",
+      "results": "Ergebnis | Ergebnisse",
+      "noResults": "Keine Ergebnisse..."
+    },
+    "mappingEditor": {
+      "title": "Mapping-Editor",
+      "placeholder": "Konzept hinzufügen oder hierher ziehen.",
+      "placeholderDragging": "Konzept hierher ziehen.",
+      "saveMapping": "Mapping speichern",
+      "deleteMapping": "Mapping löschen",
+      "clearMapping": "Mapping leeren",
+      "exportMapping": "Mapping exportieren",
+      "addConcept": "Konzept zum Mapping hinzufügen",
+      "exportTitle": "Mapping Exportieren",
+      "exportClipboard": "In die Zwischenablage kopieren",
+      "exportJson": "Als .json-Datei herunterladen",
+      "deleteTitle": "Mapping Löschen",
+      "deleteAndClear": "Lösche originales Mapping und verwerfe Änderungen",
+      "deleteAndKeep": "Lösche originales Mapping und behalte Änderungen",
+      "keepAndClear": "Behalte originales Mapping und verwerte Änderungen",
+      "cancel": "@:general.cancel"
+    },
+    "settings": {
+      "title": "Cocoda @:navbar.settings",
+      "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",
+      "truncateNotes": "Notizen für Konzepte nicht abschneiden.",
+      "showAll": "Immer alle Mappings und Vorschläge anzeigen.",
+      "resetSizes": "Komponenten-Größen zurücksetzen",
+      "creator": "Ersteller für Mappings",
+      "creatorPlaceholder": "Bitte Namen eintippen...",
+      "creatorRewrite": "Ersteller für alle lokalen Mappings überschreiben",
+      "localDownload": "Lokale Mappings herunterladen",
+      "localDownloadJskos": "Lade alle {0} Mappings als JSKOS herunter",
+      "localUpload": "Lokale Mappings hochladen (JSKOS)",
+      "localUploadPlaceholder": "Datei auswählen...",
+      "localDeleteTitle": "Lokale Mappings löschen",
+      "localDeleteText": "Alle lokalen Mappings löschen",
+      "localDeleteSure": "Diese Aktion kann nicht rückgängig gemacht werden! Fortfahren?",
+      "suggestions1": "Für Probleme oder Vorschläge, bitte den",
+      "suggestions2": "GitHub Issue Tracker",
+      "suggestions3": " benutzen.",
+      "version": "Version",
+      "currentCommit": "Aktueller Commit",
+      "buildDate": "Build-Datum",
+      "impressum": "Impressum"
+    },
+    "conceptDetail": {
+      "showAllAncestors": "Zeige alle übergeordneten Konzepte",
+      "showLess": "zeige weniger",
+      "showMore": "zeige mehr",
+      "created": "Erstellt",
+      "modified": "Modifiziert",
+      "definition": "Definition",
+      "relevance": "Relevanz",
+      "relevanceVeryHigh": "sehr hoch",
+      "relevanceHigh": "hoch",
+      "relevanceMedium": "mittel",
+      "relevanceLow": "niedrig",
+      "info": "Info",
+      "registerEntries": "Registereinträge",
+      "editorial": "Editorial",
+      "scope": "Scope",
+      "gnd": "GND"
+    },
+    "schemeDetail": {
+      "noTopConcepts": "Keine Oberkonzepte"
+    },
+    "conceptTree": {
+      "title": "Konzeptbaum",
+      "noTree": "Kein Baum verfügbar"
+    },
+    "itemDetail": {
+      "pleaseSelect": "Bitte Vokabular oder Konzept auswählen."
+    },
+    "mappingBrowser": {
+      "title": "Mapping-Browser",
+      "edit": "editieren",
+      "saveAndEdit": "speichern und editieren",
+      "saveAsMapping": "als Mapping speichern",
+      "delete": "löschen",
+      "showMore": "@:conceptDetail.showMore",
+      "noMappings": "Keine Mappings verfügbar",
+      "from": "Von",
+      "to": "Zu",
+      "creator": "Ersteller",
+      "source": "Quelle"
+    },
+    "minimizer": {
+      "minimize": "Komponente ausblenden",
+      "maximize": "Komponente einblenden"
+    },
+    "alerts": {
+      "mappingDeleted": "Mapping wurde gelöscht.",
+      "mappingNotDeleted": "Mapping konnte nicht gelöscht werden.",
+      "mappingSaved": "Mapping wurde gespeichert."
+    }
+  }
+}

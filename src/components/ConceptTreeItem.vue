@@ -28,6 +28,7 @@
         class="labelBox"
         draggable="true"
         @dragstart="dragStart(concept, $event)"
+        @dragend="dragEnd()"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)"
         @click.stop.prevent="onClick" >
@@ -37,7 +38,7 @@
           :prevent-external-hover="true" />
       </a>
       <div
-        v-b-tooltip.hover="{ title: 'add to mapping', delay: $util.delay.medium}"
+        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         v-show="canAddToMapping"
         class="addToMapping fontSize-large"
         @click="addConcept($store)"
@@ -245,6 +246,11 @@ export default {
     dragStart(concept, event) {
       // FIXME: This is now duplicate code with ItemName because the a tag here prevents the dragStart function in ItemName to work properly. It would be good to find a better solution, but it seems to work for now.
       event.dataTransfer.setData("text", concept.uri)
+      this.draggedConcept = concept
+    },
+    dragEnd() {
+      // FIXME: This is now duplicate code with ItemName because the a tag here prevents the dragStart function in ItemName to work properly. It would be good to find a better solution, but it seems to work for now.
+      this.draggedConcept = null
     },
   }
 }

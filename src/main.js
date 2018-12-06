@@ -187,6 +187,17 @@ Vue.mixin({
         })
       }
     },
+    draggedConcept: {
+      get() {
+        return this.$store.state.draggedConcept
+      },
+      set(concept) {
+        this.$store.commit({
+          type: "setDraggedConcept",
+          concept
+        })
+      }
+    },
     hoveredMapping: {
       get() {
         return this.$store.state.hoveredMapping

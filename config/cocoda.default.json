@@ -116,12 +116,11 @@
     }
   ],
   "language": "de",
+  "languages": {
+    "en": "English",
+    "de": "Deutsch"
+  },
   "logos": [
-    {
-      "file": "vzg-logo.svg",
-      "url": "https://www.gbv.de/",
-      "alt": "Verbundzentrale des GBV"
-    },
     {
       "file": "coli-conc-logo.svg",
       "url": "https://coli-conc.gbv.de/",
@@ -131,5 +130,6 @@
   "title": "Cocoda Mapping Tool",
   "githubUrl": "https://github.com/gbv/cocoda",
   "helpUrl": "https://gbv.github.io/cocoda/",
-  "feedbackUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdwJrYIL6oj7LLFA9qCZb7SwZImp72Bi_1iIL1d_h1Pbu8_vg/viewform"
+  "feedbackUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdwJrYIL6oj7LLFA9qCZb7SwZImp72Bi_1iIL1d_h1Pbu8_vg/viewform",
+  "impressumUrl": "https://www.gbv.de/impressum"
 }

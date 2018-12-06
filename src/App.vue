@@ -18,7 +18,7 @@
     <the-navbar />
     <!-- Swap sides button -->
     <div
-      v-b-tooltip.hover="{ title:'swap sides', delay: $util.delay.medium }"
+      v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: $util.delay.medium }"
       v-show="selected.scheme[true] || selected.scheme[false]"
       id="swapSides"
       @click="swapSides" >
@@ -49,14 +49,14 @@
               class="schemeSelect fontWeight-heavy"
               @change="setSelected('concept', isLeft, null); setSelected('scheme', isLeft, $event)" />
             <div
-              v-b-tooltip.hover="{ title:'show info about scheme', delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $t('general.showSchemeInfo'), delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
               class="button schemeSelectInfo"
               @click="setSelected('concept', isLeft, null)" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
-              v-b-tooltip.hover="{ title: 'clear scheme', delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null"
               class="button schemeSelectInfo"
               @click="clear(isLeft)" >
@@ -70,7 +70,7 @@
             <p
               v-if="favoriteSchemes && favoriteSchemes.length"
               class="fontWeight-heavy" >
-              Scheme quick selection
+              {{ $t("schemeSelection.schemeQuick") }}
             </p>
             <p
               v-for="scheme in favoriteSchemes"
@@ -86,7 +86,7 @@
             <p
               v-if="config.favoriteConcepts && config.favoriteConcepts.length"
               class="fontWeight-heavy" >
-              Concept quick selection
+              {{ $t("schemeSelection.conceptQuick") }}
             </p>
             <p
               v-for="concept in config.favoriteConcepts"
@@ -164,25 +164,25 @@
               v-else
               class="placeholderComponentCenter" >
               <div class="fontWeight-heavy fontSize-large">
-                <p>Welcome to Cocoda!</p>
+                <p>{{ $t("general.welcome") }}</p>
                 <p>
                   <a
                     href="https://gbv.github.io/cocoda/#manual"
-                    target="_blank">Manual</a> -
+                    target="_blank">{{ $t("general.manual") }}</a> -
                   <a
                     href="https://gbv.github.io/cocoda/"
-                    target="_blank">Documentation</a> -
+                    target="_blank">{{ $t("general.documentation") }}</a> -
                   <a
                     href="https://github.com/gbv/cocoda"
-                    target="_blank">GitHub</a>
+                    target="_blank">{{ $t("general.github") }}</a>
                 </p>
                 <p v-if="config.feedbackUrl">
                   <br>
                   <a
                     :href="config.feedbackUrl"
-                    target="_blank">Feedback is welcome!</a>
+                    target="_blank">{{ $t("general.feedback") }}</a>
                   <br>
-                  Please report any questions, ideas or bugs!
+                  {{ $t("general.feedback2") }}
                 </p>
               </div>
             </div>
@@ -245,15 +245,12 @@ export default {
      */
     schemeOptions: function() {
       let options = [
-        { value: null, text: "Select a scheme", disabled: true }
+        { value: null, text: this.$t("schemeSelection.title"), disabled: true }
       ]
       // Add from schemes
       for (var scheme of this.$store.state.schemes) {
-        // TODO: - Check if notation always has a single value (and why is it an array then?).
-        // TODO: - Support other languages.
-        // TODO: - Fallback if no German label is available.
         options.push(
-          { value: scheme, text: scheme.prefLabel.de || scheme.prefLabel.en || "" }
+          { value: scheme, text: this.$util.prefLabel(scheme) }
         )
       }
       return options
@@ -279,7 +276,13 @@ export default {
     },
     selectedSchemeRight() {
       return this.selected.scheme[false]
-    }
+    },
+    locale() {
+      return this.$i18n.locale
+    },
+    settingsLocale() {
+      return this.$settings.locale
+    },
   },
   watch: {
     schemes() {
@@ -339,7 +342,28 @@ export default {
           this.insertPrefLabel()
         }, 50)
       }
-    }
+    },
+    /**
+     * Watches i18n locale (changed by user). Every change will be stored in settings.
+     */
+    locale(newValue, oldValue) {
+      if (newValue != oldValue) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "locale",
+          value: newValue
+        })
+      }
+    },
+    /**
+     * Watches settings locale (changed usually only after settings were loaded).
+     * Every change will be set as i18n locale.
+     */
+    settingsLocale(newValue) {
+      if (newValue != this.locale) {
+        this.$i18n.locale = newValue
+      }
+    },
   },
   created() {
     // Set loading to true if schemes are not loaded yet.
@@ -356,7 +380,7 @@ export default {
   },
   methods: {
     insertPrefLabel() {
-      let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, this.$store.state.config.language, false)
+      let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       if (this.$refs.conceptSearchRight && this.$refs.conceptSearchRight.length) {
@@ -649,7 +673,7 @@ html, body {
   flex: 2;
 }
 #mappingBrowserComponent {
-  flex: 4;
+  flex: 2;
 }
 
 .placeholderComponent {
@@ -687,9 +711,9 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: @color-primary-text;
+  color: @color-button;
 }
 #swapSides:hover {
-  color: @color-primary-2;
+  color: @color-button-hover;
 }
 </style>

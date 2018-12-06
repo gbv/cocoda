@@ -229,16 +229,16 @@ export default {
 .resizingSliderCol, .resizingSliderRow {
   background-color: @color--resizingSlider;
   margin: 0;
-  flex: 0 1 2px;
+  flex: 0 1 6px;
 }
 .resizingSliderCol {
   cursor: col-resize;
-  border-left: 1px solid @color--resizingSlider;
-  border-right: 1px solid @color--resizingSlider;
+  border-left: 2px solid @color-background;
+  border-right: 2px solid @color-background;
 }
 .resizingSliderRow {
   cursor: row-resize;
-  border-bottom: 1px solid @color--resizingSlider;
-  border-top: 1px solid @color--resizingSlider;
+  border-bottom: 2px solid @color-background;
+  border-top: 2px solid @color-background;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="mappingBrowser">
     <!-- Minimizer allows component to get minimized -->
-    <minimizer text="Mapping Browser" />
+    <minimizer :text="$t('mappingBrowser.title')" />
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
@@ -129,18 +129,18 @@
         <span
           slot="source"
           slot-scope="{ item }" >
-          <b>{{ item.sourceShort }}</b>
+          <b v-b-tooltip="item.source">{{ item.sourceShort }}</b>
         </span>
         <span
           slot="actions"
           slot-scope="data" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'save and edit', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
             icon="edit"
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? 'save as mapping' : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
             v-if="!data.item.mapping.LOCAL"
             :class="{
               ['button']: canSave(data.item.mapping),
@@ -150,7 +150,7 @@
             class="mappingBrowser-toolbar-button"
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: 'delete mapping', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: $util.delay.medium }"
             v-if="data.item.mapping.LOCAL"
             icon="trash-alt"
             class="button-delete mappingBrowser-toolbar-button"
@@ -164,7 +164,7 @@
           slot="ITEM_ROW"
           slot-scope="{ item, value }" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: `show more (${value})`, delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: `${$t('mappingBrowser.showMore')} (${value})`, delay: $util.delay.medium }"
             v-if="item.type == 'more'"
             icon="ellipsis-h"
             class="button"
@@ -185,7 +185,7 @@
       <div
         v-show="loading == 0 && items.length == 0"
         class="noItems fontWeight-heavy" >
-        No mappings available
+        {{ $t("mappingBrowser.noMappings") }}
       </div>
     </div>
     <!-- Full screen loading indicator -->
@@ -253,7 +253,7 @@ export default {
         },
         {
           key: "sourceConcepts",
-          label: "from",
+          label: this.$t("mappingBrowser.from"),
           width: "10%",
           minWidth: "",
           align: "left",
@@ -263,7 +263,7 @@ export default {
         },
         {
           key: "sourceConceptsLong",
-          label: "from",
+          label: this.$t("mappingBrowser.from"),
           width: "25%",
           minWidth: "",
           align: "left",
@@ -300,7 +300,7 @@ export default {
         },
         {
           key: "targetConcepts",
-          label: "to",
+          label: this.$t("mappingBrowser.to"),
           width: "10%",
           minWidth: "",
           align: "left",
@@ -310,7 +310,7 @@ export default {
         },
         {
           key: "targetConceptsLong",
-          label: "to",
+          label: this.$t("mappingBrowser.to"),
           width: "25%",
           minWidth: "",
           align: "left",
@@ -320,8 +320,8 @@ export default {
         },
         {
           key: "creator",
-          label: "creator",
-          width: "8%",
+          label: this.$t("mappingBrowser.creator"),
+          width: "10%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -348,8 +348,8 @@ export default {
         },
         {
           key: "source",
-          label: "",
-          width: "2%",
+          label: this.$t("mappingBrowser.source"),
+          width: "6%",
           minWidth: "",
           sortable: false
         },
@@ -526,7 +526,8 @@ export default {
             }
             return {
               source: this.$util.prefLabel(provider),
-              items
+              items,
+              provider
             }
           }))
         }
@@ -577,7 +578,8 @@ export default {
           }
           return {
             source: "catalog",
-            items
+            items,
+            provider
           }
         }))
       }
@@ -591,6 +593,7 @@ export default {
         let truncateResults = zeroCount < (results.length - 1) && !this.$settings.mappingBrowserShowAll
         for (let result of results) {
           let source = result.source || "unknown"
+          let provider = result.provider
           // Sort the results
           result.items = result.items.sort((a, b) => {
             if (source == "catalog") {
@@ -722,12 +725,14 @@ export default {
             if (addSeparator) {
               item._rowClass += " mappingBrowser-separatorRow"
               addSeparator = false
+              // Add class to previous item
+              _.last(items)._rowClass += " mappingBrowser-beforeSeparatorRow"
             }
             item.creator = mapping.creator && mapping.creator[0] || ""
             if (typeof item.creator === "object") {
-              item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || ""
+              item.creator = this.$util.prefLabel(item.creator)
             }
-            item.source = `${item.sourceShort} ${item.creator}`
+            item.source = this.$util.prefLabel(provider)
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             items.push(item)
           }
@@ -841,9 +846,9 @@ export default {
     removeMapping(mapping) {
       this.$api.removeMapping(mapping).then(success => {
         if (success) {
-          this.alert("Mapping was deleted.", null, "success")
+          this.alert(this.$t("alerts.mappingDeleted"), null, "success")
         } else {
-          this.alert("Mapping could not be deleted.", null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", true)
@@ -1045,8 +1050,12 @@ export default {
 .mappingBrowser-table-row-showMore {
   height: 24px;
 }
+.mappingBrowser-beforeSeparatorRow {
+  padding-bottom: 10px !important;
+}
 .mappingBrowser-separatorRow {
   border-top: 1px solid black;
+  padding-top: 10px !important;
 }
 
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {

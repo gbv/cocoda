@@ -4,7 +4,7 @@
       size="lg"
       class="loadingIndicatorFull-indicator" />
     <div class="loadingIndicatorFull-text fontWeight-heavy">
-      Loading...
+      {{ $t("general.loading") }}
     </div>
   </div>
 </template>
@@ -29,6 +29,7 @@ export default {
 
 .loadingIndicatorFull {
   z-index: @zIndex-8 !important;
+  background-color: @color-loading-overlay-background;
 }
 .loadingIndicatorFull-text, .loadingIndicatorFull-indicator {
   flex: none;
