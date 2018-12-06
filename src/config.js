@@ -17,19 +17,19 @@ if (config.registries) {
   config.mappingProviders = []
   config.occurrenceProviders = []
   for (let registry of config.registries) {
-    if (registry.plugin == "concept-api") {
+    if (registry.provider == "concept-api") {
       // baseUrl -> url
       registry.url = registry.baseUrl
       // schemes -> voc
       registry.voc = registry.schemes
       // Add to list
       config.terminologyProviders.push(registry)
-    } else if (registry.plugin == "mappings-api") {
+    } else if (registry.provider == "mappings-api") {
       // mappings -> url
       registry.url = registry.mappings
       // Add to list
       config.mappingProviders.push(registry)
-    } else if (registry.plugin == "occurrences-api") {
+    } else if (registry.provider == "occurrences-api") {
       // occurrences -> url
       registry.url = registry.occurrences
       // Add to list

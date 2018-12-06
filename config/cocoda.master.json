@@ -6,7 +6,7 @@
         "en": "JSKOS Server"
       },
       "baseUrl": "//coli-conc.gbv.de/api/",
-      "plugin": "concept-api",
+      "provider": "concept-api",
       "priority": 2
     }
   ],
