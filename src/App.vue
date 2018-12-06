@@ -66,7 +66,7 @@
           <!-- Concept and concept scheme quick selection -->
           <div
             v-show="selected.scheme[isLeft] == null"
-            class="placeholderComponent" >
+            class="placeholderComponent scrollable" >
             <p
               v-if="favoriteSchemes && favoriteSchemes.length"
               class="fontWeight-heavy" >
@@ -74,16 +74,15 @@
             </p>
             <p
               v-for="scheme in favoriteSchemes"
-              :key="scheme.uri" >
-              <br>
+              :key="scheme.uri"
+              class="quickSelectionItem" >
               <item-name
                 :item="scheme"
                 :is-link="true"
                 :is-left="isLeft"
-                class="quickSelectionItem"
               />
             </p>
-            <br><br>
+            <br>
             <p
               v-if="config.favoriteConcepts && config.favoriteConcepts.length"
               class="fontWeight-heavy" >
@@ -91,13 +90,12 @@
             </p>
             <p
               v-for="concept in config.favoriteConcepts"
-              :key="concept.uri" >
-              <br>
+              :key="concept.uri"
+              class="quickSelectionItem" >
               <item-name
                 :item="concept"
                 :is-link="true"
                 :is-left="isLeft"
-                class="quickSelectionItem"
               />
             </p>
           </div>
@@ -680,13 +678,17 @@ html, body {
 
 .placeholderComponent {
   text-align: left;
-  padding: 50px 20px 10px 30px;
+  padding: 40px 20px 20px 30px;
 }
 .placeholderComponentCenter > div {
   text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.quickSelectionItem {
+  padding-top: 15px;
 }
 
 .alertsContainer {
