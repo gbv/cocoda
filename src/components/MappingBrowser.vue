@@ -134,7 +134,7 @@
         <span
           slot="source"
           slot-scope="{ item }" >
-          <b>{{ item.sourceShort }}</b>
+          <b v-b-tooltip="item.source">{{ item.sourceShort }}</b>
         </span>
         <span
           slot="actions"
@@ -532,7 +532,14 @@ export default {
           }
           return {
             source: "local",
-            items
+            items,
+            provider: {
+              prefLabel: {
+                de: "Lokal",
+                en: "Local"
+              },
+              notation: ["L"]
+            }
           }
         }))
       }
@@ -550,7 +557,8 @@ export default {
             }
             return {
               source: this.$util.prefLabel(provider),
-              items
+              items,
+              provider
             }
           }))
         }
@@ -601,7 +609,8 @@ export default {
           }
           return {
             source: "catalog",
-            items
+            items,
+            provider
           }
         }))
       }
@@ -615,6 +624,7 @@ export default {
         let truncateResults = zeroCount < (results.length - 1) && !this.$settings.mappingBrowserShowAll
         for (let result of results) {
           let source = result.source || "unknown"
+          let provider = result.provider
           // Sort the results
           result.items = result.items.sort((a, b) => {
             if (source == "catalog") {
@@ -753,7 +763,7 @@ export default {
             if (typeof item.creator === "object") {
               item.creator = this.$util.prefLabel(item.creator)
             }
-            item.source = `${item.sourceShort} ${item.creator}`
+            item.source = this.$util.prefLabel(provider)
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             items.push(item)
           }
