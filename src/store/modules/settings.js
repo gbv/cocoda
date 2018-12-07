@@ -10,6 +10,7 @@ const defaultSettings = {
   mappingBrowserLocal: true,
   mappingBrowserProvider: {},
   mappingBrowserCatalog: true,
+  mappingBrowserShowRegistry: {},
   minimized: {},
   flex: {},
   mappingBrowserShowAll: false,

@@ -1,22 +1,25 @@
 {
   "registries": [
     {
+      "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
       "notation": ["D"],
       "prefLabel": {
         "en": "DANTE"
       },
       "baseUrl": "//api.dante.gbv.de/",
-      "provider": "concept-api"
+      "provider": "ConceptApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
       "notation": ["J"],
       "prefLabel": {
         "en": "JSKOS Server"
       },
       "baseUrl": "//coli-conc.gbv.de/dev-api/",
-      "provider": "concept-api"
+      "provider": "ConceptApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
       "notation": ["GND"],
       "prefLabel": {
         "de": "Gemeinsame Normdatei",
@@ -32,9 +35,10 @@
       "data": "//coli-conc.gbv.de/services/gnd.php",
       "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
       "types": "//ws.gbv.de/suggest/gnd/types",
-      "provider": "concept-api"
+      "provider": "ConceptApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/wikidata-concepts",
       "notation": ["WD"],
       "prefLabel": {
         "en": "Wikidata"
@@ -48,41 +52,45 @@
       } ],
       "data": "//coli-conc.gbv.de/services/wikidata/data/",
       "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}",
-      "provider": "concept-api"
+      "provider": "ConceptApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "notation": ["L"],
       "prefLabel": {
         "de": "Lokal",
         "en": "Local"
       },
       "mappings": "...",
-      "provider": "local-mappings"
+      "provider": "LocalMappings"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
       "notation": ["R"],
       "prefLabel": {
         "en": "Registry"
       },
       "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
-      "provider": "mappings-api"
+      "provider": "MappingsApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
       "notation": ["W"],
       "prefLabel": {
         "en": "Wikidata"
       },
       "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
-      "provider": "mappings-api"
+      "provider": "MappingsApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "notation": ["O"],
       "prefLabel": {
         "de": "Vorkommen",
         "en": "Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
-      "provider": "occurrences-api"
+      "provider": "OccurrencesApi"
     }
   ],
   "registryMode": "override",

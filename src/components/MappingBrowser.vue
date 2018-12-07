@@ -8,23 +8,11 @@
       <!-- Settings -->
       <div id="mappingBrowser-settings">
         <b-form-checkbox
-          v-model="showLocal"
+          v-for="(registry, index) in mappingRegistries"
+          :key="`registry_${index}`"
+          v-model="showRegistry[registry.uri]"
           class="mappingBrowser-setting" >
-          <b>L</b>ocal ({{ localMappingsCurrent }} / {{ localMappingsTotal }})
-        </b-form-checkbox>
-        <b-form-checkbox
-          v-for="provider in config.mappingProviders"
-          :key="provider.url"
-          v-model="showProvider[provider.url]"
-          class="mappingBrowser-setting" >
-          <provider-name :provider="provider" />
-        </b-form-checkbox>
-        <b-form-checkbox
-          v-for="provider in config.occurrenceProviders"
-          :key="provider.notation[0]"
-          v-model="showCatalog"
-          class="mappingBrowser-setting" >
-          <provider-name :provider="provider" />
+          <provider-name :provider="registry" />
         </b-form-checkbox>
       </div>
       <!-- Mapping table -->
@@ -174,6 +162,13 @@
             icon="ellipsis-h"
             class="button"
             @click="showMore(value)" />
+          <loading-indicator
+            v-if="item.type == 'loading'"
+            size="sm" />
+          <span
+            v-if="item.type == 'noItems'">
+            {{ $t("mappingBrowser.noItemsFor") }} {{ $util.prefLabel(item.registry) }}.
+          </span>
         </span>
         <span
           slot="count"
@@ -193,8 +188,6 @@
         {{ $t("mappingBrowser.noMappings") }}
       </div>
     </div>
-    <!-- Full screen loading indicator -->
-    <loading-indicator-full v-if="loading" />
   </div>
 </template>
 
@@ -204,16 +197,16 @@ import ProviderName from "./ProviderName"
 import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
+import LoadingIndicator from "./LoadingIndicator"
 import FlexibleTable from "vue-flexible-table"
 import _ from "lodash"
-import axios from "axios"
 
 /**
  * The mapping suggestion browser component.
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, ProviderName, AutoLink, Minimizer, LoadingIndicatorFull, FlexibleTable },
+  components: { ItemName, ProviderName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable },
   data () {
     return {
       loading: 0,
@@ -228,11 +221,8 @@ export default {
           [false]: null,
         }
       },
-      /** List of supported schemes by occurrences-api */
-      occurrencesSupportedSchemes: null,
       /** List of identifiers of all local mappings (used in `canSave`) */
       localMappingIdentifiers: [],
-      occurrencesCache: [],
       localMappingsTotal: 0,
       localMappingsCurrent: 0,
       showMoreValues: {},
@@ -372,29 +362,14 @@ export default {
     selectedConcepts() {
       return this.selected.concept
     },
-    // show local mappings
-    showLocal: {
-      get() {
-        return this.$settings.mappingBrowserLocal
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserLocal",
-          value
-        })
-        // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", true)
-      }
-    },
-    // show provider mappings
-    showProvider() {
+    // show registries
+    showRegistry() {
       let object = {}
-      // Define setter and getter for each mapping provider separately.
-      for (let provider of this.config.mappingProviders) {
-        Object.defineProperty(object, provider.url, {
+      // Define setter and getter for each registry separately.
+      for (let registry of this.mappingRegistries) {
+        Object.defineProperty(object, registry.uri, {
           get: () => {
-            let result = this.$settings.mappingBrowserProvider[provider.url]
+            let result = this.$settings.mappingBrowserShowRegistry[registry.uri]
             if (result == null) {
               return true
             }
@@ -403,8 +378,8 @@ export default {
           set: (value) => {
             this.$store.commit({
               type: "settings/set",
-              prop: "mappingBrowserProvider",
-              value: Object.assign({}, this.$settings.mappingBrowserProvider, { [provider.url]: value })
+              prop: "mappingBrowserShowRegistry",
+              value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
             })
             this.$store.commit("mapping/setRefresh", true)
           }
@@ -412,20 +387,8 @@ export default {
       }
       return object
     },
-    // show catalog suggestions/occurrences
-    showCatalog: {
-      get() {
-        return this.$settings.mappingBrowserCatalog
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserCatalog",
-          value
-        })
-        // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", true)
-      }
+    mappingRegistries() {
+      return this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences))
     },
   },
   watch: {
@@ -459,12 +422,11 @@ export default {
         this.localMappingsTotal = mappings.length
       })
 
-      let items = []
       let promises = []
 
       if (!this.selected.concept[true] && !this.selected.concept[false]) {
         // No selected concepts, not reloading and clearing items+previosSelected.
-        this.items = items
+        this.items = []
         this.previousSelected = {
           scheme: {
             [true]: null,
@@ -486,6 +448,7 @@ export default {
         this.showMoreValues = {}
       }
 
+      this.items = []
       this.loading = 1
 
       // Set unique ID for this request
@@ -507,198 +470,120 @@ export default {
       let params = {
         direction: "both",
         mode: "or",
+        selected: this.selected,
       }
       let from = _.get(this, "selected.concept[true]")
       let to = _.get(this, "selected.concept[false]")
       if (from) {
-        params["from"] = from.uri
+        params["from"] = from
       }
       if (to) {
-        params["to"] = to.uri
+        params["to"] = to
       }
 
-      // 1. Local
-      if (this.showLocal) {
-        promises.push(this.$api.getLocalMappings(params).then(mappings => {
-          if (this.loadingId == loadingId) {
-            this.localMappingsCurrent = mappings.length
-          }
-          let items = []
-          for (let mapping of mappings) {
-            let item = {}
-            item.mapping = mapping
-            item.sourceShort = "L"
-            items.push(item)
-          }
-          return {
-            source: "local",
-            items,
-            provider: {
-              prefLabel: {
-                de: "Lokal",
-                en: "Local"
-              },
-              notation: ["L"]
-            }
-          }
-        }))
-      }
+      let isFirst = true
 
-      // 2. Server
-      for (let provider of this.config.mappingProviders) {
-        if (this.showProvider[provider.url]) {
-          promises.push(this.$api.getMappings(params, false, [provider]).then(mappings => {
-            let items = []
-            for (let mapping of mappings) {
-              let item = {}
-              item.mapping = mapping
-              item.sourceShort = this.$util.notation(provider)
-              items.push(item)
-            }
-            return {
-              source: this.$util.prefLabel(provider),
-              items,
-              provider
-            }
-          }))
+      for (let registry of this.mappingRegistries) {
+
+        // Check if enabled
+        if (!this.showRegistry[registry.uri]) {
+          continue
         }
-      }
 
-      // 3. Catalog
-      if (this.showCatalog) {
-        let provider = this.config.occurrenceProviders[0]
-        promises.push(this.loadOccurrences().then(occurrences => {
+        let addSeparator = !isFirst
+        isFirst = false
+
+        // Add loading indicator.
+        this.items.push({
+          "_wholeRow": true,
+          "_rowClass": "mappingBrowser-table-row-loading",
+          value: "",
+          type: "loading",
+          registry,
+        })
+
+        let promise = registry.provider.getAllMappings(params).then(mappings => {
+
+          // Check loadingId
+          if (this.loadingId != loadingId) {
+            return
+          }
+
           let items = []
-          for (let occurrence of occurrences) {
-            if (!occurrence) continue
-            let item = {}
-            item.occurrence = occurrence
-            item.sourceShort = this.$util.notation(provider)
-            let mapping = {}
-            mapping.from = _.get(occurrence, "memberSet[0]")
-            this.loadNotation(mapping.from)
-            if (mapping.from) {
-              mapping.from = { memberSet: [mapping.from] }
-            } else {
-              mapping.from = null
-            }
-            mapping.fromScheme = this.$store.getters["objects/get"](_.get(occurrence, "memberSet[0].inScheme[0]"))
-            mapping.to = _.get(occurrence, "memberSet[1]")
-            this.loadNotation(mapping.to)
-            if (mapping.to) {
-              mapping.to = { memberSet: [mapping.to] }
-            } else {
-              mapping.to = { memberSet: [] }
-            }
-            mapping.toScheme = this.$store.getters["objects/get"](_.get(occurrence, "memberSet[1].inScheme[0]"))
-            // Swap sides if necessary
-            if (!this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true]) && !this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
-              [mapping.from, mapping.fromScheme, mapping.to, mapping.toScheme] = [mapping.to, mapping.toScheme, mapping.from, mapping.fromScheme]
-            }
-            mapping.toScheme = mapping.toScheme || this.selected.scheme[false]
-            mapping.type = [this.$jskos.defaultMappingType.uri]
-            mapping = this.$jskos.addMappingIdentifiers(mapping)
-            if (occurrence.database) {
-              mapping.creator = [occurrence.database]
-            }
-            item.mapping = mapping
-            // Only add if either side could be found.
-            if (mapping.fromScheme || mapping.toScheme) {
-              items.push(item)
-            }
-          }
-          return {
-            source: "catalog",
-            items,
-            provider
-          }
-        }))
-      }
 
-      Promise.all(promises).then(results => {
-        if (this.loadingId != loadingId) return
-        let lengthPerSet = 5
-        let lengths = results.map(result => result.items.length)
-        // let totalLength = lengths.reduce((total, value) => total + value, 0)
-        let zeroCount = _.get(_.countBy(lengths), "[0]", 0)
-        let truncateResults = zeroCount < (results.length - 1) && !this.$settings.mappingBrowserShowAll
-        for (let result of results) {
-          let source = result.source || "unknown"
-          let provider = result.provider
-          // Sort the results
-          result.items = result.items.sort((a, b) => {
-            if (source == "catalog") {
-              // Sort catalog items by occurrences decending
-              return _.get(b, "occurrence.count", 0) - _.get(a, "occurrence.count", 0)
-            } else {
-              // Sort mappings
-              // TODO: - Put into utils/jskos-tools.
-              const includes = (list, concept) => {
-                for (let item of list) {
-                  if (this.$jskos.compare(item, concept)) {
-                    return true
-                  }
-                }
-                return false
-              }
-              // TODO: - Put into utils/jskos-tools.
-              const concepts = (mapping, isLeft) => {
-                let fromTo = isLeft ? "from" : "to"
-                return _.get(mapping, `${fromTo}.memberSet`) || _.get(mapping, `${fromTo}.memberChoice`) || _.get(mapping, `${fromTo}.memberList`) || []
-              }
-              let points = {
-                a: 10, b: 10
-              }
-              _.forOwn({ a, b }, ({ mapping }, key) => {
-                let conceptsLeft = concepts(mapping, true)
-                let conceptsRight = concepts(mapping, false)
-                // Left concept is on left side of mapping.
-                if (includes(conceptsLeft, this.selected.concept[true])) {
-                  points[key] -= 6
-                }
-                // Right concept is on right side of mapping.
-                if (includes(conceptsRight, this.selected.concept[false])) {
-                  points[key] -= 4
-                }
-                // Right concept is on left side of mapping.
-                if (includes(conceptsLeft, this.selected.concept[false])) {
-                  points[key] -= 3
-                }
-                // Left concept is on right side of mapping.
-                if (includes(conceptsRight, this.selected.concept[true])) {
-                  points[key] -= 2
-                }
-                // Left scheme matches left side of mapping.
-                if (this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true])) {
-                  points[key] -= 1
-                }
-                // Right scheme matches right side of mapping.
-                if (this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
-                  points[key] -= 1
-                }
-              })
-              if (points.a - points.b != 0) {
-                return points.a - points.b
-              }
-              // If the points are equal, sort by concepts (first from, then to).
-              let value = this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
-              if (value != 0) {
-                return value
-              }
-              return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
+          let lengthPerSet = 5
+          let truncateResults = mappings.length > lengthPerSet && !this.$settings.mappingBrowserShowAll
+          mappings = mappings.sort((a, b) => {
+            // Sort mappings
+            if (a._occurrence || b._occurrence) {
+              // Sort by occurrence count descending
+              return _.get(b, "_occurrence.count", 0) - _.get(a, "_occurrence.count", 0)
             }
+            // TODO: - Put into utils/jskos-tools.
+            const includes = (list, concept) => {
+              for (let item of list) {
+                if (this.$jskos.compare(item, concept)) {
+                  return true
+                }
+              }
+              return false
+            }
+            // TODO: - Put into utils/jskos-tools.
+            const concepts = (mapping, isLeft) => {
+              let fromTo = isLeft ? "from" : "to"
+              return _.get(mapping, `${fromTo}.memberSet`) || _.get(mapping, `${fromTo}.memberChoice`) || _.get(mapping, `${fromTo}.memberList`) || []
+            }
+            let points = {
+              a: 10, b: 10
+            }
+            _.forOwn({ a, b }, (mapping, key) => {
+              let conceptsLeft = concepts(mapping, true)
+              let conceptsRight = concepts(mapping, false)
+              // Left concept is on left side of mapping.
+              if (includes(conceptsLeft, this.selected.concept[true])) {
+                points[key] -= 6
+              }
+              // Right concept is on right side of mapping.
+              if (includes(conceptsRight, this.selected.concept[false])) {
+                points[key] -= 4
+              }
+              // Right concept is on left side of mapping.
+              if (includes(conceptsLeft, this.selected.concept[false])) {
+                points[key] -= 3
+              }
+              // Left concept is on right side of mapping.
+              if (includes(conceptsRight, this.selected.concept[true])) {
+                points[key] -= 2
+              }
+              // Left scheme matches left side of mapping.
+              if (this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true])) {
+                points[key] -= 1
+              }
+              // Right scheme matches right side of mapping.
+              if (this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
+                points[key] -= 1
+              }
+            })
+            if (points.a - points.b != 0) {
+              return points.a - points.b
+            }
+            // If the points are equal, sort by concepts (first from, then to).
+            let value = this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
+            if (value != 0) {
+              return value
+            }
+            return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
           })
           // Truncate if necessary (and don't truncate local mappings)
           let wasTruncated = false
-          let maxLengthForThis = _.get(this.showMoreValues, `[${source}]`, 1) * lengthPerSet
-          if (truncateResults && source != "local" && result.items.length > maxLengthForThis) {
-            result.items = result.items.slice(0, maxLengthForThis)
+          let maxLengthForThis = _.get(this.showMoreValues, `[${registry.uri}]`, 1) * lengthPerSet // TODO:
+          if (truncateResults && mappings.length > maxLengthForThis) {
+            mappings = mappings.slice(0, maxLengthForThis)
             wasTruncated = true
           }
-          let addSeparator = items.length > 0
           // Add items
-          for (let item of result.items) {
-            let mapping = item.mapping
+          for (let mapping of mappings) {
+            let item = { mapping, registry }
             item.sourceScheme = _.get(mapping, "fromScheme")
             item.sourceScheme = this.$store.getters["objects/get"](item.sourceScheme) || item.sourceScheme
             item.targetScheme = _.get(mapping, "toScheme")
@@ -753,18 +638,14 @@ export default {
             if (leftInSource && rightInSource) {
               item._rowClass = "mappingBrowser-table-row-match"
             }
-            if (addSeparator) {
-              item._rowClass += " mappingBrowser-separatorRow"
-              addSeparator = false
-              // Add class to previous item
-              _.last(items)._rowClass += " mappingBrowser-beforeSeparatorRow"
-            }
             item.creator = mapping.creator && mapping.creator[0] || ""
             if (typeof item.creator === "object") {
               item.creator = this.$util.prefLabel(item.creator)
             }
-            item.source = this.$util.prefLabel(provider)
+            item.source = this.$util.prefLabel(registry)
+            item.sourceShort = this.$util.notation(registry)
             item.type = this.$jskos.mappingTypeByType(mapping.type)
+            item.occurrence = mapping._occurrence
             items.push(item)
           }
           // Add extra row if truncated
@@ -772,16 +653,58 @@ export default {
             items.push({
               "_wholeRow": true,
               "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
-              value: source,
+              value: registry.uri,
               type: "more",
             })
           }
-        }
-      }).catch(() => null).finally(() => {
+
+          // Insert items into this.items
+          let index = this.items.findIndex(item => this.$jskos.compare(item.registry, registry))
+          if (index >= 0) {
+
+            let addBeforeSeparatorClass = false
+            let beforeSeparatorClass = " mappingBrowser-beforeSeparatorRow"
+            if (this.items[index]._rowClass.includes(beforeSeparatorClass)) {
+              addBeforeSeparatorClass = true
+            }
+
+            if (items.length == 0) {
+              this.items[index] = {
+                "_wholeRow": true,
+                "_rowClass": "mappingBrowser-table-row-loading" + (addBeforeSeparatorClass ? beforeSeparatorClass : ""),
+                value: "",
+                type: "noItems",
+                registry,
+              }
+            } else {
+              if (addBeforeSeparatorClass) {
+                _.last(items)._rowClass += beforeSeparatorClass
+              }
+              this.items = this.items.slice(0, index).concat(items, this.items.slice(index + 1, this.items.length))
+            }
+
+            if (addSeparator) {
+              this.items[index]._rowClass += " mappingBrowser-separatorRow"
+              // Add class to previous item
+              if (index > 0) {
+                this.items[index - 1]._rowClass += beforeSeparatorClass
+              }
+            }
+          }
+
+
+        }).catch(error => {
+          console.warn("Error", error)
+        })
+
+        promises.push(promise)
+
+      }
+
+      Promise.all(promises).finally(() => {
         if (this.loadingId == loadingId) {
-          this.items = items
-          this.loadingId = null
           this.loading = 0
+          this.loadingId = null
         }
       })
     },
@@ -891,120 +814,6 @@ export default {
         this.$store.commit("mapping/setRefresh", true)
       })
     },
-    /** Reloads occurrences from api */
-    loadOccurrences() {
-      let promise
-      if (!this.occurrencesSupportedSchemes) {
-        // Load supported schemes
-        // TODO: - Put this into API
-        promise = axios.get("//coli-conc.gbv.de/occurrences/api/voc")
-          .then(response => {
-            this.occurrencesSupportedSchemes = _.get(response, "data", [])
-          })
-          .catch(error => {
-            console.error(error)
-            // TODO: - Better error handling
-            this.occurrencesSupportedSchemes = []
-          })
-      } else {
-        promise = Promise.resolve()
-      }
-      return promise.then(() => {
-        let uris = []
-        let promises = []
-        for (let [scheme, concept] of [[this.selected.scheme[true], this.selected.concept[true]], [this.selected.scheme[false], this.selected.concept[false]]]) {
-          if (concept && this.occurrencesIsSupported(scheme)) {
-            uris.push(concept.uri)
-          }
-        }
-        if (uris.length == 0) {
-          return []
-        }
-        for (let uri of uris) {
-          promises.push(this.getOccurrences({
-            params: {
-              member: uri,
-              scheme: "*",
-              threshold: 5
-            },
-          }).catch(error => {
-            console.error("Occurrences API Error:", error)
-            return { data: [] }
-          }))
-        }
-        // Another request for co-occurrences between two specific concepts
-        if (uris.length == 2 && uris[0] != uris[1]) {
-          let urisString = uris.join(" ")
-          promises.push(this.getOccurrences({
-            params: {
-              member: urisString,
-              threshold: 5
-            },
-          }).catch(error => {
-            console.error("Occurrences API Error:", error)
-            return null
-          }))
-        }
-        return Promise.all(promises)
-      }).then(responses => {
-        let occurrences = []
-        for (let response of responses) {
-          let result = _.get(response, "data", [])
-          occurrences = occurrences.concat(result)
-        }
-        // Filter duplicates
-        let existingUris = []
-        let indexesToDelete = []
-        for (let i = 0; i < occurrences.length; i += 1) {
-          let occurrence = occurrences[i]
-          let uris = occurrence.memberSet.reduce((total, current) => total.concat(current.uri), []).sort().join(" ")
-          if (existingUris.includes(uris)) {
-            indexesToDelete.push(i)
-          } else {
-            existingUris.push(uris)
-          }
-        }
-        indexesToDelete.forEach(value => {
-          delete occurrences[value]
-        })
-        // Sort occurrences and only save top 10
-        return occurrences.sort((a, b) => parseInt(b.count || 0) - parseInt(a.count || 0)).slice(0, 10)
-      }).catch(error => {
-        console.error("Occurrences Error:", error)
-        return []
-      })
-    },
-    /** Wrapper around axios.get for loading occurrences */
-    getOccurrences(options) {
-      if (this.config.occurrenceProviders && this.config.occurrenceProviders.length) {
-        // Use local cache.
-        let resultsFromCache = this.occurrencesCache.find(item => {
-          return _.isEqual(item.options.params, options.params)
-        })
-        if (resultsFromCache) {
-          return Promise.resolve(resultsFromCache.results)
-        }
-        return axios.get(this.config.occurrenceProviders[0].url, options).then(results => {
-          this.occurrencesCache.push({
-            options,
-            results
-          })
-          return results
-        })
-      } else {
-        return Promise.resolve([])
-      }
-    },
-    /** Returns whether a scheme is supported by the occurrences-api */
-    occurrencesIsSupported(scheme) {
-      let supported = false
-      for (let supportedScheme of this.occurrencesSupportedSchemes) {
-        if (this.$jskos.compare(scheme, supportedScheme)) {
-          supported = true
-        }
-      }
-      return supported
-    },
     /** Saving of mappigns */
     canSave(mapping) {
       if (!mapping || mapping.LOCAL || !mapping.fromScheme || !mapping.toScheme) {
@@ -1079,6 +888,9 @@ export default {
 }
 .mappingBrowser-table-row-showMore {
   height: 24px;
+}
+.mappingBrowser-table-row-loading > span > div {
+  margin: 0 auto;
 }
 .mappingBrowser-beforeSeparatorRow {
   padding-bottom: 10px !important;
