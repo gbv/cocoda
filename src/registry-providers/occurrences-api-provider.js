@@ -120,8 +120,7 @@ class OccurrencesApiProvider extends BaseProvider {
     if (resultsFromCache) {
       return Promise.resolve(resultsFromCache.data)
     }
-    return this.http.get(this.registry.occurrences, options).then(results => {
-      let data = _.get(results, "data", [])
+    return this.get(this.registry.occurrences, options).then(data => {
       this.occurrencesCache.push({
         options,
         data

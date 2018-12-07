@@ -48,6 +48,15 @@ class BaseProvider {
     _.forOwn(this.has, (value, key) => {
       this.has[key] = value != null
     })
+    // Save a modified http.get
+    this.get = (url, options, cancelToken) => {
+      return http.get(url, options, cancelToken).then(response => {
+        return response.data || []
+      }).catch(error => {
+        console.log("API error:", error)
+        return []
+      })
+    }
   }
 
   /**
