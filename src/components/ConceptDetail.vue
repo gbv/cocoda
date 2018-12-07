@@ -151,6 +151,13 @@
       :is-left="isLeft"
     />
 
+    <div
+      class="conceptDetail-apiUrl" >
+      <auto-link
+        :link="$util.apiUrl(item)"
+        text="API" />
+    </div>
+
   </div>
 </template>
 
@@ -464,6 +471,14 @@ export default {
 }
 .conceptDetail-identifier svg {
   user-select: none;
+}
+.conceptDetail-apiUrl {
+  position: absolute;
+  bottom: 20px;
+  right: 5px;
+}
+.conceptDetail-apiUrl > a {
+  color: @color-background !important;
 }
 
 .conceptDetail-notes {
