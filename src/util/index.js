@@ -161,6 +161,16 @@ let definition = (item, language) => {
   return content
 }
 
+let addEndpoint = (url, endpoint) => {
+  if (url.slice(-1) == "/") {
+    url = url.slice(0, -1)
+  }
+  if (endpoint[0] == "/") {
+    endpoint = endpoint.substring(1)
+  }
+  return url + "/" + endpoint
+}
+
 // Returns an API URL for a concept
 let apiUrl = (concept) => {
   if (!concept || !concept.uri) {
@@ -173,4 +183,4 @@ let apiUrl = (concept) => {
   return `${provider.data}?uri=${encodeURIComponent(concept.uri)}`
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, lmContent, prefLabel, definition, apiUrl }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, lmContent, prefLabel, definition, addEndpoint, apiUrl }

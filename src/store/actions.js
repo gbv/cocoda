@@ -1,16 +1,7 @@
 import api from "../api"
 import config from "../config"
 import jskos from "jskos-tools"
-
-const addEndpoint = (url, endpoint) => {
-  if (url.slice(-1) == "/") {
-    url = url.slice(0, -1)
-  }
-  if (endpoint[0] == "/") {
-    endpoint = endpoint.substring(1)
-  }
-  return url + "/" + endpoint
-}
+import util from "../util"
 
 export default {
   init ({ commit, getters }) {
@@ -26,7 +17,7 @@ export default {
       let url = provider.url || null, saveSchemePromise = Promise.resolve(null)
       if(!Array.isArray(provider.voc)) {
       // Load schemes
-        let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : addEndpoint(url, "/voc")
+        let vocEndpoint = typeof(provider.voc) === "string" ? provider.voc : util.addEndpoint(url, "/voc")
         if (vocEndpoint) {
           saveSchemePromise = api.get(vocEndpoint)
             .then(function(data) {
@@ -48,19 +39,19 @@ export default {
         saveSchemePromise = Promise.resolve(provider)
       }
       if (!provider.data && url) {
-        provider.data = addEndpoint(url, "/data")
+        provider.data = util.addEndpoint(url, "/data")
       }
       if (!provider.suggest && url) {
-        provider.suggest = addEndpoint(url, "/suggest")
+        provider.suggest = util.addEndpoint(url, "/suggest")
       }
       if (!provider.top && url) {
-        provider.top = addEndpoint(url, "/voc/top")
+        provider.top = util.addEndpoint(url, "/voc/top")
       }
       if (!provider.ancestors && url) {
-        provider.ancestors = addEndpoint(url, "/ancestors")
+        provider.ancestors = util.addEndpoint(url, "/ancestors")
       }
       if (!provider.narrower && url) {
-        provider.narrower = addEndpoint(url, "/narrower")
+        provider.narrower = util.addEndpoint(url, "/narrower")
       }
       // Save scheme in store and in schemes array
       promises.push(saveSchemePromise.then(provider => {
