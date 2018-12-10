@@ -25,7 +25,7 @@
         :class="{ 'fontWeight-heavy': showText }" />
       <!-- Text for prefLabel -->
       <span v-if="showText || !notation">
-        {{ $util.prefLabel(item) }}
+        {{ $util.prefLabel(item, null, notation == null) }}
       </span>
     </div>
     <!-- Tooltip for prefLabel if only notation is shown -->
