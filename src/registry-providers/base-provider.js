@@ -48,34 +48,77 @@ class BaseProvider {
     _.forOwn(this.has, (value, key) => {
       this.has[key] = value != null
     })
+    // Set languages
+    this.defaultLanguage = "de,en,es,nl,it,fi,pl,ru,cs,jp"
+    this.language = this.defaultLanguage
+    // Set properties
+    this.properties = {
+      minimum: "-",
+      default: "uri,prefLabel,notation,inScheme",
+      detail: "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote",
+      all: "*",
+    }
     // Save a modified http.get
     this.get = (url, options, cancelToken) => {
+      let language = _.get(options, "params.language") || this.language || this.defaultLanguage
+      _.set(options, "params.language", language)
       return http.get(url, options, cancelToken).then(response => {
-        return response.data || []
+        if (Array.isArray(response.data)) {
+          return response.data
+        } else {
+          return []
+        }
       }).catch(error => {
         console.log("API error:", error)
         return []
       })
     }
-  }
 
-  /**
-   * The following are adjustment methods for specific types of objects. These are called by the wrapper functions (those without a leading underscope) to modify the results before returning.
-   */
-  adjustRegistries(registries) {
-    return registries
-  }
-  adjustSchemes(schemes) {
-    return schemes
-  }
-  adjustConcepts(concepts) {
-    return concepts
-  }
-  adjustConcordances(concordances) {
-    return concordances
-  }
-  adjustMappings(mappings) {
-    return mappings
+    /**
+     * The following are adjustment methods for specific types of objects. These are called by the wrapper functions (those without a leading underscope) to modify the results before returning.
+     * These are defined in the constructor so that they will have access to "this".
+     */
+    this.adjustConcepts = (concepts) => {
+      for (let concept of concepts) {
+        // Add getNarrower function to concepts
+        concept.getNarrower = () => {
+          return this.getNarrower(concept)
+        }
+        // Add getAncestors function to concepts
+        concept.getAncestors = () => {
+          return this.getAncestors(concept)
+        }
+        // Add getDetails function to concepts
+        concept.getDetails = () => {
+          return this.getDetails(concept)
+        }
+      }
+      return concepts
+    }
+    this.adjustRegistries = (registries) => {
+      return registries
+    }
+    this.adjustSchemes = (schemes) => {
+      for (let scheme of schemes) {
+        // Add getTop function to schemes
+        scheme.getTop = () => {
+          return this.getTop(scheme)
+        }
+        // Add provider to schemes
+        scheme.provider = this
+        // Add suggest function to schemes
+        scheme.suggest = (search) => {
+          return this.suggest(search, scheme)
+        }
+      }
+      return schemes
+    }
+    this.adjustConcordances = (concordances) => {
+      return concordances
+    }
+    this.adjustMappings = (mappings) => {
+      return mappings
+    }
   }
 
   /**
@@ -127,6 +170,13 @@ class BaseProvider {
   }
   _getConcepts() {
     return Promise.resolve([])
+  }
+
+  /**
+   * Wrapper around getConcepts that returns detailed properties.
+   */
+  getDetails(concepts) {
+    return this.getConcepts(concepts, { properties: this.properties.detail })
   }
 
   /**
