@@ -1,5 +1,4 @@
 import Vue from "vue"
-import api from "../../api"
 import jskos from "jskos-tools"
 
 // initial state
@@ -44,7 +43,7 @@ const mutations = {
     if (save) {
       // Add all possible properties to ensure reactivity in Vue
       // 1. General properties
-      object.DETAILSLOADED = false
+      object.DETAILSLOADED = object.DETAILSLOADED != null ? object.DETAILSLOADED : false
       object.INSTORE = true
       if (jskos.isConcept(object)) {
         Vue.set(object, "BROADERLOADED", false)
@@ -76,12 +75,19 @@ const mutations = {
                   alreadyAdded = true
                 }
               }
-              if (!alreadyAdded && schemeInMap) {
-                inScheme.push(schemeInMap)
+              if (!alreadyAdded) {
+                if (schemeInMap) {
+                  inScheme.push(schemeInMap)
+                } else {
+                  inScheme.push(scheme)
+                }
               }
             }
           }
           object.inScheme = inScheme
+        }
+        if (object.inScheme.length == 0) {
+          console.warn("inScheme has no elements", object)
         }
         // Set inScheme of all related nodes
         for (let prop of ["ancestors", "broader", "narrower"]) {
@@ -90,6 +96,15 @@ const mutations = {
               concept.inScheme = concept.inScheme || object.inScheme
             }
           }
+        }
+        // Use scheme's provider to adjust concepts if they haven't been adjusted yet.
+        // FIXME: Ideally, all concepts coming from the API have been adjusted already! So eventually, this should be removed.
+        let provider = _.get(object, "inScheme[0]._provider")
+        if (provider && !object._getDetails) {
+          console.warn("Adjusting object...")
+          provider.adjustConcepts([object])
+        } else if (!object._getDetails) {
+          console.error("Could not adjust", object)
         }
       } else if (jskos.isScheme(object)) {
         Vue.set(object, "TOPCONCEPTS", object.TOPCONCEPTS || [null])
@@ -184,7 +199,13 @@ const actions = {
         scheme = null
         console.warn("newApi/get No scheme found for", object)
       }
-      return api.data(schemeInMap, object.uri).then(results => {
+      let promise
+      if (_.get(schemeInMap, "_provider.getDetails")) {
+        promise = schemeInMap._provider.getDetails(object)
+      } else {
+        promise = Promise.resolve([object])
+      }
+      return promise.then(results => {
         if (results.length) {
           let object = results[0]
           if (isObjectInMap(state.map, object)) {
@@ -219,7 +240,7 @@ const actions = {
     if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
       return Promise.resolve(scheme)
     } else {
-      return api.top(scheme).then(results => {
+      return scheme._getTop().then(results => {
         if (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null)) {
           return scheme
         }
@@ -271,7 +292,7 @@ const actions = {
    *
    * @returns a Promise with the updated object
    */
-  narrower({ state, commit }, { object }) {
+  narrower({ state, commit, getters }, { object }) {
     if (object.narrower && !object.narrower.includes(null)) {
       return Promise.resolve(object)
     } else if (!object.inScheme || object.inScheme.length == 0) {
@@ -279,8 +300,12 @@ const actions = {
       return Promise.resolve(object)
     } else {
       // Load narrower
+      if (!getters.get(object)) {
+        console.warn(JSON.stringify(jskos.deepCopy(object)))
+        return Promise.resolve(object)
+      }
       let scheme = object.inScheme[0]
-      return api.narrower(scheme, object.uri).then(results => {
+      return object._getNarrower().then(results => {
         if (object.narrower && !object.narrower.includes(null)) {
           // Apparrently, narrower were loaded elsewhere, so abort
           return object
@@ -361,7 +386,7 @@ const actions = {
       return Promise.resolve(object)
     } else {
       let scheme = object.inScheme[0]
-      return api.ancestors(scheme, object.uri).then(results => {
+      return object._getAncestors().then(results => {
         if (object.ancestors && !object.ancestors.includes(null)) {
           // Apparrently, ancestors were loaded elsewhere, so abort
           return object
@@ -428,7 +453,11 @@ const actions = {
     if (!object || object.DETAILSLOADED) {
       return Promise.resolve(object)
     } else {
-      return api.data(object.inScheme ? object.inScheme[0] : object, object.uri, api.detailProperties).then(results => {
+      let promise = (object._getDetails && object._getDetails()) || (_.get(object, "inScheme[0]._provider.getDetails") && _.get(object, "inScheme[0]._provider").getDetails(object))
+      if (!promise) {
+        console.log("Object", object, "does not have _getDetails.")
+      }
+      return promise.then(results => {
         if (results.length) {
           let detail = results[0]
           // Integrate detail into object
@@ -457,7 +486,25 @@ const actions = {
         return null
       })
     }
-  }
+  },
+
+  types({ commit }, { scheme }) {
+    let promise
+    if (!scheme || !scheme._getTypes) {
+      promise = Promise.resolve([])
+    } else {
+      promise = scheme._getTypes()
+    }
+    return promise.then(types => {
+      commit({
+        type: "set",
+        object: scheme,
+        prop: "types",
+        value: types
+      })
+      return types
+    })
+  },
 
 }
 
