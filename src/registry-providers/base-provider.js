@@ -104,6 +104,10 @@ class BaseProvider {
         scheme._getTop = () => {
           return this.getTop(scheme)
         }
+        // Add _getTypes function to schemes
+        scheme._getTypes = () => {
+          return this.getTypes(scheme)
+        }
         // Add _provider to schemes
         scheme._provider = this
         // Add _suggest function to schemes
@@ -117,8 +121,21 @@ class BaseProvider {
       return concordances
     }
     this.adjustMappings = (mappings) => {
+      for (let mapping of mappings) {
+        // Add fromScheme and toScheme if missing
+        for (let side of ["from", "to"]) {
+          let sideScheme = `${side}Scheme`
+          if (!mapping[sideScheme]) {
+            mapping[sideScheme] = _.get(jskos.conceptsOfMapping(mapping, side), "[0].inScheme[0]")
+          }
+        }
+      }
       return mappings
     }
+  }
+
+  getCancelToken() {
+    return axios.CancelToken.source()
   }
 
   /**
