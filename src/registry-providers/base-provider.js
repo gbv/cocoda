@@ -80,16 +80,16 @@ class BaseProvider {
      */
     this.adjustConcepts = (concepts) => {
       for (let concept of concepts) {
-        // Add getNarrower function to concepts
-        concept.getNarrower = () => {
+        // Add _getNarrower function to concepts
+        concept._getNarrower = () => {
           return this.getNarrower(concept)
         }
-        // Add getAncestors function to concepts
-        concept.getAncestors = () => {
+        // Add _getAncestors function to concepts
+        concept._getAncestors = () => {
           return this.getAncestors(concept)
         }
-        // Add getDetails function to concepts
-        concept.getDetails = () => {
+        // Add _getDetails function to concepts
+        concept._getDetails = () => {
           return this.getDetails(concept)
         }
       }
@@ -100,14 +100,14 @@ class BaseProvider {
     }
     this.adjustSchemes = (schemes) => {
       for (let scheme of schemes) {
-        // Add getTop function to schemes
-        scheme.getTop = () => {
+        // Add _getTop function to schemes
+        scheme._getTop = () => {
           return this.getTop(scheme)
         }
-        // Add provider to schemes
-        scheme.provider = this
-        // Add suggest function to schemes
-        scheme.suggest = (search) => {
+        // Add _provider to schemes
+        scheme._provider = this
+        // Add _suggest function to schemes
+        scheme._suggest = (search) => {
           return this.suggest(search, scheme)
         }
       }
