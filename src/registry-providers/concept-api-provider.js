@@ -94,7 +94,7 @@ class ConceptApiProvider extends BaseProvider {
     return this.get(this.registry.ancestors, options)
   }
 
-  _suggest(search, scheme, { limit = 200, use = "notation,label", types = [] } = {}) {
+  _suggest(search, { scheme, limit = 200, use = "notation,label", types = [], cancelToken } = {}) {
     if (!this.registry.suggest || !search) {
       return Promise.resolve(["", [], [], []])
     }
@@ -110,7 +110,7 @@ class ConceptApiProvider extends BaseProvider {
     }
     // Some registries use URL templates with {searchTerms}
     let url = this.registry.suggest.replace("{searchTerms}", search)
-    return this.get(url, options)
+    return this.get(url, options, cancelToken)
   }
 
   /**
