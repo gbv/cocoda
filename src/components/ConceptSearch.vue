@@ -172,6 +172,9 @@ export default {
         })
       }
     },
+    provider() {
+      return _.get(this.scheme, "_provider")
+    },
   },
   watch: {
     /**
@@ -242,7 +245,7 @@ export default {
       let uri = _.last(result)
       let concept = {
         uri: uri,
-        inScheme: [this.selected.scheme[this.isLeft]]
+        inScheme: [this.scheme]
       }
       this.setSelected("concept", this.isLeft, concept)
       this.closeResults()
@@ -259,9 +262,9 @@ export default {
     getAnswer:  function () {
       this.searchResult = []
       // Generate new axios cancel token
-      this.cancelToken = this.$api.token()
+      this.cancelToken = this.provider.getCancelToken()
       let searchQuery = this.searchQuery
-      this.$api.suggest(this.selected.scheme[this.isLeft], searchQuery, 100, undefined, this.cancelToken.token)
+      this.provider.suggest(searchQuery, { scheme: this.scheme, types: this.selectedTypes, cancelToken: this.cancelToken.token })
         .then((data) => {
           if (searchQuery == this.searchQuery) {
             this.loading = false
@@ -394,21 +397,10 @@ export default {
     },
     loadTypes(item) {
       // Load types for scheme
-      let promise
-      if (item.types && Array.isArray(item.types) && !item.types.includes(null)) {
-        promise = Promise.resolve(item.types)
-      } else {
-        promise = this.$api.types(item, true).then(types => {
-          this.$store.commit({
-            type: "objects/set",
-            object: item,
-            prop: "types",
-            value: types
-          })
-          return types
-        })
-      }
-      promise.then(types => {
+      this.$store.dispatch({
+        type: "objects/types",
+        scheme: item
+      }).then(types => {
         if (!this.selectedTypes) {
           this.selectedTypes = types.map(type => type.uri)
         }
