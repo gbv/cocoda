@@ -6,7 +6,7 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of local mappings.
    */
-  _getMappings({ from, to, direction, mode, identifier }) {
+  _getMappings({ from, to, direction, mode, identifier } = {}) {
     let params = {}
     if (from) {
       params.from = from.uri
@@ -90,7 +90,7 @@ class LocalMappingsProvider extends BaseProvider {
    *
    * @param {*} mappings - list of mappings in object form: { mapping, original }
    */
-  _saveMappings(mappings) {
+  _saveMappings(mappings = []) {
     return this.getMappings().then(localMappings => {
       let addedMappings = []
 
@@ -113,6 +113,9 @@ class LocalMappingsProvider extends BaseProvider {
       }
 
       return localforage.setItem("mappings", localMappings).then(() => {
+        for (let mapping of addedMappings) {
+          mapping.LOCAL = true
+        }
         return addedMappings
       }).catch(() => {
         return []
@@ -123,7 +126,7 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Removes mappings from local storage. Returns a Promise with a list of mappings that were removed.
    */
-  _removeMappings(mappings) {
+  _removeMappings(mappings = []) {
     return this.getMappings().then(localMappings => {
       let removedMappings = []
       let filter = (reverse = false) => mapping => m => {
