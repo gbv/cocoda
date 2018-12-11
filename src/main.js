@@ -16,10 +16,7 @@ Vue.use(BootstrapVue)
 var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
 
-// Add api, use with this.$api in components
-import api from "./api"
-Vue.prototype.$api = api
-// Initialize api
+// Initialize store
 store.dispatch("init")
 
 // Add util, use with this.$util in components

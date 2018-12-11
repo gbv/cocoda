@@ -1,5 +1,6 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
+import config from "../../config"
 
 // TODO: - Add support for memberChoice and maybe memberList.
 
@@ -16,6 +17,7 @@ const state = {
   mapping: jskos.copyDeep(emptyMapping),
   original: null,
   mappingsNeedRefresh: false,
+  mappingRegistry: null,
 }
 
 // helper functions
@@ -248,9 +250,83 @@ const mutations = {
   },
 }
 
+// actions
+// TODO: Refactoring!
+const actions = {
+
+  getMappings({ state }, { from, to, direction, mode, identifier, registry, onlyFromMain = false } = {}) {
+    let registries = []
+    if (onlyFromMain) {
+      // Try to find registry that fits state.mappingRegistry
+      let registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
+      if (!registry) {
+        registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
+      }
+      if (registry) {
+        registries = [registry]
+      }
+    } else {
+      if (registry) {
+        let uri = registry
+        registry = config.registries.find(registry => jskos.compare(registry, { uri }))
+        if (registry) {
+          registries = [registry]
+        }
+      } else {
+        registries = config.registries.filter(registry => registry.provider.has.mappings)
+      }
+    }
+    let promises = []
+    for (let registry of registries) {
+      promises.push(registry.provider.getMappings({ from, to, direction, mode, identifier }))
+    }
+    return Promise.all(promises).then(results => {
+      let mappings = _.union(...results)
+      // TODO: Adjustments, like replacing schemes and concepts with references in store, etc.
+      return mappings
+    })
+  },
+
+  saveMappings({ state }, { mappings, registry }) {
+    let uri = registry
+    if (uri) {
+      registry = config.registries.find(registry => jskos.compare(registry, { uri }))
+    } else {
+      registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
+      if (!registry) {
+        registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
+      }
+    }
+    if (!registry || !registry.provider || !registry.provider.has.canSaveMappings) {
+      console.warn("Tried to save mappings, but could not determine provider.")
+      return Promise.resolve([])
+    }
+    return registry.provider.saveMappings(mappings)
+  },
+
+  removeMappings({ state }, { mappings, registry }) {
+    let uri = registry
+    if (uri) {
+      registry = config.registries.find(registry => jskos.compare(registry, { uri }))
+    } else {
+      registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
+      if (!registry) {
+        registry = config.registries.find(registry => registry.provider.has.canRemoveMappings)
+      }
+    }
+    if (!registry || !registry.provider || !registry.provider.has.canSaveMappings) {
+      console.warn("Tried to remove mappings, but could not determine provider.")
+      return Promise.resolve([])
+    }
+    return registry.provider.removeMappings(mappings)
+  },
+
+}
+
 export default {
   namespaced: true,
   state,
   getters,
   mutations,
+  actions,
 }

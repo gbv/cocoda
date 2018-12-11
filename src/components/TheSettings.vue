@@ -170,36 +170,30 @@ export default {
       if (this.uploadedFile) {
         let reader = new FileReader()
         reader.onloadend = evt => {
-          let numberOfMappings, lines, importResult
-          this.$api.getLocalMappings().then(localMappings => {
-            numberOfMappings = localMappings.length
-            let contents = evt.target.result
-            lines = contents.split("\n")
-            importResult = {
-              imported: 0,
-              skipped: 0,
-              error: 0,
-              empty: 0,
+          let lines, importResult
+          let contents = evt.target.result
+          lines = contents.split("\n")
+          importResult = {
+            imported: 0,
+            skipped: 0,
+            error: 0,
+            empty: 0,
+          }
+          let mappings = []
+          for (let line of lines) {
+            if (line === "") {
+              importResult.empty += 1
+              continue
             }
-            let promise = Promise.resolve([])
-            for (let line of lines) {
-              if (line === "") {
-                importResult.empty += 1
-                continue
-              }
-              try {
-                let mapping = JSON.parse(line)
-                promise = promise.then(() => {
-                  return this.$api.saveMapping(mapping)
-                })
-              } catch(error) {
-                importResult.error += 1
-              }
+            try {
+              let mapping = JSON.parse(line)
+              mappings.push({ mapping })
+            } catch(error) {
+              importResult.error += 1
             }
-            return promise
-          }).then(result => {
-            let newNumberOfMappings = result.length
-            importResult.imported = newNumberOfMappings - numberOfMappings
+          }
+          this.$store.dispatch({ type: "mapping/saveMappings", mappings }).then(result => {
+            importResult.imported = result.length
             importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
             this.$refs.fileUpload.reset()
@@ -221,7 +215,7 @@ export default {
       // Set download data variables
       this.dlAllMappings = null
       this.dlMappings = []
-      this.$api.getLocalMappings().then(mappings => {
+      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {
         // Set all mappings variable
         this.dlAllMappings = mappings.map(mapping => JSON.stringify(this.$jskos.minifyMapping(mapping))).join("\n")
         // First, determine available combinations of concept schemes
@@ -260,16 +254,12 @@ export default {
     },
     rewriteCreator() {
       // 1. Load all local mappings directly from API
-      this.$api.getLocalMappings().then(mappings => {
+      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {
         // 2. Rewrite mappings to new creator
         for (let mapping of mappings) {
-          mapping.creator = [{
-            prefLabel: {
-              de: this.localSettings.creator
-            }
-          }]
+          _.set(mapping, "creator[0].prefLabel.de", this.localSettings.creator)
         }
-        return this.$api.saveMappings(mappings)
+        return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })) })
       }).then(() => {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", true)
@@ -292,13 +282,15 @@ export default {
       FileSaver.saveAs(blob, filename)
     },
     deleteMappings() {
-      this.$api.saveMappings([]).then(mappings => {
-        if (mappings.length) {
-          console.warn("Error when deleting mappings.")
-        }
-        this.$store.commit("mapping/setRefresh", true)
-        this.refreshDownloads()
-        this.deleteMappingsButtons = false
+      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {
+        return this.$store.dispatch({ type: "mapping/removeMappings", mappings }).then(removedMappings => {
+          if (mappings.length != removedMappings.length) {
+            console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappings.length}.`)
+          }
+          this.$store.commit("mapping/setRefresh", true)
+          this.refreshDownloads()
+          this.deleteMappingsButtons = false
+        })
       })
     },
   }

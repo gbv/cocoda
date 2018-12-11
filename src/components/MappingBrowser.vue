@@ -417,7 +417,7 @@ export default {
 
       // Reload local mapping identifiers
       // TODO: Do this differently!
-      this.$api.getLocalMappings(params).then(mappings => {
+      this.$store.dispatch({ type: "mapping/getMappings", ...params, onlyFromMain: true }).then(mappings => {
         this.localMappingIdentifiers = mappings.reduce((all, current) => all.concat(current.identifier || []), [])
         this.localMappingsTotal = mappings.length
       })
@@ -737,11 +737,11 @@ export default {
       // Save mapping
       // let original = mapping.LOCAL ? data.item.mapping : null
       if (this.canSave(mapping)) {
-        this.saveMapping(mapping).then(() => {
+        this.saveMapping(mapping).then(original => {
           this.$store.commit({
             type: "mapping/set",
             mapping,
-            original: mapping
+            original
           })
         })
       } else {
@@ -804,7 +804,7 @@ export default {
       }
     },
     removeMapping(mapping) {
-      this.$api.removeMapping(mapping).then(success => {
+      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(success => {
         if (success) {
           this.alert(this.$t("alerts.mappingDeleted"), null, "success")
         } else {
@@ -834,8 +834,8 @@ export default {
     },
     saveMapping(mapping) {
       this.loading = 1
-      return this.$api.saveMapping(mapping).then(mapping => {
-        return mapping
+      return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
+        return mappings[0]
       }).catch(() => {
         return null
       }).finally(() => {

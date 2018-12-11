@@ -498,7 +498,7 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query["identifier"] ? this.$api.getMappings({ identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
+        let loadMapping = (query["identifier"] ? this.$store.dispatch({ type: "mapping/getMappings", identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
           if (query["identifier"] && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.

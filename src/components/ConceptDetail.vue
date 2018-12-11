@@ -313,9 +313,9 @@ export default {
       let promises = []
       let params = {
         direction: "both",
-        from: this.item.uri,
+        from: this.item,
       }
-      promises.push(this.$api.getMappings(params))
+      promises.push(this.$store.dispatch({ type: "mapping/getMappings", ...params }))
       Promise.all(promises).then(results => {
         if (!this.$jskos.compare(itemBefore, this.item)) {
           // Abort if item changed in the meantime
