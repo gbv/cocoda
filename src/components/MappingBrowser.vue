@@ -502,7 +502,7 @@ export default {
           registry,
         })
 
-        let promise = registry.provider.getAllMappings(params).then(mappings => {
+        let promise = this.$store.dispatch({ type: "mapping/getMappings", ...params, registry: registry.uri, all: true }).then(mappings => {
 
           // Check loadingId
           if (this.loadingId != loadingId) {

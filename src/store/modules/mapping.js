@@ -254,7 +254,7 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ state }, { from, to, direction, mode, identifier, registry, onlyFromMain = false } = {}) {
+  getMappings({ state }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
@@ -273,12 +273,16 @@ const actions = {
           registries = [registry]
         }
       } else {
-        registries = config.registries.filter(registry => registry.provider.has.mappings)
+        registries = config.registries.filter(registry => registry.provider.has.mappings || (all && registry.provider.has.occurrences))
       }
     }
     let promises = []
     for (let registry of registries) {
-      promises.push(registry.provider.getMappings({ from, to, direction, mode, identifier }))
+      if (all) {
+        promises.push(registry.provider.getAllMappings({ from, to, direction, mode, identifier, selected }))
+      } else {
+        promises.push(registry.provider.getMappings({ from, to, direction, mode, identifier }))
+      }
     }
     return Promise.all(promises).then(results => {
       let mappings = _.union(...results)
