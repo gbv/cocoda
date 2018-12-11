@@ -42,7 +42,8 @@ class BaseProvider {
       concordances: registry.concordances,
       mappings: registry.mappings,
       occurrences: registry.occurrences,
-      // TODO: - Add entries for saving/editing/deleting mappings.
+      canSaveMappings: registry.canSaveMappings,
+      canRemoveMappings: registry.canRemoveMappings,
     }
     // Convert all values into booleans
     _.forOwn(this.has, (value, key) => {
