@@ -576,7 +576,7 @@ export default {
           })
           // Truncate if necessary (and don't truncate local mappings)
           let wasTruncated = false
-          let maxLengthForThis = _.get(this.showMoreValues, `[${registry.uri}]`, 1) * lengthPerSet // TODO:
+          let maxLengthForThis = _.get(this.showMoreValues, `["${registry.uri}"]`, 1) * lengthPerSet
           if (truncateResults && mappings.length > maxLengthForThis) {
             mappings = mappings.slice(0, maxLengthForThis)
             wasTruncated = true
@@ -709,7 +709,7 @@ export default {
       })
     },
     showMore(value) {
-      this.showMoreValues[value] = _.get(this.showMoreValues, `[${value}]`, 1) + 1
+      this.showMoreValues[value] = _.get(this.showMoreValues, `["${value}"]`, 1) + 1
       this.$store.commit("mapping/setRefresh", true)
     },
     truncateText(text, characters = 10) {
