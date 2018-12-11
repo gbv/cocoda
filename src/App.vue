@@ -501,11 +501,14 @@ export default {
         let loadMapping = (query["identifier"] ? this.$api.getMappings({ identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
           if (query["identifier"] && mappings.length) {
             // Found original mapping.
+            // Prefer local mapping over other mappings.
+            // TODO: There needs to be a completely unique identifier for this.
+            let original = mappings.find(mapping => mapping.LOCAL) || mappings[0]
             return decodeMapping.then(mapping => {
               if (mapping) {
-                return [mapping, mappings[0]]
+                return [mapping, original]
               } else {
-                return [mappings[0], mappings[0]]
+                return [original, original]
               }
             })
           } else {
