@@ -17,6 +17,7 @@ const state = {
   mapping: jskos.copyDeep(emptyMapping),
   original: null,
   mappingsNeedRefresh: false,
+  mappingsNeedRefreshRegistry: null,
   mappingRegistry: null,
 }
 
@@ -245,7 +246,27 @@ const mutations = {
     }
   },
 
-  setRefresh(state, refresh) {
+  setRefresh(state, { refresh = true, registry, onlyMain = false } = {}) {
+    // TODO: Refactoring!
+    if (refresh) {
+      if (onlyMain) {
+        // Try to find registry that fits state.mappingRegistry
+        registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
+        if (!registry) {
+          registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
+        }
+      } else {
+        if (registry) {
+          let uri = registry
+          registry = config.registries.find(registry => jskos.compare(registry, { uri }))
+        }
+      }
+      if (registry) {
+        state.mappingsNeedRefreshRegistry = registry.uri
+      }
+    } else {
+      state.mappingsNeedRefreshRegistry = null
+    }
     state.mappingsNeedRefresh = refresh
   },
 }

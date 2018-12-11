@@ -381,7 +381,7 @@ export default {
               prop: "mappingBrowserShowRegistry",
               value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
             })
-            this.$store.commit("mapping/setRefresh", true)
+            this.$store.commit("mapping/setRefresh")
           }
         })
       }
@@ -394,8 +394,13 @@ export default {
   watch: {
     needsRefresh(refresh) {
       if (refresh) {
-        this.reload(true)
-        this.$store.commit("mapping/setRefresh", false)
+        let registry = this.$store.state.mapping.mappingsNeedRefreshRegistry
+        if (registry) {
+          this.reload(true, registry)
+        } else {
+          this.reload(true)
+        }
+        this.$store.commit("mapping/setRefresh", { refresh: false })
       }
     },
     selectedConcepts: {
@@ -413,7 +418,7 @@ export default {
     this.reload()
   },
   methods: {
-    internalReload(force = false) {
+    internalReload(force = false, registryToReload) {
 
       // Reload local mapping identifiers
       // TODO: Do this differently!
@@ -448,7 +453,11 @@ export default {
         this.showMoreValues = {}
       }
 
-      this.items = []
+      let partialReload = true
+      if (!registryToReload) {
+        this.items = []
+        partialReload = false
+      }
       this.loading = 1
 
       // Set unique ID for this request
@@ -494,13 +503,25 @@ export default {
         isFirst = false
 
         // Add loading indicator.
-        this.items.push({
+        let loadingRow = {
           "_wholeRow": true,
           "_rowClass": "mappingBrowser-table-row-loading",
           value: "",
           type: "loading",
           registry,
-        })
+        }
+        if (partialReload) {
+          if (registry.uri != registryToReload) {
+            // Skip
+            continue
+          }
+          // Only remove mappings from current registry
+          let index = this.items.findIndex(item => this.$jskos.compare(item.registry, registry))
+          this.items = this.items.filter(item => !this.$jskos.compare(item.registry, registry))
+          this.items = this.items.slice(0, index).concat([loadingRow], this.items.slice(index, this.items.length))
+        } else {
+          this.items.push(loadingRow)
+        }
 
         let promise = this.$store.dispatch({ type: "mapping/getMappings", ...params, registry: registry.uri, all: true }).then(mappings => {
 
@@ -710,7 +731,7 @@ export default {
     },
     showMore(value) {
       this.showMoreValues[value] = _.get(this.showMoreValues, `["${value}"]`, 1) + 1
-      this.$store.commit("mapping/setRefresh", true)
+      this.$store.commit("mapping/setRefresh", { registry: value })
     },
     truncateText(text, characters = 10) {
       if (text.length > characters) {
@@ -811,7 +832,7 @@ export default {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
         // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", true)
+        this.$store.commit("mapping/setRefresh", { onlyMain: true })
       })
     },
     /** Saving of mappigns */
@@ -840,7 +861,7 @@ export default {
         return null
       }).finally(() => {
         // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", true)
+        this.$store.commit("mapping/setRefresh", { onlyMain: true })
       })
     },
   }

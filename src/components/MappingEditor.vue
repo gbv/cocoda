@@ -287,7 +287,7 @@ export default {
       }).catch(error => {
         this.alert(error, null, "danger")
       }).then(() => {
-        this.$store.commit("mapping/setRefresh", true)
+        this.$store.commit("mapping/setRefresh", { onlyMain: true })
         this.clearMapping()
       })
     },
@@ -303,7 +303,7 @@ export default {
       }).catch(error => {
         this.alert(error, null, "danger")
       }).then(() => {
-        this.$store.commit("mapping/setRefresh", true)
+        this.$store.commit("mapping/setRefresh", { onlyMain: true })
         if (clear) {
           this.clearMapping()
         }

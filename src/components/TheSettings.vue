@@ -198,7 +198,7 @@ export default {
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
             this.$refs.fileUpload.reset()
             this.refreshDownloads()
-            this.$store.commit("mapping/setRefresh", true)
+            this.$store.commit("mapping/setRefresh", { onlyMain: true })
           })
         }
         reader.readAsText(this.uploadedFile)
@@ -262,7 +262,7 @@ export default {
         return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })) })
       }).then(() => {
         this.creatorRewritten = true
-        this.$store.commit("mapping/setRefresh", true)
+        this.$store.commit("mapping/setRefresh", { onlyMain: true })
         this.refreshDownloads()
       })
     },
@@ -287,7 +287,7 @@ export default {
           if (mappings.length != removedMappings.length) {
             console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappings.length}.`)
           }
-          this.$store.commit("mapping/setRefresh", true)
+          this.$store.commit("mapping/setRefresh", { onlyMain: true })
           this.refreshDownloads()
           this.deleteMappingsButtons = false
         })
