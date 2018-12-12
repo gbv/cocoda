@@ -47,12 +47,12 @@
               :value="selected.scheme[isLeft]"
               :options="schemeOptions"
               class="schemeSelect fontWeight-heavy"
-              @change="setSelected('concept', isLeft, null); setSelected('scheme', isLeft, $event)" />
+              @change="setSelected({ isLeft, scheme: $event })" />
             <div
               v-b-tooltip.hover="{ title: $t('general.showSchemeInfo'), delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
               class="button schemeSelectInfo"
-              @click="setSelected('concept', isLeft, null)" >
+              @click="setSelected({ isLeft, concept: null, scheme: selected.scheme[isLeft] })" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
@@ -398,11 +398,7 @@ export default {
      * Completely clears the concept scheme browser on one side
      */
     clear(isLeft) {
-      if (isLeft) {
-        this.setSelected("scheme", true, null)
-      } else {
-        this.setSelected("scheme", false, null)
-      }
+      this.setSelected({ isLeft })
     },
     // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
     conceptTreeLeft() {
@@ -423,6 +419,9 @@ export default {
 
       // Check route to see if navigation is necessary
       let query = this.$route.query
+
+      let promises = []
+
       // Prepare application by selecting schemes and concepts from URL parameters.
       let selected = {
         scheme: {
@@ -434,54 +433,14 @@ export default {
           false: query.to
         }
       }
-      let promises = []
-      let setSelectedPromise = (kind, isLeft, scheme, conceptUri) => {
-        let object
-        if (kind == "concept") {
-          if (scheme && conceptUri) {
-            object = {
-              uri: conceptUri,
-              inScheme: [scheme]
-            }
-          } else {
-            object = null
-          }
-        } else {
-          object = scheme
-        }
-        this.setSelected(kind, isLeft, object, true)
-        return Promise.resolve()
-      }
+
       for (let isLeft of [true, false]) {
-        let schemeUri = selected.scheme[isLeft]
-        // Select scheme
-        let scheme = schemeUri && this.$store.getters["objects/get"]({ uri: schemeUri })
-        if (schemeUri && !scheme) {
-          this.alert("Scheme from URL could not be found.", null, "danger")
-        }
-        let promise = Promise.resolve()
-        // Check if same scheme is already selected
-        let currentScheme = this.selected.scheme[isLeft]
-        if (!this.$jskos.compare(scheme, currentScheme)) {
-          // Only select scheme if current scheme is different
-          promise = setSelectedPromise("scheme", isLeft, scheme).then(() => {
-            // Introduce a short delay to make sure everything's loaded properly.
-            return new Promise(resolve => setTimeout(() => resolve(), 200))
-          })
-        }
-        promises.push(
-          promise.then(() => {
-            let conceptUri = selected.concept[isLeft]
-            // Select concept
-            // Check if same concept is already selected
-            let currentConcept = this.selected.concept[isLeft]
-            if (!this.$jskos.compare({ uri: conceptUri }, currentConcept)) {
-              return setSelectedPromise("concept", isLeft, scheme, conceptUri)
-            } else {
-              return Promise.resolve()
-            }
-          })
-        )
+        promises.push(this.setSelected({
+          concept: selected.concept[isLeft] ? { uri: selected.concept[isLeft] } : null,
+          scheme: selected.scheme[isLeft] ? { uri: selected.scheme[isLeft] } : null,
+          isLeft,
+          noQueryRefresh: true,
+        }))
       }
       // Prepare application by selecting mapping from URL parameters.
       if (query["mapping"]) {
@@ -556,7 +515,7 @@ export default {
           refreshRouter(this.$store)
         }).catch((error) => {
           this.loading = false
-          console.log(error)
+          console.warn(error)
           this.alert("There was an error loading data from URL.", null, "danger")
         })
       } else {

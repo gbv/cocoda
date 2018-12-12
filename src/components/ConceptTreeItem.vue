@@ -169,7 +169,7 @@ export default {
      * Triggers a selected event.
      */
     select(concept) {
-      this.setSelected("concept", this.isLeft, concept)
+      this.setSelected({ isLeft: this.isLeft, concept })
     },
     /**
      * Deals with a click on a concept.

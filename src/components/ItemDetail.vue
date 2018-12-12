@@ -29,7 +29,6 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
-import _ from "lodash"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -109,63 +108,11 @@ export default {
      */
     item: function() {
       this.$el.scrollTop = 0
-      this.loadDetails()
     }
-  },
-  created() {
-    this.loadDetails()
   },
   mounted() {
     this.$el.scrollTop = 0
   },
-  methods: {
-    loadDetails() {
-      this.loading = true
-      // Get details from API
-      this.loadObjectDetails({ object: this.item }).then(() => {
-        this.loading = false
-        // If there are no ancestors, but broader, load concepts for broader
-        if ((!this.item.ancestors || this.item.ancestors.length == 0) && !this.item.BROADERLOADED) {
-          let item = this.item
-          if (!item.broader || item.broader.length == 0) {
-            this.$store.commit({
-              type: "objects/set",
-              object: item,
-              prop: "BROADERLOADED",
-              value: true
-            })
-            return
-          }
-          if (item.broader.includes(null)) {
-          // FIXME: Use broader endpoint to load broader instead
-            console.warn("broader: null")
-            this.$store.commit({
-              type: "objects/set",
-              object: item,
-              prop: "BROADERLOADED",
-              value: true
-            })
-            return
-          } else {
-            let promises = []
-            for (let i = 0; i < (item.broader && item.broader.length) || 0; i += 1) {
-              promises.push(this.getObject({ object: item.broader[i], scheme: _.get(item, "inScheme[0]") }).then( broader => {
-                this.$set(item.broader, i, broader)
-              }))
-            }
-            Promise.all(promises).then(() => {
-              this.$store.commit({
-                type: "objects/set",
-                object: item,
-                prop: "BROADERLOADED",
-                value: true
-              })
-            })
-          }
-        }
-      })
-    },
-  }
 }
 </script>
 

@@ -1,5 +1,6 @@
 import Vue from "vue"
 import jskos from "jskos-tools"
+import _ from "lodash"
 
 // initial state
 const state = {
@@ -22,6 +23,34 @@ const getters = {
       }
     }
     return null
+  }
+}
+
+const adjustObject = object => {
+  // Set inScheme and type of all related nodes and add them to the store if necessary
+  for (let prop of ["ancestors", "broader", "narrower"]) {
+    if (object[prop]) {
+      object[prop].forEach((concept, index) => {
+        if (concept != null) {
+          concept.inScheme = concept.inScheme || object.inScheme
+          concept.type = concept.type || ["http://www.w3.org/2004/02/skos/core#Concept"]
+          // Add to store if necessary
+          if (!getters.get(state)(concept)) {
+            mutations.save(state, { object: concept })
+          } else {
+            // Replace concept with concept from store
+            object[prop][index] = getters.get(state)(concept)
+          }
+        }
+      })
+    }
+  }
+  // Use scheme's provider to adjust concepts if they haven't been adjusted yet.
+  let provider = _.get(object, "inScheme[0]._provider")
+  if (provider && !object._getDetails) {
+    provider.adjustConcepts([object])
+  } else if (!object._getDetails) {
+    console.warn("Could not adjust", object)
   }
 }
 
@@ -89,23 +118,8 @@ const mutations = {
         if (object.inScheme.length == 0) {
           console.warn("inScheme has no elements", object)
         }
-        // Set inScheme of all related nodes
-        for (let prop of ["ancestors", "broader", "narrower"]) {
-          if (object[prop] && !object[prop].includes(null)) {
-            for (let concept of object[prop]) {
-              concept.inScheme = concept.inScheme || object.inScheme
-            }
-          }
-        }
-        // Use scheme's provider to adjust concepts if they haven't been adjusted yet.
-        // FIXME: Ideally, all concepts coming from the API have been adjusted already! So eventually, this should be removed.
-        let provider = _.get(object, "inScheme[0]._provider")
-        if (provider && !object._getDetails) {
-          console.warn("Adjusting object...")
-          provider.adjustConcepts([object])
-        } else if (!object._getDetails) {
-          console.error("Could not adjust", object)
-        }
+        // Adjust concept
+        adjustObject(object)
       } else if (jskos.isScheme(object)) {
         Vue.set(object, "TOPCONCEPTS", object.TOPCONCEPTS || [null])
         Vue.set(object, "created", object.created || null)
@@ -141,6 +155,10 @@ const mutations = {
       Vue.set(objectInStore, prop, value)
     }
     Vue.set(object, prop, value)
+  },
+
+  adjust (state, { object }) {
+    adjustObject(object)
   }
 
 }
@@ -362,6 +380,11 @@ const actions = {
           prop: "narrower",
           value: jskos.sortConcepts(narrower)
         })
+        // Adjust object
+        commit({
+          type: "adjust",
+          object,
+        })
         return object
       }).catch(error => {
         console.error(error)
@@ -433,6 +456,11 @@ const actions = {
           prop: "ancestors",
           value: ancestors
         })
+        // Adjust object
+        commit({
+          type: "adjust",
+          object,
+        })
         return object
       }).catch(error => {
         console.error(error)
@@ -455,14 +483,15 @@ const actions = {
     } else {
       let promise = (object._getDetails && object._getDetails()) || (_.get(object, "inScheme[0]._provider.getDetails") && _.get(object, "inScheme[0]._provider").getDetails(object))
       if (!promise) {
-        console.log("Object", object, "does not have _getDetails.")
+        console.warn("Object", object, "does not have _getDetails.")
+        return Promise.resolve(object)
       }
       return promise.then(results => {
         if (results.length) {
           let detail = results[0]
           // Integrate detail into object
           for (let prop of Object.keys(detail)) {
-            if (object[prop] == null) {
+            if ((_.isEmpty(object[prop]) || Array.isArray(object[prop]) && object[prop].includes(null)) && detail[prop] != null) {
               commit({
                 type: "set",
                 object,
@@ -476,6 +505,11 @@ const actions = {
             object,
             prop: "DETAILSLOADED",
             value: true
+          })
+          // Adjust object
+          commit({
+            type: "adjust",
+            object,
           })
           return object
         } else {

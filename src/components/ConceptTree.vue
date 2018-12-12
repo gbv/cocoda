@@ -102,10 +102,6 @@ export default {
           this.shouldScroll = true
         }
         if (this.$jskos.isConcept(concept)) {
-          // Load concept's narrower
-          if (!concept.narrower || concept.narrower.includes(null)) {
-            this.loadNarrower({ object: concept })
-          }
           // Check if concept is fully loaded
           if (concept.ancestors && !concept.ancestors.includes(null)) {
             let fullyLoaded = true

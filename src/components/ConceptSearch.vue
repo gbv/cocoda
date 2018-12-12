@@ -247,7 +247,10 @@ export default {
         uri: uri,
         inScheme: [this.scheme]
       }
-      this.setSelected("concept", this.isLeft, concept)
+      this.setSelected({
+        concept,
+        isLeft: this.isLeft,
+      })
       this.closeResults()
       this.searchSelected = -1
       // Remove focus
