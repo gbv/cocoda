@@ -42,7 +42,7 @@ If you need to use z-index values, please use the predefined LESS variables in `
 ### Icons
 Cocoda uses [Font Awesome](https://fontawesome.com/) for some icons. You can use any of their free icons (see their [icon gallery](https://fontawesome.com/icons?d=gallery&s=brands,solid&m=free)) like this:
 
-```html
+```html static
 <font-awesome-icon icon="plus-circle" />
 ```
 

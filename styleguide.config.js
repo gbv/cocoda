@@ -63,6 +63,10 @@ module.exports = {
           content: "docs/design-guidelines.md"
         },
         {
+          name: "Registries and Providers",
+          content: "docs/dev-providers.md"
+        },
+        {
           name: "Releasing a New Version",
           content: "docs/releasing.md"
         }

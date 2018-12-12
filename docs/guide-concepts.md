@@ -15,7 +15,7 @@ A list of bookmarked concept schemes is shown if no concept scheme was selected.
 
 ### Details
 
-The details pane shows a scheme's or concept's detailed information. In case of a scheme it currently shows the notation, label, license, publisher, and identifier. It will also show a scheme's top concepts if the tree view is minimized. In case of a concept it currently shows a concept's ancestors, its notation and preferred label, notes (scope notes and editorial notes), register entries and additional labels, identifiers, GND terms, and narrower concepts. In most cases, not all of these informations are available for a concept. The details pane also allows navigating backward and forward through the history of selected concepts by using the arrow buttons in the top right.
+The details pane shows a scheme's or concept's detailed information. In case of a scheme it currently shows the notation, label, license, publisher, and identifier. It will also show a scheme's top concepts if the tree view is minimized. In case of a concept it currently shows a concept's ancestors, its notation and preferred label, notes (scope notes and editorial notes), register entries and additional labels, identifiers, GND terms, and narrower concepts. In most cases, not all of these informations are available for a concept.
 
 ### Concept Tree
 

@@ -8,9 +8,8 @@ The web application is build with [Vue](https://vuejs.org/), based on independen
 
 Backend services include:
 
-* **Terminology Providers** such as <https://api.dante.gbv.de/> provide
+* **Terminology Repositories** such as <https://api.dante.gbv.de/> provide
   information about concept schemes and concepts.
-* **Mapping Providers** can be queried for existing mappings and mapping recommendations.
-* **Mapping Repositories** allow creation, modification, and annotation of new mappings.
-* **Occurrence Providers** can be queried for usage statistics of concepts in collections.
-* **Identity Providers** manage user accounts and provide access tokens via OAuth2.
+* **Mapping Repositories** can be queried for existing mappings and mapping recommendations, and might allow creation, modification, and annotation of new mappings.
+* **Occurrence Repositories** can be queried for usage statistics of concepts in collections.
+* **Identity Repositories** manage user accounts and provide access tokens via OAuth2.
