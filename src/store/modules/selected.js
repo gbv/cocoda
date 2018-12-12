@@ -81,11 +81,13 @@ const actions = {
         console.error("setSelected: critical error when getting/saving concept from store.")
         return Promise.resolve(false)
       }
+      let promises = []
       // Check if scheme is different from selected scheme, if not change
       if (!jskos.compare(scheme, state.scheme[isLeft])) {
         kind = "both"
+        // Load top concepts for scheme
+        promises.push(dispatch("objects/top", { scheme }, { root: true }))
       }
-      let promises = []
       // Load details
       promises.push(dispatch("objects/details", { object: concept }, { root: true }))
       // Load narrower concepts
