@@ -78,6 +78,6 @@ module.exports = {
       components: "src/components/*.vue"
     },
   ],
-  showUsage: true,
+  usageMode: "expand",
   webpackConfig
 }
