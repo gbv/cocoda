@@ -12,6 +12,23 @@ let config = Object.assign({}, defaultConfig, userConfig)
 
 if (config.registryMode == "merge") {
   config.registries = [].concat(defaultConfig.registries || [], userConfig.registries || [])
+  // Merge registries with the same URI (higher priority overrides lower priority, later in list overrides earlier in list)
+  let registries = []
+  for (let registry of config.registries) {
+    let index = registries.findIndex(r => r.uri == registry.uri)
+    if (index != -1) {
+      // Compare priorities
+      let prioCurrent = registry.priority || 0
+      let prioExisting = registries[index].priority || 0
+      // Override except if existing prio is higher than current prio
+      if (!(prioExisting > prioCurrent)) {
+        registries[index] = registry
+      }
+    } else {
+      registries.push(registry)
+    }
+  }
+  config.registries = registries
 }
 
 // Make new config file format (#64) compatible with current implementation.
@@ -47,6 +64,7 @@ if (config.registries) {
   }
 }
 
+// Filter out registries where no provider could be initialized
 config.registries = config.registries.filter(registry => registry.provider != null)
 
 // load build info into config
