@@ -78,7 +78,9 @@
             class="conceptSearch-results-item fontSize-small"
             @click="chooseResult(result)"
             @mouseover="mouseover(i)" >
-            <span v-html="highlightQueryInResult(result[0])" />
+            <router-link
+              :to="_getRouterUrl(result)"
+              v-html="highlightQueryInResult(result[0])" />
           </li>
           <li
             v-if="searchResult.length == 0"
@@ -241,20 +243,19 @@ export default {
      *
      * @param {string[]} result - result array with label, description, and uri (in this order)
      */
-    chooseResult: function (result) {
+    chooseResult() {
+      this.closeResults()
+      this.searchSelected = -1
+      // Remove focus
+      if (document.activeElement != document.body) document.activeElement.blur()
+    },
+    _getRouterUrl(result) {
       let uri = _.last(result)
       let concept = {
         uri: uri,
         inScheme: [this.scheme]
       }
-      this.setSelected({
-        concept,
-        isLeft: this.isLeft,
-      })
-      this.closeResults()
-      this.searchSelected = -1
-      // Remove focus
-      if (document.activeElement != document.body) document.activeElement.blur()
+      return this.getRouterUrl(concept, this.isLeft)
     },
     closeResults() {
       this.isOpen = false
@@ -349,7 +350,8 @@ export default {
       } else {
         chosenIndex = this.searchSelected
       }
-      this.chooseResult(this.searchResult[chosenIndex])
+      this.$router.push({ path: this._getRouterUrl(this.searchResult[chosenIndex]) })
+      this.chooseResult()
     },
     /**
      * Handles a mouseover down event.
@@ -475,7 +477,15 @@ export default {
   list-style: none;
   text-align: left;
   cursor: pointer;
+  height: 25px;
+  position: relative;
+}
+
+.conceptSearch-results-item > a {
+  position: absolute;
   padding: 3px 0px 3px 12px;
+  top: 0; right: 0; left: 0; bottom: 0;
+  color: @color-text-dark;
 }
 
 .conceptSearch-selected {

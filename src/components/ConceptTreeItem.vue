@@ -23,20 +23,21 @@
             selected: isSelected
         }" />
       </div>
-      <a
+      <router-link
+        :to="getRouterUrl(concept, isLeft)"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         draggable="true"
         @dragstart="dragStart(concept, $event)"
         @dragend="dragEnd()"
-        @mouseover="hovering(concept)"
-        @mouseout="hovering(null)"
+        @mouseover.native="hovering(concept)"
+        @mouseout.native="hovering(null)"
         @click.stop.prevent="onClick" >
         <item-name
           :item="concept"
           :is-highlighted="isSelected"
           :prevent-external-hover="true" />
-      </a>
+      </router-link>
       <div
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         v-show="canAddToMapping"
@@ -182,7 +183,7 @@ export default {
         return
       }
       if (!this.isSelected) {
-        this.select(this.concept)
+        // this.select(this.concept)
       } else if(this.hasChildren) {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
