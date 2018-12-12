@@ -1,10 +1,13 @@
 import config from "../config"
 import jskos from "jskos-tools"
 import util from "../util"
+import _ from "lodash"
 
 export default {
   init ({ commit, getters }) {
     // Prepare config
+    // Work with a local copy of the config so that we don't use schemes that have already been added to store (causes observers not to work properly).
+    let localConfig = _.cloneDeep(config)
     commit({
       type: "setConfig",
       config
@@ -12,7 +15,7 @@ export default {
 
     let schemes = [], promises = []
 
-    for (let registry of config.registries) {
+    for (let registry of localConfig.registries) {
       let provider = registry.provider
       if (provider.has.concepts) {
         let promise = provider.getSchemes().then(results => {
@@ -72,6 +75,11 @@ export default {
       commit({
         type: "setSchemes",
         schemes
+      })
+      // Set local config in store (after committing schemes to store)
+      commit({
+        type: "setConfig",
+        config: localConfig
       })
     })
   }

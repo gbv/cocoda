@@ -22,7 +22,7 @@
       {{ $t("conceptTree.noTree") }}
     </div>
     <!-- Full screen loading indicator -->
-    <loading-indicator-full v-if="loading" />
+    <loading-indicator-full v-if="loading || topConcepts.includes(null)" />
   </div>
 </template>
 
@@ -52,7 +52,6 @@ export default {
   },
   data () {
     return {
-      topConcepts: [],
       loading: false,
       currentSelectedConcept: null,
       shouldScroll: true,
@@ -82,17 +81,12 @@ export default {
         })
       }
       return items
-    }
+    },
+    topConcepts() {
+      return (this.selected.scheme[this.isLeft] ? this.selected.scheme[this.isLeft].TOPCONCEPTS : null) || []
+    },
   },
   watch: {
-    /**
-     * Resets the tree when new vocabulary is chosen.
-     */
-    schemeSelected: function(newValue, oldValue) {
-      if (oldValue != newValue) {
-        this.reset()
-      }
-    },
     conceptSelected: {
       handler() {
         // TODO: Check
@@ -141,26 +135,9 @@ export default {
         }
       },
       deep: true
-    }
-  },
-  created() {
-    // Reset tree if scheme is already chosen
-    if (this.schemeSelected) {
-      this.reset()
-    }
+    },
   },
   methods: {
-    /**
-     * Resets the concept tree and loads top concepts for new vocabulary.
-     */
-    reset: function() {
-      this.topConcepts = []
-      this.loading = true
-      this.loadTop({ scheme: this.schemeSelected }).then(() => {
-        this.topConcepts = _.get(this, "schemeSelected.TOPCONCEPTS", [])
-        this.loading = false
-      })
-    },
     children(concept) {
       let items = []
       if (concept && concept.ISOPEN[this.isLeft]) {

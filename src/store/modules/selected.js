@@ -54,7 +54,8 @@ const actions = {
           concept: null,
           noQueryRefresh,
         })
-        return Promise.resolve(true)
+        // Load top concepts for scheme
+        return dispatch("objects/top", { scheme }, { root: true }).then(() => true)
       } else {
         console.error("setSelected: could not find scheme in store.")
         return Promise.resolve(false)
