@@ -24,7 +24,7 @@
         }" />
       </div>
       <router-link
-        :to="getRouterUrl(concept, isLeft)"
+        :to="url"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         draggable="true"
@@ -32,7 +32,7 @@
         @dragend="dragEnd()"
         @mouseover.native="hovering(concept)"
         @mouseout.native="hovering(null)"
-        @click.stop.prevent="onClick" >
+        @click.native.stop.prevent="onClick" >
         <item-name
           :item="concept"
           :is-highlighted="isSelected"
@@ -116,6 +116,8 @@ export default {
       preventClickArrow: false,
       canAddToMapping: false,
       interval: null,
+      /** URL of currently hovered concept */
+      url: "",
     }
   },
   computed: {
@@ -149,6 +151,12 @@ export default {
           }
         }, 500)
       }
+      // Set URL to router URL for this concept
+      if (concept) {
+        this.url = this.getRouterUrl(concept, this.isLeft)
+      } else {
+        this.url = ""
+      }
     },
     /**
      * Calls open and prevents accidental double clicks.
@@ -170,6 +178,7 @@ export default {
      * Triggers a selected event.
      */
     select(concept) {
+      // FIXME: Replace with $router.push.
       this.setSelected({ isLeft: this.isLeft, concept })
     },
     /**
