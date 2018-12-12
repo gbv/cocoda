@@ -171,16 +171,4 @@ let addEndpoint = (url, endpoint) => {
   return url + "/" + endpoint
 }
 
-// Returns an API URL for a concept
-let apiUrl = (concept) => {
-  if (!concept || !concept.uri) {
-    return null
-  }
-  let provider = _.get(concept, "inScheme[0].PROVIDER")
-  if (!provider || !provider.data) {
-    return null
-  }
-  return `${provider.data}?uri=${encodeURIComponent(concept.uri)}`
-}
-
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, lmContent, prefLabel, definition, addEndpoint, apiUrl }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, lmContent, prefLabel, definition, addEndpoint }

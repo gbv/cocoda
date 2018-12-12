@@ -152,10 +152,13 @@
     />
 
     <div
+      v-if="apiUrl"
       class="conceptDetail-apiUrl" >
-      <auto-link
-        :link="$util.apiUrl(item)"
-        text="API" />
+      <a
+        :href="apiUrl"
+        target="_blank" >
+        API
+      </a>
     </div>
 
   </div>
@@ -276,6 +279,17 @@ export default {
     },
     broader() {
       return _.get(this.item, "broader", []) || []
+    },
+    apiUrl() {
+      if (!this.item || !this.item.uri) {
+        return null
+      }
+      let provider = _.get(this.item, "inScheme[0]._provider")
+      let baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
+      if (!baseUrl) {
+        return null
+      }
+      return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
     },
   },
   watch: {
