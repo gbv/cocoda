@@ -63,8 +63,12 @@ Vue.mixin({
     getRouterUrl(object, isLeft) {
       let query = _.cloneDeep(this.$route.query)
       let fromTo = isLeft ? "from" : "to"
-      if (jskos.isScheme(object) || !object.inScheme) {
-      // Consider object a scheme
+      if (!object) {
+        // If null, clear side
+        delete query[fromTo]
+        delete query[fromTo + "Scheme"]
+      } else if (jskos.isScheme(object) || !object.inScheme) {
+        // Consider object a scheme
         delete query[fromTo]
         query[fromTo + "Scheme"] = object.uri
       } else {

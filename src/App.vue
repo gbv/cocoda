@@ -47,19 +47,19 @@
               :value="selected.scheme[isLeft]"
               :options="schemeOptions"
               class="schemeSelect fontWeight-heavy"
-              @change="setSelected({ isLeft, scheme: $event })" />
+              @change="$router.push({ path: getRouterUrl($event, isLeft) })" />
             <div
               v-b-tooltip.hover="{ title: $t('general.showSchemeInfo'), delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
               class="button schemeSelectInfo"
-              @click="setSelected({ isLeft, concept: null, scheme: selected.scheme[isLeft] })" >
+              @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })" >
               <font-awesome-icon icon="info-circle" />
             </div>
             <div
               v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
               v-show="selected.scheme[isLeft] != null"
               class="button schemeSelectInfo"
-              @click="clear(isLeft)" >
+              @click="$router.push({ path: getRouterUrl(null, isLeft) })" >
               <font-awesome-icon icon="times-circle" />
             </div>
           </div>
@@ -393,12 +393,6 @@ export default {
         this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft() != null && this.conceptTreeLeft().$el.dataset.minimized == "1"
         this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight() != null && this.conceptTreeRight().$el.dataset.minimized == "1"
       }
-    },
-    /**
-     * Completely clears the concept scheme browser on one side
-     */
-    clear(isLeft) {
-      this.setSelected({ isLeft })
     },
     // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
     conceptTreeLeft() {
