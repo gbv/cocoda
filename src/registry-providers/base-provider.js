@@ -14,7 +14,7 @@ import axios from "axios"
  *    // (usually it is recommended to only override the _ functions)
  *    // ...
  *  }
- *  TestProvider.providerName = "test"
+ *  TestProvider.providerName = "Test"
  * ```
  * The providerName is necessary for the provider to be identified.
  */
@@ -143,6 +143,8 @@ class BaseProvider {
    * Returns a Promise with a list of registries.
    *
    * By default, the current registry is returned.
+   *
+   * Usually, this method has no parameters.
    */
   getRegistries(...params) {
     return this._getRegistries(...params)
@@ -156,6 +158,8 @@ class BaseProvider {
    * Returns a Promise with a list of supported concept schemes.
    *
    * If registry.schemes is an array, it will be returned, otherwise an empty array will be returned by default.
+   *
+   * Usually, this method has no parameters.
    */
   getSchemes(...params) {
     return this._getSchemes(...params)
@@ -170,6 +174,8 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of top concepts.
+   *
+   * Usually, this method has one parameter `scheme` (JSKOS object).
    */
   getTop(...params) {
     return this._getTop(...params)
@@ -181,6 +187,11 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of concepts.
+   *
+   * Usually, this method has two parameters:
+   * - 1. A list of JSKOS concepts to be retrieved from the API.
+   * - 2. An options object currently supporting only a `properties` field which defaults to this.properties.default.
+   * Note that this might change in the future.
    */
   getConcepts(...params) {
     return this._getConcepts(...params)
@@ -199,6 +210,8 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of types of concepts.
+   *
+   * Usually, this method has one parameter `scheme` (JSKOS object).
    */
   getTypes(...params) {
     return this._getTypes(...params)
@@ -209,6 +222,8 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of narrower concepts for a concept.
+   *
+   * Usually, this method has one parameter `concept` (JSKOS object).
    */
   getNarrower(...params) {
     return this._getNarrower(...params)
@@ -220,6 +235,8 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of ancestor concepts for a concept.
+   *
+   * Usually, this method has one parameter `concept` (JSKOS object).
    */
   getAncestors(...params) {
     return this._getAncestors(...params)
@@ -231,6 +248,14 @@ class BaseProvider {
 
   /**
    * Returns Promise with typeahead suggestions according to the OpenSearch Suggest Format.
+   *
+   * Usually, this method has two parameters:
+   * 1. A search string.
+   * 2. A params/options object with the following fields:
+   *    - scheme: if the search should be restricted by scheme
+   *    - limit: number of results returned
+   *    - types: an array of type URIs
+   *    - cancelToken: an axios cancel token (e.g. provided by provider.cancelToken)
    */
   suggest(...params) {
     return this._suggest(...params)
@@ -241,6 +266,9 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of search results.
+   *
+   * Usually, this method has the same parameters as `suggest`.
+   * Note that this might change in the future.
    */
   search(...params) {
     return this._search(...params)
@@ -252,6 +280,8 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of concordances.
+   *
+   * Usually, this method has no parameters.
    */
   getConcordances(...params) {
     return this._getConcordances(...params)
@@ -263,6 +293,14 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of mappings.
+   *
+   * Usually, this method has one parameter which is an object containing some of the following fields:
+   * - from: a JSKOS concept from which to map
+   * - to: a JSKOS concept to which to map
+   * - direction: one of `forward`, `backward`, or `both`
+   * - mode: one of `and` or `or`
+   * - identifier: a string of identifiers separated by `|`
+   * - options: a raw options object for the GET request
    */
   getMappings(...params) {
     return this._getMappings(...params)
@@ -274,6 +312,8 @@ class BaseProvider {
 
   /**
    * Saves mappings to the registry. Returns a Promise with a list of mappings that were saved.
+   *
+   * Usually, this method has one parameter which is a list of JSKOS mappings to be saved.
    */
   saveMappings(...params) {
     return this._saveMappings(...params)
@@ -284,6 +324,8 @@ class BaseProvider {
 
   /**
    * Removes mappings from the registry. Returns a Promise with a list of mappings that were removed.
+   *
+   * Usually, this method has one parameter which is a list of JSKOS mappings to be removed.
    */
   removeMappings(...params) {
     return this._removeMappings(...params)
@@ -294,6 +336,11 @@ class BaseProvider {
 
   /**
    * Returns a Promise with a list of occurrences.
+   *
+   * Usually, this method has one parameter which is an object containing some of the following fields:
+   * - from: a JSKOS concept for which to search for occurrences (for compatibility with getMappings)
+   * - to: a JSKOS concept for which to search for occurrences (for compatibility with getMappings)
+   * - concepts: a list of JSKOS concepts for which to search for occurrences
    */
   getOccurrences(...params) {
     return this._getOccurrences(...params)
@@ -307,9 +354,9 @@ class BaseProvider {
    *
    * By default, it combines the results of getMappings and getOccurrences.
    *
-   * @param {*} selected - an object with selected schemes and concepts, like it's used in Cocoda (*)
+   * This method should have the same parameter as `getMappings`, with an additional field `selected` (see * below).
    *
-   * (*) the selected parameter should have the following form:
+   * (*) The selected parameter allows this method to rearrange occurrences based on already selected concept schemes. It should have the following form (same as in Cocoda):
    * {
    *   scheme: {
    *     [true]: {...},
