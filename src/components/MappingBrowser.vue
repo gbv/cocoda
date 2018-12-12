@@ -676,6 +676,7 @@ export default {
               "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
               value: registry.uri,
               type: "more",
+              registry,
             })
           }
 
@@ -797,6 +798,15 @@ export default {
               object: concept,
               prop: "prefLabel",
               value: { de: " " }
+            })
+          }
+          // Also set notation if it doesn't exist.
+          if (result && result.notation && !concept.notation) {
+            this.$store.commit({
+              type: "objects/set",
+              object: concept,
+              prop: "notation",
+              value: result.notation
             })
           }
         })
