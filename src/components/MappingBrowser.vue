@@ -13,20 +13,19 @@
           class="mappingBrowser-settings-registryGroup" >
           <span
             :id="`registryGroup-${group.uri}`"
-            class="fontWeight-heavy button" >
-            {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
+            class="mappingBrowser-settings-registryGroup-title fontWeight-heavy button" >
+            {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" />
           </span>
-          <span v-if="!registryGroupShow[group.uri]">
-            <span
-              v-for="registry in group.registries"
-              :key="registry.uri"
-              :class="{
-                ['text-veryLightGrey']: !showRegistry[registry.uri]
-              }"
-              class="mappingBrowser-settings-registryGroup-notation fontSize-small" >
-              {{ $util.notation(registry) }}
-            </span>
-          </span>
+          (<span
+            v-for="registry in group.registries"
+            :key="registry.uri"
+            :class="{
+              ['fontWeight-heavy']: showRegistry[registry.uri],
+              ['text-veryLightGrey']: !showRegistry[registry.uri]
+            }"
+            class="mappingBrowser-settings-registryGroup-notation fontSize-small" >
+            {{ $util.notation(registry) }}
+          </span>)
           <b-popover
             :target="`registryGroup-${group.uri}`"
             :show.sync="registryGroupShow[group.uri]"
@@ -977,8 +976,11 @@ export default {
   flex: 1;
   text-align: center;
 }
+.mappingBrowser-settings-registryGroup-title {
+  margin-right: 10px;
+}
 .mappingBrowser-settings-registryGroup-notation {
-  margin: 0 10px;
+  margin: 0 4px;
 }
 .mappingBrowser-settings-registryGroup-popover {
   display: flex;
