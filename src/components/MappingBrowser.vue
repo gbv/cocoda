@@ -40,7 +40,7 @@
                 :key="`registry_${index}`"
                 v-model="showRegistry[registry.uri]"
                 class="mappingBrowser-settings-registryGroup-popover-item" >
-                <provider-name :provider="registry" />
+                <registry-name :registry="registry" />
               </b-form-checkbox>
             </div>
           </b-popover>
@@ -224,7 +224,7 @@
 
 <script>
 import ItemName from "./ItemName"
-import ProviderName from "./ProviderName"
+import RegistryName from "./RegistryName"
 import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
@@ -237,7 +237,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, ProviderName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable },
+  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable },
   data () {
     return {
       loading: 0,

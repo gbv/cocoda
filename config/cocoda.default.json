@@ -69,7 +69,11 @@
       "provider": "LocalMappings",
       "subject": [{
         "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-      }]
+      }],
+      "definition": {
+        "en": ["Mappings saved locally in the browser."],
+        "de": ["Mappings, die lokal im Browser gespeichert wurden."]
+      }
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
@@ -107,7 +111,11 @@
       "provider": "OccurrencesApi",
       "subject": [{
         "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }]
+      }],
+      "definition": {
+        "en": ["Catalog Occurrences"],
+        "de": ["Katalogvorkommen"]
+      }
     }
   ],
   "registryMode": "override",
