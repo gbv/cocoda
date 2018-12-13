@@ -117,7 +117,7 @@ export default {
         return null
       }
       let baseUrl
-      if (this.$jskos.isScheme) {
+      if (this.$jskos.isScheme(this.item)) {
         let provider = _.get(this.item, "inScheme[0]._provider") || _.get(this.item, "_provider")
         baseUrl = _.get(provider, "registry.schemes") || _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
       } else {
