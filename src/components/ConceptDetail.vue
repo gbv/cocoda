@@ -151,16 +151,6 @@
       :is-left="isLeft"
     />
 
-    <div
-      v-if="apiUrl"
-      class="conceptDetail-apiUrl" >
-      <a
-        :href="apiUrl"
-        target="_blank" >
-        API
-      </a>
-    </div>
-
   </div>
 </template>
 
@@ -279,17 +269,6 @@ export default {
     },
     broader() {
       return _.get(this.item, "broader", []) || []
-    },
-    apiUrl() {
-      if (!this.item || !this.item.uri) {
-        return null
-      }
-      let provider = _.get(this.item, "inScheme[0]._provider")
-      let baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
-      if (!baseUrl) {
-        return null
-      }
-      return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
     },
   },
   watch: {
@@ -485,14 +464,6 @@ export default {
 }
 .conceptDetail-identifier svg {
   user-select: none;
-}
-.conceptDetail-apiUrl {
-  position: absolute;
-  bottom: 20px;
-  right: 5px;
-}
-.conceptDetail-apiUrl > a {
-  color: @color-background !important;
 }
 
 .conceptDetail-notes {

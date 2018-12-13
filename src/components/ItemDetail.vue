@@ -19,6 +19,17 @@
       class="fillAndCenter fontSize-normal fontWeight-heavy" >
       {{ $t("itemDetail.pleaseSelect") }}
     </div>
+
+    <div
+      v-if="apiUrl"
+      class="itemDetail-apiUrl" >
+      <a
+        :href="apiUrl"
+        target="_blank" >
+        API
+      </a>
+    </div>
+
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
   </div>
@@ -100,7 +111,25 @@ export default {
         showAllAncestors: this.$settings.conceptDetailShowAllAncestors,
         showAllNotes: this.$settings.conceptDetailDoNotTruncateNotes,
       },this.settings)
-    }
+    },
+    apiUrl() {
+      if (!this.item || !this.item.uri) {
+        return null
+      }
+      let baseUrl
+      if (this.$jskos.isScheme) {
+        let provider = _.get(this.item, "inScheme[0]._provider") || _.get(this.item, "_provider")
+        baseUrl = _.get(provider, "registry.schemes") || _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
+      } else {
+        let provider = _.get(this.item, "inScheme[0]._provider")
+        baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
+      }
+      // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165.
+      if (!baseUrl) {
+        return null
+      }
+      return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
+    },
   },
   watch: {
     /**
@@ -132,6 +161,14 @@ export default {
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;
+}
+.itemDetail-apiUrl {
+  position: absolute;
+  bottom: 20px;
+  right: 5px;
+}
+.itemDetail-apiUrl > a {
+  color: @color-background !important;
 }
 
 </style>
