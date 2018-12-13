@@ -44,6 +44,7 @@
       </div>
       <!-- Mapping table -->
       <flexible-table
+        v-show="items.length > 0"
         :items="items"
         :fields="fields"
         class="mappingBrowser-table"
