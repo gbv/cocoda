@@ -680,4 +680,9 @@ html, body {
 #swapSides:hover {
   color: @color-button-hover;
 }
+
+.alert-success2 {
+  color: @color-alert-success;
+  background-color: @color-alert-success-background;
+}
 </style>

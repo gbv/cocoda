@@ -177,12 +177,12 @@ export default {
 .minimizeButton {
   right: 0px;
   top: 0px;
-  background: @color-button-faded;
+  background: @color-button-slightlyFaded;
   color: @color-primary-text;
-  border-radius: 0 0 0 5px;
+  border-radius: 0 0 0 3px;
 }
 .minimizeButton {
-  padding-left: 6px;
+  padding-left: 5px;
 }
 .maximizeButton {
   z-index: @zIndex-9;
@@ -198,7 +198,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: fadeout(@color--resizingSlider, 75%);
+  background-color: darken(@color-loading-overlay-background, 20%);
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized

@@ -277,7 +277,7 @@ export default {
       let mapping = this.prepareMapping()
       let original = this.original
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
-        this.alert(this.$t("alerts.mappingSaved"), null, "success")
+        this.alert(this.$t("alerts.mappingSaved"), 0, "success2")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
         this.$store.commit({
           type: "mapping/set",
@@ -298,7 +298,7 @@ export default {
     deleteOriginalMapping(clear = false) {
       let mapping = this.prepareMapping(this.original)
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(() => {
-        this.alert(this.$t("alerts.mappingDeleted"), null, "success")
+        this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
       }).catch(error => {
         this.alert(error, null, "danger")
       }).then(() => {

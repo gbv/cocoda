@@ -1,7 +1,7 @@
 // Base colors // --------------------------------------------------
 
 @color-primary-0: rgb(88, 128, 187);
-@color-highlight: rgb(255, 225, 107);
+@color-highlight: rgb(255, 200, 107);
 @color-complement-0: rgb(255, 200, 107);
 
 // Adjusted base colors // --------------------------------------------------
@@ -14,6 +14,7 @@
 
 @color-highlight-dark: darken(@color-highlight, 12%);
 @color-highlight-darker: darken(@color-highlight, 24%);
+@color-highlight-much-darker: darken(@color-highlight, 40%);
 @color-highlight-light: lighten(@color-highlight, 12%);
 @color-highlight-lighter: lighten(@color-highlight, 24%);
 
@@ -82,6 +83,11 @@
 @color--minimizer-overlay-background-hover: @color-primary-1;
 
 @color--resizingSlider: #B34D28;
+
+// Alert colors // --------------------------------------------------
+
+@color-alert-success: @color-text-dark;
+@color-alert-success-background: rgb(193, 221, 198);
 
 // Import user colors to override colors
 @import (optional) "./user-colors.less";
