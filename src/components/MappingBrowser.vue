@@ -7,13 +7,44 @@
       id="mappingBrowserWrapper" >
       <!-- Settings -->
       <div id="mappingBrowser-settings">
-        <b-form-checkbox
-          v-for="(registry, index) in mappingRegistries"
-          :key="`registry_${index}`"
-          v-model="showRegistry[registry.uri]"
-          class="mappingBrowser-setting" >
-          <provider-name :provider="registry" />
-        </b-form-checkbox>
+        <div
+          v-for="group of registryGroups"
+          :key="group.uri"
+          class="mappingBrowser-settings-registryGroup" >
+          <span
+            :id="`registryGroup-${group.uri}`"
+            class="fontWeight-heavy button" >
+            {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
+          </span>
+          <span v-if="!registryGroupShow[group.uri]">
+            <span
+              v-for="registry in group.registries"
+              :key="registry.uri"
+              :class="{
+                ['text-veryLightGrey']: !showRegistry[registry.uri]
+              }"
+              class="mappingBrowser-settings-registryGroup-notation fontSize-small" >
+              {{ $util.notation(registry) }}
+            </span>
+          </span>
+          <b-popover
+            :target="`registryGroup-${group.uri}`"
+            :show.sync="registryGroupShow[group.uri]"
+            triggers="click"
+            placement="bottom" >
+            <div
+              :ref="`registryGroup-${group.uri}-popover`"
+              class="mappingBrowser-settings-registryGroup-popover" >
+              <b-form-checkbox
+                v-for="(registry, index) in group.registries"
+                :key="`registry_${index}`"
+                v-model="showRegistry[registry.uri]"
+                class="mappingBrowser-settings-registryGroup-popover-item" >
+                <provider-name :provider="registry" />
+              </b-form-checkbox>
+            </div>
+          </b-popover>
+        </div>
       </div>
       <!-- Mapping table -->
       <flexible-table
@@ -228,6 +259,7 @@ export default {
       showMoreValues: {},
       /** Unique ID for each reload */
       loadingId: null,
+      registryGroupShow: {},
     }
   },
   computed: {
@@ -390,6 +422,27 @@ export default {
     mappingRegistries() {
       return this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences))
     },
+    registryGroups() {
+      let groups = _.cloneDeep(this.config.registryGroups)
+      for (let group of groups) {
+        group.registries = []
+      }
+      let otherGroup = {
+        uri: "http://coli-conc.gbv.de/registry-group/other-mappings",
+        prefLabel: {
+          de: "Andere Mappings",
+          en: "Other Mappings"
+        },
+        registries: []
+      }
+      for (let registry of this.mappingRegistries) {
+        let group = groups.find(group => group.uri == _.get(registry, "subject[0].uri")) || otherGroup
+        group.registries.push(registry)
+      }
+      groups.push(otherGroup)
+      groups = groups.filter(group => group.registries.length > 0)
+      return groups
+    },
   },
   watch: {
     needsRefresh(refresh) {
@@ -412,12 +465,31 @@ export default {
   },
   created() {
     this.reload = _.debounce(this.internalReload, 100)
+    // Fill registryGroupsShow
+    for (let group of this.registryGroups) {
+      this.$set(this.registryGroupShow, group.uri, false)
+    }
   },
   mounted() {
     this.$util.setupTableScrollSync()
     this.reload()
+    // Add click event listener
+    document.addEventListener("click", this.handleClickOutside)
+  },
+  destroyed() {
+    // Remove click event listener
+    document.removeEventListener("click", this.handleClickOutside)
   },
   methods: {
+    handleClickOutside(event) {
+      // Handle registry group popovers
+      for (let group of this.registryGroups) {
+        let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
+        if (popover && !popover.contains(event.target)) {
+          this.registryGroupShow[group.uri] = false
+        }
+      }
+    },
     internalReload(force = false, registryToReload) {
 
       // Reload local mapping identifiers
@@ -895,11 +967,27 @@ export default {
   flex: none;
   display: flex;
   flex-wrap: wrap;
-  margin: 5px auto;
+  margin: 10px 50px;
 }
 .mappingBrowser-setting {
   user-select: none;
   margin: 0 15px;
+}
+.mappingBrowser-settings-registryGroup {
+  flex: 1;
+  text-align: center;
+}
+.mappingBrowser-settings-registryGroup-notation {
+  margin: 0 10px;
+}
+.mappingBrowser-settings-registryGroup-popover {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px;
+}
+.mappingBrowser-settings-registryGroup-popover-item {
+  flex: 1;
+  margin: 5px 0;
 }
 .mappingBrowser-table {
   flex: 1;

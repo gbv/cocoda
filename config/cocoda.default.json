@@ -66,16 +66,23 @@
       "mappings": "...",
       "canSaveMappings": true,
       "canRemoveMappings": true,
-      "provider": "LocalMappings"
+      "provider": "LocalMappings",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
+      }]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
       "notation": ["R"],
       "prefLabel": {
-        "en": "Registry"
+        "de": "Konkordanz-Register",
+        "en": "Corcordance Registry"
       },
       "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
-      "provider": "MappingsApi"
+      "provider": "MappingsApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
+      }]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
@@ -84,20 +91,42 @@
         "en": "Wikidata"
       },
       "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
-      "provider": "MappingsApi"
+      "provider": "MappingsApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
+      }]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "notation": ["O"],
       "prefLabel": {
-        "de": "Vorkommen",
+        "de": "Vorkommen (O)",
         "en": "Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
-      "provider": "OccurrencesApi"
+      "provider": "OccurrencesApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+      }]
     }
   ],
   "registryMode": "override",
+  "registryGroups": [
+    {
+      "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings",
+      "prefLabel": {
+        "de": "Vorhandene Mappings",
+        "en": "Existing Mappings"
+      }
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings",
+      "prefLabel": {
+        "de": "Automatische Mappings",
+        "en": "Automatic Mappings"
+      }
+    }
+  ],
   "favoriteTerminologyProviders": [
     "http://uri.gbv.de/terminology/bk/",
     "http://bartoc.org/en/node/18785",
