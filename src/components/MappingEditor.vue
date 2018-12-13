@@ -2,10 +2,6 @@
   <div
     id="mappingEditor"
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
-    <!-- Minimizer allows component to get minimized -->
-    <minimizer
-      ref="minimizer"
-      :text="$t('mappingEditor.title')" />
     <div class="mappingEditorToolbar">
       <div
         v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"

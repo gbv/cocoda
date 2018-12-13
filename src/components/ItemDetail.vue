@@ -123,12 +123,12 @@ export default {
   position: relative;
 }
 .itemDetail-content {
-  width: 100%;
-  height: 100%;
   position: absolute;
   overflow-y: auto;
-  top: 0;
-  left: 0;
+  top: 6px;
+  right: 4px;
+  bottom: 5px;
+  left: 4px;
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;

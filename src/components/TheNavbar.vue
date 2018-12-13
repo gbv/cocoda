@@ -11,7 +11,7 @@
       <img
         :src="'./static/' + logo.file"
         :alt="logo.alt || 'logo'"
-        height="40px" >
+        style="height: 50px; margin-right: 40px" >
     </b-navbar-brand>
     <!-- Title -->
     <b-navbar-brand href="#">
@@ -103,10 +103,8 @@ export default {
 
 nav.navbar {
   padding: 4px 16px 4px 16px;
-  height: 40px;
-  background-color: @color-primary-5;
-  box-shadow: 0 1px 2px 0 @color-shadow;
-  border-bottom: 2px solid @color--resizingSlider;
+  height: 60px;
+  background-color: @color-primary-1;
 }
 .navbar-brand {
   color: @color-text-dark !important;

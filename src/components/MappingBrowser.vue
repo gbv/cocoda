@@ -1,7 +1,5 @@
 <template>
   <div id="mappingBrowser">
-    <!-- Minimizer allows component to get minimized -->
-    <minimizer :text="$t('mappingBrowser.title')" />
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >

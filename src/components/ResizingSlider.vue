@@ -227,18 +227,17 @@ export default {
 @import "../style/main.less";
 
 .resizingSliderCol, .resizingSliderRow {
-  background-color: @color--resizingSlider;
   margin: 0;
   flex: 0 1 6px;
 }
 .resizingSliderCol {
   cursor: col-resize;
-  border-left: 2px solid @color-background;
-  border-right: 2px solid @color-background;
+  border-left: 2px solid @color-transparent;
+  border-right: 2px solid @color-transparent;
 }
 .resizingSliderRow {
   cursor: row-resize;
-  border-bottom: 2px solid @color-background;
-  border-top: 2px solid @color-background;
+  border-bottom: 2px solid @color-transparent;
+  border-top: 2px solid @color-transparent;
 }
 </style>

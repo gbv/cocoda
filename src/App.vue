@@ -66,7 +66,7 @@
           <!-- Concept and concept scheme quick selection -->
           <div
             v-show="selected.scheme[isLeft] == null"
-            class="placeholderComponent scrollable" >
+            class="visualComponent placeholderComponent scrollable" >
             <p
               v-if="favoriteSchemes && favoriteSchemes.length"
               class="fontWeight-heavy" >
@@ -117,7 +117,7 @@
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
               :id="'itemDetailComponent_' + isLeft"
-              class="mainComponent conceptBrowserItem conceptBrowserItemDetail"
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
             />
             <!-- Slider -->
             <resizing-slider />
@@ -126,7 +126,7 @@
               :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
               :is-left="isLeft"
               :id="'conceptTreeComponent_' + isLeft"
-              class="mainComponent conceptBrowserItem conceptBrowserItemTree"
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemTree"
             />
           </div>
         </div>
@@ -142,19 +142,24 @@
           class="mappingTool order3">
           <div
             id="mappingEditorComponent"
-            class="mappingToolItem mainComponent">
+            class="mappingToolItem mainComponent visualComponent">
             <!-- MappingEditor -->
             <mapping-editor
               v-if="selected.scheme[true] || selected.scheme[false]"
             />
             <!-- Placeholder -->
+            <!-- ... -->
+            <!-- Minimizer allows component to get minimized -->
+            <minimizer
+              ref="minimizer"
+              :text="$t('mappingEditor.title')" />
 
           </div>
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
           <div
             id="mappingBrowserComponent"
-            class="mappingToolItem mainComponent">
+            class="mappingToolItem mainComponent visualComponent">
             <!-- MappingBrowser -->
             <mapping-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
@@ -186,6 +191,8 @@
                 </p>
               </div>
             </div>
+            <!-- Minimizer allows component to get minimized -->
+            <minimizer :text="$t('mappingBrowser.title')" />
           </div>
         </div>
 
@@ -542,14 +549,15 @@ html, body {
 .main {
   flex: 1;
   position: relative;
+  background-color: @color-primary-5;
 }
 .flexbox-row {
   display: flex;
   position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  top: 6px;
+  bottom: 5px;
+  left: 4px;
+  right: 4px;
   margin: auto auto;
 }
 
@@ -634,7 +642,7 @@ html, body {
 
 .placeholderComponent {
   text-align: left;
-  padding: 40px 20px 20px 30px;
+  padding: 40px 20px 40px 30px;
 }
 .placeholderComponentCenter > div {
   text-align: center;
@@ -660,7 +668,7 @@ html, body {
   position: absolute;
   text-align: center;
   font-size: 20px;
-  top: 6px;
+  top: 16px;
   width: 50px;
   left: 0;
   right: 0;
