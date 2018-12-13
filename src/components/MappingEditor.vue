@@ -132,7 +132,7 @@
     <div class="mappingEditor-creator">
       {{ creatorName }}
     </div>
-    <div class="mappingEditor-title fontSize-large">
+    <div class="mappingEditor-title fontSize-large fontWeight-heavy">
       {{ $t("mappingEditor.title") }}
     </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
@@ -250,7 +250,10 @@ export default {
   watch: {
     mappingEncoded() {
       // When mapping changed, maximize MappingEditor.
-      this.$refs.minimizer.toggleMinimize(false)
+      let minimizerComponent = _.get(this.$el.parentElement.getElementsByClassName("minimizer"), "[0].__vue__")
+      if (minimizerComponent) {
+        minimizerComponent.toggleMinimize(false)
+      }
       // Set toScheme on every change (mutation will do nothing if there are concepts in the mapping).
       this.$store.commit({
         type: "mapping/setScheme",
@@ -463,7 +466,7 @@ export default {
 .mappingEditorPart {
   flex: 1;
   width: 0;
-  padding: 25px 0px 25px 5px;
+  padding: 30px 0px 30px 5px;
   margin-right: 5px;
   display: flex;
   flex-direction: column;

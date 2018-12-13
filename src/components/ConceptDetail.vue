@@ -478,7 +478,7 @@ export default {
 }
 
 .conceptDetail-identifier {
-  margin: 0 5px;
+  margin: 2px 5px;
 }
 .conceptDetail-identifier a {
   padding: 0 3px;
@@ -508,18 +508,15 @@ export default {
 
 <style lang="less">
 @import "../style/main.less";
-
 .conceptDetail-note-tabs {
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
+  margin-top: 5px;
 }
 .conceptDetail-note-tabs .tabs {
   box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
 }
 .conceptDetail-note-tabs .card-header {
   padding: 2px 10px 10px 10px;
-  background-color: @color-background;
+  background-color: @color-primary-5;
   user-select: none;
 }
 .conceptDetail-note-tabs .card-header-tabs {
@@ -530,7 +527,7 @@ export default {
 }
 .conceptDetail-note-tabs .card-body {
   .m-borderRadius(0px 0px 5px 5px;);
-  padding: 10px;
+  padding: 15px 10px;
   background-color: @color-background-card;
 }
 .conceptDetail-note-tabs .card-body br {
