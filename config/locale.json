@@ -63,7 +63,7 @@
     },
     "mappingEditor": {
       "title": "Mapping Editor",
-      "placeholder": "Add or drag a concept here.",
+      "placeholder": "Drag and drop a concept here.",
       "placeholderDragging": "Drop concept here.",
       "saveMapping": "save mapping",
       "deleteMapping": "delete mapping",
@@ -163,8 +163,8 @@
     },
     "mappingEditor": {
       "title": "Mapping-Editor",
-      "placeholder": "Konzept hinzufügen oder hierher ziehen.",
-      "placeholderDragging": "Konzept hierher ziehen.",
+      "placeholder": "Konzept ziehen und hier ablegen.",
+      "placeholderDragging": "Konzept hier ablegen.",
       "saveMapping": "Mapping speichern",
       "deleteMapping": "Mapping löschen",
       "clearMapping": "Mapping leeren",
