@@ -5,6 +5,7 @@ const fs = require('fs')
 const jsdoc2md = require('jsdoc-to-markdown')
 const githubBase = "https://github.com/gbv/cocoda/tree/dev/"
 const providerBase = "src/registry-providers/"
+fs.mkdirSync('styleguide')
 const providerSections =
   fs.readdirSync(providerBase)
     .sort()
