@@ -3,6 +3,9 @@
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
+      <div class="mappingBrowser-title fontSize-large fontWeight-heavy">
+        {{ $t("mappingBrowser.title") }}
+      </div>
       <!-- Settings -->
       <div id="mappingBrowser-settings">
         <div
@@ -12,18 +15,14 @@
           <span
             :id="`registryGroup-${group.uri}`"
             class="mappingBrowser-settings-registryGroup-title fontWeight-heavy button" >
-            {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" />
+            {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
           </span>
-          (<span
+          <registry-notation
             v-for="registry in group.registries"
             :key="registry.uri"
-            :class="{
-              ['fontWeight-heavy']: showRegistry[registry.uri],
-              ['text-veryLightGrey']: !showRegistry[registry.uri]
-            }"
-            class="mappingBrowser-settings-registryGroup-notation fontSize-small" >
-            {{ $util.notation(registry) }}
-          </span>)
+            :registry="registry"
+            :disabled="!showRegistry[registry.uri]"
+            class="mappingBrowser-settings-registryGroup-notation" />
           <b-popover
             :target="`registryGroup-${group.uri}`"
             :show.sync="registryGroupShow[group.uri]"
@@ -150,7 +149,8 @@
         <span
           slot="source"
           slot-scope="{ item }" >
-          <b v-b-tooltip="item.source">{{ item.sourceShort }}</b>
+          <registry-notation
+            :registry="item.registry" />
         </span>
         <span
           slot="actions"
@@ -195,7 +195,11 @@
             size="sm" />
           <span
             v-if="item.type == 'noItems'">
-            {{ $t("mappingBrowser.noItemsFor") }} {{ $util.prefLabel(item.registry) }}.
+            {{ $t("mappingBrowser.noItemsFor") }}
+            <registry-notation
+              :registry="item.registry"
+              :tooltip="false" />
+            {{ $util.prefLabel(item.registry) }}.
           </span>
         </span>
         <span
@@ -226,6 +230,7 @@ import AutoLink from "./AutoLink"
 import Minimizer from "./Minimizer"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import LoadingIndicator from "./LoadingIndicator"
+import RegistryNotation from "./RegistryNotation"
 import FlexibleTable from "vue-flexible-table"
 import _ from "lodash"
 
@@ -234,7 +239,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable },
+  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation },
   data () {
     return {
       loading: 0,
@@ -917,7 +922,7 @@ export default {
     removeMapping(mapping) {
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(success => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted"), null, "success")
+          this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
         } else {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
@@ -971,11 +976,17 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.mappingBrowser-title {
+  flex: none;
+  margin: 0 auto;
+}
 #mappingBrowser-settings {
   flex: none;
   display: flex;
   flex-wrap: wrap;
-  margin: 10px 50px;
+  margin: 5px 45px 15px 45px;
+  padding: 5px;
+  box-shadow: 0 1px 2px 0 @color-shadow;
 }
 .mappingBrowser-setting {
   user-select: none;
