@@ -2,6 +2,9 @@ import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
 
+/**
+ * For saving and retrieving mappings from the browser's local storage.
+ */
 class LocalMappingsProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of local mappings.

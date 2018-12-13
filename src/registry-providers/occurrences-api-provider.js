@@ -2,6 +2,9 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import BaseProvider from "./base-provider"
 
+/**
+ * For APIs that provide occurrences in JSKOS format.
+ */
 class OccurrencesApiProvider extends BaseProvider {
 
   constructor(...params) {

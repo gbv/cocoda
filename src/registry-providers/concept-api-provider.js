@@ -3,6 +3,10 @@ import _ from "lodash"
 import BaseProvider from "./base-provider"
 import util from "../util"
 
+/**
+ * For APIs that provide concept schemes and concepts in JSKOS format
+ * like [DANTE](http://api.dante.gbv.de/).
+ */
 class ConceptApiProvider extends BaseProvider {
 
   constructor(...params) {

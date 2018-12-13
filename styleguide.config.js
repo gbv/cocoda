@@ -1,4 +1,36 @@
 const webpackConfig = require("./build/webpack.prod.conf.js")
+const path = require('path')
+const fs = require('fs')
+
+const jsdoc2md = require('jsdoc-to-markdown')
+const githubBase = "https://github.com/gbv/cocoda/tree/dev/"
+const providerBase = "src/registry-providers/"
+const providerSections =
+  fs.readdirSync(providerBase)
+    .sort()
+    .map(file => file.match(/^(.+-provider).js$/))
+    .filter(match => match)
+    .map(match => {
+      const jsFile = match[0]
+      const name = match[1].split('-')
+        .map(s => s.charAt(0).toUpperCase() + s.substr(1))
+        .join('')
+      const content = `styleguide/${match[1]}.md`
+      let options = {
+        files: [providerBase+jsFile],
+        "index-format": "none",
+        "global-index-format": "none"
+      }
+
+      let markdown = jsdoc2md.renderSync(options)
+      // only keep the first section. TODO: also show details
+      markdown = markdown.replace(/^(<a name.*>|^## .*$)/gm,'')
+      markdown = markdown.replace(/^\*\*Kind\*\*[\s\S]*/gm,'')
+      markdown = markdown + "\n\n⇒ [source]("
+        +  githubBase + providerBase + jsFile +")"
+      fs.writeFileSync(content, markdown)
+      return { name, content }
+    })
 
 module.exports = {
   title: "Cocoda Docs",
@@ -8,25 +40,14 @@ module.exports = {
   template: {
     favicon: "/favicon.ico",
   },
+  require: [
+    path.join(__dirname, "static/styleguide.css")
+  ],
   assetsDir: "static",
   sections: [
     {
       name: "Cocoda",
-      content: "docs/introduction.md",
-      sections: [
-        {
-          name: "Usage",
-          content: "docs/usage.md"
-        },
-        {
-          name: "Installation",
-          content: "docs/installation.md"
-        },
-        {
-          name: "Configuration",
-          content: "docs/configuration.md"
-        }
-      ]
+      content: "docs/introduction.md"
     },
     {
       name: "Manual",
@@ -37,12 +58,33 @@ module.exports = {
           content: "docs/guide-interface.md"
         },
         {
+          name: "Concept Schemes",
+          content: "docs/guide-concept-schemes.md"
+        },
+        {
           name: "Concepts",
           content: "docs/guide-concepts.md"
         },
         {
           name: "Mappings",
           content: "docs/guide-mappings.md"
+        },
+        {
+          name: "Registries",
+          content: "docs/registries.md"
+        }
+      ]
+    },
+    {
+      name: "Administration",
+      sections: [
+        {
+          name: "Installation",
+          content: "docs/installation.md"
+        },
+        {
+          name: "Configuration",
+          content: "docs/configuration.md"
         }
       ]
     },
@@ -63,7 +105,7 @@ module.exports = {
           content: "docs/design-guidelines.md"
         },
         {
-          name: "Registries and Providers",
+          name: "Creating Providers",
           content: "docs/dev-providers.md"
         },
         {
@@ -71,6 +113,11 @@ module.exports = {
           content: "docs/releasing.md"
         }
       ]
+    },
+    {
+      name: "Providers",
+      content: "docs/providers.md",
+      sections: providerSections
     },
     {
       name: "Components",

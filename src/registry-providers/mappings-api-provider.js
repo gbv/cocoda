@@ -2,6 +2,9 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import BaseProvider from "./base-provider"
 
+/**
+ * For APIs that provide concordances and mappings in JSKOS format.
+ */
 class MappingsApiProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of mappings from a jskos-server.

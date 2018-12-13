@@ -1,9 +1,19 @@
-Cocoda uses registries as data sources for concept schemes, concepts, mappings, and mapping recommendations. There are some preconfigured registries in the config file, but it's possible to set up a new registry, for example with [jskos-server](https://github.com/gbv/jskos-server). Each registry has to be assigned a provider. A provider is like a category for registries, a way of accessing an API for example. Currently, Cocoda supports four different providers:
+Access to [concepts schemes](#concept-schemes), [concepts](#concepts), [mappings](#mappings), and mapping recommendations is provided by **registries** which can be configured in the [config file](#configuration).
 
-- `ConceptApi`: for APIs that provide concept schemes and concepts in JSKOS format, like [DANTE](http://api.dante.gbv.de)
-- `MappingsApi`: for APIs that provide concordances and mappings in JSKOS format
-- `OccurrencesApi`: for APIs that provide occurrences in JSKOS format
-- `LocalMappings`: for saving and retrieving mappings from the browser's local storage
+There are some preconfigured registries in the config file, but it's possible to set up a new registry, for example with [jskos-server](https://github.com/gbv/jskos-server). Each registry has to be assigned a provider. A provider is like a category for registries, a way of accessing an API for example.
+
+See [providers](#providers) for a list of providers currently implemented as part of cocoda.
+
+The registries accessed via providers can be grouped into:
+
+* **Terminology Registries** such as <https://api.dante.gbv.de/> provide
+  information about concept schemes and concepts.
+
+* **Mapping Registries** can be queried for existing mappings and mapping recommendations, and might allow creation, modification, and annotation of new mappings.
+
+* **Occurrence Registries** can be queried for usage statistics of concepts in collections.
+
+* **Identity Registries** manage user accounts and provide access tokens via OAuth2 (not implemented yet).
 
 ### Creating a new provider
 

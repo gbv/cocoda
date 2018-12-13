@@ -1,6 +1,6 @@
-A concept scheme is an organized collection of **concepts** which each indentify an individual object such as a person, a place, or a topic. Most concepts have at least a possibly unique preferred **label**, a unique **notation**, and a globally unique URI.
+A **concept** identifies and individual object such as a person, a place, or a topic. Most concepts have at least a possibly unique preferred **label**, a unique **notation**, and a globally unique URI.
 
-The left and right pane of cocoda user interface allow browsing in a concept scheme to search, inspect, and select individual concepts. Each concept browser at the left and the right side of the interface consists of:
+The left and right pane of Cocoda user interface allow browsing in a concept scheme to search, inspect, and select individual concepts. Each concept browser at the left and the right side of the interface consists of:
 
 * a dropdown menu on the top to **select a concept scheme**
 
