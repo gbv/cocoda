@@ -412,7 +412,7 @@ export default {
               prop: "mappingBrowserShowRegistry",
               value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
             })
-            this.$store.commit("mapping/setRefresh")
+            this.$store.commit("mapping/setRefresh", { registry: registry.uri })
           }
         })
       }
@@ -565,10 +565,7 @@ export default {
 
       for (let registry of this.mappingRegistries) {
 
-        // Check if enabled
-        if (!this.showRegistry[registry.uri]) {
-          continue
-        }
+
 
         let addSeparator = !isFirst
         isFirst = false
@@ -581,6 +578,15 @@ export default {
           type: "loading",
           registry,
         }
+        if (!this.showRegistry[registry.uri]) {
+          // Replace loadingRow with a hidden dummy row
+          loadingRow = {
+            "_wholeRow": true,
+            "_rowClass": "mappingBrowser-table-row-hidden",
+            value: "",
+            registry,
+          }
+        }
         if (partialReload) {
           if (registry.uri != registryToReload) {
             // Skip
@@ -592,6 +598,11 @@ export default {
           this.items = this.items.slice(0, index).concat([loadingRow], this.items.slice(index, this.items.length))
         } else {
           this.items.push(loadingRow)
+        }
+
+        // Check if enabled
+        if (!this.showRegistry[registry.uri]) {
+          continue
         }
 
         let promise = this.$store.dispatch({ type: "mapping/getMappings", ...params, registry: registry.uri, all: true }).then(mappings => {
@@ -1012,6 +1023,9 @@ export default {
 }
 .mappingBrowser-table-row-loading > span > div {
   margin: 0 auto;
+}
+.mappingBrowser-table-row-hidden {
+  display: none;
 }
 .mappingBrowser-beforeSeparatorRow {
   padding-bottom: 10px !important;
