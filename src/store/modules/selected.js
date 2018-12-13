@@ -37,6 +37,11 @@ const actions = {
     let get = object => {
       return rootGetters["objects/get"](object)
     }
+    let loadTypes = scheme => {
+      if (scheme) {
+        dispatch("objects/types", { scheme }, { root: true })
+      }
+    }
     scheme = _.get(concept, "inScheme[0]") || scheme
     // Check if concept and scheme is already selected
     if (jskos.compare(concept, state.concept[isLeft]) && jskos.compare(scheme, state.scheme[isLeft])) {
@@ -54,6 +59,8 @@ const actions = {
           concept: null,
           noQueryRefresh,
         })
+        // Load types for scheme
+        loadTypes(scheme)
         // Load top concepts for scheme
         return dispatch("objects/top", { scheme }, { root: true }).then(() => true)
       } else {
@@ -98,6 +105,8 @@ const actions = {
       return Promise.all(promises).then(() => {
         // Don't select if another selection came in on the same side
         // ...
+        // Load types for scheme
+        loadTypes(scheme)
         // Get concept from store on last time
         concept = get(concept) || concept
         // Asynchronously load its ancestors narrower concepts
