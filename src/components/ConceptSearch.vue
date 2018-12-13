@@ -85,7 +85,7 @@
           <li
             v-if="searchResult.length == 0"
             class="conceptSearch-results-item fontSize-small" >
-            {{ $t("search.noResults") }}
+            <div>{{ $t("search.noResults") }}</div>
           </li>
         </ul>
       </div>
@@ -481,7 +481,7 @@ export default {
   position: relative;
 }
 
-.conceptSearch-results-item > a {
+.conceptSearch-results-item > a, .conceptSearch-results-item > div {
   position: absolute;
   padding: 3px 0px 3px 12px;
   top: 0; right: 0; left: 0; bottom: 0;
