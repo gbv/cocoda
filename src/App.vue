@@ -143,24 +143,22 @@
           <div
             id="mappingEditorComponent"
             class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingEditor -->
-            <mapping-editor
-              v-if="selected.scheme[true] || selected.scheme[false]"
-            />
-            <!-- Placeholder -->
-            <!-- ... -->
-            <!-- Minimizer allows component to get minimized -->
-            <minimizer
-              ref="minimizer"
-              :text="$t('mappingEditor.title')" />
-
+            <div class="componentTitle">
+              {{ $t("mappingEditor.title") }}
+            </div>
+            <div class="componentBody">
+              <mapping-editor
+                v-if="selected.scheme[true] || selected.scheme[false]" />
+              <minimizer
+                ref="minimizer"
+                :text="$t('mappingEditor.title')" />
+            </div>
           </div>
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
           <div
             id="mappingBrowserComponent"
             class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingBrowser -->
             <mapping-browser
               v-if="selected.scheme[true] || selected.scheme[false]"
             />
@@ -613,6 +611,23 @@ html, body {
   flex: 6;
 }
 
+.componentTitle {
+  .fontWeight-heavy;
+  letter-spacing: 0.2em;
+  background-color: @color-primary-1;
+  text-align: center;
+  line-height: 1.5em;
+  padding: 4px;
+}
+.componentBody {
+  height: calc(100% - 1.5em - 8px);
+  padding: 5px;
+}
+
+.componentBody > div {
+  height: 100%
+}
+
 .mappingTool {
   width: 0;
   flex: 2;
@@ -624,11 +639,9 @@ html, body {
   height: 0;
   min-height: 165px;
 }
-.mappingToolItem > div {
-  height: 100%;
-}
 #mappingEditorComponent {
-  flex: 1
+  flex: 1;
+  padding: 0px;
 }
 #mappingBrowserComponent {
   flex: 2;
