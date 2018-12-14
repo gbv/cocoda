@@ -5,6 +5,12 @@ You can use the mentioned CSS classes in one of two ways:
 1. Add them to the classes list of your HTML element (recommended).
 2. Extend your CSS class using [LESS](http://lesscss.org): `&:extend(.font-heavy);`
 
+### Cards
+
+The user interface is divided into **cards** which are implemented by [components](#components).
+
+Design of cards should roughly adhere to [material design cards](https://material.io/design/components/cards.html).
+
 ### Fonts
 
 * **Font size** must only be set via one of the CSS classes `fontSize-small`, `fontSize-normal`, and `fontSize-large` (as defined in `src/style/text-styles.less`). The latter must only be use in the navigation bar and component placeholders.

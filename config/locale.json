@@ -94,15 +94,15 @@
       "source": "Source"
     },
     "minimizer": {
-      "minimize": "minimize component",
-      "maximize": "maximize component"
+      "minimize": "minimize card",
+      "maximize": "maximize card"
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
       "showAllAncestors": "Always show all ancestors in concept details.",
       "truncateNotes": "Do not truncate notes in concept details.",
       "showAll": "Always show all mappings and suggestions in mapping browser.",
-      "resetSizes": "Reset component sizes",
+      "resetSizes": "Reset card sizes",
       "creator": "Creator for mappings",
       "creatorPlaceholder": "Enter your name",
       "creatorRewrite": "Rewrite creator for all local mappings",
