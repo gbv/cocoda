@@ -5,7 +5,10 @@ const fs = require('fs')
 const jsdoc2md = require('jsdoc-to-markdown')
 const githubBase = "https://github.com/gbv/cocoda/tree/dev/"
 const providerBase = "src/registry-providers/"
-fs.mkdirSync('styleguide')
+const styleguideDir = "styleguide"
+if (!fs.existsSync(styleguideDir)) {
+  fs.mkdirSync(styleguideDir)
+}
 const providerSections =
   fs.readdirSync(providerBase)
     .sort()
@@ -16,7 +19,7 @@ const providerSections =
       const name = match[1].split('-')
         .map(s => s.charAt(0).toUpperCase() + s.substr(1))
         .join('')
-      const content = `styleguide/${match[1]}.md`
+      const content = `${styleguideDir}/${match[1]}.md`
       let options = {
         files: [providerBase+jsFile],
         "index-format": "none",
