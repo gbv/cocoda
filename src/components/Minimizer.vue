@@ -210,13 +210,13 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: @color--minimizer-overlay-background;
+  background-color: @color-background;
   text-align: center;
   letter-spacing: 0.2em;
   user-select: none;
 }
 .minimizedOverlay:hover {
-  background-color: @color--minimizer-overlay-background-hover;
+  background-color: @color-primary-1;
 }
 .minimizedOverlay > div {
   position: absolute;
