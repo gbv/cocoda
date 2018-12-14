@@ -3,7 +3,7 @@
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
       id="mappingBrowserWrapper" >
-      <div class="mappingBrowser-title fontSize-large fontWeight-heavy">
+      <div class="mappingBrowser-title">
         {{ $t("mappingBrowser.title") }}
       </div>
       <!-- Settings -->
@@ -978,6 +978,8 @@ export default {
   flex-direction: column;
 }
 .mappingBrowser-title {
+  .componentTitle;
+  .fontSize-large;
   flex: none;
   margin: 0 auto;
 }

@@ -6,7 +6,7 @@
       ['registry-notation-enabled']: !disabled,
       ['registry-notation-disabled']: disabled
     }"
-    class="registry-notation fontSize-small" >
+    class="registry-notation" >
     {{ $util.notation(registry) }}
   </div>
 </template>
@@ -41,6 +41,7 @@ export default {
   color: white;
   width: 18px;
   height: 18px;
+  .fontSize-small;
 }
 .registry-notation-enabled {
   background-color: darken(@color-button-delete, 5%);

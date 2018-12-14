@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="item != null"
-    class="conceptDetail fontSize-small">
+    class="conceptDetail">
     <!-- inScheme -->
     <div
       v-show="settings.showSchemeInAncestors"
@@ -66,7 +66,7 @@
       <div
         v-b-tooltip.hover="{ title: showAddToMappingButton ? $t('general.addToMapping') : '', delay: $util.delay.medium }"
         :class="{ button: showAddToMappingButton, 'button-disabled': !showAddToMappingButton }"
-        class="conceptDetail-name-addButton fontSize-large"
+        class="conceptDetail-name-addButton"
         @click="addToMapping" >
         <font-awesome-icon icon="plus-circle" />
       </div>
@@ -451,6 +451,7 @@ export default {
   position: relative;
 }
 .conceptDetail-name-addButton {
+  .fontSize-large;
   position: absolute;
   right: -8px;
   top: -1px;

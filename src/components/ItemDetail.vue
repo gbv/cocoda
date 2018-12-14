@@ -1,6 +1,6 @@
 <template>
   <div
-    class="itemDetail fontSize-small">
+    class="itemDetail">
     <!-- Minimizer allows component to get minimized -->
     <minimizer :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
@@ -150,6 +150,7 @@ export default {
 
 .itemDetail {
   position: relative;
+  .fontSize-small;
 }
 .itemDetail-content {
   position: absolute;

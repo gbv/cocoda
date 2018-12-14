@@ -11,7 +11,7 @@
     </div>
     <div
       v-show="minimized"
-      class="minimizedOverlay text-lightGrey fontWeight-heavy fontSize-normal"
+      class="minimizedOverlay"
       @click="toggleMinimize()" >
       <div>
         {{ text }}
@@ -203,6 +203,8 @@ export default {
 }
 // Overlay when component is minimized
 .minimizedOverlay {
+  .componentTitle;
+  .text-lightGrey;
   cursor: pointer;
   position: absolute;
   z-index: @zIndex-9;
@@ -211,8 +213,6 @@ export default {
   bottom: 0;
   left: 0;
   background-color: @color-background;
-  text-align: center;
-  letter-spacing: 0.2em;
   user-select: none;
 }
 .minimizedOverlay:hover {

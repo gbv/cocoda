@@ -11,7 +11,7 @@
     <div class="conceptSearch-inputWrapper">
       <div
         v-if="isOpen && !loading"
-        class="conceptSearch-resultCount fontSize-small" >
+        class="conceptSearch-resultCount" >
         {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
       <div
@@ -75,7 +75,7 @@
             :key="i"
             :id="uniqueID + '-searchResult-' + i"
             :class="{ 'conceptSearch-selected': i === searchSelected }"
-            class="conceptSearch-results-item fontSize-small"
+            class="conceptSearch-results-item"
             @click="chooseResult(result)"
             @mouseover="mouseover(i)" >
             <router-link
@@ -84,7 +84,7 @@
           </li>
           <li
             v-if="searchResult.length == 0"
-            class="conceptSearch-results-item fontSize-small" >
+            class="conceptSearch-results-item" >
             <div>{{ $t("search.noResults") }}</div>
           </li>
         </ul>
@@ -432,6 +432,7 @@ export default {
 }
 
 .conceptSearch-resultCount {
+  .fontSize-small;
   position: absolute;
   top: 8px;
   right: 27px;
@@ -474,6 +475,7 @@ export default {
 }
 
 .conceptSearch-results-item {
+  .fontSize-small;
   list-style: none;
   text-align: left;
   cursor: pointer;

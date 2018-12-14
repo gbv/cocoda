@@ -41,7 +41,7 @@
       <div
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         v-show="canAddToMapping"
-        class="addToMapping fontSize-large"
+        class="addToMapping"
         @click="addConcept($store)"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)" >
@@ -295,6 +295,7 @@ export default {
   padding-left: 18px;
 }
 .addToMapping {
+  .fontSize-large;
   position: absolute;
   color: @color--conceptTreeItem-addToMapping;
   top: -1px;

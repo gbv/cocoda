@@ -1,6 +1,6 @@
 <template>
   <div
-    class="schemeDetail fontSize-small">
+    class="schemeDetail">
 
     <!-- Name of scheme -->
     <item-name

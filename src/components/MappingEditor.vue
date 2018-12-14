@@ -94,7 +94,7 @@
         </div>
       </div>
       <div v-else >
-        <div class="mappingNoConcepts fontSize-small text-lightGrey">
+        <div class="mappingNoConcepts">
           <div v-if="draggedConcept == null">{{ $t("mappingEditor.placeholder") }}<br><br></div>
           <div
             v-else
@@ -132,7 +132,7 @@
     <div class="mappingEditor-creator">
       {{ creatorName }}
     </div>
-    <div class="mappingEditor-title fontSize-large fontWeight-heavy">
+    <div class="mappingEditor-title">
       {{ $t("mappingEditor.title") }}
     </div>
     <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
@@ -519,6 +519,8 @@ export default {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   text-align: center;
+  .fontSize-small;
+  .text-lightGrey;
 }
 
 .mappingEditorToolbar {
@@ -554,6 +556,8 @@ export default {
   right: 5px;
 }
 .mappingEditor-title {
+  .componentTitle;
+  .fontSize-large;
   position: absolute;
   top: 0px;
   left: 50%;
