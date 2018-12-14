@@ -1,8 +1,7 @@
 // Base colors // --------------------------------------------------
 
 @color-primary-0: rgb(88, 128, 187);
-@color-highlight: rgb(255, 200, 107);
-@color-complement-0: rgb(255, 200, 107);
+@color-select: rgb(255, 200, 107);
 
 // Adjusted base colors // --------------------------------------------------
 
@@ -12,16 +11,9 @@
 @color-primary-4: darken(@color-primary-0, 14%);
 @color-primary-5: lighten(@color-primary-0, 40%);
 
-@color-highlight-dark: darken(@color-highlight, 12%);
-@color-highlight-darker: darken(@color-highlight, 24%);
-@color-highlight-much-darker: darken(@color-highlight, 40%);
-@color-highlight-light: lighten(@color-highlight, 12%);
-@color-highlight-lighter: lighten(@color-highlight, 24%);
-
-@color-complement-1: lighten(@color-complement-0, 24%);
-@color-complement-2: lighten(@color-complement-0, 12%);
-@color-complement-3: darken(@color-complement-0, 12%);
-@color-complement-4: darken(@color-complement-0, 24%);
+@color-select-1: @color-select;
+@color-select-2: lighten(@color-select-1, 12%);
+@color-select-darker: darken(@color-select, 24%);
 
 // Text colors // --------------------------------------------------
 
@@ -36,12 +28,15 @@
 @color-button: #555555;
 @color-button-slightlyFaded: fadeout(@color-button, 40%);
 @color-button-faded: fadeout(@color-button, 80%);
-@color-button-hover: @color-highlight-darker;
+@color-button-hover: @color-select-darker;
 @color-button-disabled: rgb(228, 228, 228);
 @color-button-delete: rgb(194, 0, 0);
 @color-button-delete-hover: @color-button-hover;
 
 // General colors // --------------------------------------------------
+
+@color-action-1: darkgreen;
+@color-action-2: green;
 
 @color-background: rgb(255, 255, 255);
 @color-background-card: rgba(0, 0, 0, 0.02);
@@ -65,16 +60,11 @@
 
 @color--conceptSearch-result-selected: @color-primary-4;
 @color--conceptSearch-result-selected-background: @color-primary-5;
-@color--conceptSearch-searchHighlight: @color-highlight-darker;
-@color--conceptSearch-searchHighlight-selected: @color-highlight-darker;
+@color--conceptSearch-searchHighlight: @color-select-darker;
+@color--conceptSearch-searchHighlight-selected: @color-select-darker;
 
 @color--itemName-highlighted: @color-text-grey;
 @color--itemName-highlighted-background: @color-table-highlight-background-0;
-
-@color--conceptTreeItem-addToMapping: @color-background;
-@color--conceptTreeItem-addToMapping-hover: @color-highlight-light;
-@color--conceptTreeItem-item-hover: @color-primary-4;
-@color--conceptTreeItem-item-hover-background: @color-table-highlight-background-1;
 
 @color--loadingIndicator-border: rgb(243, 243, 243);
 @color--loadingIndicator-border-top: rgb(52, 152, 219);

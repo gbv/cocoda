@@ -557,7 +557,6 @@ export default {
 }
 .mappingEditor-title {
   .componentTitle;
-  .fontSize-large;
   position: absolute;
   top: 0px;
   left: 50%;

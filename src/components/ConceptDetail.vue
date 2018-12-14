@@ -448,6 +448,7 @@ export default {
 }
 
 .conceptDetail-name {
+  background-color: @color-select-2;
   position: relative;
 }
 .conceptDetail-name-addButton {
@@ -455,6 +456,9 @@ export default {
   position: absolute;
   right: -8px;
   top: -1px;
+}
+.conceptDetail-name-addButton:hover {
+  color: @color-action-1;
 }
 
 .conceptDetail-identifier {

@@ -979,7 +979,6 @@ export default {
 }
 .mappingBrowser-title {
   .componentTitle;
-  .fontSize-large;
   flex: none;
   margin: 0 auto;
 }

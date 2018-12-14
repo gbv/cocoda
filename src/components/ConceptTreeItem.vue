@@ -1,16 +1,15 @@
 <template>
   <div
     v-if="concept != null"
-    :style="`margin-left: ${depth * 10}px`"
+    :style="`padding-left: ${depth * 10}px`"
     :data-uri="concept.uri"
+    :class="{
+      hovered: isHovered,
+      selected: isSelected
+    }"
     class="conceptTreeItem" >
     <!-- Concept -->
     <div
-      :class="{
-        conceptBoxHovered: isHovered,
-        conceptBoxSelected: isSelected,
-        'fontWeight-heavy': isSelected
-      }"
       class="conceptBox" >
       <div
         v-if="hasChildren"
@@ -297,28 +296,26 @@ export default {
 .addToMapping {
   .fontSize-large;
   position: absolute;
-  color: @color--conceptTreeItem-addToMapping;
+  color: @color-background;
   top: -1px;
   right: 5px;
   opacity: 0.7;
 }
+
 .addToMapping:hover {
-  color: @color--conceptTreeItem-addToMapping-hover;
-  opacity: 1.0;
+  color: @color-action-1;
 }
-.conceptBoxSelected {
-  background-color: @color--itemName-highlighted-background;
+.hovered > .addToMapping {
+  color: @color-action-2;
 }
-.conceptBoxSelected .arrowBox:hover {
-  background-color: @color--conceptTreeItem-item-hover-background;
+
+.hovered,
+.selected.hovered,
+.arrowBox:hover {
+  background-color: @color-select-1;
+  color: @color-action-2;
 }
-.conceptBoxHovered, .arrowBox:hover {
-  background-color: @color--conceptTreeItem-item-hover-background;
-  color: @color--conceptTreeItem-item-hover;
-}
-.conceptBoxHovered.conceptBoxSelected {
-  background-color: @color--conceptTreeItem-item-hover-background;
-}
+
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 // TODO: Use font awesome or move somewhere else
 i {
