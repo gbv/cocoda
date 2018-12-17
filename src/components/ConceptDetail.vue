@@ -454,8 +454,9 @@ export default {
 .conceptDetail-name-addButton {
   .fontSize-large;
   position: absolute;
-  right: -8px;
+  right: 3px;
   top: -1px;
+  color: @color-background;
 }
 .conceptDetail-name-addButton:hover {
   color: @color-action-1;

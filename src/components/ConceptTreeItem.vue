@@ -298,7 +298,7 @@ export default {
   position: absolute;
   color: @color-background;
   top: -1px;
-  right: 5px;
+  right: 0px;
   opacity: 0.7;
 }
 
