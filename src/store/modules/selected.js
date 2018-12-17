@@ -129,6 +129,8 @@ const actions = {
             }, { root: true })
           })
         }
+        // Asynchronously load information from Wikipedia
+        dispatch("objects/wikipedia", { concept }, { root: true })
         commit({
           type: "set",
           kind,
