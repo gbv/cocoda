@@ -1,5 +1,5 @@
 // Import registry providers
-import providers from "./registry-providers"
+import providers from "./providers"
 
 let defaultConfig = require("../config/cocoda.default.json")
 let userConfig
