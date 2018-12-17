@@ -1,5 +1,6 @@
 import _ from "lodash"
 import jskos from "jskos-tools"
+import util from "../../util"
 
 // initial state
 const state = {
@@ -10,7 +11,11 @@ const state = {
   concept: {
     true: null,
     false: null
-  }
+  },
+  loadingId: {
+    true: "",
+    false: ""
+  },
 }
 
 // mutations
@@ -29,11 +34,14 @@ const mutations = {
       state[kind][isLeft] = value
     }
   },
+  setLoadingId (state, { isLeft, loadingId } = {}) {
+    state.loadingId[isLeft] = loadingId
+  },
 }
 
 const actions = {
 
-  set({ state, commit, dispatch, rootGetters }, { concept, scheme, isLeft = true, noQueryRefresh = false } = {}) {
+  set({ state, commit, dispatch, rootGetters }, { concept, scheme, isLeft, noQueryRefresh = false } = {}) {
     let get = object => {
       return rootGetters["objects/get"](object)
     }
@@ -42,6 +50,12 @@ const actions = {
         dispatch("objects/types", { scheme }, { root: true })
       }
     }
+    let loadingId = util.generateID()
+    commit({
+      type: "setLoadingId",
+      isLeft,
+      loadingId,
+    })
     scheme = _.get(concept, "inScheme[0]") || scheme
     // Check if concept and scheme is already selected
     if (jskos.compare(concept, state.concept[isLeft]) && jskos.compare(scheme, state.scheme[isLeft])) {
@@ -103,8 +117,6 @@ const actions = {
       promises.push(dispatch("objects/ancestors", { object: concept }, { root: true }))
 
       return Promise.all(promises).then(() => {
-        // Don't select if another selection came in on the same side
-        // ...
         // Load types for scheme
         loadTypes(scheme)
         // Get concept from store on last time
@@ -131,16 +143,21 @@ const actions = {
         }
         // Asynchronously load information from Wikipedia
         dispatch("objects/wikipedia", { concept }, { root: true })
-        commit({
-          type: "set",
-          kind,
-          isLeft,
-          concept,
-          scheme,
-          value: concept,
-          noQueryRefresh,
-        })
-        return true
+        // Only select if loadingId matches on the same side
+        if (loadingId == state.loadingId[isLeft]) {
+          commit({
+            type: "set",
+            kind,
+            isLeft,
+            concept,
+            scheme,
+            value: concept,
+            noQueryRefresh,
+          })
+          return true
+        } else {
+          return false
+        }
       })
     } else if (isLeft != null) {
       commit({
