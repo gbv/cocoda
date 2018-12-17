@@ -1,10 +1,10 @@
 const webpackConfig = require("./build/webpack.prod.conf.js")
-const path = require('path')
-const fs = require('fs')
+const path = require("path")
+const fs = require("fs")
 
-const jsdoc2md = require('jsdoc-to-markdown')
+const jsdoc2md = require("jsdoc-to-markdown")
 const githubBase = "https://github.com/gbv/cocoda/tree/dev/"
-const providerBase = "src/registry-providers/"
+const providerBase = "src/providers/"
 const styleguideDir = "styleguide"
 if (!fs.existsSync(styleguideDir)) {
   fs.mkdirSync(styleguideDir)
@@ -16,9 +16,9 @@ const providerSections =
     .filter(match => match)
     .map(match => {
       const jsFile = match[0]
-      const name = match[1].split('-')
+      const name = match[1].split("-")
         .map(s => s.charAt(0).toUpperCase() + s.substr(1))
-        .join('')
+        .join("")
       const content = `${styleguideDir}/${match[1]}.md`
       let options = {
         files: [providerBase+jsFile],
@@ -28,8 +28,8 @@ const providerSections =
 
       let markdown = jsdoc2md.renderSync(options)
       // only keep the first section. TODO: also show details
-      markdown = markdown.replace(/^(<a name.*>|^## .*$)/gm,'')
-      markdown = markdown.replace(/^\*\*Kind\*\*[\s\S]*/gm,'')
+      markdown = markdown.replace(/^(<a name.*>|^## .*$)/gm,"")
+      markdown = markdown.replace(/^\*\*Kind\*\*[\s\S]*/gm,"")
       markdown = markdown + "\n\n⇒ [source]("
         +  githubBase + providerBase + jsFile +")"
       fs.writeFileSync(content, markdown)
