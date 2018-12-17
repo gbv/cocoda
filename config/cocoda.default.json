@@ -77,9 +77,9 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
-      "notation": ["R"],
+      "notation": ["C"],
       "prefLabel": {
-        "de": "Konkordanz-Register",
+        "de": "Konkordanz-Register (C)",
         "en": "Corcordance Registry"
       },
       "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
