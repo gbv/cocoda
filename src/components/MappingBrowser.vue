@@ -44,7 +44,7 @@
       </div>
       <!-- Mapping table -->
       <flexible-table
-        v-show="items.length > 0"
+        v-show="itemCount > 0"
         :items="items"
         :fields="fields"
         class="mappingBrowser-table"
@@ -216,7 +216,7 @@
         </span>
       </flexible-table>
       <div
-        v-show="loading == 0 && items.length == 0"
+        v-show="loading == 0 && itemCount == 0"
         class="noItems fontWeight-heavy" >
         {{ $t("mappingBrowser.noMappings") }}
       </div>
@@ -266,6 +266,9 @@ export default {
     }
   },
   computed: {
+    itemCount() {
+      return this.items.filter(item => item.mapping != null).length
+    },
     /**
      * List of fields (columns) to be used in bootstrap table
      */
