@@ -45,7 +45,7 @@
       <!-- Mapping table -->
       <flexible-table
         v-show="itemCount > 0"
-        :items="items"
+        :items="tableItems"
         :fields="fields"
         class="mappingBrowser-table"
         @hover="hoveredMapping = $event && $event.mapping" >
@@ -134,7 +134,7 @@
           slot-scope="{ value }" >
           <span
             v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }"
-            v-if="value != null" >
+            v-if="value != null && $util.notation(value) != '→'" >
             {{ $util.notation(value) }}
           </span>
         </span>
@@ -268,6 +268,30 @@ export default {
   computed: {
     itemCount() {
       return this.items.filter(item => item.mapping != null).length
+    },
+    tableItems() {
+      let items = this.items.slice()
+      let previousRegistry = null
+      let previousSourceScheme = null
+      let previousTargetScheme = null
+      for (let item of items) {
+        if (!this.$jskos.compare(previousRegistry, item.registry)) {
+          previousSourceScheme = null
+          previousTargetScheme = null
+          previousRegistry = item.registry
+        }
+        if (item.sourceScheme && this.$jskos.compare(item.sourceScheme, previousSourceScheme)) {
+          item.sourceScheme = null
+        } else {
+          previousSourceScheme = item.sourceScheme
+        }
+        if (item.targetScheme && this.$jskos.compare(item.targetScheme, previousTargetScheme)) {
+          item.targetScheme = null
+        } else {
+          previousTargetScheme = item.targetScheme
+        }
+      }
+      return items
     },
     /**
      * List of fields (columns) to be used in bootstrap table
