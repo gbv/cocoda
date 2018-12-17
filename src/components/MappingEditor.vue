@@ -282,7 +282,7 @@ export default {
       let mapping = this.prepareMapping()
       let original = this.original
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
-        this.alert(this.$t("alerts.mappingSaved"), 0, "success2")
+        this.alert(this.$t("alerts.mappingSaved"), null, "success2")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
         this.$store.commit({
           type: "mapping/set",
