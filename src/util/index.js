@@ -93,6 +93,34 @@ let notation = (item, type) => {
   return ""
 }
 
+let fallbackLanguage = "en"
+
+/**
+ * Returns a language tag to be used for a language map, null if no language was found in the map.
+ *
+ * @param {*} languageMap
+ * @param {*} language
+ */
+let getLanguage = (languageMap, language) => {
+  if (!languageMap) {
+    return null
+  }
+  language = language || i18n.locale || store.state.config.language || fallbackLanguage
+  if (languageMap[language]) {
+    return language
+  }
+  if (languageMap[fallbackLanguage]) {
+    return fallbackLanguage
+  }
+  // Fallback for the fallback: iterate through languages and choose the first one found.
+  for (let language of Object.keys(languageMap)) {
+    if (language != "-") {
+      return language
+    }
+  }
+  return null
+}
+
 /**
  * Returns the content of a language map for a JSKOS Item.
  *
@@ -109,22 +137,10 @@ let lmContent = (item, prop, language) => {
   } else {
     object = item
   }
-  let fallbackLanguage = "en"
-  if (!language) {
-    language = i18n.locale || store.state.config.language || fallbackLanguage
-  }
   if (object) {
-    if (object[language]) {
+    language = getLanguage(object, language)
+    if (language) {
       return object[language]
-    }
-    if (object[fallbackLanguage]) {
-      return object[fallbackLanguage]
-    }
-    // Fallback for the fallback: iterate through languages and choose the first one found.
-    for (let language of Object.keys(object)) {
-      if (language != "-") {
-        return object[language]
-      }
     }
   }
   return null
@@ -171,4 +187,4 @@ let addEndpoint = (url, endpoint) => {
   return url + "/" + endpoint
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, lmContent, prefLabel, definition, addEndpoint }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint }

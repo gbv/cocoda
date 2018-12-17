@@ -42,7 +42,7 @@
         {{ $t("settings.creatorRewrite") }}
       </b-button>
     </p>
-    <div v-if="dlAllMappings">
+    <div v-if="dlAllMappings && dlMappingsReady">
       <h5>{{ $t("settings.localDownload") }}</h5>
       <a
         href=""
@@ -148,6 +148,7 @@ export default {
     return {
       localSettings: null,
       creatorRewritten: false,
+      dlMappingsReady: false,
       dlAllMappings: null,
       dlMappings: [],
       uploadedFile: null,
@@ -213,11 +214,47 @@ export default {
     },
     refreshDownloads() {
       // Set download data variables
+      this.dlMappingsReady = false
       this.dlAllMappings = null
       this.dlMappings = []
-      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {
+      let mappings = []
+      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(result => {
+        mappings = result
+        // First, load concepts for all mappings into Vuex store (to have the labels available)
+        // TODO: Add support for loading multiple concepts together.
+        let promises = []
+        for (let mapping of mappings) {
+          for (let side of ["from", "to"]) {
+            for (let concept of this.$jskos.conceptsOfMapping(mapping, side)) {
+              let scheme = mapping[side + "Scheme"]
+              if (!concept.inScheme || !concept.inScheme.length) {
+                concept.inScheme = [scheme]
+              }
+              promises.push(this.$store.dispatch({
+                type: "objects/load",
+                object: concept,
+                scheme
+              }))
+            }
+          }
+        }
+        return Promise.all(promises)
+      }).then(() => {
+        // Function for minifying and stringifying a mapping for JSKOS export.
+        let jskosExport = m => {
+          let mapping = this.$jskos.minifyMapping(m)
+          // Add labels to concepts in mapping
+          for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
+            let conceptInStore = this.$store.getters["objects/get"](concept)
+            let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+            if (language) {
+              concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
+            }
+          }
+          return JSON.stringify(mapping)
+        }
         // Set all mappings variable
-        this.dlAllMappings = mappings.map(mapping => JSON.stringify(this.$jskos.minifyMapping(mapping))).join("\n")
+        this.dlAllMappings = mappings.map(jskosExport).join("\n")
         // First, determine available combinations of concept schemes
         for (let mapping of mappings) {
           let download = this.dlMappings.find(dl => this.$jskos.compare(mapping.fromScheme, dl.fromScheme) && this.$jskos.compare(mapping.toScheme, dl.toScheme))
@@ -235,13 +272,24 @@ export default {
         // Then, set download property and label of each combination
         for (let download of this.dlMappings) {
           // Download as JSKOS/ndjson
-          download.ndjson = download.mappings.map(mapping => JSON.stringify(this.$jskos.minifyMapping(mapping))).join("\n")
+          download.ndjson = download.mappings.map(jskosExport).join("\n")
           // Download as CSV
-          let csv = "\"fromNotation\",\"toNotation\",\"type\"\r\n"
+          let csv = "\"fromNotation\",\"fromLabel\",\"toNotation\",\"toLabel\",\"type\"\r\n"
           let mappingToCSV = this.$jskos.mappingToCSV({
-            lineTerminator: "\r\n"
+            lineTerminator: "\r\n",
+            language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingToCSV doesn't support a language override in each call (yet).
           })
           for (let mapping of download.mappings) {
+            // Prepare labels
+            for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
+              let conceptInStore = this.$store.getters["objects/get"](concept)
+              let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+              if (language) {
+                // NOTE: Hardcoded language, see note above.
+                concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
+              }
+            }
+            // Append to CSV
             csv += mappingToCSV(mapping)
           }
           download.csv = csv
@@ -250,6 +298,7 @@ export default {
           // Filename
           download.filename = `${this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$util.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
         }
+        this.dlMappingsReady = true
       })
     },
     rewriteCreator() {
