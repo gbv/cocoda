@@ -91,7 +91,9 @@
       "from": "From",
       "to": "To",
       "creator": "Creator",
-      "source": "Source"
+      "source": "Source",
+      "settingShowAllSchemes": "Show results of all concept schemes",
+      "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown."
     },
     "minimizer": {
       "minimize": "minimize card",
@@ -243,7 +245,9 @@
       "from": "Von",
       "to": "Zu",
       "creator": "Ersteller",
-      "source": "Quelle"
+      "source": "Quelle",
+      "settingShowAllSchemes": "Ergebnisse aller Vokabulare anzeigen",
+      "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind."
     },
     "minimizer": {
       "minimize": "Komponente ausblenden",

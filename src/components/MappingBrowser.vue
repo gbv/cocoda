@@ -7,6 +7,28 @@
         {{ $t("mappingBrowser.title") }}
       </div>
       <!-- Settings -->
+      <div id="mappingBrowser-settingsButton">
+        <font-awesome-icon
+          id="mappingBrowser-settingsButton-icon"
+          icon="cog"
+          class="button" />
+        <b-popover
+          :show.sync="settingsShow"
+          target="mappingBrowser-settingsButton-icon"
+          triggers="click"
+          placement="bottomleft" >
+          <div
+            ref="settingsPopover" >
+            <p><b>{{ $t("navbar.settings") }}</b></p>
+            <b-form-checkbox
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
+              v-model="showAllSchemes"
+              style="user-select: none;">
+              {{ $t("mappingBrowser.settingShowAllSchemes") }}
+            </b-form-checkbox>
+          </div>
+        </b-popover>
+      </div>
       <div id="mappingBrowser-settings">
         <div
           v-for="group of registryGroups"
@@ -263,6 +285,7 @@ export default {
       /** Unique ID for each reload */
       loadingId: null,
       registryGroupShow: {},
+      settingsShow: false,
     }
   },
   computed: {
@@ -473,6 +496,21 @@ export default {
       groups = groups.filter(group => group.registries.length > 0)
       return groups
     },
+    // Setting whether to show mappings from all schemes or only chosen schemes
+    showAllSchemes: {
+      get() {
+        return this.$settings.mappingBrowserAllSchemes
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserAllSchemes",
+          value
+        })
+        // Refresh
+        this.$store.commit("mapping/setRefresh")
+      }
+    },
   },
   watch: {
     needsRefresh(refresh) {
@@ -518,6 +556,11 @@ export default {
         if (popover && !popover.contains(event.target)) {
           this.registryGroupShow[group.uri] = false
         }
+      }
+      // Handle settings popover
+      let popover = this.$refs.settingsPopover
+      if (popover && !popover.contains(event.target)) {
+        this.settingsShow = false
       }
     },
     internalReload(force = false, registryToReload) {
@@ -722,6 +765,25 @@ export default {
             item.sourceScheme = this.$store.getters["objects/get"](item.sourceScheme) || item.sourceScheme
             item.targetScheme = _.get(mapping, "toScheme")
             item.targetScheme = this.$store.getters["objects/get"](item.targetScheme) || item.targetScheme
+            // Skip mapping if showAllSchemes is off and schemes don't match
+            if (!this.showAllSchemes) {
+              // If one side doesn't have a scheme selected, always show all
+              if (this.selected.scheme[true] && this.selected.scheme[false]) {
+                let schemesCorrect = true
+                for (let scheme of [item.sourceScheme, item.targetScheme]) {
+                  let schemeCorrect = false
+                  for (let isLeft of [true, false]) {
+                    if (this.$jskos.compare(scheme, this.selected.scheme[isLeft])) {
+                      schemeCorrect = true
+                    }
+                  }
+                  schemesCorrect = schemesCorrect && schemeCorrect
+                }
+                if (!schemesCorrect) {
+                  continue
+                }
+              }
+            }
             // TODO: Use Vuex getters.
             item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
             item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []
@@ -1008,6 +1070,11 @@ export default {
   .componentTitle;
   flex: none;
   margin: 0 auto;
+}
+#mappingBrowser-settingsButton {
+  position: absolute;
+  right: 20px;
+  top: -6px;
 }
 #mappingBrowser-settings {
   flex: none;
