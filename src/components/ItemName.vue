@@ -233,6 +233,7 @@ Vue.component("notation-text", {
 
 .itemName {
   display: inline;
+  user-select: text !important;
 }
 .itemName > * {
   color: @color-text-dark !important;
