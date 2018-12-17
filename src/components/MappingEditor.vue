@@ -61,7 +61,12 @@
         <div
           class="mappingScheme fontWeight-heavy" >
           <span v-if="showScheme(isLeft)">
-            {{ labelForScheme($store.getters['mapping/getScheme'](isLeft)) }}
+            <item-name
+              :item="$store.getters['objects/get']($store.getters['mapping/getScheme'](isLeft))"
+              :is-link="true"
+              :is-left="isLeft"
+              :show-text="false"
+              :show-tooltip="true" />
           </span>
           <span v-else>&nbsp;</span>
         </div>
