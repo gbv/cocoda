@@ -869,19 +869,20 @@ export default {
             }
 
             if (items.length == 0) {
-              this.items[index] = {
+              let noItemsRow = {
                 "_wholeRow": true,
                 "_rowClass": "mappingBrowser-table-row-loading" + (addBeforeSeparatorClass ? beforeSeparatorClass : ""),
                 value: "",
                 type: "noItems",
                 registry,
               }
-            } else {
-              if (addBeforeSeparatorClass) {
-                _.last(items)._rowClass += beforeSeparatorClass
-              }
-              this.items = this.items.slice(0, index).concat(items, this.items.slice(index + 1, this.items.length))
+              items = [noItemsRow]
             }
+
+            if (addBeforeSeparatorClass) {
+              _.last(items)._rowClass += beforeSeparatorClass
+            }
+            this.items = this.items.slice(0, index).concat(items, this.items.slice(index + 1, this.items.length))
 
             if (addSeparator) {
               this.items[index]._rowClass += " mappingBrowser-separatorRow"
@@ -891,7 +892,6 @@ export default {
               }
             }
           }
-
 
         }).catch(error => {
           console.warn("Error", error)
