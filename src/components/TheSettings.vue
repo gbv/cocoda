@@ -137,7 +137,6 @@
 
 <script>
 import _ from "lodash"
-import FileSaver from "file-saver"
 
 /**
  * The settings modal.
@@ -241,6 +240,7 @@ export default {
         return Promise.all(promises)
       }).then(() => {
         // Function for minifying and stringifying a mapping for JSKOS export.
+        // TODO: Code duplication with MappingBrowser! This should actually go into jskos-tools.
         let jskosExport = m => {
           let mapping = this.$jskos.minifyMapping(m)
           // Add labels to concepts in mapping
@@ -325,10 +325,6 @@ export default {
         prop: "flex",
         value: flex
       })
-    },
-    downloadFile(filename, contents) {
-      var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
-      FileSaver.saveAs(blob, filename)
     },
     deleteMappings() {
       this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {

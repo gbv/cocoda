@@ -131,6 +131,8 @@ Vue.mixin({
   }
 })
 
+import FileSaver from "file-saver"
+
 Vue.mixin({
   computed: {
     config() {
@@ -202,6 +204,10 @@ Vue.mixin({
       let { x, y } = this.$store.state.mousePosition
       let rect = element.getBoundingClientRect()
       return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
-    }
+    },
+    downloadFile(filename, contents) {
+      var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
+      FileSaver.saveAs(blob, filename)
+    },
   }
 })

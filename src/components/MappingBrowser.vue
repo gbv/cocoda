@@ -26,6 +26,14 @@
               style="user-select: none;">
               {{ $t("mappingBrowser.settingShowAllSchemes") }}
             </b-form-checkbox>
+            <p v-if="settingsDownloadCurrent">
+              <a
+                href=""
+                @click.prevent="downloadFile('mappings.ndjson', settingsDownloadCurrent)" >
+                <br><font-awesome-icon icon="download" />
+                {{ $t("settings.localDownloadJskos", [settingsDownloadCurrent.split("\n").length]) }}
+              </a>
+            </p>
           </div>
         </b-popover>
       </div>
@@ -286,6 +294,7 @@ export default {
       loadingId: null,
       registryGroupShow: {},
       settingsShow: false,
+      settingsDownloadCurrent: null,
     }
   },
   computed: {
@@ -526,6 +535,29 @@ export default {
         this.reload()
       },
       deep: true
+    },
+    settingsShow(newValue) {
+      // Prepare mappings download when settings are shown.
+      if (newValue) {
+        // Function for minifying and stringifying a mapping for JSKOS export.
+        // TODO: Code duplication with TheSettings! This should actually go into jskos-tools.
+        let jskosExport = m => {
+          let mapping = this.$jskos.minifyMapping(m)
+          // Add labels to concepts in mapping
+          for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
+            let conceptInStore = this.$store.getters["objects/get"](concept)
+            let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+            if (language) {
+              concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
+            }
+          }
+          return JSON.stringify(mapping)
+        }
+        let mappings = this.tableItems.map(item => item.mapping).filter(mapping => mapping != null)
+        this.settingsDownloadCurrent = mappings.map(jskosExport).join("\n")
+      } else {
+        this.settingsDownloadCurrent = null
+      }
     },
   },
   created() {
