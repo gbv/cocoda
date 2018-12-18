@@ -102,6 +102,7 @@ class LocalMappingsProvider extends BaseProvider {
           continue
         }
         original = original || {}
+        mapping = jskos.deepCopy(mapping)
         mapping = jskos.addMappingIdentifiers(mapping)
         // Filter out original mapping and other local mappings with the same content identifier.
         localMappings = localMappings.filter(m => {
