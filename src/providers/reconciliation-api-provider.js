@@ -39,7 +39,6 @@ class ReconciliationApiProvider extends BaseProvider {
   }
 
   _getMappings({ from, to, mode }) {
-    console.log(from, to, mode)
     let concept = from || to
     // Temporary to filter out GND mapping requests...
     // FIXME: Remove!
