@@ -444,9 +444,6 @@ export default {
     needsRefresh() {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
-    selectedConcepts() {
-      return this.selected.concept
-    },
     // show registries
     showRegistry() {
       let object = {}
@@ -524,7 +521,7 @@ export default {
         this.$store.commit("mapping/setRefresh", { refresh: false })
       }
     },
-    selectedConcepts: {
+    selected: {
       handler() {
         this.reload()
       },
@@ -574,25 +571,41 @@ export default {
 
       let promises = []
 
+      let setPreviousSelected = () => {
+        this.previousSelected = {}
+        this.previousSelected.concept = {
+          [true]: this.selected.concept[true] ? { uri: this.selected.concept[true].uri } : null,
+          [false]: this.selected.concept[false] ? { uri: this.selected.concept[false].uri } : null,
+        }
+        this.previousSelected.scheme = {
+          [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
+          [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
+        }
+      }
+
       if (!this.selected.concept[true] && !this.selected.concept[false]) {
         // No selected concepts, not reloading and clearing items+previosSelected.
         this.items = []
-        this.previousSelected = {
-          scheme: {
-            [true]: null,
-            [false]: null
-          },
-          concept: {
-            [true]: null,
-            [false]: null
-          }
-        }
+        setPreviousSelected()
         return
       }
-      if (this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) && this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) && this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) && this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false]) && !force) {
+      if (
+        !force &&
+        this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) &&
+        this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) &&
+        (
+          this.showAllSchemes ||
+          (
+            this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
+            this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
+          )
+        )
+      ) {
         // No change in concepts, not reloading.
+        setPreviousSelected()
         return
       }
+      setPreviousSelected()
       if (!force) {
         // Either concept or scheme changed => reset showMoreValues.
         this.showMoreValues = {}
@@ -609,16 +622,6 @@ export default {
       let loadingId = this.$util.generateID()
       this.loadingId = loadingId
       // Question/TODO: - Use axios cancel tokens to remove old requests?
-
-      this.previousSelected = {}
-      this.previousSelected.concept = {
-        [true]: this.selected.concept[true] ? { uri: this.selected.concept[true].uri } : null,
-        [false]: this.selected.concept[false] ? { uri: this.selected.concept[false].uri } : null,
-      }
-      this.previousSelected.scheme = {
-        [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
-        [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
-      }
 
       // Prepare params
       let params = {
