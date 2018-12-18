@@ -479,7 +479,7 @@ export default {
       return object
     },
     mappingRegistries() {
-      return this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences))
+      return this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences) && (registry.scheme == null || this.$jskos.compare(this.selected.scheme[true], registry.scheme) || this.$jskos.compare(this.selected.scheme[false], registry.scheme)))
     },
     registryGroups() {
       let groups = _.cloneDeep(this.config.registryGroups)
@@ -814,9 +814,8 @@ export default {
                 }
               }
             }
-            // TODO: Use Vuex getters.
-            item.sourceConcepts = _.get(mapping, "from.memberSet") || _.get(mapping, "from.memberChoice") || []
-            item.targetConcepts = _.get(mapping, "to.memberSet") || _.get(mapping, "to.memberChoice") || []
+            item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
+            item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
             // Load prefLabels for all concepts
             // TODO: Optimize by loading multiple concepts simultaneously (#107)
             for (let concept of item.sourceConcepts) {

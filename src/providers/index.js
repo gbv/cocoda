@@ -16,6 +16,9 @@ providers[OccurrencesApiProvider.providerName] = OccurrencesApiProvider
 import ConceptApiProvider from "./concept-api-provider"
 providers[ConceptApiProvider.providerName] = ConceptApiProvider
 
+import ReconciliationApiProvider from "./reconciliation-api-provider"
+providers[ReconciliationApiProvider.providerName] = ReconciliationApiProvider
+
 // Add more providers here.
 
 export default providers
