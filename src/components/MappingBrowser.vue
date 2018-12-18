@@ -299,7 +299,7 @@ export default {
   },
   computed: {
     itemCount() {
-      return this.items.filter(item => item.mapping != null).length
+      return this.items.filter(item => item.mapping != null || item.type == "loading").length
     },
     tableItems() {
       let items = this.items.slice()
@@ -625,13 +625,8 @@ export default {
         !force &&
         this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) &&
         this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) &&
-        (
-          this.showAllSchemes ||
-          (
-            this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
-            this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
-          )
-        )
+        this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
+        this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
       ) {
         // No change in concepts, not reloading.
         setPreviousSelected()
