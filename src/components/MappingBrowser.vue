@@ -302,15 +302,27 @@ export default {
       return this.items.filter(item => item.mapping != null || item.type == "loading").length
     },
     tableItems() {
+      let separatorPaddingBottom = " mappingBrowser-separatorPaddingBottom"
+      let separatorPaddingTop = " mappingBrowser-separatorPaddingTop"
+      let separatorBorder = " mappingBrowser-separatorBorder"
       let items = this.items.slice()
       let previousRegistry = null
       let previousSourceScheme = null
       let previousTargetScheme = null
+      let previousItem = null
       for (let item of items) {
         if (!this.$jskos.compare(previousRegistry, item.registry)) {
           previousSourceScheme = null
           previousTargetScheme = null
           previousRegistry = item.registry
+          // Add separator classes
+          if (previousItem) {
+            item._rowClass += separatorBorder + separatorPaddingTop
+            previousItem._rowClass += separatorPaddingBottom
+          } else if (!item.mapping) {
+            // Add padding if the first item is not a mapping
+            item._rowClass += separatorPaddingTop
+          }
         }
         if (item.sourceScheme && this.$jskos.compare(item.sourceScheme, previousSourceScheme)) {
           item.sourceScheme = null
@@ -322,6 +334,7 @@ export default {
         } else {
           previousTargetScheme = item.targetScheme
         }
+        previousItem = item
       }
       return items
     },
@@ -665,14 +678,7 @@ export default {
         params["to"] = to
       }
 
-      let isFirst = true
-
       for (let registry of this.mappingRegistries) {
-
-
-
-        let addSeparator = !isFirst
-        isFirst = false
 
         // Add loading indicator.
         let loadingRow = {
@@ -888,16 +894,10 @@ export default {
           let index = this.items.findIndex(item => this.$jskos.compare(item.registry, registry))
           if (index >= 0) {
 
-            let addBeforeSeparatorClass = false
-            let beforeSeparatorClass = " mappingBrowser-beforeSeparatorRow"
-            if (this.items[index]._rowClass.includes(beforeSeparatorClass)) {
-              addBeforeSeparatorClass = true
-            }
-
             if (items.length == 0) {
               let noItemsRow = {
                 "_wholeRow": true,
-                "_rowClass": "mappingBrowser-table-row-loading" + (addBeforeSeparatorClass ? beforeSeparatorClass : ""),
+                "_rowClass": "mappingBrowser-table-row-loading",
                 value: "",
                 type: "noItems",
                 registry,
@@ -905,18 +905,7 @@ export default {
               items = [noItemsRow]
             }
 
-            if (addBeforeSeparatorClass) {
-              _.last(items)._rowClass += beforeSeparatorClass
-            }
             this.items = this.items.slice(0, index).concat(items, this.items.slice(index + 1, this.items.length))
-
-            if (addSeparator) {
-              this.items[index]._rowClass += " mappingBrowser-separatorRow"
-              // Add class to previous item
-              if (index > 0) {
-                this.items[index - 1]._rowClass += beforeSeparatorClass
-              }
-            }
           }
 
         }).catch(error => {
@@ -1161,12 +1150,14 @@ export default {
 .mappingBrowser-table-row-hidden {
   display: none;
 }
-.mappingBrowser-beforeSeparatorRow {
+.mappingBrowser-separatorPaddingBottom {
   padding-bottom: 10px !important;
 }
-.mappingBrowser-separatorRow {
-  border-top: 1px solid black;
+.mappingBrowser-separatorPaddingTop {
   padding-top: 10px !important;
+}
+.mappingBrowser-separatorBorder {
+  border-top: 1px solid @color-text-lightGrey;
 }
 
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {
