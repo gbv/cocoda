@@ -2,6 +2,7 @@ import _ from "lodash"
 import BaseProvider from "./base-provider"
 import util from "../util"
 import jskos from "jskos-tools"
+import qs from "qs"
 
 /**
  * Provider for the OpenRefine Reconciliation API.
@@ -122,9 +123,10 @@ class ReconciliationApiProvider extends BaseProvider {
     if (language) {
       url = url.replace("{language}", language)
     }
-    return this.http.get(url, {
-      params: {
-        queries
+    queries = JSON.stringify(queries)
+    return this.http.post(url, qs.stringify({ queries }), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
       }
     }).then(response => response.data).catch(() => []).then(data => {
       this.cache.push({
