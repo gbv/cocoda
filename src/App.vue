@@ -296,19 +296,18 @@ export default {
     settingsLocale() {
       return this.$settings.locale
     },
+    settingsLoaded() {
+      return this.$store.state.settings.loaded
+    },
   },
   watch: {
     schemes() {
-      if (this.schemes.length) {
-        this.loadFromParametersOnce()
+      if (this.settingsLoaded) {
+        this.start()
       }
-      // Load favorite concepts into Vuex
-      for (let concept of this.config.favoriteConcepts) {
-        this.$store.dispatch({
-          type: "objects/load",
-          object: concept
-        })
-      }
+    },
+    settingsLoaded() {
+      this.start()
     },
     $route({ query: toQuery }, { query: fromQuery }) {
       // Only refresh when one of the scheme/concept parameters changed
@@ -414,6 +413,18 @@ export default {
     }
   },
   methods: {
+    start() {
+      if (this.schemes.length) {
+        this.loadFromParametersOnce()
+      }
+      // Load favorite concepts into Vuex
+      for (let concept of this.config.favoriteConcepts) {
+        this.$store.dispatch({
+          type: "objects/load",
+          object: concept
+        })
+      }
+    },
     insertPrefLabel(isLeft) {
       if (!this.$settings.autoInsertLabels) {
         return
