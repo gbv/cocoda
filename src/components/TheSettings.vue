@@ -262,6 +262,9 @@ export default {
         this.dlAllMappings = mappings.map(jskosExport).join("\n")
         // First, determine available combinations of concept schemes
         for (let mapping of mappings) {
+          // Adjust schemes with store
+          mapping.fromScheme = this.$store.getters["objects/get"](mapping.fromScheme) || mapping.fromScheme
+          mapping.toScheme = this.$store.getters["objects/get"](mapping.toScheme) || mapping.toScheme
           let download = this.dlMappings.find(dl => this.$jskos.compare(mapping.fromScheme, dl.fromScheme) && this.$jskos.compare(mapping.toScheme, dl.toScheme))
           if (download) {
             download.mappings.push(mapping)
