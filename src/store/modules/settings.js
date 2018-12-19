@@ -16,6 +16,7 @@ const defaultSettings = {
   mappingBrowserShowAll: false,
   typesForSchemes: {},
   locale: "",
+  autoInsertLabels: true,
 }
 
 // initial state

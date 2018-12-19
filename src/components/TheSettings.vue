@@ -20,6 +20,11 @@
         {{ $t("settings.showAll") }}
       </b-form-checkbox>
     </p>
+    <p v-if="localSettings">
+      <b-form-checkbox v-model="localSettings.autoInsertLabels">
+        {{ $t("settings.autoInsertLabels") }}
+      </b-form-checkbox>
+    </p>
     <p>
       <b-button
         variant="primary"

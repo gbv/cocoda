@@ -415,6 +415,9 @@ export default {
   },
   methods: {
     insertPrefLabel(isLeft) {
+      if (!this.$settings.autoInsertLabels) {
+        return
+      }
       let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
