@@ -903,7 +903,7 @@ export default {
             if (items.length == 0) {
               let noItemsRow = {
                 "_wholeRow": true,
-                "_rowClass": "mappingBrowser-table-row-loading",
+                "_rowClass": "mappingBrowser-table-row-loading fontSize-small text-lightGrey",
                 value: "",
                 type: "noItems",
                 registry,
