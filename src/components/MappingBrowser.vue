@@ -793,13 +793,6 @@ export default {
             }
             return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
           })
-          // Truncate if necessary (and don't truncate local mappings)
-          let wasTruncated = false
-          let maxLengthForThis = _.get(this.showMoreValues, `["${registry.uri}"]`, 1) * lengthPerSet
-          if (truncateResults && mappings.length > maxLengthForThis) {
-            mappings = mappings.slice(0, maxLengthForThis)
-            wasTruncated = true
-          }
           // Add items
           for (let mapping of mappings) {
             let item = { mapping, registry }
@@ -885,8 +878,11 @@ export default {
             item.occurrence = mapping._occurrence
             items.push(item)
           }
-          // Add extra row if truncated
-          if (wasTruncated) {
+          // Truncate if necessary (and don't truncate local mappings)
+          let maxLengthForThis = _.get(this.showMoreValues, `["${registry.uri}"]`, 1) * lengthPerSet
+          if (truncateResults && items.length > maxLengthForThis) {
+            items = items.slice(0, maxLengthForThis)
+            // Add extra row if truncated
             items.push({
               "_wholeRow": true,
               "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
