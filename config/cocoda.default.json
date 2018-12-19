@@ -116,6 +116,23 @@
         "en": ["Catalog Occurrences"],
         "de": ["Katalogvorkommen"]
       }
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
+      "notation": ["R"],
+      "prefLabel": {
+        "de": "Wikidata-Empfehlungen (R)",
+        "en": "Wikidata Recommendations"
+      },
+      "provider": "ReconciliationApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+      }],
+      "scheme": {
+        "uri": "http://bartoc.org/en/node/1940"
+      },
+      "baseUrl": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
+      "namespace": "http://www.wikidata.org/entity/"
     }
   ],
   "registryMode": "override",

@@ -4,30 +4,6 @@ import util from "../util"
 import jskos from "jskos-tools"
 
 /**
-
-This is still being developed and tested, therefore there is no default entry in the config. To test it with the Wikidata Reconciliation API, add to following registry entry to your config:
-
-{
-  "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
-  "notation": ["R"],
-  "prefLabel": {
-    "de": "Wikidata-Reconciliation",
-    "en": "Wikidata Reconciliation"
-  },
-  "provider": "ReconciliationApi",
-  "subject": [{
-    "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-  }],
-  "scheme": {
-    "uri": "http://bartoc.org/en/node/1940"
-  },
-  "baseUrl": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
-  "namespace": "http://www.wikidata.org/entity/"
-}
-
-**/
-
-/**
  * Provider for the OpenRefine Reconciliation API.
  */
 class ReconciliationApiProvider extends BaseProvider {
