@@ -133,6 +133,23 @@
       },
       "baseUrl": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
       "namespace": "http://www.wikidata.org/entity/"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
+      "notation": ["R"],
+      "prefLabel": {
+        "de": "GND-Empfehlungen (R)",
+        "en": "GND Recommendations"
+      },
+      "provider": "ReconciliationApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+      }],
+      "scheme": {
+        "uri": "http://bartoc.org/en/node/430"
+      },
+      "baseUrl": "https://lobid.org/gnd/reconcile",
+      "namespace": "http://d-nb.info/gnd/"
     }
   ],
   "registryMode": "override",
