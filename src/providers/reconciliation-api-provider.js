@@ -39,7 +39,14 @@ class ReconciliationApiProvider extends BaseProvider {
   }
 
   _getMappings({ from, to, mode }) {
-    let concept = from || to
+    let swap = false
+    let concept
+    if (jskos.compare(this.registry.scheme, _.get(from, "inScheme[0]")) || !from) {
+      concept = to
+      swap = true
+    } else {
+      concept = from
+    }
     // Temporary to filter out GND mapping requests...
     // FIXME: Remove!
     if (mode != "or" || !concept || !this.registry.baseUrl) {
@@ -99,7 +106,7 @@ class ReconciliationApiProvider extends BaseProvider {
             )
         ]
       }))
-      if (!from) {
+      if (swap) {
         // Swap mapping sides if only `to` was set
         mappings = mappings.map(mapping => Object.assign(mapping, {
           fromScheme: mapping.toScheme,
