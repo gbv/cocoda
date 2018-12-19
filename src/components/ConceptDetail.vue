@@ -378,7 +378,7 @@ export default {
           let term = `<strong>${this.$parent.$t("conceptDetail.relevance")}: ${relevance}</strong> - `
           let terms = []
           for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
-            if (concept && (this.$util.prefLabel(concept))) {
+            if (concept && (this.$util.prefLabel(concept, null, false))) {
               terms.push(_.escape(this.$util.prefLabel(concept)))
             }
           }
