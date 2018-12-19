@@ -10,7 +10,10 @@
     class="conceptTreeItem" >
     <!-- Concept -->
     <div
-      class="conceptBox" >
+      class="conceptBox"
+      draggable="true"
+      @dragstart="dragStart(concept, $event)"
+      @dragend="dragEnd()" >
       <div
         v-if="hasChildren"
         class="arrowBox"
@@ -26,9 +29,6 @@
         :to="url"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
-        draggable="true"
-        @dragstart="dragStart(concept, $event)"
-        @dragend="dragEnd()"
         @mouseover.native="hovering(concept)"
         @mouseout.native="hovering(null)"
         @click.native.stop.prevent="onClick" >
