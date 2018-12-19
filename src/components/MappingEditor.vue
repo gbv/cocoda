@@ -200,6 +200,7 @@ import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import Minimizer from "./Minimizer"
 import _ from "lodash"
+import hotkeys from "hotkeys-js"
 
 /**
  * The mapping editor component.
@@ -275,6 +276,29 @@ export default {
         })
       }
     }
+  },
+  created() {
+    // Add hotkey for saving the mapping
+    hotkeys("ctrl+s, command+s", "mappingEditor", () => {
+      this.saveMapping()
+      return false
+    })
+    // Add hotkey for adding left
+    hotkeys("ctrl+a, command+a", "mappingEditor", () => {
+      this.addToMapping(true)
+      return false
+    })
+    // Add hotkey for adding right
+    hotkeys("ctrl+d, command+d", "mappingEditor", () => {
+      this.addToMapping(false)
+      return false
+    })
+    // Set hotkey scope (= enable hotkeys)
+    hotkeys.setScope("mappingEditor")
+  },
+  destroyed() {
+    // Delete hotkey scope (= disable hotkeys)
+    hotkeys.deleteScope("mappingEditor")
   },
   methods: {
     saveMapping() {
