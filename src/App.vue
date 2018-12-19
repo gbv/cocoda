@@ -284,6 +284,12 @@ export default {
     selectedSchemeRight() {
       return this.selected.scheme[false]
     },
+    selectedConceptRight() {
+      return this.selected.concept[false]
+    },
+    selectedSchemeLeft() {
+      return this.selected.scheme[true]
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -336,7 +342,7 @@ export default {
         if (_.isEqual(_.get(newValue, "prefLabel"), _.get(oldValue, "prefLabel"))) {
           return
         }
-        this.insertPrefLabel()
+        this.insertPrefLabel(true)
       },
       deep: true
     },
@@ -346,7 +352,29 @@ export default {
     selectedSchemeRight(newValue, oldValue) {
       if (!this.$jskos.compare(newValue, oldValue)) {
         _.delay(() => {
-          this.insertPrefLabel()
+          this.insertPrefLabel(true)
+        }, 50)
+      }
+    },
+    /**
+     * This watches the selected concept on the left side and inserts its prefLabel into the search field on the right. This is a first step at helping the user find possible mapping matches from the target system.
+     */
+    selectedConceptRight: {
+      handler(newValue, oldValue) {
+        if (_.isEqual(_.get(newValue, "prefLabel"), _.get(oldValue, "prefLabel"))) {
+          return
+        }
+        this.insertPrefLabel(false)
+      },
+      deep: true
+    },
+    /**
+     * Insert prefLabel into target search field if the scheme on the right changes.
+     */
+    selectedSchemeLeft(newValue, oldValue) {
+      if (!this.$jskos.compare(newValue, oldValue)) {
+        _.delay(() => {
+          this.insertPrefLabel(false)
         }, 50)
       }
     },
@@ -386,12 +414,13 @@ export default {
     }
   },
   methods: {
-    insertPrefLabel() {
-      let prefLabel = this.$util.prefLabel(this.selectedConceptLeft, null, false)
+    insertPrefLabel(isLeft) {
+      let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
-      if (this.$refs.conceptSearchRight && this.$refs.conceptSearchRight.length) {
-        this.$refs.conceptSearchRight[0].setSearchQuery(regexResult ? regexResult[0] : "")
+      let conceptSearch = isLeft ? this.$refs.conceptSearchRight : this.$refs.conceptSearchLeft
+      if (conceptSearch && conceptSearch.length) {
+        conceptSearch[0].setSearchQuery(regexResult ? regexResult[0] : "")
       }
     },
     refresh(key) {
