@@ -52,7 +52,8 @@
             :key="registry.uri"
             :registry="registry"
             :disabled="!showRegistry[registry.uri]"
-            class="mappingBrowser-settings-registryGroup-notation" />
+            class="mappingBrowser-settings-registryGroup-notation"
+            @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]" />
           <b-popover
             :target="`registryGroup-${group.uri}`"
             :show.sync="registryGroupShow[group.uri]"
@@ -1120,6 +1121,7 @@ export default {
 }
 .mappingBrowser-settings-registryGroup-notation {
   margin: 0 4px;
+  cursor: pointer;
 }
 .mappingBrowser-settings-registryGroup-popover {
   display: flex;
