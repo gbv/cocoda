@@ -254,8 +254,19 @@ export default {
       let options = [
         { value: null, text: this.$t("schemeSelection.title"), disabled: true }
       ]
+      // Sort schemes
+      let schemes = this.schemes.slice().sort((a, b) => {
+        let labelA = this.$util.prefLabel(a), labelB = this.$util.prefLabel(b)
+        if (labelA < labelB) {
+          return -1
+        }
+        if (labelA > labelB) {
+          return 1
+        }
+        return 0
+      })
       // Add from schemes
-      for (var scheme of this.$store.state.schemes) {
+      for (var scheme of schemes) {
         options.push(
           { value: scheme, text: this.$util.prefLabel(scheme) }
         )
