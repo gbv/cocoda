@@ -141,6 +141,9 @@ Vue.mixin({
     $settings() {
       return this.$store.state.settings.settings
     },
+    locale() {
+      return this.$i18n.locale
+    },
     hoveredConcept: {
       get() {
         return this.$store.state.hoveredConcept

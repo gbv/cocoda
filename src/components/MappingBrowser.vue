@@ -572,6 +572,11 @@ export default {
         this.settingsDownloadCurrent = null
       }
     },
+    locale() {
+      // When locale changed, reload mapping recommendations
+      // TODO: Only reload relevant sections.
+      this.$store.commit("mapping/setRefresh")
+    },
   },
   created() {
     this.reload = _.debounce(this.internalReload, 100)
