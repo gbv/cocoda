@@ -983,7 +983,7 @@ export default {
       }
     },
     hover(concept, scheme) {
-      if(concept && !concept.prefLabel) {
+      if(concept && _.isEmpty(concept.prefLabel)) {
         // Load prefLabel to be shown as tooltip
         if ((!concept.inScheme || concept.inScheme.length == 0) && !scheme) {
           // TODO: - Error handling
@@ -999,17 +999,9 @@ export default {
               prop: "prefLabel",
               value: result.prefLabel
             })
-          } else {
-            // TODO: - Error handling
-            this.$store.commit({
-              type: "objects/set",
-              object: concept,
-              prop: "prefLabel",
-              value: { de: " " }
-            })
           }
           // Also set notation if it doesn't exist.
-          if (result && result.notation && !concept.notation) {
+          if (result && result.notation && _.isEmpty(concept.notation)) {
             this.$store.commit({
               type: "objects/set",
               object: concept,
