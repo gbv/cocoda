@@ -30,8 +30,8 @@ const refreshRouter = (store) => {
       }
     }
   }
-  // Add mapping if either fromScheme or toScheme exists
-  if (store.state.mapping.mapping.fromScheme || store.state.mapping.mapping.toScheme) {
+  // Add mapping if there is at least one concept
+  if (jskos.conceptsOfMapping(store.state.mapping.mapping).length) {
     query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
     // If an original mapping exists for the current mapping, save its identifier as well
     if (store.state.mapping.original) {
