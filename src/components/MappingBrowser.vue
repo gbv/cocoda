@@ -253,8 +253,9 @@
             {{ $t("mappingBrowser.noItemsFor") }}
             <registry-notation
               :registry="item.registry"
+              :disabled="true"
               :tooltip="false" />
-            {{ $util.prefLabel(item.registry) }}.
+            {{ $util.prefLabel(item.registry) }}
           </span>
         </span>
         <span
@@ -353,12 +354,9 @@ export default {
           skipCurrentRegistry = false
           previousRegistry = item.registry
           // Add separator classes
+          item._rowClass += separatorBorder + separatorPaddingTop
           if (previousItem) {
-            item._rowClass += separatorBorder + separatorPaddingTop
             previousItem._rowClass += separatorPaddingBottom
-          } else if (!item.mapping) {
-            // Add padding if the first item is not a mapping
-            item._rowClass += separatorPaddingTop
           }
         }
         currentSetLength += 1
@@ -1153,7 +1151,7 @@ export default {
   flex: none;
   display: flex;
   flex-wrap: wrap;
-  margin: 5px 45px 15px 45px;
+  margin: 5px 5px 15px 5px;
   padding: 5px;
   box-shadow: 0 1px 2px 0 @color-shadow;
 }

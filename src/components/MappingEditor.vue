@@ -85,7 +85,7 @@
               />
               <!-- Delete button for concept -->
               <span
-                class="button-delete fontSize-large"
+                class="button fontSize-large"
                 @click="$store.commit({
                   type: 'mapping/remove',
                   concept,
@@ -519,6 +519,9 @@ export default {
 }
 .mappingEditor-addButton {
   font-size: 1.8em;
+}
+.mappingEditor-addButton.button:hover {
+  color: @color-action-2;
 }
 .mappingScheme {
   text-align: center;

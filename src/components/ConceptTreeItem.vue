@@ -272,7 +272,9 @@ export default {
 .conceptBox {
   display: flex;
   position: relative;
-  min-height: 24px;
+  min-height: 20px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   margin: 3px;
   cursor: pointer;
   user-select: none;

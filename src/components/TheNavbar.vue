@@ -103,7 +103,7 @@ export default {
 
 nav.navbar {
   padding: 4px 16px 4px 16px;
-  height: 64px;
+  height: 54px;
   background-color: @color-primary-1;
 }
 .navbar-brand {

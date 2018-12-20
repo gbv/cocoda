@@ -79,7 +79,7 @@
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
       "notation": ["C"],
       "prefLabel": {
-        "de": "Konkordanz-Register (C)",
+        "de": "Konkordanz-Register",
         "en": "Corcordance Registry"
       },
       "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
@@ -104,7 +104,7 @@
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "notation": ["O"],
       "prefLabel": {
-        "de": "Vorkommen (O)",
+        "de": "Vorkommen",
         "en": "Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
@@ -121,7 +121,7 @@
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
       "notation": ["R"],
       "prefLabel": {
-        "de": "Wikidata-Empfehlungen (R)",
+        "de": "Wikidata-Empfehlungen",
         "en": "Wikidata Recommendations"
       },
       "provider": "ReconciliationApi",
@@ -138,7 +138,7 @@
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
       "notation": ["R"],
       "prefLabel": {
-        "de": "GND-Empfehlungen (R)",
+        "de": "GND-Empfehlungen",
         "en": "GND Recommendations"
       },
       "provider": "ReconciliationApi",
