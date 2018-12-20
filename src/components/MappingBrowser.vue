@@ -95,30 +95,42 @@
         <span
           slot="sourceConcepts"
           slot-scope="{ value }" >
-          <item-name
+          <span
             v-for="concept in value"
-            :key="concept.uri"
-            :item="concept"
-            :show-text="false"
-            :show-tooltip="true"
-            :is-link="true"
-            :is-left="true"
-            :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-            @mouseover.native="hover(concept)" />
+            :key="concept.uri" >
+            <item-name
+              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
+              :item="concept"
+              :show-text="false"
+              :show-tooltip="true"
+              :is-link="true"
+              :is-left="true"
+              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
+              @mouseover.native="hover(concept)" />
+            <loading-indicator
+              v-else
+              size="sm" />
+          </span>
         </span>
         <span
           slot="sourceConceptsLong"
           slot-scope="{ value }" >
-          <item-name
+          <span
             v-for="concept in value"
-            :key="concept.uri"
-            :item="concept"
-            :show-text="true"
-            :show-tooltip="false"
-            :is-link="true"
-            :is-left="true"
-            :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-            @mouseover.native="hover(concept)" />
+            :key="concept.uri" >
+            <item-name
+              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
+              :item="concept"
+              :show-text="true"
+              :show-tooltip="false"
+              :is-link="true"
+              :is-left="true"
+              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
+              @mouseover.native="hover(concept)" />
+            <loading-indicator
+              v-else
+              size="sm" />
+          </span>
         </span>
         <span
           slot="targetScheme"
@@ -136,6 +148,7 @@
             v-for="concept in value"
             :key="concept.uri">
             <item-name
+              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
               :item="concept"
               :show-text="false"
               :show-tooltip="true"
@@ -143,6 +156,9 @@
               :is-left="false"
               :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
               @mouseover.native="hover(concept)" />
+            <loading-indicator
+              v-else
+              size="sm" />
             <br>
           </span>
         </span>
@@ -153,6 +169,7 @@
             v-for="concept in value"
             :key="concept.uri">
             <item-name
+              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
               :item="concept"
               :show-text="true"
               :show-tooltip="false"
@@ -160,6 +177,9 @@
               :is-left="false"
               :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
               @mouseover.native="hover(concept)" />
+            <loading-indicator
+              v-else
+              size="sm" />
             <br>
           </span>
         </span>
@@ -299,6 +319,8 @@ export default {
       registryGroupShow: {},
       settingsShow: false,
       settingsDownloadCurrent: null,
+      /** List of concepts whose labels are being loaded */
+      loadingConcepts: [],
     }
   },
   computed: {
@@ -983,15 +1005,24 @@ export default {
       }
     },
     hover(concept, scheme) {
-      if(concept && _.isEmpty(concept.prefLabel)) {
+      if(concept && _.isEmpty(concept.prefLabel) && !this.$jskos.isContainedIn(concept, this.loadingConcepts)) {
         // Load prefLabel to be shown as tooltip
+
         if ((!concept.inScheme || concept.inScheme.length == 0) && !scheme) {
           // TODO: - Error handling
           console.warn("No scheme for", concept)
           return
         }
 
+        this.loadingConcepts.push(concept)
+
         this.getObject({ object: concept, scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
+          // Remove concept from list of loading concepts
+          let index = this.loadingConcepts.findIndex(c => this.$jskos.compare(c, concept))
+          if (index != -1) {
+            this.loadingConcepts.splice(index, 1)
+          }
+          // Set prefLabel
           if (result && result.prefLabel) {
             this.$store.commit({
               type: "objects/set",
