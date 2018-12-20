@@ -17,6 +17,7 @@ const defaultSettings = {
   typesForSchemes: {},
   locale: "",
   autoInsertLabels: true,
+  mappingEditorClearOnSave: true,
 }
 
 // initial state

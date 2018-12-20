@@ -316,7 +316,9 @@ export default {
         this.alert(error, null, "danger")
       }).then(() => {
         this.$store.commit("mapping/setRefresh", { onlyMain: true })
-        this.clearMapping()
+        if (this.$settings.mappingEditorClearOnSave) {
+          this.clearMapping()
+        }
       })
     },
     deleteMapping() {
