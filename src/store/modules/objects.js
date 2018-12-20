@@ -56,14 +56,19 @@ const adjustObject = object => {
 }
 
 const integrateDetails = ({ detail, object, commit }) => {
+  if (!object) return
   for (let prop of Object.keys(detail)) {
     if ((_.isEmpty(object[prop]) || Array.isArray(object[prop]) && object[prop].includes(null)) && detail[prop] != null) {
-      commit({
-        type: "set",
-        object,
-        prop,
-        value: detail[prop]
-      })
+      if (commit) {
+        commit({
+          type: "set",
+          object,
+          prop,
+          value: detail[prop]
+        })
+      } else {
+        Vue.set(object, prop, detail[prop])
+      }
     }
   }
 }
@@ -162,6 +167,12 @@ const mutations = {
       for (let uri of uris) {
         state.map.set(uri, object)
       }
+    } else {
+      // Integrate changes into existing object
+      integrateDetails({
+        detail: object,
+        object: getters.get(state)(object),
+      })
     }
     return save
   },
@@ -282,7 +293,7 @@ const actions = {
    *
    * @returns a Promise with the updated scheme
    */
-  top({ state, commit }, { scheme }) {
+  top({ commit, getters }, { scheme }) {
     if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
       return Promise.resolve(scheme)
     } else {
@@ -292,20 +303,15 @@ const actions = {
         }
         let top = []
         for (let result of results) {
-          let resultInMap = state.map.get(result.uri)
-          if (resultInMap) {
-            top.push(resultInMap)
-          } else {
-            // Save into map
-            let object = result, force = false
-            commit({
-              type: "save",
-              object,
-              force,
-              scheme
-            })
-            top.push(result)
-          }
+          // Save into map
+          let object = result
+          commit({
+            type: "save",
+            object,
+            scheme
+          })
+          let resultInMap = getters.get(result)
+          top.push(resultInMap || result)
         }
         // Set ancestors to []
         for (let concept of top) {
