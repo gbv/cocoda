@@ -424,16 +424,19 @@ export default {
     }
   },
   methods: {
+    /**
+     * Properly start the application (called by watchers for either schemes or settingsLoaded).
+     */
     start() {
       if (this.schemes.length) {
         this.loadFromParametersOnce()
-      }
-      // Load favorite concepts into Vuex
-      for (let concept of this.config.favoriteConcepts) {
-        this.$store.dispatch({
-          type: "objects/load",
-          object: concept
-        })
+        // Load favorite concepts into Vuex
+        for (let concept of this.config.favoriteConcepts) {
+          this.$store.dispatch({
+            type: "objects/load",
+            object: concept
+          })
+        }
       }
     },
     insertPrefLabel(isLeft) {
