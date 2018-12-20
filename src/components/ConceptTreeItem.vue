@@ -21,8 +21,7 @@
         <i
           :class="{
             right: !concept.ISOPEN[isLeft],
-            down: concept.ISOPEN[isLeft],
-            selected: isSelected
+            down: concept.ISOPEN[isLeft]
         }" />
       </div>
       <router-link
@@ -320,18 +319,12 @@ export default {
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 // TODO: Use font awesome or move somewhere else
-i {
+.arrowBox > i {
   border: solid black;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
   margin: 2px 0;
-}
-i.selected {
-  border: solid @color-primary-4;
-  border-width: 0 2px 2px 0;
-  display: inline-block;
-  padding: 3px;
 }
 .right {
   transform: rotate(-45deg);
