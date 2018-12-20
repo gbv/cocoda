@@ -217,7 +217,7 @@
           slot="ITEM_ROW"
           slot-scope="{ item, value }" >
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: `${$t('mappingBrowser.showMore')} (${value})`, delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: `${$t('mappingBrowser.showMore')} (${$util.prefLabel(item.registry)})`, delay: $util.delay.medium }"
             v-if="item.type == 'more'"
             icon="ellipsis-h"
             class="button"
