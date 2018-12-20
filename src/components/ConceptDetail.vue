@@ -143,7 +143,7 @@
           </div>
         </b-tab>
         <b-tab
-          v-if="item._wikipediaResults"
+          v-if="item._wikipediaResults && ($util.lmContent(item._wikipediaResults) || []).length"
           title="Wikipedia" >
           <p
             v-for="(result, index) in $util.lmContent(item._wikipediaResults)"
