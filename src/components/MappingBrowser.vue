@@ -321,6 +321,10 @@ export default {
       settingsDownloadCurrent: null,
       /** List of concepts whose labels are being loaded */
       loadingConcepts: [],
+      /** List of concepts whose labels could not be loaded */
+      errorConcepts: [],
+      /** A variable to force tableItems to recompute */
+      tableItemsRecompute: null,
     }
   },
   computed: {
@@ -328,6 +332,7 @@ export default {
       return this.items.filter(item => item.mapping != null || item.type == "loading").length
     },
     tableItems() {
+      this.tableItemsRecompute
       let separatorPaddingBottom = " mappingBrowser-separatorPaddingBottom"
       let separatorPaddingTop = " mappingBrowser-separatorPaddingTop"
       let separatorBorder = " mappingBrowser-separatorBorder"
@@ -906,12 +911,6 @@ export default {
               }
               concept.inScheme = _.get(concept, "inScheme") || [mapping.toScheme]
             }
-            // Load the prefLabels for all concepts that don't have a notation
-            for (let concept of [].concat(item.sourceConcepts, item.targetConcepts)) {
-              if (!this.$util.notation(concept)) {
-                this.hover(concept)
-              }
-            }
             item._rowClass = ""
             if (leftInSource && rightInSource) {
               item._rowClass = "mappingBrowser-table-row-match"
@@ -962,7 +961,8 @@ export default {
     },
     showMore(value) {
       this.showMoreValues[value] = _.get(this.showMoreValues, `["${value}"]`, 1) + 1
-      this.$store.commit("mapping/setRefresh", { registry: value })
+      // Force tableItems to recomputed (doesn't trigger by changing "showMoreValues")
+      this.tableItemsRecompute = Math.random()
     },
     truncateText(text, characters = 10) {
       if (text.length > characters) {
@@ -1005,12 +1005,13 @@ export default {
       }
     },
     hover(concept, scheme) {
-      if(concept && _.isEmpty(concept.prefLabel) && !this.$jskos.isContainedIn(concept, this.loadingConcepts)) {
+      if(concept && _.isEmpty(concept.prefLabel) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && !this.$jskos.isContainedIn(concept, this.errorConcepts)) {
         // Load prefLabel to be shown as tooltip
 
         if ((!concept.inScheme || concept.inScheme.length == 0) && !scheme) {
           // TODO: - Error handling
           console.warn("No scheme for", concept)
+          this.errorConcepts.push(concept)
           return
         }
 
@@ -1021,6 +1022,10 @@ export default {
           let index = this.loadingConcepts.findIndex(c => this.$jskos.compare(c, concept))
           if (index != -1) {
             this.loadingConcepts.splice(index, 1)
+          }
+          if (!result) {
+            this.errorConcepts.push(concept)
+            return
           }
           // Set prefLabel
           if (result && result.prefLabel) {
