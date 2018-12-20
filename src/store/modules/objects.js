@@ -140,6 +140,16 @@ const mutations = {
             }
           }
         }
+        // Sort inScheme so that those in store are at the top
+        inScheme.sort((a, b) => {
+          if (a.INSTORE) {
+            return -1
+          }
+          if (b.INSTORE) {
+            return 1
+          }
+          return 0
+        })
         object.inScheme = inScheme
         if (object.inScheme.length == 0) {
           console.warn("inScheme has no elements", object)

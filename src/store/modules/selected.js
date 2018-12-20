@@ -56,6 +56,7 @@ const actions = {
       isLeft,
       loadingId,
     })
+    concept = get(concept) || concept
     scheme = _.get(concept, "inScheme[0]") || scheme
     // Check if concept and scheme is already selected
     if (jskos.compare(concept, state.concept[isLeft]) && jskos.compare(scheme, state.scheme[isLeft])) {
