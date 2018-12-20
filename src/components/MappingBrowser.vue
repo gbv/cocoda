@@ -147,19 +147,19 @@
           <span
             v-for="concept in value"
             :key="concept.uri">
-            <item-name
-              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
-              :item="concept"
-              :show-text="false"
-              :show-tooltip="true"
-              :is-link="true"
-              :is-left="false"
-              :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
-              @mouseover.native="hover(concept)" />
+            <span v-if="!$jskos.isContainedIn(concept, loadingConcepts)">
+              <item-name
+                :item="concept"
+                :show-text="false"
+                :show-tooltip="true"
+                :is-link="true"
+                :is-left="false"
+                :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
+                @mouseover.native="hover(concept)" /><br>
+            </span>
             <loading-indicator
               v-else
               size="sm" />
-            <br>
           </span>
         </span>
         <span
@@ -168,19 +168,19 @@
           <span
             v-for="concept in value"
             :key="concept.uri">
-            <item-name
-              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
-              :item="concept"
-              :show-text="true"
-              :show-tooltip="false"
-              :is-link="true"
-              :is-left="false"
-              :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
-              @mouseover.native="hover(concept)" />
+            <span v-if="!$jskos.isContainedIn(concept, loadingConcepts)">
+              <item-name
+                :item="concept"
+                :show-text="true"
+                :show-tooltip="false"
+                :is-link="true"
+                :is-left="false"
+                :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
+                @mouseover.native="hover(concept)" /><br>
+            </span>
             <loading-indicator
               v-else
               size="sm" />
-            <br>
           </span>
         </span>
         <span
