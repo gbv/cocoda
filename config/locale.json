@@ -142,9 +142,9 @@
       "yes": "Ja",
       "no": "Nein",
       "swapSides": "Seiten tauschen",
-      "showSchemeInfo": "zeige Info über Vokabular",
+      "showSchemeInfo": "zeige Informationen über das Vokabular",
       "clearScheme": "Vokabular entfernen",
-      "addToMapping": "zu Mapping hinzufügen",
+      "addToMapping": "zum Mapping hinzufügen",
       "loading": "Lade...",
       "cancel": "Abbrechen"
     },
@@ -157,8 +157,8 @@
     },
     "schemeSelection": {
       "title": "Wähle ein Vokabular",
-      "schemeQuick": "Vokabular Schnellwahl",
-      "conceptQuick": "Konzept Schnellwahl"
+      "schemeQuick": "Vokabular-Schnellauswahl",
+      "conceptQuick": "Konzept-Schnellauswahl"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -177,7 +177,7 @@
       "exportTitle": "Mapping Exportieren",
       "exportClipboard": "In die Zwischenablage kopieren",
       "exportJson": "Als .json-Datei herunterladen",
-      "deleteTitle": "Mapping Löschen",
+      "deleteTitle": "Mapping löschen",
       "deleteAndClear": "Lösche originales Mapping und verwerfe Änderungen",
       "deleteAndKeep": "Lösche originales Mapping und behalte Änderungen",
       "keepAndClear": "Behalte originales Mapping und verwerte Änderungen",
@@ -214,7 +214,7 @@
       "showLess": "zeige weniger",
       "showMore": "zeige mehr",
       "created": "Erstellt",
-      "modified": "Modifiziert",
+      "modified": "Geändert",
       "definition": "Definition",
       "relevance": "Relevanz",
       "relevanceVeryHigh": "sehr hoch",
@@ -231,16 +231,16 @@
       "noTopConcepts": "Keine Oberkonzepte"
     },
     "conceptTree": {
-      "title": "Konzeptbaum",
-      "noTree": "Kein Baum verfügbar"
+      "title": "Hierachie",
+      "noTree": "Keine Hierarchie verfügbar"
     },
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen."
     },
     "mappingBrowser": {
       "title": "Mapping-Browser",
-      "edit": "editieren",
-      "saveAndEdit": "speichern und editieren",
+      "edit": "bearbeiten",
+      "saveAndEdit": "speichern und bearbeiten",
       "saveAsMapping": "als Mapping speichern",
       "delete": "löschen",
       "showMore": "@:conceptDetail.showMore",
