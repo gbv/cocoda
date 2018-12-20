@@ -8,7 +8,7 @@ Use the following step-by-step guide to preprare and create a new Cocoda release
 
 1. Run tests and manual checks to confirm that there are no more bugs left.
 
-1. Update the version numbers in `package.lock` and `package-lock.json`.
+1. Update the version numbers in `package.json` and `package-lock.json`.
 
 1. Commit those changes with the commit message `Release version x.y.z`.
 
