@@ -30,6 +30,11 @@ export default {
 .loadingIndicatorFull {
   z-index: @zIndex-8 !important;
   background-color: @color-loading-overlay-background;
+  animation: fadein 0.5s;
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 .loadingIndicatorFull-text, .loadingIndicatorFull-indicator {
   flex: none;
