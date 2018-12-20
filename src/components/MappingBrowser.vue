@@ -34,6 +34,9 @@
                 {{ $t("settings.localDownloadJskos", [settingsDownloadCurrent.split("\n").length]) }}
               </a>
             </p>
+            <p v-else-if="itemCount != 0">
+              <loading-indicator size="sm" />
+            </p>
           </div>
         </b-popover>
       </div>
