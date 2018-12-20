@@ -592,7 +592,7 @@ export default {
           }
           return JSON.stringify(mapping)
         }
-        let mappings = this.tableItems.map(item => item.mapping).filter(mapping => mapping != null)
+        let mappings = this.items.map(item => item.mapping).filter(mapping => mapping != null)
         this.settingsDownloadCurrent = mappings.map(jskosExport).join("\n")
       } else {
         this.settingsDownloadCurrent = null
