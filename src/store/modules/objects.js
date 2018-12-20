@@ -483,6 +483,17 @@ const actions = {
           })
           currentAncestors.push(ancestor)
         }
+        // Set ancestors of narrower
+        for (let child of object.narrower || []) {
+          if (child) {
+            commit({
+              type: "set",
+              object: child,
+              prop: "ancestors",
+              value: ancestors.concat([object])
+            })
+          }
+        }
         // Save ancestors
         commit({
           type: "set",
