@@ -307,14 +307,20 @@ export default {
       let separatorPaddingTop = " mappingBrowser-separatorPaddingTop"
       let separatorBorder = " mappingBrowser-separatorBorder"
       let items = this.items.slice()
+      let newItems = []
       let previousRegistry = null
       let previousSourceScheme = null
       let previousTargetScheme = null
       let previousItem = null
+      let currentSetLength = 0
+      let skipCurrentRegistry = false
+      const lengthPerSet = 5
       for (let item of items) {
         if (!this.$jskos.compare(previousRegistry, item.registry)) {
           previousSourceScheme = null
           previousTargetScheme = null
+          currentSetLength = 0
+          skipCurrentRegistry = false
           previousRegistry = item.registry
           // Add separator classes
           if (previousItem) {
@@ -325,6 +331,24 @@ export default {
             item._rowClass += separatorPaddingTop
           }
         }
+        currentSetLength += 1
+        // Truncate if necessary
+        let maxLengthForThis = _.get(this.showMoreValues, `["${item.registry.uri}"]`, 1) * lengthPerSet
+        if (!skipCurrentRegistry && !this.$settings.mappingBrowserShowAll && currentSetLength > maxLengthForThis) {
+          skipCurrentRegistry = true
+          // Add extra row if truncated
+          newItems.push({
+            "_wholeRow": true,
+            "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
+            value: item.registry.uri,
+            type: "more",
+            registry: item.registry,
+          })
+        }
+        if (skipCurrentRegistry) {
+          continue
+        }
+        // Hide repeating schemes
         if (item.sourceScheme && this.$jskos.compare(item.sourceScheme, previousSourceScheme)) {
           item.sourceScheme = null
         } else {
@@ -335,9 +359,10 @@ export default {
         } else {
           previousTargetScheme = item.targetScheme
         }
+        newItems.push(item)
         previousItem = item
       }
-      return items
+      return newItems
     },
     /**
      * List of fields (columns) to be used in bootstrap table
@@ -730,8 +755,6 @@ export default {
 
           let items = []
 
-          let lengthPerSet = 5
-          let truncateResults = mappings.length > lengthPerSet && !this.$settings.mappingBrowserShowAll
           mappings = mappings.sort((a, b) => {
             // Sort mappings
             if (a._occurrence || b._occurrence) {
@@ -877,19 +900,6 @@ export default {
             item.type = this.$jskos.mappingTypeByType(mapping.type)
             item.occurrence = mapping._occurrence
             items.push(item)
-          }
-          // Truncate if necessary (and don't truncate local mappings)
-          let maxLengthForThis = _.get(this.showMoreValues, `["${registry.uri}"]`, 1) * lengthPerSet
-          if (truncateResults && items.length > maxLengthForThis) {
-            items = items.slice(0, maxLengthForThis)
-            // Add extra row if truncated
-            items.push({
-              "_wholeRow": true,
-              "_rowClass": "mappingBrowser-table-row-showMore fontSize-small",
-              value: registry.uri,
-              type: "more",
-              registry,
-            })
           }
 
           // Insert items into this.items
