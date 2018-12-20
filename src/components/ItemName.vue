@@ -21,19 +21,19 @@
       :id="tooltipDOMID" >
       <!-- Text for notation -->
       <notation-text
-        :item="item"
+        :item="storeItem"
         :class="{ 'fontWeight-heavy': showText }" />
       <!-- Text for prefLabel -->
       <span v-if="showText || !notation">
-        {{ $util.prefLabel(item, null, notation == null) }}
+        {{ $util.prefLabel(storeItem, null, notation == null) }}
       </span>
     </div>
     <!-- Tooltip for prefLabel if only notation is shown -->
     <b-tooltip
-      v-if="showTooltip && $util.prefLabel(item)"
+      v-if="showTooltip && $util.prefLabel(storeItem)"
       ref="tooltip"
       :target="tooltipDOMID" >
-      {{ trimTooltip($util.prefLabel(item)) }}
+      {{ trimTooltip($util.prefLabel(storeItem)) }}
     </b-tooltip>
   </div>
 </template>
@@ -122,6 +122,9 @@ export default {
     },
     notation() {
       return this.$util.notation(this.item)
+    },
+    storeItem() {
+      return this.$store.getters["objects/get"](this.item) || this.item
     },
   },
   watch: {
