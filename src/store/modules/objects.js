@@ -55,6 +55,19 @@ const adjustObject = object => {
   }
 }
 
+const integrateDetails = ({ detail, object, commit }) => {
+  for (let prop of Object.keys(detail)) {
+    if ((_.isEmpty(object[prop]) || Array.isArray(object[prop]) && object[prop].includes(null)) && detail[prop] != null) {
+      commit({
+        type: "set",
+        object,
+        prop,
+        value: detail[prop]
+      })
+    }
+  }
+}
+
 // mutations
 const mutations = {
 
@@ -228,7 +241,9 @@ const actions = {
         if (results.length) {
           let object = results[0]
           if (isObjectInMap(state.map, object)) {
-            return getters.get(object)
+            let objectInMap = getters.get(object)
+            integrateDetails({ detail: object, object: objectInMap, commit })
+            return objectInMap
           } else {
             commit({
               type: "save",
@@ -478,11 +493,14 @@ const actions = {
    *
    * @returns a Promise with the updated object
    */
-  details({ commit }, { object }) {
+  details({ commit, getters }, { object, scheme }) {
     if (!object || object.DETAILSLOADED) {
       return Promise.resolve(object)
     } else {
-      let promise = (object._getDetails && object._getDetails()) || (_.get(object, "inScheme[0]._provider.getDetails") && _.get(object, "inScheme[0]._provider").getDetails(object))
+      scheme = getters.get(scheme)
+      let promise = (object._getDetails && object._getDetails())
+        || (_.get(object, "inScheme[0]._provider.getDetails") && _.get(object, "inScheme[0]._provider").getDetails(object))
+        || (_.get(scheme, "_provider.getDetails") && _.get(scheme, "_provider").getDetails(object))
       if (!promise) {
         console.warn("Object", object, "does not have _getDetails.")
         return Promise.resolve(object)
@@ -491,16 +509,7 @@ const actions = {
         if (results.length) {
           let detail = results[0]
           // Integrate detail into object
-          for (let prop of Object.keys(detail)) {
-            if ((_.isEmpty(object[prop]) || Array.isArray(object[prop]) && object[prop].includes(null)) && detail[prop] != null) {
-              commit({
-                type: "set",
-                object,
-                prop,
-                value: detail[prop]
-              })
-            }
-          }
+          integrateDetails({ detail, object, commit })
           commit({
             type: "set",
             object,
