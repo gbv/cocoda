@@ -877,10 +877,22 @@ export default {
             // Load prefLabels for all concepts
             // TODO: Optimize by loading multiple concepts simultaneously (#107)
             for (let concept of item.sourceConcepts) {
-              this.hover(concept, _.get(mapping, "fromScheme"))
+              let scheme = _.get(mapping, "fromScheme")
+              this.hover(concept, scheme)
+              this.$store.commit({
+                type: "objects/save",
+                object: concept,
+                scheme
+              })
             }
             for (let concept of item.targetConcepts) {
-              this.hover(concept, _.get(mapping, "toScheme"))
+              let scheme = _.get(mapping, "toScheme")
+              this.hover(concept, scheme)
+              this.$store.commit({
+                type: "objects/save",
+                object: concept,
+                scheme
+              })
             }
             // Save concepts as xLabels attribute as well
             item.sourceConceptsLong = item.sourceConcepts
