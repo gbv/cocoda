@@ -77,6 +77,7 @@ const mutations = {
    * Payload object: { object, force }
    * - object: object to save in map
    * - force: force saving if object already exists (default: false)
+   * - scheme: scheme for concept if applicable
    */
   save (state, { object, force = false, scheme }) {
     // First, check if any if the URIs is already in the map
@@ -88,7 +89,18 @@ const mutations = {
       // 1. General properties
       object.DETAILSLOADED = object.DETAILSLOADED != null ? object.DETAILSLOADED : false
       object.INSTORE = true
-      if (jskos.isConcept(object)) {
+      if (jskos.isScheme(object)) {
+        Vue.set(object, "TOPCONCEPTS", object.TOPCONCEPTS || [null])
+        Vue.set(object, "created", object.created || null)
+        Vue.set(object, "issued", object.issued || null)
+        Vue.set(object, "modified", object.modified || null)
+        Vue.set(object, "license", object.license || null)
+        Vue.set(object, "notation", object.notation || [])
+        Vue.set(object, "prefLabel", object.prefLabel || {})
+        Vue.set(object, "publisher", object.publisher || null)
+        Vue.set(object, "types", object.types || null)
+        Vue.set(object, "type", object.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"])
+      } else {
         Vue.set(object, "BROADERLOADED", false)
         Vue.set(object, "GNDTERMS", null)
         Vue.set(object, "ISOPEN", { true: false, false: false })
@@ -105,45 +117,35 @@ const mutations = {
         Vue.set(object, "notation", object.notation || [])
         Vue.set(object, "prefLabel", object.prefLabel || {})
         Vue.set(object, "publisher", object.publisher || null)
+        Vue.set(object, "type", object.type || ["http://www.w3.org/2004/02/skos/core#Concept"])
         if (!object.inScheme) {
           Vue.set(object, "inScheme", [scheme])
-        } else {
-          let inScheme = []
-          for (let scheme of object.inScheme) {
-            for (let uri of jskos.getAllUris(scheme)) {
-              let schemeInMap = state.map.get(uri)
-              let alreadyAdded = false
-              for (let schemeInScheme of inScheme) {
-                if (schemeInMap && compare(state, schemeInMap.uri, schemeInScheme.uri)) {
-                  alreadyAdded = true
-                }
+        }
+        let inScheme = []
+        for (let scheme of object.inScheme) {
+          for (let uri of jskos.getAllUris(scheme)) {
+            let schemeInMap = state.map.get(uri)
+            let alreadyAdded = false
+            for (let schemeInScheme of inScheme) {
+              if (schemeInMap && compare(state, schemeInMap.uri, schemeInScheme.uri)) {
+                alreadyAdded = true
               }
-              if (!alreadyAdded) {
-                if (schemeInMap) {
-                  inScheme.push(schemeInMap)
-                } else {
-                  inScheme.push(scheme)
-                }
+            }
+            if (!alreadyAdded) {
+              if (schemeInMap) {
+                inScheme.push(schemeInMap)
+              } else {
+                inScheme.push(scheme)
               }
             }
           }
-          object.inScheme = inScheme
         }
+        object.inScheme = inScheme
         if (object.inScheme.length == 0) {
           console.warn("inScheme has no elements", object)
         }
         // Adjust concept
         adjustObject(object)
-      } else if (jskos.isScheme(object)) {
-        Vue.set(object, "TOPCONCEPTS", object.TOPCONCEPTS || [null])
-        Vue.set(object, "created", object.created || null)
-        Vue.set(object, "issued", object.issued || null)
-        Vue.set(object, "modified", object.modified || null)
-        Vue.set(object, "license", object.license || null)
-        Vue.set(object, "notation", object.notation || [])
-        Vue.set(object, "prefLabel", object.prefLabel || {})
-        Vue.set(object, "publisher", object.publisher || null)
-        Vue.set(object, "types", object.types || null)
       }
       // Add to map
       let uris = jskos.getAllUris(object)
