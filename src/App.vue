@@ -84,12 +84,12 @@
             </p>
             <br>
             <p
-              v-if="config.favoriteConcepts && config.favoriteConcepts.length"
+              v-if="favoriteConcepts && favoriteConcepts.length"
               class="fontWeight-heavy" >
               {{ $t("schemeSelection.conceptQuick") }}
             </p>
             <p
-              v-for="concept in config.favoriteConcepts"
+              v-for="concept in favoriteConcepts"
               :key="concept.uri"
               class="quickSelectionItem" >
               <item-name
@@ -284,6 +284,13 @@ export default {
       // This does nothing except for triggering a refresh for this computed property when the list of schemes has changed.
       this.schemes
       return schemes
+    },
+    favoriteConcepts() {
+      let concepts = []
+      for (let concept of this.config.favoriteConcepts) {
+        concepts.push(this.$store.getters["objects/get"](concept) || concept)
+      }
+      return concepts
     },
     schemes() {
       return this.$store.state.schemes
