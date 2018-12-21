@@ -76,11 +76,9 @@
             :id="uniqueID + '-searchResult-' + i"
             :class="{ 'conceptSearch-selected': i === searchSelected }"
             class="conceptSearch-results-item"
-            @click="chooseResult(result)"
+            @click="chooseResult(i)"
             @mouseover="mouseover(i)" >
-            <router-link
-              :to="_getRouterUrl(result)"
-              v-html="highlightQueryInResult(result[0])" />
+            <span v-html="highlightQueryInResult(result[0])" />
           </li>
           <li
             v-if="searchResult.length == 0"
@@ -243,9 +241,10 @@ export default {
      *
      * @param {string[]} result - result array with label, description, and uri (in this order)
      */
-    chooseResult() {
+    chooseResult(chosenIndex) {
       this.closeResults()
       this.searchSelected = -1
+      this.$router.push({ path: this._getRouterUrl(this.searchResult[chosenIndex]) })
       // Remove focus
       if (document.activeElement != document.body) document.activeElement.blur()
     },
@@ -350,8 +349,7 @@ export default {
       } else {
         chosenIndex = this.searchSelected
       }
-      this.$router.push({ path: this._getRouterUrl(this.searchResult[chosenIndex]) })
-      this.chooseResult()
+      this.chooseResult(chosenIndex)
     },
     /**
      * Handles a mouseover down event.
@@ -479,15 +477,7 @@ export default {
   list-style: none;
   text-align: left;
   cursor: pointer;
-  height: 25px;
-  position: relative;
-}
-
-.conceptSearch-results-item > a, .conceptSearch-results-item > div {
-  position: absolute;
   padding: 3px 0px 3px 12px;
-  top: 0; right: 0; left: 0; bottom: 0;
-  color: @color-text-dark;
 }
 
 .conceptSearch-selected {
