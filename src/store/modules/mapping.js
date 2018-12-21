@@ -329,7 +329,7 @@ const actions = {
     return registry.provider.saveMappings(mappings)
   },
 
-  removeMappings({ state }, { mappings, registry }) {
+  removeMappings({ state, commit }, { mappings, registry }) {
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
@@ -343,7 +343,16 @@ const actions = {
       console.warn("Tried to remove mappings, but could not determine provider.")
       return Promise.resolve([])
     }
-    return registry.provider.removeMappings(mappings)
+    return registry.provider.removeMappings(mappings).then(mappings => {
+      // Check if current original was amongst the removed mappings
+      for (let mapping of mappings) {
+        if (_.isEqual(mapping, state.original)) {
+          // Set original to null
+          commit({ type: "set" })
+        }
+      }
+      return mappings
+    })
   },
 
 }
