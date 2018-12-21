@@ -41,7 +41,7 @@ export default {
   color: white;
   width: 18px;
   height: 18px;
-  .fontSize-small;
+  .fontSize-verySmall;
 }
 .registry-notation-enabled {
   background-color: darken(@color-button-delete, 5%);

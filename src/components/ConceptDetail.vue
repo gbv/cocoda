@@ -469,7 +469,7 @@ export default {
   .fontSize-large;
   position: absolute;
   right: 3px;
-  top: -1px;
+  top: -2px;
   color: @color-background;
 }
 .conceptDetail-name-addButton:hover {
