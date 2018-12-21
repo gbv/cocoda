@@ -78,7 +78,6 @@
       </div>
       <!-- Mapping table -->
       <flexible-table
-        v-show="itemCount > 0"
         :items="tableItems"
         :fields="fields"
         class="mappingBrowser-table"
@@ -270,11 +269,6 @@
           </span>
         </span>
       </flexible-table>
-      <div
-        v-show="loading == 0 && itemCount == 0"
-        class="noItems fontWeight-heavy" >
-        {{ $t("mappingBrowser.noMappings") }}
-      </div>
     </div>
   </div>
 </template>
