@@ -11,7 +11,7 @@
       <img
         :src="'./static/' + logo.file"
         :alt="logo.alt || 'logo'"
-        style="height: 60px; margin-right: 60px" >
+        style="height: 42px;" >
     </b-navbar-brand>
     <!-- Title -->
     <b-navbar-brand href="#">
@@ -102,8 +102,8 @@ export default {
 @import "../style/main.less";
 
 nav.navbar {
-  padding: 4px 16px 4px 16px;
-  height: 54px;
+  padding: 2px 8px;
+  height: 42px;
   background-color: @color-primary-1;
 }
 .navbar-brand {
