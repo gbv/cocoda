@@ -78,6 +78,7 @@
       </div>
       <!-- Mapping table -->
       <flexible-table
+        v-show="items.length"
         :items="tableItems"
         :fields="fields"
         class="mappingBrowser-table"
@@ -269,6 +270,11 @@
           </span>
         </span>
       </flexible-table>
+      <div
+        v-show="loading == 0 && items.length == 0"
+        class="noItems fontWeight-heavy" >
+        {{ $t("mappingBrowser.chooseConcept") }}
+      </div>
     </div>
   </div>
 </template>

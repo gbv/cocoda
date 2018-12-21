@@ -92,7 +92,8 @@
       "creator": "Creator",
       "source": "Source",
       "settingShowAllSchemes": "Show results of all concept schemes",
-      "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown."
+      "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown.",
+      "chooseConcept": "Select a concept to see mappings and mapping recommendations"
     },
     "minimizer": {
       "minimize": "minimize card",
@@ -249,7 +250,8 @@
       "creator": "Ersteller",
       "source": "Quelle",
       "settingShowAllSchemes": "Ergebnisse aller Vokabulare anzeigen",
-      "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind."
+      "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind.",
+      "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen"
     },
     "minimizer": {
       "minimize": "Komponente ausblenden",
