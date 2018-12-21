@@ -600,22 +600,7 @@ export default {
     settingsShow(newValue) {
       // Prepare mappings download when settings are shown.
       if (newValue) {
-        // Function for minifying and stringifying a mapping for JSKOS export.
-        // TODO: Code duplication with TheSettings! This should actually go into jskos-tools.
-        let jskosExport = m => {
-          let mapping = this.$jskos.minifyMapping(m)
-          // Add labels to concepts in mapping
-          for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-            let conceptInStore = this.$store.getters["objects/get"](concept)
-            let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
-            if (language) {
-              concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
-            }
-          }
-          return JSON.stringify(mapping)
-        }
-        let mappings = this.items.map(item => item.mapping).filter(mapping => mapping != null)
-        this.settingsDownloadCurrent = mappings.map(jskosExport).join("\n")
+        this.refreshSettingsDownload()
       } else {
         this.settingsDownloadCurrent = null
       }
@@ -644,6 +629,24 @@ export default {
     document.removeEventListener("click", this.handleClickOutside)
   },
   methods: {
+    refreshSettingsDownload() {
+      // Function for minifying and stringifying a mapping for JSKOS export.
+      // TODO: Code duplication with TheSettings! This should actually go into jskos-tools.
+      let jskosExport = m => {
+        let mapping = this.$jskos.minifyMapping(m)
+        // Add labels to concepts in mapping
+        for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
+          let conceptInStore = this.$store.getters["objects/get"](concept)
+          let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+          if (language) {
+            concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
+          }
+        }
+        return JSON.stringify(mapping)
+      }
+      let mappings = this.items.map(item => item.mapping).filter(mapping => mapping != null)
+      this.settingsDownloadCurrent = mappings.map(jskosExport).join("\n")
+    },
     handleClickOutside(event) {
       // Handle registry group popovers
       for (let group of this.registryGroups) {
@@ -960,6 +963,10 @@ export default {
         if (this.loadingId == loadingId) {
           this.loading = 0
           this.loadingId = null
+          // If settings are shown, refresh download
+          if (this.settingsShow) {
+            this.refreshSettingsDownload()
+          }
         }
       })
     },
