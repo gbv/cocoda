@@ -509,6 +509,7 @@ export default {
   padding: 2px 10px 10px 10px;
   background-color: @color-primary-5;
   user-select: none;
+  .fontWeight-heavy;
 }
 .conceptDetail-note-tabs .card-header-tabs {
   margin-bottom: -10px;

@@ -226,7 +226,7 @@ Vue.component("notation-text", {
       return fill
     },
   },
-  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-veryLightGrey'>{{ fill }}</span></span>"
+  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-mediumLightGrey'>{{ fill }}</span></span>"
 })
 
 </script>

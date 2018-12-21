@@ -90,7 +90,8 @@
             :item="value"
             :show-text="false"
             :show-tooltip="true"
-            font-size="sm" />
+            font-size="sm"
+            class="fontWeight-heavy" />
         </span>
         <span
           slot="sourceConcepts"
@@ -139,7 +140,8 @@
             :item="value"
             :show-text="false"
             :show-tooltip="true"
-            font-size="sm" />
+            font-size="sm"
+            class="fontWeight-heavy" />
         </span>
         <span
           slot="targetConcepts"
@@ -946,7 +948,7 @@ export default {
             if (items.length == 0) {
               let noItemsRow = {
                 "_wholeRow": true,
-                "_rowClass": "mappingBrowser-table-row-loading fontSize-small text-lightGrey",
+                "_rowClass": "mappingBrowser-table-row-loading fontSize-small text-grey",
                 value: "",
                 type: "noItems",
                 registry,
