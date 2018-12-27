@@ -349,6 +349,10 @@ export default {
   methods: {
     saveMapping() {
       if (!this.canSaveMapping) return false
+      if (!this.creatorName || this.creatorName == "") {
+        this.alert("Please set your name in Settings (top right of the page).")
+        return false
+      }
       let mapping = this.prepareMapping()
       let original = this.original
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
