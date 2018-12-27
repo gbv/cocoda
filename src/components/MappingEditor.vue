@@ -43,6 +43,16 @@
         @click="exportMapping()" >
         <font-awesome-icon icon="share-square" />
       </div>
+      <div
+        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
+        :class="{
+          button: canClearMapping,
+          'button-disabled': !canClearMapping
+        }"
+        class="mappingEditorToolbarItem"
+        @click="$refs.commentModal.show()" >
+        <font-awesome-icon icon="comment" />
+      </div>
     </div>
     <!-- Source and target sides for the mapping -->
     <div
@@ -192,6 +202,19 @@
         {{ $t("mappingEditor.cancel") }}
       </b-button>
     </b-modal>
+    <!-- Comment mapping modal -->
+    <b-modal
+      ref="commentModal"
+      :title="$t('mappingEditor.commentMappingTitle')"
+      hide-footer >
+      <b-form-textarea
+        v-for="(comment, index) in comments"
+        :key="`mappingEditor-comment-${index}`"
+        v-model="comments[index]"
+        :rows="2"
+        :max-rows="6"
+        @input="saveComment" />
+    </b-modal>
   </div>
 </template>
 
@@ -208,6 +231,11 @@ import hotkeys from "hotkeys-js"
 export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, Minimizer },
+  data() {
+    return {
+      comments: [""]
+    }
+  },
   computed: {
     mapping() {
       return this.$store.state.mapping.mapping
@@ -246,11 +274,18 @@ export default {
       if (!this.original) {
         return true
       }
+      // Check if notes have changed
+      if (!_.isEqual(this.mapping.note, this.original.note)) {
+        return true
+      }
       return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
       return this.$util.prefLabel(_.get(this.mapping, "creator[0]"))
         || this.$store.state.settings.settings.creator
+    },
+    mappingComments() {
+      return this.$util.lmContent(this.mapping, "note") || []
     },
   },
   watch: {
@@ -275,7 +310,18 @@ export default {
           creator: [{ prefLabel: { de: this.$settings.creator || "" } }]
         })
       }
-    }
+    },
+    comments() {
+      // Keep exactly one empty comment at the end
+      let comments = this.comments.filter(c => c != "")
+      comments.push("")
+      if (comments.length != this.comments.length) {
+        this.comments = comments
+      }
+    },
+    mappingComments(comments) {
+      this.comments = comments
+    },
   },
   created() {
     // Add hotkey for saving the mapping
@@ -461,6 +507,19 @@ export default {
           concept: object,
           scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
           isLeft: isLeft
+        })
+      }
+    },
+    saveComment() {
+      // Save comments
+      let comments = this.comments.filter(c => c != "")
+      if (!_.isEqual(comments, this.mappingComments)) {
+        let language = this.$util.getLanguage(_.get(this, "mapping.note")) || this.$util.fallbackLanguage
+        this.$store.commit({
+          type: "mapping/setNote",
+          note: {
+            [language]: comments
+          }
         })
       }
     },

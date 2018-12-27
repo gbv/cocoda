@@ -218,6 +218,29 @@ const mutations = {
   },
 
   /**
+   * Sets the note for the mapping.
+   *
+   * Payload object: { note }
+   * - note: a language map of list of notes
+   */
+  setNote(state, { note }) {
+    if (_.isObject(note)) {
+      let noteCount = 0
+      _.forOwn(note, value => {
+        noteCount += value.length
+      })
+      if (!noteCount) {
+        note = null
+      }
+    }
+    if (!note) {
+      delete state.mapping.note
+    } else {
+      state.mapping.note = note
+    }
+  },
+
+  /**
    * Sets the fromScheme or toScheme for the mapping if that side has no concepts.
    *
    * Payload object: { isLeft, scheme }

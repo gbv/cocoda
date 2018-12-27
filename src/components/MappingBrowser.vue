@@ -212,6 +212,15 @@
         <span
           slot="actions"
           slot-scope="data" >
+          <span v-if="data.item.mapping && data.item.mapping.note">
+            <font-awesome-icon
+              v-b-popover.hover="{
+                html: true,
+                content: ($util.lmContent(data.item.mapping, 'note') || []).map(note => `<p>${note.split('\n').join('<br>')}</p>`).join('')
+              }"
+              icon="comment"
+              class="button mappingBrowser-toolbar-button" />
+          </span>
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
             icon="edit"
@@ -513,7 +522,7 @@ export default {
         {
           key: "actions",
           label: "",
-          width: "4%",
+          width: "6%",
           minWidth: "",
           sortable: false
         }
