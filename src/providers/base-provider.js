@@ -47,7 +47,7 @@ class BaseProvider {
     }
     // Convert all values into booleans
     _.forOwn(this.has, (value, key) => {
-      this.has[key] = value != null
+      this.has[key] = _.isBoolean(value) ? value : value != null
     })
     // Set languages
     this.defaultLanguage = "de,en,es,nl,it,fi,pl,ru,cs,jp"
