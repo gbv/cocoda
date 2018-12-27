@@ -104,6 +104,15 @@ const getters = {
     return state.mapping[helpers.fromToScheme(isLeft)]
   },
 
+  getCurrentRegistry: (state) => () => {
+    // Try to find registry that fits state.mappingRegistry
+    let registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
+    if (!registry) {
+      registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
+    }
+    return registry
+  },
+
 }
 
 // mutations
@@ -180,10 +189,9 @@ const mutations = {
     if (mapping) {
       state.mapping = mapping
     }
-    // Save a minified version of the original with identifiers and the LOCAL property.
+    // Save the original with identifiers and the LOCAL property.
     if (original) {
-      state.original = jskos.addMappingIdentifiers(jskos.minifyMapping(original))
-      state.original.LOCAL = original.LOCAL
+      state.original = jskos.addMappingIdentifiers(original)
     } else if (!mapping) {
       state.original = null
     }
@@ -273,11 +281,7 @@ const mutations = {
     // TODO: Refactoring!
     if (refresh) {
       if (onlyMain) {
-        // Try to find registry that fits state.mappingRegistry
-        registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
-        if (!registry) {
-          registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
-        }
+        registry = getters.getCurrentRegistry(state)()
       } else {
         if (registry) {
           let uri = registry
@@ -298,14 +302,11 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ state }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+  getMappings({ getters }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
-      let registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
-      if (!registry) {
-        registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
-      }
+      let registry = getters.getCurrentRegistry()
       if (registry) {
         registries = [registry]
       }
@@ -335,41 +336,39 @@ const actions = {
     })
   },
 
-  saveMappings({ state }, { mappings, registry }) {
+  saveMappings({ getters }, { mappings, registry }) {
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
     } else {
-      registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
-      if (!registry) {
-        registry = config.registries.find(registry => registry.provider.has.canSaveMappings)
-      }
+      registry = getters.getCurrentRegistry()
     }
     if (!registry || !registry.provider || !registry.provider.has.canSaveMappings) {
       console.warn("Tried to save mappings, but could not determine provider.")
       return Promise.resolve([])
     }
+    // Minify mappings before saving
+    mappings = mappings.map(({ mapping, original }) => ({ mapping: jskos.minifyMapping(mapping), original }))
     return registry.provider.saveMappings(mappings)
   },
 
-  removeMappings({ state, commit }, { mappings, registry }) {
+  removeMappings({ state, getters, commit }, { mappings, registry }) {
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
     } else {
-      registry = config.registries.find(registry => jskos.compare(registry, state.mappingRegistry))
-      if (!registry) {
-        registry = config.registries.find(registry => registry.provider.has.canRemoveMappings)
-      }
+      registry = getters.getCurrentRegistry()
     }
-    if (!registry || !registry.provider || !registry.provider.has.canSaveMappings) {
+    if (!registry || !registry.provider || !registry.provider.has.canRemoveMappings) {
       console.warn("Tried to remove mappings, but could not determine provider.")
       return Promise.resolve([])
     }
+    // Minify mappings before removing
+    mappings = mappings.map(mapping => jskos.minifyMapping(mapping))
     return registry.provider.removeMappings(mappings).then(mappings => {
       // Check if current original was amongst the removed mappings
       for (let mapping of mappings) {
-        if (_.isEqual(mapping, state.original)) {
+        if (_.isEqual(jskos.minifyMapping(mapping), jskos.minifyMapping(state.original)) && jskos.compare(_.get(mapping, "_provider.registry"), _.get(state.original, "_provider.registry"))) {
           // Set original to null
           commit({ type: "set" })
         }

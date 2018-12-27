@@ -244,10 +244,10 @@ export default {
       return this.$store.state.mapping.original
     },
     canSaveMapping() {
-      return (this.original == null || this.hasChangedFromOriginal || !this.original.LOCAL) && this.mapping.fromScheme && this.mapping.toScheme
+      return (this.original == null || this.hasChangedFromOriginal) && this.mapping.fromScheme && this.mapping.toScheme
     },
     canDeleteMapping() {
-      return this.original && this.original.LOCAL
+      return _.get(this.original, "_provider.has.canRemoveMappings", false)
     },
     canClearMapping() {
       return this.mapping.fromScheme || this.mapping.toScheme

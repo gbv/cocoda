@@ -37,7 +37,7 @@
     "file-saver": "^2.0.0-rc.3",
     "hotkeys-js": "^3.4.1",
     "jquery": "^3.3.1",
-    "jskos-tools": "^0.1.19",
+    "jskos-tools": "^0.1.20",
     "localforage": "^1.7.2",
     "lodash": "^4.17.10",
     "qs": "^6.6.0",

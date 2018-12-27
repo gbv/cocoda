@@ -527,7 +527,7 @@ export default {
             // Found original mapping.
             // Prefer local mapping over other mappings.
             // TODO: There needs to be a completely unique identifier for this.
-            let original = mappings.find(mapping => mapping.LOCAL) || mappings[0]
+            let original = mappings.find(mapping => _.get(mapping, "_provider.has.canSaveMappings")) || mappings[0]
             return decodeMapping.then(mapping => {
               if (mapping) {
                 return [mapping, original]

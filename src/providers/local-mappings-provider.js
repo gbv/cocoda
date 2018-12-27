@@ -79,12 +79,6 @@ class LocalMappingsProvider extends BaseProvider {
         })
       }
       return mappings
-    }).then(mappings => {
-      // Add "LOCAL = true" for all mappings.
-      mappings.forEach(mapping => {
-        mapping.LOCAL = true
-      })
-      return mappings
     })
   }
 
@@ -115,11 +109,9 @@ class LocalMappingsProvider extends BaseProvider {
         localMappings.push(mapping)
         addedMappings.push(mapping)
       }
-
+      // Minify mappings before saving back to local storage
+      localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem("mappings", localMappings).then(() => {
-        for (let mapping of addedMappings) {
-          mapping.LOCAL = true
-        }
         return addedMappings
       }).catch(() => {
         return []
@@ -131,6 +123,7 @@ class LocalMappingsProvider extends BaseProvider {
    * Removes mappings from local storage. Returns a Promise with a list of mappings that were removed.
    */
   _removeMappings(mappings = []) {
+    mappings = mappings.map(mapping => jskos.addMappingIdentifiers(mapping))
     return this.getMappings().then(localMappings => {
       let removedMappings = []
       let filter = (reverse = false) => mapping => m => {
@@ -145,6 +138,8 @@ class LocalMappingsProvider extends BaseProvider {
         removedMappings = removedMappings.concat(localMappings.filter(filter(true)(mapping)))
         localMappings = localMappings.filter(filter()(mapping))
       }
+      // Minify mappings before saving back to local storage
+      localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem("mappings", localMappings).then(() => {
         return removedMappings
       }).catch(() => {

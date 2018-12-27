@@ -228,7 +228,7 @@
             @click="edit(data)" />
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
-            v-if="!data.item.mapping.LOCAL"
+            v-if="!$jskos.compare(data.item.registry, $store.getters['mapping/getCurrentRegistry']())"
             :class="{
               ['button']: canSave(data.item.mapping),
               ['button-disabled']: !canSave(data.item.mapping)
@@ -238,7 +238,7 @@
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
             v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: $util.delay.medium }"
-            v-if="data.item.mapping.LOCAL"
+            v-if="data.item.registry.provider.has.canRemoveMappings"
             icon="trash-alt"
             class="button-delete mappingBrowser-toolbar-button"
             @click="removeMapping(data.item.mapping)"
@@ -1010,12 +1010,12 @@ export default {
       } else if (mapping.to.memberChoice) {
         mapping.to.memberChoice = data.item.mapping.to.memberChoice.slice()
       }
+      mapping._provider = data.item.mapping._provider
       // Load concept prefLabel for each concept in mapping if necessary
       for (let concept of [].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice)) {
         this.hover(concept)
       }
       // Save mapping
-      // let original = mapping.LOCAL ? data.item.mapping : null
       if (this.canSave(mapping)) {
         this.saveMapping(mapping).then(original => {
           this.$store.commit({
@@ -1028,7 +1028,7 @@ export default {
         this.$store.commit({
           type: "mapping/set",
           mapping,
-          original: mapping.LOCAL ? mapping : null
+          original: mapping._provider && mapping._provider.has.canSaveMappings ? mapping : null
         })
       }
     },
@@ -1111,7 +1111,7 @@ export default {
     },
     /** Saving of mappigns */
     canSave(mapping) {
-      if (!mapping || mapping.LOCAL || !mapping.fromScheme || !mapping.toScheme) {
+      if (!mapping || !mapping.fromScheme || !mapping.toScheme) {
         return false
       }
       // TODO: Do this differently to prevent going through all local mappings on each reload.

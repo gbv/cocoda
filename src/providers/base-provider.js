@@ -130,6 +130,7 @@ class BaseProvider {
             mapping[sideScheme] = _.get(jskos.conceptsOfMapping(mapping, side), "[0].inScheme[0]")
           }
         }
+        mapping._provider = this
       }
       return mappings
     }
@@ -317,6 +318,7 @@ class BaseProvider {
    */
   saveMappings(...params) {
     return this._saveMappings(...params)
+      .then(this.adjustMappings)
   }
   _saveMappings() {
     return Promise.resolve([])
