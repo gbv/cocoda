@@ -281,8 +281,7 @@ export default {
       return !this.$jskos.compareMappings(this.original, this.mapping)
     },
     creatorName() {
-      return this.$util.prefLabel(_.get(this.mapping, "creator[0]"))
-        || this.$store.state.settings.settings.creator
+      return this.$store.state.settings.settings.creator
     },
     mappingComments() {
       return this.$util.lmContent(this.mapping, "note") || []
@@ -301,15 +300,6 @@ export default {
         isLeft: false,
         scheme: this.selected.scheme[false]
       })
-    },
-    canSaveMapping(newValue, oldValue) {
-      if (!oldValue && newValue) {
-      // Change creator of mapping.
-        this.$store.commit({
-          type: "mapping/setCreator",
-          creator: [{ prefLabel: { de: this.$settings.creator || "" } }]
-        })
-      }
     },
     comments() {
       // Keep exactly one empty comment at the end
@@ -353,6 +343,11 @@ export default {
         this.alert("Please set your name in Settings (top right of the page).")
         return false
       }
+      // Change creator of mapping before saving
+      this.$store.commit({
+        type: "mapping/setCreator",
+        creator: [{ prefLabel: { de: this.creatorName || "" } }]
+      })
       let mapping = this.prepareMapping()
       let original = this.original
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
