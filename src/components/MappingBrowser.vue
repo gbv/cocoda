@@ -337,6 +337,8 @@ export default {
       errorConcepts: [],
       /** A variable to force tableItems to recompute */
       tableItemsRecompute: null,
+      /** An object for refresh timers for registries */
+      refreshTimers: {},
     }
   },
   computed: {
@@ -754,6 +756,11 @@ export default {
 
       for (let registry of this.mappingRegistries) {
 
+        // Remove auto refresh timer if necessary
+        if (this.refreshTimers[registry.uri]) {
+          window.clearInterval(this.refreshTimers[registry.uri])
+        }
+
         // Add loading indicator.
         let loadingRow = {
           "_wholeRow": true,
@@ -967,6 +974,14 @@ export default {
             }
 
             this.items = this.items.slice(0, index).concat(items, this.items.slice(index + 1, this.items.length))
+          }
+
+          // Set auto refresh timer if necessary
+          if (registry.autoRefresh) {
+            window.clearInterval(this.refreshTimers[registry.uri])
+            this.refreshTimers[registry.uri] = setInterval(() => {
+              this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+            }, _.isInteger(registry.autoRefresh) ? registry.autoRefresh : 5000)
           }
 
         }).catch(error => {
