@@ -45,14 +45,14 @@
         :placeholder="$t('settings.creatorPlaceholder')"
         type="text" />
     </p>
-    <p>
+    <p v-if="localMappingsSupported">
       <b-button
         :variant="creatorRewritten ? 'success' : 'warning'"
         @click="rewriteCreator">
         {{ $t("settings.creatorRewrite") }}
       </b-button>
     </p>
-    <div v-if="dlAllMappings && dlMappingsReady">
+    <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
       <h5>{{ $t("settings.localDownload") }}</h5>
       <a
         href=""
@@ -78,7 +78,7 @@
       </span>
     </div>
     <br>
-    <div>
+    <div v-if="localMappingsSupported">
       <h5>{{ $t("settings.localUpload") }}</h5>
       <b-form-file
         ref="fileUpload"
@@ -90,7 +90,7 @@
         {{ uploadedFileStatus }}
       </p>
     </div>
-    <div>
+    <div v-if="localMappingsSupported">
       <h5>{{ $t("settings.localDeleteTitle") }}</h5>
       <b-button
         :disabled="!dlAllMappings"
@@ -165,6 +165,12 @@ export default {
       deleteMappingsButtons: false,
     }
   },
+  computed: {
+    localMappingsSupported() {
+      let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
+      return registry != null
+    },
+  },
   watch: {
     localSettings: {
       handler() {
@@ -177,7 +183,7 @@ export default {
       deep: true
     },
     uploadedFile() {
-      if (this.uploadedFile) {
+      if (this.uploadedFile && this.localMappingsSupported) {
         let reader = new FileReader()
         reader.onloadend = evt => {
           let lines, importResult
@@ -202,7 +208,7 @@ export default {
               importResult.error += 1
             }
           }
-          this.$store.dispatch({ type: "mapping/saveMappings", mappings }).then(result => {
+          this.$store.dispatch({ type: "mapping/saveMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(result => {
             importResult.imported = result.length
             importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
@@ -222,12 +228,15 @@ export default {
       this.refreshDownloads()
     },
     refreshDownloads() {
+      if (!this.localMappingsSupported) {
+        return
+      }
       // Set download data variables
       this.dlMappingsReady = false
       this.dlAllMappings = null
       this.dlMappings = []
       let mappings = []
-      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(result => {
+      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(result => {
         mappings = result
         // First, load concepts for all mappings into Vuex store (to have the labels available)
         // TODO: Add support for loading multiple concepts together.
@@ -315,13 +324,16 @@ export default {
       })
     },
     rewriteCreator() {
+      if (!this.localMappingsSupported) {
+        return
+      }
       // 1. Load all local mappings directly from API
-      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {
+      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
         // 2. Rewrite mappings to new creator
         for (let mapping of mappings) {
           _.set(mapping, "creator[0].prefLabel.de", this.localSettings.creator)
         }
-        return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })) })
+        return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })), registry: "http://coli-conc.gbv.de/registry/local-mappings" })
       }).then(() => {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", { onlyMain: true })
@@ -340,8 +352,11 @@ export default {
       })
     },
     deleteMappings() {
-      this.$store.dispatch({ type: "mapping/getMappings", onlyFromMain: true }).then(mappings => {
-        return this.$store.dispatch({ type: "mapping/removeMappings", mappings }).then(removedMappings => {
+      if (!this.localMappingsSupported) {
+        return
+      }
+      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
+        return this.$store.dispatch({ type: "mapping/removeMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(removedMappings => {
           if (mappings.length != removedMappings.length) {
             console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappings.length}.`)
           }
