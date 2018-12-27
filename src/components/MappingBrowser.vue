@@ -524,7 +524,7 @@ export default {
         {
           key: "actions",
           label: "",
-          width: "6%",
+          width: "8%",
           minWidth: "",
           align: "right",
           sortable: false
