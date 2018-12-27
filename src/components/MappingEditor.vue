@@ -44,10 +44,10 @@
         <font-awesome-icon icon="share-square" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
         :class="{
-          button: canClearMapping,
-          'button-disabled': !canClearMapping
+          button: canExportMapping,
+          'button-disabled': !canExportMapping
         }"
         class="mappingEditorToolbarItem"
         @click="$refs.commentModal.show()" >

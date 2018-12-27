@@ -524,6 +524,7 @@ export default {
           label: "",
           width: "6%",
           minWidth: "",
+          align: "right",
           sortable: false
         }
       ]
