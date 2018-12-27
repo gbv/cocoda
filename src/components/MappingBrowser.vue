@@ -1115,6 +1115,10 @@ export default {
       if (!mapping || !mapping.fromScheme || !mapping.toScheme) {
         return false
       }
+      // Don't allow saving if it's the current registry
+      if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.$store.getters["mapping/getCurrentRegistry"]())) {
+        return false
+      }
       // TODO: Do this differently to prevent going through all local mappings on each reload.
       if (!mapping.identifier) {
         mapping = this.$jskos.addMappingIdentifiers(mapping)
