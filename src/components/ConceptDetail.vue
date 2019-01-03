@@ -15,6 +15,13 @@
     <!-- Ancestors / Broader -->
     <div class="conceptDetail-ancestors">
       <div
+        v-if="ancestors.length > 3 && !settings.showAllAncestors"
+        class="button conceptDetail-ancestors-expand"
+        @click="showAncestors = !showAncestors" >
+        <font-awesome-icon
+          :icon="showAncestors ? 'angle-up' : 'angle-down'" />
+      </div>
+      <div
         v-for="(concept, index) in ancestors"
         v-if="concept != null"
         :key="concept.uri">
@@ -448,6 +455,10 @@ export default {
 .conceptDetail-ancestors {
   margin: 5px;
   padding-left: 5px;
+}
+.conceptDetail-ancestors-expand {
+  position: absolute;
+  left: 5px;
 }
 .conceptDetail-ancestors-more {
   width: 20px;
