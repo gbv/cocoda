@@ -324,6 +324,18 @@ class BaseProvider {
    * Usually, this method has one parameter which is a list of JSKOS mappings to be saved.
    */
   saveMappings(...params) {
+    // Adjust created or modified date of mappings to be saved
+    if (Array.isArray(params[0])) {
+      for (let mapping of params[0]) {
+        // Mappings are often saved as an object { mapping, original }
+        mapping = mapping.mapping || mapping
+        if (!mapping.created) {
+          mapping.created = (new Date()).toISOString()
+        } else {
+          mapping.modified = (new Date()).toISOString()
+        }
+      }
+    }
     return this._saveMappings(...params)
       .then(this.adjustMappings)
   }
