@@ -131,6 +131,13 @@ class BaseProvider {
           }
         }
         mapping._provider = this
+        if (!mapping.identifier) {
+          // Add mapping identifiers for this mapping
+          let identifier = _.get(jskos.addMappingIdentifiers(mapping), "identifier")
+          if (identifier) {
+            mapping.identifier = identifier
+          }
+        }
       }
       return mappings
     }
