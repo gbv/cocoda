@@ -206,14 +206,17 @@
     <b-modal
       ref="commentModal"
       :title="$t('mappingEditor.commentMappingTitle')"
-      hide-footer >
+      :ok-disabled="!haveNotesChanged"
+      hide-header-close
+      no-close-on-backdrop
+      @hide="comments = mappingComments"
+      @ok="saveComment" >
       <b-form-textarea
         v-for="(comment, index) in comments"
         :key="`mappingEditor-comment-${index}`"
         v-model="comments[index]"
         :rows="2"
-        :max-rows="6"
-        @input="saveComment" />
+        :max-rows="6" />
     </b-modal>
   </div>
 </template>
@@ -276,6 +279,10 @@ export default {
     mappingComments() {
       return this.$util.lmContent(this.mapping, "note") || []
     },
+    haveNotesChanged() {
+      let comments = this.comments.filter(c => c != "")
+      return !_.isEqual(comments, this.mappingComments)
+    },
   },
   watch: {
     mappingEncoded() {
@@ -292,15 +299,17 @@ export default {
       })
     },
     comments() {
-      // Keep exactly one empty comment at the end
+      // Add one empty string if comments are empty
       let comments = this.comments.filter(c => c != "")
-      comments.push("")
-      if (comments.length != this.comments.length) {
+      if (!comments.length) {
+        comments.push("")
+      }
+      if (!_.isEqual(comments, this.comments)) {
         this.comments = comments
       }
     },
     mappingComments(comments) {
-      this.comments = comments
+      this.comments = _.clone(comments)
     },
   },
   created() {
@@ -488,7 +497,7 @@ export default {
     saveComment() {
       // Save comments
       let comments = this.comments.filter(c => c != "")
-      if (!_.isEqual(comments, this.mappingComments)) {
+      if (this.haveNotesChanged) {
         let language = this.$util.getLanguage(_.get(this, "mapping.note")) || this.$util.fallbackLanguage
         this.$store.commit({
           type: "mapping/setNote",
