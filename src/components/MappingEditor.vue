@@ -218,7 +218,8 @@
         :id="`mappingEditor-comment-${index}`"
         v-model="comments[index]"
         :rows="2"
-        :max-rows="6" />
+        :max-rows="6"
+        @keydown.native="textareaKeydown" />
     </b-modal>
   </div>
 </template>
@@ -314,7 +315,7 @@ export default {
       this.comments = _.clone(comments)
     },
   },
-  created() {
+  mounted() {
     // Add hotkey for saving the mapping
     hotkeys("ctrl+s, command+s", "mappingEditor", () => {
       this.saveMapping()
@@ -328,6 +329,13 @@ export default {
     // Add hotkey for adding right
     hotkeys("ctrl+d, command+d", "mappingEditor", () => {
       this.addToMapping(false)
+      return false
+    })
+    // Add hotkey for editing comments
+    hotkeys("ctrl+k, command+k", "mappingEditor", () => {
+      if (this.canExportMapping) {
+        this.$refs.commentModal.show()
+      }
       return false
     })
     // Set hotkey scope (= enable hotkeys)
@@ -511,6 +519,14 @@ export default {
     },
     focusNote() {
       document.getElementById("mappingEditor-comment-0").focus()
+    },
+    textareaKeydown(event) {
+      // Save comment on ctrl + enter or cmd + enter
+      if (!(event.keyCode == 13 && (event.metaKey || event.ctrlKey))) {
+        return
+      }
+      this.saveComment()
+      this.$refs.commentModal.hide()
     },
   }
 }
