@@ -209,11 +209,13 @@
       :ok-disabled="!haveNotesChanged"
       hide-header-close
       no-close-on-backdrop
+      @shown="focusNote"
       @hide="comments = mappingComments"
       @ok="saveComment" >
       <b-form-textarea
         v-for="(comment, index) in comments"
         :key="`mappingEditor-comment-${index}`"
+        :id="`mappingEditor-comment-${index}`"
         v-model="comments[index]"
         :rows="2"
         :max-rows="6" />
@@ -506,6 +508,9 @@ export default {
           }
         })
       }
+    },
+    focusNote() {
+      document.getElementById("mappingEditor-comment-0").focus()
     },
   }
 }
