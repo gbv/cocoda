@@ -113,6 +113,21 @@ const getters = {
     return registry
   },
 
+  hasChangedFromOriginal: (state) => {
+    if (!state.mapping) {
+      return false
+    }
+    if (!state.original) {
+      return true
+    }
+    // Check if notes have changed
+    // Add more fields like this if needed.
+    if (!_.isEqual(state.mapping.note, state.original.note)) {
+      return true
+    }
+    return !jskos.compareMappings(state.original, state.mapping)
+  }
+
 }
 
 // mutations
@@ -191,6 +206,7 @@ const mutations = {
     }
     // Save the original with identifiers and the LOCAL property.
     if (original) {
+      console.log(original)
       state.original = jskos.addMappingIdentifiers(original)
     } else if (!mapping) {
       state.original = null

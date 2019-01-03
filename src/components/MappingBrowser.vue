@@ -351,6 +351,8 @@ export default {
       let separatorPaddingBottom = " mappingBrowser-separatorPaddingBottom"
       let separatorPaddingTop = " mappingBrowser-separatorPaddingTop"
       let separatorBorder = " mappingBrowser-separatorBorder"
+      let original = this.$store.state.mapping.original
+      let hasChangedFromOriginal = this.$store.getters["mapping/hasChangedFromOriginal"]
       let items = this.items.slice()
       let newItems = []
       let previousRegistry = null
@@ -361,6 +363,7 @@ export default {
       let skipCurrentRegistry = false
       const lengthPerSet = 5
       for (let item of items) {
+        item = _.clone(item)
         if (!this.$jskos.compare(previousRegistry, item.registry)) {
           previousSourceScheme = null
           previousTargetScheme = null
@@ -403,6 +406,10 @@ export default {
         }
         // Generate unique ID as helper
         item.uniqueId = this.$util.generateID()
+        // Add row class if mapping is the same as original
+        if (original && this.$jskos.compareMappingsDeep(original, item.mapping)) {
+          item._rowClass += hasChangedFromOriginal ? " mappingBrowser-table-row-editing-notSaved" : " mappingBrowser-table-row-editing-saved"
+        }
         newItems.push(item)
         previousItem = item
       }
@@ -1235,6 +1242,12 @@ export default {
 
 .mappingBrowser-table-row-match {
   background-color: @color-table-highlight-background-1;
+}
+.mappingBrowser-table-row-editing-saved {
+  background-color: fadein(@color-background-saved, 6%);
+}
+.mappingBrowser-table-row-editing-notSaved {
+  background-color: fadein(@color-background-notSaved, 6%);
 }
 .mappingBrowser-table-row-showMore {
   height: 24px;

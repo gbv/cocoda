@@ -268,17 +268,7 @@ export default {
       return encodeURIComponent(JSON.stringify(this.prepareMapping()))
     },
     hasChangedFromOriginal() {
-      if (!this.mapping) {
-        return false
-      }
-      if (!this.original) {
-        return true
-      }
-      // Check if notes have changed
-      if (!_.isEqual(this.mapping.note, this.original.note)) {
-        return true
-      }
-      return !this.$jskos.compareMappings(this.original, this.mapping)
+      return this.$store.getters["mapping/hasChangedFromOriginal"]
     },
     creatorName() {
       return this.$store.state.settings.settings.creator
@@ -525,10 +515,10 @@ export default {
   background-color: @color-background;
 }
 .mappingEditor-notSaved {
-  background-color: #ff000004;
+  background-color: @color-background-notSaved;
 }
 .mappingEditor-saved {
-  background-color: #00ff0004;
+  background-color: @color-background-saved;
 }
 .mappingTypeSelection {
   flex: none;
