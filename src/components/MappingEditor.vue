@@ -159,7 +159,7 @@
       size="lg" >
       <p><b-btn
         class="mt-3"
-        @click.stop.prevent="exportClipboard">
+        @click.stop.prevent="copyToClipboard($refs.json)">
         {{ $t("mappingEditor.exportClipboard") }}
       </b-btn></p>
       <p><a
@@ -477,20 +477,6 @@ export default {
     exportMapping() {
       if (!this.canExportMapping) return false
       this.$refs.exportModal.show()
-    },
-    /**
-     * Exports the mapping to clipboard
-     */
-    exportClipboard() {
-      window.getSelection().removeAllRanges()
-      this.$util.selectText(this.$refs.json)
-      _.delay(function() {
-        let successful = document.execCommand("copy")
-        if (!successful) {
-          console.warn("Copy to clipboard failed.")
-        }
-        window.getSelection().removeAllRanges()
-      }, 50)
     },
     dragOver(event) {
       event.preventDefault()

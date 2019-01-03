@@ -131,6 +131,38 @@ Vue.mixin({
   }
 })
 
+// Global mixin for copy to clipboard
+Vue.mixin({
+  methods: {
+    /**
+     * Tries to copy the content of an element to the clipboard.
+     *
+     * @param {*} elementOrId - DOM element or ID of DOM element
+     */
+    copyToClipboard(elementOrId) {
+      let element
+      if (_.isString(elementOrId)) {
+        element = document.getElementById(elementOrId)
+      } else {
+        element = elementOrId
+      }
+      try {
+        window.getSelection().removeAllRanges()
+        this.$util.selectText(element)
+        _.delay(() => {
+          let successful = document.execCommand("copy")
+          if (!successful) {
+            console.warn("Copy to clipboard failed.")
+          }
+          window.getSelection().removeAllRanges()
+        }, 50)
+      } catch(error) {
+        console.warn("Copy to clipboard failed.")
+      }
+    }
+  }
+})
+
 import FileSaver from "file-saver"
 
 Vue.mixin({

@@ -118,7 +118,7 @@
             :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'" >
             <font-awesome-icon
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
-              @dblclick="copy" />
+              @dblclick="copyToClipboard(elementForEvent($event))" />
             <auto-link :link="identifier" />
           </div>
           <div
@@ -398,23 +398,15 @@ export default {
       })
     },
     /**
-     * Copy to clipboard
+     * Function to get element for copy to clipboard
      */
-    copy(event) {
+    elementForEvent(event) {
       let element = event.target
       if (element.tagName.toLowerCase() == "path") {
         element = element.parentElement
       }
       element = element.nextElementSibling
-      window.getSelection().removeAllRanges()
-      this.$util.selectText(element)
-      _.delay(function() {
-        let successful = document.execCommand("copy")
-        if (!successful) {
-          console.warn("Copy to clipboard failed.")
-        }
-        window.getSelection().removeAllRanges()
-      }, 50)
+      return element
     },
     /**
      * Enable show more for a specific note

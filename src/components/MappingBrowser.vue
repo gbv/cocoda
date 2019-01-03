@@ -216,10 +216,11 @@
             <font-awesome-icon
               v-b-popover.hover="{
                 html: true,
-                content: ($util.lmContent(data.item.mapping, 'note') || []).map(note => `<p>${note.split('\n').join('<br>')}</p>`).join('')
+                content: `<span id='${data.item.uniqueId}'>` + ($util.lmContent(data.item.mapping, 'note') || []).map(note => `<p>${note.split('\n').join('<br>')}</p>`).join('') + '</span>'
               }"
               icon="comment"
-              class="button mappingBrowser-toolbar-button" />
+              class="button mappingBrowser-toolbar-button"
+              @dblclick="copyToClipboard(data.item.uniqueId)" />
           </span>
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
@@ -400,6 +401,8 @@ export default {
         } else {
           previousTargetScheme = item.targetScheme
         }
+        // Generate unique ID as helper
+        item.uniqueId = this.$util.generateID()
         newItems.push(item)
         previousItem = item
       }
