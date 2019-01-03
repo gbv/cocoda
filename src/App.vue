@@ -732,7 +732,7 @@ html, body {
   position: absolute;
   text-align: center;
   font-size: 20px;
-  top: 16px;
+  top: 6px;
   width: 50px;
   left: 0;
   right: 0;
