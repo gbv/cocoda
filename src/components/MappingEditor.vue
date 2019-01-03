@@ -311,8 +311,10 @@ export default {
         this.comments = comments
       }
     },
-    mappingComments(comments) {
-      this.comments = _.clone(comments)
+    mappingComments(newValue, oldValue) {
+      if (!_.isEqual(oldValue, newValue)) {
+        this.comments = _.clone(newValue)
+      }
     },
   },
   mounted() {
