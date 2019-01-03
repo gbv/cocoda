@@ -12,5 +12,5 @@
     }
   ],
   "registryMode": "merge",
-  "cocodaBaseUrl": "//coli-conc.gbv.de/cocoda/"
+  "cocodaBaseUrl": "//coli-conc.gbv.de/cocoda/app/"
 }
