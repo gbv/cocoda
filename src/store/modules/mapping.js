@@ -206,7 +206,6 @@ const mutations = {
     }
     // Save the original with identifiers and the LOCAL property.
     if (original) {
-      console.log(original)
       state.original = jskos.addMappingIdentifiers(original)
     } else if (!mapping) {
       state.original = null
