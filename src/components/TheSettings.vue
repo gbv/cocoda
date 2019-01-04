@@ -7,7 +7,8 @@
     centered
     size="lg" >
     <b-card
-      no-body>
+      no-body
+      footer-tag="footer">
       <b-tabs
         pills
         card
@@ -139,37 +140,47 @@
             </b-button>
           </p>
         </b-tab>
-        <b-tab
-          :title="$t('settings.tabAbout')" >
-          <p>
-            {{ $t("settings.suggestions1") }}
-            <a
-              href="https://github.com/gbv/cocoda/issues"
-              target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
-          </p>
-          <p v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
-            {{ $t("settings.version") }}: {{ config.buildInfo.gitTag }}
-          </p>
-          <p v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-            {{ $t("settings.currentCommit") }}:
-            <a
-              :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
-              target="_blank" >
-              {{ config.buildInfo.gitCommitShort }}
-            </a>
-          </p>
-          <p v-if="config.buildInfo.buildDate">
-            {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}
-          </p>
-          <p v-if="config.impressumUrl">
-            <a
-              :href="config.impressumUrl"
-              target="_blank" >
-              {{ $t("settings.impressum") }}
-            </a>
-          </p>
-        </b-tab>
       </b-tabs>
+      <span slot="footer">
+        <a
+          href="https://github.com/gbv/cocoda"
+          target="_blank" >
+          <font-awesome-icon :icon="['fab', 'github']" />
+          GitHub
+        </a>
+        <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
+          •
+          {{ $t("settings.version") }} {{ config.buildInfo.gitTag }}
+        </span>
+        <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
+          •
+          {{ $t("settings.currentCommit") }}:
+          <a
+            :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+            target="_blank" >
+            {{ config.buildInfo.gitCommitShort }}
+          </a>
+        </span>
+        <span v-if="config.buildInfo.buildDate">
+          •
+          {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}
+        </span>
+        <span v-if="config.impressumUrl">
+          •
+          <a
+            :href="config.impressumUrl"
+            target="_blank" >
+            {{ $t("settings.impressum") }}
+          </a>
+        </span>
+        <br>
+        <span>
+          {{ $t("settings.suggestions1") }}
+          <a
+            href="https://github.com/gbv/cocoda/issues"
+            target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
+        </span>
+      </span>
     </b-card>
 
   </b-modal>
