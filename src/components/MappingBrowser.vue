@@ -795,8 +795,14 @@ export default {
           }
           // Only remove mappings from current registry
           let index = this.items.findIndex(item => this.$jskos.compare(item.registry, registry))
-          this.items = this.items.filter(item => !this.$jskos.compare(item.registry, registry))
-          this.items = this.items.slice(0, index).concat([loadingRow], this.items.slice(index, this.items.length))
+          // 1. For a forced reload, current items for this registry will not be removed and instead replaced after the results were loaded.
+          // 2. If the registry is supposed to be hidden though, items have to be replaced with the hidden dummy row.
+          // 3. If the item at the index does not have a mapping, i.e. it is a loading or (more likely) a dummy row, replace it with a loading row.
+          // The reason for this is to make the auto refresh seem more "seamless".
+          if (!force || !this.showRegistry[registry.uri] || !this.items[index].mapping) {
+            this.items = this.items.filter(item => !this.$jskos.compare(item.registry, registry))
+            this.items = this.items.slice(0, index).concat([loadingRow], this.items.slice(index, this.items.length))
+          }
         } else {
           this.items.push(loadingRow)
         }
@@ -982,8 +988,9 @@ export default {
               }
               items = [noItemsRow]
             }
-
-            this.items = this.items.slice(0, index).concat(items, this.items.slice(index + 1, this.items.length))
+            // Filter out all existing items for this registry before insertion.
+            let newItems = this.items.filter(item => !this.$jskos.compare(item.registry, registry))
+            this.items = newItems.slice(0, index).concat(items, newItems.slice(index, newItems.length))
           }
 
           // Set auto refresh timer if necessary
