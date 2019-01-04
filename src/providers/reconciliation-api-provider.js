@@ -26,7 +26,7 @@ class ReconciliationApiProvider extends BaseProvider {
     }
     // Temporary to filter out GND mapping requests...
     // FIXME: Remove!
-    if (mode != "or" || !concept || !this.registry.baseUrl) {
+    if (mode != "or" || !concept || !this.registry.url) {
       return Promise.resolve([])
     }
     // If concept's scheme is the same as reconciliation scheme, skip
@@ -119,7 +119,7 @@ class ReconciliationApiProvider extends BaseProvider {
       }
       index += 1
     }
-    let url =this.registry.baseUrl
+    let url =this.registry.url
     if (language) {
       url = url.replace("{language}", language)
     }

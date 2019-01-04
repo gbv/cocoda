@@ -131,7 +131,7 @@
       "scheme": {
         "uri": "http://bartoc.org/en/node/1940"
       },
-      "baseUrl": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
+      "url": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
       "namespace": "http://www.wikidata.org/entity/"
     },
     {
@@ -148,7 +148,7 @@
       "scheme": {
         "uri": "http://bartoc.org/en/node/430"
       },
-      "baseUrl": "https://lobid.org/gnd/reconcile",
+      "url": "https://lobid.org/gnd/reconcile",
       "namespace": "http://d-nb.info/gnd/"
     }
   ],
