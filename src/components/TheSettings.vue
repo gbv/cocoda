@@ -61,33 +61,11 @@
         </b-tab>
         <b-tab
           :title="$t('settings.tabSources')" >
-          <div
+          <registry-info
             v-for="(registry, index) in config.registries"
             :key="`settingsModal-registries-${index}`"
-            class="settings-sources" >
-            <div class="settings-sources-title fontSize-large fontWeight-heavy">
-              {{ $util.prefLabel(registry) }}
-            </div>
-            <div class="settings-sources-uri">
-              <auto-link :link="registry.uri" />
-            </div>
-            <div class="settings-sources-definition">
-              {{ $util.definition(registry).join(" ") }}
-            </div>
-            <div class="settings-sources-capabilities">
-              <span
-                v-for="type in ['schemes', 'concepts', 'mappings', 'occurrences']"
-                :key="`settings-sources-capabilities-${type}`" >
-                <span v-if="registry.provider.has[type]">
-                  <font-awesome-icon
-                    v-if="registry.provider.has[type]"
-                    style="color: green; margin-left: 5px;"
-                    icon="check" />
-                  {{ type }}
-                </span>
-              </span>
-            </div>
-          </div>
+            :registry="registry"
+            class="settings-sources" />
         </b-tab>
         <b-tab
           v-if="localMappingsSupported"
@@ -199,14 +177,14 @@
 
 <script>
 import _ from "lodash"
-import AutoLink from "./AutoLink"
+import RegistryInfo from "./RegistryInfo"
 
 /**
  * The settings modal.
  */
 export default {
   name: "TheSettings",
-  components: { AutoLink },
+  components: { RegistryInfo },
   data() {
     return {
       localSettings: null,
