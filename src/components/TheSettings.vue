@@ -78,15 +78,13 @@
               <span
                 v-for="type in ['schemes', 'concepts', 'mappings', 'occurrences']"
                 :key="`settings-sources-capabilities-${type}`" >
-                {{ type }}:
-                <font-awesome-icon
-                  v-if="registry.provider.has[type]"
-                  style="color: green; width: 30px;"
-                  icon="check" />
-                <font-awesome-icon
-                  v-else
-                  style="color: red; width: 30px;"
-                  icon="times" />
+                <span v-if="registry.provider.has[type]">
+                  <font-awesome-icon
+                    v-if="registry.provider.has[type]"
+                    style="color: green; margin-left: 5px;"
+                    icon="check" />
+                  {{ type }}
+                </span>
               </span>
             </div>
           </div>
@@ -94,21 +92,8 @@
         <b-tab
           v-if="localMappingsSupported"
           :title="$t('settings.tabLocalMappings')" >
-          <p v-if="localMappingsSupported">
-            <b-button
-              :variant="creatorRewritten ? 'success' : 'warning'"
-              @click="rewriteCreator">
-              {{ $t("settings.creatorRewrite") }}
-            </b-button>
-          </p>
           <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
             <h5>{{ $t("settings.localDownload") }}</h5>
-            <a
-              href=""
-              @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
-              {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
-            </a>
-            <br><br>
             <span
               v-for="(download, index) in dlMappings"
               :key="index">
@@ -125,6 +110,12 @@
               </a>
               <br>
             </span>
+            <br>
+            <a
+              href=""
+              @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
+              {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
+            </a>
           </div>
           <br>
           <div v-if="localMappingsSupported">
@@ -161,37 +152,43 @@
                 @click="deleteMappingsButtons = false" >{{ $t("general.no") }}</b-button>
             </p>
           </div>
+          <br><br>
+          <p v-if="localMappingsSupported">
+            <b-button
+              :variant="creatorRewritten ? 'success' : 'warning'"
+              @click="rewriteCreator">
+              {{ $t("settings.creatorRewrite") }}
+            </b-button>
+          </p>
         </b-tab>
         <b-tab
           :title="$t('settings.tabAbout')" >
           <p>
-            <span>
-              {{ $t("settings.suggestions1") }}
-              <a
-                href="https://github.com/gbv/cocoda/issues"
-                target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
-            </span>
-            <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
-              {{ $t("settings.version") }}: {{ config.buildInfo.gitTag }}<br>
-            </span>
-            <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-              {{ $t("settings.currentCommit") }}:
-              <a
-                :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
-                target="_blank" >
-                {{ config.buildInfo.gitCommitShort }}
-              </a><br>
-            </span>
-            <span v-if="config.buildInfo.buildDate">
-              {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}<br>
-            </span>
-            <span v-if="config.impressumUrl">
-              <a
-                :href="config.impressumUrl"
-                target="_blank" >
-                {{ $t("settings.impressum") }}
-              </a>
-            </span>
+            {{ $t("settings.suggestions1") }}
+            <a
+              href="https://github.com/gbv/cocoda/issues"
+              target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
+          </p>
+          <p v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
+            {{ $t("settings.version") }}: {{ config.buildInfo.gitTag }}
+          </p>
+          <p v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
+            {{ $t("settings.currentCommit") }}:
+            <a
+              :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+              target="_blank" >
+              {{ config.buildInfo.gitCommitShort }}
+            </a>
+          </p>
+          <p v-if="config.buildInfo.buildDate">
+            {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}
+          </p>
+          <p v-if="config.impressumUrl">
+            <a
+              :href="config.impressumUrl"
+              target="_blank" >
+              {{ $t("settings.impressum") }}
+            </a>
           </p>
         </b-tab>
       </b-tabs>
