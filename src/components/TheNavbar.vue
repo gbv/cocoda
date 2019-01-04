@@ -32,14 +32,6 @@
         target="_blank" >
         {{ $t("navbar.help") }}
       </b-nav-item>
-      <!-- GitHub button -->
-      <b-nav-item
-        v-if="config.githubUrl"
-        :href="config.githubUrl"
-        target="_blank" >
-        <font-awesome-icon :icon="['fab', 'github']" />
-        {{ $t("navbar.github") }}
-      </b-nav-item>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
         <font-awesome-icon icon="cog" />
