@@ -1,158 +1,215 @@
 <template>
   <b-modal
+    id="settingsModal"
     ref="settingsModal"
     :title="$t('settings.title')"
     hide-footer
     centered
-    size="md" >
-    <p v-if="localSettings">
-      <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
-        {{ $t("settings.showAllAncestors") }}
-      </b-form-checkbox>
-    </p>
-    <p v-if="localSettings">
-      <b-form-checkbox v-model="localSettings.conceptDetailDoNotTruncateNotes">
-        {{ $t("settings.truncateNotes") }}
-      </b-form-checkbox>
-    </p>
-    <p v-if="localSettings">
-      <b-form-checkbox v-model="localSettings.mappingBrowserShowAll">
-        {{ $t("settings.showAll") }}
-      </b-form-checkbox>
-    </p>
-    <p v-if="localSettings">
-      <b-form-checkbox v-model="localSettings.mappingEditorClearOnSave">
-        {{ $t("settings.mappingEditorClearOnSave") }}
-      </b-form-checkbox>
-    </p>
-    <p v-if="localSettings">
-      <b-form-checkbox v-model="localSettings.autoInsertLabels">
-        {{ $t("settings.autoInsertLabels") }}
-      </b-form-checkbox>
-    </p>
-    <p>
-      <b-button
-        variant="primary"
-        @click="resetFlex">
-        {{ $t("settings.resetSizes") }}
-      </b-button>
-    </p>
-    <br>
-    <p v-if="localSettings">
-      <b>{{ $t("settings.creator") }}</b>
-      <b-form-input
-        v-model="localSettings.creator"
-        :placeholder="$t('settings.creatorPlaceholder')"
-        type="text" />
-    </p>
-    <p v-if="localMappingsSupported">
-      <b-button
-        :variant="creatorRewritten ? 'success' : 'warning'"
-        @click="rewriteCreator">
-        {{ $t("settings.creatorRewrite") }}
-      </b-button>
-    </p>
-    <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
-      <h5>{{ $t("settings.localDownload") }}</h5>
-      <a
-        href=""
-        @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
-        {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
-      </a>
-      <br><br>
-      <span
-        v-for="(download, index) in dlMappings"
-        :key="index">
-        {{ download.label }} ({{ download.mappings.length }}):
-        <a
-          href=""
-          @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)" >
-          JSKOS
-        </a>
-        <a
-          href=""
-          @click.prevent="downloadFile(download.filename + '.csv', download.csv)" >
-          CSV
-        </a>
-        <br>
-      </span>
-    </div>
-    <br>
-    <div v-if="localMappingsSupported">
-      <h5>{{ $t("settings.localUpload") }}</h5>
-      <b-form-file
-        ref="fileUpload"
-        v-model="uploadedFile"
-        :state="Boolean(uploadedFile)"
-        :placeholder="$t('settings.localUploadPlaceholder')"
-        accept=".ndjson" />
-      <p>
-        {{ uploadedFileStatus }}
-      </p>
-    </div>
-    <div v-if="localMappingsSupported">
-      <h5>{{ $t("settings.localDeleteTitle") }}</h5>
-      <b-button
-        :disabled="!dlAllMappings"
-        variant="danger"
-        hide-footer
-        @click="deleteMappingsButtons = true" >
-        {{ $t("settings.localDeleteText") }}
-      </b-button>
-      <p
-        v-if="deleteMappingsButtons">
-        {{ $t("settings.localDeleteSure") }}
-        <b-button
-          variant="danger"
-          size="sm"
-          @click="deleteMappings" >{{ $t("general.yes") }}</b-button>
-        <b-button
-          variant="success"
-          size="sm"
-          @click="deleteMappingsButtons = false" >{{ $t("general.no") }}</b-button>
-      </p>
-    </div>
-    <br>
-    <p>
-      <span>
-        {{ $t("settings.suggestions1") }}
-        <a
-          href="https://github.com/gbv/cocoda/issues"
-          target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
-      </span>
-      <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
-        {{ $t("settings.version") }}: {{ config.buildInfo.gitTag }}<br>
-      </span>
-      <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-        {{ $t("settings.currentCommit") }}:
-        <a
-          :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
-          target="_blank" >
-          {{ config.buildInfo.gitCommitShort }}
-        </a><br>
-      </span>
-      <span v-if="config.buildInfo.buildDate">
-        {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}<br>
-      </span>
-      <span v-if="config.impressumUrl">
-        <a
-          :href="config.impressumUrl"
-          target="_blank" >
-          {{ $t("settings.impressum") }}
-        </a>
-      </span>
-    </p>
+    size="lg" >
+    <b-card
+      no-body>
+      <b-tabs
+        pills
+        card
+        vertical >
+        <b-tab
+          :title="$t('settings.tabAccount')"
+          active>
+          <p v-if="localSettings">
+            <b>{{ $t("settings.creator") }}</b>
+            <b-form-input
+              v-model="localSettings.creator"
+              :placeholder="$t('settings.creatorPlaceholder')"
+              type="text" />
+          </p>
+        </b-tab>
+        <b-tab
+          :title="$t('settings.tabLayout')" >
+          <p v-if="localSettings">
+            <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
+              {{ $t("settings.showAllAncestors") }}
+            </b-form-checkbox>
+          </p>
+          <p v-if="localSettings">
+            <b-form-checkbox v-model="localSettings.conceptDetailDoNotTruncateNotes">
+              {{ $t("settings.truncateNotes") }}
+            </b-form-checkbox>
+          </p>
+          <p v-if="localSettings">
+            <b-form-checkbox v-model="localSettings.mappingBrowserShowAll">
+              {{ $t("settings.showAll") }}
+            </b-form-checkbox>
+          </p>
+          <p v-if="localSettings">
+            <b-form-checkbox v-model="localSettings.mappingEditorClearOnSave">
+              {{ $t("settings.mappingEditorClearOnSave") }}
+            </b-form-checkbox>
+          </p>
+          <p v-if="localSettings">
+            <b-form-checkbox v-model="localSettings.autoInsertLabels">
+              {{ $t("settings.autoInsertLabels") }}
+            </b-form-checkbox>
+          </p>
+          <p>
+            <b-button
+              variant="primary"
+              @click="resetFlex">
+              {{ $t("settings.resetSizes") }}
+            </b-button>
+          </p>
+          <br>
+        </b-tab>
+        <b-tab
+          :title="$t('settings.tabSources')" >
+          <div
+            v-for="(registry, index) in config.registries"
+            :key="`settingsModal-registries-${index}`"
+            class="settings-sources" >
+            <div class="settings-sources-title fontSize-large fontWeight-heavy">
+              {{ $util.prefLabel(registry) }}
+            </div>
+            <div class="settings-sources-uri">
+              <auto-link :link="registry.uri" />
+            </div>
+            <div class="settings-sources-definition">
+              {{ $util.definition(registry).join(" ") }}
+            </div>
+            <div class="settings-sources-capabilities">
+              <span
+                v-for="type in ['schemes', 'concepts', 'mappings', 'occurrences']"
+                :key="`settings-sources-capabilities-${type}`" >
+                {{ type }}:
+                <font-awesome-icon
+                  v-if="registry.provider.has[type]"
+                  style="color: green; width: 30px;"
+                  icon="check" />
+                <font-awesome-icon
+                  v-else
+                  style="color: red; width: 30px;"
+                  icon="times" />
+              </span>
+            </div>
+          </div>
+        </b-tab>
+        <b-tab
+          v-if="localMappingsSupported"
+          :title="$t('settings.tabLocalMappings')" >
+          <p v-if="localMappingsSupported">
+            <b-button
+              :variant="creatorRewritten ? 'success' : 'warning'"
+              @click="rewriteCreator">
+              {{ $t("settings.creatorRewrite") }}
+            </b-button>
+          </p>
+          <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
+            <h5>{{ $t("settings.localDownload") }}</h5>
+            <a
+              href=""
+              @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
+              {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
+            </a>
+            <br><br>
+            <span
+              v-for="(download, index) in dlMappings"
+              :key="index">
+              {{ download.label }} ({{ download.mappings.length }}):
+              <a
+                href=""
+                @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)" >
+                JSKOS
+              </a>
+              <a
+                href=""
+                @click.prevent="downloadFile(download.filename + '.csv', download.csv)" >
+                CSV
+              </a>
+              <br>
+            </span>
+          </div>
+          <br>
+          <div v-if="localMappingsSupported">
+            <h5>{{ $t("settings.localUpload") }}</h5>
+            <b-form-file
+              ref="fileUpload"
+              v-model="uploadedFile"
+              :state="Boolean(uploadedFile)"
+              :placeholder="$t('settings.localUploadPlaceholder')"
+              accept=".ndjson" />
+            <p>
+              {{ uploadedFileStatus }}
+            </p>
+          </div>
+          <div v-if="localMappingsSupported">
+            <h5>{{ $t("settings.localDeleteTitle") }}</h5>
+            <b-button
+              :disabled="!dlAllMappings"
+              variant="danger"
+              hide-footer
+              @click="deleteMappingsButtons = true" >
+              {{ $t("settings.localDeleteText") }}
+            </b-button>
+            <p
+              v-if="deleteMappingsButtons">
+              {{ $t("settings.localDeleteSure") }}
+              <b-button
+                variant="danger"
+                size="sm"
+                @click="deleteMappings" >{{ $t("general.yes") }}</b-button>
+              <b-button
+                variant="success"
+                size="sm"
+                @click="deleteMappingsButtons = false" >{{ $t("general.no") }}</b-button>
+            </p>
+          </div>
+        </b-tab>
+        <b-tab
+          :title="$t('settings.tabAbout')" >
+          <p>
+            <span>
+              {{ $t("settings.suggestions1") }}
+              <a
+                href="https://github.com/gbv/cocoda/issues"
+                target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
+            </span>
+            <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
+              {{ $t("settings.version") }}: {{ config.buildInfo.gitTag }}<br>
+            </span>
+            <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
+              {{ $t("settings.currentCommit") }}:
+              <a
+                :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+                target="_blank" >
+                {{ config.buildInfo.gitCommitShort }}
+              </a><br>
+            </span>
+            <span v-if="config.buildInfo.buildDate">
+              {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}<br>
+            </span>
+            <span v-if="config.impressumUrl">
+              <a
+                :href="config.impressumUrl"
+                target="_blank" >
+                {{ $t("settings.impressum") }}
+              </a>
+            </span>
+          </p>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+
   </b-modal>
 </template>
 
 <script>
 import _ from "lodash"
+import AutoLink from "./AutoLink"
 
 /**
  * The settings modal.
  */
 export default {
   name: "TheSettings",
+  components: { AutoLink },
   data() {
     return {
       localSettings: null,
@@ -375,6 +432,40 @@ export default {
 
 p {
   margin: 5px 0 20px 0 !important;
+}
+
+.settings-sources {
+  margin-bottom: 15px;
+}
+
+</style>
+
+<style>
+
+#settingsModal .modal-dialog {
+  height: 90%;
+}
+#settingsModal .modal-content {
+  height: 100%;
+}
+
+#settingsModal .modal-body {
+  padding: 0;
+}
+
+#settingsModal .modal-body .card {
+  border: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+#settingsModal .modal-body .card .tabs {
+  height: 100%;
+}
+#settingsModal .modal-body .card .col, #settingsModal .modal-body .card .card-header {
+  overflow-y: scroll;
 }
 
 </style>
