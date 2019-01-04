@@ -19,17 +19,6 @@
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
-      <b-nav-item-dropdown
-        :text="config.languages[$i18n.locale] || '?'"
-        right>
-        <b-dropdown-item
-          v-for="(label, language) in config.languages"
-          :key="language"
-          href="#"
-          @click="$i18n.locale = language">
-          {{ label }}
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
       <!-- Feedback button -->
       <b-nav-item
         v-if="config.feedbackUrl"
