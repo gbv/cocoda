@@ -464,5 +464,8 @@ p {
 #settingsModal .modal-body .card .col, #settingsModal .modal-body .card .card-header {
   overflow-y: scroll;
 }
+#settingsModal .modal-body .card .col-auto {
+  min-width: 200px;
+}
 
 </style>
