@@ -1,13 +1,18 @@
 <template>
   <div class="registry-info">
-    <div class="settings-info-title fontWeight-heavy">
-      {{ $util.prefLabel(registry) }}
-    </div>
-    <div class="settings-info-uri">
-      <auto-link :link="registry.uri" />
+    <div>
+      <registry-notation :registry="registry"/>
+      <div 
+        class="settings-info-title fontWeight-heavy" 
+        style="display: inline-block">
+        {{ $util.prefLabel(registry) }}
+      </div>
     </div>
     <div class="settings-info-definition">
       {{ $util.definition(registry).join(" ") }}
+    </div>
+    <div class="settings-info-uri fontSize-small">
+      <auto-link :link="registry.uri" />
     </div>
     <div class="settings-info-capabilities">
       <span
@@ -27,10 +32,11 @@
 
 <script>
 import AutoLink from "./AutoLink"
+import RegistryNotation from "./RegistryNotation"
 
 export default {
-  name: "RegistryNotation",
-  components: { AutoLink },
+  name: "RegistryInfo",
+  components: { AutoLink, RegistryNotation },
   props: {
     registry: {
       type: Object,

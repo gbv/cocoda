@@ -2,9 +2,7 @@
   <div
     v-b-tooltip.html.right="tooltip ? $util.prefLabel(registry) : ''"
     :class="{
-      ['fontWeight-heavy']: !disabled,
-      ['registry-notation-enabled']: !disabled,
-      ['registry-notation-disabled']: disabled
+      ['registry-enabled']: !disabled
     }"
     class="registry-notation" >
     {{ $util.notation(registry) }}
@@ -31,22 +29,22 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../style/main.less";
 
 .registry-notation {
   user-select: none;
   display: inline-block;
+  text-align: center;
   .m-borderRadius(5px);
   color: white;
   width: 18px;
   height: 18px;
   .fontSize-verySmall;
-}
-.registry-notation-enabled {
-  background-color: darken(@color-button-delete, 5%);
-}
-.registry-notation-disabled {
   background-color: fadeout(@color-button-delete, 80%);
+}
+.registry-notation.registry-enabled {
+  background-color: fadeout(@color-button-delete, 5%);
+  .fontWeight-heavy;
 }
 </style>

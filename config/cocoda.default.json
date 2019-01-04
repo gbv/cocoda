@@ -6,6 +6,10 @@
       "prefLabel": {
         "en": "DANTE"
       },
+      "definition": {
+        "en": ["DANTE API with vocabularies at VZG"],
+        "de": ["DANTEi-API der VZG"]
+      },
       "baseUrl": "//api.dante.gbv.de/",
       "provider": "ConceptApi"
     },
@@ -15,15 +19,23 @@
       "prefLabel": {
         "en": "JSKOS Server"
       },
+      "definition": {
+        "en": ["central JSKOS server instance of coli-conc"],
+        "de": ["zentrale JSKOS-Server Instanz von coli-conc"]
+      },
       "baseUrl": "//coli-conc.gbv.de/dev-api/",
       "provider": "ConceptApi"
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
-      "notation": ["GND"],
+      "notation": ["G"],
       "prefLabel": {
         "de": "Gemeinsame Normdatei",
         "en": "Integrated Authority File"
+      },
+      "definition": {
+        "en": ["Access to a copy of GND at VZG"],
+        "de": ["Zugriff auf eine GND-Kopie an der VZG"]
       },
       "schemes": [ {
         "uri": "http://bartoc.org/en/node/430",
@@ -43,6 +55,10 @@
       "notation": ["WD"],
       "prefLabel": {
         "en": "Wikidata"
+      },
+      "definition": {
+        "en": ["Access to Wikidata in JSKOS format"],
+        "de": ["Zugriff auf Wikidata im JSKOS-Format"]
       },
       "schemes": [ {
         "uri": "http://bartoc.org/en/node/1940",
@@ -71,8 +87,8 @@
         "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
       }],
       "definition": {
-        "en": ["Mappings saved locally in the browser."],
-        "de": ["Mappings, die lokal im Browser gespeichert wurden."]
+        "en": ["Mappings saved locally in the browser"],
+        "de": ["Mappings, die lokal im Browser gespeichert wurden"]
       }
     },
     {
@@ -80,7 +96,11 @@
       "notation": ["C"],
       "prefLabel": {
         "de": "Konkordanz-Register",
-        "en": "Corcordance Registry"
+        "en": "Concordance Registry"
+      },
+      "definition": {
+        "en": ["Central concordance registry of coli-conc"],
+        "de": ["Zentrale Konkordanz-Datenbank von coli-conc"]
       },
       "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
       "provider": "MappingsApi",
@@ -93,6 +113,10 @@
       "notation": ["W"],
       "prefLabel": {
         "en": "Wikidata"
+      },
+      "definition": {
+        "en": ["Access to Wikidata mappings in JSKOS format"],
+        "de": ["Zugriff auf Wikidata-Mappings im JSKOS-Format"]
       },
       "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
       "provider": "MappingsApi",
@@ -124,6 +148,10 @@
         "de": "Wikidata-Empfehlungen",
         "en": "Wikidata Recommendations"
       },
+      "definition": {
+        "en": ["Wikidata Reconciliation API"],
+        "de": ["Wikidata-Reconciliation API"]
+      },
       "provider": "ReconciliationApi",
       "subject": [{
         "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
@@ -140,6 +168,10 @@
       "prefLabel": {
         "de": "GND-Empfehlungen",
         "en": "GND Recommendations"
+      },
+      "definition": {
+        "en": ["GND Reconciliation API (lobid.org)"],
+        "de": ["GND-Reconciliation API (lobid.org)"]
       },
       "provider": "ReconciliationApi",
       "subject": [{
