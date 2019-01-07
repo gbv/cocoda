@@ -25,8 +25,10 @@
     },
     "schemeSelection": {
       "title": "Select a scheme",
-      "schemeQuick": "Scheme quick selection",
-      "conceptQuick": "Concept quick selection"
+      "schemeQuick": "Scheme Quick Selection",
+      "conceptQuick": "Concept Quick Selection",
+      "source": "Source Scheme",
+      "target": "Target Scheme"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -165,7 +167,9 @@
     "schemeSelection": {
       "title": "Wähle ein Vokabular",
       "schemeQuick": "Vokabular-Schnellauswahl",
-      "conceptQuick": "Konzept-Schnellauswahl"
+      "conceptQuick": "Konzept-Schnellauswahl",
+      "source": "Quell-Vokabular",
+      "target": "Ziel-Vokabular"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",

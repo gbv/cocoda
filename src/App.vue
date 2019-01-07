@@ -42,70 +42,10 @@
           class="browser mainComponent" >
           <minimizer :is-column="true" />
           <!-- Concept scheme selection -->
-          <div class="schemeSelectWrapper">
-            <b-form-select
-              :value="selected.scheme[isLeft]"
-              :options="schemeOptions"
-              class="schemeSelect fontWeight-heavy"
-              @change="$router.push({ path: getRouterUrl($event, isLeft) })" />
-            <div
-              v-b-tooltip.hover="{ title: $t('general.showSchemeInfo'), delay: $util.delay.medium }"
-              v-show="selected.scheme[isLeft] != null && selected.concept[isLeft] != null"
-              class="button schemeSelectInfo"
-              @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })" >
-              <font-awesome-icon icon="info-circle" />
-            </div>
-            <div
-              v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
-              v-show="selected.scheme[isLeft] != null"
-              class="button schemeSelectInfo"
-              @click="$router.push({ path: getRouterUrl(null, isLeft) })" >
-              <font-awesome-icon icon="times-circle" />
-            </div>
-          </div>
-          <!-- Concept and concept scheme quick selection -->
-          <div
-            v-show="selected.scheme[isLeft] == null"
-            class="visualComponent placeholderComponent scrollable" >
-            <p
-              v-if="favoriteSchemes && favoriteSchemes.length"
-              class="fontWeight-heavy" >
-              {{ $t("schemeSelection.schemeQuick") }}
-            </p>
-            <p
-              v-for="scheme in favoriteSchemes"
-              :key="scheme.uri"
-              class="quickSelectionItem" >
-              <item-name
-                :item="scheme"
-                :is-link="true"
-                :is-left="isLeft"
-              />
-            </p>
-            <br>
-            <p
-              v-if="favoriteConcepts && favoriteConcepts.length"
-              class="fontWeight-heavy" >
-              {{ $t("schemeSelection.conceptQuick") }}
-            </p>
-            <p
-              v-for="concept in favoriteConcepts"
-              :key="concept.uri"
-              class="quickSelectionItem" >
-              <item-name
-                :item="concept"
-                :is-link="true"
-                :is-left="isLeft"
-              />
-            </p>
-          </div>
-          <!-- ConceptSearch -->
-          <concept-search
-            v-if="selected.scheme[isLeft] != null"
-            :ref="isLeft ? 'conceptSearchLeft' : 'conceptSearchRight'"
+          <concept-scheme-selection
+            :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
             :is-left="isLeft"
-            :scheme="selected.scheme[isLeft]"
-            class="conceptSearch"
+            class="mainComponent visualComponent"
           />
           <!-- ItemDetail and ConceptTree -->
           <div
@@ -214,11 +154,11 @@ import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
-import ItemName from "./components/ItemName"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
+import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 const ElementQueries = require("css-element-queries/src/ElementQueries")
@@ -230,7 +170,7 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, MappingBrowser, ResizingSlider, ItemName, LoadingIndicatorFull, Minimizer
+    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
   },
   data () {
     return {
@@ -272,25 +212,6 @@ export default {
         )
       }
       return options
-    },
-    favoriteSchemes() {
-      let schemes = []
-      for (let uri of this.config.favoriteTerminologyProviders) {
-        let scheme = this.$store.getters["objects/get"]({ uri })
-        if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
-          schemes.push(scheme)
-        }
-      }
-      // This does nothing except for triggering a refresh for this computed property when the list of schemes has changed.
-      this.schemes
-      return schemes
-    },
-    favoriteConcepts() {
-      let concepts = []
-      for (let concept of this.config.favoriteConcepts) {
-        concepts.push(this.$store.getters["objects/get"](concept) || concept)
-      }
-      return concepts
     },
     schemes() {
       return this.$store.state.schemes
@@ -460,9 +381,9 @@ export default {
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       // Insert on the left AND the right
       for (let isLeft of both ? [true, false] : [isLeft]) {
-        let conceptSearch = isLeft ? this.$refs.conceptSearchRight : this.$refs.conceptSearchLeft
-        if (conceptSearch && conceptSearch.length) {
-          conceptSearch[0].setSearchQuery(regexResult ? regexResult[0] : "")
+        let conceptSearch = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Left" : "Right"}[0].conceptSearch`)
+        if (conceptSearch) {
+          conceptSearch.setSearchQuery(regexResult ? regexResult[0] : "")
         }
       }
     },
@@ -701,7 +622,7 @@ html, body {
   height: 0;
   min-height: 165px;
 }
-.mappingToolItem > div {
+.mappingToolItem > div:first-child {
   height: 100%;
 }
 #mappingEditorComponent {

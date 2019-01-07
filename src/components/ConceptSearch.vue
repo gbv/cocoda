@@ -1,5 +1,5 @@
 <template>
-  <span
+  <div
     class="conceptSearch"
     @mousemove="mousemove()" >
     <!-- Search icon -->
@@ -51,6 +51,7 @@
         :placeholder="$t('search.placeholder')"
         size="sm"
         type="search"
+        autocomplete="off"
         @click.native="isOpen = searchQuery != ''"
         @keydown.down.native.prevent="onArrowDown"
         @keydown.up.native.prevent="onArrowUp"
@@ -91,7 +92,7 @@
         </ul>
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
