@@ -504,6 +504,19 @@ export default {
           scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
           isLeft: isLeft
         })
+      } else {
+        // Fallback: Use this.draggedConcept and load from API
+        this.getObject({ object: this.draggedConcept }).then(object => {
+          if (this.$jskos.isConcept(object)) {
+            // Add concept to mapping
+            this.$store.commit({
+              type: "mapping/add",
+              concept: object,
+              scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
+              isLeft: isLeft
+            })
+          }
+        })
       }
     },
     saveComment() {

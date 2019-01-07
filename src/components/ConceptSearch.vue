@@ -76,6 +76,9 @@
             :id="uniqueID + '-searchResult-' + i"
             :class="{ 'conceptSearch-selected': i === searchSelected }"
             class="conceptSearch-results-item"
+            draggable="true"
+            @dragstart="dragStart(result, $event)"
+            @dragend="dragEnd()"
             @click="chooseResult(i)"
             @mouseover="mouseover(i)" >
             <span v-html="highlightQueryInResult(result[0])" />
@@ -408,6 +411,16 @@ export default {
           this.selectedTypes = types.map(type => type.uri)
         }
       })
+    },
+    dragStart(result, event) {
+      // FIXME: This is now duplicate code with ItemName because the a tag here prevents the dragStart function in ItemName to work properly. It would be good to find a better solution, but it seems to work for now.
+      let uri = _.last(result)
+      event.dataTransfer.setData("text", uri)
+      this.draggedConcept = { uri, inScheme: [this.scheme], type: ["http://www.w3.org/2004/02/skos/core#Concept"] }
+    },
+    dragEnd() {
+      // FIXME: This is now duplicate code with ItemName because the a tag here prevents the dragStart function in ItemName to work properly. It would be good to find a better solution, but it seems to work for now.
+      this.draggedConcept = null
     },
   },
 }
