@@ -243,7 +243,20 @@
     }
   ],
   "title": "Cocoda Mapping Tool",
-  "helpUrl": "https://gbv.github.io/cocoda/",
-  "feedbackUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdwJrYIL6oj7LLFA9qCZb7SwZImp72Bi_1iIL1d_h1Pbu8_vg/viewform",
-  "impressumUrl": "https://www.gbv.de/impressum"
+  "menu": [
+    {
+      "url": "https://gbv.github.io/cocoda/",
+      "prefLabel": {
+        "en": "Help",
+        "de": "Hilfe"
+      }
+    },
+    {
+      "url": "https://goo.gl/forms/X3eNn2L6OARaKZGr2",
+      "prefLabel": {
+        "en": "Feedback"
+      }
+    }
+  ],
+  "impressum": "https://www.gbv.de/impressum"
 }

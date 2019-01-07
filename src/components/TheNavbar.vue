@@ -19,18 +19,13 @@
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
-      <!-- Feedback button -->
+      <!-- Menu buttons (from configuration) -->
       <b-nav-item
-        v-if="config.feedbackUrl"
-        @click="$refs.feedback.show()">
-        {{ $t("navbar.feedback") }}
-      </b-nav-item>
-      <!-- Help button (links to documentation) -->
-      <b-nav-item
-        v-if="config.helpUrl"
-        :href="config.helpUrl"
+        v-for="item in config.menu"
+        :key="item.url"
+        :href="item.url"
         target="_blank" >
-        {{ $t("navbar.help") }}
+        {{ $util.prefLabel(item) }}
       </b-nav-item>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
@@ -39,23 +34,6 @@
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
-      <!-- Feedback modal -->
-      <b-modal
-        v-if="config.feedbackUrl"
-        ref="feedback"
-        centered
-        class="feedbackModal"
-        hide-footer
-        size="lg"
-        title="Feedback" >
-        <iframe
-          :src="config.feedbackUrl + '?embedded=true'"
-          frameborder="0"
-          marginheight="0"
-          marginwidth="0">
-          {{ $t("navbar.settingsLoading") }}
-        </iframe>
-      </b-modal>
     </b-navbar-nav>
   </b-navbar>
 </template>

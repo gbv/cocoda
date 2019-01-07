@@ -176,10 +176,10 @@
           •
           {{ $t("settings.buildDate") }}: {{ config.buildInfo.buildDate }}
         </span>
-        <span v-if="config.impressumUrl">
+        <span v-if="config.impressum">
           •
           <a
-            :href="config.impressumUrl"
+            :href="config.impressum"
             target="_blank" >
             {{ $t("settings.impressum") }}
           </a>
