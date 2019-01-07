@@ -453,9 +453,12 @@ export default {
       let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
-      let conceptSearch = isLeft ? this.$refs.conceptSearchRight : this.$refs.conceptSearchLeft
-      if (conceptSearch && conceptSearch.length) {
-        conceptSearch[0].setSearchQuery(regexResult ? regexResult[0] : "")
+      // Insert on the left AND the right
+      for (let isLeft of [true, false]) {
+        let conceptSearch = isLeft ? this.$refs.conceptSearchRight : this.$refs.conceptSearchLeft
+        if (conceptSearch && conceptSearch.length) {
+          conceptSearch[0].setSearchQuery(regexResult ? regexResult[0] : "")
+        }
       }
     },
     refresh(key) {
