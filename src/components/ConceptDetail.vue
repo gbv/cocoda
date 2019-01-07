@@ -19,7 +19,7 @@
         class="button conceptDetail-ancestors-expand"
         @click="showAncestors = !showAncestors" >
         <font-awesome-icon
-          :icon="showAncestors ? 'angle-up' : 'angle-down'" />
+          :icon="showAncestors ? 'angle-down' : 'angle-right'" />
       </div>
       <div
         v-for="(concept, index) in ancestors"
