@@ -2,9 +2,9 @@
   <div class="registry-info">
     <div>
       <registry-notation :registry="registry"/>
-      <div 
-        class="settings-info-title fontWeight-heavy" 
-        style="display: inline-block">
+      <div
+        class="settings-info-title fontWeight-heavy"
+        style="display: inline-block" >
         {{ $util.prefLabel(registry) }}
       </div>
     </div>

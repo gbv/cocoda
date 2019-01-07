@@ -4,6 +4,7 @@
     :class="{
       ['registry-enabled']: !disabled
     }"
+    :style="`width: ${18 + 12 * ($util.notation(registry).length - 1)}px;`"
     class="registry-notation" >
     {{ $util.notation(registry) }}
   </div>
@@ -38,7 +39,6 @@ export default {
   text-align: center;
   .m-borderRadius(5px);
   color: white;
-  width: 18px;
   height: 18px;
   .fontSize-verySmall;
   background-color: fadeout(@color-button-delete, 80%);
