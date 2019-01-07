@@ -14,7 +14,9 @@
         style="height: 42px;" >
     </b-navbar-brand>
     <!-- Title -->
-    <b-navbar-brand href="#">
+    <b-navbar-brand
+      href="https://coli-conc.gbv.de/cocoda/"
+      target="_blank" >
       {{ config.title }}
     </b-navbar-brand>
     <!-- Links on right side -->
