@@ -405,6 +405,11 @@ export default {
           prop: "locale",
           value: newValue
         })
+        // Also re-insert prefLabels after delay
+        _.delay(() => {
+          this.insertPrefLabel(true, false)
+          this.insertPrefLabel(false, false)
+        }, 300)
       }
     },
     /**
@@ -446,7 +451,7 @@ export default {
         }
       }
     },
-    insertPrefLabel(isLeft) {
+    insertPrefLabel(isLeft, both = true) {
       if (!this.$settings.autoInsertLabels) {
         return
       }
@@ -454,7 +459,7 @@ export default {
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       // Insert on the left AND the right
-      for (let isLeft of [true, false]) {
+      for (let isLeft of both ? [true, false] : [isLeft]) {
         let conceptSearch = isLeft ? this.$refs.conceptSearchRight : this.$refs.conceptSearchLeft
         if (conceptSearch && conceptSearch.length) {
           conceptSearch[0].setSearchQuery(regexResult ? regexResult[0] : "")
@@ -481,6 +486,11 @@ export default {
       // Question: Reverse mapping or not? (see also: issue #158)
       this.$router.push({ query })
       this.loadFromParameters()
+      // Also re-insert prefLabels after delay
+      _.delay(() => {
+        this.insertPrefLabel(true, false)
+        this.insertPrefLabel(false, false)
+      }, 300)
     },
     loadFromParameters() {
       this.loading = true
