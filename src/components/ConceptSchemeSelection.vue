@@ -321,16 +321,13 @@ export default {
   cursor: pointer;
 }
 .conceptSchemeSelection-starFavorite {
-  color: @color-primary-4;
+  color: @color-select;
 }
-.conceptSchemeSelection-starFavorite:hover {
-  color: @color-primary-1;
+.conceptSchemeSelection-starFavorite:hover, .conceptSchemeSelection-starNormal:hover {
+  color: @color-button-hover;
 }
 .conceptSchemeSelection-starNormal {
   color: @color-button-faded;
-}
-.conceptSchemeSelection-starNormal:hover {
-  color: @color-button-hover;
 }
 
 </style>
