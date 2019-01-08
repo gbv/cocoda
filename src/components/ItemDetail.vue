@@ -22,17 +22,15 @@
 
     <div
       class="itemDetail-apiUrl" >
-      <a
-        :href="apiUrl || ''"
-        target="_blank"
-        @click="clickApiUrl" >
+      <a @click="clickApiUrl">
         <font-awesome-icon icon="code" />
       </a>
-      <!-- Export modal -->
-      <data-modal
-        ref="exportModal"
-        :data="item" />
     </div>
+    <!-- Export modal -->
+    <data-modal
+      ref="exportModal"
+      :data="item"
+      :url="apiUrl" />
 
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
@@ -150,11 +148,9 @@ export default {
   },
   methods: {
     clickApiUrl(event) {
-      if (!this.apiUrl) {
-        event.preventDefault()
-        // Open export modal
-        this.$refs.exportModal.show()
-      }
+      event.preventDefault()
+      // Open export modal
+      this.$refs.exportModal.show()
     }
   },
 }
@@ -182,9 +178,8 @@ export default {
   position: absolute;
   bottom: 0px;
   right: 5px;
-}
-.itemDetail-apiUrl > a {
   color: @color-text-mediumLightGrey;
+  cursor: pointer;
 }
 
 </style>
