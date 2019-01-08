@@ -83,7 +83,7 @@ export default {
       return items
     },
     topConcepts() {
-      return (this.selected.scheme[this.isLeft] ? this.selected.scheme[this.isLeft].TOPCONCEPTS : null) || []
+      return (this.selected.scheme[this.isLeft] ? this.selected.scheme[this.isLeft].__TOPCONCEPTS__ : null) || []
     },
   },
   watch: {
@@ -140,7 +140,7 @@ export default {
   methods: {
     children(concept) {
       let items = []
-      if (concept && concept.ISOPEN[this.isLeft]) {
+      if (concept && concept.__ISOPEN__[this.isLeft]) {
         for (let child of concept.narrower) {
           items.push(child)
           items = items.concat(this.children(child))

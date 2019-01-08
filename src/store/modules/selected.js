@@ -129,7 +129,7 @@ const actions = {
           }
         }
         // Asynchronously load information about its broader concepts
-        if (concept && concept.broader && !concept.BROADERLOADED) {
+        if (concept && concept.broader && !concept.__BROADERLOADED__) {
           let broaderPromises = []
           for (let broader of concept.broader) {
             broaderPromises.push(dispatch("objects/details", { object: broader }, { root: true }))
@@ -137,7 +137,7 @@ const actions = {
           Promise.all(broaderPromises).then(() => {
             commit("objects/set", {
               object: concept,
-              prop: "BROADERLOADED",
+              prop: "__BROADERLOADED__",
               value: true,
             }, { root: true })
           })

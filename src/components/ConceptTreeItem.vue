@@ -17,11 +17,11 @@
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="openByArrow(!concept.ISOPEN[isLeft])" >
+        @click="openByArrow(!concept.__ISOPEN__[isLeft])" >
         <i
           :class="{
-            right: !concept.ISOPEN[isLeft],
-            down: concept.ISOPEN[isLeft]
+            right: !concept.__ISOPEN__[isLeft],
+            down: concept.__ISOPEN__[isLeft]
         }" />
       </div>
       <router-link
@@ -48,7 +48,7 @@
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="hasChildren && concept.ISOPEN[isLeft] && concept.narrower.includes(null)"
+      v-show="hasChildren && concept.__ISOPEN__[isLeft] && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -195,7 +195,7 @@ export default {
         // This section tries to prevent accidental clicks by preventing double clicks when opening/closing a concept's children.
         this.preventClick = true
         _.delay(() => {
-          this.open(this.concept, this.isLeft, !this.concept.ISOPEN[this.isLeft])
+          this.open(this.concept, this.isLeft, !this.concept.__ISOPEN__[this.isLeft])
           _.delay(() => {
             this.preventClick = false
           }, 200)
@@ -226,7 +226,7 @@ export default {
       this.loadNarrower({ object: this.concept }).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
-        if (concept.ISOPEN[this.isLeft]) {
+        if (concept.__ISOPEN__[this.isLeft]) {
           this.scrollTo()
         }
       })

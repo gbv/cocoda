@@ -37,7 +37,7 @@
       </div>
       <!-- Broader -->
       <div
-        v-for="(concept) in (ancestors.length == 0 && item.BROADERLOADED ? broader : [])"
+        v-for="(concept) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : [])"
         v-if="concept != null"
         :key="concept.uri" >
         <font-awesome-icon
@@ -50,7 +50,7 @@
       </div>
       <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
       <loading-indicator
-        v-if="ancestors.length != 0 && ancestors.includes(null) || ancestors.length == 0 && broader.length != 0 && !item.BROADERLOADED"
+        v-if="ancestors.length != 0 && ancestors.includes(null) || ancestors.length == 0 && broader.length != 0 && !item.__BROADERLOADED__"
         size="sm" />
     </div>
 
@@ -80,7 +80,7 @@
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.GNDTERMS }, $t('conceptDetail.gnd')]]"
+          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]]"
           v-if="notes != null && $util.lmContent(notes) != null && $util.lmContent(notes).length > 0"
           :key="'note'+index+'-'+iteration"
           :title="title"
@@ -387,7 +387,7 @@ export default {
         this.$store.commit({
           type: "objects/set",
           object: itemBefore,
-          prop: "GNDTERMS",
+          prop: "__GNDTERMS__",
           value: gndTerms
         })
       }).catch(error => {

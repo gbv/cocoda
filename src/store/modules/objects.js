@@ -92,10 +92,10 @@ const mutations = {
     if (save) {
       // Add all possible properties to ensure reactivity in Vue
       // 1. General properties
-      object.DETAILSLOADED = object.DETAILSLOADED != null ? object.DETAILSLOADED : false
-      object.INSTORE = true
+      object.__DETAILSLOADED__ = object.__DETAILSLOADED__ != null ? object.__DETAILSLOADED__ : false
+      object.__INSTORE__ = true
       if (jskos.isScheme(object)) {
-        Vue.set(object, "TOPCONCEPTS", object.TOPCONCEPTS || [null])
+        Vue.set(object, "__TOPCONCEPTS__", object.__TOPCONCEPTS__ || [null])
         Vue.set(object, "created", object.created || null)
         Vue.set(object, "issued", object.issued || null)
         Vue.set(object, "modified", object.modified || null)
@@ -106,10 +106,10 @@ const mutations = {
         Vue.set(object, "types", object.types || null)
         Vue.set(object, "type", object.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"])
       } else {
-        Vue.set(object, "BROADERLOADED", false)
-        Vue.set(object, "GNDTERMS", null)
-        Vue.set(object, "ISOPEN", { true: false, false: false })
-        Vue.set(object, "MAPPINGS", object.MAPPINGS || null)
+        Vue.set(object, "__BROADERLOADED__", false)
+        Vue.set(object, "__GNDTERMS__", null)
+        Vue.set(object, "__ISOPEN__", { true: false, false: false })
+        Vue.set(object, "__MAPPINGS__", object.__MAPPINGS__ || null)
         Vue.set(object, "ancestors", object.ancestors || [null])
         Vue.set(object, "broader", object.broader || [null])
         Vue.set(object, "narrower", object.narrower || [null])
@@ -147,10 +147,10 @@ const mutations = {
         }
         // Sort inScheme so that those in store are at the top
         inScheme.sort((a, b) => {
-          if (a.INSTORE) {
+          if (a.__INSTORE__) {
             return -1
           }
-          if (b.INSTORE) {
+          if (b.__INSTORE__) {
             return 1
           }
           return 0
@@ -248,7 +248,7 @@ const actions = {
       for (let schemeInObject of object.inScheme || []) {
         scheme = scheme || getters.get(schemeInObject)
       }
-      if (scheme && scheme.INSTORE) {
+      if (scheme && scheme.__INSTORE__) {
         schemeInMap = scheme
       } else if (isObjectInMap(state.map, scheme)) {
         schemeInMap = getters.get(scheme)
@@ -296,11 +296,11 @@ const actions = {
    * @returns a Promise with the updated scheme
    */
   top({ commit, getters }, { scheme }) {
-    if (!scheme || (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null))) {
+    if (!scheme || (scheme.__TOPCONCEPTS__ && !scheme.__TOPCONCEPTS__.includes(null))) {
       return Promise.resolve(scheme)
     } else {
       return scheme._getTop().then(results => {
-        if (scheme.TOPCONCEPTS && !scheme.TOPCONCEPTS.includes(null)) {
+        if (scheme.__TOPCONCEPTS__ && !scheme.__TOPCONCEPTS__.includes(null)) {
           return scheme
         }
         let top = []
@@ -327,7 +327,7 @@ const actions = {
         commit({
           type: "set",
           object: scheme,
-          prop: "TOPCONCEPTS",
+          prop: "__TOPCONCEPTS__",
           value: jskos.sortConcepts(top)
         })
         return scheme
@@ -525,7 +525,7 @@ const actions = {
    * @returns a Promise with the updated object
    */
   details({ commit, getters }, { object, scheme }) {
-    if (!object || object.DETAILSLOADED) {
+    if (!object || object.__DETAILSLOADED__) {
       return Promise.resolve(object)
     } else {
       scheme = getters.get(scheme)
@@ -544,7 +544,7 @@ const actions = {
           commit({
             type: "set",
             object,
-            prop: "DETAILSLOADED",
+            prop: "__DETAILSLOADED__",
             value: true
           })
           // Adjust object
