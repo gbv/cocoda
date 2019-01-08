@@ -150,30 +150,11 @@
     <div class="mappingEditor-title">
       {{ $t("mappingEditor.title") }}
     </div>
-    <!-- Export modal (TODO: Put into its own component and allow export of mappings, concepts, etc.) -->
-    <b-modal
+    <!-- Export modal -->
+    <data-modal
       ref="exportModal"
-      :title="$t('mappingEditor.exportTitle')"
-      hide-footer
-      center
-      size="lg" >
-      <p><b-btn
-        class="mt-3"
-        @click.stop.prevent="copyToClipboard($refs.json)">
-        {{ $t("mappingEditor.exportClipboard") }}
-      </b-btn></p>
-      <p><a
-        :href="'data:application/json;charset=utf-8,' + mappingEncoded"
-        download="mapping.json"
-        target="_blank" >
-        {{ $t("mappingEditor.exportJson") }}
-      </a></p>
-      <div
-        ref="json"
-        style="height: 600px; overflow: auto; margin-top: 20px;" >
-        <pre ref="jsonPre">{{ mappingPretty }}</pre>
-      </div>
-    </b-modal>
+      :data="mapping"
+      type="mapping" />
     <!-- Delete mapping modal -->
     <b-modal
       ref="deleteModal"
@@ -228,6 +209,7 @@
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import Minimizer from "./Minimizer"
+import DataModal from "./DataModal"
 import _ from "lodash"
 import hotkeys from "hotkeys-js"
 
@@ -236,7 +218,7 @@ import hotkeys from "hotkeys-js"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, Minimizer },
+  components: { ItemName, MappingTypeSelection, Minimizer, DataModal },
   data() {
     return {
       comments: [""]
@@ -260,12 +242,6 @@ export default {
     },
     canExportMapping() {
       return this.mapping.fromScheme && this.mapping.toScheme
-    },
-    /**
-     * Returns a formatted version of the mapping
-     */
-    mappingPretty() {
-      return JSON.stringify(this.prepareMapping(), null, 2)
     },
     /**
      * Returns an encoded version of the mapping for export

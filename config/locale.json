@@ -74,9 +74,6 @@
       "commentMapping": "comment mapping",
       "commentMappingTitle": "Comment",
       "addConcept": "add concept to mapping",
-      "exportTitle": "Export Mapping",
-      "exportClipboard": "Copy to clipboard",
-      "exportJson": "Download as .json file",
       "deleteTitle": "Delete Mapping",
       "deleteAndClear": "Delete original mapping and clear",
       "deleteAndKeep": "Delete original mapping and keep changes",
@@ -138,6 +135,15 @@
       "mappingDeleted": "Mapping was deleted.",
       "mappingNotDeleted": "Mapping could not be deleted.",
       "mappingSaved": "Mapping was saved."
+    },
+    "dataModal": {
+      "title": "Export JSKOS Data",
+      "exportClipboard": "Copy to clipboard",
+      "exportJson": "Download as .json file",
+      "jskosSpecification": "JSKOS Specification",
+      "validation": "Validation",
+      "validationSuccess": "successful",
+      "validationFailure": "failure"
     }
   },
   "de": {
@@ -187,9 +193,6 @@
       "commentMapping": "Mapping kommentieren",
       "commentMappingTitle": "Kommentar",
       "addConcept": "Konzept zum Mapping hinzufügen",
-      "exportTitle": "Mapping Exportieren",
-      "exportClipboard": "In die Zwischenablage kopieren",
-      "exportJson": "Als .json-Datei herunterladen",
       "deleteTitle": "Mapping löschen",
       "deleteAndClear": "Lösche originales Mapping und verwerfe Änderungen",
       "deleteAndKeep": "Lösche originales Mapping und behalte Änderungen",
@@ -279,6 +282,15 @@
       "mappingDeleted": "Mapping wurde gelöscht.",
       "mappingNotDeleted": "Mapping konnte nicht gelöscht werden.",
       "mappingSaved": "Mapping wurde gespeichert."
+    },
+    "dataModal": {
+      "title": "JSKOS-Daten exportieren",
+      "exportClipboard": "In die Zwischenablage kopieren",
+      "exportJson": "Als .json-Datei herunterladen",
+      "jskosSpecification": "JSKOS-Spezifikation",
+      "validation": "Validierung",
+      "validationSuccess": "erfolgreich",
+      "validationFailure": "fehlgeschlagen"
     }
   }
 }

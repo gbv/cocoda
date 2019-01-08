@@ -1,0 +1,139 @@
+<template>
+  <b-modal
+    ref="dataModal"
+    :title="$t('dataModal.title')"
+    centered
+    size="lg" >
+    <span slot="modal-footer">
+      {{ $t("dataModal.validation") }}:
+      <span :class="validated ? 'text-success' : 'text-danger'">
+        {{ validated ? $t("dataModal.validationSuccess") : $t("dataModal.validationFailure") }}
+      </span>
+      |
+      JSKOS {{ $t("settings.version") }} {{ $jskos.version }}
+      |
+      <a
+        href="https://gbv.github.io/jskos/jskos.html"
+        target="_blank" >
+        {{ $t("dataModal.jskosSpecification") }}
+      </a>
+    </span>
+    <p><b-btn
+      @click.stop.prevent="copyToClipboard($refs.json)">
+      {{ $t("dataModal.exportClipboard") }}
+    </b-btn></p>
+    <p><a
+      :href="'data:application/json;charset=utf-8,' + encodedData"
+      download="mapping.json"
+      target="_blank" >
+      {{ $t("dataModal.exportJson") }}
+    </a></p>
+    <div
+      ref="json"
+      style="height: 600px; overflow: auto; margin-top: 20px;" >
+      <pre ref="jsonPre">{{ jsonData }}</pre>
+    </div>
+  </b-modal>
+</template>
+
+<script>
+import _ from "lodash"
+
+/**
+ * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
+ */
+export default {
+  name: "DataModal",
+  components: { },
+  props: {
+    /**
+     * JSKOS data (either object or array)
+     */
+    data: {
+      type: [Object, Array],
+      default: null
+    },
+    /**
+     * JSKOS type (one of `concept`, `scheme`, or `mapping`)
+     *
+     * Mostly important for mappings that are prepared differently from other JSKOS types. Also used for JSKOS validation.
+     */
+    type: {
+      type: String,
+      default: null,
+      validator: function (value) {
+        return ["concept", "scheme", "mapping"].indexOf(value) !== -1
+      }
+    }
+  },
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+    computedType() {
+      return this.type || (this.$jskos.isConcept(object) ? "concept" : (this.$jskos.isScheme(object) ? "scheme" : null))
+    },
+    preparedData() {
+      if (this.data == null) {
+        return null
+      }
+      let dataArray = this.data
+      if (!_.isArray(this.data)) {
+        dataArray = [this.data]
+      }
+      let newData = []
+      for (let object of dataArray) {
+        // Prepare object depending on type
+        let type = this.computedType
+        let newObject
+        if (type == "mapping") {
+          newObject = this.$jskos.minifyMapping(object)
+          newObject = this.$jskos.addMappingIdentifiers(newObject)
+        } else {
+          newObject = this.$jskos.copyDeep(object)
+        }
+        if (newObject) {
+          newData.push(newObject)
+        }
+      }
+      if (!_.isArray(this.data)) {
+        return newData[0]
+      }
+      return newData
+    },
+    jsonData() {
+      return JSON.stringify(this.preparedData, null, 2)
+    },
+    encodedData() {
+      return encodeURIComponent(this.jsonData)
+    },
+    validated() {
+      let type = this.computedType
+      let validate = _.get(this.$jskos.validate, type, this.$jskos.validate.resource)
+      if (!this.preparedData || !validate) {
+        return false
+      }
+      let validated = true
+      for (let object of _.isArray(this.data) ? this.preparedData : [this.preparedData]) {
+        validated = validated && validate(object)
+      }
+      return validated
+    }
+  },
+  watch: {
+
+  },
+  methods: {
+    show() {
+      this.$refs.dataModal.show()
+    },
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import "../style/main.less";
+
+</style>
