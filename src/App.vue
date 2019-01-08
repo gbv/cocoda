@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="text-dark color-primary-0-bg fontSize-normal" >
+    class="font-default text-dark color-primary-0-bg fontSize-normal" >
     <div class="alertsContainer">
       <b-alert
         v-for="(alert, index) in $store.state.alerts.alerts"
@@ -533,9 +533,6 @@ html, body {
   margin: 0;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   height: 100%;
   width: 100%;
   display: flex;

@@ -44,7 +44,7 @@
       class="conceptSchemeSelection-popover" >
       <div
         ref="popover"
-        class="conceptSchemeSelection-expanded" >
+        class="conceptSchemeSelection-expanded font-default text-dark color-primary-0-bg fontSize-normal" >
         <div class="conceptSchemeSelection-title">
           {{ isLeft ? $t("schemeSelection.source") : $t("schemeSelection.target") }}
         </div>
@@ -53,13 +53,13 @@
             ref="input"
             v-model="schemeFilter"
             autocomplete="off"
-            @keyup.enter.native="chooseFirst" />
+            @keyup.enter.native="chooseFirst"
+            @keyup.esc.native="showPopover = false" />
         </p>
         <ul class="conceptSchemeSelection-schemeList scrollable">
           <li
             v-for="(scheme, index) in filteredSchemes"
-            :key="scheme.uri + '-scheme-list-' + id + index"
-            class="quickSelectionItem" >
+            :key="scheme.uri + '-scheme-list-' + id + index" >
             <font-awesome-icon
               :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
               icon="star" />
@@ -75,16 +75,17 @@
           class="conceptSchemeSelection-title">
           {{ $t("schemeSelection.conceptQuick") }}
         </div>
-        <p
-          v-for="concept in favoriteConcepts"
-          :key="concept.uri + '-favorite-' + id"
-          class="quickSelectionItem" >
-          <item-name
-            :item="concept"
-            :is-link="true"
-            :is-left="isLeft"
-          />
-        </p>
+        <div class="conceptSchemeSelection-favoriteConcepts scrollable">
+          <p
+            v-for="concept in favoriteConcepts"
+            :key="concept.uri + '-favorite-' + id" >
+            <item-name
+              :item="concept"
+              :is-link="true"
+              :is-left="isLeft"
+            />
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -258,11 +259,17 @@ export default {
 
 .conceptSchemeSelection-schemeList {
   flex: 1;
+  min-height: 40vh;
   list-style: none;
   padding-left: 3px;
+  margin-bottom: 30px;
 }
-.conceptSchemeSelection-schemeList > li {
+.conceptSchemeSelection-schemeList > li, .conceptSchemeSelection-favoriteConcepts > p {
   padding-top: 8px;
+}
+
+.conceptSchemeSelection-favoriteConcepts {
+  flex: 0 1 auto;
 }
 
 .conceptSchemeSelection-starFavorite {
