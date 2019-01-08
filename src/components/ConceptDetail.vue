@@ -2,16 +2,6 @@
   <div
     v-if="item != null"
     class="conceptDetail">
-    <!-- inScheme -->
-    <div
-      v-show="settings.showSchemeInAncestors"
-      class="conceptDetail-scheme" >
-      <item-name
-        :item="selected.scheme[isLeft]"
-        :is-link="true"
-        :is-left="isLeft"
-        font-size="normal" />
-    </div>
     <!-- Ancestors / Broader -->
     <div class="conceptDetail-ancestors">
       <div
