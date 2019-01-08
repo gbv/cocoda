@@ -135,6 +135,8 @@ export default {
       }
       let computedStyle = window.getComputedStyle(current)
       if (this.minimized) {
+        // Add class mainComponent-minimized
+        current.classList.add("mainComponent-minimized")
         this.previousFlex = computedStyle.getPropertyValue("flex")
         current.style.flex = "0 1 " + this.minimizerSize
         // Set data-minimized property to 1 so that it can be identified as minimized
@@ -151,6 +153,8 @@ export default {
           }
         }
       } else {
+        // Remove class mainComponent-minimized
+        current.classList.remove("mainComponent-minimized")
         // Reset styles to previous
         current.style.flex = this.previousFlex
         for (let previous of this.previousMinSizes) {
