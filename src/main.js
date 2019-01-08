@@ -39,13 +39,6 @@ library.add(fas)
 library.add(fab)
 Vue.component("font-awesome-icon", FontAwesomeIcon)
 
-// Add syntax highlighter
-import hljs from "highlight.js/lib/highlight"
-import hljsJson from "highlight.js/lib/languages/json"
-hljs.registerLanguage("json", hljsJson)
-import "highlight.js/styles/github.css"
-Vue.prototype.$hljs = hljs
-
 Vue.mixin({
   methods: {
     toggleMinimize() {

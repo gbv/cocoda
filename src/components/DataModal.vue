@@ -49,17 +49,16 @@
       </b-button>
     </p>
     <div class="dataModal-json">
-      <pre>
-        <code
+      <pre><code
           ref="jsonCode"
-          class="json">{{ jsonData }}</code>
-      </pre>
+          v-html="jsonHtml" /></pre>
     </div>
   </b-modal>
 </template>
 
 <script>
 import _ from "lodash"
+import formatHighlight from "json-format-highlight"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
@@ -146,6 +145,9 @@ export default {
     jsonData() {
       return JSON.stringify(this.preparedData, null, 2)
     },
+    jsonHtml() {
+      return formatHighlight(this.preparedData)
+    },
     encodedData() {
       return encodeURIComponent(this.jsonData)
     },
@@ -174,8 +176,6 @@ export default {
   methods: {
     show() {
       this.$refs.dataModal.show()
-      // Add syntax highlighting
-      this.$hljs.highlightBlock(this.$refs.jsonCode)
     },
   }
 }
@@ -188,11 +188,6 @@ export default {
   height: 600px;
   overflow: auto;
   margin-top: 20px;
-}
-
-// Small visual fix for pre-code block
-.dataModal-json > pre {
-  margin: -18px 0 -36px 0;
 }
 
 </style>
