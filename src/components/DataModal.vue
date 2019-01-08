@@ -6,6 +6,14 @@
     centered
     size="lg" >
     <span slot="modal-footer">
+      <span v-if="url">
+        <a
+          :href="url"
+          target="_blank" >
+          API URL
+        </a>
+        |
+      </span>
       {{ $t("dataModal.validation") }}:
       <span :class="validated ? 'text-success' : 'text-danger'">
         {{ validated ? $t("dataModal.validationSuccess") : $t("dataModal.validationFailure") }}
@@ -78,6 +86,13 @@ export default {
       validator: function (value) {
         return ["concept", "scheme", "mapping"].indexOf(value) !== -1
       }
+    },
+    /**
+     * API URL for data (if it exists).
+     */
+    url: {
+      type: String,
+      default: null
     }
   },
   data() {
