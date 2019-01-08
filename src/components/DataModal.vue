@@ -131,6 +131,8 @@ export default {
           newObject = this.$jskos.addMappingIdentifiers(newObject)
         } else {
           newObject = this.$jskos.copyDeep(object)
+          // Remove all properties with null values
+          newObject = _.pick(newObject, _.keys(newObject).filter(key => newObject[key] != null))
         }
         if (newObject) {
           newData.push(newObject)
