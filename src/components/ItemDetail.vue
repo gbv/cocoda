@@ -40,6 +40,7 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
+import _ from "lodash"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -124,8 +125,8 @@ export default {
         let provider = _.get(this.item, "inScheme[0]._provider")
         baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
       }
-      // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165.
-      if (!baseUrl) {
+      // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
+      if (!baseUrl || !_.isString(baseUrl)) {
         return null
       }
       return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
