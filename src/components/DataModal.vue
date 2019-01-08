@@ -2,6 +2,7 @@
   <b-modal
     ref="dataModal"
     :title="$t('dataModal.title')"
+    class="fontSize-normal"
     centered
     size="lg" >
     <span slot="modal-footer">
@@ -84,7 +85,7 @@ export default {
   },
   computed: {
     computedType() {
-      return this.type || (this.$jskos.isConcept(object) ? "concept" : (this.$jskos.isScheme(object) ? "scheme" : null))
+      return this.type || (this.$jskos.isConcept(this.isArray ? this.data[0] : this.data) ? "concept" : (this.$jskos.isScheme(this.isArray ? this.data[0] : this.data) ? "scheme" : null))
     },
     isArray() {
       return _.isArray(this.data)
@@ -107,9 +108,8 @@ export default {
       let newData = []
       for (let object of dataArray) {
         // Prepare object depending on type
-        let type = this.computedType
         let newObject
-        if (type == "mapping") {
+        if (this.computedType == "mapping") {
           newObject = this.$jskos.minifyMapping(object)
           newObject = this.$jskos.addMappingIdentifiers(newObject)
         } else {
