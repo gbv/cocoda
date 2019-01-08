@@ -245,7 +245,9 @@ const actions = {
       return Promise.resolve(getters.get(object))
     } else {
       let schemeInMap
-      scheme = scheme || (object.inScheme ? object.inScheme[0] : null)
+      for (let schemeInObject of object.inScheme || []) {
+        scheme = scheme || getters.get(schemeInObject)
+      }
       if (scheme && scheme.INSTORE) {
         schemeInMap = scheme
       } else if (isObjectInMap(state.map, scheme)) {
