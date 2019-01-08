@@ -187,32 +187,6 @@ export default {
     }
   },
   computed: {
-    /**
-     * Generates the options for the select element.
-     */
-    schemeOptions: function() {
-      let options = [
-        { value: null, text: this.$t("schemeSelection.title"), disabled: true }
-      ]
-      // Sort schemes
-      let schemes = this.schemes.slice().sort((a, b) => {
-        let labelA = this.$util.prefLabel(a), labelB = this.$util.prefLabel(b)
-        if (labelA < labelB) {
-          return -1
-        }
-        if (labelA > labelB) {
-          return 1
-        }
-        return 0
-      })
-      // Add from schemes
-      for (var scheme of schemes) {
-        options.push(
-          { value: scheme, text: this.$util.prefLabel(scheme) }
-        )
-      }
-      return options
-    },
     schemes() {
       return this.$store.state.schemes
     },
@@ -563,33 +537,6 @@ html, body {
   flex-direction: column;
   min-width: 315px;
 }
-.schemeSelectWrapper {
-  flex: none;
-  padding: 3px;
-  display: flex;
-  margin-right: 24px;
-}
-.schemeSelect {
-  .m-borderRadius(2px);
-  border: 0 !important;
-  box-shadow: 0 1px 2px 0 @color-shadow;
-  color: @color-primary-4 !important;
-  flex: 1;
-}
-.schemeSelect.form-control {
-  .fontSize-normal;
-}
-.schemeSelectInfo {
-  flex: none;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  margin-left: 10px;
-}
-.conceptSearch {
-  margin: 5px 0 0 0;
-}
 .conceptBrowser {
   height: 0;
   flex: 1;
@@ -644,10 +591,6 @@ html, body {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-}
-
-.quickSelectionItem {
-  padding-top: 15px;
 }
 
 .alertsContainer {
