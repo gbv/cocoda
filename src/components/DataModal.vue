@@ -21,7 +21,7 @@
     </span>
     <p>
       <b-button
-        @click.stop.prevent="copyToClipboard($refs.json)">
+        @click.stop.prevent="copyToClipboard($refs.jsonCode)">
         {{ $t("dataModal.exportClipboard") }}
       </b-button>
       <b-button
@@ -40,10 +40,12 @@
         {{ $t("dataModal.exportNdjson") }}
       </b-button>
     </p>
-    <div
-      ref="json"
-      style="height: 600px; overflow: auto; margin-top: 20px;" >
-      <pre ref="jsonPre">{{ jsonData }}</pre>
+    <div class="dataModal-json">
+      <pre>
+        <code
+          ref="jsonCode"
+          class="json">{{ jsonData }}</code>
+      </pre>
     </div>
   </b-modal>
 </template>
@@ -155,6 +157,8 @@ export default {
   methods: {
     show() {
       this.$refs.dataModal.show()
+      // Add syntax highlighting
+      this.$hljs.highlightBlock(this.$refs.jsonCode)
     },
   }
 }
@@ -162,5 +166,16 @@ export default {
 
 <style lang="less" scoped>
 @import "../style/main.less";
+
+.dataModal-json {
+  height: 600px;
+  overflow: auto;
+  margin-top: 20px;
+}
+
+// Small visual fix for pre-code block
+.dataModal-json > pre {
+  margin: -18px 0 -36px 0;
+}
 
 </style>
