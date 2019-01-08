@@ -128,8 +128,6 @@ export default {
     return {
       // Unique ID for this instance of the component.
       id: this.$util.generateID(),
-      // UpdateID which is only used to update the "conceptSearch" computed property.
-      updateId: null,
       // Boolean whether popover is shown.
       showPopover: false,
       // Filter text for scheme selection.
@@ -182,11 +180,6 @@ export default {
       }
       return concepts
     },
-    conceptSearch() {
-      // Recompute when updateId changed (because $refs is not reactive!)
-      this.updateId
-      return this.$refs.conceptSearch
-    },
   },
   watch: {
     showPopover(show) {
@@ -201,9 +194,6 @@ export default {
   mounted() {
     // Add click event listener
     document.addEventListener("click", this.handleClickOutside)
-  },
-  updated() {
-    this.updateId = this.$util.generateID()
   },
   destroyed() {
     // Remove click event listener
@@ -240,6 +230,14 @@ export default {
       this.$router.push({ path: this.getRouterUrl(this.filteredSchemes[0], this.isLeft) })
       this.showPopover = false
     },
+    /**
+     * Sets concept search query to a certain string.
+     */
+    setConceptSearchQuery(query) {
+      if (this.$refs.conceptSearch) {
+        this.$refs.conceptSearch.setSearchQuery(query)
+      }
+    }
   }
 }
 </script>

@@ -355,9 +355,9 @@ export default {
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       // Insert on the left AND the right
       for (let isLeft of both ? [true, false] : [isLeft]) {
-        let conceptSearch = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Left" : "Right"}[0].conceptSearch`)
-        if (conceptSearch) {
-          conceptSearch.setSearchQuery(regexResult ? regexResult[0] : "")
+        let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Left" : "Right"}[0]`)
+        if (conceptSchemeSelection) {
+          conceptSchemeSelection.setConceptSearchQuery(regexResult ? regexResult[0] : "")
         }
       }
     },
