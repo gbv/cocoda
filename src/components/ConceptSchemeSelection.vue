@@ -35,7 +35,8 @@
       <concept-search
         ref="conceptSearch"
         :is-left="isLeft"
-        :scheme="scheme" />
+        :scheme="scheme"
+        class="conceptSchemeSelection-conceptSearch" />
     </div>
     <!-- This is shown when no scheme is selected, or as a popover. -->
     <!-- The popover reacts to the expand button above. It is attached to the main element of this component. -->
@@ -250,7 +251,11 @@ export default {
 }
 
 .conceptSchemeSelection-collapsed {
-  padding: 5px;
+  padding: 5px 5px 0 5px;
+}
+
+.conceptSchemeSelection-conceptSearch {
+  margin-top: 5px;
 }
 
 .conceptSchemeSelection-expandButton {

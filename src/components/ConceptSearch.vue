@@ -11,6 +11,7 @@
     <div class="conceptSearch-inputWrapper">
       <div
         v-if="isOpen && !loading"
+        :style="`right: ${scheme.types && scheme.types.length ? 27 : 10}px;`"
         class="conceptSearch-resultCount" >
         {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
@@ -446,13 +447,12 @@ export default {
 .conceptSearch-resultCount {
   .fontSize-small;
   position: absolute;
-  top: 8px;
-  right: 27px;
+  top: 7px;
   user-select: none;
 }
 .conceptSearch-filter {
   position: absolute;
-  top: 9px;
+  top: 8px;
   right: 2px;
   width: 20px;
   font-size: 0.8em;
@@ -463,10 +463,6 @@ export default {
   position: relative;
   margin-left: 28px;
 }
-.conceptSearch-inputWrapper > input {
-  border: 0;
-  box-shadow: 0 1px 2px 0 @color-shadow;
-}
 
 .conceptSearch-results {
   position: absolute;
@@ -475,7 +471,7 @@ export default {
   max-height: 250px;
   width: 100%;
   padding: 0;
-  margin: 0;
+  margin: 3px 0;
   background-color: @color-background;
   box-shadow: 0 2px 4px 0 @color-shadow;
   z-index: @zIndex-10;
