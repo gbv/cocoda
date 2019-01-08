@@ -21,13 +21,17 @@
     </div>
 
     <div
-      v-if="apiUrl"
       class="itemDetail-apiUrl" >
       <a
-        :href="apiUrl"
-        target="_blank" >
-        API
+        :href="apiUrl || ''"
+        target="_blank"
+        @click="clickApiUrl" >
+        <font-awesome-icon icon="code" />
       </a>
+      <!-- Export modal -->
+      <data-modal
+        ref="exportModal"
+        :data="item" />
     </div>
 
     <!-- Full screen loading indicator -->
@@ -40,6 +44,7 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
+import DataModal from "./DataModal"
 import _ from "lodash"
 
 /**
@@ -48,7 +53,7 @@ import _ from "lodash"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModal
   },
   props: {
     /**
@@ -143,6 +148,15 @@ export default {
   mounted() {
     this.$el.scrollTop = 0
   },
+  methods: {
+    clickApiUrl(event) {
+      if (!this.apiUrl) {
+        event.preventDefault()
+        // Open export modal
+        this.$refs.exportModal.show()
+      }
+    }
+  },
 }
 </script>
 
@@ -166,11 +180,11 @@ export default {
 }
 .itemDetail-apiUrl {
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   right: 5px;
 }
 .itemDetail-apiUrl > a {
-  color: @color-background !important;
+  color: @color-text-mediumLightGrey;
 }
 
 </style>
