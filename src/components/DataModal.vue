@@ -18,16 +18,27 @@
         {{ $t("dataModal.jskosSpecification") }}
       </a>
     </span>
-    <p><b-btn
-      @click.stop.prevent="copyToClipboard($refs.json)">
-      {{ $t("dataModal.exportClipboard") }}
-    </b-btn></p>
-    <p><a
-      :href="'data:application/json;charset=utf-8,' + encodedData"
-      download="mapping.json"
-      target="_blank" >
-      {{ $t("dataModal.exportJson") }}
-    </a></p>
+    <p>
+      <b-button
+        @click.stop.prevent="copyToClipboard($refs.json)">
+        {{ $t("dataModal.exportClipboard") }}
+      </b-button>
+      <b-button
+        :href="'data:application/json;charset=utf-8,' + encodedData"
+        :download="filename + '.json'"
+        target="_blank"
+        variant="outline-warning" >
+        {{ $t("dataModal.exportJson") }}
+      </b-button>
+      <b-button
+        v-if="encodedDataNdjson"
+        :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
+        :download="filename + '.ndjson'"
+        target="_blank"
+        variant="outline-warning" >
+        {{ $t("dataModal.exportNdjson") }}
+      </b-button>
+    </p>
     <div
       ref="json"
       style="height: 600px; overflow: auto; margin-top: 20px;" >
@@ -75,12 +86,22 @@ export default {
     computedType() {
       return this.type || (this.$jskos.isConcept(object) ? "concept" : (this.$jskos.isScheme(object) ? "scheme" : null))
     },
+    isArray() {
+      return _.isArray(this.data)
+    },
+    filename() {
+      let filename = this.computedType || "resource"
+      if (this.isArray) {
+        filename += "s"
+      }
+      return filename
+    },
     preparedData() {
       if (this.data == null) {
         return null
       }
       let dataArray = this.data
-      if (!_.isArray(this.data)) {
+      if (!this.isArray) {
         dataArray = [this.data]
       }
       let newData = []
@@ -98,7 +119,7 @@ export default {
           newData.push(newObject)
         }
       }
-      if (!_.isArray(this.data)) {
+      if (!this.isArray) {
         return newData[0]
       }
       return newData
@@ -109,6 +130,12 @@ export default {
     encodedData() {
       return encodeURIComponent(this.jsonData)
     },
+    encodedDataNdjson() {
+      if (!this.isArray) {
+        return null
+      }
+      return this.preparedData.map(object => JSON.stringify(object)).join("\n")
+    },
     validated() {
       let type = this.computedType
       let validate = _.get(this.$jskos.validate, type, this.$jskos.validate.resource)
@@ -116,7 +143,7 @@ export default {
         return false
       }
       let validated = true
-      for (let object of _.isArray(this.data) ? this.preparedData : [this.preparedData]) {
+      for (let object of this.isArray ? this.preparedData : [this.preparedData]) {
         validated = validated && validate(object)
       }
       return validated

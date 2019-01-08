@@ -139,7 +139,8 @@
     "dataModal": {
       "title": "Export JSKOS Data",
       "exportClipboard": "Copy to clipboard",
-      "exportJson": "Download as .json file",
+      "exportJson": ".json Download",
+      "exportNdjson": ".ndjson Download",
       "jskosSpecification": "JSKOS Specification",
       "validation": "Validation",
       "validationSuccess": "successful",
@@ -286,7 +287,8 @@
     "dataModal": {
       "title": "JSKOS-Daten exportieren",
       "exportClipboard": "In die Zwischenablage kopieren",
-      "exportJson": "Als .json-Datei herunterladen",
+      "exportJson": ".json Download",
+      "exportNdjson": ".ndjson Download",
       "jskosSpecification": "JSKOS-Spezifikation",
       "validation": "Validierung",
       "validationSuccess": "erfolgreich",
