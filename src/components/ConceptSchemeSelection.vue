@@ -302,7 +302,7 @@ export default {
 }
 
 .conceptSchemeSelection-schemeList {
-  flex: 1;
+  flex: 1 1 auto;
   // Make sure scheme list doesn't get too small.
   min-height: 40vh;
   list-style: none;
@@ -314,7 +314,8 @@ export default {
 }
 
 .conceptSchemeSelection-favoriteConcepts {
-  flex: 0 1 auto;
+  max-height: 300px;
+  padding-top: 5px;
 }
 
 .conceptSchemeSelection-star {
