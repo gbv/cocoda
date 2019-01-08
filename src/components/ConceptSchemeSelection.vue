@@ -72,7 +72,9 @@
             :key="scheme.uri + '-scheme-list-' + id + index" >
             <font-awesome-icon
               :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
-              icon="star" />
+              class="conceptSchemeSelection-star"
+              icon="star"
+              @click="toggleFavoriteScheme(scheme)" />
             <item-name
               :ref="index == 0 ? 'firstScheme' : null"
               :item="scheme"
@@ -164,7 +166,7 @@ export default {
     },
     favoriteSchemes() {
       let schemes = []
-      for (let uri of this.config.favoriteTerminologyProviders) {
+      for (let uri of this.$settings.favoriteSchemes || this.config.favoriteTerminologyProviders) {
         let scheme = this.$store.getters["objects/get"]({ uri })
         if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
           schemes.push(scheme)
@@ -238,7 +240,25 @@ export default {
       if (this.$refs.conceptSearch) {
         this.$refs.conceptSearch.setSearchQuery(query)
       }
-    }
+    },
+    toggleFavoriteScheme(scheme) {
+      if (this.$jskos.isContainedIn(scheme, this.favoriteSchemes)) {
+        // Remove from favorites
+        let uris = this.$jskos.getAllUris(scheme)
+        this.$store.commit({
+          type: "settings/set",
+          prop: "favoriteSchemes",
+          value: this.favoriteSchemes.map(scheme => scheme.uri).filter(uri => !uris.includes(uri))
+        })
+      } else {
+        // Add to favorites
+        this.$store.commit({
+          type: "settings/set",
+          prop: "favoriteSchemes",
+          value: this.favoriteSchemes.map(scheme => scheme.uri).concat([scheme.uri])
+        })
+      }
+    },
   }
 }
 </script>
@@ -297,11 +317,20 @@ export default {
   flex: 0 1 auto;
 }
 
+.conceptSchemeSelection-star {
+  cursor: pointer;
+}
 .conceptSchemeSelection-starFavorite {
   color: @color-primary-4;
 }
+.conceptSchemeSelection-starFavorite:hover {
+  color: @color-primary-1;
+}
 .conceptSchemeSelection-starNormal {
   color: @color-button-faded;
+}
+.conceptSchemeSelection-starNormal:hover {
+  color: @color-button-hover;
 }
 
 </style>
