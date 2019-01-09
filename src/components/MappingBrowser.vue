@@ -247,7 +247,7 @@
         </span>
         <span
           slot="HEAD_actions"
-          slot-scope="data" />
+          slot-scope="" />
         <span
           slot="ITEM_ROW"
           slot-scope="{ item, value }" >
@@ -288,6 +288,9 @@
         {{ $t("mappingBrowser.chooseConcept") }}
       </div>
     </div>
+    <data-modal-button
+      :data="items.map(item => item.mapping).filter(mapping => mapping != null)"
+      type="mapping" />
   </div>
 </template>
 
@@ -300,6 +303,7 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import LoadingIndicator from "./LoadingIndicator"
 import RegistryNotation from "./RegistryNotation"
 import FlexibleTable from "vue-flexible-table"
+import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 
 /**
@@ -307,7 +311,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation },
+  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton },
   data () {
     return {
       loading: 0,

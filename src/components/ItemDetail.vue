@@ -20,15 +20,7 @@
       {{ $t("itemDetail.pleaseSelect") }}
     </div>
 
-    <div
-      class="itemDetail-apiUrl" >
-      <a @click="clickApiUrl">
-        <font-awesome-icon icon="code" />
-      </a>
-    </div>
-    <!-- Export modal -->
-    <data-modal
-      ref="exportModal"
+    <data-modal-button
       :data="item"
       :url="apiUrl" />
 
@@ -42,7 +34,7 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
-import DataModal from "./DataModal"
+import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 
 /**
@@ -51,7 +43,7 @@ import _ from "lodash"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModal
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton
   },
   props: {
     /**
@@ -146,13 +138,6 @@ export default {
   mounted() {
     this.$el.scrollTop = 0
   },
-  methods: {
-    clickApiUrl(event) {
-      event.preventDefault()
-      // Open export modal
-      this.$refs.exportModal.show()
-    }
-  },
 }
 </script>
 
@@ -173,13 +158,6 @@ export default {
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;
-}
-.itemDetail-apiUrl {
-  position: absolute;
-  bottom: 0px;
-  right: 5px;
-  color: @color-text-mediumLightGrey;
-  cursor: pointer;
 }
 
 </style>

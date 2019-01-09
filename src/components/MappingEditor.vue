@@ -34,16 +34,6 @@
         <font-awesome-icon icon="ban" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.exportMapping') : '', delay: $util.delay.medium }"
-        :class="{
-          button: canExportMapping,
-          'button-disabled': !canExportMapping
-        }"
-        class="mappingEditorToolbarItem"
-        @click="exportMapping()" >
-        <font-awesome-icon icon="share-square" />
-      </div>
-      <div
         v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canExportMapping,
@@ -150,11 +140,6 @@
     <div class="mappingEditor-title">
       {{ $t("mappingEditor.title") }}
     </div>
-    <!-- Export modal -->
-    <data-modal
-      ref="exportModal"
-      :data="mapping"
-      type="mapping" />
     <!-- Delete mapping modal -->
     <b-modal
       ref="deleteModal"
@@ -202,6 +187,9 @@
         :max-rows="6"
         @keydown.native="textareaKeydown" />
     </b-modal>
+    <data-modal-button
+      :data="mapping"
+      type="mapping" />
   </div>
 </template>
 
@@ -209,7 +197,7 @@
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import Minimizer from "./Minimizer"
-import DataModal from "./DataModal"
+import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 import hotkeys from "hotkeys-js"
 
@@ -218,7 +206,7 @@ import hotkeys from "hotkeys-js"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, Minimizer, DataModal },
+  components: { ItemName, MappingTypeSelection, Minimizer, DataModalButton },
   data() {
     return {
       comments: [""]
@@ -458,13 +446,6 @@ export default {
       let mappingScheme = this.$store.getters["mapping/getScheme"](isLeft)
       return !this.$jskos.compare(chosenScheme, mappingScheme)
     },
-    /**
-     * Opens the export modal
-     */
-    exportMapping() {
-      if (!this.canExportMapping) return false
-      this.$refs.exportModal.show()
-    },
     dragOver(event) {
       event.preventDefault()
     },
@@ -617,8 +598,8 @@ export default {
   font-size: 16px;
   text-align: center;
   margin: 5px auto;
-  left: 0;
-  right: 0;
+  left: 30px;
+  right: 30px;
   bottom: 0;
   display: flex;
   justify-content:center;
@@ -642,7 +623,7 @@ export default {
 .mappingEditor-creator {
   position: absolute;
   bottom: 2px;
-  right: 5px;
+  right: 30px;
 }
 .mappingEditor-title {
   .componentTitle;
