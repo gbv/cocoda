@@ -42,7 +42,8 @@
         "identifier": ["http://www.wikidata.org/entity/Q36578"],
         "prefLabel": { "de": "Gemeinsame Normdatei", "en": "Integrated Authority File" },
         "notation": ["GND"],
-        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
+        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ],
+        "languages": ["de"]
       } ],
       "data": "//coli-conc.gbv.de/services/gnd.php",
       "concepts": "//coli-conc.gbv.de/services/gnd.php",
@@ -65,7 +66,8 @@
         "identifier": ["http://www.wikidata.org/entity/2013"],
         "prefLabel": { "en": "Wikidata" },
         "notation": ["WD"],
-        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ]
+        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ],
+        "languages": ["de", "en"]
       } ],
       "data": "//coli-conc.gbv.de/services/wikidata/data/",
       "concepts": "//coli-conc.gbv.de/services/wikidata/data/",
