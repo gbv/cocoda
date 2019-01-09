@@ -80,6 +80,7 @@
             v-for="(scheme, index) in filteredSchemes"
             :key="scheme.uri + '-scheme-list-' + id + index" >
             <font-awesome-icon
+              v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
               :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
               class="conceptSchemeSelection-star"
               icon="star"

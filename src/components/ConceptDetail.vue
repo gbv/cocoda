@@ -5,6 +5,7 @@
     <!-- Ancestors / Broader -->
     <div class="conceptDetail-ancestors">
       <div
+        v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
         v-if="ancestors.length > 3 && !settings.showAllAncestors"
         class="button conceptDetail-ancestors-expand"
         @click="showAncestors = !showAncestors" >

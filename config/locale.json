@@ -31,7 +31,9 @@
       "target": "Target Scheme",
       "languageFilter": "Language",
       "allLanguages": "all",
-      "schemeFilterPlaceholder": "Search for schemes..."
+      "schemeFilterPlaceholder": "Search for schemes...",
+      "starAdd": "add to favorites",
+      "starRemove": "remove from favorites"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -40,6 +42,7 @@
     },
     "conceptDetail": {
       "showAllAncestors": "show all ancestors",
+      "showLessAncestors": "show less ancesters",
       "showLess": "show less",
       "showMore": "show more",
       "created": "Created",
@@ -183,7 +186,9 @@
       "target": "Ziel-Vokabular",
       "languageFilter": "Sprache",
       "allLanguages": "alle",
-      "schemeFilterPlaceholder": "Suche nach Vokabularen..."
+      "schemeFilterPlaceholder": "Suche nach Vokabularen...",
+      "starAdd": "zu Favoriten hinzufügen",
+      "starRemove": "aus Favoriten entfernen"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -239,7 +244,8 @@
       "impressum": "Impressum"
     },
     "conceptDetail": {
-      "showAllAncestors": "Zeige alle übergeordneten Konzepte",
+      "showAllAncestors": "zeige alle übergeordneten Konzepte",
+      "showLessAncestors": "zeige weniger übergeordnete Konzepte",
       "showLess": "zeige weniger",
       "showMore": "zeige mehr",
       "created": "Erstellt",
