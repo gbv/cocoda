@@ -28,7 +28,9 @@
       "schemeQuick": "Scheme Quick Selection",
       "conceptQuick": "Concept Quick Selection",
       "source": "Source Scheme",
-      "target": "Target Scheme"
+      "target": "Target Scheme",
+      "languageFilter": "Language",
+      "allLanguages": "all"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -177,7 +179,9 @@
       "schemeQuick": "Vokabular-Schnellauswahl",
       "conceptQuick": "Konzept-Schnellauswahl",
       "source": "Quell-Vokabular",
-      "target": "Ziel-Vokabular"
+      "target": "Ziel-Vokabular",
+      "languageFilter": "Sprache",
+      "allLanguages": "alle"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",

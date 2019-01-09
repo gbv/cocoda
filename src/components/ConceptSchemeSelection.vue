@@ -56,6 +56,19 @@
         <div class="componentTitle">
           {{ isLeft ? $t("schemeSelection.source") : $t("schemeSelection.target") }}
         </div>
+        <!-- Language filter selection -->
+        <b-form-group
+          :label-cols="8"
+          :label="$t('schemeSelection.languageFilter') + ':'"
+          label-size="md"
+          style="margin-bottom: 0; text-align: right;"
+          horizontal >
+          <b-form-select
+            v-model="languageFilter"
+            :options="languageFilterOptions"
+            size="md"
+            @change="focusAndSelectInput" />
+        </b-form-group>
         <!-- Scheme filter input field -->
         <p>
           <b-form-input
@@ -135,6 +148,8 @@ export default {
       showPopover: false,
       // Filter text for scheme selection.
       schemeFilter: "",
+      // Filter for language
+      languageFilter: null,
     }
   },
   computed: {
@@ -158,10 +173,16 @@ export default {
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
       // Filter schemes, prepend favorites if filter is empty.
-      return (filter == "" ? this.favoriteSchemes : []).concat(this.schemes).filter(
+      return (filter == "" && this.languageFilter == null ? this.favoriteSchemes : []).concat(this.schemes).filter(
         scheme =>
-          Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
-          (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
+          (
+            Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
+            (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
+          ) &&
+          (
+            this.languageFilter == null ||
+            (scheme.languages || []).includes(this.languageFilter)
+          )
       )
     },
     favoriteSchemes() {
@@ -183,14 +204,23 @@ export default {
       }
       return concepts
     },
+    languageFilterOptions() {
+      let options = [
+        {
+          value: null,
+          text: this.$t("schemeSelection.allLanguages")
+        }
+      ]
+      let languages = _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
+      options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
+      return options
+    },
   },
   watch: {
     showPopover(show) {
       // Focus input field when popover is shown
-      let input = this.$refs.input.$el
-      if (show && input) {
-        input.focus()
-        input.select()
+      if (show) {
+        this.focusAndSelectInput()
       }
     },
   },
@@ -216,11 +246,7 @@ export default {
       this.$router.push({ path: this.getRouterUrl(null, this.isLeft) })
       // Focus and select input field with delay.
       _.delay(() => {
-        let input = this.$refs.input.$el
-        if (input) {
-          input.focus()
-          input.select()
-        }
+        this.focusAndSelectInput()
       }, 100)
     },
     /**
@@ -257,6 +283,14 @@ export default {
           prop: "favoriteSchemes",
           value: this.favoriteSchemes.map(scheme => scheme.uri).concat([scheme.uri])
         })
+      }
+      this.focusAndSelectInput()
+    },
+    focusAndSelectInput() {
+      let input = this.$refs.input.$el
+      if (input) {
+        input.focus()
+        input.select()
       }
     },
   }
