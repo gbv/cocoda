@@ -16,17 +16,6 @@
         <b-tab
           :title="$t('settings.tabAccount')"
           active>
-          <p>
-            <b>{{ $t("settings.language") }}</b>
-            <b-form-select v-model="$i18n.locale">
-              <option
-                v-for="(label, language) in config.languages"
-                :key="language"
-                :value="language" >
-                {{ label }}
-              </option>
-            </b-form-select>
-          </p>
           <p v-if="localSettings">
             <b>{{ $t("settings.creator") }}</b>
             <b-form-input
@@ -37,6 +26,17 @@
         </b-tab>
         <b-tab
           :title="$t('settings.tabLayout')" >
+          <p v-if="localSettings">
+            <b>{{ $t("settings.language") }}</b>
+            <b-form-select v-model="$i18n.locale">
+              <option
+                v-for="(label, language) in config.languages"
+                :key="language"
+                :value="language" >
+                {{ label }}
+              </option>
+            </b-form-select>
+          </p>
           <p v-if="localSettings">
             <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
               {{ $t("settings.showAllAncestors") }}
