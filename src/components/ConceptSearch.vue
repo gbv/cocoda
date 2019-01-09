@@ -51,14 +51,15 @@
         v-model="searchQuery"
         :placeholder="$t('search.placeholder')"
         size="sm"
-        type="search"
         autocomplete="off"
         @click.native="isOpen = searchQuery != ''"
         @keydown.down.native.prevent="onArrowDown"
         @keydown.up.native.prevent="onArrowUp"
         @keydown.tab.native="closeResults"
         @keyup.enter.native="onEnter"
+        @keyup.esc.native="$refs.searchInput.$el.blur()"
         @focus.native="isOpen = searchQuery != ''"
+        @blur.native="isOpen = false"
       />
       <!-- Results -->
       <div
