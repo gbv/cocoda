@@ -54,7 +54,8 @@
       "gnd": "GND"
     },
     "schemeDetail": {
-      "noTopConcepts": "No top concepts"
+      "noTopConcepts": "No top concepts",
+      "languages": "Available languages"
     },
     "conceptTree": {
       "title": "Concept Tree",
@@ -250,7 +251,8 @@
       "gnd": "GND"
     },
     "schemeDetail": {
-      "noTopConcepts": "Keine Oberkonzepte"
+      "noTopConcepts": "Keine Oberkonzepte",
+      "languages": "Vorhandene Sprachen"
     },
     "conceptTree": {
       "title": "Hierachie",

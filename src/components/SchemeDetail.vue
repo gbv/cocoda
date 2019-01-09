@@ -46,9 +46,24 @@
       v-for="(identifier, index) in [item.uri].concat(item.identifier)"
       v-if="identifier != null"
       :key="index"
-      :class="identifier.startsWith('http') ? 'schemeDetail-identifier' : 'schemeDetail-identifier'" >
+      class="schemeDetail-identifier" >
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
       <auto-link :link="identifier" />
+    </div>
+    <div
+      v-if="item.created"
+      class="schemeDetail-identifier" >
+      <b>{{ $t("conceptDetail.created") }}:</b> {{ item.created }}
+    </div>
+    <div
+      v-if="item.modified"
+      class="schemeDetail-identifier" >
+      <b>{{ $t("conceptDetail.modified") }}:</b> {{ item.modified }}
+    </div>
+    <div
+      v-if="item.languages"
+      class="schemeDetail-identifier" >
+      <b>{{ $t("schemeDetail.languages") }}:</b> {{ item.languages.join(", ") }}
     </div>
 
     <!-- Top Concepts -->
