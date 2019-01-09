@@ -217,17 +217,36 @@ export default {
     showPopover(show) {
       // Focus input field when popover is shown
       if (show) {
-        this.focusAndSelectInput()
+        _.delay(() => {
+          this.focusAndSelectInput()
+        }, 100)
       }
     },
   },
   mounted() {
     // Add click event listener
     document.addEventListener("click", this.handleClickOutside)
+    // Add hotkey for opening popup
+    let letter = this.isLeft ? "f" : "g"
+    this.addHotkey(`ctrl+shift+${letter},command+shift+${letter}`, () => {
+      this.showPopover = !this.showPopover
+      return false
+    })
+    this.addHotkey(`ctrl+${letter},command+${letter}`, () => {
+      let conceptSearch = this.$refs.conceptSearch
+      if (conceptSearch) {
+        conceptSearch.focusSearch()
+      }
+      return false
+    })
+    // Enable hotkeys
+    this.enableHotkeys()
   },
   destroyed() {
     // Remove click event listener
     document.removeEventListener("click", this.handleClickOutside)
+    // Delete hotkey scope (= disable hotkeys)
+    this.disableHotkeys()
   },
   methods: {
     handleClickOutside(evt) {

@@ -199,7 +199,6 @@ import MappingTypeSelection from "./MappingTypeSelection"
 import Minimizer from "./Minimizer"
 import DataModalButton from "./DataModalButton"
 import _ from "lodash"
-import hotkeys from "hotkeys-js"
 
 /**
  * The mapping editor component.
@@ -283,33 +282,38 @@ export default {
   },
   mounted() {
     // Add hotkey for saving the mapping
-    hotkeys("ctrl+s, command+s", "mappingEditor", () => {
+    this.addHotkey("ctrl+s,command+s", () => {
       this.saveMapping()
       return false
     })
+    // Add hotkey for clearing the mapping
+    this.addHotkey("ctrl+shift+c,command+shift+c", () => {
+      this.clearMapping()
+      return false
+    })
     // Add hotkey for adding left
-    hotkeys("ctrl+a, command+a", "mappingEditor", () => {
+    this.addHotkey("ctrl+a,command+a", () => {
       this.addToMapping(true)
       return false
     })
     // Add hotkey for adding right
-    hotkeys("ctrl+d, command+d", "mappingEditor", () => {
+    this.addHotkey("ctrl+d,command+d", () => {
       this.addToMapping(false)
       return false
     })
     // Add hotkey for editing comments
-    hotkeys("ctrl+k, command+k", "mappingEditor", () => {
+    this.addHotkey("ctrl+k,command+k", () => {
       if (this.canExportMapping) {
         this.$refs.commentModal.show()
       }
       return false
     })
-    // Set hotkey scope (= enable hotkeys)
-    hotkeys.setScope("mappingEditor")
+    // Enable hotkeys
+    this.enableHotkeys()
   },
   destroyed() {
-    // Delete hotkey scope (= disable hotkeys)
-    hotkeys.deleteScope("mappingEditor")
+    // Disable hotkeys
+    this.disableHotkeys()
   },
   methods: {
     saveMapping() {

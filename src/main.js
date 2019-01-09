@@ -246,3 +246,65 @@ Vue.mixin({
     },
   }
 })
+
+// Keyboard shortcut mixin
+Vue.mixin({
+  data() {
+    return {
+      hotkeys: [],
+    }
+  },
+  methods: {
+    enableHotkeys() {
+      document.addEventListener("keydown", this.hotkeyHandler)
+    },
+    disableHotkeys() {
+      document.removeEventListener("keydown", this.hotkeyHandler)
+    },
+    hotkeyHandler(event) {
+      let shortcut = _.pick(event, ["key", "metaKey", "ctrlKey", "altKey", "shiftKey"])
+      let pass = true
+      for (let sc of this.hotkeys) {
+        if (_.isEqual(shortcut, sc.shortcut)) {
+          pass = sc.handler() && pass
+        }
+      }
+      if (!pass) {
+        event.stopPropagation()
+        event.preventDefault()
+        event.returnValue = false
+        event.cancelBubble = true
+      }
+    },
+    addHotkey(shortcuts, handler) {
+      shortcuts = shortcuts.split(",")
+      for (let sc of shortcuts) {
+        let keys = sc.split("+")
+        let key = null
+        let metaKey = false
+        let ctrlKey = false
+        let altKey = false
+        let shiftKey = false
+        for (let k of keys) {
+          if (k == "ctrl") {
+            ctrlKey = true
+          } else if (k == "alt" || k == "options") {
+            altKey = true
+          } else if (k == "meta" || k == "command") {
+            metaKey = true
+          } else if (k == "shift") {
+            shiftKey = true
+          } else {
+            key = k
+          }
+        }
+        this.hotkeys.push({
+          handler,
+          shortcut: {
+            key, metaKey, ctrlKey, altKey, shiftKey
+          }
+        })
+      }
+    },
+  },
+})
