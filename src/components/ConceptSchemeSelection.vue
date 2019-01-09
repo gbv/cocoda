@@ -56,28 +56,24 @@
         <div class="componentTitle">
           {{ isLeft ? $t("schemeSelection.source") : $t("schemeSelection.target") }}
         </div>
-        <!-- Language filter selection -->
-        <b-form-group
-          :label-cols="8"
-          :label="$t('schemeSelection.languageFilter') + ':'"
-          label-size="md"
-          style="margin-bottom: 0; text-align: right;"
-          horizontal >
+        <b-form
+          inline
+          @submit="chooseFirst" >
+          <!-- Scheme filter input field -->
+          <b-form-input
+            ref="input"
+            v-model="schemeFilter"
+            :placeholder="$t('schemeSelection.schemeFilterPlaceholder')"
+            autocomplete="off"
+            style="flex: 1; margin-right: 5px;"
+            @keyup.esc.native="showPopover = false" />
+          <!-- Language filter selection -->
           <b-form-select
             v-model="languageFilter"
             :options="languageFilterOptions"
             size="md"
             @change="focusAndSelectInput" />
-        </b-form-group>
-        <!-- Scheme filter input field -->
-        <p>
-          <b-form-input
-            ref="input"
-            v-model="schemeFilter"
-            autocomplete="off"
-            @keyup.enter.native="chooseFirst"
-            @keyup.esc.native="showPopover = false" />
-        </p>
+        </b-form>
         <!-- List of all schemes, showing favorites first -->
         <ul class="conceptSchemeSelection-schemeList scrollable">
           <li
@@ -252,7 +248,8 @@ export default {
     /**
      * Selects first result from filtered scheme list and hide popover if necessary.
      */
-    chooseFirst() {
+    chooseFirst(event) {
+      event.preventDefault()
       if (!this.filteredSchemes.length) {
         return
       }

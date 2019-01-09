@@ -30,7 +30,8 @@
       "source": "Source Scheme",
       "target": "Target Scheme",
       "languageFilter": "Language",
-      "allLanguages": "all"
+      "allLanguages": "all",
+      "schemeFilterPlaceholder": "Search for schemes..."
     },
     "search": {
       "placeholder": "Type to search...",
@@ -181,7 +182,8 @@
       "source": "Quell-Vokabular",
       "target": "Ziel-Vokabular",
       "languageFilter": "Sprache",
-      "allLanguages": "alle"
+      "allLanguages": "alle",
+      "schemeFilterPlaceholder": "Suche nach Vokabularen..."
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
