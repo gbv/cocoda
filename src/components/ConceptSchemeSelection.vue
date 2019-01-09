@@ -65,13 +65,15 @@
             v-model="schemeFilter"
             :placeholder="$t('schemeSelection.schemeFilterPlaceholder')"
             autocomplete="off"
+            size="sm"
             style="flex: 1; margin-right: 5px;"
             @keyup.esc.native="showPopover = false" />
           <!-- Language filter selection -->
           <b-form-select
             v-model="languageFilter"
             :options="languageFilterOptions"
-            size="md"
+            size="sm"
+            class="fontSize-normal"
             @change="focusAndSelectInput" />
         </b-form>
         <!-- List of all schemes, showing favorites first -->
