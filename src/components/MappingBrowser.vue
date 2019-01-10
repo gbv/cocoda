@@ -212,13 +212,19 @@
         <span
           slot="actions"
           slot-scope="data" >
-          <span v-if="data.item.mapping">
+          <div
+            v-if="data.item.mapping"
+            style="display: inline-block; position: relative;">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: $util.delay.medium }"
               icon="info-circle"
               class="button mappingBrowser-toolbar-button"
               @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
-          </span>
+            <font-awesome-icon
+              v-if="data.item.mapping.note"
+              icon="comment"
+              class="mappingBrowser-noteIcon" />
+          </div>
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
             icon="edit"
@@ -1248,6 +1254,13 @@ export default {
 .noItems {
   margin: 30px auto 5px auto;
   flex: 5 0 auto;
+}
+.mappingBrowser-noteIcon {
+  color: @color-button;
+  position: absolute;
+  right: -4px;
+  top: -2px;
+  font-size: 8px;
 }
 
 </style>
