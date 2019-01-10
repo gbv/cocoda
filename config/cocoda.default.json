@@ -203,6 +203,31 @@
       }
     }
   ],
+  "searchLinks": [
+    {
+      "prefLabel": { "de": "Wikipedia" },
+      "url": "https://{language}.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": { "de": "Wikipedia (de)" },
+      "url": "https://de.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": { "de": "RVK Online" },
+      "url": "https://rvk.uni-regensburg.de/regensburger-verbundklassifikation-online#notation/{notation}",
+      "schemeUris": ["http://bartoc.org/en/node/533"]
+    },
+    {
+      "prefLabel": { "de": "ccmapper" },
+      "url": "https://ccmapper-de-test.pansoft.de/m/mapping.html?id={notation}",
+      "schemeUris": ["http://bartoc.org/en/node/533"]
+    },
+    {
+      "prefLabel": { "en": "WebDewey Search" },
+      "url": "https://deweysearchde.pansoft.de/webdeweysearch/executeSearch.html?query={notation}",
+      "schemeUris": ["http://bartoc.org/en/node/241"]
+    }
+  ],
   "favoriteTerminologyProviders": [
     "http://uri.gbv.de/terminology/bk/",
     "http://bartoc.org/en/node/18785",

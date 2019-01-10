@@ -57,7 +57,8 @@
       "registerEntries": "Register Entries",
       "editorial": "Editorial",
       "scope": "Scope",
-      "gnd": "GND"
+      "gnd": "GND",
+      "searchLinks": "Search Links"
     },
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
@@ -260,7 +261,8 @@
       "registerEntries": "Registereinträge",
       "editorial": "Editorial",
       "scope": "Scope",
-      "gnd": "GND"
+      "gnd": "GND",
+      "searchLinks": "Suchlinks"
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",

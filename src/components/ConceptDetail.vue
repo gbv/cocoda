@@ -154,6 +154,22 @@
             <span v-html="result.extract || `... ${result.snippet} ...`" />
           </p>
         </b-tab>
+        <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
+        <b-tab
+          v-if="config.searchLinks"
+          :title="$t('conceptDetail.searchLinks')" >
+          <ul style="margin-bottom: 0;">
+            <li
+              v-for="(searchLink, index) of searchLinks"
+              :key="'searchLink' + isLeft + index" >
+              <a
+                :href="searchLink.url"
+                target="_blank" >
+                {{ searchLink.label }}
+              </a>
+            </li>
+          </ul>
+        </b-tab>
       </b-tabs>
     </b-card>
 
@@ -281,6 +297,39 @@ export default {
     },
     broader() {
       return _.get(this.item, "broader", []) || []
+    },
+    // Search Links (see https://github.com/gbv/cocoda/issues/220)
+    searchLinks() {
+      let language = this.$i18n.locale
+      let notation = this.$util.notation(this.item)
+      let prefLabel = this.$util.prefLabel(this.item)
+      let info = { language, notation, prefLabel }
+      let searchLinks = []
+      for (let searchLink of this.config.searchLinks) {
+        // Test schemeUris
+        let scheme = this.selected.scheme[this.isLeft]
+        let schemeUris = searchLink.schemeUris || []
+        let match = schemeUris.length ? false : true
+        for (let uri of schemeUris) {
+          if (this.$jskos.compare(scheme, { uri })) {
+            match = true
+          }
+        }
+        if (!match) {
+          continue
+        }
+        // Construct URL
+        let url = searchLink.url
+        _.forOwn(info, (value, key) => {
+          // Replace all occurrences of {key} with value
+          url = _.replace(url, new RegExp(`{${key}}`, "g"), value)
+        })
+        searchLinks.push({
+          url,
+          label: this.$util.prefLabel(searchLink)
+        })
+      }
+      return searchLinks
     },
   },
   watch: {
