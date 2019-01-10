@@ -2,6 +2,7 @@ import localforage from "localforage"
 
 const defaultSettings = {
   creator: "",
+  creatorUrl: "",
   mappingBrowserAllSchemes: true,
   mappingBrowserOnlyLocal: false,
   mappingBrowserShowReverse: true,
@@ -25,6 +26,21 @@ const defaultSettings = {
 const state = {
   settings: defaultSettings,
   loaded: false,
+}
+
+// getters
+const getters = {
+  /**
+   * Returns a creator object based on the local settings.
+   */
+  creator: (state) => {
+    let language = state.settings.locale || "en"
+    let creator = { prefLabel: { [language]: state.settings.creator || "" } }
+    if (state.settings.creatorUrl) {
+      creator.url = (state.settings.creatorUrl.startsWith("http") ? "" : "http://") + state.settings.creatorUrl
+    }
+    return creator
+  }
 }
 
 // mutations
@@ -73,6 +89,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions,
 }

@@ -23,6 +23,13 @@
               :placeholder="$t('settings.creatorPlaceholder')"
               type="text" />
           </p>
+          <p v-if="localSettings">
+            <b>{{ $t("settings.creatorUrl") }}</b>
+            <b-form-input
+              v-model="localSettings.creatorUrl"
+              placeholder="https://"
+              type="text" />
+          </p>
         </b-tab>
         <b-tab
           :title="$t('settings.tabLayout')" >
@@ -385,7 +392,7 @@ export default {
       this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
         // 2. Rewrite mappings to new creator
         for (let mapping of mappings) {
-          _.set(mapping, "creator[0].prefLabel.de", this.localSettings.creator)
+          _.set(mapping, "creator", [this.$store.getters["settings/creator"]])
         }
         return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })), registry: "http://coli-conc.gbv.de/registry/local-mappings" })
       }).then(() => {

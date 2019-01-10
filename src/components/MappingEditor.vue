@@ -239,8 +239,11 @@ export default {
     hasChangedFromOriginal() {
       return this.$store.getters["mapping/hasChangedFromOriginal"]
     },
+    creator() {
+      return this.$store.getters["settings/creator"]
+    },
     creatorName() {
-      return this.$store.state.settings.settings.creator
+      return this.$util.prefLabel(this.creator)
     },
     mappingComments() {
       return this.$util.lmContent(this.mapping, "note") || []
@@ -325,7 +328,7 @@ export default {
       // Change creator of mapping before saving
       this.$store.commit({
         type: "mapping/setCreator",
-        creator: [{ prefLabel: { de: this.creatorName || "" } }]
+        creator: [this.creator]
       })
       let mapping = this.prepareMapping()
       let original = this.original
