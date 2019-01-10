@@ -1,8 +1,8 @@
 <template>
   <div
     v-if="item != null"
+    :draggable="draggable"
     class="itemName"
-    draggable="true"
     @dragstart="dragStart"
     @dragend="dragEnd"
     @mouseover="mouseOver"
@@ -103,7 +103,14 @@ export default {
     preventExternalHover: {
       type: Boolean,
       default: false
-    }
+    },
+    /**
+     * Determines whether the item is draggable
+     */
+    draggable: {
+      type: Boolean,
+      default: true
+    },
   },
   data () {
     return {
