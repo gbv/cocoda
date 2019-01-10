@@ -212,15 +212,12 @@
         <span
           slot="actions"
           slot-scope="data" >
-          <span v-if="data.item.mapping && data.item.mapping.note">
+          <span v-if="data.item.mapping">
             <font-awesome-icon
-              v-b-popover.hover="{
-                html: true,
-                content: `<span id='${data.item.uniqueId}'>` + ($util.lmContent(data.item.mapping, 'note') || []).map(note => `<p>${note.split('\n').join('<br>')}</p>`).join('') + '</span>'
-              }"
-              icon="comment"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: $util.delay.medium }"
+              icon="info-circle"
               class="button mappingBrowser-toolbar-button"
-              @dblclick="copyToClipboard(data.item.uniqueId)" />
+              @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
           </span>
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
@@ -291,6 +288,10 @@
     <data-modal-button
       :data="items.map(item => item.mapping).filter(mapping => mapping != null)"
       type="mapping" />
+    <!-- Mapping detail modal -->
+    <mapping-detail
+      ref="mappingDetail"
+      :mapping="mappingDetailMapping" />
   </div>
 </template>
 
@@ -304,6 +305,7 @@ import LoadingIndicator from "./LoadingIndicator"
 import RegistryNotation from "./RegistryNotation"
 import FlexibleTable from "vue-flexible-table"
 import DataModalButton from "./DataModalButton"
+import MappingDetail from "./MappingDetail"
 import _ from "lodash"
 
 /**
@@ -311,7 +313,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton },
+  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton, MappingDetail },
   data () {
     return {
       loading: 0,
@@ -344,6 +346,8 @@ export default {
       tableItemsRecompute: null,
       /** An object for refresh timers for registries */
       refreshTimers: {},
+      /** Current mapping for mapping detail */
+      mappingDetailMapping: null,
     }
   },
   computed: {
