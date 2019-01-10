@@ -77,6 +77,10 @@ a:hover {
   color: @color-link-hover;
 }
 
+ul {
+  padding-left: 20px;
+}
+
 // Button styles // --------------------------------------------------
 
 .button {
@@ -118,6 +122,17 @@ a:hover {
 .utilityButton:hover {
   color: fadeout(@color-button, 40%);
   background-color: fadeout(@color-button-disabled, 60%);
+}
+
+.dataModalButton {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  color: @color-text-mediumLightGrey;
+  cursor: pointer;
+}
+.dataModalButton:hover {
+  color: @color-button-hover;
 }
 
 // Other styles // --------------------------------------------------
