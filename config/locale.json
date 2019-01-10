@@ -94,6 +94,7 @@
       "saveAndEdit": "save and edit",
       "saveAsMapping": "save as mapping",
       "delete": "delete",
+      "showDetail": "show mapping details",
       "showMore": "@:conceptDetail.showMore",
       "noItemsFor": "No results for",
       "from": "From",
@@ -103,6 +104,19 @@
       "settingShowAllSchemes": "Show results of all concept schemes",
       "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown.",
       "chooseConcept": "Select a concept to see mappings and mapping recommendations"
+    },
+    "mappingDetail": {
+      "title": "Mapping Details",
+      "sourceScheme": "Source Scheme",
+      "sourceConcept": "Source Concept | Source Concepts",
+      "targetScheme": "Target Scheme",
+      "targetConcept": "Target Concept | Target Concepts",
+      "mappingType": "Mapping Type",
+      "creator": "@:mappingBrowser.creator",
+      "created": "@:conceptDetail.created",
+      "modified": "@:conceptDetail.modified",
+      "note": "Note",
+      "identifier": "Identifier"
     },
     "minimizer": {
       "minimize": "minimize card",
@@ -281,6 +295,7 @@
       "saveAndEdit": "speichern und bearbeiten",
       "saveAsMapping": "als Mapping speichern",
       "delete": "löschen",
+      "showDetail": "Mapping-Details anzeigen",
       "showMore": "@:conceptDetail.showMore",
       "noItemsFor": "Keine Ergebnisse für",
       "from": "Von",
@@ -290,6 +305,19 @@
       "settingShowAllSchemes": "Ergebnisse aller Vokabulare anzeigen",
       "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind.",
       "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen"
+    },
+    "mappingDetail": {
+      "title": "Mapping-Details",
+      "sourceScheme": "Quellvokabular",
+      "sourceConcept": "Quellkonzept | Quellkonzepte",
+      "targetScheme": "Zielvokabular",
+      "targetConcept": "Zielkonzept | Zielkonzepte",
+      "mappingType": "Mapping-Typ",
+      "creator": "@:mappingBrowser.creator",
+      "created": "@:conceptDetail.created",
+      "modified": "@:conceptDetail.modified",
+      "note": "Notiz",
+      "identifier": "Identifier"
     },
     "minimizer": {
       "minimize": "Komponente ausblenden",
