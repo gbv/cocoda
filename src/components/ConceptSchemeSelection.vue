@@ -291,19 +291,10 @@ export default {
     toggleFavoriteScheme(scheme) {
       if (this.$jskos.isContainedIn(scheme, this.favoriteSchemes)) {
         // Remove from favorites
-        let uris = this.$jskos.getAllUris(scheme)
-        this.$store.commit({
-          type: "settings/set",
-          prop: "favoriteSchemes",
-          value: this.favoriteSchemes.map(scheme => scheme.uri).filter(uri => !uris.includes(uri))
-        })
+        this.$store.dispatch("removeSchemeFromFavorites", scheme)
       } else {
         // Add to favorites
-        this.$store.commit({
-          type: "settings/set",
-          prop: "favoriteSchemes",
-          value: this.favoriteSchemes.map(scheme => scheme.uri).concat([scheme.uri])
-        })
+        this.$store.dispatch("addSchemeToFavorites", scheme)
       }
       this.focusAndSelectInput()
     },
