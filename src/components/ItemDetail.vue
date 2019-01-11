@@ -154,8 +154,10 @@ export default {
       } else {
         // Fallback: Use this.draggedConcept and load from API
         this.getObject({ object: this.draggedConcept }).then(object => {
-          // Select object
-          this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
+          if (object) {
+            // Select object
+            this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
+          }
         })
       }
     },
