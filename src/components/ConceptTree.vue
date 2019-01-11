@@ -1,5 +1,6 @@
 <template>
   <div
+    :style="`${noTree ? 'min-height: 50px; max-height: 50px;' : ''}`"
     class="conceptTree" >
     <!-- Minimizer allows the component to get minimized -->
     <minimizer :text="$t('conceptTree.title')" />
@@ -17,7 +18,7 @@
         :is-left="isLeft" />
     </div>
     <div
-      v-if="items.length == 0 && !loading"
+      v-if="noTree"
       class="fillAndCenter fontWeight-heavy" >
       {{ $t("conceptTree.noTree") }}
     </div>
@@ -84,6 +85,9 @@ export default {
     },
     topConcepts() {
       return (this.selected.scheme[this.isLeft] ? this.selected.scheme[this.isLeft].__TOPCONCEPTS__ : null) || []
+    },
+    noTree() {
+      return this.items.length == 0 && !this.loading
     },
   },
   watch: {
