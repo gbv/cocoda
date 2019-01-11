@@ -29,6 +29,29 @@
         target="_blank" >
         {{ $util.prefLabel(item) }}
       </b-nav-item>
+      <!-- Favorite concepts -->
+      <b-nav-item-dropdown
+        ref="favoriteConceptsDropdown"
+        extra-menu-classes="favoriteConceptsDropdown"
+        no-caret
+        right
+        @hide="favoriteConceptsDropdownHide"
+        @mouseover.native="favoriteConceptsDropdownMouseover"
+        @mouseout.native="favoriteConceptsDropdownMouseout" >
+        <template slot="button-content">
+          <font-awesome-icon icon="star" />
+        </template>
+        <b-dropdown-header>Favorite Concepts</b-dropdown-header>
+        <b-dropdown-item
+          v-for="concept in favoriteConcepts"
+          :key="'theNavbar-' + concept.uri + '-favorite'"
+          disabled
+          draggable
+          @dragstart="favoriteConceptDragStart(concept)"
+          @dragend="favoriteConceptDragEnd" >
+          <item-name :item="concept" />
+        </b-dropdown-item>
+      </b-nav-item-dropdown>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
         <font-awesome-icon icon="cog" />
@@ -42,6 +65,7 @@
 
 <script>
 import TheSettings from "./TheSettings"
+import ItemName from "./ItemName"
 
 /**
  * The navigation bar.
@@ -49,11 +73,45 @@ import TheSettings from "./TheSettings"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings
+    TheSettings, ItemName
   },
   computed: {
     creatorName() {
       return this.$settings.creator
+    },
+    // FIXME: Code duplication with ConceptSchemeSelection
+    favoriteConcepts() {
+      let concepts = []
+      for (let concept of this.config.favoriteConcepts) {
+        concepts.push(this.$store.getters["objects/get"](concept) || concept)
+      }
+      return concepts
+    },
+  },
+  methods: {
+    favoriteConceptDragStart(concept) {
+      event.dataTransfer.setData("text", concept.uri)
+      this.draggedConcept = concept
+    },
+    favoriteConceptDragEnd(event) {
+      // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations#dragend
+      // "If the dropEffect property has the value none during a dragend, then the drag was cancelled."
+      if (event.dataTransfer.dropEffect != "none") {
+        // Drag successful, hide dropdown
+        this.$refs.favoriteConceptsDropdown.hide()
+      }
+      this.draggedConcept = null
+    },
+    favoriteConceptsDropdownMouseover() {
+      this.$refs.favoriteConceptsDropdown.show()
+    },
+    favoriteConceptsDropdownMouseout() {
+      console.log("mouseout")
+      this.$refs.favoriteConceptsDropdown.hide()
+    },
+    favoriteConceptsDropdownHide() {
+      // Scroll back to the top
+      this.$refs.favoriteConceptsDropdown.$el.getElementsByClassName("favoriteConceptsDropdown")[0].scrollTop = 0
     },
   },
 }
@@ -100,5 +158,20 @@ nav.navbar {
   bottom:0;
   left:0;
   right:0;
+}
+.favoriteConceptsDropdown {
+  max-height: 700px;
+  width: 300px;
+  overflow-x: hidden;
+  // Offset to the right
+  right: -50px !important;
+  // Move a little to the top
+  top: 95% !important;
+}
+.favoriteConceptsDropdown .dropdown-item {
+  white-space: normal;
+}
+.favoriteConceptsDropdown .dropdown-item:hover {
+  background-color: @color-primary-5;
 }
 </style>
