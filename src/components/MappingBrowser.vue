@@ -56,7 +56,9 @@
             :registry="registry"
             :disabled="!showRegistry[registry.uri]"
             class="mappingBrowser-settings-registryGroup-notation"
-            @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]" />
+            @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+            @mouseover.native="hoveredRegistry = registry"
+            @mouseout.native="hoveredRegistry = null" />
           <b-popover
             :target="`registryGroup-${group.uri}`"
             :show.sync="registryGroupShow[group.uri]"
@@ -69,7 +71,9 @@
                 v-for="(registry, index) in group.registries"
                 :key="`registry_${index}`"
                 v-model="showRegistry[registry.uri]"
-                class="mappingBrowser-settings-registryGroup-popover-item" >
+                class="mappingBrowser-settings-registryGroup-popover-item"
+                @mouseover.native="hoveredRegistry = registry"
+                @mouseout.native="hoveredRegistry = null" >
                 <registry-name :registry="registry" />
               </b-form-checkbox>
             </div>
@@ -354,6 +358,8 @@ export default {
       refreshTimers: {},
       /** Current mapping for mapping detail */
       mappingDetailMapping: null,
+      /** Currently hovered registry */
+      hoveredRegistry: null,
     }
   },
   computed: {
@@ -427,6 +433,11 @@ export default {
         newItems.push(item)
         previousItem = item
       }
+      // Add class to all items of hoveredRegistry
+      for (let item of newItems.filter(item => this.$jskos.compare(item.registry, this.hoveredRegistry))) {
+        item._rowClass += " mappingBrowser-hoveredRegistry"
+      }
+
       return newItems
     },
     /**
@@ -1276,6 +1287,13 @@ export default {
 }
 .mappingBrowser-table-row-editing-notSaved {
   background-color: fadein(@color-background-notSaved, 6%);
+}
+.mappingBrowser-hoveredRegistry:before {
+  position: absolute;
+  content: "";
+  background: @color-loading-overlay-background;
+  top: 0; right: 0; left: 0; bottom: 0;
+  z-index: @zIndex-10;
 }
 .mappingBrowser-table-row-showMore {
   height: 24px;
