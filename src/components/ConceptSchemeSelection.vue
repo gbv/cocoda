@@ -17,19 +17,19 @@
       </div>
       <!-- Name of scheme -->
       <div>
+        <!-- Button to clear scheme -->
+        <div
+          v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
+          class="button"
+          style="display: inline-block; margin-right: 2px; margin-top: -3px;"
+          @click="clearScheme" >
+          <font-awesome-icon icon="times-circle" />
+        </div>
         <item-name
           :item="scheme"
           :is-link="true"
           :is-left="isLeft"
           font-size="large" />
-        <!-- Button to clear scheme -->
-        <div
-          v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
-          class="button"
-          style="display: inline-block; margin-left: 5px; margin-top: -5px;"
-          @click="clearScheme" >
-          <font-awesome-icon icon="times-circle" />
-        </div>
       </div>
       <!-- ConceptSearch -->
       <concept-search
