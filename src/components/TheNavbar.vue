@@ -82,7 +82,7 @@ export default {
     // FIXME: Code duplication with ConceptSchemeSelection
     favoriteConcepts() {
       let concepts = []
-      for (let concept of this.config.favoriteConcepts) {
+      for (let concept of this.$store.getters.favoriteConcepts) {
         concepts.push(this.$store.getters["objects/get"](concept) || concept)
       }
       return concepts

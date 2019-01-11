@@ -338,7 +338,7 @@ export default {
       if (this.schemes.length) {
         this.loadFromParametersOnce()
         // Load favorite concepts into Vuex
-        for (let concept of this.config.favoriteConcepts) {
+        for (let concept of this.$store.getters.favoriteConcepts) {
           this.$store.dispatch({
             type: "objects/load",
             object: concept

@@ -23,6 +23,15 @@ const state = {
   }
 }
 
+const getters = {
+  favoriteSchemes: (state) => {
+    return state.settings.settings.favoriteSchemes || state.config.favoriteTerminologyProviders
+  },
+  favoriteConcepts: (state) => {
+    return state.settings.settings.favoriteConcepts || state.config.favoriteConcepts
+  },
+}
+
 const mutations = {
   setSchemes(state, { schemes }) {
     state.schemes = schemes
@@ -54,6 +63,7 @@ const store = new Vuex.Store({
   },
   plugins,
   state,
+  getters,
   mutations,
   actions,
 })

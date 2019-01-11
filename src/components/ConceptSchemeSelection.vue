@@ -188,7 +188,7 @@ export default {
     },
     favoriteSchemes() {
       let schemes = []
-      for (let uri of this.$settings.favoriteSchemes || this.config.favoriteTerminologyProviders) {
+      for (let uri of this.$store.getters.favoriteSchemes) {
         let scheme = this.$store.getters["objects/get"]({ uri })
         if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
           schemes.push(scheme)
@@ -200,7 +200,7 @@ export default {
     },
     favoriteConcepts() {
       let concepts = []
-      for (let concept of this.config.favoriteConcepts) {
+      for (let concept of this.$store.getters.favoriteConcepts) {
         concepts.push(this.$store.getters["objects/get"](concept) || concept)
       }
       return concepts
