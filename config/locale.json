@@ -58,7 +58,8 @@
       "editorial": "Editorial",
       "scope": "Scope",
       "gnd": "GND",
-      "searchLinks": "Search Links"
+      "searchLinks": "Search Links",
+      "clearConcept": "clear concept"
     },
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
@@ -278,7 +279,8 @@
       "editorial": "Editorial",
       "scope": "Scope",
       "gnd": "GND",
-      "searchLinks": "Suchlinks"
+      "searchLinks": "Suchlinks",
+      "clearConcept": "Konzept entfernen"
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",

@@ -57,6 +57,14 @@
 
     <!-- Name of concept -->
     <div class="conceptDetail-name">
+      <!-- Button to clear scheme -->
+      <div
+        v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: $util.delay.medium }"
+        class="button"
+        style="display: inline-block; margin: 0px 2px 0px 2px;"
+        @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })" >
+        <font-awesome-icon icon="times-circle" />
+      </div>
       <item-name
         :item="item"
         :is-highlighted="true"
