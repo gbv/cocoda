@@ -97,7 +97,8 @@
         <!-- Concept quick selection title -->
         <div
           v-if="favoriteConcepts && favoriteConcepts.length"
-          class="componentTitle">
+          class="componentTitle"
+          style="margin-top: 30px;" >
           {{ $t("schemeSelection.conceptQuick") }}
         </div>
         <!-- Quick selection concepts -->
@@ -360,7 +361,7 @@ export default {
   min-height: 40vh;
   list-style: none;
   padding-left: 3px;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 .conceptSchemeSelection-schemeList > li, .conceptSchemeSelection-favoriteConcepts > p {
   padding-top: 8px;
