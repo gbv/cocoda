@@ -108,8 +108,9 @@
             :key="concept.uri + '-favorite-' + id" >
             <item-name
               :item="concept"
-              :is-link="true"
               :is-left="isLeft"
+              is-link
+              force-side
             />
           </p>
         </div>
