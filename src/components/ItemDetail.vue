@@ -1,6 +1,8 @@
 <template>
   <div
-    class="itemDetail">
+    class="itemDetail"
+    @dragover="dragOver"
+    @drop="drop(isLeft, $event)" >
     <!-- Minimizer allows component to get minimized -->
     <minimizer :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
@@ -137,6 +139,26 @@ export default {
   },
   mounted() {
     this.$el.scrollTop = 0
+  },
+  methods: {
+    dragOver(event) {
+      event.preventDefault()
+    },
+    drop(isLeft, event) {
+      event.preventDefault()
+      let uri = event.dataTransfer.getData("text")
+      let object = this.$store.getters["objects/get"]({ uri })
+      if (object) {
+        // Select object
+        this.$router.push({ path: this.getRouterUrl(object, this.isLeft) })
+      } else {
+        // Fallback: Use this.draggedConcept and load from API
+        this.getObject({ object: this.draggedConcept }).then(object => {
+          // Select object
+          this.$router.push({ path: this.getRouterUrl(object, this.isLeft) })
+        })
+      }
+    },
   },
 }
 </script>
