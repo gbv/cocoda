@@ -127,7 +127,7 @@
               {{ uploadedFileStatus }}
             </p>
           </div>
-          <div v-if="localMappingsSupported">
+          <div v-if="localMappingsSupported && dlAllMappings">
             <h5>{{ $t("settings.localDeleteTitle") }}</h5>
             <b-button
               :disabled="!dlAllMappings"
@@ -150,7 +150,7 @@
             </p>
           </div>
           <br><br>
-          <p v-if="localMappingsSupported">
+          <p v-if="localMappingsSupported && dlAllMappings">
             <b-button
               :variant="creatorRewritten ? 'success' : 'warning'"
               @click="rewriteCreator">
