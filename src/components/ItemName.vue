@@ -111,6 +111,13 @@ export default {
       type: Boolean,
       default: true
     },
+    /**
+     * Determines whether the item should be forced to open on the specified side in `isLeft`
+     */
+    forceSide: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -154,7 +161,7 @@ export default {
       this.isHoveredFromHere = true
       this.hoveredConcept = this.item
       // Set URL
-      this.url = this.getRouterUrl(this.item, this.isLeft)
+      this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
       // Set isValidLink
       if (!this.isLink) {
         this.isValidLink = false
