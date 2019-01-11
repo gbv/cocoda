@@ -106,7 +106,6 @@ export default {
       this.$refs.favoriteConceptsDropdown.show()
     },
     favoriteConceptsDropdownMouseout() {
-      console.log("mouseout")
       this.$refs.favoriteConceptsDropdown.hide()
     },
     favoriteConceptsDropdownHide() {
