@@ -31,6 +31,8 @@
       </b-nav-item>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown
+        v-b-tooltip.right="favoriteCanBeDropped ? 'drop here to favorite' : ''"
+        id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
         extra-menu-classes="favoriteConceptsDropdown"
         no-caret
@@ -39,7 +41,11 @@
         @mouseover.native="favoriteConceptsDropdownMouseover"
         @mouseout.native="favoriteConceptsDropdownMouseout" >
         <template slot="button-content">
-          <font-awesome-icon icon="star" />
+          <font-awesome-icon
+            :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
+            icon="star"
+            @dragover="dragOver"
+            @drop="drop" />
         </template>
         <b-dropdown-header>Favorite Concepts</b-dropdown-header>
         <b-dropdown-item
@@ -50,6 +56,11 @@
           @dragstart="favoriteConceptDragStart(concept)"
           @dragend="favoriteConceptDragEnd" >
           <item-name :item="concept" />
+          <div
+            class="button favoriteConceptsDropdown-removeButton"
+            @click="removeFavoriteConcept(concept)" >
+            <font-awesome-icon icon="minus-circle" />
+          </div>
         </b-dropdown-item>
       </b-nav-item-dropdown>
       <!-- Settings button -->
@@ -66,6 +77,7 @@
 <script>
 import TheSettings from "./TheSettings"
 import ItemName from "./ItemName"
+import _ from "lodash"
 
 /**
  * The navigation bar.
@@ -86,6 +98,20 @@ export default {
         concepts.push(this.$store.getters["objects/get"](concept) || concept)
       }
       return concepts
+    },
+    favoriteCanBeDropped() {
+      return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
+    },
+  },
+  watch: {
+    draggedConcept(concept) {
+      if (concept) {
+        _.delay(() => {
+          this.$root.$emit("bv::show::tooltip", "favoriteConceptsDropdown")
+        }, 100)
+      } else {
+        this.$root.$emit("bv::hide::tooltip", "favoriteConceptsDropdown")
+      }
     },
   },
   methods: {
@@ -111,6 +137,19 @@ export default {
     favoriteConceptsDropdownHide() {
       // Scroll back to the top
       this.$refs.favoriteConceptsDropdown.$el.getElementsByClassName("favoriteConceptsDropdown")[0].scrollTop = 0
+    },
+    dragOver(event) {
+      event.preventDefault()
+    },
+    drop(event) {
+      event.preventDefault()
+      let uri = event.dataTransfer.getData("text")
+      let concept = this.$store.getters["objects/get"]({ uri }) || this.draggedConcept || { uri }
+      // Save concept to favorites
+      this.$store.dispatch("addConceptToFavorites", concept)
+    },
+    removeFavoriteConcept(concept) {
+      this.$store.dispatch("removeConceptFromFavorites", concept)
     },
   },
 }
@@ -169,8 +208,19 @@ nav.navbar {
 }
 .favoriteConceptsDropdown .dropdown-item {
   white-space: normal;
+  position: relative;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
   background-color: @color-primary-5;
+}
+.favoriteConceptsDropdown-iconTarget {
+  color: @color-select;
+}
+.favoriteConceptsDropdown-removeButton {
+  position: absolute;
+  right: 10px;
+  top: 55%;
+  transform: translateY(-50%);
+  font-size: 14px;
 }
 </style>
