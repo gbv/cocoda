@@ -141,7 +141,7 @@ const mutations = {
    * - scheme: the scheme to which the concept belongs (can be ommitted if concept has "inScheme")
    * - isLeft: the side to which to add the concept
    */
-  add(state, { concept, scheme, isLeft }) {
+  add(state, { concept, scheme, isLeft, cardinality = "1-to-n" }) {
     scheme = scheme || concept.inScheme && concept.inScheme[0]
     if (!scheme) return
     if (getters.added(state)(concept, isLeft)) {
@@ -152,6 +152,8 @@ const mutations = {
       state.mapping[fromTo].memberSet = [concept]
       // Remove conncetion to original mapping because a whole side changed.
       state.original = null
+    } else if (fromTo == "to" && cardinality == "1-to-1") {
+      state.mapping[fromTo].memberSet = [concept]
     } else {
       state.mapping[fromTo].memberSet.push(concept)
     }

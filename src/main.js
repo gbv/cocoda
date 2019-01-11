@@ -106,7 +106,12 @@ Vue.mixin({
       loadAncestors: "objects/ancestors",
       loadObjectDetails: "objects/details",
       setSelected: "selected/set",
-    })
+    }),
+    addToMapping(params) {
+      params.type = "mapping/add"
+      params.cardinality = this.$settings.mappingCardinality
+      this.$store.commit(params)
+    }
   }
 })
 

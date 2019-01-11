@@ -109,7 +109,7 @@
             v-if="draggedConcept == null"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
-            @click="addToMapping(isLeft)" >
+            @click="addToMappingInternal(isLeft)" >
             <font-awesome-icon icon="plus-circle" />
           </div>
         </div>
@@ -424,13 +424,12 @@ export default {
     /**
      * Adds currently selected concept to mapping
      */
-    addToMapping(isLeft) {
+    addToMappingInternal(isLeft) {
       if (!this.isAddButtonEnabled(isLeft)) {
         return
       }
       let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
-      this.$store.commit({
-        type: "mapping/add",
+      this.addToMapping({
         concept,
         scheme: this.selected.scheme[isLeft],
         isLeft
@@ -462,8 +461,7 @@ export default {
       let object = this.$store.getters["objects/get"]({ uri })
       if (this.$jskos.isConcept(object)) {
         // Add concept to mapping
-        this.$store.commit({
-          type: "mapping/add",
+        this.addToMapping({
           concept: object,
           scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
           isLeft: isLeft
@@ -473,8 +471,7 @@ export default {
         this.getObject({ object: this.draggedConcept }).then(object => {
           if (this.$jskos.isConcept(object)) {
             // Add concept to mapping
-            this.$store.commit({
-              type: "mapping/add",
+            this.addToMapping({
               concept: object,
               scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
               isLeft: isLeft

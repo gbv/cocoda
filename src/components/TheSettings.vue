@@ -65,6 +65,11 @@
             </b-form-checkbox>
           </p>
           <p v-if="localSettings">
+            <b-form-checkbox v-model="only1to1mappings">
+              {{ $t("settings.only1to1mappings") }}
+            </b-form-checkbox>
+          </p>
+          <p v-if="localSettings">
             <b-form-checkbox v-model="localSettings.autoInsertLabels">
               {{ $t("settings.autoInsertLabels") }}
             </b-form-checkbox>
@@ -230,6 +235,14 @@ export default {
     localMappingsSupported() {
       let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
       return registry != null
+    },
+    only1to1mappings: {
+      get() {
+        return this.localSettings.mappingCardinality == "1-to-1" ? true : false
+      },
+      set(value) {
+        this.localSettings.mappingCardinality = value ? "1-to-1" : "1-to-n"
+      },
     },
   },
   watch: {

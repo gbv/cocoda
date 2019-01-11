@@ -20,6 +20,7 @@ const defaultSettings = {
   autoInsertLabels: true,
   mappingEditorClearOnSave: true,
   favoriteSchemes: null,
+  mappingCardinality: "1-to-n",
 }
 
 // initial state

@@ -40,7 +40,7 @@
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         v-show="canAddToMapping"
         class="addToMapping"
-        @click="addConcept($store)"
+        @click="addConcept()"
         @mouseover="hovering(concept)"
         @mouseout="hovering(null)" >
         <font-awesome-icon icon="plus-circle" />
@@ -205,12 +205,11 @@ export default {
     /**
      * Clicked the plus icon to add a concept.
      */
-    addConcept(store) {
+    addConcept() {
       if (!this.isSelected) {
         this.select(this.concept)
       }
-      store.commit({
-        type: "mapping/add",
+      this.addToMapping({
         concept: this.concept,
         scheme: this.selected.scheme[this.isLeft],
         isLeft: this.isLeft

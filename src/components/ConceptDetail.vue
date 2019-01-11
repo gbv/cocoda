@@ -73,7 +73,12 @@
         v-b-tooltip.hover="{ title: showAddToMappingButton ? $t('general.addToMapping') : '', delay: $util.delay.medium }"
         :class="{ button: showAddToMappingButton, 'button-disabled': !showAddToMappingButton }"
         class="conceptDetail-name-addButton"
-        @click="addToMapping" >
+        @click="addToMapping({
+          concept: item,
+          scheme: (item.inScheme && item.inScheme[0]) || selected.scheme[isLeft],
+          isLeft: isLeft
+        })"
+      >
         <font-awesome-icon icon="plus-circle" />
       </div>
     </div>
@@ -481,14 +486,6 @@ export default {
       }
       return hasNotes
     },
-    addToMapping() {
-      this.$store.commit({
-        type: "mapping/add",
-        concept: this.item,
-        scheme: (this.item.inScheme && this.item.inScheme[0]) || this.selected.scheme[this.isLeft],
-        isLeft: this.isLeft
-      })
-    }
   }
 }
 </script>
