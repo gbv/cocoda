@@ -150,12 +150,12 @@ export default {
       let object = this.$store.getters["objects/get"]({ uri })
       if (object) {
         // Select object
-        this.$router.push({ path: this.getRouterUrl(object, this.isLeft) })
+        this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
       } else {
         // Fallback: Use this.draggedConcept and load from API
         this.getObject({ object: this.draggedConcept }).then(object => {
           // Select object
-          this.$router.push({ path: this.getRouterUrl(object, this.isLeft) })
+          this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
         })
       }
     },
