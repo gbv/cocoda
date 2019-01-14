@@ -69,9 +69,9 @@
         "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ],
         "languages": ["de", "en"]
       } ],
-      "data": "//coli-conc.gbv.de/services/wikidata/data/",
-      "concepts": "//coli-conc.gbv.de/services/wikidata/data/",
-      "suggest": "//coli-conc.gbv.de/services/wikidata-suggest.php?search={searchTerms}",
+      "data": "//coli-conc.gbv.de/services/wikidata/concept/",
+      "concepts": "//coli-conc.gbv.de/services/wikidata/concept/",
+      "suggest": "//coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
       "provider": "ConceptApi"
     },
     {
