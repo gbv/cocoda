@@ -296,12 +296,12 @@ export default {
     })
     // Add hotkey for adding left
     this.addHotkey("ctrl+a,command+a", () => {
-      this.addToMapping(true)
+      this.addToMappingInternal(true)
       return false
     })
     // Add hotkey for adding right
     this.addHotkey("ctrl+d,command+d", () => {
-      this.addToMapping(false)
+      this.addToMappingInternal(false)
       return false
     })
     // Add hotkey for editing comments
