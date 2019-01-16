@@ -153,20 +153,6 @@
             <b>{{ $t("conceptDetail.definition") }}:</b> {{ $util.definition(item).join(", ") }}
           </div>
         </b-tab>
-        <b-tab
-          v-if="item._wikipediaResults && ($util.lmContent(item._wikipediaResults) || []).length"
-          title="Wikipedia" >
-          <p
-            v-for="(result, index) in $util.lmContent(item._wikipediaResults)"
-            :key="`wikipediaResults-${isLeft}-${index}`" >
-            <b><a
-              :href="`https://${result.language}.wikipedia.org/?curid=${result.pageid}`"
-              target="_blank">
-              {{ result.title }}
-            </a></b><br>
-            <span v-html="result.extract || `... ${result.snippet} ...`" />
-          </p>
-        </b-tab>
         <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
         <b-tab
           v-if="config.searchLinks"

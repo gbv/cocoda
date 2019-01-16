@@ -178,8 +178,6 @@ Vue.mixin({
               this.$set(concept, "__BROADERLOADED__", true)
             })
           }
-          // Asynchronously load information from Wikipedia
-          this.loadWikipedia(concept)
           // TODO
           // Only select if loadingId matches on the same side
           if (loadingId == this.$store.state.selected.loadingId[isLeft]) {

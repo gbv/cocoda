@@ -9,8 +9,6 @@
 
 import jskos from "jskos-tools"
 import _ from "lodash"
-// For Wikipedia
-import axios from "axios"
 
 let objects = {}
 let topConcepts = {}
@@ -454,56 +452,6 @@ export default {
       }).catch(error => {
         console.error("Error in loadAncestors:", error)
         return object
-      })
-    },
-    /**
-     * Loads Wikipedia search results for a concept.
-     *
-     * @param {*} concept
-     */
-    loadWikipedia(concept) {
-      let prefLabel = _.get(concept, "prefLabel")
-      if (!prefLabel || _.get(concept, "_wikipediaResults") != null) {
-        return Promise.resolve(concept)
-      }
-      let promises = []
-      // TODO: Use current language first with fallback to other languages, maybe using util.
-      for (let language of ["de", "en"]) {
-        if (prefLabel[language]) {
-          let results
-          promises.push(axios.get(`https://${language}.wikipedia.org/w/api.php?origin=*&action=query&format=json&list=search&utf8=1`, { params: {
-            srsearch: prefLabel[language]
-          }}).then(response => response.data).catch(() => ({})).then(data => {
-            results = _.get(data, "query.search", [])
-            for (let result of results) {
-              result.language = language
-            }
-            // Load extract for first three result
-            let titles = [_.get(results, "[0].title"), _.get(results, "[1].title"), _.get(results, "[2].title")].filter(title => title != null && title != "").join("|")
-            if (titles) {
-              return axios.get(`https://${language}.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro=&explaintext=`, { params: {
-                titles: titles
-              }})
-            } else {
-              return {}
-            }
-          }).then(response => response.data).catch(() => ({})).then(data => {
-            let pages = _.get(data, "query.pages", {})
-            // Merge extracts into results
-            for (let result of results) {
-              let extract = _.get(pages, `${result.pageid}.extract`)
-              if (extract) {
-                result.extract = extract
-              }
-            }
-            return { [language]: results }
-          }))
-        }
-      }
-      return Promise.all(promises).then(result => {
-        result = Object.assign({}, ...result)
-        this.$set(concept, "_wikipediaResults", result)
-        return concept
       })
     },
     /**
