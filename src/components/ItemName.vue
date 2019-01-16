@@ -21,19 +21,19 @@
       :id="tooltipDOMID" >
       <!-- Text for notation -->
       <notation-text
-        :item="storeItem"
+        :item="item"
         :class="{ 'fontWeight-heavy': showText }" />
       <!-- Text for prefLabel -->
       <span v-if="showText || !notation">
-        {{ $util.prefLabel(storeItem, null, notation == null) }}
+        {{ $util.prefLabel(item, null, notation == null) }}
       </span>
     </div>
     <!-- Tooltip for prefLabel if only notation is shown -->
     <b-tooltip
-      v-if="showTooltip && $util.prefLabel(storeItem)"
+      v-if="showTooltip && $util.prefLabel(item)"
       ref="tooltip"
       :target="tooltipDOMID" >
-      {{ trimTooltip($util.prefLabel(storeItem)) }}
+      {{ trimTooltip($util.prefLabel(item)) }}
     </b-tooltip>
   </div>
 </template>
@@ -137,9 +137,6 @@ export default {
     notation() {
       return this.$util.notation(this.item)
     },
-    storeItem() {
-      return this.$store.getters["objects/get"](this.item) || this.item
-    },
   },
   watch: {
     item: function() {
@@ -166,11 +163,8 @@ export default {
       if (!this.isLink) {
         this.isValidLink = false
       } else {
-        // Only mention schemes so that computed property refreshes after schemes are loaded.
-        this.$store.state.schemes
-        // Check if scheme (or item itself) is available.
-        let scheme = this.$store.getters["objects/get"](_.get(this.item, "inScheme[0]")) || this.$store.getters["objects/get"](this.item)
-        this.isValidLink = scheme != null
+        // Check if scheme is available or item itself is a scheme.
+        this.isValidLink = this.getProvider(this.item) != null
       }
       // Check whether mouse is still in element.
       window.clearInterval(this.interval)

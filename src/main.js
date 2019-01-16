@@ -1,6 +1,4 @@
 import Vue from "vue"
-import store from "./store"
-import { mapActions, mapMutations } from "vuex"
 
 Vue.config.productionTip = false
 
@@ -15,9 +13,6 @@ Vue.use(BootstrapVue)
 // Add vue-scrollto
 var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
-
-// Initialize store
-store.dispatch("init")
 
 // Add util, use with this.$util in components
 import util from "./util"
@@ -38,6 +33,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 library.add(fas)
 library.add(fab)
 Vue.component("font-awesome-icon", FontAwesomeIcon)
+
+// Add objects mixin
+import objects from "./mixins/objects"
+Vue.mixin(objects)
 
 Vue.mixin({
   methods: {
@@ -72,8 +71,8 @@ Vue.mixin({
         delete query[fromTo]
         query[fromTo + "Scheme"] = object.uri
       } else {
-      // Consider object a concept
-        let conceptScheme = this.$store.getters["objects/get"]({ uri: _.get(object, "inScheme[0].uri") })
+        // Consider object a concept
+        let conceptScheme = _.get(object, "inScheme[0]")
         if (forceSide || this.selected.scheme[isLeft] == null || this.$jskos.compare(this.selected.scheme[isLeft], conceptScheme)) {
         // If the scheme on the same side is null or the same as the concept's scheme, don't change anything.
         } else if (this.$jskos.compare(this.selected.scheme[!isLeft], conceptScheme) || this.selected.scheme[!isLeft] == null) {
@@ -96,17 +95,120 @@ Vue.mixin({
 // Global mixin for object actions
 Vue.mixin({
   methods: {
-    ...mapMutations({
-      saveObject: "objects/save",
-    }),
-    ...mapActions({
-      getObject: "objects/load",
-      loadTop: "objects/top",
-      loadNarrower: "objects/narrower",
-      loadAncestors: "objects/ancestors",
-      loadObjectDetails: "objects/details",
-      setSelected: "selected/set",
-    }),
+    setSelected({ concept, scheme, isLeft, noQueryRefresh = false } = {}) {
+      let loadTypes = scheme => {
+        if (scheme) {
+          this.loadTypes(scheme)
+        }
+      }
+      let loadingId = this.$util.generateID()
+      this.$store.commit({
+        type: "selected/setLoadingId",
+        isLeft,
+        loadingId,
+      })
+      scheme = _.get(concept, "inScheme[0]") || scheme
+      // Check if concept and scheme is already selected
+      if (jskos.compare(concept, this.selected.concept[isLeft]) && jskos.compare(scheme, this.selected.scheme[isLeft])) {
+        return Promise.resolve(true)
+      }
+      if (scheme && !concept) {
+        let kind = "both"
+        if (scheme) {
+          this.$store.commit({
+            type: "selected/set",
+            kind,
+            isLeft,
+            scheme,
+            concept: null,
+            noQueryRefresh,
+          })
+          // Load types for scheme
+          loadTypes(scheme)
+          // Load top concepts for scheme
+          return this.loadTop(scheme).then(() => true)
+        } else {
+          console.error("setSelected: could not find scheme in store.")
+          return Promise.resolve(false)
+        }
+      } else if (concept) {
+        let kind = "concept"
+        if (!scheme) {
+          console.error("setSelected: could not find scheme for concept in store.")
+          return Promise.resolve(false)
+        }
+        if (!concept) {
+          // This case should not happen!
+          console.error("setSelected: critical error when getting/saving concept from store.")
+          return Promise.resolve(false)
+        }
+        let promises = []
+        // Check if scheme is different from selected scheme, if not change
+        if (!jskos.compare(scheme, this.selected.scheme[isLeft])) {
+          kind = "both"
+          // Load top concepts for scheme
+          promises.push(this.loadTop(scheme))
+        }
+        // Load details
+        promises.push(this.loadDetails(concept))
+        // Load narrower concepts
+        promises.push(this.loadNarrower(concept))
+        // Load ancestor concepts and their narrower concepts
+        promises.push(this.loadAncestors(concept))
+
+        return Promise.all(promises).then(() => {
+          // Load types for scheme
+          loadTypes(scheme)
+          // Asynchronously load its ancestors narrower concepts
+          if (concept && concept.ancestors) {
+            for (let ancestor of concept.ancestors) {
+              this.loadNarrower(ancestor)
+            }
+          }
+          // Asynchronously load information about its broader concepts
+          if (concept && concept.broader && !concept.__BROADERLOADED__) {
+            let broaderPromises = []
+            this.adjustConcept(concept)
+            for (let broader of concept.broader.filter(concept => concept != null)) {
+              this.loadDetails(broader, { scheme })
+            }
+            Promise.all(broaderPromises).then(() => {
+              // TODO: Is adjustment necessary?
+              this.adjustConcept(concept)
+              this.$set(concept, "__BROADERLOADED__", true)
+            })
+          }
+          // Asynchronously load information from Wikipedia
+          this.loadWikipedia(concept)
+          // TODO
+          // Only select if loadingId matches on the same side
+          if (loadingId == this.$store.state.selected.loadingId[isLeft]) {
+            this.$store.commit({
+              type: "selected/set",
+              kind,
+              isLeft,
+              concept,
+              scheme,
+              value: concept,
+              noQueryRefresh,
+            })
+            return true
+          } else {
+            return false
+          }
+        })
+      } else if (isLeft != null) {
+        this.$store.commit({
+          type: "selected/clear",
+          kind: "scheme",
+          isLeft,
+          noQueryRefresh,
+        })
+      } else {
+        console.error("setSelected: called with no valid concept or scheme.")
+        return Promise.resolve(false)
+      }
+    },
     addToMapping(params) {
       params.type = "mapping/add"
       params.cardinality = this.$settings.mappingCardinality
@@ -227,12 +329,7 @@ Vue.mixin({
       if (!concept) return
       let open = Object.assign({}, concept.__ISOPEN__)
       open[isLeft] = isOpen
-      this.$store.commit({
-        type: "objects/set",
-        object: concept,
-        prop: "__ISOPEN__",
-        value: open
-      })
+      this.$set(concept, "__ISOPEN__", open)
     },
     /**
      * Uses the mouse position to determine whether it is hovering over an element.

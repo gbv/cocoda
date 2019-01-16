@@ -691,7 +691,8 @@ export default {
         let mapping = this.$jskos.minifyMapping(m)
         // Add labels to concepts in mapping
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-          let conceptInStore = this.$store.getters["objects/get"](concept)
+          // TODO: Can be removed?
+          let conceptInStore = this._getObject(concept)
           let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
           if (language) {
             concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
@@ -720,7 +721,7 @@ export default {
 
       // Reload local mapping identifiers
       // TODO: Do this differently!
-      this.$store.dispatch({ type: "mapping/getMappings", ...params, onlyFromMain: true }).then(mappings => {
+      this.getMappings({ ...params, onlyFromMain: true }).then(mappings => {
         this.localMappingIdentifiers = mappings.reduce((all, current) => all.concat(current.identifier || []), [])
         this.localMappingsTotal = mappings.length
       })
@@ -837,7 +838,7 @@ export default {
           continue
         }
 
-        let promise = this.$store.dispatch({ type: "mapping/getMappings", ...params, registry: registry.uri, all: true }).then(mappings => {
+        let promise = this.getMappings({ ...params, registry: registry.uri, all: true }).then(mappings => {
 
           // Check loadingId
           if (this.loadingId != loadingId) {
@@ -911,9 +912,7 @@ export default {
           for (let mapping of mappings) {
             let item = { mapping, registry }
             item.sourceScheme = _.get(mapping, "fromScheme")
-            item.sourceScheme = this.$store.getters["objects/get"](item.sourceScheme) || item.sourceScheme
             item.targetScheme = _.get(mapping, "toScheme")
-            item.targetScheme = this.$store.getters["objects/get"](item.targetScheme) || item.targetScheme
             // Skip mapping if showAllSchemes is off and schemes don't match
             if (!this.showAllSchemes) {
               // If one side doesn't have a scheme selected, always show all
@@ -940,20 +939,10 @@ export default {
             for (let concept of item.sourceConcepts) {
               let scheme = _.get(mapping, "fromScheme")
               this.hover(concept, scheme)
-              this.$store.commit({
-                type: "objects/save",
-                object: concept,
-                scheme
-              })
             }
             for (let concept of item.targetConcepts) {
               let scheme = _.get(mapping, "toScheme")
               this.hover(concept, scheme)
-              this.$store.commit({
-                type: "objects/save",
-                object: concept,
-                scheme
-              })
             }
             // Save concepts as xLabels attribute as well
             item.sourceConceptsLong = item.sourceConcepts
@@ -1091,7 +1080,7 @@ export default {
       }
     },
     hover(concept, scheme) {
-      if(concept && _.isEmpty(concept.prefLabel) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && !this.$jskos.isContainedIn(concept, this.errorConcepts)) {
+      if(concept && _.isEmpty(concept.prefLabel) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && !this.$jskos.isContainedIn(concept, this.errorConcepts) && this.getProvider(concept)) {
         // Load prefLabel to be shown as tooltip
 
         if ((!concept.inScheme || concept.inScheme.length == 0) && !scheme) {
@@ -1102,40 +1091,22 @@ export default {
         }
 
         this.loadingConcepts.push(concept)
-
-        this.getObject({ object: concept, scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
+        this.loadDetails(concept, { scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
           // Remove concept from list of loading concepts
           let index = this.loadingConcepts.findIndex(c => this.$jskos.compare(c, concept))
           if (index != -1) {
             this.loadingConcepts.splice(index, 1)
           }
-          if (!result) {
+          if (!result || !result.prefLabel) {
             this.errorConcepts.push(concept)
             return
           }
-          // Set prefLabel
-          if (result && result.prefLabel) {
-            this.$store.commit({
-              type: "objects/set",
-              object: concept,
-              prop: "prefLabel",
-              value: result.prefLabel
-            })
-          }
-          // Also set notation if it doesn't exist.
-          if (result && result.notation && _.isEmpty(concept.notation)) {
-            this.$store.commit({
-              type: "objects/set",
-              object: concept,
-              prop: "notation",
-              value: result.notation
-            })
-          }
+          this.saveObject(result)
         })
       }
     },
     loadNotation(concept) {
-      if(concept && !concept.notation) {
+      if(concept && !concept.notation && this.getProvider(concept)) {
         // Load notation
 
         if (!concept.inScheme || concept.inScheme.length == 0) {
@@ -1143,16 +1114,8 @@ export default {
           console.warn("No scheme for", concept)
           return
         }
-
-        this.getObject({ object: concept, scheme: concept.inScheme[0] }).then(result => {
-          if (result && result.notation) {
-            this.$store.commit({
-              type: "objects/set",
-              object: concept,
-              prop: "notation",
-              value: result.notation
-            })
-          }
+        this.loadDetails(concept, { scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
+          this.saveObject(result)
         })
       }
     },

@@ -68,8 +68,8 @@
 
     <!-- Top Concepts -->
     <item-detail-narrower
-      v-if="settings.showTopConceptsInScheme && item.__TOPCONCEPTS__ && item.__TOPCONCEPTS__.length > 0"
-      :narrower="item.__TOPCONCEPTS__"
+      v-if="settings.showTopConceptsInScheme && topConcepts[item.uri] && topConcepts[item.uri].length > 0"
+      :narrower="topConcepts[item.uri]"
       :is-left="isLeft"
       text="Top Concepts:"
     />

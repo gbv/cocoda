@@ -147,18 +147,10 @@ export default {
     drop(isLeft, event) {
       event.preventDefault()
       let uri = event.dataTransfer.getData("text")
-      let object = this.$store.getters["objects/get"]({ uri })
+      let object = this.draggedConcept || this._getObject({ uri })
       if (object) {
         // Select object
         this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
-      } else {
-        // Fallback: Use this.draggedConcept and load from API
-        this.getObject({ object: this.draggedConcept }).then(object => {
-          if (object) {
-            // Select object
-            this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
-          }
-        })
       }
     },
   },

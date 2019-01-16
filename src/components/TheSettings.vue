@@ -310,7 +310,7 @@ export default {
       this.dlAllMappings = null
       this.dlMappings = []
       let mappings = []
-      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(result => {
+      this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(result => {
         mappings = result
         // First, load concepts for all mappings into Vuex store (to have the labels available)
         // TODO: Add support for loading multiple concepts together.
@@ -322,11 +322,7 @@ export default {
               if (!concept.inScheme || !concept.inScheme.length) {
                 concept.inScheme = [scheme]
               }
-              promises.push(this.$store.dispatch({
-                type: "objects/load",
-                object: concept,
-                scheme
-              }))
+              promises.push(this.loadDetails(concept, { scheme }))
             }
           }
         }
@@ -338,7 +334,7 @@ export default {
           let mapping = this.$jskos.minifyMapping(m)
           // Add labels to concepts in mapping
           for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-            let conceptInStore = this.$store.getters["objects/get"](concept)
+            let conceptInStore = this._getObject(concept)
             let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
             if (language) {
               concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
@@ -351,8 +347,8 @@ export default {
         // First, determine available combinations of concept schemes
         for (let mapping of mappings) {
           // Adjust schemes with store
-          mapping.fromScheme = this.$store.getters["objects/get"](mapping.fromScheme) || mapping.fromScheme
-          mapping.toScheme = this.$store.getters["objects/get"](mapping.toScheme) || mapping.toScheme
+          mapping.fromScheme = this._getObject(mapping.fromScheme) || mapping.fromScheme
+          mapping.toScheme = this._getObject(mapping.toScheme) || mapping.toScheme
           let download = this.dlMappings.find(dl => this.$jskos.compare(mapping.fromScheme, dl.fromScheme) && this.$jskos.compare(mapping.toScheme, dl.toScheme))
           if (download) {
             download.mappings.push(mapping)
@@ -378,7 +374,7 @@ export default {
           for (let mapping of download.mappings) {
             // Prepare labels
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-              let conceptInStore = this.$store.getters["objects/get"](concept)
+              let conceptInStore = this._getObject(concept)
               let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
               if (language) {
                 // NOTE: Hardcoded language, see note above.

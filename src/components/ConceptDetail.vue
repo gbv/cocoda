@@ -382,7 +382,7 @@ export default {
         direction: "both",
         from: this.item,
       }
-      promises.push(this.$store.dispatch({ type: "mapping/getMappings", ...params }))
+      promises.push(this.getMappings(params))
       Promise.all(promises).then(results => {
         if (!this.$jskos.compare(itemBefore, this.item)) {
           // Abort if item changed in the meantime
@@ -410,17 +410,11 @@ export default {
         for (let concept of gndConcepts) {
           // Only add GND concepts that are different from the item.
           if (!this.$jskos.compare(concept, itemBefore)) {
-            promises.push(this.getObject({
-              object: concept,
+            promises.push(this.loadDetails(concept, {
               scheme: { uri: "http://bartoc.org/en/node/430" }
             }).then(object => {
               if (object) {
-                this.$store.commit({
-                  type: "objects/set",
-                  object,
-                  prop: "GNDTYPE",
-                  value: concept.GNDTYPE
-                })
+                object.GNDTYPE = concept.GNDTYPE
               }
               return object
             }))
@@ -447,12 +441,7 @@ export default {
             gndTerms.push(term)
           }
         }
-        this.$store.commit({
-          type: "objects/set",
-          object: itemBefore,
-          prop: "__GNDTERMS__",
-          value: gndTerms
-        })
+        itemBefore.__GNDTERMS__ = gndTerms
       }).catch(error => {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })

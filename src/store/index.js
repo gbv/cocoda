@@ -1,7 +1,7 @@
 import Vue from "vue"
 import Vuex from "vuex"
+import config from "../config"
 import selected from "./modules/selected"
-import objects from "./modules/objects"
 import mapping from "./modules/mapping"
 import alerts from "./modules/alerts"
 import settings from "./modules/settings"
@@ -13,7 +13,8 @@ Vue.use(Vuex)
 
 const state = {
   schemes: [],
-  config: {},
+  schemesLoaded: false,
+  config,
   hoveredConcept: null,
   draggedConcept: null,
   hoveredMapping: null,
@@ -35,6 +36,9 @@ const getters = {
 const mutations = {
   setSchemes(state, { schemes }) {
     state.schemes = schemes
+  },
+  setSchemesLoaded(state, { value }) {
+    state.schemesLoaded = value
   },
   setConfig(state, { config, option, value }) {
     if (config) {
@@ -59,7 +63,7 @@ const mutations = {
 
 const store = new Vuex.Store({
   modules: {
-    selected, objects, mapping, alerts, settings
+    selected, mapping, alerts, settings
   },
   plugins,
   state,

@@ -91,14 +91,6 @@ export default {
     creatorName() {
       return this.$settings.creator
     },
-    // FIXME: Code duplication with ConceptSchemeSelection
-    favoriteConcepts() {
-      let concepts = []
-      for (let concept of this.$store.getters.favoriteConcepts) {
-        concepts.push(this.$store.getters["objects/get"](concept) || concept)
-      }
-      return concepts
-    },
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
     },
@@ -143,8 +135,7 @@ export default {
     },
     drop(event) {
       event.preventDefault()
-      let uri = event.dataTransfer.getData("text")
-      let concept = this.$store.getters["objects/get"]({ uri }) || this.draggedConcept || { uri }
+      let concept = this.draggedConcept
       // Save concept to favorites
       this.$store.dispatch("addConceptToFavorites", concept)
     },

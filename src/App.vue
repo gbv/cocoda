@@ -25,7 +25,9 @@
       <font-awesome-icon icon="exchange-alt" />
     </div>
     <!-- Main -->
-    <div class="main">
+    <div
+      v-if="schemes.length"
+      class="main">
       <div class="flexbox-row">
         <!-- Full screen loading indicator -->
         <loading-indicator-full v-if="loading" />
@@ -187,9 +189,6 @@ export default {
     }
   },
   computed: {
-    schemes() {
-      return this.$store.state.schemes
-    },
     // Needed to watch for changes in the left concept.
     selectedConceptLeft() {
       return this.selected.concept[true]
@@ -214,11 +213,6 @@ export default {
     },
   },
   watch: {
-    schemes() {
-      if (this.settingsLoaded) {
-        this.start()
-      }
-    },
     settingsLoaded() {
       this.start()
     },
@@ -230,8 +224,8 @@ export default {
         // Try to get objects for both URIs
         let uri1 = fromQuery[param],
           uri2 = toQuery[param],
-          object1 = this.$store.getters["objects/get"]({ uri: uri1 }),
-          object2 = this.$store.getters["objects/get"]({ uri: uri2 })
+          object1 = uri1 && this._getObject({ uri: uri1 }),
+          object2 = uri2 && this._getObject({ uri: uri2 })
         // Compare objects if they exist to prevent unnecessary reloads.
         if (object1 && object2) {
           if (!this.$jskos.compare(object1, object2)) {
@@ -332,19 +326,13 @@ export default {
   },
   methods: {
     /**
-     * Properly start the application (called by watchers for either schemes or settingsLoaded).
+     * Properly start the application (called by settingsLoaded watcher).
      */
     start() {
-      if (this.schemes.length) {
+      // Load schemes
+      this.loadSchemes().then(() => {
         this.loadFromParametersOnce()
-        // Load favorite concepts into Vuex
-        for (let concept of this.$store.getters.favoriteConcepts) {
-          this.$store.dispatch({
-            type: "objects/load",
-            object: concept
-          })
-        }
-      }
+      })
     },
     insertPrefLabel(isLeft, both = true) {
       if (!this.$settings.autoInsertLabels) {
@@ -408,9 +396,20 @@ export default {
       }
 
       for (let isLeft of [true, false]) {
+        // Get from store
+        let schemeUri = selected.scheme[isLeft]
+        let scheme = null
+        if (schemeUri) {
+          scheme = this._getObject({ uri: schemeUri })
+        }
+        let concept = null
+        if (scheme && selected.concept[isLeft]) {
+          concept = this.saveObject({ uri: selected.concept[isLeft] }, { scheme, type: "concept" })
+        }
+
         promises.push(this.setSelected({
-          concept: selected.concept[isLeft] ? { uri: selected.concept[isLeft] } : null,
-          scheme: selected.scheme[isLeft] ? { uri: selected.scheme[isLeft] } : null,
+          concept,
+          scheme,
           isLeft,
           noQueryRefresh: true,
         }))
@@ -430,13 +429,13 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query["identifier"] ? this.$store.dispatch({ type: "mapping/getMappings", identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
+        let loadMapping = (query["identifier"] ? this.getMappings({ identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
           if (query["identifier"] && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
             // TODO: There needs to be a completely unique identifier for this.
             let original = mappings.find(mapping => _.get(mapping, "_provider.has.canSaveMappings")) || mappings[0]
-            return decodeMapping.then(mapping => {
+            return decodeMapping.then(this.adjustMapping).then(mapping => {
               if (mapping) {
                 return [mapping, original]
               } else {
@@ -453,7 +452,7 @@ export default {
           let promises = []
           for (let direction of directions) {
             // Get scheme from store
-            let scheme = this.$store.getters["objects/get"](mappingFromQuery[`${direction}Scheme`])
+            let scheme = this.getObject(mappingFromQuery[`${direction}Scheme`])
             // TODO: - Should scheme be set in mapping object? Would possibly caused scheme URI to change.
             // mappingFromQuery[`${direction}Scheme`] = scheme
             // TODO: - Show error if scheme does not exist?
@@ -461,11 +460,7 @@ export default {
               if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
               // Load data for each concept in mapping
               _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                promises.push(this.$store.dispatch({
-                  type: "objects/load",
-                  object: concept,
-                  scheme: scheme
-                }).then(concept => {
+                promises.push(this.loadDetails(concept, { scheme }).then(concept => {
                   mappingFromQuery[direction][memberField][index] = concept
                 }))
               })

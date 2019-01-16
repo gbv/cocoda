@@ -62,7 +62,7 @@
           class="mappingScheme fontWeight-heavy" >
           <span v-if="showScheme(isLeft)">
             <item-name
-              :item="$store.getters['objects/get']($store.getters['mapping/getScheme'](isLeft))"
+              :item="$store.getters['mapping/getScheme'](isLeft)"
               :is-link="true"
               :is-left="isLeft"
               :show-text="false"
@@ -458,25 +458,13 @@ export default {
     drop(isLeft, event) {
       event.preventDefault()
       let uri = event.dataTransfer.getData("text")
-      let object = this.$store.getters["objects/get"]({ uri })
+      let object = this.draggedConcept || this._getObject({ uri })
       if (this.$jskos.isConcept(object)) {
         // Add concept to mapping
         this.addToMapping({
           concept: object,
           scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
           isLeft: isLeft
-        })
-      } else {
-        // Fallback: Use this.draggedConcept and load from API
-        this.getObject({ object: this.draggedConcept }).then(object => {
-          if (this.$jskos.isConcept(object)) {
-            // Add concept to mapping
-            this.addToMapping({
-              concept: object,
-              scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
-              isLeft: isLeft
-            })
-          }
         })
       }
     },

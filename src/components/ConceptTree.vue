@@ -23,7 +23,7 @@
       {{ $t("conceptTree.noTree") }}
     </div>
     <!-- Full screen loading indicator -->
-    <loading-indicator-full v-if="loading || topConcepts.includes(null)" />
+    <loading-indicator-full v-if="loading || _topConcepts.includes(null)" />
   </div>
 </template>
 
@@ -68,7 +68,7 @@ export default {
     },
     items() {
       let concepts = []
-      for (let concept of this.topConcepts) {
+      for (let concept of this._topConcepts) {
         concepts.push(concept)
         let children = this.children(concept)
         concepts = concepts.concat(children)
@@ -83,8 +83,9 @@ export default {
       }
       return items
     },
-    topConcepts() {
-      return (this.selected.scheme[this.isLeft] ? this.selected.scheme[this.isLeft].__TOPCONCEPTS__ : null) || []
+    _topConcepts() {
+      let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
+      return _.get(this.topConcepts, uri)
     },
     noTree() {
       return this.items.length == 0 && !this.loading
@@ -144,7 +145,7 @@ export default {
   methods: {
     children(concept) {
       let items = []
-      if (concept && concept.__ISOPEN__[this.isLeft]) {
+      if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
         for (let child of concept.narrower) {
           items.push(child)
           items = items.concat(this.children(child))

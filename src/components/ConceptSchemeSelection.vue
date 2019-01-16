@@ -154,19 +154,6 @@ export default {
     }
   },
   computed: {
-    // Sorted list of all available schemes.
-    schemes() {
-      return this.$store.state.schemes.slice().sort((a, b) => {
-        let labelA = this.$util.prefLabel(a), labelB = this.$util.prefLabel(b)
-        if (labelA < labelB) {
-          return -1
-        }
-        if (labelA > labelB) {
-          return 1
-        }
-        return 0
-      })
-    },
     // Current scheme for this side.
     scheme() {
       return this.selected.scheme[this.isLeft]
@@ -185,25 +172,6 @@ export default {
             (scheme.languages || []).includes(this.languageFilter)
           )
       )
-    },
-    favoriteSchemes() {
-      let schemes = []
-      for (let uri of this.$store.getters.favoriteSchemes) {
-        let scheme = this.$store.getters["objects/get"]({ uri })
-        if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
-          schemes.push(scheme)
-        }
-      }
-      // This does nothing except for triggering a refresh for this computed property when the list of schemes has changed.
-      this.schemes
-      return schemes
-    },
-    favoriteConcepts() {
-      let concepts = []
-      for (let concept of this.$store.getters.favoriteConcepts) {
-        concepts.push(this.$store.getters["objects/get"](concept) || concept)
-      }
-      return concepts
     },
     languageFilterOptions() {
       let options = [

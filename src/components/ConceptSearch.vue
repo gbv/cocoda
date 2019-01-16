@@ -218,7 +218,7 @@ export default {
         this.searchSelected = -1
       }
       if (newValue != null) {
-        this.loadTypes(newValue)
+        this._loadTypes(newValue)
       }
     },
     typesForSchemes() {
@@ -260,6 +260,8 @@ export default {
         uri: uri,
         inScheme: [this.scheme]
       }
+      // Get concept from store
+      concept = this.saveObject(concept, { type: "concept", scheme: this.scheme, provider: this.provider })
       return this.getRouterUrl(concept, this.isLeft)
     },
     closeResults() {
@@ -404,14 +406,11 @@ export default {
         this.isOpen = isOpen
       })
     },
-    loadTypes(item) {
+    _loadTypes(item) {
       // Load types for scheme
-      this.$store.dispatch({
-        type: "objects/types",
-        scheme: item
-      }).then(types => {
+      this.loadTypes(item).then(scheme => {
         if (!this.selectedTypes) {
-          this.selectedTypes = types.map(type => type.uri)
+          this.selectedTypes = scheme.types.map(type => type.uri)
         }
       })
     },
