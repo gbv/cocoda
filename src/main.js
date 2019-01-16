@@ -38,6 +38,10 @@ Vue.component("font-awesome-icon", FontAwesomeIcon)
 import objects from "./mixins/objects"
 Vue.mixin(objects)
 
+// Add drag and drop mixin
+import draganddrop from "./mixins/dragandrop"
+Vue.mixin(draganddrop)
+
 Vue.mixin({
   methods: {
     toggleMinimize() {

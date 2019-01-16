@@ -55,7 +55,7 @@
       }"
       class="mappingEditorPart"
       @dragover="dragOver"
-      @drop="drop(isLeft, $event)" >
+      @drop="drop($event, isLeft)" >
       <div v-if="$store.getters['mapping/getScheme'](isLeft) != null && $store.getters['mapping/getConcepts'](isLeft).length">
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
@@ -452,18 +452,12 @@ export default {
       let mappingScheme = this.$store.getters["mapping/getScheme"](isLeft)
       return !this.$jskos.compare(chosenScheme, mappingScheme)
     },
-    dragOver(event) {
-      event.preventDefault()
-    },
-    drop(isLeft, event) {
-      event.preventDefault()
-      let uri = event.dataTransfer.getData("text")
-      let object = this.draggedConcept || this._getObject({ uri })
-      if (this.$jskos.isConcept(object)) {
+    droppedConcept(concept, isLeft) {
+      if (this.$jskos.isConcept(concept)) {
         // Add concept to mapping
         this.addToMapping({
-          concept: object,
-          scheme: (object.inScheme && object.inScheme[0]) || this.selected.scheme[isLeft],
+          concept,
+          scheme: (concept.inScheme && concept.inScheme[0]) || this.selected.scheme[isLeft],
           isLeft: isLeft
         })
       }

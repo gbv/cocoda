@@ -2,7 +2,7 @@
   <div
     class="itemDetail"
     @dragover="dragOver"
-    @drop="drop(isLeft, $event)" >
+    @drop="drop" >
     <!-- Minimizer allows component to get minimized -->
     <minimizer :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
@@ -141,17 +141,8 @@ export default {
     this.$el.scrollTop = 0
   },
   methods: {
-    dragOver(event) {
-      event.preventDefault()
-    },
-    drop(isLeft, event) {
-      event.preventDefault()
-      let uri = event.dataTransfer.getData("text")
-      let object = this.draggedConcept || this._getObject({ uri })
-      if (object) {
-        // Select object
-        this.$router.push({ path: this.getRouterUrl(object, this.isLeft, true) })
-      }
+    droppedConcept(concept) {
+      this.$router.push({ path: this.getRouterUrl(concept, this.isLeft, true) })
     },
   },
 }

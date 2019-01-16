@@ -130,12 +130,7 @@ export default {
       // Scroll back to the top
       this.$refs.favoriteConceptsDropdown.$el.getElementsByClassName("favoriteConceptsDropdown")[0].scrollTop = 0
     },
-    dragOver(event) {
-      event.preventDefault()
-    },
-    drop(event) {
-      event.preventDefault()
-      let concept = this.draggedConcept
+    droppedConcept(concept) {
       // Save concept to favorites
       this.$store.dispatch("addConceptToFavorites", concept)
     },

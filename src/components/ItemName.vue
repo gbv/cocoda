@@ -3,7 +3,7 @@
     v-if="item != null"
     :draggable="draggable"
     class="itemName"
-    @dragstart="dragStart"
+    @dragstart="dragStart(item, $event)"
     @dragend="dragEnd"
     @mouseover="mouseOver"
     @mouseout="mouseOut">
@@ -186,13 +186,6 @@ export default {
       } else {
         return text
       }
-    },
-    dragStart(event) {
-      event.dataTransfer.setData("text", this.item.uri)
-      this.draggedConcept = this.item
-    },
-    dragEnd() {
-      this.draggedConcept = null
     },
   }
 }
