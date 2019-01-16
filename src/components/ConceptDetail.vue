@@ -382,6 +382,7 @@ export default {
         direction: "both",
         from: this.item,
       }
+      let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
       promises.push(this.getMappings(params))
       Promise.all(promises).then(results => {
         if (!this.$jskos.compare(itemBefore, this.item)) {
@@ -394,12 +395,12 @@ export default {
             let toFrom = fromTo == "from" ? "to" : "from"
             for(let mapping of mappings) {
               let startIndex = gndConcepts.length
-              if (mapping[toFrom+"Scheme"].uri == "http://bartoc.org/en/node/430") {
+              if (this.$jskos.compare(mapping[toFrom+"Scheme"], gnd)) {
                 gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
               }
               // Save GND mapping type to concept
               while (startIndex < gndConcepts.length) {
-                gndConcepts[startIndex].GNDTYPE = this.$jskos.mappingTypeByType(mapping.type)
+                this.$set(gndConcepts[startIndex], "__GNDTYPE__", this.$jskos.mappingTypeByType(mapping.type))
                 startIndex += 1
               }
             }
@@ -411,10 +412,10 @@ export default {
           // Only add GND concepts that are different from the item.
           if (!this.$jskos.compare(concept, itemBefore)) {
             promises.push(this.loadDetails(concept, {
-              scheme: { uri: "http://bartoc.org/en/node/430" }
+              scheme: gnd
             }).then(object => {
               if (object) {
-                object.GNDTYPE = concept.GNDTYPE
+                this.$set(object, "__GNDTYPE__", concept.__GNDTYPE__)
               }
               return object
             }))
@@ -427,11 +428,11 @@ export default {
         // Assemble gndTerms array for display
         let gndTerms = []
         // Use this.$parent.$t instead of this.$t to prevent a rare, very weird bug.
-        let relevanceOrder = [this.$parent.$t("conceptDetail.relevanceVeryHigh"), this.$parent.$t("conceptDetail.relevanceHigh"), this.$parent.$t("conceptDetail.relevanceMedium"), this.$parent.$t("conceptDetail.relevanceLow")]
+        let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow"]
         for (let relevance of relevanceOrder) {
-          let term = `<strong>${this.$parent.$t("conceptDetail.relevance")}: ${relevance}</strong> - `
+          let term = `<strong>${this.$parent.$t("conceptDetail.relevance")}: ${this.$parent.$t(relevance)}</strong> - `
           let terms = []
-          for (let concept of results.filter(concept => concept.GNDTYPE.RELEVANCE == relevance)) {
+          for (let concept of results.filter(concept => concept.__GNDTYPE__.RELEVANCE == this.$parent.$t(relevance, "en"))) {
             if (concept && (this.$util.prefLabel(concept, null, false))) {
               terms.push(_.escape(this.$util.prefLabel(concept)))
             }
@@ -441,7 +442,7 @@ export default {
             gndTerms.push(term)
           }
         }
-        itemBefore.__GNDTERMS__ = gndTerms
+        this.$set(itemBefore, "__GNDTERMS__", gndTerms)
       }).catch(error => {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })
