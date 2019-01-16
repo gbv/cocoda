@@ -117,7 +117,8 @@
       "created": "@:conceptDetail.created",
       "modified": "@:conceptDetail.modified",
       "note": "Note",
-      "identifier": "Identifier"
+      "identifier": "Identifier",
+      "partOf": "Concordance"
     },
     "minimizer": {
       "minimize": "minimize card",
@@ -323,7 +324,8 @@
       "created": "@:conceptDetail.created",
       "modified": "@:conceptDetail.modified",
       "note": "Notiz",
-      "identifier": "Identifier"
+      "identifier": "Identifier",
+      "partOf": "Konkordanz"
     },
     "minimizer": {
       "minimize": "Komponente ausblenden",
