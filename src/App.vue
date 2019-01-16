@@ -443,7 +443,7 @@ export default {
               }
             })
           } else {
-            return decodeMapping.then(mapping => [mapping])
+            return decodeMapping.then(this.adjustMapping).then(mapping => [mapping])
           }
         })
         let directions = ["from", "to"]
@@ -451,11 +451,8 @@ export default {
         promises.push(loadMapping.then(( [mappingFromQuery, original = null] ) => {
           let promises = []
           for (let direction of directions) {
-            // Get scheme from store
-            let scheme = this.getObject(mappingFromQuery[`${direction}Scheme`])
-            // TODO: - Should scheme be set in mapping object? Would possibly caused scheme URI to change.
-            // mappingFromQuery[`${direction}Scheme`] = scheme
-            // TODO: - Show error if scheme does not exist?
+            // Get scheme
+            let scheme = mappingFromQuery[`${direction}Scheme`]
             for (let memberField of memberFields) {
               if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
               // Load data for each concept in mapping
