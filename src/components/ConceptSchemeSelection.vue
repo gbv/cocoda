@@ -17,6 +17,19 @@
       </div>
       <!-- Name of scheme -->
       <div>
+        <!-- Favorite star -->
+        <font-awesome-icon
+          v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
+          :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
+          class="conceptSchemeSelection-star"
+          icon="star"
+          @click="toggleFavoriteScheme(scheme)" />
+        <!-- Name of scheme -->
+        <item-name
+          :item="scheme"
+          :is-link="true"
+          :is-left="isLeft"
+          font-size="large" />
         <!-- Button to clear scheme -->
         <div
           v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
@@ -25,11 +38,6 @@
           @click="clearScheme" >
           <font-awesome-icon icon="times-circle" />
         </div>
-        <item-name
-          :item="scheme"
-          :is-link="true"
-          :is-left="isLeft"
-          font-size="large" />
       </div>
       <!-- ConceptSearch -->
       <concept-search
