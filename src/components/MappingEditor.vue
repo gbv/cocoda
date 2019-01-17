@@ -33,16 +33,6 @@
         @click="clearMapping" >
         <font-awesome-icon icon="ban" />
       </div>
-      <div
-        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
-        :class="{
-          button: canExportMapping,
-          'button-disabled': !canExportMapping
-        }"
-        class="mappingEditorToolbarItem"
-        @click="$refs.commentModal.show()" >
-        <font-awesome-icon icon="comment" />
-      </div>
     </div>
     <!-- Source and target sides for the mapping -->
     <div
@@ -134,6 +124,18 @@
         v-show="selected.scheme[true] != null || selected.scheme[false] != null"
         :mapping="$store.state.mapping.mapping" />
     </div>
+    <div class="mappingEditor-comment">
+      <span
+        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
+        :class="{
+          button: canExportMapping,
+          'button-disabled': !canExportMapping
+        }"
+        @click="$refs.commentModal.show()" >
+        <font-awesome-icon icon="comment" />
+      </span>
+      {{ mappingComments.join(", ") }}
+    </div>
     <div class="mappingEditor-creator">
       {{ creatorName }}
     </div>
@@ -172,9 +174,8 @@
     <b-modal
       ref="commentModal"
       :title="$t('mappingEditor.commentMappingTitle')"
-      :ok-disabled="!haveNotesChanged"
       hide-header-close
-      no-close-on-backdrop
+      ok-only
       @shown="focusNote"
       @hide="comments = mappingComments"
       @ok="saveComment" >
@@ -623,6 +624,16 @@ export default {
   bottom: 2px;
   right: 30px;
 }
+.mappingEditor-comment {
+  position: absolute;
+  bottom: 2px;
+  left: 5px;
+  width: calc(50% - 60px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .mappingEditor-title {
   .componentTitle;
   position: absolute;
