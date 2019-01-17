@@ -57,9 +57,8 @@
         @keydown.up.native.prevent="onArrowUp"
         @keydown.tab.native="closeResults"
         @keyup.enter.native="onEnter"
-        @keyup.esc.native="$refs.searchInput.$el.blur()"
+        @keyup.esc.native="$refs.searchInput.$el.blur(); closeResults()"
         @focus.native="isOpen = searchQuery != ''"
-        @blur.native="isOpen = false"
       />
       <!-- Results -->
       <div
