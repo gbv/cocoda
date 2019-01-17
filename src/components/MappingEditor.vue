@@ -187,7 +187,8 @@
         v-model="comments[index]"
         :rows="2"
         :max-rows="6"
-        @keydown.native="textareaKeydown" />
+        @keydown.native="textareaKeydown"
+        @input="saveComment" />
     </b-modal>
     <data-modal-button
       :data="mapping"
@@ -339,6 +340,8 @@ export default {
         this.alert("Please set your name in Settings (top right of the page).")
         return false
       }
+      // Hide comment modal if open
+      this.$refs.commentModal.hide()
       // Change creator of mapping before saving
       this.$store.commit({
         type: "mapping/setCreator",
@@ -386,6 +389,8 @@ export default {
       this.$store.commit({
         type: "mapping/empty"
       })
+      // Hide comment modal if open
+      this.$refs.commentModal.hide()
       return true
     },
     prepareMapping(mapping = null) {
@@ -478,7 +483,7 @@ export default {
     },
     saveComment() {
       // Save comments
-      let comments = this.comments.filter(c => c != "")
+      let comments = this.comments.filter(c => c != "").slice()
       if (this.haveNotesChanged) {
         let language = this.$util.getLanguage(_.get(this, "mapping.note")) || this.$util.fallbackLanguage
         this.$store.commit({
@@ -493,12 +498,10 @@ export default {
       document.getElementById("mappingEditor-comment-0").focus()
     },
     textareaKeydown(event) {
-      // Save comment on ctrl + enter or cmd + enter
-      if (!(event.keyCode == 13 && (event.metaKey || event.ctrlKey))) {
-        return
+      // Hide modal on ctrl + enter or cmd + enter
+      if (event.keyCode == 13 && (event.metaKey || event.ctrlKey)) {
+        this.$refs.commentModal.hide()
       }
-      this.saveComment()
-      this.$refs.commentModal.hide()
     },
   }
 }
