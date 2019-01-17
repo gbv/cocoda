@@ -92,7 +92,7 @@
                   isLeft
                 })"
               >
-                <font-awesome-icon icon="minus-circle" />
+                <font-awesome-icon icon="times-circle" />
               </span>
             </li>
           </ul>

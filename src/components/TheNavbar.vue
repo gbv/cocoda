@@ -59,7 +59,7 @@
           <div
             class="button favoriteConceptsDropdown-removeButton"
             @click="removeFavoriteConcept(concept)" >
-            <font-awesome-icon icon="minus-circle" />
+            <font-awesome-icon icon="times-circle" />
           </div>
         </b-dropdown-item>
       </b-nav-item-dropdown>
@@ -205,7 +205,7 @@ nav.navbar {
 .favoriteConceptsDropdown-removeButton {
   position: absolute;
   right: 10px;
-  top: 55%;
+  top: 53%;
   transform: translateY(-50%);
   font-size: 14px;
 }
