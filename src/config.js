@@ -37,19 +37,20 @@ if (config.registries) {
   config.mappingProviders = []
   config.occurrenceProviders = []
   for (let registry of config.registries) {
-    if (registry.provider.endsWith("ConceptApi")) {
+    let provider = registry.provider || ""
+    if (provider.endsWith("ConceptApi")) {
       // baseUrl -> url
       registry.url = registry.baseUrl
       // schemes -> voc
       registry.voc = registry.schemes
       // Add to list
       config.terminologyProviders.push(registry)
-    } else if (registry.provider.endsWith("MappingsApi")) {
+    } else if (provider.endsWith("MappingsApi")) {
       // mappings -> url
       registry.url = registry.mappings
       // Add to list
       config.mappingProviders.push(registry)
-    } else if (registry.provider.endsWith("OccurrencesApi")) {
+    } else if (provider.endsWith("OccurrencesApi")) {
       // occurrences -> url
       registry.url = registry.occurrences
       // Add to list
