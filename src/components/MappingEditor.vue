@@ -252,6 +252,10 @@ export default {
       let comments = this.comments.filter(c => c != "")
       return !_.isEqual(comments, this.mappingComments)
     },
+    // Is used for watcher that sets the target scheme
+    schemeRight() {
+      return this.selected.scheme[false]
+    },
   },
   watch: {
     mappingEncoded() {
@@ -281,6 +285,14 @@ export default {
       if (!_.isEqual(oldValue, newValue)) {
         this.comments = _.clone(newValue)
       }
+    },
+    schemeRight() {
+      // Set toScheme on scheme change (mutation will do nothing if there are concepts in the mapping).
+      this.$store.commit({
+        type: "mapping/setScheme",
+        isLeft: false,
+        scheme: this.selected.scheme[false]
+      })
     },
   },
   mounted() {

@@ -1047,17 +1047,22 @@ export default {
       }
     },
     edit(data) {
-      let mapping = this.$jskos.copyDeep(data.item.mapping)
-      // Make sure concept object references are in sync
-      mapping.from.memberSet = data.item.mapping.from.memberSet.slice()
-      if (mapping.to.memberSet) {
-        mapping.to.memberSet = data.item.mapping.to.memberSet.slice()
-      } else if (mapping.to.memberList) {
-        mapping.to.memberList = data.item.mapping.to.memberList.slice()
-      } else if (mapping.to.memberChoice) {
-        mapping.to.memberChoice = data.item.mapping.to.memberChoice.slice()
+      let copyWithReferences = mapping => {
+        let newMapping = this.$jskos.copyDeep(mapping)
+        newMapping.from.memberSet = mapping.from.memberSet.slice()
+        if (newMapping.to.memberSet) {
+          newMapping.to.memberSet = mapping.to.memberSet.slice()
+        } else if (newMapping.to.memberList) {
+          newMapping.to.memberList = mapping.to.memberList.slice()
+        } else if (newMapping.to.memberChoice) {
+          newMapping.to.memberChoice = mapping.to.memberChoice.slice()
+        }
+        newMapping._provider = mapping._provider
+        newMapping.fromScheme = mapping.fromScheme
+        newMapping.toScheme = mapping.toScheme
+        return newMapping
       }
-      mapping._provider = data.item.mapping._provider
+      let mapping = copyWithReferences(data.item.mapping)
       // Load concept prefLabel for each concept in mapping if necessary
       for (let concept of [].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice)) {
         this.hover(concept)
@@ -1075,7 +1080,7 @@ export default {
         this.$store.commit({
           type: "mapping/set",
           mapping,
-          original: mapping._provider && mapping._provider.has.canSaveMappings ? mapping : null
+          original: mapping._provider && mapping._provider.has.canSaveMappings ? copyWithReferences(mapping) : null
         })
       }
     },
