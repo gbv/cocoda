@@ -10,6 +10,7 @@
       class="conceptSchemeSelection-collapsed">
       <!-- Expand button -->
       <div
+        v-b-tooltip.hover="{ title: showPopover ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: $util.delay.medium }"
         :id="`${id}-expandButton`"
         class="conceptSchemeSelection-expandButton button">
         <font-awesome-icon

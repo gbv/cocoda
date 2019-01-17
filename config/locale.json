@@ -33,7 +33,9 @@
       "allLanguages": "all",
       "schemeFilterPlaceholder": "Search for schemes...",
       "starAdd": "add to favorites",
-      "starRemove": "remove from favorites"
+      "starRemove": "remove from favorites",
+      "popoverShow": "show scheme selection",
+      "popoverHide": "hide scheme selection"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -87,7 +89,8 @@
       "deleteAndClear": "Delete original mapping and clear",
       "deleteAndKeep": "Delete original mapping and keep changes",
       "keepAndClear": "Keep original mapping and clear",
-      "cancel": "@:general.cancel"
+      "cancel": "@:general.cancel",
+      "removeConceptFromMapping": "remove concept from mapping"
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -104,7 +107,8 @@
       "source": "Source",
       "settingShowAllSchemes": "Show results of all concept schemes",
       "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown.",
-      "chooseConcept": "Select a concept to see mappings and mapping recommendations"
+      "chooseConcept": "Select a concept to see mappings and mapping recommendations",
+      "settingsButton": "Mapping Browser Settings"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -207,7 +211,9 @@
       "allLanguages": "alle",
       "schemeFilterPlaceholder": "Suche nach Vokabularen...",
       "starAdd": "zu Favoriten hinzufügen",
-      "starRemove": "aus Favoriten entfernen"
+      "starRemove": "aus Favoriten entfernen",
+      "popoverShow": "Vokabular-Auswahl öffnen",
+      "popoverHide": "Vokabular-Auswahl ausblenden"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -229,7 +235,8 @@
       "deleteAndClear": "Lösche originales Mapping und verwerfe Änderungen",
       "deleteAndKeep": "Lösche originales Mapping und behalte Änderungen",
       "keepAndClear": "Behalte originales Mapping und verwerte Änderungen",
-      "cancel": "@:general.cancel"
+      "cancel": "@:general.cancel",
+      "removeConceptFromMapping": "Konzept aus Mapping entfernen"
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
@@ -311,7 +318,8 @@
       "source": "Quelle",
       "settingShowAllSchemes": "Ergebnisse aller Vokabulare anzeigen",
       "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind.",
-      "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen"
+      "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen",
+      "settingsButton": "Mapping-Browser Einstellungen"
     },
     "mappingDetail": {
       "title": "Mapping-Details",

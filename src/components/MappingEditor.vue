@@ -75,6 +75,7 @@
               />
               <!-- Delete button for concept -->
               <span
+                v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: $util.delay.medium }"
                 class="button fontSize-large"
                 @click="$store.commit({
                   type: 'mapping/remove',

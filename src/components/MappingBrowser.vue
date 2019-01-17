@@ -9,6 +9,7 @@
       <!-- Settings -->
       <div id="mappingBrowser-settingsButton">
         <font-awesome-icon
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingsButton'), delay: $util.delay.medium }"
           id="mappingBrowser-settingsButton-icon"
           icon="cog"
           class="button" />
