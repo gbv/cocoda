@@ -371,6 +371,8 @@ export default {
             lineTerminator: "\r\n",
             language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingToCSV doesn't support a language override in each call (yet).
           })
+          // Minify all mappings first
+          download.mappings = download.mappings.map(mapping => this.$jskos.minifyMapping(mapping))
           for (let mapping of download.mappings) {
             // Prepare labels
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
