@@ -133,6 +133,12 @@
             <auto-link :link="identifier" />
           </div>
           <div
+            v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel) && language != '-'))"
+            :key="`conceptDetail-prefLabel-${language}`"
+            class="conceptDetail-identifier" >
+            <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
+          </div>
+          <div
             v-if="item.creator && item.creator.length"
             class="conceptDetail-identifier" >
             <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
@@ -147,11 +153,14 @@
             class="conceptDetail-identifier" >
             <b>{{ $t("conceptDetail.modified") }}:</b> {{ item.modified }}
           </div>
-          <div
-            v-if="item.definition"
-            class="conceptDetail-identifier" >
-            <b>{{ $t("conceptDetail.definition") }}:</b> {{ $util.definition(item).join(", ") }}
-          </div>
+          <template v-if="item.definition">
+            <div
+              v-for="language in [$util.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $util.getLanguage(item.definition) && language != '-'))"
+              :key="`conceptDetail-defintion-${language}`"
+              class="conceptDetail-identifier" >
+              <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
+            </div>
+          </template>
         </b-tab>
         <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
         <b-tab
