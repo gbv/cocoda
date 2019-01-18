@@ -130,7 +130,7 @@ export default {
       return !this.concept.narrower || !this.concept.narrower.includes(null)
     },
     isOpen() {
-      return _.get(this.concept, "__ISOPEN__[isLeft]", false)
+      return _.get(this.concept, `__ISOPEN__[${this.isLeft}]`, false)
     },
   },
   methods: {
