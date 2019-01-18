@@ -205,12 +205,16 @@
   ],
   "searchLinks": [
     {
-      "prefLabel": { "de": "Wikipedia" },
-      "url": "https://{language}.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
-    },
-    {
       "prefLabel": { "de": "Wikipedia (de)" },
       "url": "https://de.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": { "de": "Wikipedia (en)" },
+      "url": "https://en.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": { "de": "Wikipedia" },
+      "url": "https://{language}.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
     },
     {
       "prefLabel": { "de": "RVK Online" },
