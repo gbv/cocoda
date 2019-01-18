@@ -26,16 +26,7 @@ export default {
      */
     schemes() {
       // TODO: Sorting should be fixed in jskos-tools.
-      return this.$store.state.schemes.slice().sort((a, b) => {
-        let labelA = this.$util.prefLabel(a).toLowerCase(), labelB = this.$util.prefLabel(b).toLowerCase()
-        if (labelA < labelB) {
-          return -1
-        }
-        if (labelA > labelB) {
-          return 1
-        }
-        return 0
-      })
+      return this.$store.state.schemes.slice()
     },
     schemesLoaded() {
       return this.$store.state.schemesLoaded
