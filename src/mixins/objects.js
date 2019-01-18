@@ -227,8 +227,6 @@ export default {
         if (provider.has.concepts) {
           let promise = provider.getSchemes().then(results => {
             for (let scheme of results) {
-              // Set provider for scheme
-              scheme.__PROVIDER__ = registry
               // Add scheme specific custom properties
               scheme.__DETAILSLOADED__ = true
               scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
@@ -237,9 +235,10 @@ export default {
               let otherScheme = this._getObject(scheme), prio, otherPrio, override = false
               // let otherScheme = null, prio, otherPrio
               if (otherScheme) {
-                prio = registry.prio || 0
-                otherPrio = otherScheme.__PROVIDER__ ? (otherScheme.__PROVIDER__.priority || 0) : -1
+                prio = registry.priority || 0
+                otherPrio = _.get(otherScheme, "_provider.registry.priority", -1)
                 override = otherPrio < prio
+                console.log(scheme, otherPrio, otherScheme)
               }
               if (!otherScheme || override) {
                 if (override) {
