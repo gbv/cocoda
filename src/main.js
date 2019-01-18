@@ -367,6 +367,35 @@ Vue.mixin({
     },
     hotkeyHandler(event) {
       let shortcut = _.pick(event, ["key", "metaKey", "ctrlKey", "altKey", "shiftKey"])
+      if (_.get(event, "srcElement.tagName") == "INPUT") {
+        // Skip certain shortcuts for input elements
+        let toSkip = [
+          {
+            key: "a",
+            ctrlKey: true,
+            metaKey: false,
+            altKey: false,
+            shiftKey: false,
+          },
+          {
+            key: "a",
+            ctrlKey: false,
+            metaKey: true,
+            altKey: false,
+            shiftKey: false,
+          }
+        ]
+        let skip = false
+        for (let sc of toSkip) {
+          if (_.isEqual(sc, shortcut)) {
+            skip = true
+            break
+          }
+        }
+        if (skip) {
+          return
+        }
+      }
       let pass = true
       for (let sc of this.hotkeys) {
         if (_.isEqual(shortcut, sc.shortcut)) {
