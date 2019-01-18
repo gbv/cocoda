@@ -328,6 +328,12 @@ export default {
           label: this.$util.prefLabel(searchLink)
         })
       }
+      // Filter out duplicate URLs (e.g. Wikipedia)
+      searchLinks = searchLinks.filter((link, index, self) =>
+        index === self.findIndex(l => (
+          l.url == link.url
+        ))
+      )
       return searchLinks
     },
   },
