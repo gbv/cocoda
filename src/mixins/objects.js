@@ -404,7 +404,7 @@ export default {
           this.$set(child, "broader", [object])
           this.adjustConcept(child)
         }
-        this.$set(object, "narrower", narrower)
+        this.$set(object, "narrower", this.$jskos.sortConcepts(narrower))
         this.adjustConcept(object)
         return object
       }).catch(error => {
