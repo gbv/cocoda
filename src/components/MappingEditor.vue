@@ -479,6 +479,8 @@ export default {
           scheme: (concept.inScheme && concept.inScheme[0]) || this.selected.scheme[isLeft],
           isLeft: isLeft
         })
+        // Load details if necessary
+        this.loadDetails(concept)
       }
     },
     saveComment() {
