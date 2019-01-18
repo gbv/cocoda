@@ -20,8 +20,8 @@
           :href="license.uri"
           target="_blank" >
           <img
-            v-if="licenseBadges[license.uri]"
-            :src="licenseBadges[license.uri]"
+            v-if="$util.licenseBadges[license.uri]"
+            :src="$util.licenseBadges[license.uri]"
             class="schemeDetail-licenseBadge" >
           <span v-else>
             {{ license.uri }}
@@ -114,20 +114,6 @@ export default {
     settings: {
       type: Object,
       default: () => { return {} }
-    }
-  },
-  data () {
-    return {
-      /** Image URLs for specific licenses */
-      licenseBadges: {
-        "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
-        "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
-        "http://creativecommons.org/licenses/by-nc-nd/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
-        "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
-        "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
-        "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
-        "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
-      },
     }
   },
   methods: {

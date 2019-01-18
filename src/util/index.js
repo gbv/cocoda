@@ -187,4 +187,16 @@ let addEndpoint = (url, endpoint) => {
   return url + "/" + endpoint
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint }
+/** Image URLs for specific licenses */
+let licenseBadges = {
+  "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
+  "http://creativecommons.org/licenses/by/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by.svg",
+  "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+  "http://creativecommons.org/licenses/by-nc-nd/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+  "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
+  "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
+  "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
+  "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
+}
+
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, licenseBadges }

@@ -17,7 +17,7 @@
           :icon="showPopover ? 'angle-left' : 'angle-down'" />
       </div>
       <!-- Name of scheme -->
-      <div>
+      <div class="conceptSchemeSelection-schemeName">
         <!-- Favorite star -->
         <font-awesome-icon
           v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
@@ -31,6 +31,13 @@
           :is-link="true"
           :is-left="isLeft"
           font-size="large" />
+        <!-- License badge -->
+        <span v-if="scheme.license && scheme.license.length">
+          <img
+            v-if="$util.licenseBadges[scheme.license[0].uri]"
+            :src="$util.licenseBadges[scheme.license[0].uri]"
+            class="schemeDetail-licenseBadge" >
+        </span>
         <!-- Button to clear scheme -->
         <div
           v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
@@ -296,7 +303,9 @@ export default {
 .conceptSchemeSelection-collapsed {
   padding: 5px 5px 0 5px;
 }
-
+.conceptSchemeSelection-schemeName {
+  padding-right: 30px;
+}
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;
 }
