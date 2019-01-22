@@ -124,6 +124,9 @@ class ReconciliationApiProvider extends BaseProvider {
       url = url.replace("{language}", language)
     }
     queries = JSON.stringify(queries)
+    if (url.startsWith("http:") && window.location.protocol == "https:") {
+      return Promise.resolve({})
+    }
     return this.http.post(url, qs.stringify({ queries }), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"

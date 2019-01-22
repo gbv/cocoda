@@ -61,6 +61,10 @@ class BaseProvider {
     }
     // Save a modified http.get
     this.get = (url, options, cancelToken) => {
+      // Don't perform http requests if site is used via https
+      if (url.startsWith("http:") && window.location.protocol == "https:") {
+        return Promise.resolve([])
+      }
       let language = _.get(options, "params.language") || this.language || this.defaultLanguage
       _.set(options, "params.language", language)
       return http.get(url, options, cancelToken).then(response => {
