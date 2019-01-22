@@ -184,6 +184,27 @@
       },
       "url": "https://lobid.org/gnd/reconcile",
       "namespace": "http://d-nb.info/gnd/"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
+      "notation": ["R"],
+      "prefLabel": {
+        "de": "Nomisma-Empfehlungen",
+        "en": "Nomisma Recommendations"
+      },
+      "definition": {
+        "en": ["Nomisma Reconciliation API"],
+        "de": ["Nomisma-Reconciliation API"]
+      },
+      "provider": "ReconciliationApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+      }],
+      "scheme": {
+        "uri": "http://nomisma.org/id/"
+      },
+      "url": "http://nomisma.org/apis/reconcile",
+      "namespace": "http://nomisma.org/id/"
     }
   ],
   "registryMode": "override",
