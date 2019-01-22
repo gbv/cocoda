@@ -23,7 +23,7 @@
         "en": ["central JSKOS server instance of coli-conc"],
         "de": ["zentrale JSKOS-Server Instanz von coli-conc"]
       },
-      "baseUrl": "//coli-conc.gbv.de/dev-api/",
+      "baseUrl": "//coli-conc.gbv.de/api/",
       "provider": "ConceptApi"
     },
     {
@@ -104,7 +104,7 @@
         "en": ["Central concordance registry of coli-conc"],
         "de": ["Zentrale Konkordanz-Datenbank von coli-conc"]
       },
-      "mappings": "//coli-conc.gbv.de/dev-api/mappings/",
+      "mappings": "//coli-conc.gbv.de/api/mappings/",
       "provider": "MappingsApi",
       "subject": [{
         "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"

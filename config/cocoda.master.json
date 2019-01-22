@@ -1,16 +1,3 @@
 {
-  "registries": [
-    {
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
-      "notation": ["J"],
-      "prefLabel": {
-        "en": "JSKOS Server"
-      },
-      "baseUrl": "//coli-conc.gbv.de/api/",
-      "provider": "ConceptApi",
-      "priority": 2
-    }
-  ],
-  "registryMode": "merge",
   "cocodaBaseUrl": "//coli-conc.gbv.de/cocoda/app/"
 }
