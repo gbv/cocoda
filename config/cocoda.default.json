@@ -230,6 +230,11 @@
       "prefLabel": { "en": "WebDewey Search" },
       "url": "https://deweysearchde.pansoft.de/webdeweysearch/executeSearch.html?query={notation}",
       "schemeUris": ["http://bartoc.org/en/node/241"]
+    },
+    {
+      "prefLabel": { "en": "WebGND" },
+      "url": "http://gnd.eurospider.com/s?q={notation}",
+      "schemeUris": ["http://bartoc.org/en/node/430"]
     }
   ],
   "favoriteTerminologyProviders": [
