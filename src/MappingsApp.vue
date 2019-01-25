@@ -326,7 +326,7 @@ export default {
           icon: "external-link-alt"
         }
       ],
-      showLabels: "0",
+      showLabels: "1",
       // Properties for URL parameters
       properties: {
         sourceScheme: "fromScheme",
