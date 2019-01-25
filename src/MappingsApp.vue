@@ -229,6 +229,7 @@
                     v-show="mappings.length"
                     :mappings="mappings"
                     :actions="actions"
+                    :show-labels="showLabels != 0"
                     :show-tooltip="false"
                     :hide-duplicates="false"
                     @click="tableClicked" />
@@ -264,6 +265,12 @@
                       <font-awesome-icon icon="download" /> .tsv
                     </a>
                   </p>
+                  <b-form-checkbox
+                    v-model="showLabels"
+                    value="1"
+                    unchecked-value="0" >
+                    Show Labels for Concepts
+                  </b-form-checkbox>
                 </b-col>
               </b-row>
             </b-container>
@@ -293,7 +300,7 @@ export default {
     return {
       loading: false,
       loadingId: null,
-      schemes: null,
+      mappingSchemes: null,
       currentPage: 1,
       tab: 0,
       downloadUrl: null,
@@ -319,6 +326,7 @@ export default {
           icon: "external-link-alt"
         }
       ],
+      showLabels: "0",
       // Properties for URL parameters
       properties: {
         sourceScheme: "fromScheme",
@@ -329,6 +337,7 @@ export default {
         type: "type",
         concordance: "concordance",
         currentPage: "page",
+        showLabels: "showLabels",
       },
       // Filter for concordance table
       filter: {
@@ -353,7 +362,7 @@ export default {
       return options
     },
     fromScheme() {
-      return this.schemes.find(
+      return this.mappingSchemes.find(
         scheme =>
           _.get(scheme, "prefLabel.de", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
           _.get(scheme, "prefLabel.en", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
@@ -361,7 +370,7 @@ export default {
       )
     },
     toScheme() {
-      return this.schemes.find(
+      return this.mappingSchemes.find(
         scheme =>
           _.get(scheme, "prefLabel.de", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
           _.get(scheme, "prefLabel.en", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
@@ -488,8 +497,8 @@ export default {
     }
   },
   watch: {
-    schemes() {
-      if (this.schemes) {
+    mappingSchemes() {
+      if (this.mappingSchemes) {
         this.loading = false
         // Load search from parameters
         this.loadFromParameters()
@@ -507,34 +516,50 @@ export default {
       query.tab = this.tab
       this.$router.push({ query })
     },
+    mappings() {
+      for (let mapping of this.mappings) {
+        let concepts = this.$jskos.conceptsOfMapping(mapping)
+        for (let concept of concepts) {
+          if (!concept.__DETAILSLOADED__ && concept._getDetails) {
+            this.loadDetails(concept)
+          }
+        }
+      }
+    },
+    showLabels() {
+      this.saveToParameters()
+    },
   },
   created() {
-    // Set loading to true if schemes are not loaded yet.
-    if (!this.schemes) {
+    // Set loading to true if mappingSchemes are not loaded yet.
+    if (!this.mappingSchemes) {
       this.loading = true
     }
-    // Load mapping schemes from API.
-    axios.get(this.config.mappingProviders[0].url + "voc").then(({ data }) => {
-      this.schemes = data
-    }).catch(error => {
-      console.warn("Error fetching mapping schemes:", error)
-      this.schemes = []
-    })
-    // Load concordances from API.
-    axios.get(this.concordancesUrl).then(({ data }) => {
-      this.concordances = data
-    }).catch(error => {
-      console.warn("Error fetching mapping schemes:", error)
-      this.concordances = []
-    }).finally(() => {
-      // If there are no concordances, jump to second tab.
-      if (this.concordances.length == 0 && this.tab == 0) {
-        this.tab = 1
-      }
-    })
-    // Load from parameters on popstate (when using the browser's forward and backward buttons).
-    window.addEventListener("popstate", () => {
-      this.loadFromParameters()
+    // Load all schemes first before loading anything else
+    this.loadSchemes().then(() => {
+      // Load mapping mappingSchemes from API.
+      axios.get(this.config.mappingProviders[0].url + "voc").then(({ data }) => {
+        this.mappingSchemes = data
+      }).catch(error => {
+        console.warn("Error fetching mapping schemes:", error)
+        this.mappingSchemes = []
+      })
+      // Load concordances from API.
+      axios.get(this.concordancesUrl).then(({ data }) => {
+        this.concordances = data
+      }).catch(error => {
+        console.warn("Error fetching mapping schemes:", error)
+        this.concordances = []
+      }).finally(() => {
+        // If there are no concordances, jump to second tab.
+        if (this.concordances.length == 0 && this.tab == 0) {
+          this.tab = 1
+        }
+      })
+      // Load from parameters on popstate (when using the browser's forward and backward buttons).
+      window.addEventListener("popstate", () => {
+        this.loadFromParameters()
+      })
     })
   },
   methods: {
@@ -629,6 +654,9 @@ export default {
         }
       }).then(({ data, headers }) => {
         if (this.loadingId == loadingId) {
+          for (let mapping of data || []) {
+            this.adjustMapping(mapping)
+          }
           this.mappings = data || []
           this.totalCount = parseInt(headers["x-total-count"])
           if (!this.totalCount) {

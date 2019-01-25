@@ -9,7 +9,7 @@
         v-for="concept in value"
         :key="concept.uri"
         :item="concept"
-        :show-text="false"
+        :show-text="showLabels"
         :show-tooltip="showTooltip"
         :is-link="false"
         :is-highlighted="false"
@@ -24,7 +24,7 @@
         :key="concept.uri">
         <item-name
           :item="concept"
-          :show-text="false"
+          :show-text="showLabels"
           :show-tooltip="showTooltip"
           :is-link="false"
           :is-highlighted="false"
@@ -96,6 +96,13 @@ export default {
     showTooltip: {
       type: Boolean,
       default: true
+    },
+    /**
+     * Whether to show the concepts' labels
+     */
+    showLabels: {
+      type: Boolean,
+      default: false
     },
   },
   data () {
