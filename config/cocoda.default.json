@@ -203,7 +203,7 @@
       "scheme": {
         "uri": "http://nomisma.org/id/"
       },
-      "url": "http://nomisma.org/apis/reconcile",
+      "url": "https://coli-conc.gbv.de/nomisma-reconciliation/",
       "namespace": "http://nomisma.org/id/"
     }
   ],
