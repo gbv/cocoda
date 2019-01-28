@@ -30,6 +30,30 @@
               placeholder="https://"
               type="text" />
           </p>
+          <p v-if="localSettings">
+            <b>{{ $t("settings.creatorUri") }}</b>
+            <b-form-input
+              v-model="localSettings.creatorUri"
+              placeholder="https://"
+              type="text"
+              @input="checkCredentials" />
+          </p>
+          <p v-if="localSettings && $store.getters.authAvailable">
+            <b>{{ $t("settings.creatorCredentials") }}</b>
+            <b-form-input
+              v-model="localSettings.creatorCredentials"
+              :state="$store.state.authorized"
+              type="password"
+              @input="checkCredentials" />
+            <span
+              v-if="$store.state.authorized != null"
+              :class="{
+                'text-success': $store.state.authorized,
+                'text-danger': !$store.state.authorized
+            }" >
+              {{ $store.state.authorized ? $t("settings.credentialsCorrect") : $t("settings.credentialsIncorrect") }}
+            </span>
+          </p>
         </b-tab>
         <b-tab
           :title="$t('settings.tabLayout')" >
@@ -295,6 +319,10 @@ export default {
       }
     },
   },
+  created() {
+    // Debounce checkCredentials by 350 ms
+    this.checkCredentials = _.debounce(this._checkCredentials, 350)
+  },
   methods: {
     show() {
       this.$refs.settingsModal.show()
@@ -437,6 +465,9 @@ export default {
           this.deleteMappingsButtons = false
         })
       })
+    },
+    _checkCredentials() {
+      this.$store.dispatch("checkAuth")
     },
   }
 }

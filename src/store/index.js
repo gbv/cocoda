@@ -21,7 +21,9 @@ const state = {
   mousePosition: {
     x: 0,
     y: 0
-  }
+  },
+  authorized: null,
+  authorizedLoadingId: null,
 }
 
 const getters = {
@@ -30,6 +32,9 @@ const getters = {
   },
   favoriteConcepts: (state) => {
     return state.settings.settings.favoriteConcepts || state.config.favoriteConcepts
+  },
+  authAvailable: (state) => {
+    return state.config.registries.find(registry => registry.auth) != null
   },
 }
 
@@ -58,7 +63,13 @@ const mutations = {
   },
   setMousePosition(state, { x, y }) {
     state.mousePosition = { x, y }
-  }
+  },
+  setAuthorized(state, { value }) {
+    state.authorized = value
+  },
+  setAuthorizedLoadingId(state, { value }) {
+    state.authorizedLoadingId = value
+  },
 }
 
 const store = new Vuex.Store({
@@ -73,6 +84,14 @@ const store = new Vuex.Store({
 })
 
 // Load settings on first launch.
-store.dispatch("settings/load")
+store.dispatch("settings/load").then(() => {
+  // Check auth once after loading
+  store.dispatch("checkAuth")
+})
+
+// Check auth every 15 seconds
+setInterval(() => {
+  store.dispatch("checkAuth")
+}, 15000)
 
 export default store

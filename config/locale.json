@@ -160,7 +160,11 @@
       "version": "Version",
       "currentCommit": "Current Commit",
       "buildDate": "Build Date",
-      "impressum": "Impressum"
+      "impressum": "Impressum",
+      "creatorUri": "Creator URI (e.g. ORCID)",
+      "creatorCredentials": "Creator Credentials",
+      "credentialsCorrect": "Credentials successfully validated.",
+      "credentialsIncorrect": "Credentials could not be validated."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -270,7 +274,11 @@
       "version": "Version",
       "currentCommit": "Aktueller Commit",
       "buildDate": "Build-Datum",
-      "impressum": "Impressum"
+      "impressum": "Impressum",
+      "creatorUri": "Ersteller-URI (z.B. ORCID)",
+      "creatorCredentials": "Ersteller-Zugang",
+      "credentialsCorrect": "Zugang erfolgreich bestätigt.",
+      "credentialsIncorrect": "Zugang konnte nicht bestätigt werden."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",

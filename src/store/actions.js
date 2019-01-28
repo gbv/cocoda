@@ -1,5 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
+import util from "../util"
+import axios from "axios"
 
 export default {
 
@@ -45,4 +47,41 @@ export default {
       value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other))
     })
   },
+
+  checkAuth({ state, commit }) {
+    // Currently only use the first registry that provides authentication.
+    // TODO: Update this as soon as proper authorization is implemented.
+    let registry = state.config.registries.find(registry => registry.auth)
+    if (!registry) {
+      commit({
+        type: "setAuthorized",
+        value: null
+      })
+      return
+    }
+    let loadingId = util.generateID()
+    commit({
+      type: "setAuthorizedLoadingId",
+      value: loadingId
+    })
+    let username = Buffer.from(state.settings.settings.creatorUri).toString("base64")
+    let password = Buffer.from(state.settings.settings.creatorCredentials).toString("base64")
+    axios.get(registry.auth, {
+      auth: { username, password }
+    }).then(() => {
+      // If there is no error, authorization was successful
+      return true
+    }).catch(() => {
+      // If there is an error, authorization was not successful
+      return false
+    }).then(result => {
+      if (state.authorizedLoadingId == loadingId) {
+        commit({
+          type: "setAuthorized",
+          value: result
+        })
+      }
+    })
+  },
+
 }

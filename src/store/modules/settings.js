@@ -74,7 +74,7 @@ const mutations = {
 // actions
 const actions = {
   load({ commit }) {
-    localforage.getItem("settings").then(settings => {
+    return localforage.getItem("settings").then(settings => {
       let newSettings = Object.assign({}, defaultSettings, settings || {})
       commit({
         type: "loaded"
@@ -83,6 +83,7 @@ const actions = {
         type: "save",
         settings: newSettings
       })
+      return
     })
   }
 }

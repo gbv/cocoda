@@ -67,6 +67,12 @@
       <b-nav-item @click="$refs.settings.show()">
         <font-awesome-icon icon="cog" />
         {{ creatorName || $t("navbar.settings") }}
+        <!-- Login status -->
+        <span
+          v-if="$store.getters.authAvailable"
+          :style="`color: ${$store.state.authorized ? 'green' : 'red'} !important;`">
+          <font-awesome-icon icon="user" />
+        </span>
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
