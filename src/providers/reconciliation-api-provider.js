@@ -127,11 +127,12 @@ class ReconciliationApiProvider extends BaseProvider {
     if (url.startsWith("http:") && window.location.protocol == "https:") {
       return Promise.resolve({})
     }
-    return this.http.post(url, qs.stringify({ queries }), {
+    return this.post(url, qs.stringify({ queries }), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
-    }).then(response => response.data).catch(() => []).then(data => {
+    }).then(data => {
+      data = data || {}
       this.cache.push({
         labels,
         language,

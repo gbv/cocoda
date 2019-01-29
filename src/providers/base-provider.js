@@ -60,18 +60,19 @@ class BaseProvider {
       all: "*",
     }
     this.auth = null
-    // Save a modified http.get
-    this.get = (url, options, cancelToken) => {
+    // Save modified http methods
+    this.request = (method, url, data, options, cancelToken) => {
       // Don't perform http requests if site is used via https
       if (url.startsWith("http:") && window.location.protocol == "https:") {
         return Promise.resolve([])
       }
       options = options || {}
+      options.cancelToken = cancelToken
       let language = _.get(options, "params.language") || this.language || this.defaultLanguage
       _.set(options, "params.language", language)
       // Try 5 times with 1.5 second delay
       let retryCount = 5, retryDelay = 1500
-      let tryGet = (tries) => {
+      let tryRequest = (tries) => {
         if (tries == 0) {
           return Promise.reject("No retries left.")
         }
@@ -80,27 +81,56 @@ class BaseProvider {
           options.auth = this.auth
         }
         tries -= 1
-        return http.get(url, options, cancelToken).then(response => {
-          if (Array.isArray(response.data)) {
+        let promise
+        if (method == "get") {
+          promise = http.get(url, options)
+        } else if (method == "post") {
+          promise = http.post(url, data, options)
+        } else if (method == "put") {
+          promise = http.put(url, data, options)
+        } else if (method == "patch") {
+          promise = http.patch(url, data, options)
+        } else if (method == "delete") {
+          promise = http.delete(url, options)
+        } else {
+          promise = Promise.reject("No method called " + method)
+        }
+        return promise.then(response => {
+          if (response.data) {
             return response.data
           } else {
-            return []
+            return null
           }
         }).catch(error => {
           if (_.get(error, "response.status") === 401 && tries > 0) {
             console.warn(`API authorization error => trying again! (${tries})`)
             return new Promise(resolve => { setTimeout(() => { resolve() }, retryDelay) }).then(() => {
-              return tryGet(tries)
+              return tryRequest(tries)
             })
           } else {
             throw error
           }
         })
       }
-      return tryGet(retryCount).catch(error => {
+      return tryRequest(retryCount).catch(error => {
         console.warn("API error:", error)
-        return []
+        return null
       })
+    }
+    this.get = (url, options, cancelToken) => {
+      return this.request("get", url, null, options, cancelToken)
+    }
+    this.post = (url, data, options, cancelToken) => {
+      return this.request("post", url, data, options, cancelToken)
+    }
+    this.put = (url, data, options, cancelToken) => {
+      return this.request("put", url, data, options, cancelToken)
+    }
+    this.patch = (url, data, options, cancelToken) => {
+      return this.request("patch", url, data, options, cancelToken)
+    }
+    this.delete = (url, options, cancelToken) => {
+      return this.request("delete", url, null, options, cancelToken)
     }
 
     /**

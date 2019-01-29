@@ -17,15 +17,15 @@ class KenomMappingsApiProvider extends MappingsApiProvider {
     for (let { mapping } of mappings) {
       mapping = jskos.minifyMapping(mapping)
       mapping = jskos.addMappingIdentifiers(mapping)
-      promises.push(this.http.post(this.registry.mappings, {
+      promises.push(this.post(this.registry.mappings, {
         mapping
       }))
     }
     return Promise.all(promises).then(results => {
       let savedMappings = []
-      for (let { data } of results) {
-        if (data.ok) {
-          savedMappings.push(data.mapping)
+      for (let result of results) {
+        if (result) {
+          savedMappings.push(result)
         }
       }
       return savedMappings

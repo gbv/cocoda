@@ -28,6 +28,7 @@ class MappingsApiProvider extends BaseProvider {
     }
     options = Object.assign({}, { params }, options)
     return this.get(this.registry.mappings, options).then(mappings => {
+      mappings = mappings || []
       // Filter exact duplicates from result
       let newMappings = []
       for (let mapping of mappings) {

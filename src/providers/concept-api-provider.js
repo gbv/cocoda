@@ -36,7 +36,7 @@ class ConceptApiProvider extends BaseProvider {
     if (Array.isArray(this.registry.schemes)) {
       return Promise.resolve(this.registry.schemes)
     }
-    return this.get(this.registry.schemes)
+    return this.get(this.registry.schemes).then(schemes => schemes || [])
   }
 
   _getTop(scheme) {
@@ -50,7 +50,7 @@ class ConceptApiProvider extends BaseProvider {
         limit: 10000,
       }
     }
-    return this.get(this.registry.top, options)
+    return this.get(this.registry.top, options).then(top => top || [])
   }
 
   _getConcepts(concepts, { properties } = {}) {
@@ -68,7 +68,7 @@ class ConceptApiProvider extends BaseProvider {
         properties,
       }
     }
-    return this.get(this.registry.concepts, options)
+    return this.get(this.registry.concepts, options).then(concepts => concepts || [])
   }
 
   _getNarrower(concept) {
@@ -82,7 +82,7 @@ class ConceptApiProvider extends BaseProvider {
         limit: 10000,
       }
     }
-    return this.get(this.registry.narrower, options)
+    return this.get(this.registry.narrower, options).then(narrower => narrower || [])
   }
 
   _getAncestors(concept) {
@@ -95,7 +95,7 @@ class ConceptApiProvider extends BaseProvider {
         properties: this.properties.default,
       }
     }
-    return this.get(this.registry.ancestors, options)
+    return this.get(this.registry.ancestors, options).then(ancestors => ancestors || [])
   }
 
   _suggest(search, { scheme, limit = 200, use = "notation,label", types = [], cancelToken } = {}) {
@@ -114,7 +114,7 @@ class ConceptApiProvider extends BaseProvider {
     }
     // Some registries use URL templates with {searchTerms}
     let url = this.registry.suggest.replace("{searchTerms}", search)
-    return this.get(url, options, cancelToken)
+    return this.get(url, options, cancelToken).then(result => result || ["", [], [], []])
   }
 
   /**
@@ -133,7 +133,7 @@ class ConceptApiProvider extends BaseProvider {
     }
     return this.get(this.registry.types, {
       uri: _.get(scheme, "uri"),
-    })
+    }).then(types => types || [])
   }
 
 }
