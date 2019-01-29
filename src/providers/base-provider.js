@@ -69,14 +69,14 @@ class BaseProvider {
       options = options || {}
       let language = _.get(options, "params.language") || this.language || this.defaultLanguage
       _.set(options, "params.language", language)
-      // Try 5 times with 3 second delay
-      let retryCount = 5, retryDelay = 3000
+      // Try 5 times with 1.5 second delay
+      let retryCount = 5, retryDelay = 1500
       let tryGet = (tries) => {
         if (tries == 0) {
           return Promise.reject("No retries left.")
         }
         // Set auth
-        if (this.auth) {
+        if (this.registry.auth && this.auth) {
           options.auth = this.auth
         }
         tries -= 1
@@ -87,10 +87,14 @@ class BaseProvider {
             return []
           }
         }).catch(error => {
-          console.warn("API error:", error, tries ? "\n => Trying again!" : "")
-          return new Promise(resolve => { setTimeout(() => { resolve() }, retryDelay) }).then(() => {
-            return tryGet(tries)
-          })
+          if (_.get(error, "response.status") === 401 && tries > 0) {
+            console.warn(`API authorization error => trying again! (${tries})`)
+            return new Promise(resolve => { setTimeout(() => { resolve() }, retryDelay) }).then(() => {
+              return tryGet(tries)
+            })
+          } else {
+            throw error
+          }
         })
       }
       return tryGet(retryCount).catch(error => {
