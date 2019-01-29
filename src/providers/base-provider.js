@@ -59,22 +59,42 @@ class BaseProvider {
       detail: "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote",
       all: "*",
     }
+    this.auth = null
     // Save a modified http.get
     this.get = (url, options, cancelToken) => {
       // Don't perform http requests if site is used via https
       if (url.startsWith("http:") && window.location.protocol == "https:") {
         return Promise.resolve([])
       }
+      options = options || {}
       let language = _.get(options, "params.language") || this.language || this.defaultLanguage
       _.set(options, "params.language", language)
-      return http.get(url, options, cancelToken).then(response => {
-        if (Array.isArray(response.data)) {
-          return response.data
-        } else {
-          return []
+      // Try 5 times with 3 second delay
+      let retryCount = 5, retryDelay = 3000
+      let tryGet = (tries) => {
+        if (tries == 0) {
+          return Promise.reject("No retries left.")
         }
-      }).catch(error => {
-        console.log("API error:", error)
+        // Set auth
+        if (this.auth) {
+          options.auth = this.auth
+        }
+        tries -= 1
+        return http.get(url, options, cancelToken).then(response => {
+          if (Array.isArray(response.data)) {
+            return response.data
+          } else {
+            return []
+          }
+        }).catch(error => {
+          console.warn("API error:", error, tries ? "\n => Trying again!" : "")
+          return new Promise(resolve => { setTimeout(() => { resolve() }, retryDelay) }).then(() => {
+            return tryGet(tries)
+          })
+        })
+      }
+      return tryGet(retryCount).catch(error => {
+        console.warn("API error:", error)
         return []
       })
     }
@@ -149,6 +169,10 @@ class BaseProvider {
 
   getCancelToken() {
     return axios.CancelToken.source()
+  }
+
+  setAuth(auth) {
+    this.auth = auth
   }
 
   /**

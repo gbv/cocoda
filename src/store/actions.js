@@ -80,6 +80,12 @@ export default {
           type: "setAuthorized",
           value: result
         })
+        if (result) {
+          // Set auth for all providers
+          for (let registry of state.config.registries) {
+            registry.provider.setAuth({ username, password })
+          }
+        }
       }
     })
   },
