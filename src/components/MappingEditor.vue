@@ -349,6 +349,7 @@ export default {
       })
       let mapping = this.prepareMapping()
       let original = this.original
+      this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
         this.alert(this.$t("alerts.mappingSaved"), null, "success2")
         let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
@@ -363,6 +364,8 @@ export default {
         if (this.$settings.mappingEditorClearOnSave) {
           this.clearMapping()
         }
+      }).finally(() => {
+        this.loadingGlobal = false
       })
     },
     deleteMapping() {
@@ -372,6 +375,7 @@ export default {
     },
     deleteOriginalMapping(clear = false) {
       let mapping = this.prepareMapping(this.original)
+      this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
           this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
@@ -382,6 +386,8 @@ export default {
         } else {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
+      }).finally(() => {
+        this.loadingGlobal = false
       })
       return true
     },

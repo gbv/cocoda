@@ -12,6 +12,7 @@ import actions from "./actions"
 Vue.use(Vuex)
 
 const state = {
+  loading: 0,
   schemes: [],
   schemesLoaded: false,
   config,
@@ -69,6 +70,13 @@ const mutations = {
   },
   setAuthorizedLoadingId(state, { value }) {
     state.authorizedLoadingId = value
+  },
+  setLoading(state, { value }) {
+    if (value) {
+      state.loading += 1
+    } else {
+      state.loading -= 1
+    }
   },
 }
 

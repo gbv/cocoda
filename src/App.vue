@@ -26,7 +26,7 @@
     </div>
     <!-- Main -->
     <!-- Full screen loading indicator -->
-    <loading-indicator-full v-if="loading" />
+    <loading-indicator-full v-if="loadingGlobal || loading" />
     <div
       v-if="schemes.length"
       class="main">

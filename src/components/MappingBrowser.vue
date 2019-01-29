@@ -1126,6 +1126,7 @@ export default {
       }
     },
     removeMapping(mapping) {
+      this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
           this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
@@ -1134,6 +1135,8 @@ export default {
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { onlyMain: true })
+      }).finally(() => {
+        this.loadingGlobal = false
       })
     },
     /** Saving of mappigns */
