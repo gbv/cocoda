@@ -71,7 +71,7 @@ class BaseProvider {
       let language = _.get(options, "params.language") || this.language || this.defaultLanguage
       _.set(options, "params.language", language)
       // Try 5 times with 1.5 second delay
-      let retryCount = 5, retryDelay = 1500
+      let retryCount = 3, retryDelay = 1500
       let tryRequest = (tries) => {
         if (tries == 0) {
           return Promise.reject("No retries left.")
