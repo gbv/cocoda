@@ -38,7 +38,7 @@ const getters = {
   authAvailable: (state) => {
     return state.config.registries.find(registry => registry.auth) != null
   },
-  getCurrentRegistry: (state) => () => {
+  getCurrentRegistry: (state) => {
     // Try to find registry that fits state.settings.settings.mappingRegistry
     let registry = state.config.registries.find(registry => jskos.compare(registry, { uri: state.settings.settings.mappingRegistry }))
     if (!registry) {

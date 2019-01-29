@@ -309,7 +309,7 @@ const actions = {
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
-      let registry = rootGetters.getCurrentRegistry()
+      let registry = rootGetters.getCurrentRegistry
       if (registry) {
         registries = [registry]
       }
@@ -344,7 +344,7 @@ const actions = {
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
     } else {
-      registry = rootGetters.getCurrentRegistry()
+      registry = rootGetters.getCurrentRegistry
     }
     if (!registry || !registry.provider || !registry.provider.has.canSaveMappings) {
       console.warn("Tried to save mappings, but could not determine provider.")
@@ -360,7 +360,7 @@ const actions = {
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
     } else {
-      registry = rootGetters.getCurrentRegistry()
+      registry = rootGetters.getCurrentRegistry
     }
     if (!registry || !registry.provider || !registry.provider.has.canRemoveMappings) {
       console.warn("Tried to remove mappings, but could not determine provider.")

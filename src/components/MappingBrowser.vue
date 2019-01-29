@@ -237,7 +237,7 @@
             @click="edit(data)" />
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
-            v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry())"
+            v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
             :class="{
               ['button']: canSave(data.item.mapping),
               ['button-disabled']: !canSave(data.item.mapping)
@@ -247,7 +247,7 @@
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
             v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: $util.delay.medium }"
-            v-if="$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry()) && data.item.registry.provider.has.canRemoveMappings"
+            v-if="$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry) && data.item.registry.provider.has.canRemoveMappings"
             icon="trash-alt"
             class="button-delete mappingBrowser-toolbar-button"
             @click="removeMapping(data.item.mapping)"
@@ -1134,7 +1134,7 @@ export default {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
         // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry(), "uri") })
+        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
       }).finally(() => {
         this.loadingGlobal = false
       })
@@ -1145,7 +1145,7 @@ export default {
         return false
       }
       // Don't allow saving if it's the current registry
-      if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry())) {
+      if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry)) {
         return false
       }
       // TODO: Do this differently to prevent going through all local mappings on each reload.
@@ -1176,7 +1176,7 @@ export default {
       }).finally(() => {
         this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry(), "uri") })
+        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
       })
     },
   }
