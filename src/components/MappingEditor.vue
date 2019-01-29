@@ -351,21 +351,22 @@ export default {
       let original = this.original
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
+        if (!mappings.length || !mappings[0]) {
+          this.alert(this.$t("alerts.mappingNotSaved"), null, "danger")
+          return
+        }
         this.alert(this.$t("alerts.mappingSaved"), null, "success2")
-        let newMapping = mappings.find(m => this.$jskos.compareMappings(mapping, m))
+        let newMapping = mappings[0]
         this.$store.commit({
           type: "mapping/set",
           original: newMapping
         })
-      }).catch(error => {
-        this.alert(error, null, "danger")
-      }).then(() => {
-        this.$store.commit("mapping/setRefresh", { onlyMain: true })
         if (this.$settings.mappingEditorClearOnSave) {
           this.clearMapping()
         }
       }).finally(() => {
         this.loadingGlobal = false
+        this.$store.commit("mapping/setRefresh", { onlyMain: true })
       })
     },
     deleteMapping() {

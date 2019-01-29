@@ -1163,11 +1163,18 @@ export default {
     },
     saveMapping(mapping) {
       this.loading = 1
+      this.loadingGlobal = true
       return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
         return mappings[0]
       }).catch(() => {
         return null
+      }).then(mapping => {
+        if (!mapping) {
+          this.alert(this.$t("alerts.mappingNotSaved"), null, "danger")
+        }
+        return mapping
       }).finally(() => {
+        this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { onlyMain: true })
       })

@@ -170,7 +170,8 @@
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
       "mappingNotDeleted": "Mapping could not be deleted.",
-      "mappingSaved": "Mapping was saved."
+      "mappingSaved": "Mapping was saved.",
+      "mappingNotSaved": "Mapping could not be saved."
     },
     "dataModal": {
       "title": "Export JSKOS Data",
@@ -354,7 +355,8 @@
     "alerts": {
       "mappingDeleted": "Mapping wurde gelöscht.",
       "mappingNotDeleted": "Mapping konnte nicht gelöscht werden.",
-      "mappingSaved": "Mapping wurde gespeichert."
+      "mappingSaved": "Mapping wurde gespeichert.",
+      "mappingNotSaved": "Mapping konnte nicht gespeichert werden."
     },
     "dataModal": {
       "title": "JSKOS-Daten exportieren",
