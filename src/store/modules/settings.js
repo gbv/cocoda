@@ -40,6 +40,9 @@ const getters = {
     if (state.settings.creatorUrl) {
       creator.url = (state.settings.creatorUrl.startsWith("http") ? "" : "http://") + state.settings.creatorUrl
     }
+    if (state.settings.creatorUri) {
+      creator.uri = state.settings.creatorUri
+    }
     return creator
   }
 }
