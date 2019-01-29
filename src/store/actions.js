@@ -87,6 +87,8 @@ export default {
         authorized[registry.uri] = result
         if (result) {
           registry.provider.setAuth(auth)
+        } else {
+          registry.provider.setAuth(null)
         }
         index += 1
       }
