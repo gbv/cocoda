@@ -8,7 +8,7 @@
       },
       "definition": {
         "en": ["DANTE API with vocabularies at VZG"],
-        "de": ["DANTEi-API der VZG"]
+        "de": ["DANTE-API der VZG"]
       },
       "baseUrl": "//api.dante.gbv.de/",
       "provider": "ConceptApi"
