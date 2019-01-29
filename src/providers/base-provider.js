@@ -409,7 +409,7 @@ class BaseProvider {
    */
   saveMapping(mapping, original) {
     if (!mapping) {
-      return null
+      return Promise.resolve(null)
     }
     if (!mapping.created) {
       mapping.created = (new Date()).toISOString()
