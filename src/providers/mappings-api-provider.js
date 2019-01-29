@@ -54,6 +54,38 @@ class MappingsApiProvider extends BaseProvider {
       return mappings
     })
   }
+
+  /**
+   * Saves a mapping with http post or http put. Returns a Promise with the saved mapping.
+   *
+   * @param {*} mapping
+   * @param {*} original
+   */
+  _saveMapping(mapping, original) {
+    mapping = jskos.minifyMapping(mapping)
+    mapping = jskos.addMappingIdentifiers(mapping)
+    let uri = _.get(original, "uri")
+    if (uri) {
+      // If there is a URI, use PUT to update the mapping.
+      return this.put(uri, mapping)
+    } else {
+      // Otherwise, use POST to save the mapping.
+      return this.post(this.registry.mappings, mapping)
+    }
+  }
+
+  /**
+   * Removes a mapping with http delete. Returns a Promise with a boolean whether removal was successful.
+   */
+  _removeMapping(mapping) {
+    let uri = _.get(mapping, "uri")
+    if (uri) {
+      return this.delete(uri).then(result => result === undefined ? false : true)
+    } else {
+      return Promise.resolve(false)
+    }
+  }
+
 }
 
 MappingsApiProvider.providerName = "MappingsApi"
