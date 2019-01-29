@@ -25,12 +25,12 @@
       <font-awesome-icon icon="exchange-alt" />
     </div>
     <!-- Main -->
+    <!-- Full screen loading indicator -->
+    <loading-indicator-full v-if="loading" />
     <div
       v-if="schemes.length"
       class="main">
       <div class="flexbox-row">
-        <!-- Full screen loading indicator -->
-        <loading-indicator-full v-if="loading" />
 
         <!-- Concept components left side -->
         <div
