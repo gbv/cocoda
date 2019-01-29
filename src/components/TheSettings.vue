@@ -67,6 +67,18 @@
               }}
             </span>
           </p>
+          <p v-if="localSettings && availableMappingRegistries.length">
+            <b>{{ $t("settings.mappingRegistry") }}</b>
+            <b-form-select v-model="localSettings.mappingRegistry">
+              <option
+                v-for="registry in availableMappingRegistries"
+                :key="`settings-registry-${registry.uri}`"
+                :value="registry.uri" >
+                {{ $util.prefLabel(registry) }}
+              </option>
+            </b-form-select>
+            {{ $t("settings.mappingRegistryExplanation") }}
+          </p>
         </b-tab>
         <b-tab
           :title="$t('settings.tabLayout')" >
@@ -281,6 +293,9 @@ export default {
         this.localSettings.mappingCardinality = value ? "1-to-1" : "1-to-n"
       },
     },
+    availableMappingRegistries() {
+      return this.config.registries.filter(registry => registry.provider.has.canSaveMappings)
+    },
   },
   watch: {
     localSettings: {
@@ -325,7 +340,7 @@ export default {
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
             this.$refs.fileUpload.reset()
             this.refreshDownloads()
-            this.$store.commit("mapping/setRefresh", { onlyMain: true })
+            this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           })
         }
         reader.readAsText(this.uploadedFile)
@@ -449,7 +464,7 @@ export default {
         return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })), registry: "http://coli-conc.gbv.de/registry/local-mappings" })
       }).then(() => {
         this.creatorRewritten = true
-        this.$store.commit("mapping/setRefresh", { onlyMain: true })
+        this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
       })
     },
@@ -474,7 +489,7 @@ export default {
           if (mappings.length != removedMappingsCount) {
             console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappingsCount}.`)
           }
-          this.$store.commit("mapping/setRefresh", { onlyMain: true })
+          this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           this.refreshDownloads()
           this.deleteMappingsButtons = false
         })

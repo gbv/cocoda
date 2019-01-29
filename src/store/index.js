@@ -6,6 +6,7 @@ import mapping from "./modules/mapping"
 import alerts from "./modules/alerts"
 import settings from "./modules/settings"
 import { plugins } from "./plugins"
+import jskos from "jskos-tools"
 // Root store
 import actions from "./actions"
 
@@ -36,6 +37,14 @@ const getters = {
   },
   authAvailable: (state) => {
     return state.config.registries.find(registry => registry.auth) != null
+  },
+  getCurrentRegistry: (state) => () => {
+    // Try to find registry that fits state.settings.settings.mappingRegistry
+    let registry = state.config.registries.find(registry => jskos.compare(registry, { uri: state.settings.settings.mappingRegistry }))
+    if (!registry) {
+      registry = state.config.registries.find(registry => registry.provider.has.canSaveMappings)
+    }
+    return registry
   },
 }
 

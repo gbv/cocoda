@@ -21,6 +21,7 @@ const defaultSettings = {
   mappingEditorClearOnSave: true,
   favoriteSchemes: null,
   mappingCardinality: "1-to-n",
+  mappingRegistry: null,
 }
 
 // initial state

@@ -366,7 +366,7 @@ export default {
         }
       }).finally(() => {
         this.loadingGlobal = false
-        this.$store.commit("mapping/setRefresh", { onlyMain: true })
+        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry(), "uri") })
       })
     },
     deleteMapping() {
@@ -380,7 +380,7 @@ export default {
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
           this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
-          this.$store.commit("mapping/setRefresh", { onlyMain: true })
+          this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry(), "uri") })
           if (clear) {
             this.clearMapping()
           }

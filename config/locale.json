@@ -165,7 +165,9 @@
       "creatorCredentials": "Creator Credentials",
       "credentialsCorrect": "Credentials successfully validated.",
       "credentialsIncorrect": "Credentials could not be validated.",
-      "credentialsPartiallyIncorrect": "Credentials could partially not be validated."
+      "credentialsPartiallyIncorrect": "Credentials could partially not be validated.",
+      "mappingRegistry": "Active Mapping Provider",
+      "mappingRegistryExplanation": "This provider will be used to save mappings."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -281,7 +283,9 @@
       "creatorCredentials": "Ersteller-Zugang",
       "credentialsCorrect": "Zugang erfolgreich bestätigt.",
       "credentialsIncorrect": "Zugang konnte nicht bestätigt werden.",
-      "credentialsPartiallyIncorrect": "Zugang konnte teilweise nicht bestätigt werden."
+      "credentialsPartiallyIncorrect": "Zugang konnte teilweise nicht bestätigt werden.",
+      "mappingRegistry": "Aktiver Mapping-Provider",
+      "mappingRegistryExplanation": "Dieser Provider wird zum Speichern von Mappings genutzt."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",
