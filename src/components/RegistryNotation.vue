@@ -2,7 +2,8 @@
   <div
     v-b-tooltip.html.right="tooltip ? $util.prefLabel(registry) : ''"
     :class="{
-      ['registry-enabled']: !disabled
+      [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
+      'registry-notation-current': isCurrentRegistry,
     }"
     :style="`width: ${18 + 12 * ($util.notation(registry).length - 1)}px;`"
     class="registry-notation" >
@@ -27,6 +28,11 @@ export default {
       default: true
     },
   },
+  computed: {
+    isCurrentRegistry() {
+      return this.$jskos.compare(this.registry, this.$store.getters.getCurrentRegistry)
+    },
+  },
 }
 </script>
 
@@ -42,6 +48,13 @@ export default {
   height: 18px;
   .fontSize-verySmall;
   background-color: fadeout(@color-button-delete, 80%);
+}
+.registry-notation-current {
+  background-color: fadeout(@color-primary-3, 80%);
+}
+.registry-notation.registry-current-enabled {
+  background-color: fadeout(@color-primary-3, 5%);
+  .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {
   background-color: fadeout(@color-button-delete, 5%);
