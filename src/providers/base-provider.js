@@ -179,25 +179,26 @@ class BaseProvider {
     this.adjustConcordances = (concordances) => {
       return concordances
     }
-    this.adjustMappings = (mappings) => {
-      for (let mapping of mappings) {
-        // Add fromScheme and toScheme if missing
-        for (let side of ["from", "to"]) {
-          let sideScheme = `${side}Scheme`
-          if (!mapping[sideScheme]) {
-            mapping[sideScheme] = _.get(jskos.conceptsOfMapping(mapping, side), "[0].inScheme[0]")
-          }
-        }
-        mapping._provider = this
-        if (!mapping.identifier) {
-          // Add mapping identifiers for this mapping
-          let identifier = _.get(jskos.addMappingIdentifiers(mapping), "identifier")
-          if (identifier) {
-            mapping.identifier = identifier
-          }
+    this.adjustMapping = (mapping) => {
+      // Add fromScheme and toScheme if missing
+      for (let side of ["from", "to"]) {
+        let sideScheme = `${side}Scheme`
+        if (!mapping[sideScheme]) {
+          mapping[sideScheme] = _.get(jskos.conceptsOfMapping(mapping, side), "[0].inScheme[0]")
         }
       }
-      return mappings
+      mapping._provider = this
+      if (!mapping.identifier) {
+        // Add mapping identifiers for this mapping
+        let identifier = _.get(jskos.addMappingIdentifiers(mapping), "identifier")
+        if (identifier) {
+          mapping.identifier = identifier
+        }
+      }
+      return mapping
+    }
+    this.adjustMappings = (mappings) => {
+      return mappings.map(mapping => this.adjustMapping(mapping))
     }
   }
 
@@ -387,22 +388,41 @@ class BaseProvider {
    */
   saveMappings(...params) {
     // Adjust created or modified date of mappings to be saved
+    let promises = []
     if (Array.isArray(params[0])) {
-      for (let mapping of params[0]) {
-        // Mappings are often saved as an object { mapping, original }
-        mapping = mapping.mapping || mapping
-        if (!mapping.created) {
-          mapping.created = (new Date()).toISOString()
-        } else {
-          mapping.modified = (new Date()).toISOString()
-        }
+      for (let { mapping, original } of params[0]) {
+        promises.push(this.saveMapping(mapping, original))
       }
     }
-    return this._saveMappings(...params)
-      .then(this.adjustMappings)
+    return Promise.all(promises).then(mappings => {
+      return mappings
+    })
   }
-  _saveMappings() {
-    return Promise.resolve([])
+
+  /**
+   * Saves a single mapping to the registry.
+   * If `original` is given, there will be an attempt to find the original in the registry and override it.
+   * Otherwise, the mapping will be saved as a new mapping.
+   *
+   * @param {*} mapping
+   * @param {*} original
+   */
+  saveMapping(mapping, original) {
+    if (!mapping) {
+      return null
+    }
+    if (!mapping.created) {
+      mapping.created = (new Date()).toISOString()
+    } else {
+      mapping.modified = (new Date()).toISOString()
+    }
+    mapping = jskos.minifyMapping(mapping)
+    mapping = jskos.addMappingIdentifiers(mapping)
+    return this._saveMapping(mapping, original).then(this.adjustMapping).catch(() => null)
+  }
+
+  _saveMapping() {
+    return Promise.resolve(null)
   }
 
   /**

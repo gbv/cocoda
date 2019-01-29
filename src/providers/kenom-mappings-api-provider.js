@@ -8,27 +8,15 @@ import MappingsApiProvider from "./mappings-api-provider"
  */
 class KenomMappingsApiProvider extends MappingsApiProvider {
   /**
-   * Saves mappings to local storage. Returns a Promise with a list of mappings that were saved.
+   * Saves a mapping with http post. Returns a Promise with the saved mapping.
    *
    * @param {*} mappings - list of mappings in object form: { mapping, original }
    */
-  _saveMappings(mappings = []) {
-    let promises = []
-    for (let { mapping } of mappings) {
-      mapping = jskos.minifyMapping(mapping)
-      mapping = jskos.addMappingIdentifiers(mapping)
-      promises.push(this.post(this.registry.mappings, {
-        mapping
-      }))
-    }
-    return Promise.all(promises).then(results => {
-      let savedMappings = []
-      for (let result of results) {
-        if (result) {
-          savedMappings.push(result)
-        }
-      }
-      return savedMappings
+  _saveMapping(mapping) {
+    mapping = jskos.minifyMapping(mapping)
+    mapping = jskos.addMappingIdentifiers(mapping)
+    return this.post(this.registry.mappings, {
+      mapping
     })
   }
 }

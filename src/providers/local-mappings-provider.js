@@ -1,3 +1,4 @@
+import _ from "lodash"
 import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
@@ -6,6 +7,48 @@ import localforage from "localforage"
  * For saving and retrieving mappings from the browser's local storage.
  */
 class LocalMappingsProvider extends BaseProvider {
+
+  constructor(...params) {
+    super(...params)
+    this.queue = []
+  }
+
+  /**
+   * Returns a Promise that returns an object { mappings, done } with the local mappings and a done function that is supposed to be called when the transaction is finished.
+   * This prevents conflicts when _saveMapping is called multiple times simultaneously.
+   *
+   * TODO: There might be a better solution for this...
+   */
+  getMappingsQueue(...params) {
+    let last = _.last(this.queue) || Promise.resolve()
+    return new Promise((resolve) => {
+      function defer() {
+        var res, rej
+
+        var promise = new Promise((resolve, reject) => {
+          res = resolve
+          rej = reject
+        })
+
+        promise.resolve = res
+        promise.reject = rej
+
+        return promise
+      }
+      let promise = defer()
+      let done = () => {
+        promise.resolve()
+      }
+      this.queue.push(promise)
+
+      last.then(() => {
+        return this.getMappings(...params)
+      }).then(mappings => {
+        resolve({ mappings, done })
+      })
+    })
+  }
+
   /**
    * Returns a Promise with a list of local mappings.
    */
@@ -87,34 +130,28 @@ class LocalMappingsProvider extends BaseProvider {
    *
    * @param {*} mappings - list of mappings in object form: { mapping, original }
    */
-  _saveMappings(mappings = []) {
-    return this.getMappings().then(localMappings => {
-      let addedMappings = []
+  _saveMapping(mapping, original) {
+    return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
+      original = original || {}
+      // Filter out original mapping and other local mappings with the same content identifier.
+      localMappings = localMappings.filter(m => {
+        let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
+        let id1 = m.identifier ? m.identifier.find(findContentId) : null
+        let id2 = (original.identifier || []).find(findContentId)
+        let id3 = (mapping.identifier || []).find(findContentId)
+        return id1 != id2 && id1 != id3
+      })
+      localMappings.push(mapping)
 
-      for (let { mapping, original } of mappings) {
-        if (!mapping.fromScheme || !mapping.toScheme) {
-          continue
-        }
-        original = original || {}
-        mapping = jskos.deepCopy(mapping)
-        mapping = jskos.addMappingIdentifiers(mapping)
-        // Filter out original mapping and other local mappings with the same content identifier.
-        localMappings = localMappings.filter(m => {
-          let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
-          let id1 = m.identifier ? m.identifier.find(findContentId) : null
-          let id2 = (original.identifier || []).find(findContentId)
-          let id3 = (mapping.identifier || []).find(findContentId)
-          return id1 != id2 && id1 != id3
-        })
-        localMappings.push(mapping)
-        addedMappings.push(mapping)
-      }
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem("mappings", localMappings).then(() => {
-        return addedMappings
+        return mapping
       }).catch(() => {
-        return []
+        return null
+      }).finally(mapping => {
+        done()
+        return mapping
       })
     })
   }
