@@ -164,7 +164,8 @@
       "creatorUri": "Creator URI (e.g. ORCID)",
       "creatorCredentials": "Creator Credentials",
       "credentialsCorrect": "Credentials successfully validated.",
-      "credentialsIncorrect": "Credentials could not be validated."
+      "credentialsIncorrect": "Credentials could not be validated.",
+      "credentialsPartiallyIncorrect": "Credentials could partially not be validated."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -278,7 +279,8 @@
       "creatorUri": "Ersteller-URI (z.B. ORCID)",
       "creatorCredentials": "Ersteller-Zugang",
       "credentialsCorrect": "Zugang erfolgreich bestätigt.",
-      "credentialsIncorrect": "Zugang konnte nicht bestätigt werden."
+      "credentialsIncorrect": "Zugang konnte nicht bestätigt werden.",
+      "credentialsPartiallyIncorrect": "Zugang konnte teilweise nicht bestätigt werden."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",

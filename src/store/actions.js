@@ -51,8 +51,8 @@ export default {
   checkAuth({ state, commit }) {
     // Currently only use the first registry that provides authentication.
     // TODO: Update this as soon as proper authorization is implemented.
-    let registry = state.config.registries.find(registry => registry.auth)
-    if (!registry) {
+    let registries = state.config.registries.filter(registry => registry.auth)
+    if (!registries.length) {
       commit({
         type: "setAuthorized",
         value: null
@@ -66,26 +66,35 @@ export default {
     })
     let username = Buffer.from(state.settings.settings.creatorUri).toString("base64")
     let password = Buffer.from(state.settings.settings.creatorCredentials).toString("base64")
-    axios.get(registry.auth, {
-      auth: { username, password }
-    }).then(() => {
-      // If there is no error, authorization was successful
-      return true
-    }).catch(() => {
-      // If there is an error, authorization was not successful
-      return false
-    }).then(result => {
+    let auth = { username, password }
+    let promises = []
+    for (let registry of registries) {
+      promises.push(axios.get(registry.auth, {
+        auth
+      }).then(() => {
+        // If there is no error, authorization was successful
+        return true
+      }).catch(() => {
+        // If there is an error, authorization was not successful
+        return false
+      }))
+    }
+    return Promise.all(promises).then(results => {
+      let authorized = {}, index = 0
+      while (index < registries.length) {
+        let registry = registries[index]
+        let result = results[index]
+        authorized[registry.uri] = result
+        if (result) {
+          registry.provider.setAuth(auth)
+        }
+        index += 1
+      }
       if (state.authorizedLoadingId == loadingId) {
         commit({
           type: "setAuthorized",
-          value: result
+          value: authorized
         })
-        if (result) {
-          // Set auth for all providers
-          for (let registry of state.config.registries) {
-            registry.provider.setAuth({ username, password })
-          }
-        }
       }
     })
   },

@@ -69,8 +69,8 @@
         {{ creatorName || $t("navbar.settings") }}
         <!-- Login status -->
         <span
-          v-if="$store.getters.authAvailable"
-          :style="`color: ${$store.state.authorized ? 'green' : 'red'} !important;`">
+          v-if="$store.getters.authAvailable && $store.state.authorized != null"
+          :style="`color: ${!Object.values($store.state.authorized).includes(false) ? 'green' : (Object.values($store.state.authorized).includes(true) ? 'yellow' : 'red')} !important;`">
           <font-awesome-icon icon="user" />
         </span>
       </b-nav-item>

@@ -42,16 +42,29 @@
             <b>{{ $t("settings.creatorCredentials") }}</b>
             <b-form-input
               v-model="localSettings.creatorCredentials"
-              :state="$store.state.authorized"
+              :class="{
+                'border-success': $store.state.authorized != null && !Object.values($store.state.authorized).includes(false),
+                'border-danger': $store.state.authorized != null && !Object.values($store.state.authorized).includes(true),
+                'border-warning': $store.state.authorized != null && Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
+              }"
               type="password"
               @input="checkCredentials" />
             <span
               v-if="$store.state.authorized != null"
               :class="{
-                'text-success': $store.state.authorized,
-                'text-danger': !$store.state.authorized
+                'text-success': !Object.values($store.state.authorized).includes(false),
+                'text-danger': !Object.values($store.state.authorized).includes(true),
+                'text-warning': Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
             }" >
-              {{ $store.state.authorized ? $t("settings.credentialsCorrect") : $t("settings.credentialsIncorrect") }}
+              {{
+                !Object.values($store.state.authorized).includes(false) ?
+                  $t("settings.credentialsCorrect") :
+                  (
+                    Object.values($store.state.authorized).includes(true) ?
+                      $t("settings.credentialsPartiallyIncorrect") :
+                      $t("settings.credentialsIncorrect")
+                  )
+              }}
             </span>
           </p>
         </b-tab>
