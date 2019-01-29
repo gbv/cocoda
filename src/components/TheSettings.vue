@@ -470,8 +470,9 @@ export default {
       }
       this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
         return this.$store.dispatch({ type: "mapping/removeMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(removedMappings => {
-          if (mappings.length != removedMappings.length) {
-            console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappings.length}.`)
+          let removedMappingsCount = removedMappings.filter(success => success).length
+          if (mappings.length != removedMappingsCount) {
+            console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappingsCount}.`)
           }
           this.$store.commit("mapping/setRefresh", { onlyMain: true })
           this.refreshDownloads()

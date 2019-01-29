@@ -380,17 +380,18 @@ const actions = {
       console.warn("Tried to remove mappings, but could not determine provider.")
       return Promise.resolve([])
     }
-    // Minify mappings before removing
-    mappings = mappings.map(mapping => jskos.minifyMapping(mapping))
-    return registry.provider.removeMappings(mappings).then(mappings => {
+    return registry.provider.removeMappings(mappings).then(removedMappings => {
       // Check if current original was amongst the removed mappings
-      for (let mapping of mappings) {
-        if (_.isEqual(jskos.minifyMapping(mapping), jskos.minifyMapping(state.original)) && jskos.compare(_.get(mapping, "_provider.registry"), _.get(state.original, "_provider.registry"))) {
-          // Set original to null
-          commit({ type: "set" })
+      removedMappings.forEach((deleted, index) => {
+        if (deleted) {
+          let mapping = mappings[index]
+          if (_.isEqual(jskos.minifyMapping(mapping), jskos.minifyMapping(state.original)) && jskos.compare(_.get(mapping, "_provider.registry"), _.get(state.original, "_provider.registry"))) {
+            // Set original to null
+            commit({ type: "set" })
+          }
         }
-      }
-      return mappings
+      })
+      return removedMappings
     })
   },
 

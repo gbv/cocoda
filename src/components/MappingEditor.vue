@@ -372,14 +372,15 @@ export default {
     },
     deleteOriginalMapping(clear = false) {
       let mapping = this.prepareMapping(this.original)
-      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(() => {
-        this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
-      }).catch(error => {
-        this.alert(error, null, "danger")
-      }).then(() => {
-        this.$store.commit("mapping/setRefresh", { onlyMain: true })
-        if (clear) {
-          this.clearMapping()
+      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
+        if (success) {
+          this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
+          this.$store.commit("mapping/setRefresh", { onlyMain: true })
+          if (clear) {
+            this.clearMapping()
+          }
+        } else {
+          this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
       })
       return true

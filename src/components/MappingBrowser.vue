@@ -1126,7 +1126,7 @@ export default {
       }
     },
     removeMapping(mapping) {
-      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(success => {
+      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
           this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
         } else {
