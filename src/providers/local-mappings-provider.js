@@ -159,10 +159,9 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Removes mappings from local storage. Returns a Promise with a list of mappings that were removed.
    */
-  _removeMappings(mappings = []) {
-    mappings = mappings.map(mapping => jskos.addMappingIdentifiers(mapping))
-    return this.getMappings().then(localMappings => {
-      let removedMappings = []
+  _removeMapping(mapping) {
+    mapping = jskos.addMappingIdentifiers(mapping)
+    return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
       let filter = (reverse = false) => mapping => m => {
         let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
         let id1 = m.identifier ? m.identifier.find(findContentId) : null
@@ -170,17 +169,17 @@ class LocalMappingsProvider extends BaseProvider {
         let result = id1 == null || id2 == null || id1 != id2
         return reverse ? !result : result
       }
-      for (let mapping of mappings) {
-        // Remove by content identifier
-        removedMappings = removedMappings.concat(localMappings.filter(filter(true)(mapping)))
-        localMappings = localMappings.filter(filter()(mapping))
-      }
+      // Remove by content identifier
+      localMappings = localMappings.filter(filter()(mapping))
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem("mappings", localMappings).then(() => {
-        return removedMappings
+        return mapping
       }).catch(() => {
-        return []
+        return null
+      }).finally(mapping => {
+        done()
+        return mapping
       })
     })
   }

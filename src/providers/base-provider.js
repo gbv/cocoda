@@ -96,11 +96,7 @@ class BaseProvider {
           promise = Promise.reject("No method called " + method)
         }
         return promise.then(response => {
-          if (response.data) {
-            return response.data
-          } else {
-            return null
-          }
+          return response.data
         }).catch(error => {
           if (_.get(error, "response.status") === 401 && tries > 0) {
             console.warn(`API authorization error => trying again! (${tries})`)
@@ -114,7 +110,7 @@ class BaseProvider {
       }
       return tryRequest(retryCount).catch(error => {
         console.warn("API error:", error)
-        return null
+        return undefined
       })
     }
     this.get = (url, options, cancelToken) => {
@@ -426,15 +422,32 @@ class BaseProvider {
   }
 
   /**
-   * Removes mappings from the registry. Returns a Promise with a list of mappings that were removed.
+   * Removes mappings from the registry. Returns a Promise with a list of booleans (true if removed) corresponding to the indexes in the mappings array.
    *
-   * Usually, this method has one parameter which is a list of JSKOS mappings to be removed.
+   * @param {Array} mappings
    */
-  removeMappings(...params) {
-    return this._removeMappings(...params)
+  removeMappings(mappings) {
+    let promises = []
+    for (let mapping of mappings || []) {
+      promises.push(this.removeMapping(mapping))
+    }
+    return Promise.all(promises)
   }
-  _removeMappings() {
-    return Promise.resolve([])
+
+  /**
+   * Removes a single mapping.
+   *
+   * @param {Object} mapping
+   */
+  removeMapping(mapping) {
+    if (!mapping) {
+      return
+    }
+    return this._removeMapping(mapping)
+  }
+
+  _removeMapping() {
+    return Promise.resolve(false)
   }
 
   /**
