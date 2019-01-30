@@ -56,8 +56,8 @@ class BaseProvider {
     // Set properties
     this.properties = {
       minimum: "-",
-      default: "uri,prefLabel,notation,inScheme",
-      detail: "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote",
+      default: "uri,prefLabel,notation,inScheme,annotations",
+      detail: "uri,prefLabel,notation,inScheme,identifier,altLabel,definition,license,publisher,created,issued,modified,scopeNote,editorialNote,annotations",
       all: "*",
     }
     this.auth = null
@@ -68,6 +68,10 @@ class BaseProvider {
         return Promise.resolve([])
       }
       options = options || {}
+      // Set properties to default properties if no properties are given
+      if (!_.get(options, "params.properties")) {
+        _.set(options, "params.properties", this.properties.default)
+      }
       options.cancelToken = cancelToken
       let language = _.get(options, "params.language") || this.language || this.defaultLanguage
       _.set(options, "params.language", language)
