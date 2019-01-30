@@ -343,9 +343,6 @@ export default {
           [false]: null,
         }
       },
-      /** List of identifiers of all local mappings (used in `canSave`) */
-      localMappingIdentifiers: [],
-      localMappingsTotal: 0,
       localMappingsCurrent: 0,
       showMoreValues: {},
       /** Unique ID for each reload */
@@ -723,13 +720,6 @@ export default {
       }
     },
     internalReload(force = false, registryToReload) {
-
-      // Reload local mapping identifiers
-      // TODO: Do this differently!
-      this.getMappings({ ...params, onlyFromMain: true }).then(mappings => {
-        this.localMappingIdentifiers = mappings.reduce((all, current) => all.concat(current.identifier || []), [])
-        this.localMappingsTotal = mappings.length
-      })
 
       let promises = []
 
@@ -1162,9 +1152,6 @@ export default {
       }
       let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:content"))
       if (!id) {
-        return false
-      }
-      if (this.localMappingIdentifiers.includes(id)) {
         return false
       }
       return true
