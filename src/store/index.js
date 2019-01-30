@@ -33,7 +33,7 @@ const getters = {
     return state.settings.settings.favoriteSchemes || state.config.favoriteTerminologyProviders
   },
   favoriteConcepts: (state) => {
-    return state.settings.settings.favoriteConcepts || state.config.favoriteConcepts
+    return state.settings.settings.favoriteConcepts || []
   },
   authAvailable: (state) => {
     return state.config.registries.find(registry => registry.auth) != null

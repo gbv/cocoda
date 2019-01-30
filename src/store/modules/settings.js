@@ -19,6 +19,7 @@ const defaultSettings = {
   locale: "",
   autoInsertLabels: true,
   mappingEditorClearOnSave: true,
+  favoriteConcepts: [],
   favoriteSchemes: null,
   mappingCardinality: "1-to-n",
   mappingRegistry: null,
