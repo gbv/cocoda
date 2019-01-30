@@ -236,7 +236,7 @@
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : ($store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : ''), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
             v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
             :class="{
               ['button']: canSave(data.item.mapping),
@@ -1142,10 +1142,6 @@ export default {
       if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry)) {
         return false
       }
-      // Don't allow saving if the current registry needs authentication, but is not authenticated
-      if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
-        return false
-      }
       // TODO: Do this differently to prevent going through all local mappings on each reload.
       if (!mapping.identifier) {
         mapping = this.$jskos.addMappingIdentifiers(mapping)
@@ -1165,7 +1161,11 @@ export default {
         return null
       }).then(mapping => {
         if (!mapping) {
-          this.alert(this.$t("alerts.mappingNotSaved"), null, "danger")
+          let message = this.$t("alerts.mappingNotSaved")
+          if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
+            message += " " + this.$t("general.authNecessary")
+          }
+          this.alert(message, null, "danger")
         }
         return mapping
       }).finally(() => {

@@ -15,7 +15,7 @@
       "no": "No",
       "loading": "Loading...",
       "cancel": "Cancel",
-      "authNecessary": "authentication necessary"
+      "authNecessary": "Authentication necessary."
     },
     "navbar": {
       "feedback": "Feedback",
@@ -207,7 +207,7 @@
       "addToMapping": "zum Mapping hinzufügen",
       "loading": "Lade...",
       "cancel": "Abbrechen",
-      "authNecessary": "Authentifizierung notwendig"
+      "authNecessary": "Authentifizierung notwendig."
     },
     "navbar": {
       "feedback": "Feedback",

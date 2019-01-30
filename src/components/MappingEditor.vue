@@ -4,7 +4,7 @@
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canSaveMapping,
           'button-disabled': !canSaveMapping
@@ -222,7 +222,7 @@ export default {
       return this.$store.state.mapping.original
     },
     canSaveMapping() {
-      return (this.original == null || this.hasChangedFromOriginal) && this.mapping.fromScheme && this.mapping.toScheme && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
+      return (this.original == null || this.hasChangedFromOriginal) && this.mapping.fromScheme && this.mapping.toScheme
     },
     canDeleteMapping() {
       return _.get(this.original, "_provider.has.canRemoveMappings", false) && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
@@ -352,7 +352,11 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
         if (!mappings.length || !mappings[0]) {
-          this.alert(this.$t("alerts.mappingNotSaved"), null, "danger")
+          let message = this.$t("alerts.mappingNotSaved")
+          if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
+            message += " " + this.$t("general.authNecessary")
+          }
+          this.alert(message, null, "danger")
           return
         }
         this.alert(this.$t("alerts.mappingSaved"), null, "success2")
