@@ -104,7 +104,10 @@
         "en": ["Central concordance registry of coli-conc"],
         "de": ["Zentrale Konkordanz-Datenbank von coli-conc"]
       },
-      "mappings": "//coli-conc.gbv.de/api/mappings/",
+      "mappings": "https://coli-conc.gbv.de/api/mappings/",
+      "auth": "https://coli-conc.gbv.de/api/checkAuth",
+      "canSaveMappings": true,
+      "canRemoveMappings": true,
       "provider": "MappingsApi",
       "subject": [{
         "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
