@@ -26,6 +26,21 @@
           {{ type }}
         </span>
       </span>
+      <span
+        v-if="registry.provider.has.auth"
+        style="margin-left: 5px;" >
+        <span
+          v-if="$store.state.authorized && $store.state.authorized[registry.uri]"
+          style="color: green;" >
+          <font-awesome-icon icon="lock-open" />
+        </span>
+        <span
+          v-else
+          style="color: red;" >
+          <font-awesome-icon icon="lock" />
+        </span>
+        authentication
+      </span>
     </div>
   </div>
 </template>
