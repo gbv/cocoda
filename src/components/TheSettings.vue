@@ -76,7 +76,9 @@
                 }}
               </span>
             </p>
-            <p v-if="availableMappingRegistries.length">
+            <p
+              v-if="availableMappingRegistries.length"
+              style="margin-bottom: 10px !important;" >
               <b>{{ $t("settings.mappingRegistry") }}</b>
               <b-form-select v-model="localSettings.mappingRegistry">
                 <option
@@ -87,6 +89,9 @@
                 </option>
               </b-form-select>
               {{ $t("settings.mappingRegistryExplanation") }}
+            </p>
+            <p>
+              <registry-info :registry="$store.getters.getCurrentRegistry" />
             </p>
           </div>
         </b-tab>
