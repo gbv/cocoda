@@ -10,7 +10,7 @@ try {
 }
 let config = Object.assign({}, defaultConfig, userConfig)
 
-if (config.registryMode == "merge") {
+if (!config.overrideRegistries) {
   config.registries = [].concat(defaultConfig.registries || [], userConfig.registries || [])
   // Merge registries with the same URI (higher priority overrides lower priority, later in list overrides earlier in list)
   let registries = []

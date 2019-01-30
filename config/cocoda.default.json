@@ -210,7 +210,7 @@
       "namespace": "http://nomisma.org/id/"
     }
   ],
-  "registryMode": "override",
+  "overrideRegistries": false,
   "registryGroups": [
     {
       "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings",

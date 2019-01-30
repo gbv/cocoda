@@ -27,8 +27,8 @@ The following fields may be changed in a later version:
 
 * **registries**: lists [registries](#registries) where to get data from
 
-* **registryMode**: values `override` (default) or `merge`
-  controls whether to include registries listed in `config/cocoda.default.json`
+* **overrideRegistries**: `false` (default) or `true`
+  controls whether to override registries listed in `config/cocoda.default.json`
 
 * **registryGroups**
 
