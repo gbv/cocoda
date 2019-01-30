@@ -131,7 +131,7 @@
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
-      "tabAccount": "Account",
+      "tabAccount": "Accounts",
       "tabLayout": "Layout",
       "tabSources": "Data Sources",
       "tabLocalMappings": "Local Mappings",
@@ -144,7 +144,7 @@
       "only1to1mappings": "Mapping Editor: Only allow 1-to-1 mappings (1-to-n otherwise)",
       "resetSizes": "Reset card sizes",
       "creator": "Name",
-      "creatorUrl": "Homepage",
+      "creatorUrl": "Homepage (optional)",
       "creatorPlaceholder": "Enter your name",
       "creatorRewrite": "Rewrite creator for all local mappings",
       "localDownload": "Download Local Mappings",
@@ -167,7 +167,11 @@
       "credentialsIncorrect": "Credentials could not be validated.",
       "credentialsPartiallyIncorrect": "Credentials could partially not be validated.",
       "mappingRegistry": "Active Mapping Provider",
-      "mappingRegistryExplanation": "This provider will be used to save mappings."
+      "mappingRegistryExplanation": "This provider will be used to save mappings.",
+      "creatorTitle": "Profile",
+      "creatorInfo": "The following information is stored in all your mappings so it may also be shared:",
+      "accountTitle": "Access",
+      "accountInfo": "The following information will not be shared publicly:"
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -249,7 +253,7 @@
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
-      "tabAccount": "Account",
+      "tabAccount": "Accounts",
       "tabLayout": "Layout",
       "tabSources": "Datenquellen",
       "tabLocalMappings": "Lokale Mappings",
@@ -262,7 +266,7 @@
       "only1to1mappings": "Mapping-Editor: Nur 1-to-1 Mappings erlauben (sonst 1-to-n)",
       "resetSizes": "Komponenten-Größen zurücksetzen",
       "creator": "Name",
-      "creatorUrl": "Homepage",
+      "creatorUrl": "Homepage (optional)",
       "creatorPlaceholder": "Bitte Namen eintippen...",
       "creatorRewrite": "creator-Feld für alle lokalen Mappings überschreiben",
       "localDownload": "Lokale Mappings herunterladen",
@@ -285,7 +289,11 @@
       "credentialsIncorrect": "Zugang konnte nicht bestätigt werden.",
       "credentialsPartiallyIncorrect": "Zugang konnte teilweise nicht bestätigt werden.",
       "mappingRegistry": "Aktiver Mapping-Provider",
-      "mappingRegistryExplanation": "Dieser Provider wird zum Speichern von Mappings genutzt."
+      "mappingRegistryExplanation": "Dieser Provider wird zum Speichern von Mappings genutzt.",
+      "creatorTitle": "Profil",
+      "creatorInfo": "Die folgenden Angaben werden in allen bearbeiteten Mappings hinterlegt und können beim Austausch von Mappings weitergegeben werden:",
+      "accountTitle": "Zugangsdaten",
+      "accountInfo": "Die folgenden Angaben werde nicht öffentlich weitergegeben:"
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",

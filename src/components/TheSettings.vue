@@ -16,69 +16,79 @@
         <b-tab
           :title="$t('settings.tabAccount')"
           active>
-          <p v-if="localSettings">
-            <b>{{ $t("settings.creator") }}</b>
-            <b-form-input
-              v-model="localSettings.creator"
-              :placeholder="$t('settings.creatorPlaceholder')"
-              type="text" />
-          </p>
-          <p v-if="localSettings">
-            <b>{{ $t("settings.creatorUrl") }}</b>
-            <b-form-input
-              v-model="localSettings.creatorUrl"
-              placeholder="https://"
-              type="text" />
-          </p>
-          <p v-if="localSettings">
-            <b>{{ $t("settings.creatorUri") }}</b>
-            <b-form-input
-              v-model="localSettings.creatorUri"
-              placeholder="https://"
-              type="text"
-              @input="checkCredentials" />
-          </p>
-          <p v-if="localSettings && $store.getters.authAvailable">
-            <b>{{ $t("settings.creatorCredentials") }}</b>
-            <b-form-input
-              v-model="localSettings.creatorCredentials"
-              :class="{
-                'border-success': $store.state.authorized != null && !Object.values($store.state.authorized).includes(false),
-                'border-danger': $store.state.authorized != null && !Object.values($store.state.authorized).includes(true),
-                'border-warning': $store.state.authorized != null && Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
-              }"
-              type="password"
-              @input="checkCredentials" />
-            <span
-              v-if="$store.state.authorized != null"
-              :class="{
-                'text-success': !Object.values($store.state.authorized).includes(false),
-                'text-danger': !Object.values($store.state.authorized).includes(true),
-                'text-warning': Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
-            }" >
-              {{
-                !Object.values($store.state.authorized).includes(false) ?
-                  $t("settings.credentialsCorrect") :
-                  (
-                    Object.values($store.state.authorized).includes(true) ?
-                      $t("settings.credentialsPartiallyIncorrect") :
-                      $t("settings.credentialsIncorrect")
-                  )
-              }}
-            </span>
-          </p>
-          <p v-if="localSettings && availableMappingRegistries.length">
-            <b>{{ $t("settings.mappingRegistry") }}</b>
-            <b-form-select v-model="localSettings.mappingRegistry">
-              <option
-                v-for="registry in availableMappingRegistries"
-                :key="`settings-registry-${registry.uri}`"
-                :value="registry.uri" >
-                {{ $util.prefLabel(registry) }}
-              </option>
-            </b-form-select>
-            {{ $t("settings.mappingRegistryExplanation") }}
-          </p>
+          <div v-if="localSettings">
+            <h5>{{ $t("settings.creatorTitle") }}</h5>
+            <p>
+              {{ $t("settings.creatorInfo") }}
+            </p>
+            <p>
+              <b>{{ $t("settings.creator") }}</b>
+              <b-form-input
+                v-model="localSettings.creator"
+                :placeholder="$t('settings.creatorPlaceholder')"
+                type="text" />
+            </p>
+            <p>
+              <b>{{ $t("settings.creatorUrl") }}</b>
+              <b-form-input
+                v-model="localSettings.creatorUrl"
+                placeholder="https://"
+                type="text" />
+            </p>
+            <p>
+              <b>{{ $t("settings.creatorUri") }}</b>
+              <b-form-input
+                v-model="localSettings.creatorUri"
+                placeholder="https://"
+                type="text"
+                @input="checkCredentials" />
+            </p>
+            <div v-if="$store.getters.authAvailable || availableMappingRegistries.length">
+              <h5>{{ $t("settings.accountTitle") }}</h5>
+              <p>{{ $t("settings.accountInfo") }}</p>
+            </div>
+            <p v-if="$store.getters.authAvailable">
+              <b>{{ $t("settings.creatorCredentials") }}</b>
+              <b-form-input
+                v-model="localSettings.creatorCredentials"
+                :class="{
+                  'border-success': $store.state.authorized != null && !Object.values($store.state.authorized).includes(false),
+                  'border-danger': $store.state.authorized != null && !Object.values($store.state.authorized).includes(true),
+                  'border-warning': $store.state.authorized != null && Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
+                }"
+                type="password"
+                @input="checkCredentials" />
+              <span
+                v-if="$store.state.authorized != null"
+                :class="{
+                  'text-success': !Object.values($store.state.authorized).includes(false),
+                  'text-danger': !Object.values($store.state.authorized).includes(true),
+                  'text-warning': Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
+              }" >
+                {{
+                  !Object.values($store.state.authorized).includes(false) ?
+                    $t("settings.credentialsCorrect") :
+                    (
+                      Object.values($store.state.authorized).includes(true) ?
+                        $t("settings.credentialsPartiallyIncorrect") :
+                        $t("settings.credentialsIncorrect")
+                    )
+                }}
+              </span>
+            </p>
+            <p v-if="availableMappingRegistries.length">
+              <b>{{ $t("settings.mappingRegistry") }}</b>
+              <b-form-select v-model="localSettings.mappingRegistry">
+                <option
+                  v-for="registry in availableMappingRegistries"
+                  :key="`settings-registry-${registry.uri}`"
+                  :value="registry.uri" >
+                  {{ $util.prefLabel(registry) }}
+                </option>
+              </b-form-select>
+              {{ $t("settings.mappingRegistryExplanation") }}
+            </p>
+          </div>
         </b-tab>
         <b-tab
           :title="$t('settings.tabLayout')" >
