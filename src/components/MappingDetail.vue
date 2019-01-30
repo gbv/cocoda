@@ -135,6 +135,7 @@
       v-if="mapping"
       ref="dataModal"
       :data="mapping"
+      :url="mapping.uri"
       type="mapping" />
   </div>
 </template>
