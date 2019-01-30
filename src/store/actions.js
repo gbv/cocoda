@@ -52,7 +52,7 @@ export default {
     // Currently only use the first registry that provides authentication.
     // TODO: Update this as soon as proper authorization is implemented.
     let registries = state.config.registries.filter(registry => registry.auth)
-    if (!registries.length || !state.settings.settings.creatorUri) {
+    if (!registries.length || !state.settings.settings.creatorUri || !state.settings.settings.creatorCredentials) {
       commit({
         type: "setAuthorized",
         value: null
