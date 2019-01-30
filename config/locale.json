@@ -189,6 +189,10 @@
       "validation": "Validation",
       "validationSuccess": "successful",
       "validationFailure": "failure"
+    },
+    "languages": {
+      "en": "English",
+      "de": "German"
     }
   },
   "de": {
@@ -381,6 +385,10 @@
       "validation": "Validierung",
       "validationSuccess": "erfolgreich",
       "validationFailure": "fehlgeschlagen"
+    },
+    "languages": {
+      "en": "Englisch",
+      "de": "Deutsch"
     }
   }
 }

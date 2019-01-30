@@ -101,10 +101,10 @@
             <b>{{ $t("settings.language") }}</b>
             <b-form-select v-model="$i18n.locale">
               <option
-                v-for="(label, language) in config.languages"
+                v-for="language in config.languages"
                 :key="language"
                 :value="language" >
-                {{ label }}
+                {{ $t(`languages.${language}`) }}
               </option>
             </b-form-select>
           </p>

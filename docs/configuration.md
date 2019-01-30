@@ -23,7 +23,7 @@ The following fields may be changed in a later version:
 
 * **language**
 
-* **languages**: object with supported interface languages
+* **languages**: array with supported interface languages
 
 * **registries**: lists [registries](#registries) where to get data from
 

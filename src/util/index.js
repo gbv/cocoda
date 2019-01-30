@@ -93,7 +93,7 @@ let notation = (item, type) => {
   return ""
 }
 
-let fallbackLanguage = "en"
+let fallbackLanguage = () => _.get(store, "state.config.languages[0]", "en")
 
 /**
  * Returns a language tag to be used for a language map, null if no language was found in the map.
@@ -105,12 +105,12 @@ let getLanguage = (languageMap, language) => {
   if (!languageMap) {
     return null
   }
-  language = language || i18n.locale || store.state.config.language || fallbackLanguage
+  language = language || i18n.locale || fallbackLanguage()
   if (languageMap[language]) {
     return language
   }
-  if (languageMap[fallbackLanguage]) {
-    return fallbackLanguage
+  if (languageMap[fallbackLanguage()]) {
+    return fallbackLanguage()
   }
   // Fallback for the fallback: iterate through languages and choose the first one found.
   for (let language of Object.keys(languageMap)) {

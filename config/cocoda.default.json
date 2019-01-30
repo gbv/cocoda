@@ -271,11 +271,7 @@
     "http://bartoc.org/en/node/241",
     "http://bartoc.org/en/node/1940"
   ],
-  "language": "de",
-  "languages": {
-    "en": "English",
-    "de": "Deutsch"
-  },
+  "languages": ["en", "de"],
   "logos": [
     {
       "file": "coli-conc-logo.svg",
