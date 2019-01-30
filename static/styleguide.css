@@ -3,3 +3,9 @@ section{
   margin-top: 1em !important;
   margin-bottom: 0em !important;
 }
+ul {
+  margin-bottom: 0em !important;
+}
+article > div > * {
+  margin-bottom: 0.5em !important;
+}
