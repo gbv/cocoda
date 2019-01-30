@@ -52,11 +52,14 @@ export default {
     // Currently only use the first registry that provides authentication.
     // TODO: Update this as soon as proper authorization is implemented.
     let registries = state.config.registries.filter(registry => registry.auth)
-    if (!registries.length) {
+    if (!registries.length || !state.settings.settings.creatorUri) {
       commit({
         type: "setAuthorized",
         value: null
       })
+      for (let registry of registries) {
+        registry.provider.setAuth(null)
+      }
       return
     }
     let loadingId = util.generateID()
