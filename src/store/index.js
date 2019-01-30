@@ -30,7 +30,7 @@ const state = {
 
 const getters = {
   favoriteSchemes: (state) => {
-    return state.settings.settings.favoriteSchemes || state.config.favoriteTerminologyProviders
+    return state.settings.settings.favoriteSchemes || state.config.favoriteSchemes
   },
   favoriteConcepts: (state) => {
     return state.settings.settings.favoriteConcepts || []

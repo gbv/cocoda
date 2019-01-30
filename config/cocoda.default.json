@@ -261,7 +261,7 @@
       "schemeUris": ["http://bartoc.org/en/node/430"]
     }
   ],
-  "favoriteTerminologyProviders": [
+  "favoriteSchemes": [
     "http://uri.gbv.de/terminology/bk/",
     "http://bartoc.org/en/node/18785",
     "http://uri.gbv.de/terminology/rvk/",

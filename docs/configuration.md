@@ -19,7 +19,7 @@ Default settings are given in file `config/cocoda.default.json`. To change the c
 
 The following fields may be changed in a later version:
 
-* **favoriteTerminologyProviders**: list of vocabulary URIs to be favorited by default.
+* **favoriteSchemes**: list of vocabulary URIs to be favorited by default.
 
 * **language**
 
