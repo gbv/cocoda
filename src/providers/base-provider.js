@@ -42,6 +42,7 @@ class BaseProvider {
       concordances: registry.concordances,
       mappings: registry.mappings,
       occurrences: registry.occurrences,
+      auth: registry.auth,
       canSaveMappings: registry.canSaveMappings,
       canRemoveMappings: registry.canRemoveMappings,
     }
