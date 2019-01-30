@@ -1,7 +1,7 @@
 <template>
   <div
     id="mappingEditor"
-    :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
+    :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <div class="mappingEditorToolbar">
       <div
         v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: $util.delay.medium }"

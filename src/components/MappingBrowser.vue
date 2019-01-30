@@ -1085,7 +1085,7 @@ export default {
         this.$store.commit({
           type: "mapping/set",
           mapping,
-          original: mapping._provider && mapping._provider.has.canSaveMappings ? copyWithReferences(mapping) : null
+          original: mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.$store.state.getCurrentRegistry) ? copyWithReferences(mapping) : null
         })
       }
     },
