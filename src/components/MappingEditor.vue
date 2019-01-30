@@ -132,7 +132,7 @@
           button: canExportMapping,
           'button-disabled': !canExportMapping
         }"
-        @click="$refs.commentModal.show()" >
+        @click="canExportMapping && $refs.commentModal.show()" >
         <font-awesome-icon icon="comment" />
       </span>
       {{ mappingComments.join(", ") }}
