@@ -247,7 +247,7 @@
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
             v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
-            v-if="$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry) && data.item.registry.provider.has.canRemoveMappings"
+            v-if="$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
             :class="{
               ['button-delete']: !$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth,
               ['button-disabled']: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth
