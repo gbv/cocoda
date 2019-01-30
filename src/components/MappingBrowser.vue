@@ -236,7 +236,7 @@
             class="button mappingBrowser-toolbar-button"
             @click="edit(data)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : ($store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : ''), delay: $util.delay.medium }"
             v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
             :class="{
               ['button']: canSave(data.item.mapping),
@@ -246,11 +246,15 @@
             class="mappingBrowser-toolbar-button"
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
             v-if="$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry) && data.item.registry.provider.has.canRemoveMappings"
+            :class="{
+              ['button-delete']: !$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth,
+              ['button-disabled']: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth
+            }"
             icon="trash-alt"
-            class="button-delete mappingBrowser-toolbar-button"
-            @click="removeMapping(data.item.mapping)"
+            class="mappingBrowser-toolbar-button"
+            @click="(!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) && removeMapping(data.item.mapping)"
           />
         </span>
         <span
@@ -1146,6 +1150,10 @@ export default {
       }
       // Don't allow saving if it's the current registry
       if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry)) {
+        return false
+      }
+      // Don't allow saving if the current registry needs authentication, but is not authenticated
+      if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
         return false
       }
       // TODO: Do this differently to prevent going through all local mappings on each reload.

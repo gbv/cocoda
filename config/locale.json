@@ -14,7 +14,8 @@
       "yes": "Yes",
       "no": "No",
       "loading": "Loading...",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "authNecessary": "authentication necessary"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -205,7 +206,8 @@
       "clearScheme": "Vokabular entfernen",
       "addToMapping": "zum Mapping hinzufügen",
       "loading": "Lade...",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "authNecessary": "Authentifizierung notwendig"
     },
     "navbar": {
       "feedback": "Feedback",

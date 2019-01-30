@@ -4,7 +4,7 @@
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: $util.delay.medium }"
         :class="{
           button: canSaveMapping,
           'button-disabled': !canSaveMapping
@@ -14,7 +14,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: $util.delay.medium }"
         :class="{
           'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
@@ -222,10 +222,10 @@ export default {
       return this.$store.state.mapping.original
     },
     canSaveMapping() {
-      return (this.original == null || this.hasChangedFromOriginal) && this.mapping.fromScheme && this.mapping.toScheme
+      return (this.original == null || this.hasChangedFromOriginal) && this.mapping.fromScheme && this.mapping.toScheme && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
     },
     canDeleteMapping() {
-      return _.get(this.original, "_provider.has.canRemoveMappings", false)
+      return _.get(this.original, "_provider.has.canRemoveMappings", false) && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
     },
     canClearMapping() {
       return this.mapping.fromScheme || this.mapping.toScheme
