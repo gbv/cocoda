@@ -203,9 +203,9 @@
           slot="creator"
           slot-scope="{ item }" >
           <span
-            v-b-tooltip.hover="{ title: item.creator != truncateText(item.creator) ? item.creator : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: item.creator, delay: $util.delay.long }"
             v-if="item.creator != null" >
-            {{ truncateText(item.creator) }}
+            {{ item.creator }}
           </span>
         </span>
         <span
@@ -571,14 +571,14 @@ export default {
         {
           key: "source",
           label: this.$t("mappingBrowser.source"),
-          width: "6%",
+          width: "3%",
           minWidth: "",
           sortable: false
         },
         {
           key: "actions",
           label: "",
-          width: "10%",
+          width: "11%",
           minWidth: "",
           align: "right",
           sortable: false
@@ -1051,13 +1051,6 @@ export default {
       // Force tableItems to recomputed (doesn't trigger by changing "showMoreValues")
       this.tableItemsRecompute = Math.random()
     },
-    truncateText(text, characters = 10) {
-      if (text.length > characters) {
-        return text.substring(0, characters - 3) + "..."
-      } else {
-        return text
-      }
-    },
     edit(data) {
       let copyWithReferences = mapping => {
         let newMapping = this.$jskos.copyDeep(mapping)
@@ -1335,6 +1328,12 @@ export default {
 }
 .mappingBrowser-separatorBorder {
   border-top: 1px solid @color-text-lightGrey;
+}
+
+.mappingBrowser-table .mappingBrowser-table-creator {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {
