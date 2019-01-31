@@ -315,10 +315,10 @@ export default {
   flex: none;
   padding-right: 10px;
 }
-.annotationPopover-history > div:nth-child(even) {
+.annotationPopover-history > div:nth-child(odd) {
   background-color: white;
 }
-.annotationPopover-history > div:nth-child(odd) {
+.annotationPopover-history > div:nth-child(even) {
   background-color: fadeout(@color-text-veryLightGrey, 70%);
 }
 .annotationPopover-score {
