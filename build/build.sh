@@ -5,7 +5,8 @@ mv build/build-info.json build/build-info.backup.json
 
 # write build info to build-info.js
 GIT_TAG=$(git describe --abbrev=0 --tags || echo "")
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
+
 GIT_COMMIT=$(git rev-parse --verify HEAD)
 GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
 DATE=$(date)
@@ -18,6 +19,8 @@ cat > ./build/build-info.json <<EOL
   "buildDate": "${DATE}"
 }
 EOL
+
+echo "Building for branch $GIT_BRANCH ($GIT_COMMIT_SHORT)..."
 
 # if there was no config file before, remember this and delete the generated config at the end of the script
 DELETECONFIG=
