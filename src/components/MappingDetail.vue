@@ -7,8 +7,6 @@
       centered
       hide-footer
       no-enforce-focus
-      no-close-on-backdrop
-      no-close-on-esc
       size="lg" >
       <div v-if="mapping">
         <b-container
