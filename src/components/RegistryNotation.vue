@@ -47,17 +47,17 @@ export default {
   color: white;
   height: 18px;
   .fontSize-verySmall;
-  background-color: fadeout(@color-primary-3, 80%);
+  background-color: fadeout(@color-primary-3, 70%);
 }
 .registry-notation-current {
-  background-color: fadeout(@color-button-delete, 80%);
+  background-color: fadeout(@color-select, 50%);
 }
 .registry-notation.registry-current-enabled {
-  background-color: fadeout(@color-button-delete, 5%);
+  background-color: @color-select;
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {
-  background-color: fadeout(@color-primary-3, 5%);
+  background-color: @color-primary-3;
   .fontWeight-heavy;
 }
 </style>
