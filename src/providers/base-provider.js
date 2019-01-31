@@ -41,6 +41,7 @@ class BaseProvider {
       search: registry.baseUrl || registry.search,
       concordances: registry.concordances,
       mappings: registry.mappings,
+      annotations: registry.annotations,
       occurrences: registry.occurrences,
       auth: registry.auth,
       canSaveMappings: registry.canSaveMappings,
@@ -452,6 +453,55 @@ class BaseProvider {
   }
 
   _removeMapping() {
+    return Promise.resolve(false)
+  }
+
+  /**
+   * Adds a single annotation.
+   *
+   * @param {Object} annotation
+   */
+  addAnnotation(annotation) {
+    if (!annotation) {
+      return Promise.resolve(null)
+    }
+    return this._addAnnotation(annotation)
+  }
+
+  _addAnnotation() {
+    return Promise.resolve(null)
+  }
+
+  /**
+   * Edits an annotation. If patch is given, a PATCH request will be performed.
+   *
+   * @param {Object} annotation
+   * @param {Object} patch
+   */
+  editAnnotation(annotation, patch) {
+    if (!annotation) {
+      return Promise.resolve(null)
+    }
+    return this._editAnnotation(annotation, patch)
+  }
+
+  _editAnnotation() {
+    return Promise.resolve(null)
+  }
+
+  /**
+   * Removes an annotation.
+   *
+   * @param {Object} annotation
+   */
+  removeAnnotation(annotation) {
+    if (!annotation) {
+      return Promise.resolve(false)
+    }
+    return this._removeAnnotation(annotation)
+  }
+
+  _removeAnnotation() {
     return Promise.resolve(false)
   }
 

@@ -86,6 +86,41 @@ class MappingsApiProvider extends BaseProvider {
     }
   }
 
+  /**
+   * Adds a new annotation with http POST.
+   */
+  _addAnnotation(annotation) {
+    return this.post(this.registry.annotations, annotation)
+  }
+
+  /**
+   * Edits an annotation. If patch is given, http PATCH will be used, otherwise PUT.
+   */
+  _editAnnotation(annotation, patch) {
+    let uri = _.get(annotation, "id")
+    if (uri) {
+      if (patch) {
+        return this.patch(uri, patch)
+      } else {
+        return this.put(uri, annotation)
+      }
+    } else {
+      return Promise.resolve(null)
+    }
+  }
+
+  /**
+   * Removes an annotation with http DELETE. Returns a Promise with a boolean whether removal was successful.
+   */
+  _removeAnnotation(annotation) {
+    let uri = _.get(annotation, "id")
+    if (uri) {
+      return this.delete(uri).then(result => result === undefined ? false : true)
+    } else {
+      return Promise.resolve(false)
+    }
+  }
+
 }
 
 MappingsApiProvider.providerName = "MappingsApi"

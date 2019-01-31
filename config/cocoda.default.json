@@ -105,6 +105,7 @@
         "de": ["Zentrale Konkordanz-Datenbank von coli-conc"]
       },
       "mappings": "https://coli-conc.gbv.de/api/mappings/",
+      "annotations": "https://coli-conc.gbv.de/api/annotations/",
       "auth": "https://coli-conc.gbv.de/api/checkAuth",
       "canSaveMappings": true,
       "canRemoveMappings": true,

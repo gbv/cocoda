@@ -87,7 +87,7 @@
         :items="tableItems"
         :fields="fields"
         class="mappingBrowser-table"
-        @hover="hoveredMapping = $event && $event.mapping" >
+        @hover="hoveredMapping = $event && $event.mapping; hoveredId = $event && $event.uniqueId" >
         <span
           slot="sourceScheme"
           slot-scope="{ value }" >
@@ -217,6 +217,15 @@
         <span
           slot="actions"
           slot-scope="data" >
+          <!-- Annotation score/button -->
+          <div
+            v-if="data.item.mapping && data.item.mapping.annotations"
+            :id="'mappingBrowser-hoveredMapping-annotationButton-' + data.item.uniqueId"
+            :style="`color: ${annotationButtonColor(data.item.mapping.annotations)};`"
+            style="display: inline-block; position: relative; min-width: 18px;"
+            class="button mappingBrowser-toolbar-button fontWeight-heavy">
+            {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
+          </div>
           <div
             v-if="data.item.mapping"
             style="display: inline-block; position: relative;">
@@ -307,6 +316,11 @@
     <mapping-detail
       ref="mappingDetail"
       :mapping="mappingDetailMapping" />
+    <!-- Mapping annotations popover -->
+    <annotation-popover
+      :id="hoveredId"
+      :mapping="hoveredMapping"
+      id-prefix="mappingBrowser-hoveredMapping-annotationButton-" />
   </div>
 </template>
 
@@ -321,6 +335,7 @@ import RegistryNotation from "./RegistryNotation"
 import FlexibleTable from "vue-flexible-table"
 import DataModalButton from "./DataModalButton"
 import MappingDetail from "./MappingDetail"
+import AnnotationPopover from "./AnnotationPopover"
 import _ from "lodash"
 
 /**
@@ -328,7 +343,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton, MappingDetail },
+  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton, MappingDetail, AnnotationPopover },
   data () {
     return {
       loading: 0,
@@ -362,6 +377,8 @@ export default {
       mappingDetailMapping: null,
       /** Currently hovered registry */
       hoveredRegistry: null,
+      /** Currently hovered item unique ID  */
+      hoveredId: null,
     }
   },
   computed: {
@@ -561,7 +578,7 @@ export default {
         {
           key: "actions",
           label: "",
-          width: "8%",
+          width: "10%",
           minWidth: "",
           align: "right",
           sortable: false
@@ -1173,6 +1190,33 @@ export default {
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
       })
+    },
+    annotationsScore(annotations) {
+      let score = 0
+      for (let { bodyValue } of annotations.filter(annotation => annotation.motivation == "assessing")) {
+        score += parseInt(bodyValue) || 0
+      }
+      let sign = score > 0 ? "+" : (score < 0 ? "-" : "±")
+      score = Math.abs(score)
+      return { score, sign }
+    },
+    annotationButtonColor(annotations) {
+      // A score of +3 or -3 means it will have 100% transparency.
+      let maxIntensity = 3
+      let { score, sign } = this.annotationsScore(annotations)
+      let delta = Math.min(score / maxIntensity, 1) * 150
+      let r = 85, g = 85, b = 85
+      if (sign == "-") {
+        r += delta
+        g -= 50
+        b -= 50
+      } else if (sign == "+") {
+        g += delta
+        r -= 50
+        b -= 50
+      }
+      let color = `rgb(${r}, ${g}, ${b})`
+      return color
     },
   }
 }
