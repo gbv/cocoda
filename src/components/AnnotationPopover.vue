@@ -18,7 +18,9 @@
         ref="annotationPopoverDiv"
         class="annotationPopover">
         <!-- Left side -->
-        <div class="annotationPopover-left">
+        <div
+          v-if="annotations.length"
+          class="annotationPopover-left">
           <!-- Annotation history -->
           <div class="annotationPopover-history">
             <template>
@@ -349,7 +351,6 @@ export default {
 <style>
 /* Global styles overriding bootstrap classes */
 .annotationPopoverTop .popover {
-  min-width: 200px;
   max-width: 500px;
   z-index: 1040;
 }
