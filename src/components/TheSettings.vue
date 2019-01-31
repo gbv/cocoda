@@ -235,9 +235,9 @@
           <font-awesome-icon :icon="['fab', 'github']" />
           GitHub
         </a>
-        <span v-if="config.buildInfo.gitTag && config.buildInfo.gitTag != ''">
+        <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
           •
-          {{ $t("settings.version") }} {{ config.buildInfo.gitTag }}
+          {{ $t("settings.version") }} {{ config.buildInfo.version }}
         </span>
         <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
           •

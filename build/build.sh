@@ -4,7 +4,7 @@
 mv build/build-info.json build/build-info.backup.json
 
 # write build info to build-info.js
-GIT_TAG=$(git describe --abbrev=0 --tags || echo "")
+VERSION=$(node -pe "require('./package.json').version")
 GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
 
 GIT_COMMIT=$(git rev-parse --verify HEAD)
@@ -12,7 +12,7 @@ GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
 DATE=$(date)
 cat > ./build/build-info.json <<EOL
 {
-  "gitTag": "${GIT_TAG}",
+  "version": "${VERSION}",
   "gitBranch": "${GIT_BRANCH}",
   "gitCommit": "${GIT_COMMIT}",
   "gitCommitShort": "${GIT_COMMIT_SHORT}",
