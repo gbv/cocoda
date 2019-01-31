@@ -1,4 +1,10 @@
 {
   "title": "Cocoda Mapping Tool (dev)",
-  "cocodaBaseUrl": "//gbv.github.io/cocoda/dev/"
+  "cocodaBaseUrl": "//gbv.github.io/cocoda/dev/",
+  "creatorNames": {
+    "https://coli-conc.gbv.de/users/cocoda": "Cocoda",
+    "https://orcid.org/0000-0002-7613-4123": "Jakob Voß",
+    "https://orcid.org/0000-0002-4087-8227": "Stefan Peters",
+    "http://d-nb.info/gnd/1078005036": "Michael Herrmann"
+  }
 }
