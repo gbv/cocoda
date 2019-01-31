@@ -469,6 +469,9 @@ export default {
      * @param {*} mapping
      */
     adjustMapping(mapping) {
+      if (!mapping) {
+        return null
+      }
       for (let fromTo of ["from", "to"]) {
         if (mapping[fromTo + "Scheme"]) {
           mapping[fromTo + "Scheme"] = this.saveObject(mapping[fromTo + "Scheme"], { type: "scheme" })
