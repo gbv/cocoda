@@ -1172,6 +1172,11 @@ export default {
     saveMapping(mapping) {
       this.loading = 1
       this.loadingGlobal = true
+      // Adjust creator
+      let creator = this.$store.getters["settings/creator"]
+      if (this.$util.prefLabel(creator, null, false)) {
+        mapping.creator = [creator]
+      }
       return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
         return mappings[0]
       }).catch(() => {
