@@ -1303,6 +1303,10 @@ export default {
 <style lang="less">
 @import "../style/main.less";
 
+.mappingBrowser-table {
+  height: 0;
+}
+
 .mappingBrowser-table-row-match {
   background-color: @color-table-highlight-background-1;
 }
