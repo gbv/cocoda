@@ -102,7 +102,7 @@
       "delete": "delete",
       "showDetail": "show mapping details",
       "showMore": "@:conceptDetail.showMore",
-      "noItemsFor": "no results",
+      "noItems": "no results",
       "from": "From",
       "to": "To",
       "creator": "Creator",
