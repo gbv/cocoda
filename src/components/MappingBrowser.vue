@@ -1332,7 +1332,7 @@ export default {
 }
 .mappingBrowser-table-row-noItems {
   text-align: left !important;
-  padding-left: 0px !important;
+  padding-left: 3px !important;
 }
 .mappingBrowser-table-row-hidden {
   display: none;
@@ -1348,10 +1348,10 @@ export default {
 }
 
 .mappingBrowser-table-source {
-  min-width: 0px;
-  width: 18px;
-  max-width: 30px;
-  padding-left: 0 !important;
+  // Exactly enough for a two char wide registry notation.
+  min-width: 33px;
+  max-width: 33px;
+  padding-left: 3px !important;
   padding-right: 0 !important;
 }
 .mappingBrowser-table .mappingBrowser-table-creator {
