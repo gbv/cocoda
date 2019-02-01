@@ -223,48 +223,50 @@
             :id="'mappingBrowser-hoveredMapping-annotationButton-' + data.item.uniqueId"
             :style="`color: ${annotationButtonColor(data.item.mapping.annotations)};`"
             style="display: inline-block; position: relative; min-width: 18px;"
-            class="button mappingBrowser-toolbar-button fontWeight-heavy">
+            class="button fontWeight-heavy">
             {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
           </div>
           <div
             v-if="data.item.mapping"
-            style="display: inline-block; position: relative;">
+            class="mappingBrowser-toolbar-button">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: $util.delay.medium }"
               icon="info-circle"
-              class="button mappingBrowser-toolbar-button"
+              class="button"
               @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
             <font-awesome-icon
               v-if="data.item.mapping.note"
               icon="comment"
               class="mappingBrowser-noteIcon" />
           </div>
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
-            icon="edit"
-            class="button mappingBrowser-toolbar-button"
-            @click="edit(data)" />
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
+          <div class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
+              icon="edit"
+              class="button"
+              @click="edit(data)" />
+          </div>
+          <div
             v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
-            :class="{
-              ['button']: canSave(data.item.mapping),
-              ['button-disabled']: !canSave(data.item.mapping)
-            }"
-            icon="save"
-            class="mappingBrowser-toolbar-button"
-            @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
-            v-if="$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
-            :class="{
-              ['button-delete']: !$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth,
-              ['button-disabled']: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth
-            }"
-            icon="trash-alt"
-            class="mappingBrowser-toolbar-button"
-            @click="(!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) && removeMapping(data.item.mapping)"
-          />
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
+              v-if="canSave(data.item.mapping)"
+              class="button"
+              icon="save"
+              @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
+          </div>
+          <div
+            v-else
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
+              v-if="(!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
+              class="button-delete"
+              icon="trash-alt"
+              @click="(!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) && removeMapping(data.item.mapping)"
+            />
+          </div>
         </span>
         <span
           slot="HEAD_actions"
@@ -578,7 +580,7 @@ export default {
         {
           key: "actions",
           label: "",
-          width: "11%",
+          width: "12%",
           minWidth: "",
           align: "right",
           sortable: false
@@ -1288,6 +1290,12 @@ export default {
   right: -4px;
   top: -2px;
   font-size: 8px;
+}
+.mappingBrowser-toolbar-button {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  text-align: center;
 }
 
 </style>
