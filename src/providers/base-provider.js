@@ -413,11 +413,6 @@ class BaseProvider {
     if (!mapping) {
       return Promise.resolve(null)
     }
-    if (!mapping.created) {
-      mapping.created = (new Date()).toISOString()
-    } else {
-      mapping.modified = (new Date()).toISOString()
-    }
     mapping = jskos.minifyMapping(mapping)
     mapping = jskos.addMappingIdentifiers(mapping)
     return this._saveMapping(mapping, original).then(this.adjustMapping).catch(() => null)

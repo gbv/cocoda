@@ -132,6 +132,11 @@ class LocalMappingsProvider extends BaseProvider {
    */
   _saveMapping(mapping, original) {
     return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
+      if (!mapping.created) {
+        mapping.created = (new Date()).toISOString()
+      } else if (original) {
+        mapping.modified = (new Date()).toISOString()
+      }
       original = original || {}
       // Filter out original mapping and other local mappings with the same content identifier.
       localMappings = localMappings.filter(m => {
