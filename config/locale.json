@@ -178,7 +178,9 @@
       "mappingDeleted": "Mapping was deleted.",
       "mappingNotDeleted": "Mapping could not be deleted.",
       "mappingSaved": "Mapping was saved.",
-      "mappingNotSaved": "Mapping could not be saved."
+      "mappingNotSaved": "Mapping could not be saved.",
+      "newVersionText": "There is a new version of Cocoda.",
+      "newVersionLink": "Refresh site"
     },
     "dataModal": {
       "title": "Export JSKOS Data",
@@ -374,7 +376,9 @@
       "mappingDeleted": "Mapping wurde gelöscht.",
       "mappingNotDeleted": "Mapping konnte nicht gelöscht werden.",
       "mappingSaved": "Mapping wurde gespeichert.",
-      "mappingNotSaved": "Mapping konnte nicht gespeichert werden."
+      "mappingNotSaved": "Mapping konnte nicht gespeichert werden.",
+      "newVersionText": "Es gibt eine neue Version von Cocoda.",
+      "newVersionLink": "Seite neu laden"
     },
     "dataModal": {
       "title": "JSKOS-Daten exportieren",

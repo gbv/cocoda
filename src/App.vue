@@ -12,7 +12,7 @@
         fade
         @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
         @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })" >
-        {{ alert.text }}
+        <span v-html="alert.text" />
       </b-alert>
     </div>
     <the-navbar />
@@ -157,6 +157,7 @@ import ItemDetail from "./components/ItemDetail"
 import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
 import _ from "lodash"
+import axios from "axios"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
@@ -323,6 +324,20 @@ export default {
         y: event.pageY
       })
     }
+    // Check for update every 60 seconds
+    let updateMessageShown = false
+    setInterval(() => {
+      axios.get("./static/build-info.json", {
+        headers: {
+          "Cache-Control": "no-cache"
+        }
+      }).then(response => response.data).then(buildInfo => {
+        if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
+          this.alert(`${this.$t("alerts.newVersionText")} <a href="" class="alert-link">${this.$t("alerts.newVersionLink")}</a>`, 0, "info")
+          updateMessageShown = true
+        }
+      }).catch(() => null)
+    }, 60000)
   },
   methods: {
     /**

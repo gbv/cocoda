@@ -133,6 +133,13 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: [".*"]
       }
     ]),
+    // copy build-info.json
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, "../build/build-info.json"),
+        to: config.build.assetsSubDirectory
+      }
+    ]),
     // copy bootstrap files (for use in mappings.html)
     new CopyWebpackPlugin([
       {
