@@ -246,7 +246,7 @@ export default {
       return this.$store.getters["settings/creator"]
     },
     creatorName() {
-      return this.$util.prefLabel(this.creator)
+      return this.$util.prefLabel(this.creator, null, false)
     },
     mappingComments() {
       return this.$util.lmContent(this.mapping, "note") || []
@@ -342,10 +342,11 @@ export default {
       }
       // Hide comment modal if open
       this.$refs.commentModal.hide()
-      // Change creator of mapping before saving
+      // Adjust creator property by putting current creator in the front
+      let creator = [this.creator].concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$util.prefLabel(c, null, false) && this.creatorName == this.$util.prefLabel(c, null, false))))
       this.$store.commit({
         type: "mapping/setCreator",
-        creator: [this.creator]
+        creator
       })
       let mapping = this.prepareMapping()
       let original = this.original
