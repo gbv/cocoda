@@ -285,12 +285,11 @@
             size="sm" />
           <span
             v-if="item.type == 'noItems'">
-            {{ $t("mappingBrowser.noItemsFor") }}
             <registry-notation
               :registry="item.registry"
               :disabled="true"
               :tooltip="false" />
-            {{ $util.prefLabel(item.registry) }}
+            {{ $util.prefLabel(item.registry) }}: {{ $t("mappingBrowser.noItems") }}
           </span>
         </span>
         <span
@@ -467,6 +466,15 @@ export default {
     fields() {
       return [
         {
+          key: "source",
+          label: "",
+          width: "0%",
+          minWidth: "",
+          align: "left",
+          sortable: false,
+          class: "mappingBrowser-table-source"
+        },
+        {
           key: "sourceScheme",
           label: "",
           width: "4%",
@@ -569,13 +577,6 @@ export default {
             }
             return 0
           }
-        },
-        {
-          key: "source",
-          label: this.$t("mappingBrowser.source"),
-          width: "6%",
-          minWidth: "",
-          sortable: false
         },
         {
           key: "actions",
@@ -1009,7 +1010,7 @@ export default {
             if (items.length == 0) {
               let noItemsRow = {
                 "_wholeRow": true,
-                "_rowClass": "mappingBrowser-table-row-loading fontSize-small text-grey",
+                "_rowClass": "mappingBrowser-table-row-loading mappingBrowser-table-row-noItems fontSize-small text-grey",
                 value: "",
                 type: "noItems",
                 registry,
@@ -1329,6 +1330,10 @@ export default {
 .mappingBrowser-table-row-loading > span > div {
   margin: 0 auto;
 }
+.mappingBrowser-table-row-noItems {
+  text-align: left !important;
+  padding-left: 0px !important;
+}
 .mappingBrowser-table-row-hidden {
   display: none;
 }
@@ -1342,6 +1347,13 @@ export default {
   border-top: 1px solid @color-text-lightGrey;
 }
 
+.mappingBrowser-table-source {
+  min-width: 0px;
+  width: 18px;
+  max-width: 30px;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .mappingBrowser-table .mappingBrowser-table-creator {
   white-space: nowrap;
   overflow: hidden;
