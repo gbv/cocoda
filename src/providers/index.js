@@ -10,9 +10,6 @@ providers[LocalMappingsProvider.providerName] = LocalMappingsProvider
 import MappingsApiProvider from "./mappings-api-provider"
 providers[MappingsApiProvider.providerName] = MappingsApiProvider
 
-import KenomMappingsApiProvider from "./kenom-mappings-api-provider"
-providers[KenomMappingsApiProvider.providerName] = KenomMappingsApiProvider
-
 import OccurrencesApiProvider from "./occurrences-api-provider"
 providers[OccurrencesApiProvider.providerName] = OccurrencesApiProvider
 
