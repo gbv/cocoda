@@ -1080,7 +1080,7 @@ export default {
         this.saveMapping(mapping).then(original => {
           this.$store.commit({
             type: "mapping/set",
-            mapping,
+            mapping: original,
             original
           })
         })
