@@ -543,7 +543,7 @@ export default {
         {
           key: "creator",
           label: this.$t("mappingBrowser.creator"),
-          width: "10%",
+          width: "9%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -571,7 +571,7 @@ export default {
         {
           key: "source",
           label: this.$t("mappingBrowser.source"),
-          width: "3%",
+          width: "6%",
           minWidth: "",
           sortable: false
         },
@@ -1331,6 +1331,12 @@ export default {
 }
 
 .mappingBrowser-table .mappingBrowser-table-creator {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mappingBrowser-table .flexibleTable-head .flexibleTable-cell {
+  padding: 4px 2px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
