@@ -9,7 +9,7 @@ GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse
 
 GIT_COMMIT=$(git rev-parse --verify HEAD)
 GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
-DATE=$(date)
+DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 cat > ./build/build-info.json <<EOL
 {
   "version": "${VERSION}",

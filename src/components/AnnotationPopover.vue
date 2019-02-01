@@ -33,7 +33,7 @@
                 </div>
                 <!-- Date and creator -->
                 <div class="fontSize-verySmall">
-                  {{ annotation.created.substring(0, 10) }}<br>
+                  {{ $util.dateToString(annotation.created, true) }}<br>
                   <auto-link
                     :class="{
                       'fontWeight-heavy': annotation.creator == $settings.creatorUri

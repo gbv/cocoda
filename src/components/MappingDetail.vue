@@ -83,12 +83,12 @@
           <!-- Created -->
           <b-row>
             <b-col cols="3">{{ $t("mappingDetail.created") }}:</b-col>
-            <b-col>{{ mapping.created || "?" }}</b-col>
+            <b-col>{{ $util.dateToString(mapping.created) }}</b-col>
           </b-row>
           <!-- Modified -->
           <b-row>
             <b-col cols="3">{{ $t("mappingDetail.modified") }}:</b-col>
-            <b-col>{{ mapping.modified || "?" }}</b-col>
+            <b-col>{{ $util.dateToString(mapping.modified) }}</b-col>
           </b-row>
           <!-- Note -->
           <b-row v-if="mapping.note">

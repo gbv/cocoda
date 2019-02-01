@@ -146,12 +146,12 @@
           <div
             v-if="item.created"
             class="conceptDetail-identifier" >
-            <b>{{ $t("conceptDetail.created") }}:</b> {{ item.created }}
+            <b>{{ $t("conceptDetail.created") }}:</b> {{ $util.dateToString(item.created, true) }}
           </div>
           <div
             v-if="item.modified"
             class="conceptDetail-identifier" >
-            <b>{{ $t("conceptDetail.modified") }}:</b> {{ item.modified }}
+            <b>{{ $t("conceptDetail.modified") }}:</b> {{ $util.dateToString(item.modified, true) }}
           </div>
           <template v-if="item.definition">
             <div

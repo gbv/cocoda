@@ -187,6 +187,17 @@ let addEndpoint = (url, endpoint) => {
   return url + "/" + endpoint
 }
 
+let dateToString = (dateString, onlyDate = false) => {
+  let date = new Date(dateString)
+  let optionsDate = { year: "numeric", month: "short", day: "numeric" }
+  let options = Object.assign({ hour: "2-digit", minute: "2-digit", second: "2-digit" }, optionsDate)
+  if (date instanceof Date && !isNaN(date)) {
+    return onlyDate ? date.toLocaleDateString(undefined, optionsDate) : date.toLocaleString(undefined, options)
+  } else {
+    return "?"
+  }
+}
+
 /** Image URLs for specific licenses */
 let licenseBadges = {
   "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
@@ -199,4 +210,4 @@ let licenseBadges = {
   "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, licenseBadges }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges }
