@@ -2,7 +2,7 @@ import localforage from "localforage"
 
 const defaultSettings = {
   creator: "",
-  creatorUrl: "",
+  creatorUri: "",
   mappingBrowserAllSchemes: true,
   mappingBrowserOnlyLocal: false,
   mappingBrowserShowReverse: true,

@@ -4,6 +4,7 @@ import config from "../config"
 import selected from "./modules/selected"
 import mapping from "./modules/mapping"
 import alerts from "./modules/alerts"
+import auth from "./modules/auth"
 import settings from "./modules/settings"
 import { plugins } from "./plugins"
 import jskos from "jskos-tools"
@@ -24,8 +25,6 @@ const state = {
     x: 0,
     y: 0
   },
-  authorized: null,
-  authorizedLoadingId: null,
 }
 
 const getters = {
@@ -74,12 +73,6 @@ const mutations = {
   setMousePosition(state, { x, y }) {
     state.mousePosition = { x, y }
   },
-  setAuthorized(state, { value }) {
-    state.authorized = value
-  },
-  setAuthorizedLoadingId(state, { value }) {
-    state.authorizedLoadingId = value
-  },
   setLoading(state, { value }) {
     if (value) {
       state.loading += 1
@@ -91,7 +84,7 @@ const mutations = {
 
 const store = new Vuex.Store({
   modules: {
-    selected, mapping, alerts, settings
+    selected, mapping, alerts, auth, settings
   },
   plugins,
   state,
@@ -102,13 +95,9 @@ const store = new Vuex.Store({
 
 // Load settings on first launch.
 store.dispatch("settings/load").then(() => {
-  // Check auth once after loading
-  store.dispatch("checkAuth")
+  if (config.auth) {
+    store.dispatch("auth/init", config.auth)
+  }
 })
-
-// Check auth every 15 seconds
-setInterval(() => {
-  store.dispatch("checkAuth")
-}, 15000)
 
 export default store

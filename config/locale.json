@@ -171,8 +171,14 @@
       "mappingRegistryExplanation": "This provider will be used to save mappings.",
       "creatorTitle": "Profile",
       "creatorInfo": "The following information is stored in all your mappings so it may also be shared:",
-      "accountTitle": "Access",
-      "accountInfo": "The following information will not be shared publicly:"
+      "accountTitle": "Authentification",
+      "accountInfo": "Cocoda uses an external service to authenticate users. Please consult the following links for more information:",
+      "accountPage": "Account Page",
+      "loginPage": "Login Page",
+      "loggedIn": "You are logged in.",
+      "loggedOut": "You are not logged in.",
+      "privacyPolicy": "Privacy Policy",
+      "sources": "Sources"
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -180,7 +186,11 @@
       "mappingSaved": "Mapping was saved.",
       "mappingNotSaved": "Mapping could not be saved.",
       "newVersionText": "There is a new version of Cocoda.",
-      "newVersionLink": "Refresh site"
+      "newVersionLink": "Refresh site",
+      "loggedIn": "You are now logged in.",
+      "loggedOut": "You are now logged out.",
+      "identityAdjusted": "Your identity was adjusted. Please review this information in the settings.",
+      "nameError": "There was an error setting the name."
     },
     "dataModal": {
       "title": "Export JSKOS Data",
@@ -300,8 +310,14 @@
       "mappingRegistryExplanation": "Dieser Provider wird zum Speichern von Mappings genutzt.",
       "creatorTitle": "Profil",
       "creatorInfo": "Die folgenden Angaben werden in allen bearbeiteten Mappings hinterlegt und können beim Austausch von Mappings weitergegeben werden:",
-      "accountTitle": "Zugangsdaten",
-      "accountInfo": "Die folgenden Angaben werde nicht öffentlich weitergegeben:"
+      "accountTitle": "Authentifizierung",
+      "accountInfo": "Cocoda nutzt einen externen Dienst, um Nutzer zu authentifizieren. Bitte nimm folgende Links zur Kenntnis:",
+      "accountPage": "Account-Seite",
+      "loginPage": "Login-Seite",
+      "loggedIn": "Du bist eingeloggt.",
+      "loggedOut": "Du bist nicht eingeloggt.",
+      "privacyPolicy": "Datenschutz",
+      "sources": "Quellcode"
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",
@@ -378,7 +394,11 @@
       "mappingSaved": "Mapping wurde gespeichert.",
       "mappingNotSaved": "Mapping konnte nicht gespeichert werden.",
       "newVersionText": "Es gibt eine neue Version von Cocoda.",
-      "newVersionLink": "Seite neu laden"
+      "newVersionLink": "Seite neu laden",
+      "loggedIn": "Du bist jetzt eingeloggt.",
+      "loggedOut": "Du bist jetzt ausgeloggt.",
+      "identityAdjusted": "Die Identität wurde angepasst, bitte in den Einstellungen prüfen.",
+      "nameError": "Fehler beim Namen ändern."
     },
     "dataModal": {
       "title": "JSKOS-Daten exportieren",

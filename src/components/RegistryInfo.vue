@@ -30,7 +30,7 @@
         v-if="registry.provider.has.auth"
         style="margin-left: 5px;" >
         <span
-          v-if="$store.state.authorized && $store.state.authorized[registry.uri]"
+          v-if="authorized"
           style="color: green;" >
           <font-awesome-icon icon="lock-open" />
         </span>

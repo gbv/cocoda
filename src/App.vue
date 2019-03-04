@@ -311,6 +311,72 @@ export default {
         this.$i18n.locale = newValue
       }
     },
+    /**
+     * Show alerts when user was authorized.
+     */
+    authorized(newValue, oldValue) {
+      if (newValue != oldValue) {
+        if (newValue) {
+          // Logged in
+          this.alert(this.$t("alerts.loggedIn"), null, "success")
+        } else {
+          // Logged out
+          this.alert(this.$t("alerts.loggedOut"), null, "danger")
+        }
+      }
+    },
+    /**
+     * Update local creator name if authorized user changed.
+     */
+    user() {
+      if (this.user) {
+        if (this.user.name != this.$settings.creator) {
+          this.$store.commit({
+            type: "settings/set",
+            prop: "creator",
+            value: this.user.name
+          })
+        }
+      }
+    },
+    /**
+     * Make sure the local user URI is one of the associated URIs.
+     */
+    userUris() {
+      if (this.userUris && this.userUris.length) {
+        if (!this.userUris.includes(this.creator.uri)) {
+          // Set creatorUri to first URI in list
+          this.$store.commit({
+            type: "settings/set",
+            prop: "creatorUri",
+            value: this.userUris[0]
+          })
+          // TODO: - Localize message.
+          this.alert(this.$t("alerts.identityAdjusted"), 0, "warning")
+        }
+      }
+    },
+    /**
+     * Update authorized user's name if creator name changed.
+     */
+    creatorName() {
+      if (this.authorized && this.user) {
+        if (this.creatorName != this.user.name) {
+          this.setName(this.creatorName).then(success => {
+            if (!success) {
+              // Reset name and show error
+              this.$store.commit({
+                type: "settings/set",
+                prop: "creator",
+                value: this.user.name
+              })
+              // TODO: - Localize error message.
+              this.alert(this.$t("alerts.nameError"), null, "danger")
+            }
+          })
+        }
+      }
+    },
   },
   created() {
     // Set loading to true if schemes are not loaded yet.

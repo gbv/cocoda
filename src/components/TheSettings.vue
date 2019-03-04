@@ -29,53 +29,72 @@
                 type="text" />
             </p>
             <p>
-              <b>{{ $t("settings.creatorUrl") }}</b>
-              <b-form-input
-                v-model="localSettings.creatorUrl"
-                placeholder="https://"
-                type="text" />
-            </p>
-            <p>
               <b>{{ $t("settings.creatorUri") }}</b>
-              <b-form-input
-                v-model="localSettings.creatorUri"
-                placeholder="https://"
-                type="text"
-                @input="checkCredentials" />
-            </p>
-            <div v-if="$store.getters.authAvailable || availableMappingRegistries.length">
-              <h5>{{ $t("settings.accountTitle") }}</h5>
-              <p>{{ $t("settings.accountInfo") }}</p>
-            </div>
-            <p v-if="$store.getters.authAvailable">
-              <b>{{ $t("settings.creatorCredentials") }}</b>
-              <b-form-input
-                v-model="localSettings.creatorCredentials"
-                :class="{
-                  'border-success': $store.state.authorized != null && !Object.values($store.state.authorized).includes(false),
-                  'border-danger': $store.state.authorized != null && !Object.values($store.state.authorized).includes(true),
-                  'border-warning': $store.state.authorized != null && Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
-                }"
-                type="password"
-                @input="checkCredentials" />
-              <span
-                v-if="$store.state.authorized != null"
-                :class="{
-                  'text-success': !Object.values($store.state.authorized).includes(false),
-                  'text-danger': !Object.values($store.state.authorized).includes(true),
-                  'text-warning': Object.values($store.state.authorized).includes(false) && Object.values($store.state.authorized).includes(true)
-              }" >
-                {{
-                  !Object.values($store.state.authorized).includes(false) ?
-                    $t("settings.credentialsCorrect") :
-                    (
-                      Object.values($store.state.authorized).includes(true) ?
-                        $t("settings.credentialsPartiallyIncorrect") :
-                        $t("settings.credentialsIncorrect")
-                    )
-                }}
+              <span v-if="!user || !userUris || !userUris.length">
+                <b-form-input
+                  v-model="localSettings.creatorUri"
+                  placeholder="https://"
+                  type="text" />
+              </span>
+              <span v-else>
+                <b-form-select v-model="localSettings.creatorUri">
+                  <option
+                    v-for="uri in userUris"
+                    :key="`settings-uris-${uri}`"
+                    :value="uri">
+                    {{ uri }}
+                  </option>
+                </b-form-select>
               </span>
             </p>
+            <div v-if="$store.state.auth.connected">
+              <h5>{{ $t("settings.accountTitle") }} via {{ $store.state.auth.about.title }}</h5>
+              <p>
+                {{ $t("settings.accountInfo") }}<br>
+                <a
+                  v-if="$store.state.auth.about.urls.imprint"
+                  :href="$store.state.auth.about.urls.imprint"
+                  target="_blank">
+                  {{ $t("settings.impressum") }}
+                </a> •
+                <a
+                  v-if="$store.state.auth.about.urls.privacy"
+                  :href="$store.state.auth.about.urls.privacy"
+                  target="_blank">
+                  {{ $t("settings.privacyPolicy") }}
+                </a> •
+                <a
+                  v-if="$store.state.auth.about.urls.sources"
+                  :href="$store.state.auth.about.urls.sources"
+                  target="_blank">
+                  {{ $t("settings.sources") }}
+                </a>
+              </p>
+              <p>
+                <span
+                  v-if="user && authorized"
+                  class="text-success fontWeight-heavy" >
+                  {{ $t("settings.loggedIn") }}
+                </span>
+                <span
+                  v-else
+                  class="text-danger fontWeight-heavy" >
+                  {{ $t("settings.loggedOut") }}
+                </span>
+                <a
+                  v-if="user && authorized"
+                  :href="$store.state.auth.about.baseUrl + '/account'"
+                  target="_blank">
+                  {{ $t("settings.accountPage") }}
+                </a>
+                <a
+                  v-else
+                  :href="$store.state.auth.about.baseUrl + '/login'"
+                  target="_blank">
+                  {{ $t("settings.loginPage") }}
+                </a>
+              </p>
+            </div>
             <p
               v-if="availableMappingRegistries.length"
               style="margin-bottom: 10px !important;" >
@@ -362,10 +381,6 @@ export default {
       }
     },
   },
-  created() {
-    // Debounce checkCredentials by 350 ms
-    this.checkCredentials = _.debounce(this._checkCredentials, 350)
-  },
   methods: {
     show() {
       this.$refs.settingsModal.show()
@@ -509,9 +524,6 @@ export default {
           this.deleteMappingsButtons = false
         })
       })
-    },
-    _checkCredentials() {
-      this.$store.dispatch("checkAuth")
     },
   }
 }

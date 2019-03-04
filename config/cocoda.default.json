@@ -106,7 +106,7 @@
       },
       "mappings": "https://coli-conc.gbv.de/api/mappings/",
       "annotations": "https://coli-conc.gbv.de/api/annotations/",
-      "auth": "https://coli-conc.gbv.de/api/checkAuth",
+      "auth": true,
       "canSaveMappings": true,
       "canRemoveMappings": true,
       "provider": "MappingsApi",
@@ -296,5 +296,6 @@
       }
     }
   ],
-  "impressum": "https://www.gbv.de/impressum"
+  "impressum": "https://www.gbv.de/impressum",
+  "auth": "https://coli-conc.gbv.de/login/"
 }

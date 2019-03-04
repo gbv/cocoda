@@ -242,12 +242,6 @@ export default {
     hasChangedFromOriginal() {
       return this.$store.getters["mapping/hasChangedFromOriginal"]
     },
-    creator() {
-      return this.$store.getters["settings/creator"]
-    },
-    creatorName() {
-      return this.$util.prefLabel(this.creator, null, false)
-    },
     mappingComments() {
       return this.$util.lmContent(this.mapping, "note") || []
     },

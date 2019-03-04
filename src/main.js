@@ -38,6 +38,10 @@ Vue.component("font-awesome-icon", FontAwesomeIcon)
 import objects from "./mixins/objects"
 Vue.mixin(objects)
 
+// Add auth mixin
+import auth from "./mixins/auth"
+Vue.mixin(auth)
+
 // Add drag and drop mixin
 import draganddrop from "./mixins/dragandrop"
 Vue.mixin(draganddrop)

@@ -69,8 +69,8 @@
         {{ creatorName || $t("navbar.settings") }}
         <!-- Login status -->
         <span
-          v-if="$store.getters.authAvailable && $store.state.authorized != null"
-          :style="`color: ${!Object.values($store.state.authorized).includes(false) ? 'green' : (Object.values($store.state.authorized).includes(true) ? 'yellow' : 'red')} !important;`">
+          v-if="$store.state.auth.available"
+          :style="`color: ${authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red')} !important;`">
           <font-awesome-icon icon="user" />
         </span>
       </b-nav-item>
@@ -94,9 +94,6 @@ export default {
     TheSettings, ItemName
   },
   computed: {
-    creatorName() {
-      return this.$settings.creator
-    },
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
     },

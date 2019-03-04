@@ -84,7 +84,7 @@ class BaseProvider {
         }
         // Set auth
         if (this.registry.auth && this.auth) {
-          options.auth = this.auth
+          _.set(options, "headers.Authorization", `Bearer ${this.auth}`)
         }
         tries -= 1
         let promise
