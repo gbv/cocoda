@@ -177,6 +177,10 @@
         <b-tab
           v-if="localMappingsSupported"
           :title="$t('settings.tabLocalMappings')" >
+          <div>
+            <h5>{{ $t('settings.tabLocalMappings') }}</h5>
+            <p>{{ $t("settings.localMappingsInfo") }}</p>
+          </div>
           <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
             <h5>{{ $t("settings.localDownload") }}</h5>
             <span
