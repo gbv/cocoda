@@ -87,12 +87,29 @@
                 target="_blank">
                 {{ $t("settings.accountPage") }}
               </a>
-              <a
-                v-else
-                :href="$store.state.auth.about.baseUrl + '/login'"
-                target="_blank">
-                {{ $t("settings.loginPage") }}
-              </a>
+            </p>
+            <p v-if="$store.state.auth.available && !user">
+              <b-button
+                v-for="provider in providers"
+                :key="`login-provider-${provider.id}`"
+                block
+                variant="light"
+                @click="login(provider)" >
+                <img
+                  v-if="provider.image"
+                  :src="provider.image"
+                  height="20px"
+                  style="margin-right: 5px;" >
+                Login via {{ provider.name }}
+              </b-button>
+            </p>
+            <p v-else-if="$store.state.auth.available">
+              <b-button
+                block
+                variant="danger"
+                @click="login(null)" >
+                Logout
+              </b-button>
             </p>
             <div v-if="$store.state.auth.connected">
               <b>{{ $t("settings.accountTitle") }} via {{ $store.state.auth.about.title }}</b>
@@ -545,6 +562,24 @@ export default {
           this.refreshDownloads()
           this.deleteMappingsButtons = false
         })
+      })
+    },
+    login(provider) {
+      let url
+      let eventType
+      if (provider) {
+        // Open login window
+        url = provider.loginURL
+        eventType = "login"
+      } else {
+        // Open logout window
+        url = this.config.auth + "logout"
+        eventType = "logout"
+      }
+      this.$store.commit({
+        type: "auth/openWindow",
+        url,
+        eventType
       })
     },
   }
