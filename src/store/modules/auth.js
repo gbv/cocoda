@@ -9,7 +9,7 @@ let client
 const state = {
   available: false,
   authorized: false,
-  user: null,
+  user: undefined,
   connected: false,
   providers: [],
   about: {},

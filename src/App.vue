@@ -312,23 +312,10 @@ export default {
       }
     },
     /**
-     * Show alerts when user was authorized.
-     */
-    authorized(newValue, oldValue) {
-      if (newValue != oldValue) {
-        if (newValue) {
-          // Logged in
-          this.alert(this.$t("alerts.loggedIn"), null, "success")
-        } else {
-          // Logged out
-          this.alert(this.$t("alerts.loggedOut"), null, "danger")
-        }
-      }
-    },
-    /**
      * Update local creator name if authorized user changed.
      */
-    user() {
+    user(current, previous) {
+      console.log(previous, current)
       if (this.user) {
         if (this.user.name != this.userName) {
           this.$store.commit({
@@ -337,6 +324,16 @@ export default {
             value: this.user.name
           })
         }
+      }
+      /**
+       * Show alerts when user was logged in/out.
+       */
+      if (previous !== undefined && current) {
+        // Logged in
+        this.alert(this.$t("alerts.loggedIn"), null, "success")
+      } else if (previous && !current) {
+        // Logged out
+        this.alert(this.$t("alerts.loggedOut"), null, "danger")
       }
     },
     /**
