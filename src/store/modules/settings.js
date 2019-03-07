@@ -1,5 +1,7 @@
 import localforage from "localforage"
 
+const localStorageKey = "cocoda-settings--" + window.location.pathname
+
 const defaultSettings = {
   creator: "",
   creatorUri: "",
@@ -37,7 +39,7 @@ const mutations = {
   save(state, { settings }) {
     if (state.loaded) {
       state.settings = settings
-      localforage.setItem("settings", settings)
+      localforage.setItem(localStorageKey, settings)
     } else {
       console.warn("Tried to save settings before they were loaded.")
     }
@@ -46,7 +48,7 @@ const mutations = {
   set(state, { prop, value }) {
     if (state.loaded) {
       state.settings[prop] = value
-      localforage.setItem("settings", state.settings)
+      localforage.setItem(localStorageKey, state.settings)
     } else {
       console.warn("Tried to save settings before they were loaded.")
     }
@@ -61,7 +63,22 @@ const mutations = {
 // actions
 const actions = {
   load({ commit }) {
-    return localforage.getItem("settings").then(settings => {
+    // Migration from old local storage key to new one if necessary
+    let oldLocalStorageKey = "settings"
+    return Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(localStorageKey)]).then(results => {
+      let [oldSettings, newSettings] = results
+      if (oldSettings && !newSettings) {
+        return localforage.setItem(localStorageKey, oldSettings).then(() => {
+          console.warn(`Migrated from old local storage key (${oldLocalStorageKey}) to new one (${localStorageKey})`)
+        }).catch(error => {
+          console.error("Error attempting to migrate from old storage key to new one:", error)
+        })
+      }
+      return
+    }).then(() => {
+      // Load settings from local storage
+      return localforage.getItem(localStorageKey)
+    }).then(settings => {
       let newSettings = Object.assign({}, defaultSettings, settings || {})
       commit({
         type: "loaded"

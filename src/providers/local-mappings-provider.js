@@ -11,6 +11,19 @@ class LocalMappingsProvider extends BaseProvider {
   constructor(...params) {
     super(...params)
     this.queue = []
+    this.localStorageKey = "cocoda-mappings--" + this.path
+    let oldLocalStorageKey = "mappings"
+    // Migration from old local storage key to new one if necessary
+    Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(this.localStorageKey)]).then(results => {
+      let [oldMappings, newMappings] = results
+      if (oldMappings && !newMappings) {
+        localforage.setItem(this.localStorageKey, oldMappings).then(() => {
+          console.warn(`Migrated from old local storage key (${oldLocalStorageKey}) to new one (${this.localStorageKey})`)
+        }).catch(error => {
+          console.error("Error attempting to migrate from old storage key to new one:", error)
+        })
+      }
+    })
   }
 
   /**
@@ -53,6 +66,7 @@ class LocalMappingsProvider extends BaseProvider {
    * Returns a Promise with a list of local mappings.
    */
   _getMappings({ from, to, direction, mode, identifier } = {}) {
+    console.log("get mappings")
     let params = {}
     if (from) {
       params.from = from.uri
@@ -69,7 +83,7 @@ class LocalMappingsProvider extends BaseProvider {
     if (identifier) {
       params.identifier = identifier
     }
-    return localforage.getItem("mappings").then(mappings => mappings || []).catch(() => []).then(mappings => {
+    return localforage.getItem(this.localStorageKey).then(mappings => mappings || []).catch(() => []).then(mappings => {
       if (params.direction == "both") {
         params.mode = "or"
       }
@@ -150,7 +164,7 @@ class LocalMappingsProvider extends BaseProvider {
 
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
-      return localforage.setItem("mappings", localMappings).then(() => {
+      return localforage.setItem(this.localStorageKey, localMappings).then(() => {
         return mapping
       }).catch(() => {
         return null
@@ -178,7 +192,7 @@ class LocalMappingsProvider extends BaseProvider {
       localMappings = localMappings.filter(filter()(mapping))
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
-      return localforage.setItem("mappings", localMappings).then(() => {
+      return localforage.setItem(this.localStorageKey, localMappings).then(() => {
         return mapping
       }).catch(() => {
         return null
