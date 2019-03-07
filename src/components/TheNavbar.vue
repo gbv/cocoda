@@ -51,7 +51,6 @@
         <b-dropdown-item
           v-for="concept in favoriteConcepts"
           :key="'theNavbar-' + concept.uri + '-favorite'"
-          disabled
           draggable
           @dragstart="favoriteConceptDragStart(concept)"
           @dragend="favoriteConceptDragEnd" >
