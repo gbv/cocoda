@@ -72,4 +72,9 @@ config.registries = config.registries.filter(registry => registry.provider != nu
 let buildInfo = require("../build/build-info.json")
 config.buildInfo = buildInfo
 
+// Make sure auth URL always ends on a slash
+if (config.auth && !config.auth.endsWith("/")) {
+  config.auth += "/"
+}
+
 export default config
