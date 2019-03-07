@@ -32,10 +32,23 @@
               </span>
               <span v-else>
                 <!-- Specific identity chosen - name is set -->
-                <b-form-input
-                  :value="creatorName"
-                  type="text"
-                  disabled />
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1">
+                    <b-form-input
+                      :value="creatorName"
+                      type="text"
+                      disabled />
+                  </div>
+                  <div
+                    v-if="userIdentityProvider"
+                    class="ml-2">
+                    <img
+                      v-if="userIdentityImage"
+                      :src="userIdentityImage"
+                      height="24px">
+                    {{ userIdentityProvider.name }}
+                  </div>
+                </div>
               </span>
             </p>
             <p>
