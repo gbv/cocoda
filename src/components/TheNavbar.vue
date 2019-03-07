@@ -65,14 +65,21 @@
       </b-nav-item-dropdown>
       <!-- Settings button -->
       <b-nav-item @click="$refs.settings.show()">
-        <font-awesome-icon icon="cog" />
-        {{ creatorName || $t("navbar.settings") }}
         <!-- Login status -->
         <span
           v-if="$store.state.auth.available"
           :style="`color: ${authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red')} !important;`">
           <font-awesome-icon icon="user" />
         </span>
+        <!-- Name -->
+        {{ creatorName || $t("navbar.settings") }}
+      </b-nav-item>
+      <b-nav-item
+        v-if="userIdentityImage && creator.uri"
+        :href="creator.uri"
+        class="navbar-identitySettings"
+        target="_blank">
+        <img :src="userIdentityImage">
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
@@ -158,6 +165,16 @@ nav.navbar {
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
   color: @color-text-lightGrey;
+}
+
+.navbar-identitySettings img {
+  opacity: 1;
+  height: 17px;
+  margin-top: -3px;
+  margin-left: -6px;
+}
+.navbar-identitySettings:hover img {
+  opacity: .5;
 }
 </style>
 
