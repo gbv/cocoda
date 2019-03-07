@@ -230,6 +230,11 @@
   ],
   "searchLinks": [
     {
+      "prefLabel": { "de": "ccmapper" },
+      "url": "https://ccmapper-de-test.pansoft.de/m/mapping.html?id={notation}",
+      "schemeUris": ["http://bartoc.org/en/node/533"]
+    },
+    {
       "prefLabel": { "de": "Wikipedia (de)" },
       "url": "https://de.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
     },
@@ -244,11 +249,6 @@
     {
       "prefLabel": { "de": "RVK Online" },
       "url": "https://rvk.uni-regensburg.de/regensburger-verbundklassifikation-online#notation/{notation}",
-      "schemeUris": ["http://bartoc.org/en/node/533"]
-    },
-    {
-      "prefLabel": { "de": "ccmapper" },
-      "url": "https://ccmapper-de-test.pansoft.de/m/mapping.html?id={notation}",
       "schemeUris": ["http://bartoc.org/en/node/533"]
     },
     {
