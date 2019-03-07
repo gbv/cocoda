@@ -261,10 +261,10 @@
             class="mappingBrowser-toolbar-button">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
-              v-if="(!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
+              v-if="canRemove(data) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
               class="button-delete"
               icon="trash-alt"
-              @click="(!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) && removeMapping(data.item.mapping)"
+              @click="removeMapping(data.item.mapping)"
             />
           </div>
         </span>
@@ -1055,6 +1055,7 @@ export default {
       this.tableItemsRecompute = Math.random()
     },
     edit(data) {
+      let canEdit = this.canEdit(data)
       let copyWithReferences = mapping => {
         let newMapping = this.$jskos.copyDeep(mapping)
         newMapping.from.memberSet = mapping.from.memberSet.slice()
@@ -1081,14 +1082,14 @@ export default {
           this.$store.commit({
             type: "mapping/set",
             mapping: original,
-            original
+            original: canEdit ? original : null
           })
         })
       } else {
         this.$store.commit({
           type: "mapping/set",
           mapping,
-          original: mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry) ? copyWithReferences(mapping) : null
+          original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry) ? copyWithReferences(mapping) : null
         })
       }
     },
@@ -1131,6 +1132,26 @@ export default {
           this.saveObject(result)
         })
       }
+    },
+    canEdit(data) {
+      if (!data.item.mapping) {
+        return false
+      }
+      if (!data.item.registry.provider.has.auth) {
+        // Can always edit a mapping from a provider without auth
+        return true
+      }
+      let mapping = data.item.mapping
+      let creatorUris = (mapping.creator || []).map(creator => creator.uri).filter(uri => uri)
+      if (_.intersection(creatorUris, this.userUris).length) {
+        // Can only edit if one of the creator matches the logged in user
+        return true
+      } else {
+        return false
+      }
+    },
+    canRemove(data) {
+      return this.canEdit(data) && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
     },
     removeMapping(mapping) {
       this.loadingGlobal = true
