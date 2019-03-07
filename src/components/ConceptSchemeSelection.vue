@@ -10,11 +10,12 @@
       class="conceptSchemeSelection-collapsed">
       <!-- Expand button -->
       <div
-        v-b-tooltip.hover="{ title: showPopover ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: popoverShown ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: $util.delay.medium }"
         :id="`${id}-expandButton`"
-        class="conceptSchemeSelection-expandButton button">
+        class="conceptSchemeSelection-expandButton button"
+        @click="togglePopover" >
         <font-awesome-icon
-          :icon="showPopover ? 'angle-left' : 'angle-down'" />
+          :icon="popoverShown ? 'angle-left' : 'angle-down'" />
       </div>
       <!-- Name of scheme -->
       <div class="conceptSchemeSelection-schemeName">
@@ -59,11 +60,12 @@
     <div
       :is="scheme == null ? 'div' : 'b-popover'"
       :target="`${id}-expandButton`"
-      :show.sync="showPopover"
       :container="`conceptSchemeSelection-${id}`"
-      triggers="click"
+      triggers="disabled"
       placement="leftbottom"
-      class="conceptSchemeSelection-popover" >
+      class="conceptSchemeSelection-popover"
+      @shown="popoverShown = true"
+      @hidden="popoverShown = false" >
       <!-- Inner div. Classes are attached because #app's classes don't apply for popovers. -->
       <div
         ref="popover"
@@ -83,7 +85,7 @@
             autocomplete="off"
             size="sm"
             style="flex: 1; margin-right: 5px;"
-            @keyup.esc.native="showPopover = false" />
+            @keyup.esc.native="hidePopover" />
           <!-- Language filter selection -->
           <b-form-select
             v-model="languageFilter"
@@ -162,7 +164,7 @@ export default {
       // Unique ID for this instance of the component.
       id: this.$util.generateID(),
       // Boolean whether popover is shown.
-      showPopover: false,
+      popoverShown: false,
       // Filter text for scheme selection.
       schemeFilter: "",
       // Filter for language
@@ -202,7 +204,7 @@ export default {
     },
   },
   watch: {
-    showPopover(show) {
+    popoverShown(show) {
       // Focus input field when popover is shown
       if (show) {
         _.delay(() => {
@@ -217,7 +219,7 @@ export default {
     // Add hotkey for opening popup
     let letter = this.isLeft ? "f" : "g"
     this.addHotkey(`ctrl+shift+${letter},command+shift+${letter}`, () => {
-      this.showPopover = !this.showPopover
+      this.togglePopover()
       return false
     })
     this.addHotkey(`ctrl+${letter},command+${letter}`, () => {
@@ -239,8 +241,8 @@ export default {
   methods: {
     handleClickOutside(evt) {
       // Handle popover
-      if (this.showPopover && this.$refs.popover && !this.$refs.popover.contains(evt.target)) {
-        this.showPopover = false
+      if (this.popoverShown && this.$refs.popover && !this.$refs.popover.contains(evt.target)) {
+        this.hidePopover()
       }
     },
     /**
@@ -262,7 +264,7 @@ export default {
         return
       }
       this.$router.push({ path: this.getRouterUrl(this.filteredSchemes[0], this.isLeft) })
-      this.showPopover = false
+      this.hidePopover()
     },
     /**
      * Sets concept search query to a certain string.
@@ -287,6 +289,19 @@ export default {
       if (input) {
         input.focus()
         input.select()
+      }
+    },
+    showPopover() {
+      this.$root.$emit("bv::show::popover", `${this.id}-expandButton`)
+    },
+    hidePopover() {
+      this.$root.$emit("bv::hide::popover", `${this.id}-expandButton`)
+    },
+    togglePopover() {
+      if (this.popoverShown) {
+        this.hidePopover()
+      } else {
+        this.showPopover()
       }
     },
   }
