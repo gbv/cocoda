@@ -57,8 +57,32 @@
                 </b-form-select>
               </span>
             </p>
+            <p>
+              <span
+                v-if="user && authorized"
+                class="text-success fontWeight-heavy" >
+                {{ $t("settings.loggedIn") }}
+              </span>
+              <span
+                v-else
+                class="text-danger fontWeight-heavy" >
+                {{ $t("settings.loggedOut") }}
+              </span>
+              <a
+                v-if="user && authorized"
+                :href="$store.state.auth.about.baseUrl + '/account'"
+                target="_blank">
+                {{ $t("settings.accountPage") }}
+              </a>
+              <a
+                v-else
+                :href="$store.state.auth.about.baseUrl + '/login'"
+                target="_blank">
+                {{ $t("settings.loginPage") }}
+              </a>
+            </p>
             <div v-if="$store.state.auth.connected">
-              <h5>{{ $t("settings.accountTitle") }} via {{ $store.state.auth.about.title }}</h5>
+              <b>{{ $t("settings.accountTitle") }} via {{ $store.state.auth.about.title }}</b>
               <p>
                 {{ $t("settings.accountInfo") }}<br>
                 <a
@@ -72,56 +96,27 @@
                   :href="$store.state.auth.about.urls.privacy"
                   target="_blank">
                   {{ $t("settings.privacyPolicy") }}
-                </a> •
-                <a
-                  v-if="$store.state.auth.about.urls.sources"
-                  :href="$store.state.auth.about.urls.sources"
-                  target="_blank">
-                  {{ $t("settings.sources") }}
-                </a>
-              </p>
-              <p>
-                <span
-                  v-if="user && authorized"
-                  class="text-success fontWeight-heavy" >
-                  {{ $t("settings.loggedIn") }}
-                </span>
-                <span
-                  v-else
-                  class="text-danger fontWeight-heavy" >
-                  {{ $t("settings.loggedOut") }}
-                </span>
-                <a
-                  v-if="user && authorized"
-                  :href="$store.state.auth.about.baseUrl + '/account'"
-                  target="_blank">
-                  {{ $t("settings.accountPage") }}
-                </a>
-                <a
-                  v-else
-                  :href="$store.state.auth.about.baseUrl + '/login'"
-                  target="_blank">
-                  {{ $t("settings.loginPage") }}
                 </a>
               </p>
             </div>
-            <p
-              v-if="availableMappingRegistries.length"
-              style="margin-bottom: 10px !important;" >
-              <b>{{ $t("settings.mappingRegistry") }}</b>
-              <b-form-select v-model="localSettings.mappingRegistry">
-                <option
-                  v-for="registry in availableMappingRegistries"
-                  :key="`settings-registry-${registry.uri}`"
-                  :value="registry.uri" >
-                  {{ $util.prefLabel(registry) }}
-                </option>
-              </b-form-select>
-              {{ $t("settings.mappingRegistryExplanation") }}
-            </p>
-            <p>
-              <registry-info :registry="$store.getters.getCurrentRegistry" />
-            </p>
+            <div
+              v-if="availableMappingRegistries.length" >
+              <h5>{{ $t("settings.mappingRegistry") }}</h5>
+              <p>
+                {{ $t("settings.mappingRegistryExplanation") }}
+                <b-form-select
+                  v-model="localSettings.mappingRegistry"
+                  style="margin-bottom: 10px;">
+                  <option
+                    v-for="registry in availableMappingRegistries"
+                    :key="`settings-registry-${registry.uri}`"
+                    :value="registry.uri" >
+                    {{ $util.prefLabel(registry) }}
+                  </option>
+                </b-form-select>
+                <registry-info :registry="$store.getters.getCurrentRegistry" />
+              </p>
+            </div>
           </div>
         </b-tab>
         <b-tab
