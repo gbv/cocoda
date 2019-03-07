@@ -177,6 +177,7 @@
       "loginPage": "Login Page",
       "loggedIn": "You are logged in.",
       "loggedOut": "You are not logged in.",
+      "loginUriHint": "The URI is assigned automatically after logging in.",
       "privacyPolicy": "Privacy Policy",
       "sources": "Sources",
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage."
@@ -317,6 +318,7 @@
       "loginPage": "Login-Seite",
       "loggedIn": "Du bist eingeloggt.",
       "loggedOut": "Du bist nicht eingeloggt.",
+      "loginUriHint": "Die URI wird nach dem Login automatisch zugewiesen.",
       "privacyPolicy": "Datenschutz",
       "sources": "Quellcode",
       "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert."

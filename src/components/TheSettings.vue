@@ -76,10 +76,13 @@
                 class="text-success fontWeight-heavy" >
                 {{ $t("settings.loggedIn") }}
               </span>
-              <span
-                v-else
-                class="text-danger fontWeight-heavy" >
-                {{ $t("settings.loggedOut") }}
+              <span v-else>
+                <span class="text-danger fontWeight-heavy">
+                  {{ $t("settings.loggedOut") }}
+                </span>
+                <span>
+                  {{ $t("settings.loginUriHint") }}
+                </span>
               </span>
               <a
                 v-if="user && authorized"
@@ -88,7 +91,7 @@
                 {{ $t("settings.accountPage") }}
               </a>
             </p>
-            <p v-if="$store.state.auth.available && !user">
+            <p v-if="$store.state.auth.available && !user && providers.length">
               <b-button
                 v-for="provider in providers"
                 :key="`login-provider-${provider.id}`"
@@ -112,7 +115,14 @@
               </b-button>
             </p>
             <div v-if="$store.state.auth.connected">
-              <b>{{ $t("settings.accountTitle") }} via {{ $store.state.auth.about.title }}</b>
+              <b>
+                {{ $t("settings.accountTitle") }} via
+                <a
+                  :href="config.auth"
+                  target="_blank">
+                  {{ $store.state.auth.about.title }}
+                </a>
+              </b>
               <p>
                 {{ $t("settings.accountInfo") }}<br>
                 <a
