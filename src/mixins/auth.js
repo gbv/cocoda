@@ -7,10 +7,13 @@ import _ from "lodash"
 export default {
   computed: {
     creator() {
-      return this.$store.getters["settings/creator"]
+      return this.$store.getters["creator"]
     },
     creatorName() {
       return this.$util.prefLabel(this.creator, null, false)
+    },
+    userName() {
+      return this.$settings.creator
     },
     user() {
       return _.get(this, "$store.state.auth.user")

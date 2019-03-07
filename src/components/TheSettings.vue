@@ -23,10 +23,20 @@
             </p>
             <p>
               <b>{{ $t("settings.creator") }}</b>
-              <b-form-input
-                v-model="localSettings.creator"
-                :placeholder="$t('settings.creatorPlaceholder')"
-                type="text" />
+              <span v-if="!user || localSettings.creatorUri == user.uri">
+                <!-- Default or no identity chosen - name changeable -->
+                <b-form-input
+                  v-model="localSettings.creator"
+                  :placeholder="$t('settings.creatorPlaceholder')"
+                  type="text" />
+              </span>
+              <span v-else>
+                <!-- Specific identity chosen - name is set -->
+                <b-form-input
+                  :value="creatorName"
+                  type="text"
+                  disabled />
+              </span>
             </p>
             <p>
               <b>{{ $t("settings.creatorUri") }}</b>
@@ -493,7 +503,7 @@ export default {
       this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
         // 2. Rewrite mappings to new creator
         for (let mapping of mappings) {
-          _.set(mapping, "creator", [this.$store.getters["settings/creator"]])
+          _.set(mapping, "creator", [this.creator])
         }
         return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })), registry: "http://coli-conc.gbv.de/registry/local-mappings" })
       }).then(() => {

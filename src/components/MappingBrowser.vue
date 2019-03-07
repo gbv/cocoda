@@ -1169,7 +1169,7 @@ export default {
       this.loading = 1
       this.loadingGlobal = true
       // Adjust creator
-      let creator = this.$store.getters["settings/creator"]
+      let creator = this.creator
       let creatorName = this.$util.prefLabel(creator, null, false)
       // Adjust creator property by putting current creator in the front
       mapping.creator = [creator].concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))

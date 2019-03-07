@@ -31,24 +31,6 @@ const state = {
   loaded: false,
 }
 
-// getters
-const getters = {
-  /**
-   * Returns a creator object based on the local settings.
-   */
-  creator: (state) => {
-    let language = state.settings.locale || "en"
-    let creator = { prefLabel: { [language]: state.settings.creator || "" } }
-    if (state.settings.creatorUrl) {
-      creator.url = (state.settings.creatorUrl.startsWith("http") ? "" : "http://") + state.settings.creatorUrl
-    }
-    if (state.settings.creatorUri) {
-      creator.uri = state.settings.creatorUri
-    }
-    return creator
-  }
-}
-
 // mutations
 const mutations = {
 
@@ -96,7 +78,6 @@ const actions = {
 export default {
   namespaced: true,
   state,
-  getters,
   mutations,
   actions,
 }

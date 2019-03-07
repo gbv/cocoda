@@ -330,7 +330,7 @@ export default {
      */
     user() {
       if (this.user) {
-        if (this.user.name != this.$settings.creator) {
+        if (this.user.name != this.userName) {
           this.$store.commit({
             type: "settings/set",
             prop: "creator",
@@ -351,7 +351,6 @@ export default {
             prop: "creatorUri",
             value: this.userUris[0]
           })
-          // TODO: - Localize message.
           this.alert(this.$t("alerts.identityAdjusted"), 0, "warning")
         }
       }
@@ -359,10 +358,10 @@ export default {
     /**
      * Update authorized user's name if creator name changed.
      */
-    creatorName() {
+    userName() {
       if (this.authorized && this.user) {
-        if (this.creatorName != this.user.name) {
-          this.setName(this.creatorName).then(success => {
+        if (this.userName != this.user.name) {
+          this.setName(this.userName).then(success => {
             if (!success) {
               // Reset name and show error
               this.$store.commit({
@@ -370,7 +369,6 @@ export default {
                 prop: "creator",
                 value: this.user.name
               })
-              // TODO: - Localize error message.
               this.alert(this.$t("alerts.nameError"), null, "danger")
             }
           })

@@ -45,6 +45,28 @@ const getters = {
     }
     return registry
   },
+  /**
+   * Returns a creator object based on the local settings.
+   */
+  creator: (state) => {
+    let creator = {}
+    let language = state.settings.settings.locale || "en"
+    let name = state.settings.settings.creator
+    let uri = state.settings.settings.creatorUri
+    if (uri) {
+      creator.uri = uri
+      // Override name with name from chosen identity
+      let user = state.auth.user
+      if (user) {
+        let identity = Object.values(user.identities).find(identity => identity.uri === uri)
+        if (identity && identity.name) {
+          name = identity.name
+        }
+      }
+    }
+    creator.prefLabel = { [language]: name || "" }
+    return creator
+  },
 }
 
 const mutations = {
