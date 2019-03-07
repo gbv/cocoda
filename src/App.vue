@@ -315,7 +315,6 @@ export default {
      * Update local creator name if authorized user changed.
      */
     user(current, previous) {
-      console.log(previous, current)
       if (this.user) {
         if (this.user.name != this.userName) {
           this.$store.commit({

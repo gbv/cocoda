@@ -66,7 +66,6 @@ class LocalMappingsProvider extends BaseProvider {
    * Returns a Promise with a list of local mappings.
    */
   _getMappings({ from, to, direction, mode, identifier } = {}) {
-    console.log("get mappings")
     let params = {}
     if (from) {
       params.from = from.uri
