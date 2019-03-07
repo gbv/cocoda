@@ -219,7 +219,13 @@ export default {
     // Add hotkey for opening popup
     let letter = this.isLeft ? "f" : "g"
     this.addHotkey(`ctrl+shift+${letter},command+shift+${letter}`, () => {
-      this.togglePopover()
+      if (this.scheme) {
+        // Toggle popover when scheme is selected
+        this.togglePopover()
+      } else {
+        // Focus input when no scheme is selected
+        this.focusAndSelectInput()
+      }
       return false
     })
     this.addHotkey(`ctrl+${letter},command+${letter}`, () => {
