@@ -97,6 +97,11 @@
             :show-tooltip="true"
             font-size="sm"
             class="fontWeight-heavy" />
+          <div
+            v-if="value === null"
+            class="mappingBrowser-table-dittoMark">
+            "
+          </div>
         </span>
         <span
           slot="sourceConcepts"
@@ -147,6 +152,12 @@
             :show-tooltip="true"
             font-size="sm"
             class="fontWeight-heavy" />
+          <!-- null means repeating scheme, undefined means no scheme -->
+          <div
+            v-if="value === null"
+            class="mappingBrowser-table-dittoMark">
+            "
+          </div>
         </span>
         <span
           slot="targetConcepts"
@@ -926,8 +937,8 @@ export default {
           // Add items
           for (let mapping of mappings) {
             let item = { mapping, registry }
-            item.sourceScheme = _.get(mapping, "fromScheme")
-            item.targetScheme = _.get(mapping, "toScheme")
+            item.sourceScheme = _.get(mapping, "fromScheme") || undefined
+            item.targetScheme = _.get(mapping, "toScheme") || undefined
             // Skip mapping if showAllSchemes is off and schemes don't match
             if (!this.showAllSchemes) {
               // If one side doesn't have a scheme selected, always show all
@@ -964,10 +975,10 @@ export default {
             item.targetConceptsLong = item.targetConcepts
             // Set source/targetScheme to empty string if from/to is null.
             if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
-              item.sourceScheme = null
+              item.sourceScheme = undefined
             }
             if (!_.get(mapping, "to") && item.targetConcepts.length == 0) {
-              item.targetScheme = null
+              item.targetScheme = undefined
             }
             // Skip if there are no concepts.
             if (item.sourceConcepts.length + item.targetConcepts.length == 0) {
@@ -1367,6 +1378,13 @@ export default {
 }
 .mappingBrowser-separatorBorder {
   border-top: 1px solid @color-text-lightGrey;
+}
+
+.mappingBrowser-table-dittoMark {
+  width: 100%;
+  text-align: center;
+  padding-top: 5px;
+  color: @color-text-lightGrey;
 }
 
 .mappingBrowser-table-source {
