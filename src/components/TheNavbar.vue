@@ -62,23 +62,24 @@
           </div>
         </b-dropdown-item>
       </b-nav-item-dropdown>
-      <!-- Settings button -->
-      <b-nav-item @click="$refs.settings.show()">
-        <!-- Login status -->
-        <span
-          v-if="$store.state.auth.available"
-          :style="`color: ${authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red')} !important;`">
-          <font-awesome-icon icon="user" />
-        </span>
-        <!-- Name -->
-        {{ creatorName || $t("navbar.settings") }}
-      </b-nav-item>
+      <!-- Identity icon -->
       <b-nav-item
-        v-if="userIdentityImage && creator.uri"
-        :href="creator.uri"
+        :href="userIdentityImage && creator && creator.uri"
         class="navbar-identitySettings"
         target="_blank">
-        <img :src="userIdentityImage">
+        <span v-if="userIdentityImage && creator.uri">
+          <img :src="userIdentityImage">
+        </span>
+        <span
+          v-else
+          :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
+          <font-awesome-icon icon="user" />
+        </span>
+      </b-nav-item>
+      <!-- Settings button -->
+      <b-nav-item @click="$refs.settings.show()">
+        <!-- Name -->
+        {{ creatorName || $t("navbar.settings") }}
       </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
@@ -166,13 +167,18 @@ nav.navbar {
   color: @color-text-lightGrey;
 }
 
-.navbar-identitySettings img {
+.navbar-identitySettings img, .navbar-identitySettings svg {
   opacity: 1;
   height: 17px;
-  margin-top: -3px;
-  margin-left: -6px;
+  margin-right: -10px;
 }
-.navbar-identitySettings:hover img {
+.navbar-identitySettings img {
+  margin-top: -3px;
+}
+.navbar-identitySettings svg {
+  margin-top: 1px;
+}
+.navbar-identitySettings:hover img, .navbar-identitySettings:hover svg {
   opacity: .5;
 }
 </style>
