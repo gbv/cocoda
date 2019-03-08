@@ -37,6 +37,10 @@ DELETECONFIG=
 # build the app
 node build/build.js
 
+# rename dist-temp to dist
+rm -r dist
+mv dist-temp dist
+
 # copy build-info.json to static folder
 cp ./build/build-info.json ./dist/static/build-info.json
 
