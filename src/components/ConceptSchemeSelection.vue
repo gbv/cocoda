@@ -97,7 +97,30 @@
         <!-- List of all schemes, showing favorites first -->
         <ul class="conceptSchemeSelection-schemeList scrollable">
           <li
+            v-for="(scheme, index) in favoriteSchemes || []"
+            v-show="!isFiltered"
+            :key="scheme.uri + '-favorite-scheme-list-' + id + index" >
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: $t('schemeSelection.starRemove'), delay: $util.delay.medium }"
+              class="conceptSchemeSelection-star conceptSchemeSelection-starFavorite"
+              icon="star"
+              @click="toggleFavoriteScheme(scheme)" />
+            <item-name
+              :ref="index == 0 && !isFiltered ? 'firstScheme' : null"
+              :item="scheme"
+              :is-link="true"
+              :is-left="isLeft" />
+          </li>
+          <li v-show="!isFiltered">
+            <a
+              href=""
+              @click.prevent="showAllSchemes = !showAllSchemes" >
+              {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes") : $t("schemeSelection.showAllSchemes") }} ({{ filteredSchemes.length }})
+            </a>
+          </li>
+          <li
             v-for="(scheme, index) in filteredSchemes"
+            v-show="showAllSchemes || isFiltered"
             :key="scheme.uri + '-scheme-list-' + id + index" >
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
@@ -106,7 +129,7 @@
               icon="star"
               @click="toggleFavoriteScheme(scheme)" />
             <item-name
-              :ref="index == 0 ? 'firstScheme' : null"
+              :ref="(index == 0 && (isFiltered || !favoriteSchemes.length)) ? 'firstScheme' : null"
               :item="scheme"
               :is-link="true"
               :is-left="isLeft" />
@@ -169,6 +192,8 @@ export default {
       schemeFilter: "",
       // Filter for language
       languageFilter: null,
+      // Flag whether to show all schemes
+      showAllSchemes: false,
     }
   },
   computed: {
@@ -176,10 +201,13 @@ export default {
     scheme() {
       return this.selected.scheme[this.isLeft]
     },
+    isFiltered() {
+      return this.schemeFilter != "" || this.languageFilter != null
+    },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
       // Filter schemes, prepend favorites if filter is empty.
-      return (filter == "" && this.languageFilter == null ? this.favoriteSchemes : []).concat(this.schemes).filter(
+      return this.schemes.filter(
         scheme =>
           (
             Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
@@ -266,10 +294,11 @@ export default {
      */
     chooseFirst(event) {
       event.preventDefault()
-      if (!this.filteredSchemes.length) {
+      let scheme = _.get(this, "$refs.firstScheme[0].item")
+      if (!scheme) {
         return
       }
-      this.$router.push({ path: this.getRouterUrl(this.filteredSchemes[0], this.isLeft) })
+      this.$router.push({ path: this.getRouterUrl(scheme, this.isLeft) })
       this.hidePopover()
     },
     /**
