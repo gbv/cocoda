@@ -266,13 +266,21 @@
             </p>
           </div>
           <br><br>
-          <p v-if="localMappingsSupported && dlAllMappings">
-            <b-button
-              :variant="creatorRewritten ? 'success' : 'warning'"
-              @click="rewriteCreator">
-              {{ $t("settings.creatorRewrite") }}
-            </b-button>
-          </p>
+          <div v-if="localMappingsSupported && dlAllMappings">
+            <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
+            <p v-html="$t('settings.creatorRewriteText')" />
+            <p class="fontSize-small">
+              <b>Name:</b> {{ $util.prefLabel(creator) }}<br>
+              <b>URI:</b> {{ creator.uri }}
+            </p>
+            <p>
+              <b-button
+                :variant="creatorRewritten ? 'success' : 'warning'"
+                @click="rewriteCreator">
+                {{ $t("settings.creatorRewriteButton") }}
+              </b-button>
+            </p>
+          </div>
         </b-tab>
       </b-tabs>
       <span slot="footer">
