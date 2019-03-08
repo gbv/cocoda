@@ -135,7 +135,7 @@
       "notation": ["O"],
       "prefLabel": {
         "de": "Vorkommen",
-        "en": "Occurrences"
+        "en": "Co-/Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
       "provider": "OccurrencesApi",
@@ -143,7 +143,7 @@
         "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
       }],
       "definition": {
-        "en": ["Catalog Occurrences"],
+        "en": ["Catalog Co-/Occurrences"],
         "de": ["Katalogvorkommen"]
       }
     },
