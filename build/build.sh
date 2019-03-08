@@ -37,6 +37,9 @@ DELETECONFIG=
 # build the app
 node build/build.js
 
+# copy build-info.json to static folder
+cp ./build/build-info.json ./dist/static/build-info.json
+
 # move empty build-info.json back after build to not cause a git file change
 mv ./build/build-info.backup.json ./build/build-info.json
 
