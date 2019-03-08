@@ -17,7 +17,7 @@
           :title="$t('settings.tabAccount')"
           active>
           <div v-if="localSettings">
-            <h5>{{ $t("settings.creatorTitle") }}</h5>
+            <h4>{{ $t("settings.creatorTitle") }}</h4>
             <p>
               {{ $t("settings.creatorInfo") }}
             </p>
@@ -70,25 +70,20 @@
                 </b-form-select>
               </span>
             </p>
-            <p>
+            <p v-if="user && authorized">
               <span
-                v-if="user && authorized"
-                class="text-success fontWeight-heavy" >
+                class="text-success" >
                 {{ $t("settings.loggedIn") }}
               </span>
-              <span v-else>
-                <span class="text-danger fontWeight-heavy">
-                  {{ $t("settings.loggedOut") }}
-                </span>
-                <span>
-                  {{ $t("settings.loginUriHint") }}
-                </span>
-              </span>
               <a
-                v-if="user && authorized"
                 :href="$store.state.auth.about.baseUrl + '/account'"
                 target="_blank">
                 {{ $t("settings.accountPage") }}
+              </a> •
+              <a
+                href=""
+                @click.prevent="login(null)" >
+                Logout
               </a>
             </p>
             <p v-if="$store.state.auth.available && !user && providers.length">
@@ -106,25 +101,9 @@
                 Login via {{ provider.name }}
               </b-button>
             </p>
-            <p v-else-if="$store.state.auth.available">
-              <b-button
-                block
-                variant="danger"
-                @click="login(null)" >
-                Logout
-              </b-button>
-            </p>
             <div v-if="$store.state.auth.connected">
-              <b>
-                {{ $t("settings.accountTitle") }} via
-                <a
-                  :href="config.auth"
-                  target="_blank">
-                  {{ $store.state.auth.about.title }}
-                </a>
-              </b>
               <p>
-                {{ $t("settings.accountInfo") }}<br>
+                <span v-html="$t('settings.accountInfo', { url: config.auth })" />
                 <a
                   v-if="$store.state.auth.about.urls.imprint"
                   :href="$store.state.auth.about.urls.imprint"
@@ -141,7 +120,7 @@
             </div>
             <div
               v-if="availableMappingRegistries.length" >
-              <h5>{{ $t("settings.mappingRegistry") }}</h5>
+              <h4>{{ $t("settings.mappingRegistry") }}</h4>
               <p>
                 {{ $t("settings.mappingRegistryExplanation") }}
                 <b-form-select
@@ -223,11 +202,11 @@
           v-if="localMappingsSupported"
           :title="$t('settings.tabLocalMappings')" >
           <div>
-            <h5>{{ $t('settings.tabLocalMappings') }}</h5>
+            <h4>{{ $t('settings.tabLocalMappings') }}</h4>
             <p>{{ $t("settings.localMappingsInfo") }}</p>
           </div>
           <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
-            <h5>{{ $t("settings.localDownload") }}</h5>
+            <h4>{{ $t("settings.localDownload") }}</h4>
             <span
               v-for="(download, index) in dlMappings"
               :key="index">
@@ -253,7 +232,7 @@
           </div>
           <br>
           <div v-if="localMappingsSupported">
-            <h5>{{ $t("settings.localUpload") }}</h5>
+            <h4>{{ $t("settings.localUpload") }}</h4>
             <b-form-file
               ref="fileUpload"
               v-model="uploadedFile"
@@ -265,7 +244,7 @@
             </p>
           </div>
           <div v-if="localMappingsSupported && dlAllMappings">
-            <h5>{{ $t("settings.localDeleteTitle") }}</h5>
+            <h4>{{ $t("settings.localDeleteTitle") }}</h4>
             <b-button
               :disabled="!dlAllMappings"
               variant="danger"
@@ -610,6 +589,10 @@ p {
 </style>
 
 <style>
+
+#settingsModal h4 {
+  padding-top: 15px;
+}
 
 #settingsModal .modal-dialog {
   height: 90%;
