@@ -115,7 +115,7 @@
             <a
               href=""
               @click.prevent="showAllSchemes = !showAllSchemes" >
-              {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes") : $t("schemeSelection.showAllSchemes") }} ({{ filteredSchemes.length }})
+              {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes", { count: filteredSchemes.length }) : $t("schemeSelection.showAllSchemes", { count: filteredSchemes.length }) }}
             </a>
           </li>
           <li

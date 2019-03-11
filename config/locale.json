@@ -37,8 +37,8 @@
       "starRemove": "remove from favorites",
       "popoverShow": "show scheme selection",
       "popoverHide": "hide scheme selection",
-      "showAllSchemes": "Show All",
-      "hideAllSchemes": "Hide All"
+      "showAllSchemes": "Show {count} more",
+      "hideAllSchemes": "Hide {count}"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -251,8 +251,8 @@
       "starRemove": "aus Favoriten entfernen",
       "popoverShow": "Vokabular-Auswahl öffnen",
       "popoverHide": "Vokabular-Auswahl ausblenden",
-      "showAllSchemes": "Alle Anzeigen",
-      "hideAllSchemes": "Alle Ausblenden"
+      "showAllSchemes": "Alle {count} anzeigen",
+      "hideAllSchemes": "{count} ausblenden"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
