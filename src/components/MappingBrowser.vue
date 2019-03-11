@@ -1217,8 +1217,10 @@ export default {
       // Adjust creator
       let creator = this.creator
       let creatorName = this.$util.prefLabel(creator, null, false)
-      // Adjust creator property by putting current creator in the front
-      mapping.creator = [creator].concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))
+      // - All previous creators (except self) will be written to contributors.
+      // - `creator` will be overridden by self.
+      mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))
+      mapping.creator = [creator]
 
       return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
         return mappings[0]

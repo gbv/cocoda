@@ -336,11 +336,17 @@ export default {
       }
       // Hide comment modal if open
       this.$refs.commentModal.hide()
-      // Adjust creator property by putting current creator in the front
-      let creator = [this.creator].concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$util.prefLabel(c, null, false) && this.creatorName == this.$util.prefLabel(c, null, false))))
+      // - All previous creators (except self) will be written to contributors.
+      // - `creator` will be overridden by self.
+      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$util.prefLabel(c, null, false) && this.creatorName == this.$util.prefLabel(c, null, false))))
+      let creator = [this.creator]
       this.$store.commit({
         type: "mapping/setCreator",
         creator
+      })
+      this.$store.commit({
+        type: "mapping/setContributor",
+        contributor
       })
       let mapping = this.prepareMapping()
       let original = this.original

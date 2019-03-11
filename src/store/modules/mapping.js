@@ -233,6 +233,16 @@ const mutations = {
   },
 
   /**
+   * Sets the creator for the mapping.
+   *
+   * Payload object: { contributor }
+   * - contributor: the contributor array
+   */
+  setContributor(state, { contributor }) {
+    state.mapping.contributor = contributor
+  },
+
+  /**
    * Sets the note for the mapping.
    *
    * Payload object: { note }

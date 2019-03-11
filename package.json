@@ -37,7 +37,7 @@
     "file-saver": "^2.0.0-rc.3",
     "gbv-login-client": "^0.2.4",
     "jquery": "^3.3.1",
-    "jskos-tools": "^0.1.28",
+    "jskos-tools": "^0.1.29",
     "json-format-highlight": "^1.0.1",
     "localforage": "^1.7.2",
     "lodash": "^4.17.10",
