@@ -624,8 +624,13 @@ p {
 #settingsModal .modal-body .card .tabs {
   height: 100%;
 }
-#settingsModal .modal-body .card .col, #settingsModal .modal-body .card .card-header {
-  overflow-y: scroll;
+#settingsModal .modal-body .card .col .card-body {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: scroll;
 }
 #settingsModal .modal-body .card .col-auto {
   min-width: 200px;
