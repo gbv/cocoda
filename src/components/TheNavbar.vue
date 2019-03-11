@@ -81,6 +81,12 @@
         <!-- Name -->
         {{ creatorName || $t("navbar.settings") }}
       </b-nav-item>
+      <!-- Current registry notation -->
+      <b-nav-item v-if="$store.getters.getCurrentRegistry">
+        <registry-notation
+          :registry="$store.getters.getCurrentRegistry"
+          style="opacity: 0.7; cursor: default;" />
+      </b-nav-item>
       <!-- Settings modal -->
       <the-settings ref="settings" />
     </b-navbar-nav>
@@ -90,6 +96,7 @@
 <script>
 import TheSettings from "./TheSettings"
 import ItemName from "./ItemName"
+import RegistryNotation from "./RegistryNotation"
 import _ from "lodash"
 
 /**
@@ -98,7 +105,7 @@ import _ from "lodash"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName
+    TheSettings, ItemName, RegistryNotation
   },
   computed: {
     favoriteCanBeDropped() {
