@@ -202,7 +202,7 @@ export default {
       return this.selected.scheme[this.isLeft]
     },
     isFiltered() {
-      return this.schemeFilter != "" || this.languageFilter != null
+      return this.schemeFilter != "" || this.languageFilter != null || this.filteredSchemes.length <= 10
     },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
