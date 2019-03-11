@@ -404,7 +404,7 @@ export default {
   cursor: pointer;
 }
 .conceptSchemeSelection-starFavorite {
-  color: @color-select;
+  color: darken(@color-select, 12%);
 }
 .conceptSchemeSelection-starFavorite:hover, .conceptSchemeSelection-starNormal:hover {
   color: @color-button-hover;
