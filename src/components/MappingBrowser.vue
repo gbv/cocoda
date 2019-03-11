@@ -628,7 +628,17 @@ export default {
       return object
     },
     mappingRegistries() {
-      return this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences) && (registry.scheme == null || this.$jskos.compare(this.selected.scheme[true], registry.scheme) || this.$jskos.compare(this.selected.scheme[false], registry.scheme)))
+      let registries = this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences) && (registry.scheme == null || this.$jskos.compare(this.selected.scheme[true], registry.scheme) || this.$jskos.compare(this.selected.scheme[false], registry.scheme)))
+      let currentRegistryIndex = registries.findIndex(registry => this.$jskos.compare(registry, this.currentRegistry))
+      if (currentRegistryIndex !== -1) {
+        let current = registries[currentRegistryIndex]
+        _.pullAt(registries, [currentRegistryIndex])
+        registries = [current].concat(registries)
+      }
+      return registries
+    },
+    currentRegistry() {
+      return this.$store.getters.getCurrentRegistry
     },
     registryGroups() {
       let groups = _.cloneDeep(this.config.registryGroups)
@@ -696,6 +706,10 @@ export default {
     locale() {
       // When locale changed, reload mapping recommendations
       // TODO: Only reload relevant sections.
+      this.$store.commit("mapping/setRefresh")
+    },
+    currentRegistry() {
+      // Reload table when current registry changes
       this.$store.commit("mapping/setRefresh")
     },
   },
@@ -1100,7 +1114,7 @@ export default {
         this.$store.commit({
           type: "mapping/set",
           mapping,
-          original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry) ? copyWithReferences(mapping) : null
+          original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.currentRegistry) ? copyWithReferences(mapping) : null
         })
       }
     },
@@ -1162,7 +1176,7 @@ export default {
       }
     },
     canRemove(data) {
-      return this.canEdit(data) && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
+      return this.canEdit(data) && (!this.currentRegistry.provider.has.auth || this.currentRegistry.provider.auth)
     },
     removeMapping(mapping) {
       this.loadingGlobal = true
@@ -1173,7 +1187,7 @@ export default {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
         // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
+        this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
       }).finally(() => {
         this.loadingGlobal = false
       })
@@ -1184,7 +1198,7 @@ export default {
         return false
       }
       // Don't allow saving if it's the current registry
-      if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.$store.getters.getCurrentRegistry)) {
+      if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.currentRegistry)) {
         return false
       }
       // TODO: Do this differently to prevent going through all local mappings on each reload.
@@ -1213,7 +1227,7 @@ export default {
       }).then(mapping => {
         if (!mapping) {
           let message = this.$t("alerts.mappingNotSaved")
-          if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
+          if (this.currentRegistry.provider.has.auth && !this.currentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
@@ -1222,7 +1236,7 @@ export default {
       }).finally(() => {
         this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
+        this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
       })
     },
     annotationsScore(annotations) {
