@@ -43,8 +43,7 @@
 
     <!-- URI and identifier -->
     <div
-      v-for="(identifier, index) in [item.uri].concat(item.identifier)"
-      v-if="identifier != null"
+      v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
       :key="index"
       class="schemeDetail-identifier" >
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
@@ -64,6 +63,17 @@
       v-if="item.languages"
       class="schemeDetail-identifier" >
       <b>{{ $t("schemeDetail.languages") }}:</b> {{ item.languages.join(", ") }}
+    </div>
+
+    <!-- Link to MappingsApp -->
+    <div
+      v-if="$util.notation(item)"
+      class="schemeDetail-identifier" >
+      <a
+        :href="`mappings.html?${isLeft ? 'fromScheme' : 'toScheme'}=${$util.notation(item)}&tab=1`"
+        target="_blank">
+        {{ $t("schemeDetail.availableMappings") }}
+      </a>
     </div>
 
     <!-- Top Concepts -->
@@ -141,9 +151,8 @@ export default {
 .schemeDetail-identifier {
   margin: 5px;
 }
-.schemeDetail-identifier a {
-  .m-borderRadius(5px);
-  padding: 0 3px;
+.schemeDetail-identifier svg {
+  margin-right: 3px;
 }
 .schemeDetail-licenseBadge {
   margin-bottom: 3px;

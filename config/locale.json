@@ -69,7 +69,8 @@
     },
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
-      "languages": "Available languages"
+      "languages": "Available languages",
+      "availableMappings": "Available mappings"
     },
     "conceptTree": {
       "title": "Concept Tree",
@@ -355,7 +356,8 @@
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",
-      "languages": "Vorhandene Sprachen"
+      "languages": "Vorhandene Sprachen",
+      "availableMappings": "Vorhandene Mappings"
     },
     "conceptTree": {
       "title": "Hierachie",
