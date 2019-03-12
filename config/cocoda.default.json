@@ -132,7 +132,7 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
-      "notation": ["O"],
+      "notation": ["CO"],
       "prefLabel": {
         "de": "Vorkommen",
         "en": "Co-/Occurrences"
@@ -149,10 +149,10 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
-      "notation": ["R"],
+      "notation": ["WR"],
       "prefLabel": {
-        "de": "Wikidata-Empfehlungen",
-        "en": "Wikidata Recommendations"
+        "de": "Wikidata-Reconciliation",
+        "en": "Wikidata Reconciliation"
       },
       "definition": {
         "en": ["Wikidata Reconciliation API"],
@@ -170,10 +170,10 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
-      "notation": ["R"],
+      "notation": ["GR"],
       "prefLabel": {
-        "de": "GND-Empfehlungen",
-        "en": "GND Recommendations"
+        "de": "GND-Reconciliation",
+        "en": "GND Reconciliation"
       },
       "definition": {
         "en": ["GND Reconciliation API (lobid.org)"],
@@ -191,10 +191,10 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
-      "notation": ["R"],
+      "notation": ["NR"],
       "prefLabel": {
-        "de": "Nomisma-Empfehlungen",
-        "en": "Nomisma Recommendations"
+        "de": "Nomisma-Reconciliation",
+        "en": "Nomisma Reconciliation"
       },
       "definition": {
         "en": ["Nomisma Reconciliation API"],

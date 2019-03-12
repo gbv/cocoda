@@ -1,6 +1,6 @@
 {
   "title": "Cocoda Mapping Tool (dev)",
-  "cocodaBaseUrl": "//gbv.github.io/cocoda/dev/",
+  "cocodaBaseUrl": "https://coli-conc.gbv.de/cocoda/dev/",
   "creatorNames": {
     "https://coli-conc.gbv.de/users/cocoda": "Cocoda",
     "https://orcid.org/0000-0002-7613-4123": "Jakob Voß",
