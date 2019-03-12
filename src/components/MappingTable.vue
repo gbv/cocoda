@@ -54,8 +54,7 @@
         @click="$emit('click', { name: action.name, item: data.item })" />
     </span>
     <span
-      slot="HEAD_actions"
-      slot-scope="data" />
+      slot="HEAD_actions" />
   </flexible-table>
 </template>
 
@@ -228,5 +227,8 @@ export default {
 }
 .button:hover {
   color: @color-button-hover;
+}
+svg.button {
+  margin-left: 2px;
 }
 </style>
