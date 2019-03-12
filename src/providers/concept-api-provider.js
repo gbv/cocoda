@@ -98,7 +98,8 @@ class ConceptApiProvider extends BaseProvider {
     return this.get(this.registry.ancestors, options).then(ancestors => ancestors || [])
   }
 
-  _suggest(search, { scheme, limit = 500, use = "notation,label", types = [], cancelToken } = {}) {
+  _suggest(search, { scheme, limit, use = "notation,label", types = [], cancelToken } = {}) {
+    limit = limit || this.registry.suggestResultLimit || 100
     if (!this.registry.suggest || !search) {
       return Promise.resolve(["", [], [], []])
     }
