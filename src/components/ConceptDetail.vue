@@ -133,7 +133,7 @@
             <auto-link :link="identifier" />
           </div>
           <div
-            v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel) && language != '-'))"
+            v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
             :key="`conceptDetail-prefLabel-${language}`"
             class="conceptDetail-identifier" >
             <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
