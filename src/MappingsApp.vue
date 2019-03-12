@@ -321,6 +321,11 @@ export default {
       creator: "",
       actions: [
         {
+          name: "feedback",
+          title: "Send Feedback",
+          icon: "comment"
+        },
+        {
           name: "open",
           title: "Open in Cocoda",
           icon: "external-link-alt"
@@ -671,7 +676,7 @@ export default {
       })
     },
     tableClicked({ name, item }) {
-      if (name == "open") {
+      if (name == "open" || name == "feedback") {
         let
           fromScheme = item.mapping.fromScheme.uri,
           toScheme = item.mapping.toScheme.uri,
@@ -686,7 +691,17 @@ export default {
           }
         }
         if (fromScheme && toScheme && identifier) {
-          window.open(`${this.config.cocodaBaseUrl || "./"}?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`)
+          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`
+          if (name == "open") {
+            window.open(cocodaUrl)
+          } else {
+            if (cocodaUrl.startsWith("./")) {
+              cocodaUrl = cocodaUrl.replace("./", location.href.substring(0, location.href.indexOf("mappings.html")))
+            }
+            let emailBody = `Hello,\n\nI'd like to give feedback regarding the following mapping:\n\n${cocodaUrl}\n\n`
+            emailBody = encodeURIComponent(emailBody)
+            window.open(`mailto:coli-conc@gbv.de?subject=Cocoda Mapping Feedback&body=${emailBody}`, "_self")
+          }
         } else {
           this.alert("Mapping could not be opened in Cocoda.", null, "danger")
         }
