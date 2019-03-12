@@ -1,6 +1,6 @@
 <template>
   <div
-    v-b-tooltip.html.right="tooltip ? $util.prefLabel(registry) : ''"
+    v-b-tooltip.html.left="tooltip ? $util.prefLabel(registry) : ''"
     :class="{
       [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
       'registry-notation-current': isCurrentRegistry,

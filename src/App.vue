@@ -690,4 +690,8 @@ html, body {
   color: @color-alert-success;
   background-color: @color-alert-success-background;
 }
+
+.tooltip {
+  pointer-events: none !important;
+}
 </style>
