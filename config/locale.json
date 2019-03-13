@@ -207,7 +207,11 @@
       "jskosSpecification": "JSKOS Specification",
       "validation": "Validation",
       "validationSuccess": "successful",
-      "validationFailure": "failure"
+      "validationFailure": "failure",
+      "concept": "No Concepts | 1 Concept | {count} Concepts",
+      "scheme": "No Concept Scheme | 1 Concept Scheme | {count} Concept Schemes",
+      "mapping": "No Mappings | 1 Mapping | {count} Mappings",
+      "resource": "No Resources | 1 Resource | {count} Resources"
     },
     "languages": {
       "en": "English",
@@ -422,7 +426,11 @@
       "jskosSpecification": "JSKOS-Spezifikation",
       "validation": "Validierung",
       "validationSuccess": "erfolgreich",
-      "validationFailure": "fehlgeschlagen"
+      "validationFailure": "fehlgeschlagen",
+      "concept": "Keine Konzepte | 1 Konzept | {count} Konzepte",
+      "scheme": "Keine Vokabulare | 1 Vokabular | {count} Vokabulare",
+      "mapping": "Keine Mappings | 1 Mapping | {count} Mappings",
+      "resource": "Keine Ressourcen | 1 Ressource | {count} Ressourcen"
     },
     "languages": {
       "en": "Englisch",

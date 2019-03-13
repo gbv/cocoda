@@ -6,6 +6,9 @@
     centered
     size="lg" >
     <span slot="modal-footer">
+      <span>
+        {{ numberText }} |
+      </span>
       <span v-if="url">
         <a
           :href="url"
@@ -102,6 +105,10 @@ export default {
   computed: {
     computedType() {
       return this.type || (this.$jskos.isConcept(this.isArray ? this.data[0] : this.data) ? "concept" : (this.$jskos.isScheme(this.isArray ? this.data[0] : this.data) ? "scheme" : null))
+    },
+    numberText() {
+      let count = _.isArray(this.data) ? this.data.length : (this.data ? 1 : 0)
+      return this.$tc(`dataModal.${this.computedType}`, count, { count })
     },
     isArray() {
       return _.isArray(this.data)
