@@ -19,6 +19,9 @@ providers[ConceptApiProvider.providerName] = ConceptApiProvider
 import ReconciliationApiProvider from "./reconciliation-api-provider"
 providers[ReconciliationApiProvider.providerName] = ReconciliationApiProvider
 
+import SearchSuggestionProvider from "./search-suggestion-provider"
+providers[SearchSuggestionProvider.providerName] = SearchSuggestionProvider
+
 // Add more providers here.
 
 export default providers

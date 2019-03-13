@@ -131,6 +131,33 @@
       }]
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
+      "notation": ["CR"],
+      "prefLabel": {
+        "en": "coli-conc Recommendations",
+        "de": "coli-conc Vorschläge"
+      },
+      "provider": "SearchSuggestion",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+      }],
+      "searchUris": {
+        "http://coli-conc.gbv.de/registry/coli-conc-concepts": "//coli-conc.gbv.de/api/search",
+        "http://coli-conc.gbv.de/registry/dante-concepts": "//api.dante.gbv.de/search"
+      },
+      "excludedSchemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        },
+        {
+          "uri": "http://nomisma.org/id/"
+        }
+      ]
+    },
+    {
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "notation": ["CO"],
       "prefLabel": {
