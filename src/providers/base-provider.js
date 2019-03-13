@@ -586,6 +586,25 @@ class BaseProvider {
     }).then(this.adjustMappings)
   }
 
+  /**
+   * Returns a boolean whether a certain target scheme is supported or not.
+   *
+   * @param {object} scheme
+   */
+  supportsScheme(scheme) {
+    if (!scheme) {
+      return false
+    }
+    if (this.registry.scheme == null && !jskos.isContainedIn(scheme, this.registry.excludedSchemes || [])) {
+      return true
+    }
+    let schemes = _.isArray(this.registry.scheme) ? this.registry.scheme : [this.registry.scheme]
+    if (jskos.isContainedIn(scheme, schemes)) {
+      return true
+    }
+    return false
+  }
+
 }
 
 BaseProvider.providerName = "Base"

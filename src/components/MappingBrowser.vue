@@ -630,7 +630,14 @@ export default {
       return object
     },
     mappingRegistries() {
-      let registries = this.config.registries.filter(registry => registry.provider && (registry.provider.has.mappings || registry.provider.has.occurrences) && (registry.scheme == null || this.$jskos.compare(this.selected.scheme[true], registry.scheme) || this.$jskos.compare(this.selected.scheme[false], registry.scheme)))
+      let registries = this.config.registries.filter(registry =>
+        registry.provider &&
+        (registry.provider.has.mappings || registry.provider.has.occurrences) &&
+        (
+          (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
+          (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false]))
+        )
+      )
       let currentRegistryIndex = registries.findIndex(registry => this.$jskos.compare(registry, this.currentRegistry))
       if (currentRegistryIndex !== -1) {
         let current = registries[currentRegistryIndex]
