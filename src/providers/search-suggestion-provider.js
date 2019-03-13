@@ -63,7 +63,6 @@ class SearchSuggestionProvider extends BaseProvider {
     if (!label) {
       return Promise.resolve([])
     }
-    console.log("SEARCH", label, targetScheme)
     // Get results from API or cache
     return this.__getResults(label, targetScheme).then(results => {
       // Map results to actual mappings
