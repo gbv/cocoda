@@ -28,7 +28,7 @@ Use the following step-by-step guide to preprare and create a new Cocoda release
   git push --tags origin dev
   ```
 
-1. Wait for the Travis build to finish and check the deployed dev version [here](https://gbv.github.io/cocoda/dev/).
+1. Wait for the webhook to finish and check the deployed dev version [here](https://coli-conc.gbv.de/cocoda/dev/).
 
 1. If everything looks and works like it's supposed to, change to the master branch and merge dev into master:
 
