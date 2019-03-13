@@ -18,7 +18,7 @@ const defaultSettings = {
   flex: {},
   mappingBrowserShowAll: false,
   typesForSchemes: {},
-  locale: "",
+  locale: window.navigator.language || "en",
   autoInsertLabels: true,
   mappingEditorClearOnSave: true,
   favoriteConcepts: [],

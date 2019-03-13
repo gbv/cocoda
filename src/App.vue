@@ -207,7 +207,12 @@ export default {
       return this.$i18n.locale
     },
     settingsLocale() {
-      return this.$settings.locale
+      let locale = this.$settings.locale
+      // Only return valid lanugages, English as fallback.
+      if (!(this.config.languages || []).includes(locale)) {
+        locale = "en"
+      }
+      return locale
     },
     settingsLoaded() {
       return this.$store.state.settings.loaded
@@ -215,6 +220,7 @@ export default {
   },
   watch: {
     settingsLoaded() {
+      this.$i18n.locale = this.settingsLocale
       this.start()
     },
     $route({ query: toQuery }, { query: fromQuery }) {
