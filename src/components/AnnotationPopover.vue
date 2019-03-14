@@ -28,7 +28,12 @@
                 v-for="annotation in annotations"
                 :key="annotation.uri" >
                 <!-- Value (currently: score) -->
-                <div class="fontSize-normal fontWeight-heavy">
+                <div
+                  :class="{
+                    'text-success': annotation.bodyValue === '+1',
+                    'text-danger': annotation.bodyValue === '-1'
+                  }"
+                  class="fontSize-normal fontWeight-heavy">
                   {{ annotation.bodyValue }}
                 </div>
                 <!-- Date and creator -->
