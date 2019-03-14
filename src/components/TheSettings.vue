@@ -201,8 +201,8 @@
             <ul>
               <li
                 v-for="(keys, index) in shortcut.keys.split(',')"
-                :key="`settingsModal-shortcuts-${shortcut.id}-${index}`">
-                {{ keys }}
+                :key="`settingsModal-shortcuts-${shortcut.id}-keys-${index}`">
+                <span v-html="keys.split('+').map(key => `<code>${key}</code>`).join(' + ')" />
               </li>
             </ul>
           </p>
