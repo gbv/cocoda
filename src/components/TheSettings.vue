@@ -150,6 +150,7 @@
                 {{ $t(`languages.${language}`) }}
               </option>
             </b-form-select>
+            <br><br><span v-html="$t('settings.languageContribution')" />
           </p>
           <p v-if="localSettings">
             <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
