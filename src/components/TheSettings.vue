@@ -191,6 +191,23 @@
           <br>
         </b-tab>
         <b-tab
+          v-if="config.shortcuts && config.shortcuts.length"
+          :title="$t('settings.tabShortcuts')" >
+          <h4> {{ $t("settings.tabShortcuts") }}</h4>
+          <p
+            v-for="shortcut in config.shortcuts"
+            :key="`settingsModal-shortcuts-${shortcut.id}`" >
+            <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b>
+            <ul>
+              <li
+                v-for="(keys, index) in shortcut.keys.split(',')"
+                :key="`settingsModal-shortcuts-${shortcut.id}-${index}`">
+                {{ keys }}
+              </li>
+            </ul>
+          </p>
+        </b-tab>
+        <b-tab
           :title="$t('settings.tabSources')" >
           <registry-info
             v-for="(registry, index) in config.registries"
