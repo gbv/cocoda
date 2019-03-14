@@ -47,6 +47,7 @@
           <concept-scheme-selection
             :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
             :is-left="isLeft"
+            :style="selected.scheme[isLeft] != null ? '' : 'flex: 1;'"
             class="mainComponent visualComponent"
           />
           <!-- ItemDetail and ConceptTree -->
@@ -586,7 +587,7 @@ html, body {
   flex-direction: column;
   flex-wrap: nowrap;
   min-width: 1220px;
-  min-height: 680px;
+  min-height: 640px;
 }
 .main {
   flex: 1;

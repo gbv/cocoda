@@ -372,8 +372,8 @@ export default {
   flex-direction: column;
   padding: 5px 10px;
   // Make the component take up almost all of the visible height.
-  min-height: 93vh;
-  max-height: 93vh;
+  min-height: 88vh;
+  max-height: 88vh;
 }
 
 .conceptSchemeSelection-expanded > * {
