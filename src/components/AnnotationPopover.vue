@@ -36,10 +36,10 @@
                   {{ $util.dateToString(annotation.created, true) }}<br>
                   <auto-link
                     :class="{
-                      'fontWeight-heavy': creatorMatches(annotation)
+                      'fontWeight-heavy': $util.annotations.creatorMatches(annotation, userUris)
                     }"
-                    :link="annotationCreatorUri(annotation)"
-                    :text="annotationCreatorName(annotation)" />
+                    :link="$util.annotations.creatorUri(annotation)"
+                    :text="$util.annotations.creatorName(annotation)" />
                 </div>
               </div>
             </template>
@@ -145,7 +145,7 @@ export default {
       return `${sign}${Math.abs(score)}`
     },
     ownAssessment() {
-      return this.annotations.find(annotation => this.creatorMatches(annotation))
+      return this.annotations.find(annotation => this.$util.annotations.creatorMatches(annotation, this.userUris))
     },
     ownScore() {
       return _.get(this.ownAssessment, "bodyValue")
@@ -194,24 +194,6 @@ export default {
     },
   },
   methods: {
-    creatorMatches(annotation) {
-      return _.isString(annotation.creator) ? this.userUris && this.userUris.includes(annotation.creator) : this.userUris && annotation.creator && this.userUris.includes(annotation.creator.id)
-    },
-    annotationCreatorName(annotation) {
-      let name
-      if (_.isString(annotation.creator)) {
-        name = (this.config.creatorNames || {})[annotation.creator]
-      } else if (annotation.creator) {
-        name = annotation.creator.name
-      }
-      return name || ""
-    },
-    annotationCreatorUri(annotation) {
-      if (_.isString(annotation.creator)) {
-        return annotation.creator
-      }
-      return annotation.creator && annotation.creator.id
-    },
     scrollToBottom() {
       if (this.show) {
         // Scroll to bottom of list of annotations

@@ -205,6 +205,27 @@ let dateToString = (dateString, onlyDate = false) => {
   }
 }
 
+let annotations = {
+  creatorUri(annotation) {
+    if (_.isString(annotation.creator)) {
+      return annotation.creator
+    }
+    return annotation.creator && annotation.creator.id
+  },
+  creatorName(annotation) {
+    let name
+    if (_.isString(annotation.creator)) {
+      name = (this.config.creatorNames || {})[annotation.creator]
+    } else if (annotation.creator) {
+      name = annotation.creator.name
+    }
+    return name || ""
+  },
+  creatorMatches(annotation, uris) {
+    return annotation && _.isString(annotation.creator) ? uris && uris.includes(annotation.creator) : uris && annotation.creator && uris.includes(annotation.creator.id)
+  }
+}
+
 /** Image URLs for specific licenses */
 let licenseBadges = {
   "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
@@ -217,4 +238,4 @@ let licenseBadges = {
   "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations }
