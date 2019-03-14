@@ -210,11 +210,18 @@ export default {
       // Three cases:
       // 1. Case: User has not assessed this mapping -> add an annotation
       if (!this.ownAssessment) {
-        promise = provider.addAnnotation({
+        let annotation = {
           target: uri,
           motivation: "assessing",
-          bodyValue: value
-        }).then(annotation => {
+          bodyValue: value,
+        }
+        if (this.creator && this.creator.uri && this.creatorName) {
+          annotation.creator = {
+            id: this.creator.uri,
+            name: this.creatorName
+          }
+        }
+        promise = provider.addAnnotation(annotation).then(annotation => {
           // Check if URI stayed the same
           let newUri = _.get(this.imapping, "uri")
           if (uri != newUri || !annotation) {
