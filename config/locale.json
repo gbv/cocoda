@@ -125,6 +125,7 @@
       "creator": "@:mappingBrowser.creator",
       "created": "@:conceptDetail.created",
       "modified": "@:conceptDetail.modified",
+      "annotations": "Annotations",
       "note": "Note",
       "identifier": "Identifier",
       "partOf": "Part of Concordance"
@@ -408,6 +409,7 @@
       "creator": "@:mappingBrowser.creator",
       "created": "@:conceptDetail.created",
       "modified": "@:conceptDetail.modified",
+      "annotations": "Annotationen",
       "note": "Notiz",
       "identifier": "Identifier",
       "partOf": "Teil der Konkordanz"

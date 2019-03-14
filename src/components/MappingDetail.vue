@@ -90,6 +90,13 @@
             <b-col cols="3">{{ $t("mappingDetail.modified") }}:</b-col>
             <b-col>{{ $util.dateToString(mapping.modified) }}</b-col>
           </b-row>
+          <!-- Annotations -->
+          <b-row v-if="mapping.annotations && mapping.annotations.length">
+            <b-col cols="3">{{ $t("mappingDetail.annotations") }}:</b-col>
+            <b-col>
+              <annotation-list :annotations="mapping.annotations" />
+            </b-col>
+          </b-row>
           <!-- Note -->
           <b-row v-if="mapping.note">
             <b-col cols="3">{{ $t("mappingDetail.note") }}:</b-col>
@@ -142,13 +149,14 @@
 import DataModal from "./DataModal"
 import ItemName from "./ItemName"
 import AutoLink from "./AutoLink"
+import AnnotationList from "./AnnotationList"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink },
+  components: { DataModal, ItemName, AutoLink, AnnotationList },
   props: {
     /**
      * Mapping object
