@@ -213,6 +213,14 @@
       "mapping": "No Mappings | 1 Mapping | {count} Mappings",
       "resource": "No Resources | 1 Resource | {count} Resources"
     },
+    "registryInfo": {
+      "schemes": "Schemes",
+      "concepts": "Concepts",
+      "mappings": "Mappings",
+      "occurrences": "Co-/Occurrences",
+      "authenticated": "Authenticated",
+      "notAuthenticated": "Authentication required"
+    },
     "languages": {
       "en": "English",
       "de": "German"
@@ -431,6 +439,14 @@
       "scheme": "Keine Vokabulare | 1 Vokabular | {count} Vokabulare",
       "mapping": "Keine Mappings | 1 Mapping | {count} Mappings",
       "resource": "Keine Ressourcen | 1 Ressource | {count} Ressourcen"
+    },
+    "registryInfo": {
+      "schemes": "Vokabulare",
+      "concepts": "Konzepte",
+      "mappings": "Mappings",
+      "occurrences": "Katalogvorkommen",
+      "authenticated": "Authentifiziert",
+      "notAuthenticated": "Authentifizierung notwendig"
     },
     "languages": {
       "en": "Englisch",

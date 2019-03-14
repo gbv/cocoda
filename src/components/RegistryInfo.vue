@@ -23,7 +23,7 @@
             v-if="registry.provider.has[type]"
             style="color: green; margin-left: 5px;"
             icon="check" />
-          {{ type }}
+          {{ $t(`registryInfo.${type}`) }}
         </span>
       </span>
       <span
@@ -33,13 +33,14 @@
           v-if="authorized"
           style="color: green;" >
           <font-awesome-icon icon="lock-open" />
+          {{ $t("registryInfo.authenticated") }}
         </span>
         <span
           v-else
           style="color: red;" >
           <font-awesome-icon icon="lock" />
+          {{ $t("registryInfo.notAuthenticated") }}
         </span>
-        authentication
       </span>
     </div>
   </div>
