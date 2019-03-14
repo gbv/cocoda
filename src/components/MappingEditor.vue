@@ -292,42 +292,25 @@ export default {
       })
     },
   },
-  mounted() {
-    // Add hotkey for saving the mapping
-    this.addHotkey("ctrl+s,command+s", () => {
-      this.saveMapping()
-      return false
-    })
-    // Add hotkey for clearing the mapping
-    this.addHotkey("ctrl+shift+c,command+shift+c", () => {
-      this.clearMapping()
-      return false
-    })
-    // Add hotkey for adding left
-    this.addHotkey("ctrl+a,command+a", () => {
-      this.addToMappingInternal(true)
-      return false
-    })
-    // Add hotkey for adding right
-    this.addHotkey("ctrl+d,command+d", () => {
-      this.addToMappingInternal(false)
-      return false
-    })
-    // Add hotkey for editing comments
-    this.addHotkey("ctrl+k,command+k", () => {
-      if (this.canExportMapping) {
-        this.$refs.commentModal.show()
-      }
-      return false
-    })
-    // Enable hotkeys
-    this.enableHotkeys()
-  },
-  destroyed() {
-    // Disable hotkeys
-    this.disableHotkeys()
-  },
   methods: {
+    shortcutHandler({ action, isLeft }) {
+      switch(action) {
+        case "saveMapping":
+          this.saveMapping()
+          break
+        case "clearMapping":
+          this.clearMapping()
+          break
+        case "addConcept":
+          this.addToMappingInternal(isLeft)
+          break
+        case "commentMapping":
+          if (this.canExportMapping) {
+            this.$refs.commentModal.show()
+          }
+          break
+      }
+    },
     saveMapping() {
       if (!this.canSaveMapping) return false
       if (!this.creatorName || this.creatorName == "") {

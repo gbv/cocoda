@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 // Import registry providers
 import providers from "./providers"
 
@@ -67,6 +69,15 @@ if (config.registries) {
 
 // Filter out registries where no provider could be initialized
 config.registries = config.registries.filter(registry => registry.provider != null)
+
+// Override keyboard shortcuts
+let shortcuts = []
+for (let shortcut of (defaultConfig.shortcuts || []).concat(userConfig.shortcuts || [])) {
+  let existing = shortcuts.find(s => s.id === shortcut.id)
+  shortcuts = _.pullAllBy(shortcuts, [shortcut], "id")
+  shortcuts.push(_.defaults(shortcut, existing || {}))
+}
+config.shortcuts = shortcuts
 
 // load build info into config
 let buildInfo = require("../build/build-info.json")

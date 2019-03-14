@@ -42,6 +42,10 @@ Vue.mixin(objects)
 import auth from "./mixins/auth"
 Vue.mixin(auth)
 
+// Add hotkey mixin
+import hotkeys from "./mixins/hotkeys"
+Vue.mixin(hotkeys)
+
 // Add drag and drop mixin
 import draganddrop from "./mixins/dragandrop"
 Vue.mixin(draganddrop)
@@ -364,95 +368,4 @@ Vue.mixin({
       FileSaver.saveAs(blob, filename)
     },
   }
-})
-
-// Keyboard shortcut mixin
-Vue.mixin({
-  data() {
-    return {
-      hotkeys: [],
-    }
-  },
-  methods: {
-    enableHotkeys() {
-      document.addEventListener("keydown", this.hotkeyHandler)
-    },
-    disableHotkeys() {
-      document.removeEventListener("keydown", this.hotkeyHandler)
-    },
-    hotkeyHandler(event) {
-      let shortcut = _.pick(event, ["key", "metaKey", "ctrlKey", "altKey", "shiftKey"])
-      if (_.get(event, "srcElement.tagName") == "INPUT") {
-        // Skip certain shortcuts for input elements
-        let toSkip = [
-          {
-            key: "a",
-            ctrlKey: true,
-            metaKey: false,
-            altKey: false,
-            shiftKey: false,
-          },
-          {
-            key: "a",
-            ctrlKey: false,
-            metaKey: true,
-            altKey: false,
-            shiftKey: false,
-          }
-        ]
-        let skip = false
-        for (let sc of toSkip) {
-          if (_.isEqual(sc, shortcut)) {
-            skip = true
-            break
-          }
-        }
-        if (skip) {
-          return
-        }
-      }
-      let pass = true
-      for (let sc of this.hotkeys) {
-        if (_.isEqual(shortcut, sc.shortcut)) {
-          pass = sc.handler() && pass
-        }
-      }
-      if (!pass) {
-        event.stopPropagation()
-        event.preventDefault()
-        event.returnValue = false
-        event.cancelBubble = true
-      }
-    },
-    addHotkey(shortcuts, handler) {
-      shortcuts = shortcuts.split(",")
-      for (let sc of shortcuts) {
-        let keys = sc.split("+")
-        let key = null
-        let metaKey = false
-        let ctrlKey = false
-        let altKey = false
-        let shiftKey = false
-        for (let k of keys) {
-          if (k == "ctrl") {
-            ctrlKey = true
-          } else if (k == "alt" || k == "options") {
-            altKey = true
-          } else if (k == "meta" || k == "command") {
-            metaKey = true
-          } else if (k == "shift") {
-            shiftKey = true
-          } else {
-            key = k
-          }
-        }
-        this.hotkeys.push({
-          handler,
-          shortcut: {
-            key, metaKey, ctrlKey, altKey, shiftKey
-          }
-        })
-      }
-    },
-  },
 })

@@ -244,35 +244,32 @@ export default {
   mounted() {
     // Add click event listener
     document.addEventListener("click", this.handleClickOutside)
-    // Add hotkey for opening popup
-    let letter = this.isLeft ? "f" : "g"
-    this.addHotkey(`ctrl+shift+${letter},command+shift+${letter}`, () => {
-      if (this.scheme) {
-        // Toggle popover when scheme is selected
-        this.togglePopover()
-      } else {
-        // Focus input when no scheme is selected
-        this.focusAndSelectInput()
-      }
-      return false
-    })
-    this.addHotkey(`ctrl+${letter},command+${letter}`, () => {
-      let conceptSearch = this.$refs.conceptSearch
-      if (conceptSearch) {
-        conceptSearch.focusSearch()
-      }
-      return false
-    })
-    // Enable hotkeys
-    this.enableHotkeys()
   },
   destroyed() {
     // Remove click event listener
     document.removeEventListener("click", this.handleClickOutside)
-    // Delete hotkey scope (= disable hotkeys)
-    this.disableHotkeys()
   },
   methods: {
+    shortcutHandler({ action, isLeft }) {
+      if (this.isLeft === isLeft) {
+        switch(action) {
+          case "openSchemeSelection":
+            if (this.scheme) {
+              // Toggle popover when scheme is selected
+              this.togglePopover()
+            } else {
+              // Focus input when no scheme is selected
+              this.focusAndSelectInput()
+            }
+            break
+          case "openConceptSearch":
+            if (this.$refs.conceptSearch) {
+              this.$refs.conceptSearch.focusSearch()
+            }
+            break
+        }
+      }
+    },
     handleClickOutside(evt) {
       // Handle popover
       if (this.popoverShown && this.$refs.popover && !this.$refs.popover.contains(evt.target)) {

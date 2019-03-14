@@ -299,6 +299,104 @@
     "http://bartoc.org/en/node/241",
     "http://bartoc.org/en/node/1940"
   ],
+  "shortcuts": [
+    {
+      "id": "saveMapping",
+      "action": "saveMapping",
+      "component": "MappingEditor",
+      "keys": "ctrl+s,command+s",
+      "prefLabel": {
+        "en": "Save current mapping",
+        "de": "Aktuelles Mapping speichern"
+      }
+    },
+    {
+      "id": "clearMapping",
+      "action": "clearMapping",
+      "component": "MappingEditor",
+      "keys": "ctrl+shift+c,command+shift+c",
+      "prefLabel": {
+        "en": "Clear current mapping",
+        "de": "Aktuelles Mapping leeren"
+      }
+    },
+    {
+      "id": "addConceptLeft",
+      "action": "addConcept",
+      "component": "MappingEditor",
+      "keys": "ctrl+a,command+a",
+      "prefLabel": {
+        "en": "Add left concept to current mapping",
+        "de": "Linkes Konzept zu aktuellem Mapping hinzufügen"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "addConceptRight",
+      "action": "addConcept",
+      "component": "MappingEditor",
+      "keys": "ctrl+d,command+d",
+      "prefLabel": {
+        "en": "Add right concept to current mapping",
+        "de": "Rechtes Konzept zu aktuellem Mapping hinzufügen"
+      },
+      "isLeft": false
+    },
+    {
+      "id": "commentMapping",
+      "action": "commentMapping",
+      "component": "MappingEditor",
+      "keys": "ctrl+k,command+k",
+      "prefLabel": {
+        "en": "Comment current mapping",
+        "de": "Aktuelles Mapping kommentieren"
+      }
+    },
+    {
+      "id": "openSchemeSelectionLeft",
+      "action": "openSchemeSelection",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+shift+f,command+shift+f",
+      "prefLabel": {
+        "en": "Open concept scheme selection (left)",
+        "de": "Vokabularauswahl öffnen (links)"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "openSchemeSelectionRight",
+      "action": "openSchemeSelection",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+shift+g,command+shift+g",
+      "prefLabel": {
+        "en": "Open concept scheme selection (right)",
+        "de": "Vokabularauswahl öffnen (rechts)"
+      },
+      "isLeft": false
+    },
+    {
+      "id": "openConceptSearchLeft",
+      "action": "openConceptSearch",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+f,command+f",
+      "prefLabel": {
+        "en": "Open concept search (left)",
+        "de": "Konzeptsuche öffnen (links)"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "openConceptSearchRight",
+      "action": "openConceptSearch",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+g,command+g",
+      "prefLabel": {
+        "en": "Open concept search (right)",
+        "de": "Konzeptsuche öffnen (rechts)"
+      },
+      "isLeft": false
+    }
+  ],
   "languages": ["en", "de"],
   "logos": [
     {
