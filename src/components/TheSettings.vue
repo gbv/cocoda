@@ -163,11 +163,6 @@
             </b-form-checkbox>
           </p>
           <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.mappingBrowserShowAll">
-              {{ $t("settings.showAll") }}
-            </b-form-checkbox>
-          </p>
-          <p v-if="localSettings">
             <b-form-checkbox v-model="localSettings.mappingEditorClearOnSave">
               {{ $t("settings.mappingEditorClearOnSave") }}
             </b-form-checkbox>

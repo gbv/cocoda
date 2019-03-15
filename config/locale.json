@@ -112,6 +112,8 @@
       "source": "Source",
       "settingShowAllSchemes": "Show results of all concept schemes",
       "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown.",
+      "settingShowAllResults": "Always show all mappings and suggestions",
+      "settingShowAllResultsTooltip": "When turned off, only the first five mappings in each sections are shown, further results will be collapsed.",
       "chooseConcept": "Select a concept to see mappings and mapping recommendations",
       "settingsButton": "Mapping Browser Settings"
     },
@@ -145,7 +147,6 @@
       "languageContribution": "To contribute to the translation of Cocoda, see these <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>instructions in the documentation</a>.",
       "showAllAncestors": "Always show all ancestors in concept details.",
       "truncateNotes": "Do not truncate notes in concept details.",
-      "showAll": "Always show all mappings and suggestions in mapping browser.",
       "autoInsertLabels": "Automatically insert label in search field on opposite side.",
       "mappingEditorClearOnSave": "Mapping Editor: Clear on save.",
       "only1to1mappings": "Mapping Editor: Only allow 1-to-1 mappings (1-to-n otherwise)",
@@ -304,7 +305,6 @@
       "languageContribution": "Um zur Übersetzung von Cocoda beizutragen, siehe diese <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>Anweisungen in der Dokumentation</a> (Englisch).",
       "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",
       "truncateNotes": "Notizen für Konzepte nicht abschneiden.",
-      "showAll": "Immer alle Mappings und Vorschläge anzeigen.",
       "autoInsertLabels": "Automatisch das Label in das Suchfeld auf der anderen Seite einfügen.",
       "mappingEditorClearOnSave": "Mapping-Editor: Leere Mapping nach Speichern",
       "only1to1mappings": "Mapping-Editor: Nur 1-to-1 Mappings erlauben (sonst 1-to-n)",
@@ -398,6 +398,8 @@
       "source": "Quelle",
       "settingShowAllSchemes": "Ergebnisse aller Vokabulare anzeigen",
       "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind.",
+      "settingShowAllResults": "Immer alle Mappings und Vorschläge anzeigen",
+      "settingShowAllResultsTooltip": "Falls ausgeschaltet werden zunächst nur die ersten fünf Resultate jedes Bereichs angezeigt, alle weiteren sind ausgeblendet.",
       "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen",
       "settingsButton": "Mapping-Browser Einstellungen"
     },

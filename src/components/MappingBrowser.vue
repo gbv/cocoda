@@ -27,6 +27,12 @@
               style="user-select: none;">
               {{ $t("mappingBrowser.settingShowAllSchemes") }}
             </b-form-checkbox>
+            <b-form-checkbox
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllResultsTooltip'), delay: $util.delay.medium }"
+              v-model="showAllResults"
+              style="user-select: none;">
+              {{ $t("mappingBrowser.settingShowAllResults") }}
+            </b-form-checkbox>
             <p v-if="settingsDownloadCurrent">
               <a
                 href=""
@@ -432,7 +438,7 @@ export default {
         currentSetLength += 1
         // Truncate if necessary
         let maxLengthForThis = _.get(this.showMoreValues, `["${item.registry.uri}"]`, 1) * lengthPerSet
-        if (!skipCurrentRegistry && !this.$settings.mappingBrowserShowAll && currentSetLength > maxLengthForThis) {
+        if (!skipCurrentRegistry && !this.showAllResults && currentSetLength > maxLengthForThis) {
           skipCurrentRegistry = true
           // Add extra row if truncated
           newItems.push({
@@ -679,6 +685,21 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingBrowserAllSchemes",
+          value
+        })
+        // Refresh
+        this.$store.commit("mapping/setRefresh")
+      }
+    },
+    // Setting whether to collapse results by default or to always show results
+    showAllResults: {
+      get() {
+        return this.$settings.mappingBrowserShowAll
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserShowAll",
           value
         })
         // Refresh
