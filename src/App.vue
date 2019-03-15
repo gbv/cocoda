@@ -413,7 +413,7 @@ export default {
     start() {
       // Load schemes
       this.loadSchemes().then(() => {
-        this.loadFromParametersOnce()
+        this.loadFromParametersOnce(true)
       })
     },
     insertPrefLabel(isLeft, both = true) {
@@ -457,13 +457,33 @@ export default {
         this.insertPrefLabel(false, false)
       }, 300)
     },
-    loadFromParameters() {
+    loadFromParameters(firstLoad = false) {
       this.loading = true
 
       // Check route to see if navigation is necessary
       let query = this.$route.query
 
       let promises = []
+
+      // Set query.from/to/Scheme from mapping if not set
+      let mapping
+      try {
+        mapping = JSON.parse(query["mapping"])
+      } catch(error) {
+        mapping = null
+      }
+      if (mapping && firstLoad) {
+        for (let fromTo of ["from", "to"]) {
+          // Check if fromScheme was not set
+          if (!query[fromTo + "Scheme"]) {
+            query[fromTo + "Scheme"] = mapping[fromTo + "Scheme"].uri
+            // If concept in mapping is available, set that too
+            if (this.$jskos.conceptsOfMapping(mapping, fromTo).length) {
+              query[fromTo] = _.get(this.$jskos.conceptsOfMapping(mapping, fromTo), "[0].uri")
+            }
+          }
+        }
+      }
 
       // Prepare application by selecting schemes and concepts from URL parameters.
       let selected = {
