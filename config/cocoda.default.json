@@ -158,6 +158,23 @@
       ]
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/ccmapper-mapping-recommendations",
+      "notation": ["CC"],
+      "prefLabel": {
+        "de": "ccmapper Mapping Recommendations",
+        "en": "ccmapper Mapping-Vorschläge"
+      },
+      "definition": {
+        "en": [""],
+        "de": [""]
+      },
+      "mappings": "//coli-conc.gbv.de/ccmapper/api/mappings",
+      "provider": "MappingsApi",
+      "subject": [{
+        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+      }]
+    },
+    {
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "notation": ["CO"],
       "prefLabel": {
