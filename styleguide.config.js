@@ -117,7 +117,7 @@ module.exports = {
           content: "docs/releasing.md"
         },
         {
-          name: "Interface Translation",
+          name: "Translation",
           content: "docs/translation.md"
         }
       ]
