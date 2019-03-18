@@ -118,7 +118,7 @@
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
       "notation": ["W"],
       "prefLabel": {
-        "en": "Wikidata"
+        "en": "Wikidata-Mappings"
       },
       "definition": {
         "en": ["Access to Wikidata mappings in JSKOS format"],
