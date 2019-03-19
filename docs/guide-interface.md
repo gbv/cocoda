@@ -5,3 +5,5 @@ The user interface is divided into several **cards** which can be resized and ar
 * In between there are several cards to create, modify, browse, and evaluate [mappings and mapping recommendations](#mappings).
 
 All cards can be hidden with a **minimize button** in the top right of each card and resized by dragging on the **divider line** between cards.
+
+![](img/cocoda-homepage-en.png)
