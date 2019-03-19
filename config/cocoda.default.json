@@ -188,7 +188,7 @@
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "notation": ["CO"],
       "prefLabel": {
-        "de": "Vorkommen",
+        "de": "Katalogvorschläge",
         "en": "Co-/Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
@@ -197,8 +197,8 @@
         "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
       }],
       "definition": {
-        "en": ["Catalog Co-/Occurrences"],
-        "de": ["Katalogvorkommen"]
+        "en": ["Suggestions based on catalog co-/occurrences"],
+        "de": ["Vorschläge auf Basis der Katalogvorkommen"]
       }
     },
     {
