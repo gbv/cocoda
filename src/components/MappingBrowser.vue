@@ -104,10 +104,16 @@
               :show-tooltip="true"
               font-size="sm"
               class="fontWeight-heavy" />
+            <!-- null means repeating scheme, undefined means no scheme -->
             <div
               v-if="value === null"
-              class="mappingBrowser-table-dittoMark">
+              class="mappingBrowser-table-light mappingBrowser-table-paddingTopLeftAdjustment">
               "
+            </div>
+            <div
+              v-if="value === undefined"
+              class="mappingBrowser-table-light mappingBrowser-table-paddingTopAdjustment mappingBrowser-table-paddingLeftAdjustment">
+              —
             </div>
           </span>
           <span
@@ -129,6 +135,12 @@
                 v-else
                 size="sm" />
             </span>
+            <!-- No concepts -->
+            <div
+              v-if="value.length === 0"
+              class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+              —
+            </div>
           </span>
           <span
             slot="sourceConceptsLong"
@@ -149,6 +161,12 @@
                 v-else
                 size="sm" />
             </span>
+            <!-- No concepts -->
+            <div
+              v-if="value.length === 0"
+              class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+              —
+            </div>
           </span>
           <span
             slot="targetScheme"
@@ -162,8 +180,13 @@
             <!-- null means repeating scheme, undefined means no scheme -->
             <div
               v-if="value === null"
-              class="mappingBrowser-table-dittoMark">
+              class="mappingBrowser-table-light mappingBrowser-table-paddingTopLeftAdjustment">
               "
+            </div>
+            <div
+              v-if="value === undefined"
+              class="mappingBrowser-table-light mappingBrowser-table-paddingTopAdjustment mappingBrowser-table-paddingLeftAdjustment">
+              —
             </div>
           </span>
           <span
@@ -186,6 +209,12 @@
                 v-else
                 size="sm" />
             </span>
+            <!-- No concepts -->
+            <div
+              v-if="value.length === 0"
+              class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+              —
+            </div>
           </span>
           <span
             slot="targetConceptsLong"
@@ -207,6 +236,12 @@
                 v-else
                 size="sm" />
             </span>
+            <!-- No concepts -->
+            <div
+              v-if="value.length === 0"
+              class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+              —
+            </div>
           </span>
           <span
             slot="type"
@@ -1432,11 +1467,18 @@ export default {
   border-top: 1px solid @color-text-lightGrey;
 }
 
-.mappingBrowser-table-dittoMark {
-  width: 100%;
-  text-align: center;
-  padding-top: 5px;
+.mappingBrowser-table-light {
   color: @color-text-lightGrey;
+}
+.mappingBrowser-table-paddingTopLeftAdjustment {
+  padding-left: 10px;
+  padding-top: 5px;
+}
+.mappingBrowser-table-paddingLeftAdjustment {
+  padding-left: 5px;
+}
+.mappingBrowser-table-paddingTopAdjustment {
+  padding-top: 2px;
 }
 
 .mappingBrowser-table-source {

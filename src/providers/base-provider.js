@@ -566,7 +566,6 @@ class BaseProvider {
           if (!jskos.compare(mapping.fromScheme, selected.scheme[true]) && !jskos.compare(mapping.toScheme, selected.scheme[false])) {
             [mapping.from, mapping.fromScheme, mapping.to, mapping.toScheme] = [mapping.to, mapping.toScheme, mapping.from, mapping.fromScheme]
           }
-          mapping.toScheme = mapping.toScheme || selected.scheme[false]
         }
         mapping.type = [jskos.defaultMappingType.uri]
         mapping._occurrence = occurrence
