@@ -95,7 +95,12 @@
       "deleteAndKeep": "Delete original mapping and keep changes",
       "keepAndClear": "Keep original mapping and clear",
       "cancel": "@:general.cancel",
-      "removeConceptFromMapping": "remove concept from mapping"
+      "removeConceptFromMapping": "remove concept from mapping",
+      "settingsButton": "Mapping Editor Settings",
+      "settingClearOnSave": "Clear on save",
+      "settingClearOnSaveTooltip": "When turned on, the editor will be cleared after a mapping was saved.",
+      "settingOnly1to1mappings": "Only allow 1-to-1 mappings (1-to-n otherwise)",
+      "settingOnly1to1mappingsTooltip": "When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed."
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -148,8 +153,6 @@
       "showAllAncestors": "Always show all ancestors in concept details.",
       "truncateNotes": "Do not truncate notes in concept details.",
       "autoInsertLabels": "Automatically insert label in search field on opposite side.",
-      "mappingEditorClearOnSave": "Mapping Editor: Clear on save.",
-      "only1to1mappings": "Mapping Editor: Only allow 1-to-1 mappings (1-to-n otherwise)",
       "resetSizes": "Reset card sizes",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
@@ -291,7 +294,12 @@
       "deleteAndKeep": "Lösche originales Mapping und behalte Änderungen",
       "keepAndClear": "Behalte originales Mapping und verwerte Änderungen",
       "cancel": "@:general.cancel",
-      "removeConceptFromMapping": "Konzept aus Mapping entfernen"
+      "removeConceptFromMapping": "Konzept aus Mapping entfernen",
+      "settingsButton": "Mapping-Editor Einstellungen",
+      "settingClearOnSave": "Leere Editor nach Speichern",
+      "settingClearOnSaveTooltip": "Falls eingeschaltet wird der Editor nach dem Speichern eines Mappings geleert.",
+      "settingOnly1to1mappings": "Nur 1-zu-1 Mappings erlauben (sonst 1-zu-n)",
+      "settingOnly1to1mappingsTooltip": "Falls eingeschaltet werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet werden 1-zu-n Mappings erlaubt."
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
@@ -305,8 +313,6 @@
       "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",
       "truncateNotes": "Notizen für Konzepte nicht abschneiden.",
       "autoInsertLabels": "Automatisch das Label in das Suchfeld auf der anderen Seite einfügen.",
-      "mappingEditorClearOnSave": "Mapping-Editor: Leere Mapping nach Speichern",
-      "only1to1mappings": "Mapping-Editor: Nur 1-to-1 Mappings erlauben (sonst 1-to-n)",
       "resetSizes": "Komponenten-Größen zurücksetzen",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",

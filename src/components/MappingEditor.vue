@@ -2,6 +2,36 @@
   <div
     id="mappingEditor"
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
+    <!-- Settings -->
+    <div id="mappingEditor-settingsButton">
+      <font-awesome-icon
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingsButton'), delay: $util.delay.medium }"
+        id="mappingEditor-settingsButton-icon"
+        icon="cog"
+        class="button" />
+      <b-popover
+        :show.sync="settingsShow"
+        target="mappingEditor-settingsButton-icon"
+        triggers="click"
+        placement="bottomleft" >
+        <div
+          ref="settingsPopover" >
+          <p><b>{{ $t("navbar.settings") }}</b></p>
+          <b-form-checkbox
+            v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
+            v-model="clearOnSave"
+            style="user-select: none;">
+            {{ $t("mappingEditor.settingClearOnSave") }}
+          </b-form-checkbox>
+          <b-form-checkbox
+            v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
+            v-model="only1to1mappings"
+            style="user-select: none;">
+            {{ $t("mappingEditor.settingOnly1to1mappings") }}
+          </b-form-checkbox>
+        </div>
+      </b-popover>
+    </div>
     <div class="mappingEditorToolbar">
       <div
         v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
@@ -211,7 +241,8 @@ export default {
   components: { ItemName, MappingTypeSelection, Minimizer, DataModalButton },
   data() {
     return {
-      comments: [""]
+      comments: [""],
+      settingsShow: false,
     }
   },
   computed: {
@@ -253,6 +284,32 @@ export default {
     schemeRight() {
       return this.selected.scheme[false]
     },
+    // Setting whether to clear editor after saving a mapping
+    clearOnSave: {
+      get() {
+        return this.$settings.mappingEditorClearOnSave
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingEditorClearOnSave",
+          value
+        })
+      }
+    },
+    // Setting whether to only allow 1-to-1 mappings
+    only1to1mappings: {
+      get() {
+        return this.$settings.mappingCardinality == "1-to-1" ? true : false
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingCardinality",
+          value: value ? "1-to-1" : "1-to-n"
+        })
+      }
+    },
   },
   watch: {
     mappingEncoded() {
@@ -292,6 +349,14 @@ export default {
       })
     },
   },
+  mounted() {
+    // Add click event listener
+    document.addEventListener("click", this.handleClickOutside)
+  },
+  destroyed() {
+    // Remove click event listener
+    document.removeEventListener("click", this.handleClickOutside)
+  },
   methods: {
     shortcutHandler({ action, isLeft }) {
       switch(action) {
@@ -309,6 +374,13 @@ export default {
             this.$refs.commentModal.show()
           }
           break
+      }
+    },
+    handleClickOutside(event) {
+      // Handle settings popover
+      let popover = this.$refs.settingsPopover
+      if (popover && !popover.contains(event.target)) {
+        this.settingsShow = false
       }
     },
     saveMapping() {
@@ -349,7 +421,7 @@ export default {
           type: "mapping/set",
           original: newMapping
         })
-        if (this.$settings.mappingEditorClearOnSave) {
+        if (this.clearOnSave) {
           this.clearMapping()
         }
       }).finally(() => {
@@ -510,9 +582,14 @@ export default {
 
 #mappingEditor {
   position: relative;
-  overflow: hidden;
   display: flex;
   border: 1px solid @color-background;
+}
+#mappingEditor-settingsButton {
+  position: absolute;
+  right: 20px;
+  top: -6px;
+  z-index: @zIndex-2;
 }
 .mappingEditor-cantSave {
   background-color: @color-background;
