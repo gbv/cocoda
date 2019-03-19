@@ -90,6 +90,9 @@ class OccurrencesApiProvider extends BaseProvider {
       let indexesToDelete = []
       for (let i = 0; i < occurrences.length; i += 1) {
         let occurrence = occurrences[i]
+        if (!occurrence) {
+          continue
+        }
         let uris = occurrence.memberSet.reduce((total, current) => total.concat(current.uri), []).sort().join(" ")
         if (existingUris.includes(uris)) {
           indexesToDelete.push(i)
