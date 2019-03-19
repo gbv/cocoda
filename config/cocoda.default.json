@@ -27,6 +27,16 @@
       "provider": "ConceptApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
+      "notation": ["RVK"],
+      "prefLabel": {
+        "de": "Regensburger Verbundklassifikation"
+      },
+      "baseUrl": "//coli-conc.gbv.de/rvk/api/",
+      "provider": "ConceptApi",
+      "priority": 2
+    },
+    {
       "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
       "notation": ["G"],
       "prefLabel": {
