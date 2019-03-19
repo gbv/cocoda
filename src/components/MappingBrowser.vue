@@ -919,13 +919,14 @@ export default {
             registry,
           }
         }
-        if (partialReload) {
+        // Get index for current registry
+        let index = this.items.findIndex(item => this.$jskos.compare(item.registry, registry))
+        if (partialReload && index != -1) {
           if (registry.uri != registryToReload) {
             // Skip
             continue
           }
           // Only remove mappings from current registry
-          let index = this.items.findIndex(item => this.$jskos.compare(item.registry, registry))
           // 1. For a forced reload, current items for this registry will not be removed and instead replaced after the results were loaded.
           // 2. If the registry is supposed to be hidden though, items have to be replaced with the hidden dummy row.
           // 3. If the item at the index does not have a mapping, i.e. it is a loading or (more likely) a dummy row, replace it with a loading row.
