@@ -192,7 +192,8 @@
       "loginUriHint": "The URI is assigned automatically after logging in.",
       "privacyPolicy": "Privacy Policy",
       "sources": "Sources",
-      "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage."
+      "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage.",
+      "conceptTreeAddToMappingSelectsConcept": "Concept Tree: Adding a concept to the mapping will also select that concept."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -352,7 +353,8 @@
       "loginUriHint": "Die URI wird nach dem Login automatisch zugewiesen.",
       "privacyPolicy": "Datenschutz",
       "sources": "Quellcode",
-      "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert."
+      "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert.",
+      "conceptTreeAddToMappingSelectsConcept": "Concept-Tree: Durch Hinzufügen eines Konzepts zum Mapping wird dieses auch ausgewählt."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",

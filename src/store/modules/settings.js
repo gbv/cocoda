@@ -10,6 +10,7 @@ const defaultSettings = {
   mappingBrowserShowReverse: true,
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
+  conceptTreeAddToMappingSelectsConcept: true,
   mappingBrowserLocal: true,
   mappingBrowserProvider: {},
   mappingBrowserCatalog: true,

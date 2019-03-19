@@ -167,6 +167,11 @@
               {{ $t("settings.autoInsertLabels") }}
             </b-form-checkbox>
           </p>
+          <p v-if="localSettings">
+            <b-form-checkbox v-model="localSettings.conceptTreeAddToMappingSelectsConcept">
+              {{ $t("settings.conceptTreeAddToMappingSelectsConcept") }}
+            </b-form-checkbox>
+          </p>
           <p>
             <b-button
               variant="primary"

@@ -209,7 +209,7 @@ export default {
      * Clicked the plus icon to add a concept.
      */
     addConcept() {
-      if (!this.isSelected) {
+      if (!this.isSelected && this.$settings.conceptTreeAddToMappingSelectsConcept) {
         this.select(this.concept)
       }
       this.addToMapping({
