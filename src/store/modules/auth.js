@@ -14,10 +14,11 @@ const state = {
   providers: [],
   about: {},
   tokenTimeout: null,
-  windowManager: {
-    window: null,
-    eventType: null
-  },
+}
+
+let windowManager = {
+  window: null,
+  eventType: null
 }
 
 const mutations = {
@@ -37,18 +38,18 @@ const mutations = {
    * Opens a URL in a new window and saves an event type so that it'll be close when that event is received.
    */
   openWindow(state, { url, eventType }) {
-    state.windowManager.window = window.open(url)
-    state.windowManager.eventType = eventType
+    windowManager.window = window.open(url)
+    windowManager.eventType = eventType
   },
 
   /**
    * To be called by the login-client event handler. Closes a window that was waiting for a certain event type.
    */
   closeWindow(state, { eventType }) {
-    if (state.windowManager.window && state.windowManager.eventType == eventType) {
+    if (windowManager.window && windowManager.eventType == eventType) {
       setTimeout(() => {
-        state.windowManager.window.close()
-        state.windowManager.window = null
+        windowManager.window.close()
+        windowManager.window = null
       }, 100)
     }
   }
