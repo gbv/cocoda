@@ -200,7 +200,6 @@
       "newVersionLink": "Refresh site",
       "loggedIn": "You are now logged in.",
       "loggedOut": "You are now logged out.",
-      "identityAdjusted": "Your identity was adjusted. Please review this information in the settings.",
       "nameError": "There was an error setting the name."
     },
     "dataModal": {
@@ -431,7 +430,6 @@
       "newVersionLink": "Seite neu laden",
       "loggedIn": "Du bist jetzt eingeloggt.",
       "loggedOut": "Du bist jetzt ausgeloggt.",
-      "identityAdjusted": "Die Identität wurde angepasst, bitte in den Einstellungen prüfen.",
       "nameError": "Fehler beim Namen ändern."
     },
     "dataModal": {

@@ -354,7 +354,6 @@ export default {
             prop: "creatorUri",
             value: this.userUris[0]
           })
-          this.alert(this.$t("alerts.identityAdjusted"), 0, "warning")
         }
       }
     },
