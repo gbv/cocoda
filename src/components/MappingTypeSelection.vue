@@ -2,11 +2,11 @@
   <div
     class="mappingTypes"
     @mouseover="hovered = true"
-    @mouseout="hovered = false" >
+    @mouseout="hovered = false">
     <div
-      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType), delay: $util.delay.medium }"
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
+      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType), delay: $util.delay.medium }"
       :class="{
         mappingTypeSelected: hovered && (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
@@ -14,7 +14,7 @@
       }"
       :style="`display: ${((mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri) || hovered ? 'inline-block' : 'none'};`"
       class="mappingType"
-      @click="choose(mappingType)" >
+      @click="choose(mappingType)">
       {{ $util.notation(mappingType) }}
     </div>
   </div>

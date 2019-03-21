@@ -6,7 +6,7 @@
       'registry-notation-current': isCurrentRegistry,
     }"
     :style="`width: ${18 + 12 * ($util.notation(registry).length - 1)}px;`"
-    class="registry-notation" >
+    class="registry-notation">
     {{ $util.notation(registry) }}
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="text-dark color-primary-0-bg fontSize-normal" >
+    class="text-dark color-primary-0-bg fontSize-normal">
     <div class="alertsContainer">
       <b-alert
         v-for="(alert, index) in $store.state.alerts.alerts"
@@ -11,7 +11,7 @@
         :dismissible="!alert.shouldCountdown"
         fade
         @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
-        @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })" >
+        @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })">
         {{ alert.text }}
       </b-alert>
     </div>
@@ -20,7 +20,7 @@
       <b-card no-body>
         <b-tabs
           v-model="tab"
-          card >
+          card>
           <b-tab
             :disabled="!loading && concordances.length == 0"
             title="Concordances">
@@ -28,7 +28,7 @@
               <div
                 v-for="field in concordanceTableFields"
                 :key="field.key"
-                :style="'padding: 0px 10px 0px 0px; flex: 0 0 ' + field.width" >
+                :style="'padding: 0px 10px 0px 0px; flex: 0 0 ' + field.width">
                 <b-input
                   v-if="field.key == 'from'"
                   v-model="filter.from"
@@ -51,8 +51,8 @@
                   size="sm"
                   placeholder="creator" />
                 <span
-                  v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
                   v-if="filter[field.key] != null"
+                  v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
                   icon="times"
                   class="button d-none d-md-inline-block"
                   @click="filter[field.key] = ''">
@@ -63,34 +63,34 @@
                   class="d-none d-lg-inline-block"
                   variant="link"
                   size="sm"
-                  @click="[filter.from, filter.to] = [filter.to, filter.from]" >
+                  @click="[filter.from, filter.to] = [filter.to, filter.from]">
                   <font-awesome-icon icon="exchange-alt" />
                 </b-button>
               </div>
             </div>
             <flexible-table
               :fields="concordanceTableFields"
-              :items="concordanceTableItems" >
+              :items="concordanceTableItems">
               <span
                 slot="download"
-                slot-scope="{ value }" >
+                slot-scope="{ value }">
                 <span
                   v-for="(distribution, index) in value"
-                  :key="index" >
+                  :key="index">
                   <a
                     v-if="nameOfDistribution(distribution)"
-                    :href="distribution.download" >
+                    :href="distribution.download">
                     {{ nameOfDistribution(distribution) }}
-                </a></span>
+                  </a></span>
               </span>
               <span
                 slot="mappings"
-                slot-scope="{ value }" >
+                slot-scope="{ value }">
                 {{ (parseInt(value) || "?").toLocaleString() }}
               </span>
               <span
                 slot="actions"
-                slot-scope="{ item }" >
+                slot-scope="{ item }">
                 <font-awesome-icon
                   v-b-tooltip.hover="{ title: 'Show Mappings', delay: $util.delay.medium }"
                   icon="external-link-square-alt"
@@ -117,7 +117,9 @@
               <b-row>
                 <b-col
                   cols="3"
-                  class="label">Source</b-col>
+                  class="label">
+                  Source
+                </b-col>
                 <b-col cols="3">
                   <b-form-input
                     v-model="sourceScheme"
@@ -136,7 +138,7 @@
                 <b-col cols="2">
                   <b-button
                     variant="outline-primary"
-                    @click="swapClicked" >
+                    @click="swapClicked">
                     <!-- <font-awesome-icon icon="retweet" /> -->
                     <font-awesome-icon icon="long-arrow-alt-down" />
                     <font-awesome-icon icon="long-arrow-alt-up" />
@@ -146,7 +148,9 @@
               <b-row>
                 <b-col
                   cols="3"
-                  class="label">Target</b-col>
+                  class="label">
+                  Target
+                </b-col>
                 <b-col cols="3">
                   <b-form-input
                     v-model="targetScheme"
@@ -167,7 +171,9 @@
               <b-row>
                 <b-col
                   cols="3"
-                  class="label">Creator</b-col>
+                  class="label">
+                  Creator
+                </b-col>
                 <b-col cols="2">
                   <b-form-input
                     v-model="creator"
@@ -177,7 +183,9 @@
                 </b-col>
                 <b-col
                   cols="2"
-                  class="label">Type</b-col>
+                  class="label">
+                  Type
+                </b-col>
                 <b-col cols="3">
                   <b-select
                     v-model="type"
@@ -190,7 +198,7 @@
                   cols="3"
                   class="label">
                   <span
-                    v-if="concordances.length > 0" >
+                    v-if="concordances.length > 0">
                     Concordance
                   </span>
                 </b-col>
@@ -202,15 +210,15 @@
                 </b-col>
                 <b-col
                   class="text-right"
-                  cols="3" >
+                  cols="3">
                   <b-button
                     variant="danger"
-                    @click="clearClicked" >
+                    @click="clearClicked">
                     <font-awesome-icon icon="ban" /><span class="d-none d-lg-inline"> Clear</span>
                   </b-button>
                   <b-button
                     variant="primary"
-                    @click="searchClicked" >
+                    @click="searchClicked">
                     <font-awesome-icon icon="search" /><span class="d-none d-md-inline"> Search</span>
                   </b-button>
                 </b-col>
@@ -221,8 +229,7 @@
               :class="{
                 mappingTable: true,
                 'mappingTable-short': mappings.length <= 2
-              }"
-            >
+              }">
               <b-row>
                 <b-col cols="12">
                   <mapping-table
@@ -237,7 +244,7 @@
               </b-row>
               <b-row>
                 <b-col
-                  cols="8" >
+                  cols="8">
                   <b-pagination
                     v-if="totalCount > 0"
                     v-model="page"
@@ -249,7 +256,7 @@
                 </b-col>
                 <b-col
                   cols="4"
-                  class="text-right" >
+                  class="text-right">
                   <p>{{ totalCount.toLocaleString() }} results</p>
                   <p v-if="downloadUrl && totalCount > 0">
                     <a :href="downloadUrl + 'json'">
@@ -268,7 +275,7 @@
                   <b-form-checkbox
                     v-model="showLabels"
                     value="1"
-                    unchecked-value="0" >
+                    unchecked-value="0">
                     Show Labels for Concepts
                   </b-form-checkbox>
                 </b-col>

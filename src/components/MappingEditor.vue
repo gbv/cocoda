@@ -5,27 +5,27 @@
     <!-- Settings -->
     <div id="mappingEditor-settingsButton">
       <font-awesome-icon
-        v-b-tooltip.hover="{ title: $t('mappingEditor.settingsButton'), delay: $util.delay.medium }"
         id="mappingEditor-settingsButton-icon"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingsButton'), delay: $util.delay.medium }"
         icon="cog"
         class="button" />
       <b-popover
         :show.sync="settingsShow"
         target="mappingEditor-settingsButton-icon"
         triggers="click"
-        placement="bottomleft" >
+        placement="bottomleft">
         <div
-          ref="settingsPopover" >
+          ref="settingsPopover">
           <p><b>{{ $t("navbar.settings") }}</b></p>
           <b-form-checkbox
-            v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
             v-model="clearOnSave"
+            v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
             style="user-select: none;">
             {{ $t("mappingEditor.settingClearOnSave") }}
           </b-form-checkbox>
           <b-form-checkbox
-            v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
             v-model="only1to1mappings"
+            v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
             style="user-select: none;">
             {{ $t("mappingEditor.settingOnly1to1mappings") }}
           </b-form-checkbox>
@@ -40,7 +40,7 @@
           'button-disabled': !canSaveMapping
         }"
         class="mappingEditorToolbarItem"
-        @click="saveMapping" >
+        @click="saveMapping">
         <font-awesome-icon icon="save" />
       </div>
       <div
@@ -50,7 +50,7 @@
           'button-disabled': !canDeleteMapping
         }"
         class="mappingEditorToolbarItem"
-        @click="deleteMapping" >
+        @click="deleteMapping">
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
@@ -60,7 +60,7 @@
           'button-disabled': !canClearMapping
         }"
         class="mappingEditorToolbarItem"
-        @click="clearMapping" >
+        @click="clearMapping">
         <font-awesome-icon icon="ban" />
       </div>
     </div>
@@ -75,11 +75,11 @@
       }"
       class="mappingEditorPart"
       @dragover="dragOver"
-      @drop="drop($event, isLeft)" >
+      @drop="drop($event, isLeft)">
       <div v-if="$store.getters['mapping/getScheme'](isLeft) != null && $store.getters['mapping/getConcepts'](isLeft).length">
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
-          class="mappingScheme fontWeight-heavy" >
+          class="mappingScheme fontWeight-heavy">
           <span v-if="showScheme(isLeft)">
             <item-name
               :item="$store.getters['mapping/getScheme'](isLeft)"
@@ -95,14 +95,13 @@
           <ul>
             <li
               v-for="(concept, index) in $store.getters['mapping/getConcepts'](isLeft)"
-              :key="index" >
+              :key="index">
               <item-name
                 :item="concept"
                 :is-link="true"
                 :is-left="isLeft"
                 :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-                font-size="large"
-              />
+                font-size="large" />
               <!-- Delete button for concept -->
               <span
                 v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: $util.delay.medium }"
@@ -111,26 +110,29 @@
                   type: 'mapping/remove',
                   concept,
                   isLeft
-                })"
-              >
+                })">
                 <font-awesome-icon icon="times-circle" />
               </span>
             </li>
           </ul>
         </div>
       </div>
-      <div v-else >
+      <div v-else>
         <div class="mappingNoConcepts">
-          <div v-if="draggedConcept == null">{{ $t("mappingEditor.placeholder") }}<br><br></div>
+          <div v-if="draggedConcept == null">
+            {{ $t("mappingEditor.placeholder") }}<br><br>
+          </div>
           <div
             v-else
-            class="fontWeight-heavy">{{ $t("mappingEditor.placeholderDragging") }}</div>
+            class="fontWeight-heavy">
+            {{ $t("mappingEditor.placeholderDragging") }}
+          </div>
           <div
-            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
             v-if="draggedConcept == null"
+            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
-            @click="addToMappingInternal(isLeft)" >
+            @click="addToMappingInternal(isLeft)">
             <font-awesome-icon icon="plus-circle" />
           </div>
         </div>
@@ -162,7 +164,7 @@
           button: canExportMapping,
           'button-disabled': !canExportMapping
         }"
-        @click="canExportMapping && $refs.commentModal.show()" >
+        @click="canExportMapping && $refs.commentModal.show()">
         <font-awesome-icon icon="comment" />
       </span>
       {{ mappingComments.join(", ") }}
@@ -178,26 +180,26 @@
       ref="deleteModal"
       :title="$t('mappingEditor.deleteTitle')"
       class="mappingEditor-deleteModal"
-      hide-footer >
+      hide-footer>
       <b-button
         variant="danger"
-        @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()" >
+        @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()">
         {{ $t("mappingEditor.deleteAndClear") }}
       </b-button>
       <b-button
         v-show="hasChangedFromOriginal"
         variant="warning"
-        @click="deleteOriginalMapping() && $refs.deleteModal.hide()" >
+        @click="deleteOriginalMapping() && $refs.deleteModal.hide()">
         {{ $t("mappingEditor.deleteAndKeep") }}
       </b-button>
       <b-button
         variant="primary"
-        @click="clearMapping() && $refs.deleteModal.hide()" >
+        @click="clearMapping() && $refs.deleteModal.hide()">
         {{ $t("mappingEditor.keepAndClear") }}
       </b-button>
       <b-button
         variant="secondary"
-        @click="$refs.deleteModal.hide()" >
+        @click="$refs.deleteModal.hide()">
         {{ $t("mappingEditor.cancel") }}
       </b-button>
     </b-modal>
@@ -209,11 +211,11 @@
       ok-only
       @shown="focusNote"
       @hide="comments = mappingComments"
-      @ok="saveComment" >
+      @ok="saveComment">
       <b-form-textarea
         v-for="(comment, index) in comments"
-        :key="`mappingEditor-comment-${index}`"
         :id="`mappingEditor-comment-${index}`"
+        :key="`mappingEditor-comment-${index}`"
         v-model="comments[index]"
         :rows="2"
         :max-rows="6"
@@ -229,7 +231,6 @@
 <script>
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
-import Minimizer from "./Minimizer"
 import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 
@@ -238,7 +239,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, Minimizer, DataModalButton },
+  components: { ItemName, MappingTypeSelection, DataModalButton },
   data() {
     return {
       comments: [""],

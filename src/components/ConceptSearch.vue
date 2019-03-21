@@ -1,25 +1,25 @@
 <template>
   <div
     class="conceptSearch"
-    @mousemove="mousemove()" >
+    @mousemove="mousemove()">
     <!-- Search icon -->
     <div
       class="conceptSearch-icon button"
-      @click="focusSearch" >
+      @click="focusSearch">
       <font-awesome-icon icon="search" />
     </div>
     <div class="conceptSearch-inputWrapper">
       <div
         v-if="isOpen && !loading"
         :style="`right: ${scheme.types && scheme.types.length ? 27 : 10}px;`"
-        class="conceptSearch-resultCount" >
+        class="conceptSearch-resultCount">
         {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
       <div
         v-if="scheme.types && scheme.types.length"
         :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
         :disabled="filterPopoverShow"
-        class="conceptSearch-filter button" >
+        class="conceptSearch-filter button">
         <font-awesome-icon icon="filter" />
       </div>
       <!-- Filter Popover -->
@@ -28,18 +28,18 @@
         :target="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
         :show.sync="filterPopoverShow"
         triggers="click"
-        placement="auto" >
+        placement="auto">
         <div ref="filterPopover">
           <b-form-checkbox-group
             v-model="selectedTypes"
             class="conceptSearch-filterCheckboxes"
             stacked
-            size="sm" >
+            size="sm">
             <b-form-checkbox
               v-for="type in scheme.types"
               :key="type.uri"
               :value="type.uri"
-              class="conceptSearch-filterCheckbox" >
+              class="conceptSearch-filterCheckbox">
               {{ $util.prefLabel(type) }}
             </b-form-checkbox>
           </b-form-checkbox-group>
@@ -58,36 +58,35 @@
         @keydown.tab.native="closeResults"
         @keyup.enter.native="onEnter"
         @keyup.esc.native="$refs.searchInput.$el.blur(); closeResults()"
-        @focus.native="isOpen = searchQuery != ''"
-      />
+        @focus.native="isOpen = searchQuery != ''" />
       <!-- Results -->
       <div
         v-show="isOpen"
-        class="conceptSearch-results" >
+        class="conceptSearch-results">
         <div
           v-if="loading"
-          class="conceptSearch-loading" >
+          class="conceptSearch-loading">
           <loading-indicator />
         </div>
         <ul
           v-else
-          class="conceptSearch-results-list" >
+          class="conceptSearch-results-list">
           <li
             v-for="(result, i) in searchResult"
-            :key="i"
             :id="uniqueID + '-searchResult-' + i"
+            :key="i"
             :class="{ 'conceptSearch-selected': i === searchSelected }"
             class="conceptSearch-results-item"
             draggable="true"
             @dragstart="dragStartResult(result, $event)"
             @dragend="dragEnd"
             @click="chooseResult(i)"
-            @mouseover="mouseover(i)" >
+            @mouseover="mouseover(i)">
             <span v-html="highlightQueryInResult(result[0])" />
           </li>
           <li
             v-if="searchResult.length == 0"
-            class="conceptSearch-results-item" >
+            class="conceptSearch-results-item">
             <div>{{ $t("search.noResults") }}</div>
           </li>
         </ul>

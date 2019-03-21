@@ -6,6 +6,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+build/build-info.backup.json
+
 # local config file
 config/cocoda*.json
 !config/cocoda.default.json

@@ -1,22 +1,22 @@
 <template>
   <b-navbar
     toggleable="md"
-    type="dark" >
+    type="dark">
     <!-- Load logos from config -->
     <b-navbar-brand
       v-for="(logo, index) in config.logos || []"
       :key="index"
       :href="logo.url"
-      target="_blank" >
+      target="_blank">
       <img
-        :src="'./static/' + logo.file"
+        :src="'./' + logo.file"
         :alt="logo.alt || 'logo'"
-        style="height: 42px;" >
+        style="height: 42px;">
     </b-navbar-brand>
     <!-- Title -->
     <b-navbar-brand
       href="https://coli-conc.gbv.de/cocoda/"
-      target="_blank" >
+      target="_blank">
       {{ config.title }}
     </b-navbar-brand>
     <!-- Links on right side -->
@@ -26,20 +26,20 @@
         v-for="item in config.menu"
         :key="item.url"
         :href="item.url"
-        target="_blank" >
+        target="_blank">
         {{ $util.prefLabel(item) }}
       </b-nav-item>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown
-        v-b-tooltip.right="favoriteCanBeDropped ? 'drop here to favorite' : ''"
         id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
+        v-b-tooltip.right="favoriteCanBeDropped ? 'drop here to favorite' : ''"
         extra-menu-classes="favoriteConceptsDropdown"
         no-caret
         right
         @hide="favoriteConceptsDropdownHide"
         @mouseover.native="favoriteConceptsDropdownMouseover"
-        @mouseout.native="favoriteConceptsDropdownMouseout" >
+        @mouseout.native="favoriteConceptsDropdownMouseout">
         <template slot="button-content">
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
@@ -53,11 +53,11 @@
           :key="'theNavbar-' + concept.uri + '-favorite'"
           draggable
           @dragstart="favoriteConceptDragStart(concept)"
-          @dragend="favoriteConceptDragEnd" >
+          @dragend="favoriteConceptDragEnd">
           <item-name :item="concept" />
           <div
             class="button favoriteConceptsDropdown-removeButton"
-            @click="removeFavoriteConcept(concept)" >
+            @click="removeFavoriteConcept(concept)">
             <font-awesome-icon icon="times-circle" />
           </div>
         </b-dropdown-item>

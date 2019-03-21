@@ -1,17 +1,16 @@
 <template>
   <div
     v-if="narrower && narrower.length > 0"
-    class="itemDetailNarrower" >
+    class="itemDetailNarrower">
     <div
       v-if="text != null"
       class="fontWeight-heavy">
       {{ text }}
     </div>
     <div
-      v-for="concept in narrower"
-      v-if="concept != null"
+      v-for="concept in narrower.filter(concept => concept != null)"
       :key="concept.uri"
-      class="itemDetailNarrower-item" >
+      class="itemDetailNarrower-item">
       <font-awesome-icon
         class="u-flip-horizontal"
         icon="level-down-alt" />

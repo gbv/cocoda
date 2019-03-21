@@ -5,16 +5,15 @@
     <!-- Ancestors / Broader -->
     <div class="conceptDetail-ancestors">
       <div
-        v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
         v-if="ancestors.length > 3 && !settings.showAllAncestors"
+        v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
         class="button conceptDetail-ancestors-expand"
-        @click="showAncestors = !showAncestors" >
+        @click="showAncestors = !showAncestors">
         <font-awesome-icon
           :icon="showAncestors ? 'angle-down' : 'angle-right'" />
       </div>
       <div
-        v-for="(concept, index) in ancestors"
-        v-if="concept != null"
+        v-for="(concept, index) in ancestors.filter(concept => concept != null)"
         :key="concept.uri">
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
@@ -27,10 +26,10 @@
             font-size="small" />
         </span>
         <span
-          v-b-tooltip.hover="{ title: $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
           v-else-if="index == 1"
+          v-b-tooltip.hover="{ title: $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
           class="conceptDetail-ancestors-more button"
-          @click="showAncestors = true" >
+          @click="showAncestors = true">
           <font-awesome-icon
             class="u-flip-horizontal"
             icon="ellipsis-v" />
@@ -38,9 +37,8 @@
       </div>
       <!-- Broader -->
       <div
-        v-for="(concept) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : [])"
-        v-if="concept != null"
-        :key="concept.uri" >
+        v-for="(concept) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
+        :key="concept.uri">
         <font-awesome-icon
           icon="sort-up" />
         <item-name
@@ -62,7 +60,7 @@
         v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: $util.delay.medium }"
         class="button"
         style="display: inline-block; margin: 0px 2px 0px 2px;"
-        @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })" >
+        @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })">
         <font-awesome-icon icon="times-circle" />
       </div>
       <item-name
@@ -77,8 +75,7 @@
           concept: item,
           scheme: (item.inScheme && item.inScheme[0]) || selected.scheme[isLeft],
           isLeft: isLeft
-        })"
-      >
+        })">
         <font-awesome-icon icon="plus-circle" />
       </div>
     </div>
@@ -87,32 +84,31 @@
     <b-card
       :key="'conceptDetail-note-tabs'+iteration"
       no-body
-      class="conceptDetail-note-tabs" >
+      class="conceptDetail-note-tabs">
       <b-tabs
         no-fade
-        card >
+        card>
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]]"
-          v-if="notes != null && $util.lmContent(notes) != null && $util.lmContent(notes).length > 0"
+          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]].filter(element => element.notes != null && $util.lmContent(element.notes) != null && $util.lmContent(element.notes).length)"
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
-          class="conceptDetail-notes" >
+          class="conceptDetail-notes">
           <div class="conceptDetail-note">
             <span v-html="notesOptions.visiblePart($util.lmContent(notes))" />
             <b-collapse
               :id="'note'+index"
               tag="span"
-              class="no-transition" >
+              class="no-transition">
               <span v-html="notesOptions.hiddenPart($util.lmContent(notes))" />
             </b-collapse>
             <a
-              v-b-toggle="'note'+index"
               v-if="notesOptions.isTruncated($util.lmContent(notes))"
+              v-b-toggle="'note'+index"
               href=""
-              @click.prevent >
+              @click.prevent>
               <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
               <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
             </a>
@@ -120,13 +116,12 @@
         </b-tab>
         <b-tab
           :key="'zzzzzzzzzz'+iteration"
-          :title="$t('conceptDetail.info')" >
+          :title="$t('conceptDetail.info')">
           <!-- URI and identifier -->
           <div
-            v-for="(identifier, index) in [item.uri].concat(item.identifier)"
-            v-if="identifier != null"
+            v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
             :key="index"
-            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'" >
+            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
             <font-awesome-icon
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
               @dblclick="copyToClipboard(elementForEvent($event))" />
@@ -135,29 +130,29 @@
           <div
             v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
             :key="`conceptDetail-prefLabel-${language}`"
-            class="conceptDetail-identifier" >
+            class="conceptDetail-identifier">
             <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
           </div>
           <div
             v-if="item.creator && item.creator.length"
-            class="conceptDetail-identifier" >
+            class="conceptDetail-identifier">
             <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
           </div>
           <div
             v-if="item.created"
-            class="conceptDetail-identifier" >
+            class="conceptDetail-identifier">
             <b>{{ $t("conceptDetail.created") }}:</b> {{ $util.dateToString(item.created, true) }}
           </div>
           <div
             v-if="item.modified"
-            class="conceptDetail-identifier" >
+            class="conceptDetail-identifier">
             <b>{{ $t("conceptDetail.modified") }}:</b> {{ $util.dateToString(item.modified, true) }}
           </div>
           <template v-if="item.definition">
             <div
               v-for="language in [$util.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $util.getLanguage(item.definition) && language != '-'))"
               :key="`conceptDetail-defintion-${language}`"
-              class="conceptDetail-identifier" >
+              class="conceptDetail-identifier">
               <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
             </div>
           </template>
@@ -165,14 +160,14 @@
         <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
         <b-tab
           v-if="config.searchLinks"
-          :title="$t('conceptDetail.searchLinks')" >
+          :title="$t('conceptDetail.searchLinks')">
           <ul style="margin-bottom: 0;">
             <li
               v-for="(searchLink, index) of searchLinks"
-              :key="'searchLink' + isLeft + index" >
+              :key="'searchLink' + isLeft + index">
               <a
                 :href="searchLink.url"
-                target="_blank" >
+                target="_blank">
                 {{ searchLink.label }}
               </a>
             </li>
@@ -184,9 +179,7 @@
     <!-- Narrower concepts -->
     <item-detail-narrower
       :narrower="item.narrower"
-      :is-left="isLeft"
-    />
-
+      :is-left="isLeft" />
   </div>
 </template>
 

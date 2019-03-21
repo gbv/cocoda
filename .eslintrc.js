@@ -1,13 +1,16 @@
 module.exports = {
+  "root": true,
   "env": {
-    "browser": true,
-    "es6": true
+    "node": true
   },
-  "extends": ["eslint:recommended", "plugin:vue/recommended"],
-  "parserOptions": {
-    "sourceType": "module"
-  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/recommended"
+  ],
   "rules": {
+    "no-console": "off",
+    "no-debugger": "off",
+    "no-undef": "off",
     "indent": [
       "error",
       2,
@@ -23,11 +26,14 @@ module.exports = {
       "error",
       "double"
     ],
-    "semi": [
-      "error",
-      "never"
-    ],
-    "no-undef": "off",
-    "no-console": "off"
+    "vue/no-v-html": "off",
+    "vue/html-closing-bracket-newline": ["error", {
+      "singleline": "never",
+      "multiline": "never"
+    }],
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "parser": "babel-eslint"
   }
 }

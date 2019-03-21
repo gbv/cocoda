@@ -4,7 +4,7 @@
     :title="$t('dataModal.title')"
     class="fontSize-normal"
     centered
-    size="lg" >
+    size="lg">
     <span slot="modal-footer">
       <span>
         {{ numberText }} |
@@ -12,7 +12,7 @@
       <span v-if="url">
         <a
           :href="url"
-          target="_blank" >
+          target="_blank">
           API URL
         </a>
         |
@@ -26,7 +26,7 @@
       |
       <a
         href="https://gbv.github.io/jskos/jskos.html"
-        target="_blank" >
+        target="_blank">
         {{ $t("dataModal.jskosSpecification") }}
       </a>
     </span>
@@ -39,7 +39,7 @@
         :href="'data:application/json;charset=utf-8,' + encodedData"
         :download="filename + '.json'"
         target="_blank"
-        variant="outline-warning" >
+        variant="outline-warning">
         {{ $t("dataModal.exportJson") }}
       </b-button>
       <b-button
@@ -47,14 +47,14 @@
         :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
         :download="filename + '.ndjson'"
         target="_blank"
-        variant="outline-warning" >
+        variant="outline-warning">
         {{ $t("dataModal.exportNdjson") }}
       </b-button>
     </p>
     <div class="dataModal-json">
       <pre><code
           ref="jsonCode"
-          v-html="jsonHtml" /></pre>
+      v-html="jsonHtml" /></pre>
     </div>
   </b-modal>
 </template>

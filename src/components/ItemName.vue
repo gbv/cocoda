@@ -9,6 +9,7 @@
     @mouseout="mouseOut">
     <div
       :is="isValidLink ? 'router-link' : 'div'"
+      :id="tooltipDOMID"
       :to="url"
       :class="[
         {
@@ -17,8 +18,7 @@
           'fontWeight-heavy': isHighlighted
         },
         'fontSize-'+(fontSize || 'normal')
-      ]"
-      :id="tooltipDOMID" >
+      ]">
       <!-- Text for notation -->
       <notation-text
         :item="item"
@@ -32,7 +32,7 @@
     <b-tooltip
       v-if="showTooltip && $util.prefLabel(item)"
       ref="tooltip"
-      :target="tooltipDOMID" >
+      :target="tooltipDOMID">
       {{ trimTooltip($util.prefLabel(item)) }}
     </b-tooltip>
   </div>

@@ -1,10 +1,10 @@
 <template>
   <div class="registry-info">
     <div>
-      <registry-notation :registry="registry"/>
+      <registry-notation :registry="registry" />
       <div
         class="settings-info-title fontWeight-heavy"
-        style="display: inline-block" >
+        style="display: inline-block">
         {{ $util.prefLabel(registry) }}
       </div>
     </div>
@@ -17,7 +17,7 @@
     <div class="settings-info-capabilities">
       <span
         v-for="type in ['schemes', 'concepts', 'mappings', 'occurrences']"
-        :key="`settings-info-capabilities-${type}`" >
+        :key="`settings-info-capabilities-${type}`">
         <span v-if="registry.provider.has[type]">
           <font-awesome-icon
             v-if="registry.provider.has[type]"
@@ -28,16 +28,16 @@
       </span>
       <span
         v-if="registry.provider.has.auth"
-        style="margin-left: 5px;" >
+        style="margin-left: 5px;">
         <span
           v-if="authorized"
-          style="color: green;" >
+          style="color: green;">
           <font-awesome-icon icon="lock-open" />
           {{ $t("registryInfo.authenticated") }}
         </span>
         <span
           v-else
-          style="color: red;" >
+          style="color: red;">
           <font-awesome-icon icon="lock" />
           {{ $t("registryInfo.notAuthenticated") }}
         </span>

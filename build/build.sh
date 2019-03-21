@@ -35,14 +35,11 @@ DELETECONFIG=
 [ ! -e ./config/cocoda.json ] && echo "Using empty user config for build..." && echo -n "{}" > ./config/cocoda.json
 
 # build the app
-node build/build.js
+vue-cli-service build
 
 # rename dist-temp to dist
 rm -r dist
 mv dist-temp dist
-
-# copy build-info.json to static folder
-cp ./build/build-info.json ./dist/static/build-info.json
 
 # move empty build-info.json back after build to not cause a git file change
 mv ./build/build-info.backup.json ./build/build-info.json

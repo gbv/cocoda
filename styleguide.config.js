@@ -1,4 +1,3 @@
-const webpackConfig = require("./build/webpack.prod.conf.js")
 const path = require("path")
 const fs = require("fs")
 
@@ -21,17 +20,17 @@ const providerSections =
         .join("")
       const content = `${styleguideDir}/${match[1]}.md`
       let options = {
-        files: [providerBase+jsFile],
+        files: [providerBase + jsFile],
         "index-format": "none",
         "global-index-format": "none"
       }
 
       let markdown = jsdoc2md.renderSync(options)
       // only keep the first section. TODO: also show details
-      markdown = markdown.replace(/^(<a name.*>|^## .*$)/gm,"")
-      markdown = markdown.replace(/^\*\*Kind\*\*[\s\S]*/gm,"")
-      markdown = markdown + "\n\n⇒ [source]("
-        +  githubBase + providerBase + jsFile +")"
+      markdown = markdown.replace(/^(<a name.*>|^## .*$)/gm, "")
+      markdown = markdown.replace(/^\*\*Kind\*\*[\s\S]*/gm, "")
+      markdown = markdown + "\n\n⇒ [source](" +
+        githubBase + providerBase + jsFile + ")"
       fs.writeFileSync(content, markdown)
       return { name, content }
     })
@@ -39,15 +38,15 @@ const providerSections =
 module.exports = {
   title: "Cocoda Docs",
   ribbon: {
-    url: "https://github.com/gbv/cocoda",
+    url: "https://github.com/gbv/cocoda"
   },
   template: {
-    favicon: "/favicon.ico",
+    favicon: "/favicon.ico"
   },
   require: [
-    path.join(__dirname, "static/styleguide.css")
+    path.join(__dirname, "public/styleguide.css")
   ],
-  assetsDir: "static",
+  assetsDir: "public",
   sections: [
     {
       name: "Cocoda",
@@ -65,7 +64,7 @@ module.exports = {
           name: "Login",
           content: "docs/guide-login.md"
         },
-		{
+        {
           name: "Concept Schemes",
           content: "docs/guide-concept-schemes.md"
         },
@@ -73,7 +72,7 @@ module.exports = {
           name: "Concepts",
           content: "docs/guide-concepts.md"
         },
-		{
+        {
           name: "Mappings",
           content: "docs/guide-mappings.md"
         },
@@ -81,10 +80,10 @@ module.exports = {
           name: "Registries",
           content: "docs/registries.md"
         },
-		{ 
-		 name: "Settings",
-         content: "docs/guide-settings.md"
-        },
+        {
+          name: "Settings",
+          content: "docs/guide-settings.md"
+        }
       ]
     },
     {
@@ -139,8 +138,7 @@ module.exports = {
       name: "Components",
       content: "docs/components.md",
       components: "src/components/*.vue"
-    },
+    }
   ],
-  usageMode: "expand",
-  webpackConfig
+  usageMode: "expand"
 }

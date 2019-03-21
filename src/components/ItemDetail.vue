@@ -2,7 +2,7 @@
   <div
     class="itemDetail"
     @dragover="dragOver"
-    @drop="drop" >
+    @drop="drop">
     <!-- Minimizer allows component to get minimized -->
     <minimizer :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
@@ -13,12 +13,11 @@
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
         :is-left="isLeft"
-        :settings="internalSettings"
-      />
+        :settings="internalSettings" />
     </div>
     <div
       v-else-if="!loading"
-      class="fillAndCenter fontSize-normal fontWeight-heavy" >
+      class="fillAndCenter fontSize-normal fontWeight-heavy">
       {{ $t("itemDetail.pleaseSelect") }}
     </div>
 

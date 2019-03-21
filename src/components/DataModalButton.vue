@@ -3,7 +3,7 @@
     <!-- Button -->
     <div
       class="dataModalButton"
-      @click="openDataModal" >
+      @click="openDataModal">
       <font-awesome-icon icon="code" />
     </div>
     <!-- Data modal -->

@@ -4,7 +4,7 @@
     :fields="fields">
     <span
       slot="sourceConcepts"
-      slot-scope="{ value }" >
+      slot-scope="{ value }">
       <item-name
         v-for="concept in value"
         :key="concept.uri"
@@ -18,7 +18,7 @@
     </span>
     <span
       slot="targetConcepts"
-      slot-scope="{ value }" >
+      slot-scope="{ value }">
       <span
         v-for="concept in value"
         :key="concept.uri">
@@ -35,20 +35,20 @@
     </span>
     <span
       slot="type"
-      slot-scope="{ value }" >
+      slot-scope="{ value }">
       <span
-        v-b-tooltip.hover="{ title: $util.prefLabel(value), delay: $util.delay.medium }"
-        v-if="value != null" >
+        v-if="value != null"
+        v-b-tooltip.hover="{ title: $util.prefLabel(value), delay: $util.delay.medium }">
         {{ $util.notation(value) }}
       </span>
     </span>
     <span
       slot="actions"
-      slot-scope="data" >
+      slot-scope="data">
       <font-awesome-icon
-        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium }"
         v-for="(action, index) in actions"
         :key="index"
+        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium }"
         :icon="action.icon"
         class="button"
         @click="$emit('click', { name: action.name, item: data.item })" />

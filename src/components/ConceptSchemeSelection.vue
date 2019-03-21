@@ -10,10 +10,10 @@
       class="conceptSchemeSelection-collapsed">
       <!-- Expand button -->
       <div
-        v-b-tooltip.hover="{ title: popoverShown ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: $util.delay.medium }"
         :id="`${id}-expandButton`"
+        v-b-tooltip.hover="{ title: popoverShown ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: $util.delay.medium }"
         class="conceptSchemeSelection-expandButton button"
-        @click="togglePopover" >
+        @click="togglePopover">
         <font-awesome-icon
           :icon="popoverShown ? 'angle-left' : 'angle-down'" />
       </div>
@@ -37,14 +37,14 @@
           <img
             v-if="$util.licenseBadges[scheme.license[0].uri]"
             :src="$util.licenseBadges[scheme.license[0].uri]"
-            class="schemeDetail-licenseBadge" >
+            class="schemeDetail-licenseBadge">
         </span>
         <!-- Button to clear scheme -->
         <div
           v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
           class="button"
           style="display: inline-block; margin-right: 2px; margin-top: -3px;"
-          @click="clearScheme" >
+          @click="clearScheme">
           <font-awesome-icon icon="times-circle" />
         </div>
       </div>
@@ -65,18 +65,18 @@
       placement="leftbottom"
       class="conceptSchemeSelection-popover"
       @shown="popoverShown = true"
-      @hidden="popoverShown = false" >
+      @hidden="popoverShown = false">
       <!-- Inner div. Classes are attached because #app's classes don't apply for popovers. -->
       <div
         ref="popover"
-        class="conceptSchemeSelection-expanded font-default text-dark color-primary-0-bg fontSize-normal" >
+        class="conceptSchemeSelection-expanded font-default text-dark color-primary-0-bg fontSize-normal">
         <!-- Title (source/target scheme) -->
         <div class="componentTitle">
           {{ isLeft ? $t("schemeSelection.source") : $t("schemeSelection.target") }}
         </div>
         <b-form
           inline
-          @submit="chooseFirst" >
+          @submit="chooseFirst">
           <!-- Scheme filter input field -->
           <b-form-input
             ref="input"
@@ -97,40 +97,40 @@
         <!-- List of all schemes, showing favorites first -->
         <ul class="conceptSchemeSelection-schemeList scrollable">
           <li
-            v-for="(scheme, index) in favoriteSchemes || []"
+            v-for="(_scheme, index) in favoriteSchemes || []"
             v-show="!isFiltered"
-            :key="scheme.uri + '-favorite-scheme-list-' + id + index" >
+            :key="_scheme.uri + '-favorite-scheme-list-' + id + index">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $t('schemeSelection.starRemove'), delay: $util.delay.medium }"
               class="conceptSchemeSelection-star conceptSchemeSelection-starFavorite"
               icon="star"
-              @click="toggleFavoriteScheme(scheme)" />
+              @click="toggleFavoriteScheme(_scheme)" />
             <item-name
               :ref="index == 0 && !isFiltered ? 'firstScheme' : null"
-              :item="scheme"
+              :item="_scheme"
               :is-link="true"
               :is-left="isLeft" />
           </li>
           <li v-show="!isFiltered">
             <a
               href=""
-              @click.prevent="showAllSchemes = !showAllSchemes" >
+              @click.prevent="showAllSchemes = !showAllSchemes">
               {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes", { count: filteredSchemes.length }) : $t("schemeSelection.showAllSchemes", { count: filteredSchemes.length }) }}
             </a>
           </li>
           <li
-            v-for="(scheme, index) in filteredSchemes"
+            v-for="(_scheme, index) in filteredSchemes"
             v-show="showAllSchemes || isFiltered"
-            :key="scheme.uri + '-scheme-list-' + id + index" >
+            :key="_scheme.uri + '-scheme-list-' + id + index">
             <font-awesome-icon
-              v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
-              :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
+              v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
+              :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
               class="conceptSchemeSelection-star"
               icon="star"
-              @click="toggleFavoriteScheme(scheme)" />
+              @click="toggleFavoriteScheme(_scheme)" />
             <item-name
               :ref="(index == 0 && (isFiltered || !favoriteSchemes.length)) ? 'firstScheme' : null"
-              :item="scheme"
+              :item="_scheme"
               :is-link="true"
               :is-left="isLeft" />
           </li>
@@ -139,20 +139,19 @@
         <div
           v-if="favoriteConcepts && favoriteConcepts.length"
           class="componentTitle"
-          style="margin-top: 30px;" >
+          style="margin-top: 30px;">
           {{ $t("schemeSelection.conceptQuick") }}
         </div>
         <!-- Quick selection concepts -->
         <div class="conceptSchemeSelection-favoriteConcepts scrollable">
           <p
             v-for="concept in favoriteConcepts"
-            :key="concept.uri + '-favorite-' + id" >
+            :key="concept.uri + '-favorite-' + id">
             <item-name
               :item="concept"
               :is-left="isLeft"
               is-link
-              force-side
-            />
+              force-side />
           </p>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <div class="annotationList">
     <div
       v-for="annotation in annotations"
-      :key="annotation.uri" >
+      :key="annotation.uri">
       <!-- Value (currently: score) -->
       <div
         :class="{

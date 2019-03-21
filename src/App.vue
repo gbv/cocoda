@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="font-default text-dark color-primary-0-bg fontSize-normal" >
+    class="font-default text-dark color-primary-0-bg fontSize-normal">
     <div class="alertsContainer">
       <b-alert
         v-for="(alert, index) in $store.state.alerts.alerts"
@@ -11,17 +11,17 @@
         :dismissible="!alert.shouldCountdown"
         fade
         @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
-        @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })" >
+        @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })">
         <span v-html="alert.text" />
       </b-alert>
     </div>
     <the-navbar />
     <!-- Swap sides button -->
     <div
-      v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: $util.delay.medium }"
       v-show="selected.scheme[true] || selected.scheme[false]"
       id="swapSides"
-      @click="swapSides" >
+      v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: $util.delay.medium }"
+      @click="swapSides">
       <font-awesome-icon icon="exchange-alt" />
     </div>
     <!-- Main -->
@@ -31,46 +31,42 @@
       v-if="schemes.length"
       class="main">
       <div class="flexbox-row">
-
         <!-- Concept components left side -->
         <div
           v-for="(isLeft, index) in [true, false]"
+          :id="'browserComponent_' + isLeft"
           :key="'browser-'+index"
           :class="{
             order1: isLeft,
             order5: !isLeft
           }"
-          :id="'browserComponent_' + isLeft"
-          class="browser mainComponent" >
+          class="browser mainComponent">
           <minimizer :is-column="true" />
           <!-- Concept scheme selection -->
           <concept-scheme-selection
             :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
             :is-left="isLeft"
             :style="selected.scheme[isLeft] != null ? '' : 'flex: 1;'"
-            class="mainComponent visualComponent"
-          />
+            class="mainComponent visualComponent" />
           <!-- ItemDetail and ConceptTree -->
           <div
             v-if="selected.scheme[isLeft] != null"
             class="conceptBrowser">
             <!-- ItemDetail -->
             <item-detail
+              :id="'itemDetailComponent_' + isLeft"
               :item="selected.concept[isLeft] || selected.scheme[isLeft]"
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
-              :id="'itemDetailComponent_' + isLeft"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
-            />
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail" />
             <!-- Slider -->
             <resizing-slider />
             <!-- ConceptTree -->
             <concept-tree
+              :id="'conceptTreeComponent_' + isLeft"
               :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
               :is-left="isLeft"
-              :id="'conceptTreeComponent_' + isLeft"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemTree"
-            />
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemTree" />
           </div>
         </div>
 
@@ -88,15 +84,13 @@
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingEditor -->
             <mapping-editor
-              v-if="selected.scheme[true] || selected.scheme[false]"
-            />
+              v-if="selected.scheme[true] || selected.scheme[false]" />
             <!-- Placeholder -->
             <!-- ... -->
             <!-- Minimizer allows component to get minimized -->
             <minimizer
               ref="minimizer"
               :text="$t('mappingEditor.title')" />
-
           </div>
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
@@ -105,12 +99,11 @@
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingBrowser -->
             <mapping-browser
-              v-if="selected.scheme[true] || selected.scheme[false]"
-            />
+              v-if="selected.scheme[true] || selected.scheme[false]" />
             <!-- Placeholder -->
             <div
               v-else
-              class="placeholderComponentCenter" >
+              class="placeholderComponentCenter">
               <div class="fontWeight-heavy fontSize-large">
                 <p>{{ $t("general.welcome") }}</p>
                 <p>
@@ -143,7 +136,6 @@
         <resizing-slider
           :is-column="true"
           class="order4" />
-
       </div>
     </div>
   </div>
@@ -155,7 +147,6 @@ import MappingEditor from "./components/MappingEditor"
 import MappingBrowser from "./components/MappingBrowser"
 import ConceptTree from "./components/ConceptTree"
 import ItemDetail from "./components/ItemDetail"
-import ConceptSearch from "./components/ConceptSearch"
 import ResizingSlider from "./components/ResizingSlider"
 import _ from "lodash"
 import axios from "axios"
@@ -174,7 +165,7 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, ConceptSearch, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
+    TheNavbar, ConceptTree, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
   },
   data () {
     return {
@@ -393,7 +384,7 @@ export default {
     // Check for update every 60 seconds
     let updateMessageShown = false
     setInterval(() => {
-      axios.get("./static/build-info.json", {
+      axios.get("./build-info.json", {
         headers: {
           "Cache-Control": "no-cache"
         }

@@ -9,7 +9,7 @@
       :container="`annotationPopoverTop-${iid}`"
       :show.sync="show"
       boundary="window"
-      placement="lefttop" >
+      placement="lefttop">
       <loading-indicator-full
         v-if="loading"
         style="z-index: 1100;" />
@@ -49,7 +49,7 @@
                 'text-success': score.startsWith('+'),
                 'text-danger': score.startsWith('-')
               }"
-              class="fontWeight-heavy" >
+              class="fontWeight-heavy">
               {{ score }}
             </span>
           </div>

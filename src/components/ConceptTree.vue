@@ -1,13 +1,13 @@
 <template>
   <div
     :style="`${noTree ? 'min-height: 50px; max-height: 50px;' : ''}`"
-    class="conceptTree" >
+    class="conceptTree">
     <!-- Minimizer allows the component to get minimized -->
     <minimizer :text="$t('conceptTree.title')" />
     <!-- Show top concepts -->
     <div
       ref="conceptTreeItems"
-      class="conceptTreeItems scrollable" >
+      class="conceptTreeItems scrollable">
       <concept-tree-item
         v-for="({ concept, depth, isSelected }, index) in items"
         :key="index"
@@ -19,7 +19,7 @@
     </div>
     <div
       v-if="noTree"
-      class="fillAndCenter fontWeight-heavy" >
+      class="fillAndCenter fontWeight-heavy">
       {{ $t("conceptTree.noTree") }}
     </div>
     <!-- Full screen loading indicator -->

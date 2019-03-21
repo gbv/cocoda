@@ -1,23 +1,23 @@
 <template>
   <div class="minimizer">
     <div
-      v-b-tooltip.hover="{ title: $t('minimizer.minimize'), delay: $util.delay.medium }"
       v-show="!minimized"
+      v-b-tooltip.hover="{ title: $t('minimizer.minimize'), delay: $util.delay.medium }"
       class="utilityButton minimizeButton"
       @click="toggleMinimize()"
       @mouseover="minimizeHovered = true"
-      @mouseout="minimizeHovered = false" >
+      @mouseout="minimizeHovered = false">
       <font-awesome-icon icon="window-minimize" />
     </div>
     <div
       v-show="minimized"
       class="minimizedOverlay"
-      @click="toggleMinimize()" >
+      @click="toggleMinimize()">
       <div>
         {{ text }}
         <div
           v-b-tooltip.hover="{ title: $t('minimizer.maximize'), delay: $util.delay.medium }"
-          class="maximizeButton" >
+          class="maximizeButton">
           <font-awesome-icon icon="plus-square" />
         </div>
       </div>

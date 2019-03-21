@@ -5,14 +5,14 @@
     :title="$t('settings.title')"
     hide-footer
     centered
-    size="lg" >
+    size="lg">
     <b-card
       no-body
       footer-tag="footer">
       <b-tabs
         pills
         card
-        vertical >
+        vertical>
         <b-tab
           :title="$t('settings.tabAccount')"
           active>
@@ -72,7 +72,7 @@
             </p>
             <p v-if="user && authorized">
               <span
-                class="text-success" >
+                class="text-success">
                 {{ $t("settings.loggedIn") }}
               </span>
               <a
@@ -82,7 +82,7 @@
               </a> •
               <a
                 href=""
-                @click.prevent="login(null)" >
+                @click.prevent="login(null)">
                 Logout
               </a>
             </p>
@@ -92,12 +92,12 @@
                 :key="`login-provider-${provider.id}`"
                 block
                 variant="light"
-                @click="login(provider)" >
+                @click="login(provider)">
                 <img
                   v-if="provider.image"
                   :src="provider.image"
                   height="20px"
-                  style="margin-right: 5px;" >
+                  style="margin-right: 5px;">
                 Login via {{ provider.name }}
               </b-button>
             </p>
@@ -119,7 +119,7 @@
               </p>
             </div>
             <div
-              v-if="availableMappingRegistries.length" >
+              v-if="availableMappingRegistries.length">
               <h4>{{ $t("settings.mappingRegistry") }}</h4>
               <p>
                 {{ $t("settings.mappingRegistryExplanation") }}
@@ -129,7 +129,7 @@
                   <option
                     v-for="registry in availableMappingRegistries"
                     :key="`settings-registry-${registry.uri}`"
-                    :value="registry.uri" >
+                    :value="registry.uri">
                     {{ $util.prefLabel(registry) }}
                   </option>
                 </b-form-select>
@@ -139,14 +139,14 @@
           </div>
         </b-tab>
         <b-tab
-          :title="$t('settings.tabLayout')" >
+          :title="$t('settings.tabLayout')">
           <p v-if="localSettings">
             <b>{{ $t("settings.language") }}</b>
             <b-form-select v-model="$i18n.locale">
               <option
                 v-for="language in config.languages"
                 :key="language"
-                :value="language" >
+                :value="language">
                 {{ $t(`languages.${language}`) }}
               </option>
             </b-form-select>
@@ -183,11 +183,11 @@
         </b-tab>
         <b-tab
           v-if="config.shortcuts && config.shortcuts.length"
-          :title="$t('settings.tabShortcuts')" >
+          :title="$t('settings.tabShortcuts')">
           <h4> {{ $t("settings.tabShortcuts") }}</h4>
           <p
             v-for="shortcut in config.shortcuts"
-            :key="`settingsModal-shortcuts-${shortcut.id}`" >
+            :key="`settingsModal-shortcuts-${shortcut.id}`">
             <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b>
             <ul>
               <li
@@ -199,7 +199,7 @@
           </p>
         </b-tab>
         <b-tab
-          :title="$t('settings.tabSources')" >
+          :title="$t('settings.tabSources')">
           <registry-info
             v-for="(registry, index) in config.registries"
             :key="`settingsModal-registries-${index}`"
@@ -208,7 +208,7 @@
         </b-tab>
         <b-tab
           v-if="localMappingsSupported"
-          :title="$t('settings.tabLocalMappings')" >
+          :title="$t('settings.tabLocalMappings')">
           <div>
             <h4>{{ $t('settings.tabLocalMappings') }}</h4>
             <p>{{ $t("settings.localMappingsInfo") }}</p>
@@ -221,12 +221,12 @@
               {{ download.label }} ({{ download.mappings.length }}):
               <a
                 href=""
-                @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)" >
+                @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)">
                 JSKOS
               </a>
               <a
                 href=""
-                @click.prevent="downloadFile(download.filename + '.csv', download.csv)" >
+                @click.prevent="downloadFile(download.filename + '.csv', download.csv)">
                 CSV
               </a>
               <br>
@@ -234,7 +234,7 @@
             <br>
             <a
               href=""
-              @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)" >
+              @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)">
               {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
             </a>
           </div>
@@ -257,7 +257,7 @@
               :disabled="!dlAllMappings"
               variant="danger"
               hide-footer
-              @click="deleteMappingsButtons = true" >
+              @click="deleteMappingsButtons = true">
               {{ $t("settings.localDeleteText") }}
             </b-button>
             <p
@@ -266,11 +266,15 @@
               <b-button
                 variant="danger"
                 size="sm"
-                @click="deleteMappings" >{{ $t("general.yes") }}</b-button>
+                @click="deleteMappings">
+                {{ $t("general.yes") }}
+              </b-button>
               <b-button
                 variant="success"
                 size="sm"
-                @click="deleteMappingsButtons = false" >{{ $t("general.no") }}</b-button>
+                @click="deleteMappingsButtons = false">
+                {{ $t("general.no") }}
+              </b-button>
             </p>
           </div>
           <br><br>
@@ -294,7 +298,7 @@
       <span slot="footer">
         <a
           href="https://github.com/gbv/cocoda"
-          target="_blank" >
+          target="_blank">
           <font-awesome-icon :icon="['fab', 'github']" />
           GitHub
         </a>
@@ -307,7 +311,7 @@
           {{ $t("settings.currentCommit") }}:
           <a
             :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
-            target="_blank" >
+            target="_blank">
             {{ config.buildInfo.gitCommitShort }}
           </a>
         </span>
@@ -319,7 +323,7 @@
           •
           <a
             :href="config.impressum"
-            target="_blank" >
+            target="_blank">
             {{ $t("settings.impressum") }}
           </a>
         </span>
@@ -328,11 +332,10 @@
           {{ $t("settings.suggestions1") }}
           <a
             href="https://github.com/gbv/cocoda/issues"
-            target="_blank" >{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
+            target="_blank">{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
         </span>
       </span>
     </b-card>
-
   </b-modal>
 </template>
 

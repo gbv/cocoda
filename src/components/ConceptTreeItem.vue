@@ -7,22 +7,22 @@
       hovered: isHovered,
       selected: isSelected
     }"
-    class="conceptTreeItem" >
+    class="conceptTreeItem">
     <!-- Concept -->
     <div
       class="conceptBox"
       draggable="true"
       @dragstart="dragStart(concept, $event)"
-      @dragend="dragEnd()" >
+      @dragend="dragEnd()">
       <div
         v-if="hasChildren"
         class="arrowBox"
-        @click="openByArrow(!isOpen)" >
+        @click="openByArrow(!isOpen)">
         <i
           :class="{
             right: !isOpen,
             down: isOpen
-        }" />
+          }" />
       </div>
       <router-link
         :to="url"
@@ -30,19 +30,19 @@
         class="labelBox"
         @mouseover.native="hovering(concept)"
         @mouseout.native="hovering(null)"
-        @click.native.stop.prevent="onClick" >
+        @click.native.stop.prevent="onClick">
         <item-name
           :item="concept"
           :is-highlighted="isSelected"
           :prevent-external-hover="true" />
       </router-link>
       <div
-        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         v-show="canAddToMapping"
+        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         class="addToMapping"
         @click="addConcept()"
         @mouseover="hovering(concept)"
-        @mouseout="hovering(null)" >
+        @mouseout="hovering(null)">
         <font-awesome-icon icon="plus-circle" />
       </div>
     </div>

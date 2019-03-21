@@ -2,41 +2,41 @@
   <div id="mappingBrowser">
     <div
       v-show="selected.scheme[true] != null || selected.scheme[false] != null"
-      id="mappingBrowserWrapper" >
+      id="mappingBrowserWrapper">
       <div class="mappingBrowser-title">
         {{ $t("mappingBrowser.title") }}
       </div>
       <!-- Settings -->
       <div id="mappingBrowser-settingsButton">
         <font-awesome-icon
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingsButton'), delay: $util.delay.medium }"
           id="mappingBrowser-settingsButton-icon"
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingsButton'), delay: $util.delay.medium }"
           icon="cog"
           class="button" />
         <b-popover
           :show.sync="settingsShow"
           target="mappingBrowser-settingsButton-icon"
           triggers="click"
-          placement="bottomleft" >
+          placement="bottomleft">
           <div
-            ref="settingsPopover" >
+            ref="settingsPopover">
             <p><b>{{ $t("navbar.settings") }}</b></p>
             <b-form-checkbox
-              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
               v-model="showAllSchemes"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
               style="user-select: none;">
               {{ $t("mappingBrowser.settingShowAllSchemes") }}
             </b-form-checkbox>
             <b-form-checkbox
-              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllResultsTooltip'), delay: $util.delay.medium }"
               v-model="showAllResults"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllResultsTooltip'), delay: $util.delay.medium }"
               style="user-select: none;">
               {{ $t("mappingBrowser.settingShowAllResults") }}
             </b-form-checkbox>
             <p v-if="settingsDownloadCurrent">
               <a
                 href=""
-                @click.prevent="downloadFile('mappings.ndjson', settingsDownloadCurrent)" >
+                @click.prevent="downloadFile('mappings.ndjson', settingsDownloadCurrent)">
                 <br><font-awesome-icon icon="download" />
                 {{ $t("settings.localDownloadJskos", [settingsDownloadCurrent.split("\n").length]) }}
               </a>
@@ -51,10 +51,10 @@
         <div
           v-for="group of registryGroups"
           :key="group.uri"
-          class="mappingBrowser-settings-registryGroup" >
+          class="mappingBrowser-settings-registryGroup">
           <span
             :id="`registryGroup-${group.uri}`"
-            class="mappingBrowser-settings-registryGroup-title fontWeight-heavy button" >
+            class="mappingBrowser-settings-registryGroup-title fontWeight-heavy button">
             {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
           </span>
           <registry-notation
@@ -70,17 +70,17 @@
             :target="`registryGroup-${group.uri}`"
             :show.sync="registryGroupShow[group.uri]"
             triggers="click"
-            placement="bottom" >
+            placement="bottom">
             <div
               :ref="`registryGroup-${group.uri}-popover`"
-              class="mappingBrowser-settings-registryGroup-popover" >
+              class="mappingBrowser-settings-registryGroup-popover">
               <b-form-checkbox
                 v-for="(registry, index) in group.registries"
                 :key="`registry_${index}`"
                 v-model="showRegistry[registry.uri]"
                 class="mappingBrowser-settings-registryGroup-popover-item"
                 @mouseover.native="hoveredRegistry = registry"
-                @mouseout.native="hoveredRegistry = null" >
+                @mouseout.native="hoveredRegistry = null">
                 <registry-name :registry="registry" />
               </b-form-checkbox>
             </div>
@@ -94,10 +94,10 @@
           :items="tableItems"
           :fields="fields"
           class="mappingBrowser-table"
-          @hover="hoveredMapping = $event && $event.mapping; hoveredId = $event && $event.uniqueId" >
+          @hover="hoveredMapping = $event && $event.mapping; hoveredId = $event && $event.uniqueId">
           <span
             slot="sourceScheme"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <item-name
               :item="value"
               :show-text="false"
@@ -118,10 +118,10 @@
           </span>
           <span
             slot="sourceConcepts"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <span
               v-for="concept in value"
-              :key="concept.uri" >
+              :key="concept.uri">
               <item-name
                 v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
                 :item="concept"
@@ -144,10 +144,10 @@
           </span>
           <span
             slot="sourceConceptsLong"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <span
               v-for="concept in value"
-              :key="concept.uri" >
+              :key="concept.uri">
               <item-name
                 v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
                 :item="concept"
@@ -170,7 +170,7 @@
           </span>
           <span
             slot="targetScheme"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <item-name
               :item="value"
               :show-text="false"
@@ -191,7 +191,7 @@
           </span>
           <span
             slot="targetConcepts"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <span
               v-for="concept in value"
               :key="concept.uri">
@@ -218,7 +218,7 @@
           </span>
           <span
             slot="targetConceptsLong"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <span
               v-for="concept in value"
               :key="concept.uri">
@@ -245,31 +245,31 @@
           </span>
           <span
             slot="type"
-            slot-scope="{ value }" >
+            slot-scope="{ value }">
             <span
-              v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }"
-              v-if="value != null && $util.notation(value) != '→'" >
+              v-if="value != null && $util.notation(value) != '→'"
+              v-b-tooltip.hover="{ title: value.prefLabel.en, delay: $util.delay.medium }">
               {{ $util.notation(value) }}
             </span>
           </span>
           <span
             slot="creator"
-            slot-scope="{ item }" >
+            slot-scope="{ item }">
             <span
-              v-b-tooltip.hover="{ title: item.creator, delay: $util.delay.long }"
-              v-if="item.creator != null" >
+              v-if="item.creator != null"
+              v-b-tooltip.hover="{ title: item.creator, delay: $util.delay.long }">
               {{ item.creator }}
             </span>
           </span>
           <span
             slot="source"
-            slot-scope="{ item }" >
+            slot-scope="{ item }">
             <registry-notation
               :registry="item.registry" />
           </span>
           <span
             slot="actions"
-            slot-scope="data" >
+            slot-scope="data">
             <!-- Annotation score/button -->
             <div
               v-if="data.item.mapping && data.item.mapping.annotations"
@@ -303,8 +303,8 @@
               v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
               class="mappingBrowser-toolbar-button">
               <font-awesome-icon
-                v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
                 v-if="canSave(data.item.mapping)"
+                v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
                 class="button"
                 icon="save"
                 @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
@@ -313,12 +313,11 @@
               v-else
               class="mappingBrowser-toolbar-button">
               <font-awesome-icon
-                v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
                 v-if="canRemove(data) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
+                v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
                 class="button-delete"
                 icon="trash-alt"
-                @click="removeMapping(data.item.mapping)"
-              />
+                @click="removeMapping(data.item.mapping)" />
             </div>
           </span>
           <span
@@ -326,10 +325,10 @@
             slot-scope="" />
           <span
             slot="ITEM_ROW"
-            slot-scope="{ item, value }" >
+            slot-scope="{ item, value }">
             <font-awesome-icon
-              v-b-tooltip.hover="{ title: `${$t('mappingBrowser.showMore')} (${$util.prefLabel(item.registry)})`, delay: $util.delay.medium }"
               v-if="item.type == 'more'"
+              v-b-tooltip.hover="{ title: `${$t('mappingBrowser.showMore')} (${$util.prefLabel(item.registry)})`, delay: $util.delay.medium }"
               icon="ellipsis-h"
               class="button"
               @click="showMore(value)" />
@@ -347,7 +346,7 @@
           </span>
           <span
             slot="count"
-            slot-scope="data" >
+            slot-scope="data">
             <span v-if="data.item.occurrence == null" />
             <span v-else-if="data.item.occurrence.count == -1">-</span>
             <span v-else>
@@ -360,7 +359,7 @@
       </div>
       <div
         v-show="loading == 0 && items.length == 0"
-        class="noItems fontWeight-heavy" >
+        class="noItems fontWeight-heavy">
         {{ $t("mappingBrowser.chooseConcept") }}
       </div>
     </div>
@@ -383,8 +382,6 @@
 import ItemName from "./ItemName"
 import RegistryName from "./RegistryName"
 import AutoLink from "./AutoLink"
-import Minimizer from "./Minimizer"
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import LoadingIndicator from "./LoadingIndicator"
 import RegistryNotation from "./RegistryNotation"
 import FlexibleTable from "vue-flexible-table"
@@ -398,7 +395,7 @@ import _ from "lodash"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, RegistryName, AutoLink, Minimizer, LoadingIndicatorFull, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton, MappingDetail, AnnotationPopover },
+  components: { ItemName, RegistryName, AutoLink, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton, MappingDetail, AnnotationPopover },
   data () {
     return {
       loading: 0,
