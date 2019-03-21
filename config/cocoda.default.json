@@ -285,7 +285,7 @@
   "searchLinks": [
     {
       "prefLabel": { "de": "ccmapper" },
-      "url": "https://ccmapper-de-test.pansoft.de/m/mapping.html?id={notation}",
+      "url": "https://ccmapper-de.pansoft.de/m/mapping.html?id={notation}",
       "schemeUris": ["http://bartoc.org/en/node/533"]
     },
     {
