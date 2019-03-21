@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-  - "7"
-  - "6"
+  - "11"
+  - "8"
 cache:
   directories:
     - $HOME/.npm
@@ -20,5 +20,5 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   on:
-    node: "7"
+    node: "8"
     branch: dev
