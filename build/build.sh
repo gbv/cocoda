@@ -36,10 +36,16 @@ DELETECONFIG=
 
 # build the app
 vue-cli-service build
+success=$?
 
-# rename dist-temp to dist
-rm -r dist
-mv dist-temp dist
+if [ $success -eq 0 ]; then
+  # remove previous dist directory
+  [ -e dist/ ] && [ -e dist-temp/ ] && rm -r dist
+  # rename dist-temp to dist
+  [ -e dist-temp/ ] && mv dist-temp dist
+else
+  echo "Build has failed!"
+fi
 
 # move empty build-info.json back after build to not cause a git file change
 mv ./build/build-info.backup.json ./build/build-info.json
@@ -47,4 +53,4 @@ mv ./build/build-info.backup.json ./build/build-info.json
 # # delete config file if it was generated during this script
 [ $DELETECONFIG ] && echo "Removing config generated during build..." && rm ./config/cocoda.json
 
-exit 0
+exit $success
