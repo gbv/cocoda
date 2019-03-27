@@ -35,7 +35,7 @@ DELETECONFIG=
 [ ! -e ./config/cocoda.json ] && echo "Using empty user config for build..." && echo -n "{}" > ./config/cocoda.json
 
 # build the app
-vue-cli-service build
+vue-cli-service build --modern
 success=$?
 
 if [ $success -eq 0 ]; then
@@ -52,5 +52,7 @@ mv ./build/build-info.backup.json ./build/build-info.json
 
 # # delete config file if it was generated during this script
 [ $DELETECONFIG ] && echo "Removing config generated during build..." && rm ./config/cocoda.json
+
+[ $success -eq 0 ] && echo "Build successfully deployed to folder dist/."
 
 exit $success
