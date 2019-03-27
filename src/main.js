@@ -27,11 +27,48 @@ Vue.prototype.$jskos = jskos
 // import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 // library.add(faSpinner)
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { fas } from "@fortawesome/free-solid-svg-icons"
-import { fab } from "@fortawesome/free-brands-svg-icons"
+import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons"
+import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-library.add(fas)
-library.add(fab)
+library.add(faStar)
+library.add(faPlusCircle)
+library.add(faExchangeAlt)
+library.add(faThumbsUp)
+library.add(faThumbsDown)
+library.add(faAngleDown)
+library.add(faAngleRight)
+library.add(faAngleLeft)
+library.add(faLevelUpAlt)
+library.add(faLevelDownAlt)
+library.add(faEllipsisV)
+library.add(faEllipsisH)
+library.add(faSortUp)
+library.add(faTimesCircle)
+library.add(faLink)
+library.add(faIdCard)
+library.add(faUser)
+library.add(faSearch)
+library.add(faFilter)
+library.add(faCode)
+library.add(faCog)
+library.add(faDownload)
+library.add(faCaretDown)
+library.add(faInfoCircle)
+library.add(faComment)
+library.add(faEdit)
+library.add(faSave)
+library.add(faTrashAlt)
+library.add(faBan)
+library.add(faWindowMinimize)
+library.add(faPlusSquare)
+library.add(faCheck)
+library.add(faLock)
+library.add(faLockOpen)
+library.add(faExternalLinkSquareAlt)
+library.add(faLongArrowAltDown)
+library.add(faLongArrowAltUp)
+library.add(faExternalLinkAlt)
+library.add(faGithub)
 Vue.component("font-awesome-icon", FontAwesomeIcon)
 
 // Add objects mixin
