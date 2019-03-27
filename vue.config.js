@@ -2,6 +2,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = {
   runtimeCompiler: true,
+  productionSourceMap: false,
   publicPath: "./",
   outputDir: "dist-temp",
   pages: {
@@ -34,6 +35,6 @@ module.exports = {
           to: "css/"
         }
       ])
-    ]
+    ],
   }
 }
