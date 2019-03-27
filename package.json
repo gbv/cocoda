@@ -70,7 +70,7 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "lint-staged": "^8.1.5",
-    "vue-styleguidist": "^3.10.1",
+    "vue-styleguidist": "^3.11.0",
     "vue-template-compiler": "^2.5.21"
   }
 }

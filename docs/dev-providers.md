@@ -25,6 +25,7 @@ The following process describes how to create a very simple mapping provider tha
 
 1. Create a the file `src/providers/test-provider.js`.
 2. Add the following base code to the file:
+
   ```js static
   import _ from "lodash"
   import BaseProvider from "./base-provider"
@@ -40,12 +41,14 @@ The following process describes how to create a very simple mapping provider tha
   This should be the base template used for all providers. Make sure to replace `TestProvider` with the name of the provider when implementing your own.
 
 3. Add the following lines to `src/providers/index.js` (before the `export` statement):
+
   ```js static
   import TestProvider from "./test-provider"
   providers[TestProvider.providerName] = TestProvider
   ```
 
 4. Add the following registry to the registries array in `config/cocoda.json`:
+
   ```json
   {
     "registries": [
@@ -66,6 +69,7 @@ The following process describes how to create a very simple mapping provider tha
 5. If you take a look at your Cocoda instance now (for example by using `npm run dev`), you will see a new registry called "Test Mappings" added to the list of registries in MappingBrowser. Right now, this registry does not return any mappings yet, so you'll always see "No results for Test Mappings.".
 
 6. Add the following function to the `TestProvider` class in `src/providers/test-provider.js`:
+
   ```js static
   _getMappings({ from, to }) {
     // Create the list of concepts.
