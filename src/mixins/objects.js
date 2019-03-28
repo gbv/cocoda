@@ -360,14 +360,14 @@ export default {
         }
       }
       // Load concepts by provider
-      let promises = list.map(({ provider, concepts }) => provider.getConcepts(concepts, options))
-      return Promise.all(promises).then(results => {
-        results = _.flatten(results)
+      let promises = list.map(({ provider, concepts }) => provider.getConcepts(concepts, options).then(concepts => {
         // Save and adjust results
-        for (let concept of results) {
+        for (let concept of concepts) {
           concept = this.saveObject(concept)
           this.adjustConcept(concept)
         }
+      }))
+      return Promise.all(promises).then(() => {
         // Return objects from store
         return concepts.map(c => this.getObject(c))
       })
