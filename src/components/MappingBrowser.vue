@@ -129,8 +129,7 @@
                 :show-tooltip="true"
                 :is-link="true"
                 :is-left="true"
-                :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-                @mouseover.native="hover(concept)" />
+                :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
               <loading-indicator
                 v-else
                 size="sm" />
@@ -155,8 +154,7 @@
                 :show-tooltip="false"
                 :is-link="true"
                 :is-left="true"
-                :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-                @mouseover.native="hover(concept)" />
+                :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
               <loading-indicator
                 v-else
                 size="sm" />
@@ -202,8 +200,7 @@
                   :show-tooltip="true"
                   :is-link="true"
                   :is-left="false"
-                  :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
-                  @mouseover.native="hover(concept)" /><br>
+                  :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
               </span>
               <loading-indicator
                 v-else
@@ -229,8 +226,7 @@
                   :show-tooltip="false"
                   :is-link="true"
                   :is-left="false"
-                  :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])"
-                  @mouseover.native="hover(concept)" /><br>
+                  :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
               </span>
               <loading-indicator
                 v-else
@@ -892,6 +888,8 @@ export default {
         params["to"] = to
       }
 
+      let conceptsToLoad = []
+
       for (let registry of this.mappingRegistries) {
 
         // Remove auto refresh timer if necessary
@@ -1038,15 +1036,7 @@ export default {
             item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
             item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
             // Load prefLabels for all concepts
-            // TODO: Optimize by loading multiple concepts simultaneously (#107)
-            for (let concept of item.sourceConcepts) {
-              let scheme = _.get(mapping, "fromScheme")
-              this.hover(concept, scheme)
-            }
-            for (let concept of item.targetConcepts) {
-              let scheme = _.get(mapping, "toScheme")
-              this.hover(concept, scheme)
-            }
+            conceptsToLoad = conceptsToLoad.concat(item.sourceConcepts).concat(item.targetConcepts)
             // Save concepts as xLabels attribute as well
             item.sourceConceptsLong = item.sourceConcepts
             item.targetConceptsLong = item.targetConcepts
@@ -1128,8 +1118,11 @@ export default {
 
       Promise.all(promises).finally(() => {
         if (this.loadingId == loadingId) {
+          // Reset loading ID
           this.loading = 0
           this.loadingId = null
+          // Load concepts
+          this.mbLoadConcepts(conceptsToLoad)
           // If settings are shown, refresh download
           if (this.settingsShow) {
             this.refreshSettingsDownload()
@@ -1161,9 +1154,7 @@ export default {
       }
       let mapping = copyWithReferences(data.item.mapping)
       // Load concept prefLabel for each concept in mapping if necessary
-      for (let concept of [].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice)) {
-        this.hover(concept)
-      }
+      this.mbLoadConcepts([].concat(mapping.from.memberSet, mapping.to.memberSet, mapping.to.memberList, mapping.to.memberChoice))
       // Save mapping
       if (this.canSave(mapping)) {
         this.saveMapping(mapping).then(original => {
@@ -1181,45 +1172,14 @@ export default {
         })
       }
     },
-    hover(concept, scheme) {
-      if(concept && _.isEmpty(concept.prefLabel) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && !this.$jskos.isContainedIn(concept, this.errorConcepts) && this.getProvider(concept)) {
-        // Load prefLabel to be shown as tooltip
-
-        if ((!concept.inScheme || concept.inScheme.length == 0) && !scheme) {
-          // TODO: - Error handling
-          console.warn("No scheme for", concept)
-          this.errorConcepts.push(concept)
-          return
+    mbLoadConcepts(concepts) {
+      let toLoad = []
+      for (let concept of concepts) {
+        if(concept && (_.isEmpty(concept.prefLabel) || _.isEmpty(concept.notation)) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && !this.$jskos.isContainedIn(concept, this.errorConcepts) && this.getProvider(concept)) {
+          toLoad.push(concept)
         }
-
-        this.loadingConcepts.push(concept)
-        this.loadDetails(concept, { scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
-          // Remove concept from list of loading concepts
-          let index = this.loadingConcepts.findIndex(c => this.$jskos.compare(c, concept))
-          if (index != -1) {
-            this.loadingConcepts.splice(index, 1)
-          }
-          if (!result || !result.prefLabel) {
-            this.errorConcepts.push(concept)
-            return
-          }
-          this.saveObject(result)
-        })
       }
-    },
-    loadNotation(concept) {
-      if(concept && !concept.notation && this.getProvider(concept)) {
-        // Load notation
-
-        if (!concept.inScheme || concept.inScheme.length == 0) {
-          // TODO: - Error handling
-          console.warn("No scheme for", concept)
-          return
-        }
-        this.loadDetails(concept, { scheme: _.get(concept, "inScheme[0]", scheme) }).then(result => {
-          this.saveObject(result)
-        })
-      }
+      this.loadConcepts(toLoad)
     },
     canEdit(data) {
       if (!data.item.mapping) {

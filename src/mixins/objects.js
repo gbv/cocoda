@@ -334,6 +334,45 @@ export default {
       })
     },
     /**
+     * Loads data about concepts.
+     *
+     * @param {*} concepts
+     * @param {*} options - options for getConcepts call
+     */
+    loadConcepts(concepts, options = {}) {
+      // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
+      // Then, sort the remaining concepts by provider.
+      let list = []
+      for (let concept of concepts.filter(c => c && c.uri && c.__SAVED__ && !c.__DETAILSLOADED__)) {
+        let provider = this.getProvider(concept)
+        if (!provider) {
+          console.warn("Can't load data concept", concept.uri, "- no provider found.")
+          continue
+        }
+        let entry = list.find(e => e.provider == provider && e.concepts.length < 25)
+        if (entry) {
+          entry.concepts.push(concept)
+        } else {
+          list.push({
+            provider,
+            concepts: [concept]
+          })
+        }
+      }
+      // Load concepts by provider
+      let promises = list.map(({ provider, concepts }) => provider.getConcepts(concepts, options))
+      return Promise.all(promises).then(results => {
+        results = _.flatten(results)
+        // Save and adjust results
+        for (let concept of results) {
+          concept = this.saveObject(concept)
+          this.adjustConcept(concept)
+        }
+        // Return objects from store
+        return concepts.map(c => this.getObject(c))
+      })
+    },
+    /**
      * Loads details for a scheme or concept.
      *
      * @param {*} object
