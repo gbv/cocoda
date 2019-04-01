@@ -163,6 +163,9 @@
 import ItemName from "./ItemName"
 import ConceptSearch from "./ConceptSearch"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * Concept scheme selection component.
  *
@@ -172,6 +175,7 @@ import ConceptSearch from "./ConceptSearch"
 export default {
   name: "ConceptSchemeSelection",
   components: { ItemName, ConceptSearch },
+  mixins: [objects],
   props: {
     /**
      * Tells the component on which side of the application it is.

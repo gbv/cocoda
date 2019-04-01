@@ -99,6 +99,9 @@
 import LoadingIndicator from "./LoadingIndicator"
 import _ from "lodash"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * Component that represents a typeahead-enabled search field for concepts.
  */
@@ -107,6 +110,7 @@ export default {
   components: {
     LoadingIndicator
   },
+  mixins: [objects],
   props: {
     /**
      * Tells the component on which side of the application it is.

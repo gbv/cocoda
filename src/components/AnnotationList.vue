@@ -29,9 +29,13 @@
 <script>
 import AutoLink from "./AutoLink"
 
+// Import mixins
+import auth from "../mixins/auth"
+
 export default {
   name: "AnnotationList",
   components: { AutoLink },
+  mixins: [auth],
   props: {
     annotations: {
       type: Array,

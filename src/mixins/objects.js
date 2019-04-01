@@ -61,14 +61,6 @@ export default {
   },
   methods: {
     /**
-     * Returns the provider object for a scheme or concept.
-     *
-     * @param {*} object
-     */
-    getProvider(object) {
-      return _.get(object, "_provider") || _.get(object, "inScheme[0]._provider")
-    },
-    /**
      * Adjusts a concept so that its related nodes (ancestors, broader, narrower) all have the right inScheme properties and are saved in the store.
      *
      * @param {*} object

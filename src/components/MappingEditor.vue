@@ -234,12 +234,17 @@ import MappingTypeSelection from "./MappingTypeSelection"
 import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 
+// Import mixins
+import auth from "../mixins/auth"
+import objects from "../mixins/objects"
+
 /**
  * The mapping editor component.
  */
 export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, DataModalButton },
+  mixins: [auth, objects],
   data() {
     return {
       comments: [""],

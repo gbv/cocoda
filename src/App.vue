@@ -155,6 +155,10 @@ import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
 
+// Import mixins
+import auth from "./mixins/auth"
+import objects from "./mixins/objects"
+
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 const ElementQueries = require("css-element-queries/src/ElementQueries")
 ElementQueries.listen()
@@ -167,6 +171,7 @@ export default {
   components: {
     TheNavbar, ConceptTree, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
   },
+  mixins: [auth, objects],
   data () {
     return {
       loading: false,

@@ -295,6 +295,10 @@ import FlexibleTable from "vue-flexible-table"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 
+// Import mixins
+import auth from "./mixins/auth"
+import objects from "./mixins/objects"
+
 /**
  * The main application.
  */
@@ -303,6 +307,7 @@ export default {
   components: {
     MappingTable, LoadingIndicatorFull, FlexibleTable
   },
+  mixins: [auth, objects],
   data () {
     return {
       loading: false,

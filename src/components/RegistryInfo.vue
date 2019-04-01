@@ -50,9 +50,13 @@
 import AutoLink from "./AutoLink"
 import RegistryNotation from "./RegistryNotation"
 
+// Import mixins
+import auth from "../mixins/auth"
+
 export default {
   name: "RegistryInfo",
   components: { AutoLink, RegistryNotation },
+  mixins: [auth],
   props: {
     registry: {
       type: Object,

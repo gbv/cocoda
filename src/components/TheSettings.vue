@@ -343,12 +343,17 @@
 import _ from "lodash"
 import RegistryInfo from "./RegistryInfo"
 
+// Import mixins
+import auth from "../mixins/auth"
+import objects from "../mixins/objects"
+
 /**
  * The settings modal.
  */
 export default {
   name: "TheSettings",
   components: { RegistryInfo },
+  mixins: [auth, objects],
   data() {
     return {
       localSettings: null,

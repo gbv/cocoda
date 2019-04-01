@@ -99,6 +99,10 @@ import ItemName from "./ItemName"
 import RegistryNotation from "./RegistryNotation"
 import _ from "lodash"
 
+// Import mixins
+import auth from "../mixins/auth"
+import objects from "../mixins/objects"
+
 /**
  * The navigation bar.
  */
@@ -107,6 +111,7 @@ export default {
   components: {
     TheSettings, ItemName, RegistryNotation
   },
+  mixins: [auth, objects],
   computed: {
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)

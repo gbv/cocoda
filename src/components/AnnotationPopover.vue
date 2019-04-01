@@ -76,9 +76,13 @@ import _ from "lodash"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import AnnotationList from "./AnnotationList"
 
+// Import mixins
+import auth from "../mixins/auth"
+
 export default {
   name: "AnnotationPopover",
   components: { LoadingIndicatorFull, AnnotationList },
+  mixins: [auth],
   props: {
     id: {
       type: String,

@@ -34,6 +34,9 @@ import Minimizer from "./Minimizer"
 import _ from "lodash"
 import { scroller } from "vue-scrollto/src/scrollTo"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * Component that represents a (navigatable) concept tree.
  */
@@ -42,6 +45,7 @@ export default {
   components: {
     LoadingIndicatorFull, ConceptTreeItem, Minimizer
   },
+  mixins: [objects],
   props: {
     /**
      * Tells the component on which side of the application it is.

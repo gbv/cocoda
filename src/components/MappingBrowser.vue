@@ -386,12 +386,17 @@ import MappingDetail from "./MappingDetail"
 import AnnotationPopover from "./AnnotationPopover"
 import _ from "lodash"
 
+// Import mixins
+import auth from "../mixins/auth"
+import objects from "../mixins/objects"
+
 /**
  * The mapping suggestion browser component.
  */
 export default {
   name: "MappingBrowser",
   components: { ItemName, RegistryName, AutoLink, LoadingIndicator, FlexibleTable, RegistryNotation, DataModalButton, MappingDetail, AnnotationPopover },
+  mixins: [auth, objects],
   data () {
     return {
       loading: 0,

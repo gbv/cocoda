@@ -59,6 +59,9 @@ import LoadingIndicator from "./LoadingIndicator"
 import ItemName from "./ItemName"
 import _ from "lodash"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * Component that represents one concept item in a ConceptTree and possibly its children.
  */
@@ -67,6 +70,7 @@ export default {
   components: {
     LoadingIndicator, ItemName
   },
+  mixins: [objects],
   props: {
     /**
      * The concept object that this tree item represents.

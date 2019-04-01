@@ -72,12 +72,8 @@ library.add(faGithub)
 Vue.component("font-awesome-icon", FontAwesomeIcon)
 
 // Add objects mixin
-import objects from "./mixins/objects"
-Vue.mixin(objects)
-
-// Add auth mixin
-import auth from "./mixins/auth"
-Vue.mixin(auth)
+import globalMixins from "./mixins/global"
+Vue.mixin(globalMixins)
 
 // Add hotkey mixin
 import hotkeys from "./mixins/hotkeys"
