@@ -243,6 +243,8 @@ export default {
   mounted() {
     // Add click event listener
     document.addEventListener("click", this.handleClickOutside)
+    // Enable shortcuts
+    this.enableShortcuts()
   },
   destroyed() {
     // Remove click event listener

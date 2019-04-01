@@ -16,6 +16,14 @@
  * }
  * ```
  *
+ * You also need to enable shortcuts in `mounted`:
+ *
+ * ```javascript
+ * mounted() {
+ *   this.enableShortcuts()
+ * }
+ * ```
+ *
  * Custom properties can be added the the shortcut in config, for example `isLeft`, to have conditional shortcuts depending on the instance of the component.
  *
  * For examples how to configure shortcuts, look at the existing shortcuts in `cocoda.default.json`. You can override shortcuts in `cocoda.json` by adding one with the same `id`. You can also add additional keys for existing shortcuts by copying the shortcut and changing the `id` and `keys` values.
@@ -30,31 +38,25 @@ export default {
       hotkeys: [],
     }
   },
-  mounted() {
-    let component = this.$options.name
-    let shortcuts = 0
-    for (let shortcut of this.config.shortcuts || []) {
-      if (shortcut.component === component) {
-        this.addHotkey(shortcut.keys, () => {
-          this.shortcutHandler(shortcut)
-        })
-        shortcuts += 1
-      }
-    }
-    if (shortcuts) {
-      this.enableHotkeys()
-    }
-  },
   methods: {
     /**
      * Override this method in components (see above).
      */
     shortcutHandler() {},
-    enableHotkeys() {
-      document.addEventListener("keydown", this.hotkeyHandler)
-    },
-    disableHotkeys() {
-      document.removeEventListener("keydown", this.hotkeyHandler)
+    enableShortcuts() {
+      let component = this.$options.name
+      let shortcuts = 0
+      for (let shortcut of this.config.shortcuts || []) {
+        if (shortcut.component === component) {
+          this.addHotkey(shortcut.keys, () => {
+            this.shortcutHandler(shortcut)
+          })
+          shortcuts += 1
+        }
+      }
+      if (shortcuts) {
+        document.addEventListener("keydown", this.hotkeyHandler)
+      }
     },
     hotkeyHandler(event) {
       let shortcut = _.pick(event, ["key", "metaKey", "ctrlKey", "altKey", "shiftKey"])
