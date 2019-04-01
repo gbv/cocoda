@@ -466,7 +466,7 @@ export default {
         for (let fromTo of ["from", "to"]) {
           // Check if fromScheme was not set
           if (!query[fromTo + "Scheme"]) {
-            query[fromTo + "Scheme"] = mapping[fromTo + "Scheme"].uri
+            query[fromTo + "Scheme"] = _.get(mapping[fromTo + "Scheme"], "uri")
             // If concept in mapping is available, set that too
             if (this.$jskos.conceptsOfMapping(mapping, fromTo).length) {
               query[fromTo] = _.get(this.$jskos.conceptsOfMapping(mapping, fromTo), "[0].uri")
