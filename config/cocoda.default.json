@@ -101,7 +101,8 @@
       "definition": {
         "en": ["Mappings saved locally in the browser"],
         "de": ["Mappings, die lokal im Browser gespeichert wurden"]
-      }
+      },
+      "autoRefresh": 15000
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
@@ -122,7 +123,8 @@
       "provider": "MappingsApi",
       "subject": [{
         "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-      }]
+      }],
+      "autoRefresh": 15000
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
