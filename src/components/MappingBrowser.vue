@@ -771,9 +771,11 @@ export default {
       // TODO: Only reload relevant sections.
       this.$store.commit("mapping/setRefresh")
     },
-    currentRegistry() {
+    currentRegistry(newValue, oldValue) {
       // Reload table when current registry changes
-      this.$store.commit("mapping/setRefresh")
+      if (!this.$jskos.compare(newValue, oldValue)) {
+        this.$store.commit("mapping/setRefresh")
+      }
     },
   },
   created() {
