@@ -17,11 +17,12 @@
         </a>
         |
       </span>
-      {{ $t("dataModal.validation") }}:
+      <!-- JSKOS validation (uncommented because validate was removed from jskos-tools, possibly readd later for dev branch) -->
+      <!-- {{ $t("dataModal.validation") }}:
       <span :class="validated ? 'text-success' : 'text-danger'">
         {{ validated ? $t("dataModal.validationSuccess") : $t("dataModal.validationFailure") }}
       </span>
-      |
+      | -->
       JSKOS {{ $t("settings.version") }} {{ $jskos.version }}
       |
       <a
@@ -166,7 +167,7 @@ export default {
     },
     validated() {
       let type = this.computedType
-      let validate = _.get(this.$jskos.validate, type, this.$jskos.validate.resource)
+      let validate = _.get(this.$jskos.validate, type, this.$jskos.validate && this.$jskos.validate.resource)
       if (!this.preparedData || !validate) {
         return false
       }
