@@ -55,8 +55,6 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-plugin-unit-mocha": "^3.5.0",
@@ -64,7 +62,6 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-eslint": "^10.0.1",
-    "babel-plugin-lodash": "^3.3.4",
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^5.0.1",
     "eslint": "^5.8.0",
