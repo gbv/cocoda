@@ -163,6 +163,8 @@
 import ItemName from "./ItemName"
 import ConceptSearch from "./ConceptSearch"
 
+import _ from "lodash"
+
 // Import mixins
 import objects from "../mixins/objects"
 

@@ -2,6 +2,8 @@
  * Global mixin for helper functions.
  */
 
+import _ from "lodash"
+
 export default {
   methods: {
     /**
