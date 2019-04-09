@@ -509,7 +509,7 @@ export default {
           let scheme = mapping[fromTo + "Scheme"]
           for (let bundleType of ["memberSet", "memberList", "memberChoice"]) {
             if (_.isArray(mapping[fromTo][bundleType])) {
-              mapping[fromTo][bundleType] = mapping[fromTo][bundleType].map(concept => this.saveObject(concept, { scheme, type: "concept" }))
+              mapping[fromTo][bundleType] = mapping[fromTo][bundleType].filter(concept => concept != null).map(concept => this.saveObject(concept, { scheme, type: "concept" }))
             }
           }
         }
