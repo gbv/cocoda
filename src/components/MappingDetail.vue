@@ -107,13 +107,20 @@
             <b-col>{{ $util.dateToString(mapping.modified) }}</b-col>
           </b-row>
           <!-- Annotations -->
-          <b-row v-if="mapping.annotations && mapping.annotations.length">
+          <b-row
+            v-if="mapping.annotations && mapping.annotations.length"
+            style="position: relative;">
             <b-col cols="3">
               {{ $t("mappingDetail.annotations") }}:
             </b-col>
             <b-col>
               <annotation-list :annotations="mapping.annotations" />
             </b-col>
+            <div
+              class="dataModalButton"
+              @click="$refs.dataModalAnnotations.show()">
+              <font-awesome-icon icon="code" />
+            </div>
           </b-row>
           <!-- Note -->
           <b-row v-if="mapping.note">
@@ -166,6 +173,11 @@
       :data="mapping"
       :url="mapping.uri"
       type="mapping" />
+    <data-modal
+      v-if="mapping && mapping.annotations && mapping.annotations.length"
+      ref="dataModalAnnotations"
+      :data="mapping.annotations"
+      type="annotation" />
   </div>
 </template>
 
