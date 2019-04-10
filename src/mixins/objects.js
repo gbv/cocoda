@@ -265,6 +265,7 @@ export default {
 
       return Promise.all(promises).then(() => {
         schemes = this.$jskos.sortSchemes(schemes)
+        schemes = schemes.filter(scheme => scheme != null)
         // Commit schemes to store
         this.$store.commit({
           type: "setSchemes",
