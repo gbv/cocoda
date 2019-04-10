@@ -27,7 +27,7 @@ Vue.prototype.$jskos = jskos
 // import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 // library.add(faSpinner)
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons"
+import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt, faPuzzlePiece } from "@fortawesome/free-solid-svg-icons"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 library.add(faStar)
@@ -69,6 +69,7 @@ library.add(faLongArrowAltDown)
 library.add(faLongArrowAltUp)
 library.add(faExternalLinkAlt)
 library.add(faGithub)
+library.add(faPuzzlePiece)
 Vue.component("font-awesome-icon", FontAwesomeIcon)
 
 // Add objects mixin

@@ -19,6 +19,13 @@
         },
         'fontSize-'+(fontSize || 'normal')
       ]">
+      <!-- Show icon for combined concepts -->
+      <span
+        v-if="item && item.type && item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
+        v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: $util.delay.medium }"
+        :class="'fontSize-'+(fontSize || 'normal')">
+        <font-awesome-icon icon="puzzle-piece" />
+      </span>
       <!-- Text for notation -->
       <notation-text
         :item="item"

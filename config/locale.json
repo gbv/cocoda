@@ -77,7 +77,8 @@
       "noTree": "No Tree Available"
     },
     "itemDetail": {
-      "pleaseSelect": "Please select a scheme or concept."
+      "pleaseSelect": "Please select a scheme or concept.",
+      "combinedConcept": "combined concept"
     },
     "mappingEditor": {
       "title": "Mapping Editor",
@@ -388,7 +389,8 @@
       "noTree": "Keine Hierarchie verfügbar"
     },
     "itemDetail": {
-      "pleaseSelect": "Bitte Vokabular oder Konzept auswählen."
+      "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
+      "combinedConcept": "zusammengesetztes Konzept"
     },
     "mappingBrowser": {
       "title": "Mapping-Browser",
