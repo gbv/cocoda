@@ -229,7 +229,16 @@ export default {
               if (otherScheme) {
                 prio = registry.priority || 0
                 otherPrio = _.get(otherScheme, "_provider.registry.priority", -1)
-                override = otherPrio < prio
+                if (!otherScheme.concepts && scheme.concepts && scheme.concepts.includes(null)) {
+                  // Always override if current scheme has concepts and the other one doesn't
+                  override = true
+                } else if (!scheme.concepts && otherScheme.concepts && otherScheme.concepts.includes(null)) {
+                  // Never override if current scheme doesn't have concepts and the other one does
+                  override = false
+                } else {
+                  // Otherwise use priority
+                  override = otherPrio < prio
+                }
               }
               if (!otherScheme || override) {
                 if (override) {
