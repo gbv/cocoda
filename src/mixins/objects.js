@@ -165,7 +165,7 @@ export default {
       } else {
         // Integrate details into existing object
         for (let prop of Object.keys(object)) {
-          if ((_.isEmpty(existing[prop]) || Array.isArray(existing[prop]) && existing[prop].includes(null)) && object[prop] != null && !_.isEqual(existing[prop], object[prop])) {
+          if (((_.isEmpty(existing[prop]) || Array.isArray(existing[prop]) && existing[prop].includes(null)) && object[prop] != null && !_.isEqual(existing[prop], object[prop])) || (_.isArray(existing[prop]) && _.isArray(object[prop]) && object[prop].length > existing[prop].length)) {
             this.$set(existing, prop, object[prop])
           }
         }
