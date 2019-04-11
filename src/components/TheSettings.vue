@@ -193,7 +193,7 @@
               <li
                 v-for="(keys, index) in shortcut.keys.split(',')"
                 :key="`settingsModal-shortcuts-${shortcut.id}-keys-${index}`">
-                <span v-html="keys.split('+').map(key => `<kbd>${key}</kbd>`).join(' + ')" />
+                <span v-html="keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')" />
               </li>
             </ul>
           </p>
@@ -587,6 +587,17 @@ export default {
         eventType
       })
     },
+    replaceKey(key) {
+      let replacements = {
+        "shift": "Shift",
+        "alt": "Alt",
+        "option": "Alt",
+        "ctrl": "Ctrl",
+        "meta": "Cmd",
+        "command": "Cmd",
+      }
+      return replacements[key] || key
+    }
   }
 }
 </script>
