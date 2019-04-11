@@ -34,6 +34,16 @@
     </div>
     <div class="mappingEditorToolbar">
       <div
+        v-b-tooltip.hover="{ title: canSwapMapping ? $t('mappingEditor.swapMapping') : '', delay: $util.delay.medium }"
+        :class="{
+          button: canSwapMapping,
+          'button-disabled': !canSwapMapping
+        }"
+        class="mappingEditorToolbarItem"
+        @click="swapMapping">
+        <font-awesome-icon icon="exchange-alt" />
+      </div>
+      <div
         v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canSaveMapping,
@@ -271,6 +281,9 @@ export default {
     },
     canExportMapping() {
       return this.mapping.fromScheme && this.mapping.toScheme
+    },
+    canSwapMapping() {
+      return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
     },
     /**
      * Returns an encoded version of the mapping for export
@@ -582,6 +595,12 @@ export default {
       if (event.keyCode == 13 && (event.metaKey || event.ctrlKey)) {
         this.$refs.commentModal.hide()
       }
+    },
+    swapMapping() {
+      if (!this.canSwapMapping) {
+        return
+      }
+      this.$store.commit({ type: "mapping/switch" })
     },
   }
 }
