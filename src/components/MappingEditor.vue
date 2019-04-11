@@ -119,7 +119,9 @@
       </div>
       <div v-else>
         <div class="mappingNoConcepts">
-          <div v-if="draggedConcept == null">
+          <div
+            v-if="draggedConcept == null"
+            style="margin-bottom: -12px;">
             {{ $t("mappingEditor.placeholder") }}<br><br>
           </div>
           <div
