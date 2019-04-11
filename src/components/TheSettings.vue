@@ -188,14 +188,8 @@
           <p
             v-for="shortcut in config.shortcuts"
             :key="`settingsModal-shortcuts-${shortcut.id}`">
-            <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b>
-            <ul>
-              <li
-                v-for="(keys, index) in shortcut.keys.split(',')"
-                :key="`settingsModal-shortcuts-${shortcut.id}-keys-${index}`">
-                <span v-html="keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')" />
-              </li>
-            </ul>
+            <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b><br>
+            <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
           </p>
         </b-tab>
         <b-tab

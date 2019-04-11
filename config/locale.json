@@ -15,7 +15,8 @@
       "no": "No",
       "loading": "Loading...",
       "cancel": "Cancel",
-      "authNecessary": "Authentication necessary."
+      "authNecessary": "Authentication necessary.",
+      "or": "or"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -252,7 +253,8 @@
       "addToMapping": "zum Mapping hinzufügen",
       "loading": "Lade...",
       "cancel": "Abbrechen",
-      "authNecessary": "Authentifizierung notwendig."
+      "authNecessary": "Authentifizierung notwendig.",
+      "or": "oder"
     },
     "navbar": {
       "feedback": "Feedback",
