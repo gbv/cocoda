@@ -1,6 +1,11 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = {
+  devServer: {
+    host: "localhost",
+    port: 8080,
+    useLocalIp: false
+  },
   runtimeCompiler: true,
   productionSourceMap: false,
   publicPath: "./",
