@@ -114,7 +114,7 @@ export default {
         for (let k of keys) {
           if (k == "ctrl") {
             ctrlKey = true
-          } else if (k == "alt" || k == "options") {
+          } else if (k == "alt" || k == "option") {
             altKey = true
           } else if (k == "meta" || k == "command") {
             metaKey = true
