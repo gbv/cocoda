@@ -123,7 +123,8 @@
       "settingShowAllResults": "Always show all mappings and suggestions",
       "settingShowAllResultsTooltip": "When turned off, only the first five mappings in each sections are shown, further results will be collapsed.",
       "chooseConcept": "Select a concept to see mappings and mapping recommendations",
-      "settingsButton": "Mapping Browser Settings"
+      "settingsButton": "Mapping Browser Settings",
+      "creatorIsDifferent": "This is your mapping, but the name does not match your current name. Edit and save it again to update the name."
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -415,7 +416,8 @@
       "settingShowAllResults": "Immer alle Mappings und Vorschläge anzeigen",
       "settingShowAllResultsTooltip": "Falls ausgeschaltet werden zunächst nur die ersten fünf Resultate jedes Bereichs angezeigt, alle weiteren sind ausgeblendet.",
       "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen",
-      "settingsButton": "Mapping-Browser Einstellungen"
+      "settingsButton": "Mapping-Browser Einstellungen",
+      "creatorIsDifferent": "Dies ist dein Mapping, aber der Name entspricht nicht deinem aktuellen Namen. Editiere und speichere es erneut, um den Namen anzupassen."
     },
     "mappingDetail": {
       "title": "Mapping-Details",

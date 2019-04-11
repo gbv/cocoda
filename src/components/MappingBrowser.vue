@@ -252,6 +252,13 @@
             slot="creator"
             slot-scope="{ item }">
             <span
+              v-if="item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && $util.prefLabel(item.mapping.creator[0]) != $util.prefLabel(creator)">
+              <font-awesome-icon
+                v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
+                icon="exclamation"
+                class="text-warning" />
+            </span>
+            <span
               v-if="item.creator != null"
               v-b-tooltip.hover="{ title: item.creator, delay: $util.delay.long }">
               {{ item.creator }}
