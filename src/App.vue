@@ -330,7 +330,7 @@ export default {
       /**
        * Show alerts when user was logged in/out.
        */
-      if (previous !== undefined && current) {
+      if (previous !== undefined && !previous && current) {
         // Logged in
         this.alert(this.$t("alerts.loggedIn"), null, "success")
       } else if (previous && !current) {
