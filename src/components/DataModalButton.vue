@@ -59,3 +59,12 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+@import "../style/main.less";
+
+.dataModalButton {
+  z-index: @zIndex-3;
+}
+
+</style>
