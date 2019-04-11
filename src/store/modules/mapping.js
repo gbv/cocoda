@@ -115,6 +115,9 @@ const getters = {
     if (!_.isEqual(state.mapping.note, state.original.note)) {
       return true
     }
+    if (!_.isEqual(state.mapping.creator, state.original.creator)) {
+      return true
+    }
     return !jskos.compareMappings(state.original, state.mapping)
   }
 

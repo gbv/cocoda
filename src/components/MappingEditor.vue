@@ -369,6 +369,12 @@ export default {
         scheme: this.selected.scheme[false]
       })
     },
+    creator() {
+      this.setCreator()
+    },
+    original() {
+      this.setCreator()
+    },
   },
   mounted() {
     // Add click event listener
@@ -414,18 +420,6 @@ export default {
       }
       // Hide comment modal if open
       this.$refs.commentModal.hide()
-      // - All previous creators (except self) will be written to contributors.
-      // - `creator` will be overridden by self.
-      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$util.prefLabel(c, null, false) && this.creatorName == this.$util.prefLabel(c, null, false))))
-      let creator = [this.creator]
-      this.$store.commit({
-        type: "mapping/setCreator",
-        creator
-      })
-      this.$store.commit({
-        type: "mapping/setContributor",
-        contributor
-      })
       let mapping = this.prepareMapping()
       let original = this.original
       this.loadingGlobal = true
@@ -450,6 +444,20 @@ export default {
       }).finally(() => {
         this.loadingGlobal = false
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
+      })
+    },
+    setCreator() {
+      // - All previous creators (except self) will be written to contributors.
+      // - `creator` will be overridden by self.
+      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$util.prefLabel(c, null, false) && this.creatorName == this.$util.prefLabel(c, null, false))))
+      let creator = [this.creator]
+      this.$store.commit({
+        type: "mapping/setCreator",
+        creator
+      })
+      this.$store.commit({
+        type: "mapping/setContributor",
+        contributor
       })
     },
     deleteMapping() {
