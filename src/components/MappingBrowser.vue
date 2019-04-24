@@ -1257,6 +1257,9 @@ export default {
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
       mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))
+      if (mapping.contributor.length == 0) {
+        this.$delete(mapping, "contributor")
+      }
       mapping.creator = [creator]
 
       return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {

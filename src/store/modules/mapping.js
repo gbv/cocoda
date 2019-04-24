@@ -1,6 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import config from "../../config"
+import Vue from "vue"
 
 // TODO: - Add support for memberChoice and maybe memberList.
 
@@ -229,10 +230,18 @@ const mutations = {
    * Sets the creator for the mapping.
    *
    * Payload object: { creator }
-   * - creator: the creator object
+   * - creator: the creator array
    */
   setCreator(state, { creator }) {
-    state.mapping.creator = creator
+    if (creator && !_.isArray(creator)) {
+      creator = [creator]
+    }
+    if (!creator || creator.length == 0) {
+      // Remove creator from mapping
+      Vue.delete(state.mapping, "creator")
+    } else {
+      state.mapping.creator = creator
+    }
   },
 
   /**
@@ -242,7 +251,15 @@ const mutations = {
    * - contributor: the contributor array
    */
   setContributor(state, { contributor }) {
-    state.mapping.contributor = contributor
+    if (contributor && !_.isArray(contributor)) {
+      contributor = [contributor]
+    }
+    if (!contributor || contributor.length == 0) {
+      // Remove contributor from mapping
+      Vue.delete(state.mapping, "contributor")
+    } else {
+      state.mapping.contributor = contributor
+    }
   },
 
   /**

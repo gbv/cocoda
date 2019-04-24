@@ -418,6 +418,8 @@ export default {
         this.alert("Please set your name in Settings (top right of the page).")
         return false
       }
+      // Set creator
+      this.setCreator()
       // Hide comment modal if open
       this.$refs.commentModal.hide()
       let mapping = this.prepareMapping()
