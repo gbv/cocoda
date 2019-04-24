@@ -40,7 +40,7 @@
     "css-element-queries": "^1.1.1",
     "file-saver": "^2.0.1",
     "gbv-login-client": "^0.2.5",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "jskos-tools": "^0.2.0",
     "json-format-highlight": "^1.0.1",
     "localforage": "^1.7.3",
@@ -58,7 +58,7 @@
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-plugin-unit-mocha": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
+    "@vue/cli-service": "^3.6.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-eslint": "^10.0.1",
@@ -70,7 +70,7 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "lint-staged": "^8.1.5",
-    "vue-styleguidist": "^3.11.0",
+    "vue-styleguidist": "^3.11.7",
     "vue-template-compiler": "^2.5.21"
   }
 }
