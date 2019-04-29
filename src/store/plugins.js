@@ -38,6 +38,10 @@ const refreshRouter = (store) => {
       query.identifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
     }
   }
+  // Keep certain properties from original route
+  if (router.currentRoute.query.config) {
+    query.config = router.currentRoute.query.config
+  }
   // Push route
   router.push({ query })
 }

@@ -32,6 +32,10 @@ module.exports = {
           to: ""
         },
         {
+          from: "config/cocoda.json",
+          to: "cocoda.json"
+        },
+        {
           from: "node_modules/bootstrap/dist/css/bootstrap.css",
           to: "css/"
         },

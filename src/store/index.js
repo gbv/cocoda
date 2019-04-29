@@ -1,6 +1,5 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import config from "../config"
 import selected from "./modules/selected"
 import mapping from "./modules/mapping"
 import alerts from "./modules/alerts"
@@ -17,7 +16,8 @@ const state = {
   loading: 0,
   schemes: [],
   schemesLoaded: false,
-  config,
+  config: {},
+  configLoaded: false,
   hoveredConcept: null,
   draggedConcept: null,
   hoveredMapping: null,
@@ -83,6 +83,9 @@ const mutations = {
       state.config[option] = value
     }
   },
+  setConfigLoaded(state) {
+    state.configLoaded = true
+  },
   setHoveredConcept(state, { concept }) {
     state.hoveredConcept = concept
   },
@@ -113,13 +116,6 @@ const store = new Vuex.Store({
   getters,
   mutations,
   actions,
-})
-
-// Load settings on first launch.
-store.dispatch("settings/load").then(() => {
-  if (config.auth) {
-    store.dispatch("auth/init", config.auth)
-  }
 })
 
 export default store

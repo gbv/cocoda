@@ -15,7 +15,7 @@
         <span v-html="alert.text" />
       </b-alert>
     </div>
-    <the-navbar />
+    <the-navbar v-if="configLoaded" />
     <!-- Swap sides button -->
     <div
       v-show="selected.scheme[true] || selected.scheme[false]"
@@ -28,7 +28,7 @@
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loadingGlobal || loading" />
     <div
-      v-if="schemes.length"
+      v-if="configLoaded && schemes.length"
       class="main">
       <div class="flexbox-row">
         <!-- Concept components left side -->
@@ -214,6 +214,9 @@ export default {
     settingsLoaded() {
       return this.$store.state.settings.loaded
     },
+    configLoaded() {
+      return this.$store.state.configLoaded
+    },
   },
   watch: {
     settingsLoaded() {
@@ -379,6 +382,7 @@ export default {
     if (!this.schemes.length) {
       this.loading = true
     }
+    this.load()
     document.onmousemove = event => {
       this.$store.commit({
         type: "setMousePosition",
@@ -402,6 +406,14 @@ export default {
     }, 60000)
   },
   methods: {
+    load() {
+      // Load config and settings on first launch.
+      this.$store.dispatch("loadConfig", _.get(this.$route, "query.config")).then(() => this.$store.dispatch("settings/load")).then(() => {
+        if (this.config.auth) {
+          this.$store.dispatch("auth/init", this.config.auth)
+        }
+      })
+    },
     /**
      * Properly start the application (called by settingsLoaded watcher).
      */
