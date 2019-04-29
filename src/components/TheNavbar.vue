@@ -201,8 +201,12 @@ nav.navbar {
 .nav-link, .nav-link > span, .btn-link {
   color: @color-text-dark !important;
 }
+.nav-link.active, .btn-link.active {
+  color: @color-text-veryLightGrey !important;
+  font-weight: 700;
+}
 .nav-link:hover, .btn-link:hover {
-  color: @color-text-lightGrey !important;
+  color: @color-text-mediumLightGrey !important;
 }
 .feedbackModal .modal-dialog {
   height: 90%;
