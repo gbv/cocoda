@@ -16,7 +16,9 @@
       </b-alert>
     </div>
     <loading-indicator-full v-if="loading" />
-    <div id="main">
+    <div
+      v-if="configLoaded"
+      id="main">
       <b-card no-body>
         <b-tabs
           v-model="tab"
@@ -176,7 +178,7 @@
                 </b-col>
                 <b-col cols="2">
                   <b-form-input
-                    v-model="creator"
+                    v-model="creator_"
                     type="text"
                     placeholder="creator"
                     @keyup.enter.native="searchClicked" />
@@ -330,7 +332,7 @@ export default {
       sourceNotation: "",
       targetScheme: "",
       targetNotation: "",
-      creator: "",
+      creator_: "",
       actions: [
         {
           name: "feedback",
@@ -350,7 +352,7 @@ export default {
         sourceNotation: "from",
         targetScheme: "toScheme",
         targetNotation: "to",
-        creator: "creator",
+        creator_: "creator",
         type: "type",
         concordance: "concordance",
         currentPage: "page",
@@ -511,7 +513,10 @@ export default {
       let url = this.config.mappingProviders[0].url
       url = url.substring(0, url.substring(0, url.length - 1).lastIndexOf("/")) + "/concordances"
       return url
-    }
+    },
+    configLoaded() {
+      return this.$store.state.configLoaded
+    },
   },
   watch: {
     mappingSchemes() {
@@ -552,30 +557,33 @@ export default {
     if (!this.mappingSchemes) {
       this.loading = true
     }
-    // Load all schemes first before loading anything else
-    this.loadSchemes().then(() => {
-      // Load mapping mappingSchemes from API.
-      axios.get(this.config.mappingProviders[0].url + "voc").then(({ data }) => {
-        this.mappingSchemes = data
-      }).catch(error => {
-        console.warn("Error fetching mapping schemes:", error)
-        this.mappingSchemes = []
-      })
-      // Load concordances from API.
-      axios.get(this.concordancesUrl).then(({ data }) => {
-        this.concordances = data
-      }).catch(error => {
-        console.warn("Error fetching mapping schemes:", error)
-        this.concordances = []
-      }).finally(() => {
-        // If there are no concordances, jump to second tab.
-        if (this.concordances.length == 0 && this.tab == 0) {
-          this.tab = 1
-        }
-      })
-      // Load from parameters on popstate (when using the browser's forward and backward buttons).
-      window.addEventListener("popstate", () => {
-        this.loadFromParameters()
+    // Load config and settings on first launch.
+    this.$store.dispatch("loadConfig", _.get(this.$route, "query.config")).then(() => this.$store.dispatch("settings/load")).then(() => {
+      // Load all schemes first before loading anything else
+      this.loadSchemes().then(() => {
+        // Load mapping mappingSchemes from API.
+        axios.get(this.config.mappingProviders[0].url + "voc").then(({ data }) => {
+          this.mappingSchemes = data
+        }).catch(error => {
+          console.warn("Error fetching mapping schemes:", error)
+          this.mappingSchemes = []
+        })
+        // Load concordances from API.
+        axios.get(this.concordancesUrl).then(({ data }) => {
+          this.concordances = data
+        }).catch(error => {
+          console.warn("Error fetching mapping schemes:", error)
+          this.concordances = []
+        }).finally(() => {
+          // If there are no concordances, jump to second tab.
+          if (this.concordances.length == 0 && this.tab == 0) {
+            this.tab = 1
+          }
+        })
+        // Load from parameters on popstate (when using the browser's forward and backward buttons).
+        window.addEventListener("popstate", () => {
+          this.loadFromParameters()
+        })
       })
     })
   },
@@ -628,7 +636,7 @@ export default {
       this.sourceScheme = ""
       this.targetNotation = ""
       this.targetScheme = ""
-      this.creator = ""
+      this.creator_ = ""
       this.type = null
       this.concordance = null
       this.currentPage = 0
@@ -655,7 +663,7 @@ export default {
         to = this.targetNotation,
         fromScheme = _.get(this.fromScheme, "uri", ""),
         toScheme = _.get(this.toScheme, "uri", ""),
-        creator = this.creator,
+        creator = this.creator_,
         type = this.type || "",
         partOf = this.concordance || "",
         enc = encodeURIComponent
