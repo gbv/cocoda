@@ -121,6 +121,18 @@ class MappingsApiProvider extends BaseProvider {
     }
   }
 
+  /**
+   * Returns a promise with a list of concordances.
+   */
+  _getConcordances() {
+    if (!this.registry.concordances) {
+      return Promise.resolve([])
+    }
+    return this.get(this.registry.concordances).then(concordances => {
+      console.log(concordances)
+      return concordances
+    })
+  }
 }
 
 MappingsApiProvider.providerName = "MappingsApi"
