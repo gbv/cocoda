@@ -2,6 +2,8 @@ import _ from "lodash"
 import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
+// TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
+import util from "../util"
 
 /**
  * For saving and retrieving mappings from the browser's local storage.
@@ -65,13 +67,34 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of local mappings.
    */
-  _getMappings({ from, to, direction, mode, identifier } = {}) {
+  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier } = {}) {
     let params = {}
     if (from) {
-      params.from = from.uri
+      params.from = _.isString(from) ? from : from.uri
+    }
+    if (fromScheme) {
+      params.fromScheme = _.isString(fromScheme) ? fromScheme : fromScheme.uri
     }
     if (to) {
-      params.to = to.uri
+      params.to = _.isString(to) ? to : to.uri
+    }
+    if (toScheme) {
+      params.toScheme = _.isString(toScheme) ? toScheme : toScheme.uri
+    }
+    if (creator) {
+      params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
+    }
+    if (type) {
+      params.type = _.isString(type) ? type : type.uri
+    }
+    if (partOf) {
+      params.partOf = _.isString(partOf) ? partOf : partOf.uri
+    }
+    if (offset) {
+      params.offset = offset
+    }
+    if (limit) {
+      params.limit = limit
     }
     if (direction) {
       params.direction = direction
@@ -114,7 +137,7 @@ class LocalMappingsProvider extends BaseProvider {
           mappings = mappings.filter(mapping => {
             let target = params.direction == "backward" ? "to" : "from"
             return null != mapping[target].memberSet.find(concept => {
-              return concept.uri == params.from
+              return concept.uri == params.from || (concept.notation && concept.notation[0].toLowerCase() == params.from.toLowerCase())
             })
           })
         }
@@ -122,11 +145,28 @@ class LocalMappingsProvider extends BaseProvider {
           mappings = mappings.filter(mapping => {
             let target = params.direction == "backward" ? "from" : "to"
             return null != mapping[target].memberSet.find(concept => {
-              return concept.uri == params.to
+              return concept.uri == params.to || (concept.notation && concept.notation[0].toLowerCase() == params.to.toLowerCase())
             })
           })
         }
       }
+      // creator
+      if (params.creator) {
+        mappings = mappings.filter(mapping => {
+          return (mapping.creator && mapping.creator.find(creator => util.prefLabel(creator) == params.creator)) != null
+        })
+      }
+      // type
+      if (params.type) {
+        mappings = mappings.filter(mapping => (mapping.type || [jskos.defaultMappingType.uri]).includes(params.type))
+      }
+      // concordance
+      if (params.partOf) {
+        mappings = mappings.filter(mapping => {
+          return mapping.partOf != null && mapping.partOf.find(partOf => jskos.compare(partOf, { uri: params.partOf })) != null
+        })
+      }
+      // identifier
       if (params.identifier) {
         mappings = mappings.filter(mapping => {
           return params.identifier.split("|").map(identifier => {
@@ -134,6 +174,10 @@ class LocalMappingsProvider extends BaseProvider {
           }).reduce((current, total) => current || total)
         })
       }
+      let totalCount = mappings.length
+      mappings = mappings.slice(params.offset || 0)
+      mappings = mappings.slice(0, params.limit)
+      mappings.totalCount = totalCount
       return mappings
     })
   }

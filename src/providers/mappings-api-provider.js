@@ -1,6 +1,8 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import BaseProvider from "./base-provider"
+// TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
+import util from "../util"
 
 /**
  * For APIs that provide concordances and mappings in JSKOS format.
@@ -9,13 +11,34 @@ class MappingsApiProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of mappings from a jskos-server.
    */
-  _getMappings({ from, to, direction, mode, identifier, options }) {
+  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, options }) {
     let params = {}
     if (from) {
-      params.from = from.uri
+      params.from = _.isString(from) ? from : from.uri
+    }
+    if (fromScheme) {
+      params.fromScheme = _.isString(fromScheme) ? fromScheme : fromScheme.uri
     }
     if (to) {
-      params.to = to.uri
+      params.to = _.isString(to) ? to : to.uri
+    }
+    if (toScheme) {
+      params.toScheme = _.isString(toScheme) ? toScheme : toScheme.uri
+    }
+    if (creator) {
+      params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
+    }
+    if (type) {
+      params.type = _.isString(type) ? type : type.uri
+    }
+    if (partOf) {
+      params.partOf = _.isString(partOf) ? partOf : partOf.uri
+    }
+    if (offset) {
+      params.offset = offset
+    }
+    if (limit) {
+      params.limit = limit
     }
     if (direction) {
       params.direction = direction
@@ -26,18 +49,10 @@ class MappingsApiProvider extends BaseProvider {
     if (identifier) {
       params.identifier = identifier
     }
+    console.log(params)
     options = Object.assign({}, { params }, options)
     return this.get(this.registry.mappings, options).then(mappings => {
       mappings = mappings || []
-      // Filter exact duplicates from result
-      let newMappings = []
-      for (let mapping of mappings) {
-        if (!newMappings.find(m => _.isEqual(m, mapping))) {
-          newMappings.push(mapping)
-        }
-      }
-      return newMappings
-    }).then(mappings => {
       for (let mapping of mappings) {
         // Add mapping type if not available
         mapping.type = mapping.type || [jskos.defaultMappingType.uri]
