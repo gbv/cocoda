@@ -3,6 +3,7 @@
     <b-tabs
       v-model="tab"
       pills
+      no-fade
       justified>
       <b-tab
         title="Concordances">
@@ -99,11 +100,147 @@
       </b-tab>
       <b-tab
         title="Mapping Search">
-        <p>I'm the second tab</p>
+        <div style="flex: none;">
+          <div style="display: flex;">
+            <b-input
+              v-model="searchFilter.fromScheme"
+              :state="searchFilter.fromScheme == '' ? true : searchFromScheme != null"
+              style="flex: 1; margin: 3px;"
+              size="sm"
+              placeholder="source scheme" />
+            <b-input
+              v-model="searchFilter.fromNotation"
+              style="flex: 2; margin: 3px;"
+              size="sm"
+              placeholder="source notation" />
+            <div style="flex: none; font-size: 16px; margin: auto 5px;">
+              <font-awesome-icon icon="exchange-alt" />
+            </div>
+            <b-input
+              v-model="searchFilter.toScheme"
+              :state="searchFilter.toScheme == '' ? true : searchToScheme != null"
+              style="flex: 1; margin: 3px;"
+              size="sm"
+              placeholder="target scheme" />
+            <b-input
+              v-model="searchFilter.toNotation"
+              style="flex: 2; margin: 3px;"
+              size="sm"
+              placeholder="target notation" />
+          </div>
+          <div style="display: flex;">
+            <div style="text-align: right; flex: none; margin: auto 5px;">
+              Creator:
+            </div>
+            <b-input
+              v-model="searchFilter.creator"
+              style="flex: 2; margin: 3px;"
+              size="sm"
+              placeholder="creator" />
+            <div style="text-align: right; flex: none; margin: auto 5px;">
+              Type:
+            </div>
+            <b-select
+              v-model="searchFilter.type"
+              style="flex: 2; margin: 3px;"
+              size="sm"
+              :options="typeOptions" />
+          </div>
+          <div style="display: flex;">
+            <div style="text-align: right; flex: none; margin: auto 5px;">
+              Concordance:
+            </div>
+            <b-form-select
+              v-model="searchFilter.partOf"
+              style="flex: 2; margin: 3px;"
+              size="sm"
+              :options="concordanceOptions" />
+            <b-button
+              style="flex: none; margin: 3px;"
+              variant="danger"
+              size="sm"
+              @click="clearSearchFilter">
+              <font-awesome-icon icon="ban" />
+              Clear
+            </b-button>
+            <b-button
+              style="flex: none; margin: 3px;"
+              variant="primary"
+              size="sm"
+              @click="searchClicked">
+              <font-awesome-icon icon="search" />Search
+            </b-button>
+          </div>
+        </div>
+        <div style="flex: 1; height: 0; position: relative;">
+          <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
+            <div
+              v-for="(registryUri, index) in Object.keys(searchResults)"
+              :key="`mappingBrowser-searchResults-${registryUri}-${index}`">
+              <div
+                v-if="searchResults[registryUri].length"
+                style="font-weight: bold; text-align: center;">
+                {{ registryUri }}
+              </div>
+              <div
+                v-for="(mapping, index2) in searchResults[registryUri]"
+                :key="`mappingBrowser-searchResults-${registryUri}-${index}-result-${index2}`">
+                <span v-if="mapping">
+                  {{ mapping.fromScheme && mapping.fromScheme.uri }} {{ mapping.from.memberSet[0] && mapping.from.memberSet[0].uri }} {{ mapping.toScheme && mapping.toScheme.uri }} {{ mapping.to.memberSet[0] && mapping.to.memberSet[0].uri }}
+                </span>
+                <span v-else>
+                  Loading...
+                </span>
+              </div>
+              <b-pagination
+                v-if="searchResults[registryUri].totalCount > 0"
+                v-model="searchPages[registryUri]"
+                :total-rows="searchResults[registryUri].totalCount"
+                :per-page="searchLimit"
+                class="justify-content-begin"
+                style="user-select: none;"
+                size="sm"
+                @change="search(registryUri, $event)" />
+              {{ searchResults[registryUri].totalCount }}
+            </div>
+          </div>
+        </div>
       </b-tab>
       <b-tab
         title="Mapping Navigator">
-        <p>I'm the tab with the very, very long title</p>
+        <div style="flex: 1; height: 0; position: relative;">
+          <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
+            <div
+              v-for="(registryUri, index) in Object.keys(navigatorResults)"
+              :key="`mappingBrowser-navigatorResults-${registryUri}-${index}`">
+              <div
+                v-if="navigatorResults[registryUri].length"
+                style="font-weight: bold; text-align: center;">
+                {{ registryUri }}
+              </div>
+              <div
+                v-for="(mapping, index2) in navigatorResults[registryUri]"
+                :key="`mappingBrowser-navigatorResults-${registryUri}-${index}-result-${index2}`">
+                <span v-if="mapping">
+                  {{ mapping.fromScheme && mapping.fromScheme.uri }} {{ mapping.from.memberSet[0] && mapping.from.memberSet[0].uri }} {{ mapping.toScheme && mapping.toScheme.uri }} {{ mapping.to.memberSet[0] && mapping.to.memberSet[0].uri }}
+                </span>
+                <span v-else>
+                  Loading...
+                </span>
+              </div>
+              <b-pagination
+                v-if="navigatorResults[registryUri].totalCount > 0"
+                v-model="searchPages[registryUri]"
+                :total-rows="navigatorResults[registryUri].totalCount"
+                :per-page="searchLimit"
+                class="justify-content-begin"
+                style="user-select: none;"
+                size="sm"
+                @change="search(registryUri, $event)" />
+              {{ navigatorResults[registryUri].totalCount }}
+            </div>
+          </div>
+        </div>
       </b-tab>
     </b-tabs>
   </div>
@@ -112,10 +249,17 @@
 <script>
 import FlexibleTable from "vue-flexible-table"
 import _ from "lodash"
+// Only use for cancel token generation!
+import axios from "axios"
+
+// Import mixins
+import auth from "../mixins/auth"
+import objects from "../mixins/objects"
 
 export default {
   name: "MappingBrowser",
   components: { FlexibleTable },
+  mixins: [auth, objects],
   data() {
     return {
       tab: 0,
@@ -124,7 +268,27 @@ export default {
         from: "",
         to: "",
         creator: "",
-      }
+      },
+      searchFilter: null,
+      searchPages: {},
+      searchLimit: 5,
+      searchResults: {},
+      searchCancelToken: null,
+      previousSelected: {
+        concept: {
+          [true]: null,
+          [false]: null,
+        },
+        scheme: {
+          [true]: null,
+          [false]: null,
+        }
+      },
+      navigatorPages: {},
+      navigatorResults: {},
+      // Array of booleans and/or registry URIs (as parameters for navigatorRefresh)
+      navigatorNeedsRefresh: [],
+      navigatorCancelToken: null,
     }
   },
   computed: {
@@ -202,7 +366,7 @@ export default {
     },
     concordanceTableItems() {
       let items = []
-      for (let concordance of this.concordances) {
+      for (let concordance of this.concordances || []) {
         let item = { concordance }
         item.from = this.$util.notation(_.get(concordance, "fromScheme")) || "-"
         item.to = this.$util.notation(_.get(concordance, "toScheme")) || "-"
@@ -217,14 +381,163 @@ export default {
       }
       return items
     },
+    typeOptions() {
+      let options = [{
+        text: "all types",
+        value: null
+      }]
+      for (let type of this.$jskos.mappingTypes) {
+        options.push({
+          text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
+          value: type.uri
+        })
+      }
+      return options
+    },
+    concordanceOptions() {
+      let options = [
+        { value: null, text: "all concordances" }
+      ]
+
+      for (let item of this.concordanceTableItems) {
+        let text = `${item.from} to ${item.to} (${item.description})`
+        options.push({
+          value: item.concordance.uri,
+          text
+        })
+      }
+
+      return options
+    },
+    searchFromScheme() {
+      return this.schemes.find(scheme => {
+        return this.$jskos.compare(scheme, { uri: this.searchFilter.fromScheme }) || this.$util.notation(scheme).toLowerCase() == this.searchFilter.fromScheme.toLowerCase()
+      })
+    },
+    searchToScheme() {
+      return this.schemes.find(scheme => {
+        return this.$jskos.compare(scheme, { uri: this.searchFilter.toScheme }) || this.$util.notation(scheme).toLowerCase() == this.searchFilter.toScheme.toLowerCase()
+      })
+    },
+    needsRefresh() {
+      return this.$store.state.mapping.mappingsNeedRefresh
+    },
+    mappingRegistries() {
+      let registries = this.config.registries.filter(registry =>
+        registry.provider &&
+        (registry.provider.has.mappings || registry.provider.has.occurrences) &&
+        (
+          (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
+          (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false]))
+        )
+      )
+      let currentRegistryIndex = registries.findIndex(registry => this.$jskos.compare(registry, this.currentRegistry))
+      if (currentRegistryIndex !== -1) {
+        let current = registries[currentRegistryIndex]
+        _.pullAt(registries, [currentRegistryIndex])
+        registries = [current].concat(registries)
+      }
+      return registries
+    },
+    currentRegistry() {
+      return this.$store.getters.getCurrentRegistry
+    },
+    registryGroups() {
+      let groups = _.cloneDeep(this.config.registryGroups)
+      for (let group of groups) {
+        group.registries = []
+      }
+      let otherGroup = {
+        uri: "http://coli-conc.gbv.de/registry-group/other-mappings",
+        prefLabel: {
+          de: "Andere Mappings",
+          en: "Other Mappings"
+        },
+        registries: []
+      }
+      for (let registry of this.mappingRegistries) {
+        let group = groups.find(group => group.uri == _.get(registry, "subject[0].uri")) || otherGroup
+        group.registries.push(registry)
+      }
+      groups.push(otherGroup)
+      groups = groups.filter(group => group.registries.length > 0)
+      return groups
+    },
   },
   watch: {
-    tab(newValue) {
-      console.log(newValue)
-    }
+    tab(tab) {
+      if (tab == 2) {
+        // Changed tab to Mapping Navigator, refresh if necessary
+        if (this.navigatorNeedsRefresh.length) {
+          console.log(this.navigatorNeedsRefresh)
+          // If there's only one item, just run it
+          if (this.navigatorNeedsRefresh.length == 1) {
+            this.navigatorRefresh(this.navigatorNeedsRefresh[0])
+            return
+          }
+          if (this.navigatorNeedsRefresh.find(option => _.isBoolean(option)) != null) {
+            // Refresh all registries
+            let force = false
+            if (this.navigatorNeedsRefresh.find(option => option !== false)) {
+              force = true
+            }
+            this.navigatorRefresh(force)
+          } else {
+            // Refresh some registries
+            let registries = _.uniq(this.navigatorNeedsRefresh)
+            for (let registry of registries) {
+              this.navigatorRefresh(registry)
+            }
+          }
+        }
+      }
+    },
+    searchPages: {
+      handler(newValue) {
+        console.log("searchPages:", newValue)
+      },
+      deep: true
+    },
+    selected: {
+      handler() {
+        // Refresh navigator if anything has actually changed
+        if (!(
+          this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) &&
+          this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) &&
+          this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
+          this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
+        )) {
+          this.navigatorRefresh()
+        }
+        this.previousSelected = {}
+        this.previousSelected.concept = {
+          [true]: this.selected.concept[true] ? { uri: this.selected.concept[true].uri } : null,
+          [false]: this.selected.concept[false] ? { uri: this.selected.concept[false].uri } : null,
+        }
+        this.previousSelected.scheme = {
+          [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
+          [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
+        }
+      },
+      deep: true
+    },
+    needsRefresh(refresh) {
+      if (refresh) {
+        let registry = this.$store.state.mapping.mappingsNeedRefreshRegistry
+        if (registry) {
+          this.navigatorRefresh(registry)
+        } else {
+          this.navigatorRefresh(true)
+        }
+        this.$store.commit("mapping/setRefresh", { refresh: false })
+      }
+    },
   },
   created() {
-
+    // Debounce navigator refresh
+    this.navigatorRefresh = _.debounce(this._navigatorRefresh, 100)
+    // Clear search
+    this.clearSearchFilter()
   },
   mounted() {
     if (!this.concordances) {
@@ -237,19 +550,22 @@ export default {
         this.concordances = concordances
       })
     }
+    this.navigatorRefresh(true)
   },
   methods: {
+    generateCancelToken() {
+      return axios.CancelToken.source()
+    },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
       this.tab = 1
       concordance
       // Clear all other search parameters.
-      // this.clear()
+      this.clearSearchFilter()
       // Change concordance.
-      // this.concordance = concordance.uri
+      this.searchFilter.partOf = concordance.uri
       // Search.
-      // this.currentPage = 1
-      // this.searchClicked()
+      this.searchClicked()
     },
     nameOfDistribution(distribution) {
       let mimetype = distribution.mimetype
@@ -261,6 +577,131 @@ export default {
       }
       return null
     },
+    clearSearchFilter() {
+      this.searchFilter = {
+        fromScheme: "",
+        fromNotation: "",
+        toScheme: "",
+        toNotation: "",
+        creator: "",
+        type: null,
+        partOf: null,
+      }
+      this.searchResults = {}
+    },
+    searchClicked() {
+      this.search(null, 1)
+    },
+    search(registryUri, page) {
+      // TODO: Use only registries that support search/filter/sort
+      let registries = this.mappingRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
+      for (let registry of registries) {
+        console.log(registry)
+        this.$set(this.searchPages, registry.uri, page)
+        this.getMappings({
+          from: this.searchFilter.fromNotation,
+          to: this.searchFilter.toNotation,
+          fromScheme: this.searchFromScheme,
+          toScheme: this.searchToScheme,
+          creator: this.searchFilter.creator,
+          typeFilter: this.searchFilter.type,
+          partOf: this.searchFilter.partOf,
+          registry: registry.uri,
+          offset: ((this.searchPages[registry.uri] || 1) - 1) * this.searchLimit,
+          limit: this.searchLimit,
+        }).then(mappings => {
+          this.$set(this.searchResults, registry.uri, mappings)
+        })
+      }
+    },
+    _navigatorRefresh(option) {
+      console.log("_navigatorRefresh", option, this.tab)
+      let force, registryToReload
+      if (_.isBoolean(option)) {
+        force = option
+        registryToReload = null
+      } else if (option !== undefined) {
+        force = true
+        registryToReload = option
+      } else {
+        force = false
+        registryToReload = null
+      }
+      if (this.tab != 2) {
+        this.navigatorNeedsRefresh.push(registryToReload || force)
+        return
+      }
+      this.navigatorNeedsRefresh = []
+      // Cancel previous refreshs
+      if (this.navigatorCancelToken) {
+        this.navigatorCancelToken.cancel("There was a newer refresh operation.")
+      }
+      let cancelToken = this.generateCancelToken()
+      this.navigatorCancelToken = cancelToken
+      // From here on, check if token is invalid:
+      // if (cancelToken != this.navigatorCancelToken) { ... }
+
+      let promises = []
+      // let conceptsToLoad = []
+
+      // Prepare params
+      let params = {
+        direction: "both",
+        mode: "or",
+        selected: this.selected,
+      }
+      let from = _.get(this, "selected.concept[true]")
+      let to = _.get(this, "selected.concept[false]")
+      if (from) {
+        params["from"] = from
+      }
+      if (to) {
+        params["to"] = to
+      }
+
+      console.log("navigatorRefresh:", force, registryToReload)
+      console.log(this.mappingRegistries)
+
+      for (let registry of this.mappingRegistries) {
+
+        if (registryToReload && registry.uri != registryToReload) {
+          // Skip
+          continue
+        }
+        if (!registryToReload) {
+          this.$set(this.navigatorResults, registry.uri, [null])
+        }
+
+        // TODO: Implement cancelToken in getMappings!
+        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken }).then(mappings => {
+          if (cancelToken != this.navigatorCancelToken) {
+            return
+          }
+          this.$set(this.navigatorResults, registry.uri, mappings)
+          console.log("result:", mappings)
+          // TODO: conceptsToLoad
+        }).catch(error => {
+          console.warn("Mapping Browser: Error during refresh:", error)
+        })
+
+        promises.push(promise)
+
+      }
+
+      Promise.all(promises).then(() => {
+        if (cancelToken == this.navigatorCancelToken) {
+          // Reset cancel token
+          this.navigatorCancelToken = null
+          console.log(this.navigatorResults)
+          // Load concepts
+          // this.mbLoadConcepts(conceptsToLoad)
+          // If settings are shown, refresh download
+          // if (this.settingsShow) {
+          //   this.refreshSettingsDownload()
+          // }
+        }
+      })
+    }
   },
 }
 </script>
