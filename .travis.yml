@@ -6,8 +6,6 @@ node_js:
 cache:
   directories:
     - $HOME/.npm
-before_install:
-  - sudo apt-get install pandoc texlive
 install:
   - npm i -g npm@5.10.0
   - travis_retry npm ci
@@ -17,7 +15,6 @@ script:
   - mv dist dist-files # prevent styleguide:build overriding dist
   - npm run styleguide:build
   - mv dist-files styleguide/dev
-  - npm run user-manual
 deploy:
   provider: pages
   local_dir: styleguide
