@@ -15,7 +15,8 @@
     "test:unit": "vue-cli-service test:unit",
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
-    "styleguide:build": "vue-styleguidist build"
+    "styleguide:build": "vue-styleguidist build",
+    "user-manual": "cd docs; ./convert-user-manual.sh"
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
