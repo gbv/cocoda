@@ -7,7 +7,7 @@ cache:
   directories:
     - $HOME/.npm
 before_install:
-  - sudo apt-get install pandoc
+  - sudo apt-get install pandoc texlive
 install:
   - npm i -g npm@5.10.0
   - travis_retry npm ci
