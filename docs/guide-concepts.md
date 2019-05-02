@@ -14,10 +14,10 @@ The left and right side of Cocoda user interface allow browsing in a concept sch
 A list of bookmarked concept schemes is shown if no concept scheme was selected.
 
 ### Concept Details
-![](../public/img/cocoda-concdet-en.png)
+![](img/cocoda-concdet-en.png)
 
 ### Concept Tree
 
 If the selected scheme supports hierarchical navigation, the concept tree will show the top concepts. Clicking on a concept in the tree view will select the concept and show its details in the detail card. You can show a concept's narrower concepts by clicking on the arrow beside the concept in the tree. Double clicking a concept will both select it and show its narrower concepts. You can also use the detail card to browse by clicking on a concept's ancestors (at the top) and narrower concepts (at the bottom).
-![](../public/img/cocoda-conctree-en.png)
+![](img/cocoda-conctree-en.png)
 

@@ -6,4 +6,4 @@ The user interface is divided into several **cards** which can be resized and ar
 
 All cards can be hidden with a **minimize button** in the top right of each card and resized by dragging on the **divider line** between cards.
 
-![](../public/img/cocoda-homepage-en.png)
+![](img/cocoda-homepage-en.png)

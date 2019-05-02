@@ -4,3 +4,5 @@
 
 pandoc -s -o user-manual.html user-manual.md
 pandoc -o user-manual.pdf user-manual.md
+
+rm user-manual.md
