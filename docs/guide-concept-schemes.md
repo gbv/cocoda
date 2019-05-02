@@ -8,4 +8,4 @@ To give an example the Dewey Decimal Classification (DDC) is a concept scheme of
 
 The details card shows a scheme's or concept's detailed information. In case of a scheme it currently shows the notation, label, license, publisher, and identifier. It will also show a scheme's top concepts if the tree view is minimized. In case of a concept it currently shows a concept's ancestors, its notation and preferred label, notes (scope notes and editorial notes), register entries and additional labels, identifiers, GND terms, and narrower concepts. In most cases, not all of these informations are available for a concept.
 
-![](img/cocoda-classdet-en.png)
+![](../public/img/cocoda-classdet-en.png)
