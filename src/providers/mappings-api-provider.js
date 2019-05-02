@@ -11,7 +11,7 @@ class MappingsApiProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of mappings from a jskos-server.
    */
-  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, options }) {
+  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, options, cancelToken }) {
     let params = {}
     if (from) {
       params.from = _.isString(from) ? from : from.uri
@@ -51,7 +51,7 @@ class MappingsApiProvider extends BaseProvider {
     }
     console.log(params)
     options = Object.assign({}, { params }, options)
-    return this.get(this.registry.mappings, options).then(mappings => {
+    return this.get(this.registry.mappings, options, cancelToken).then(mappings => {
       mappings = mappings || []
       for (let mapping of mappings) {
         // Add mapping type if not available

@@ -335,7 +335,7 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+  getMappings({ rootGetters }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
@@ -357,9 +357,9 @@ const actions = {
     let promises = []
     for (let registry of registries) {
       if (all) {
-        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, selected }))
+        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, selected, cancelToken }))
       } else {
-        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier }))
+        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, cancelToken }))
       }
     }
     return Promise.all(promises).then(results => {
