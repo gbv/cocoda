@@ -6,6 +6,8 @@ node_js:
 cache:
   directories:
     - $HOME/.npm
+before_install:
+  - sudo apt-get install pandoc
 install:
   - npm i -g npm@5.10.0
   - travis_retry npm ci
