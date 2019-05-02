@@ -113,7 +113,10 @@
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="source notation" />
-            <div style="flex: none; font-size: 16px; margin: auto 5px;">
+            <div
+              class="button"
+              style="flex: none; font-size: 16px; margin: auto 5px;"
+              @click="swapClicked">
               <font-awesome-icon icon="exchange-alt" />
             </div>
             <b-input
@@ -176,7 +179,9 @@
           <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
             <div
               v-for="(registryUri, index) in Object.keys(searchResults)"
-              :key="`mappingBrowser-searchResults-${registryUri}-${index}`">
+              :key="`mappingBrowser-searchResults-${registryUri}-${index}`"
+              style="position: relative;">
+              <loading-indicator-full v-if="searchLoading[registryUri]" />
               <div
                 v-if="searchResults[registryUri].length"
                 style="font-weight: bold; text-align: center;">
@@ -247,6 +252,7 @@
 </template>
 
 <script>
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import FlexibleTable from "vue-flexible-table"
 import _ from "lodash"
 // Only use for cancel token generation!
@@ -258,7 +264,7 @@ import objects from "../mixins/objects"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable },
+  components: { FlexibleTable, LoadingIndicatorFull },
   mixins: [auth, objects],
   data() {
     return {
@@ -273,7 +279,8 @@ export default {
       searchPages: {},
       searchLimit: 5,
       searchResults: {},
-      searchCancelToken: null,
+      searchLoading: {},
+      searchCancelToken: {},
       previousSelected: {
         concept: {
           [true]: null,
@@ -288,7 +295,7 @@ export default {
       navigatorResults: {},
       // Array of booleans and/or registry URIs (as parameters for navigatorRefresh)
       navigatorNeedsRefresh: [],
-      navigatorCancelToken: null,
+      navigatorCancelToken: {},
     }
   },
   computed: {
@@ -592,12 +599,21 @@ export default {
     searchClicked() {
       this.search(null, 1)
     },
-    search(registryUri, page) {
+    search(registryUri = null, page) {
       // TODO: Use only registries that support search/filter/sort
       let registries = this.mappingRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
+        // Cancel previous refreshs
+        if (this.searchCancelToken[registry.uri]) {
+          this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        }
+        let cancelToken = this.generateCancelToken()
+        this.searchCancelToken[registry.uri] = cancelToken
+        // From here on, check if token is invalid:
+        // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
         console.log(registry)
         this.$set(this.searchPages, registry.uri, page)
+        this.$set(this.searchLoading, registry.uri, true)
         this.getMappings({
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
@@ -609,8 +625,14 @@ export default {
           registry: registry.uri,
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.searchLimit,
           limit: this.searchLimit,
+          cancelToken: cancelToken.token,
         }).then(mappings => {
-          this.$set(this.searchResults, registry.uri, mappings)
+          if (cancelToken == this.searchCancelToken[registry.uri]) {
+            this.$set(this.searchResults, registry.uri, mappings)
+            this.$set(this.searchLoading, registry.uri, false)
+          }
+        }).catch(error => {
+          console.warn("Mapping Browser: Error during search:", error)
         })
       }
     },
@@ -632,14 +654,6 @@ export default {
         return
       }
       this.navigatorNeedsRefresh = []
-      // Cancel previous refreshs
-      if (this.navigatorCancelToken) {
-        this.navigatorCancelToken.cancel("There was a newer refresh operation.")
-      }
-      let cancelToken = this.generateCancelToken()
-      this.navigatorCancelToken = cancelToken
-      // From here on, check if token is invalid:
-      // if (cancelToken != this.navigatorCancelToken) { ... }
 
       let promises = []
       // let conceptsToLoad = []
@@ -668,18 +682,29 @@ export default {
           // Skip
           continue
         }
+
+        // Cancel previous refreshs
+        if (this.navigatorCancelToken[registry.uri]) {
+          this.navigatorCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        }
+        let cancelToken = this.generateCancelToken()
+        this.navigatorCancelToken[registry.uri] = cancelToken
+        // From here on, check if token is invalid:
+        // if (cancelToken != this.navigatorCancelToken[registry.uri]) { ... }
+
         if (!registryToReload) {
           this.$set(this.navigatorResults, registry.uri, [null])
         }
 
-        // TODO: Implement cancelToken in getMappings!
-        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken }).then(mappings => {
-          if (cancelToken != this.navigatorCancelToken) {
+        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken: cancelToken.token }).then(mappings => {
+          if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
           }
           this.$set(this.navigatorResults, registry.uri, mappings)
           console.log("result:", mappings)
           // TODO: conceptsToLoad
+          // Reset cancel token
+          this.navigatorCancelToken[registry.uri] = null
         }).catch(error => {
           console.warn("Mapping Browser: Error during refresh:", error)
         })
@@ -689,19 +714,19 @@ export default {
       }
 
       Promise.all(promises).then(() => {
-        if (cancelToken == this.navigatorCancelToken) {
-          // Reset cancel token
-          this.navigatorCancelToken = null
-          console.log(this.navigatorResults)
-          // Load concepts
-          // this.mbLoadConcepts(conceptsToLoad)
-          // If settings are shown, refresh download
-          // if (this.settingsShow) {
-          //   this.refreshSettingsDownload()
-          // }
-        }
+        console.log(this.navigatorResults)
+        // Load concepts
+        // this.mbLoadConcepts(conceptsToLoad)
+        // If settings are shown, refresh download
+        // if (this.settingsShow) {
+        //   this.refreshSettingsDownload()
+        // }
       })
-    }
+    },
+    swapClicked() {
+      [this.searchFilter.fromScheme, this.searchFilter.fromNotation, this.searchFilter.toScheme, this.searchFilter.toNotation] = [this.searchFilter.toScheme, this.searchFilter.toNotation, this.searchFilter.fromScheme, this.searchFilter.fromNotation]
+      this.searchClicked()
+    },
   },
 }
 </script>
