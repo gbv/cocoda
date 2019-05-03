@@ -4,7 +4,9 @@
       resizingSliderCol: isColumn,
       resizingSliderRow: !isColumn
     }"
-    @mousedown="startResizing" />
+    @mousedown="startResizing">
+    <div><font-awesome-icon :icon="isColumn ? 'ellipsis-v' : 'ellipsis-h'" /></div>
+  </div>
 </template>
 
 <script>
@@ -227,17 +229,27 @@ export default {
 @import "../style/main.less";
 
 .resizingSliderCol, .resizingSliderRow {
-  margin: 0;
   flex: 0 1 6px;
+  color: @color-text-lightGrey;
 }
 .resizingSliderCol {
   cursor: col-resize;
   border-left: 2px solid @color-transparent;
   border-right: 2px solid @color-transparent;
+  margin: auto 0;
+  width: 6px;
 }
 .resizingSliderRow {
   cursor: row-resize;
   border-bottom: 2px solid @color-transparent;
   border-top: 2px solid @color-transparent;
+  margin: 0 auto;
+  height: 6px;
+}
+.resizingSliderRow > div {
+  margin-top: -7px;
+}
+.resizingSliderCol > div {
+  margin-left: -2px;
 }
 </style>
