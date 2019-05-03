@@ -16,7 +16,8 @@
       "loading": "Loading...",
       "cancel": "Cancel",
       "authNecessary": "Authentication necessary.",
-      "or": "or"
+      "or": "or",
+      "resizingSlider": "drag to resize cards"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -255,7 +256,8 @@
       "loading": "Lade...",
       "cancel": "Abbrechen",
       "authNecessary": "Authentifizierung notwendig.",
-      "or": "oder"
+      "or": "oder",
+      "resizingSlider": "ziehen, um Komponenten-Größen anzupassen"
     },
     "navbar": {
       "feedback": "Feedback",

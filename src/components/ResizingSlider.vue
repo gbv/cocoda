@@ -1,5 +1,6 @@
 <template>
   <div
+    v-b-tooltip.hover="{ title: $t('general.resizingSlider'), delay: $util.delay.medium }"
     :class="{
       resizingSliderCol: isColumn,
       resizingSliderRow: !isColumn
