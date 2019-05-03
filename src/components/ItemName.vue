@@ -14,8 +14,7 @@
       :class="[
         {
           'itemName-hovered': isValidLink && isHovered,
-          'itemName-highlighted': isHighlighted,
-          'fontWeight-heavy': isHighlighted
+          'itemName-highlighted': isHighlighted
         },
         'fontSize-'+(fontSize || 'normal')
       ]">
@@ -31,7 +30,11 @@
         :item="item"
         :class="{ 'fontWeight-heavy': showText }" />
       <!-- Text for prefLabel -->
-      <span v-if="showText || !notation">
+      <span
+        v-if="showText || !notation"
+        :class="{
+          'fontWeight-medium': isHighlighted
+        }">
         {{ $util.prefLabel(item, null, notation == null) }}
       </span>
     </div>
