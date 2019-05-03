@@ -90,15 +90,12 @@
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
           class="mappingScheme fontWeight-heavy">
-          <span v-if="showScheme(isLeft)">
-            <item-name
-              :item="$store.getters['mapping/getScheme'](isLeft)"
-              :is-link="true"
-              :is-left="isLeft"
-              :show-text="false"
-              :show-tooltip="true" />
-          </span>
-          <span v-else>&nbsp;</span>
+          <item-name
+            :item="$store.getters['mapping/getScheme'](isLeft)"
+            :is-link="true"
+            :is-left="isLeft"
+            :show-text="false"
+            :show-tooltip="true" />
         </div>
         <!-- All concepts in mapping -->
         <div class="mappingConceptList">
@@ -563,14 +560,6 @@ export default {
         type: "mapping/removeAll",
         isLeft
       })
-    },
-    /**
-     * Returns whether to show the scheme's label for a specific side
-     */
-    showScheme(isLeft) {
-      let chosenScheme = this.selected.scheme[isLeft]
-      let mappingScheme = this.$store.getters["mapping/getScheme"](isLeft)
-      return !this.$jskos.compare(chosenScheme, mappingScheme)
     },
     droppedConcept(concept, isLeft) {
       if (this.$jskos.isConcept(concept)) {
