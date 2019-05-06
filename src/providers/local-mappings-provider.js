@@ -165,9 +165,10 @@ class LocalMappingsProvider extends BaseProvider {
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem(this.localStorageKey, localMappings).then(() => {
         return mapping
-      }).catch(() => {
+      }).catch(error => {
+        console.error("local-mappings - error in saveMapping:", error)
         return null
-      }).finally(mapping => {
+      }).then(mapping => {
         done()
         return mapping
       })
@@ -193,9 +194,10 @@ class LocalMappingsProvider extends BaseProvider {
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem(this.localStorageKey, localMappings).then(() => {
         return mapping
-      }).catch(() => {
+      }).catch(error => {
+        console.error("local-mappings - error in removeMapping:", error)
         return null
-      }).finally(mapping => {
+      }).then(mapping => {
         done()
         return mapping
       })

@@ -440,7 +440,9 @@ export default {
         if (this.clearOnSave) {
           this.clearMapping()
         }
-      }).finally(() => {
+      }).catch(error => {
+        console.error("MappingEditor - error in saveMapping:", error)
+      }).then(() => {
         this.loadingGlobal = false
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
       })
@@ -477,7 +479,9 @@ export default {
         } else {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
-      }).finally(() => {
+      }).catch(error => {
+        console.error("MappingEditor - error in deleteOriginalMapping:", error)
+      }).then(() => {
         this.loadingGlobal = false
       })
       return true

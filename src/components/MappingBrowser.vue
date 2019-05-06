@@ -1130,7 +1130,7 @@ export default {
 
       }
 
-      Promise.all(promises).finally(() => {
+      Promise.all(promises).then(() => {
         if (this.loadingId == loadingId) {
           // Reset loading ID
           this.loading = 0
@@ -1225,7 +1225,9 @@ export default {
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
-      }).finally(() => {
+      }).catch(error => {
+        console.error("MappingBrowser - error in removeMapping:", error)
+      }).then(() => {
         this.loadingGlobal = false
       })
     },
@@ -1275,7 +1277,9 @@ export default {
           this.alert(message, null, "danger")
         }
         return mapping
-      }).finally(() => {
+      }).catch(error => {
+        console.error("MappingBrowser - error in saveMapping:", error)
+      }).then(() => {
         this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
