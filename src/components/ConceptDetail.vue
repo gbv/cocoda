@@ -173,6 +173,25 @@
             </li>
           </ul>
         </b-tab>
+        <b-tab
+          title="coli-ana">
+          <pre>
+ 700.90440747471
+ 7                  Arts & recreation
+ 70                 Arts
+ 700                The arts
+ 700.904            Modern arts
+T1--0904            20th century, 1900-1999
+T1--09044           1940-1949
+     T1--074        Museums, collections, exhibits
+        T2--7       North America
+        T2--74      Northeastern United States
+                    (New England and Middle Atlantic states)
+        T2--747-749 Middle Atlantic states
+        T2--747     New York (State)
+        T2--7471    New York Metropolitan Area
+          </pre>
+        </b-tab>
       </b-tabs>
     </b-card>
 
