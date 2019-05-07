@@ -1,6 +1,5 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
-import config from "../../config"
 import Vue from "vue"
 
 // TODO: - Add support for memberChoice and maybe memberList.
@@ -316,14 +315,8 @@ const mutations = {
 
   setRefresh(state, { refresh = true, registry } = {}) {
     // TODO: Refactoring!
-    if (refresh) {
-      if (registry) {
-        let uri = registry
-        registry = config.registries.find(registry => jskos.compare(registry, { uri }))
-      }
-      if (registry) {
-        state.mappingsNeedRefreshRegistry = registry.uri
-      }
+    if (refresh && registry) {
+      state.mappingsNeedRefreshRegistry = registry
     } else {
       state.mappingsNeedRefreshRegistry = null
     }
@@ -335,7 +328,8 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+  getMappings({ rootGetters, rootState }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+    let config = rootState.config
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
@@ -369,7 +363,8 @@ const actions = {
     })
   },
 
-  saveMappings({ rootGetters }, { mappings, registry }) {
+  saveMappings({ rootGetters, rootState }, { mappings, registry }) {
+    let config = rootState.config
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
@@ -385,7 +380,8 @@ const actions = {
     return registry.provider.saveMappings(mappings)
   },
 
-  removeMappings({ state, rootGetters, commit }, { mappings, registry }) {
+  removeMappings({ state, rootGetters, commit, rootState }, { mappings, registry }) {
+    let config = rootState.config
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
