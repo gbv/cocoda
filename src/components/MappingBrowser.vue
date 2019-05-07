@@ -1284,7 +1284,8 @@ export default {
         this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
-        return mapping
+        // Return adjusted mapping
+        return this.adjustMapping(mapping)
       })
     },
     annotationsScore(annotations) {
