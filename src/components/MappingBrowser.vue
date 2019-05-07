@@ -1279,10 +1279,12 @@ export default {
         return mapping
       }).catch(error => {
         console.error("MappingBrowser - error in saveMapping:", error)
-      }).then(() => {
+        return null
+      }).then(mapping => {
         this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
+        return mapping
       })
     },
     annotationsScore(annotations) {
