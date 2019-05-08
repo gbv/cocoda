@@ -12,7 +12,7 @@ After you logged in, the pages should look like this:
 
 ![](img/cocoda-settings-account2-en.png)
 
-By clicking on 'Account Page' you can access the overlay of the Login-Server. Here you can inspect your information, logout, delete your useraccount from cocodas login(you dont delete your other accounts) and change the means of your login.
+By clicking on 'Account Page' you can access the overlay of the Login-Server. Here you can inspect your information, logout, delete your useraccount from cocodas login(you don't delete your other accounts) and change the means of your login.
 
 ![](img/cocoda-loginserver-en.png)
 

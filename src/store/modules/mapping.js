@@ -46,7 +46,7 @@ const getters = {
    * Adds a concept to the mapping.
    *
    * @param {object} concept - concept to be added
-   * @param {object} scheme - scheme for concept (can be ommitted if concept has "inScheme")
+   * @param {object} scheme - scheme for concept (can be omitted if concept has "inScheme")
    * @param {bool} isLeft - side of the mapping
    */
   canAdd: (state) => (concept, scheme, isLeft) => {
@@ -131,7 +131,7 @@ const mutations = {
    *
    * Payload object: { concept, scheme, isLeft }
    * - concept: the concept to be added
-   * - scheme: the scheme to which the concept belongs (can be ommitted if concept has "inScheme")
+   * - scheme: the scheme to which the concept belongs (can be omitted if concept has "inScheme")
    * - isLeft: the side to which to add the concept
    */
   add(state, { concept, scheme, isLeft, cardinality = "1-to-n" }) {
