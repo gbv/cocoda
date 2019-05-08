@@ -1,10 +1,8 @@
-To log in simply click on the 'Settings' button in the menu bar.
+To log in, simply click on the 'Settings' button in the menu bar.
 
 ![](img/cocoda-login1-en.png)
 
-You will then be relayed to a settings site, at the tab 'Accounts' you have to first set your name you wish to be identified as.
-The second field 'identity' is assigned an URI as soon as you log in via GitHub, ORCIC or LDAP.
-If you are logged in, you can change the registry to save your mappings between 'Local' (your Browser) and 'Concordance Registry', which is a database from the GBV.
+On the settings screen under the tab 'Accounts', click on one of the available login buttons (currently GitHub, ORCID, and VZG LDAP). You will be required to authenticate with the respective service and confirm that you'd like to use your account to log in with our service.
 
 ![](img/cocoda-settings-account1-en.png)
 
@@ -12,10 +10,12 @@ After you logged in, the pages should look like this:
 
 ![](img/cocoda-settings-account2-en.png)
 
-By clicking on 'Account Page' you can access the overlay of the Login-Server. Here you can inspect your information, logout, delete your useraccount from cocodas login(you don't delete your other accounts) and change the means of your login.
+You can now change the registry to save your mappings between 'Local' (your browser) and 'Concordance Registry' (database from the GBV). You can also change your display name and the identity which will be stored in the mappings you save.
+
+By clicking on 'Account Page', you will be forwarded to a separate Login Server page. Here you can inspect your information, add or remove connected accounts, log out, or delete your user account. Deleting your account will immediately remove your data from the database, but already created accounts will still contain your identity information.
 
 ![](img/cocoda-loginserver-en.png)
 
-If you are logged in, the main page will change too, the icon is now green and you can even see, in which registry your mappings will be saved.
+When logged in, you will also see either a green icon (see screenshot) or the chosen identity provider's icon next to your name, as well as the registry which is used to save mappings.
 
 ![](img/cocoda-homepage2-en.png)
