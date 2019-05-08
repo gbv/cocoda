@@ -1,6 +1,6 @@
 <template>
   <div
-    v-b-tooltip.hover="{ title: $t('general.resizingSlider'), delay: $util.delay.medium }"
+    v-b-tooltip.hover="{ title: $t('general.resizingSlider'), delay: $util.delay.medium, placement: isColumn ? 'right' : 'top' }"
     :class="{
       resizingSliderCol: isColumn,
       resizingSliderRow: !isColumn
@@ -237,20 +237,22 @@ export default {
   cursor: col-resize;
   border-left: 2px solid @color-transparent;
   border-right: 2px solid @color-transparent;
-  margin: auto 0;
   width: 6px;
+  max-width: 6px;
+  display:flex;justify-content:center;align-items:center;
 }
 .resizingSliderRow {
   cursor: row-resize;
   border-bottom: 2px solid @color-transparent;
   border-top: 2px solid @color-transparent;
-  margin: 0 auto;
   height: 6px;
+  max-height: 6px;
+  display:flex;justify-content:center;align-items:center;
 }
 .resizingSliderRow > div {
-  margin-top: -7px;
+  margin-top: 3px;
 }
 .resizingSliderCol > div {
-  margin-left: -2px;
+  margin-left: 0px;
 }
 </style>
