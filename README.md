@@ -99,7 +99,7 @@ Use the following step-by-step guide to preprare and create a new Cocoda release
 
 15. If necessary, let social media know about the update.
 
-**Note:** This process will soon be streamlined and made into a script (#348).
+**Note:** This process will soon be streamlined and made into a script (https://github.com/gbv/cocoda/issues/348).
 
 ## Contribute
 We are open to pull requests, but before spending a lot of time implementing a new feature, please create an issue to discuss whether this is something we can imagine being in the main application.
