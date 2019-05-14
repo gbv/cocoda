@@ -177,6 +177,20 @@
         </div>
         <div style="flex: 1; height: 0; position: relative;">
           <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
+            <flexible-table
+              :fields="[]"
+              :sections="[]">
+              <span
+                slot="BEFORE_SECTION"
+                slot-scope="{ section }">
+                Before <b>{{ section.name }}</b>
+              </span>
+              <span
+                slot="AFTER_SECTION"
+                slot-scope="{ section }">
+                After <b>{{ section.name }}</b>
+              </span>
+            </flexible-table>
             <div
               v-for="(registryUri, index) in Object.keys(searchResults)"
               :key="`mappingBrowser-searchResults-${registryUri}-${index}`"
