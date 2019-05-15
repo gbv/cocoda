@@ -826,13 +826,15 @@ export default {
       // Handle registry group popovers
       for (let group of this.registryGroups) {
         let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
-        if (popover && !popover.contains(event.target)) {
+        let button = document.getElementById(`registryGroup-${group.uri}`)
+        if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
           this.registryGroupShow[group.uri] = false
         }
       }
       // Handle settings popover
       let popover = this.$refs.settingsPopover
-      if (popover && !popover.contains(event.target)) {
+      let button = document.getElementById("mappingBrowser-settingsButton-icon")
+      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
         this.settingsShow = false
       }
     },

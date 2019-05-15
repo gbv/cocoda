@@ -405,7 +405,8 @@ export default {
     handleClickOutside(event) {
       // Handle settings popover
       let popover = this.$refs.settingsPopover
-      if (popover && !popover.contains(event.target)) {
+      let button = document.getElementById("mappingEditor-settingsButton-icon")
+      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
         this.settingsShow = false
       }
     },

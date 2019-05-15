@@ -18,7 +18,6 @@
       <div
         v-if="scheme.types && scheme.types.length"
         :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
-        :disabled="filterPopoverShow"
         class="conceptSearch-filter button">
         <font-awesome-icon icon="filter" />
       </div>
@@ -305,7 +304,8 @@ export default {
         this.searchSelected = -1
       }
       // Handle types popover
-      if (this.$refs.filterPopover && !this.$refs.filterPopover.contains(evt.target)) {
+      let button = document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`)
+      if (this.$refs.filterPopover && !this.$refs.filterPopover.contains(evt.target) && !button.contains(evt.target)) {
         this.filterPopoverShow = false
       }
     },

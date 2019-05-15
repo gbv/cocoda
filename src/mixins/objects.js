@@ -298,7 +298,7 @@ export default {
       }
       let promise
       if (!scheme || !scheme._getTypes) {
-        promise = Promise.resolve(scheme)
+        promise = Promise.resolve([])
       } else {
         promise = scheme._getTypes()
       }
