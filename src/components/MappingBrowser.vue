@@ -1203,6 +1203,10 @@ export default {
         // Can always edit a mapping from a provider without auth
         return true
       }
+      if (data.item.registry.allowCrossUserEditing) {
+        // Some servers allow cross user editing
+        return true
+      }
       let mapping = data.item.mapping
       let creatorUris = (mapping.creator || []).map(creator => creator.uri).filter(uri => uri)
       if (_.intersection(creatorUris, this.userUris).length) {
