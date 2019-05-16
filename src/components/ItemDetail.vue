@@ -38,6 +38,9 @@ import SchemeDetail from "./SchemeDetail"
 import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
  */
@@ -46,6 +49,7 @@ export default {
   components: {
     LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton
   },
+  mixins: [objects],
   props: {
     /**
      * The concept object whose details should be displayed.
