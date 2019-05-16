@@ -18,6 +18,7 @@ export default {
     return {
       objects,
       topConcepts,
+      loadingConcepts: [],
     }
   },
   computed: {
@@ -354,6 +355,11 @@ export default {
           console.warn("Can't load data concept", concept.uri, "- no provider found.")
           continue
         }
+        if (this.loadingConcepts.find(c => this.$jskos.compare(c, concept))) {
+          // Concept is already loading
+          continue
+        }
+        this.loadingConcepts.push(concept)
         let entry = list.find(e => e.provider == provider && e.concepts.length < 25)
         if (entry) {
           entry.concepts.push(concept)
@@ -371,6 +377,8 @@ export default {
           concept = this.saveObject(concept)
           this.$set(concept, "__DETAILSLOADED__", true)
           this.adjustConcept(concept)
+          // Remove concept from loadingConcepts
+          this.loadingConcepts = this.loadingConcepts.filter(c => !this.$jskos.compare(c, concept))
         }
       }))
       return Promise.all(promises).then(() => {

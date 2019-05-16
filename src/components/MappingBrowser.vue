@@ -425,8 +425,6 @@ export default {
       registryGroupShow: {},
       settingsShow: false,
       settingsDownloadCurrent: null,
-      /** List of concepts whose labels are being loaded */
-      loadingConcepts: [],
       /** List of concepts whose labels could not be loaded */
       errorConcepts: [],
       /** A variable to force tableItems to recompute */
