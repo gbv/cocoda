@@ -381,7 +381,7 @@ export default {
           this.adjustConcept(concept)
         }
         // Remove all URIs from loadingConcepts
-        this.loadingConcepts = this.loadingConcepts.filter(concept => _.intersection(jskos.getAllUris(concept), uris).length > 0)
+        this.loadingConcepts = this.loadingConcepts.filter(concept => _.intersection(jskos.getAllUris(concept), uris).length == 0)
       }))
       return Promise.all(promises).then(() => {
         // Return objects from store
