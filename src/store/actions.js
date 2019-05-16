@@ -124,7 +124,7 @@ export default {
     }
     if (!jskos.isContainedIn(concept, getters.favoriteConcepts)) {
       // Filter properties of concepts
-      let newConcept = _.pick(jskos.copyDeep(concept), ["uri", "notation", "inScheme", "prefLabel"])
+      let newConcept = _.pick(jskos.copyDeep(concept), ["uri", "notation", "inScheme"])
       // Prepare inScheme
       newConcept.inScheme = newConcept.inScheme.map(scheme => ({ uri: scheme.uri }))
       commit({

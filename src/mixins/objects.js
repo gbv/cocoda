@@ -53,9 +53,12 @@ export default {
       let concepts = []
       if (this.schemesLoaded) {
         for (let concept of this.$store.getters.favoriteConcepts) {
-          concepts.push(this.getObject(concept, { type: "concept" }))
+          let conceptFromStore = this.getObject(concept, { type: "concept" })
+          concepts.push(conceptFromStore)
         }
       }
+      // Load details if necessary
+      this.loadConcepts(concepts.filter(concept => !concept.__DETAILSLOADED__))
       return concepts
     },
   },
@@ -366,6 +369,7 @@ export default {
         // Save and adjust results
         for (let concept of concepts) {
           concept = this.saveObject(concept)
+          this.$set(concept, "__DETAILSLOADED__", true)
           this.adjustConcept(concept)
         }
       }))
