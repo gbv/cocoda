@@ -176,96 +176,16 @@
           </div>
         </div>
         <mapping-browser-table
+          v-if="searchSections.length"
           :sections="searchSections"
           @pageChange="search($event.registry.uri, $event.page)" />
-        <!-- <div style="flex: 1; height: 0; position: relative;">
-          <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
-            <flexible-table
-              :fields="[]"
-              :sections="[]">
-              <span
-                slot="BEFORE_SECTION"
-                slot-scope="{ section }">
-                Before <b>{{ section.name }}</b>
-              </span>
-              <span
-                slot="AFTER_SECTION"
-                slot-scope="{ section }">
-                After <b>{{ section.name }}</b>
-              </span>
-            </flexible-table>
-            <div
-              v-for="(registryUri, index) in Object.keys(searchResults)"
-              :key="`mappingBrowser-searchResults-${registryUri}-${index}`"
-              style="position: relative;">
-              <loading-indicator-full v-if="searchLoading[registryUri]" />
-              <div
-                v-if="searchResults[registryUri].length"
-                style="font-weight: bold; text-align: center;">
-                {{ registryUri }}
-              </div>
-              <div
-                v-for="(mapping, index2) in searchResults[registryUri]"
-                :key="`mappingBrowser-searchResults-${registryUri}-${index}-result-${index2}`">
-                <span v-if="mapping">
-                  {{ mapping.fromScheme && mapping.fromScheme.uri }} {{ mapping.from.memberSet[0] && mapping.from.memberSet[0].uri }} {{ mapping.toScheme && mapping.toScheme.uri }} {{ mapping.to.memberSet[0] && mapping.to.memberSet[0].uri }}
-                </span>
-                <span v-else>
-                  Loading...
-                </span>
-              </div>
-              <b-pagination
-                v-if="searchResults[registryUri].totalCount > 0"
-                v-model="searchPages[registryUri]"
-                :total-rows="searchResults[registryUri].totalCount"
-                :per-page="searchLimit"
-                class="justify-content-begin"
-                style="user-select: none;"
-                size="sm"
-                @change="search(registryUri, $event)" />
-              {{ searchResults[registryUri].totalCount }}
-            </div>
-          </div>
-        </div> -->
       </b-tab>
       <b-tab
         title="Mapping Navigator">
         <mapping-browser-table
+          v-if="navigatorSections.length"
           :sections="navigatorSections"
           @pageChange="$set(navigatorPages, $event.registry.uri, $event.page)" />
-        <!-- <div style="flex: 1; height: 0; position: relative;">
-          <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
-            <div
-              v-for="(registryUri, index) in Object.keys(navigatorResults)"
-              :key="`mappingBrowser-navigatorResults-${registryUri}-${index}`">
-              <div
-                v-if="navigatorResults[registryUri].length"
-                style="font-weight: bold; text-align: center;">
-                {{ registryUri }}
-              </div>
-              <div
-                v-for="(mapping, index2) in navigatorResults[registryUri]"
-                :key="`mappingBrowser-navigatorResults-${registryUri}-${index}-result-${index2}`">
-                <span v-if="mapping">
-                  {{ mapping.fromScheme && mapping.fromScheme.uri }} {{ mapping.from.memberSet[0] && mapping.from.memberSet[0].uri }} {{ mapping.toScheme && mapping.toScheme.uri }} {{ mapping.to.memberSet[0] && mapping.to.memberSet[0].uri }}
-                </span>
-                <span v-else>
-                  Loading...
-                </span>
-              </div>
-              <b-pagination
-                v-if="navigatorResults[registryUri].totalCount > 0"
-                v-model="searchPages[registryUri]"
-                :total-rows="navigatorResults[registryUri].totalCount"
-                :per-page="searchLimit"
-                class="justify-content-begin"
-                style="user-select: none;"
-                size="sm"
-                @change="search(registryUri, $event)" />
-              {{ navigatorResults[registryUri].totalCount }}
-            </div>
-          </div>
-        </div> -->
       </b-tab>
     </b-tabs>
   </div>
@@ -657,6 +577,8 @@ export default {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             this.$set(this.searchResults, registry.uri, mappings)
             this.$set(this.searchLoading, registry.uri, false)
+            // Concept information possibly needs to be loaded
+            this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
           }
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
@@ -728,6 +650,8 @@ export default {
             return
           }
           this.$set(this.navigatorResults, registry.uri, mappings)
+          // Concept information possibly needs to be loaded
+          this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
           console.log("result:", mappings)
           // TODO: conceptsToLoad
           // Reset cancel token
@@ -848,6 +772,15 @@ export default {
         }
       }
       return sections
+    },
+    mbLoadConcepts(concepts) {
+      let toLoad = []
+      for (let concept of concepts) {
+        if(concept && (_.isEmpty(concept.prefLabel) || _.isEmpty(concept.notation)) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && this.getProvider(concept)) {
+          toLoad.push(concept)
+        }
+      }
+      this.loadConcepts(toLoad)
     },
   },
 }

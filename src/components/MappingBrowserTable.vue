@@ -321,10 +321,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    loadingConcepts: {
-      type: Array,
-      default: () => [],
-    },
     searchLimit: {
       type: Number,
       default: 5,
