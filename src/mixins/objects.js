@@ -18,6 +18,7 @@ export default {
     return {
       objects,
       topConcepts,
+      loadingConcepts: [],
     }
   },
   computed: {
@@ -53,9 +54,12 @@ export default {
       let concepts = []
       if (this.schemesLoaded) {
         for (let concept of this.$store.getters.favoriteConcepts) {
-          concepts.push(this.getObject(concept, { type: "concept" }))
+          let conceptFromStore = this.getObject(concept, { type: "concept" })
+          concepts.push(conceptFromStore)
         }
       }
+      // Load details if necessary
+      this.loadConcepts(concepts.filter(concept => !concept.__DETAILSLOADED__))
       return concepts
     },
   },
@@ -298,7 +302,7 @@ export default {
       }
       let promise
       if (!scheme || !scheme._getTypes) {
-        promise = Promise.resolve(scheme)
+        promise = Promise.resolve([])
       } else {
         promise = scheme._getTypes()
       }
@@ -345,12 +349,19 @@ export default {
       // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
       // Then, sort the remaining concepts by provider.
       let list = []
+      let uris = []
       for (let concept of concepts.filter(c => c && c.uri && c.__SAVED__ && !c.__DETAILSLOADED__)) {
         let provider = this.getProvider(concept)
         if (!provider) {
           console.warn("Can't load data concept", concept.uri, "- no provider found.")
           continue
         }
+        if (this.loadingConcepts.find(c => this.$jskos.compare(c, concept))) {
+          // Concept is already loading
+          continue
+        }
+        uris = uris.concat(jskos.getAllUris(concept))
+        this.loadingConcepts.push(concept)
         let entry = list.find(e => e.provider == provider && e.concepts.length < 25)
         if (entry) {
           entry.concepts.push(concept)
@@ -366,8 +377,11 @@ export default {
         // Save and adjust results
         for (let concept of concepts) {
           concept = this.saveObject(concept)
+          this.$set(concept, "__DETAILSLOADED__", true)
           this.adjustConcept(concept)
         }
+        // Remove all URIs from loadingConcepts
+        this.loadingConcepts = this.loadingConcepts.filter(concept => _.intersection(jskos.getAllUris(concept), uris).length == 0)
       }))
       return Promise.all(promises).then(() => {
         // Return objects from store
