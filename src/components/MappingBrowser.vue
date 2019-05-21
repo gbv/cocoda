@@ -230,7 +230,10 @@
       </b-tab>
       <b-tab
         title="Mapping Navigator">
-        <div style="flex: 1; height: 0; position: relative;">
+        <mapping-browser-table
+          :sections="navigatorSections"
+          @pageChange="$set(navigatorPages, $event.registry.uri, $event.page)" />
+        <!-- <div style="flex: 1; height: 0; position: relative;">
           <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
             <div
               v-for="(registryUri, index) in Object.keys(navigatorResults)"
@@ -262,7 +265,7 @@
               {{ navigatorResults[registryUri].totalCount }}
             </div>
           </div>
-        </div>
+        </div> -->
       </b-tab>
     </b-tabs>
   </div>
@@ -761,6 +764,9 @@ export default {
         section.page = pages[registry.uri] || 1
         let mappings = results[registry.uri] || []
         section.totalCount = mappings.totalCount || mappings.length
+        if (mappings.totalCount === undefined) {
+          mappings = mappings.slice((section.page - 1) * this.searchLimit, section.page * this.searchLimit)
+        }
         // Add items
         for (let mapping of mappings) {
           if (!mapping) {
