@@ -175,7 +175,10 @@
             </b-button>
           </div>
         </div>
-        <div style="flex: 1; height: 0; position: relative;">
+        <mapping-browser-table
+          :sections="searchSections"
+          @pageChange="search($event.registry.uri, $event.page)" />
+        <!-- <div style="flex: 1; height: 0; position: relative;">
           <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll;">
             <flexible-table
               :fields="[]"
@@ -223,7 +226,7 @@
               {{ searchResults[registryUri].totalCount }}
             </div>
           </div>
-        </div>
+        </div> -->
       </b-tab>
       <b-tab
         title="Mapping Navigator">
@@ -266,7 +269,7 @@
 </template>
 
 <script>
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
+import MappingBrowserTable from "./MappingBrowserTable"
 import FlexibleTable from "vue-flexible-table"
 import _ from "lodash"
 // Only use for cancel token generation!
@@ -278,7 +281,7 @@ import objects from "../mixins/objects"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, LoadingIndicatorFull },
+  components: { FlexibleTable, MappingBrowserTable },
   mixins: [auth, objects],
   data() {
     return {
@@ -307,6 +310,7 @@ export default {
       },
       navigatorPages: {},
       navigatorResults: {},
+      navigatorLoading: {},
       // Array of booleans and/or registry URIs (as parameters for navigatorRefresh)
       navigatorNeedsRefresh: [],
       navigatorCancelToken: {},
@@ -483,6 +487,12 @@ export default {
       groups.push(otherGroup)
       groups = groups.filter(group => group.registries.length > 0)
       return groups
+    },
+    searchSections () {
+      return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading)
+    },
+    navigatorSections () {
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading)
     },
   },
   watch: {
@@ -740,6 +750,98 @@ export default {
     swapClicked() {
       [this.searchFilter.fromScheme, this.searchFilter.fromNotation, this.searchFilter.toScheme, this.searchFilter.toNotation] = [this.searchFilter.toScheme, this.searchFilter.toNotation, this.searchFilter.fromScheme, this.searchFilter.fromNotation]
       this.searchClicked()
+    },
+    resultsToSections(results, pages, loading) {
+      let sections = []
+      for (let registry of this.mappingRegistries) {
+        let section = {}
+        section.registry = registry
+        section.items = []
+        section.loading = loading[registry.uri]
+        section.page = pages[registry.uri] || 1
+        let mappings = results[registry.uri] || []
+        section.totalCount = mappings.totalCount || mappings.length
+        // Add items
+        for (let mapping of mappings) {
+          if (!mapping) {
+            console.log("test")
+          }
+          let item = { mapping, registry }
+          item.sourceScheme = _.get(mapping, "fromScheme") || undefined
+          item.targetScheme = _.get(mapping, "toScheme") || undefined
+          // // Skip mapping if showAllSchemes is off and schemes don't match
+          // if (!this.showAllSchemes) {
+          //   // If one side doesn't have a scheme selected, always show all
+          //   if (this.selected.scheme[true] && this.selected.scheme[false]) {
+          //     let schemesCorrect = true
+          //     for (let scheme of [item.sourceScheme, item.targetScheme]) {
+          //       let schemeCorrect = false
+          //       for (let isLeft of [true, false]) {
+          //         if (this.$jskos.compare(scheme, this.selected.scheme[isLeft])) {
+          //           schemeCorrect = true
+          //         }
+          //       }
+          //       schemesCorrect = schemesCorrect && schemeCorrect
+          //     }
+          //     if (!schemesCorrect) {
+          //       continue
+          //     }
+          //   }
+          // }
+          item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
+          item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
+          // // Load prefLabels for all concepts
+          // conceptsToLoad = conceptsToLoad.concat(item.sourceConcepts).concat(item.targetConcepts)
+          // Save concepts as xLabels attribute as well
+          item.sourceConceptsLong = item.sourceConcepts
+          item.targetConceptsLong = item.targetConcepts
+          // Set source/targetScheme to empty string if from/to is null.
+          if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
+            item.sourceScheme = undefined
+          }
+          if (!_.get(mapping, "to") && item.targetConcepts.length == 0) {
+            item.targetScheme = undefined
+          }
+          // Skip if there are no concepts.
+          if (item.sourceConcepts.length + item.targetConcepts.length == 0) {
+            continue
+          }
+          // Highlight if selected concepts are in mapping and add inScheme to each concept
+          let leftInSource = false
+          for (let concept of item.sourceConcepts) {
+            if (this.selected.concept[true] && concept.uri == this.selected.concept[true].uri) {
+              leftInSource = true
+            }
+            concept.inScheme = _.get(concept, "inScheme") || [mapping.fromScheme]
+          }
+          let rightInSource = false
+          for (let concept of item.targetConcepts) {
+            if (this.selected.concept[false] && concept.uri == this.selected.concept[false].uri) {
+              rightInSource = true
+            }
+            concept.inScheme = _.get(concept, "inScheme") || [mapping.toScheme]
+          }
+          item._rowClass = ""
+          if (leftInSource && rightInSource) {
+            item._rowClass = "mappingBrowser-table-row-match"
+          }
+          item.creator = mapping.creator && mapping.creator[0] || ""
+          if (typeof item.creator === "object") {
+            item.creator = this.$util.prefLabel(item.creator)
+          }
+          item.source = this.$util.prefLabel(registry)
+          item.sourceShort = this.$util.notation(registry)
+          item.type = this.$jskos.mappingTypeByType(mapping.type)
+          item.occurrence = mapping._occurrence
+          // Generate unique ID as helper
+          item.uniqueId = this.$util.generateID()
+          section.items.push(item)
+        }
+        if (section.loading || section.items.length) {
+          sections.push(section)
+        }
+      }
+      return sections
     },
   },
 }
