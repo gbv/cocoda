@@ -267,25 +267,25 @@
         slot="BEFORE_SECTION"
         slot-scope="{ section }">
         <div style="display: flex;">
-          <b-pagination
-            v-if="section.items.length > 0"
-            :value="section.page"
-            :total-rows="section.totalCount"
-            :per-page="searchLimit"
-            class="mappingBrowser-pagination justify-content-begin"
-            style="flex: 1; user-select: none; margin: 0; padding: 0;"
-            size="sm"
-            @change="$emit('pageChange', { registry: section.registry, page: $event })" />
           <div
-            style="flex: none;"
+            style="flex: 1; padding-left: 5px;"
             class="fontWeight-heavy">
             <registry-notation
               :tooltip="false"
               :registry="section.registry" />
             <registry-name :registry="section.registry" />
           </div>
+          <b-pagination
+            v-if="section.items.length > 0"
+            :value="section.page"
+            :total-rows="section.totalCount"
+            :per-page="searchLimit"
+            class="mappingBrowser-pagination justify-content-center"
+            style="flex: none; user-select: none; margin: 0; padding: 0;"
+            size="sm"
+            @change="$emit('pageChange', { registry: section.registry, page: $event })" />
           <div
-            style="flex: 1; text-align: right; padding-top: 3px;"
+            style="flex: 1; text-align: right; padding-top: 3px; padding-right: 5px;"
             class="fontSize-small">
             {{ $tc(`dataModal.mapping`, section.totalCount, { count: section.totalCount.toLocaleString() }) }}
           </div>
@@ -352,15 +352,6 @@ export default {
      */
     fields() {
       return [
-        {
-          key: "source",
-          label: "",
-          width: "0%",
-          minWidth: "",
-          align: "left",
-          sortable: false,
-          class: "mappingBrowser-table-source"
-        },
         {
           key: "sourceScheme",
           label: "",
@@ -826,6 +817,10 @@ export default {
 .mappingBrowser-pagination.pagination .page-item .page-link {
   border: none;
   line-height: 1;
+}
+
+.mappingBrowser-table .flexibleTable-section-before {
+  background-color: @color-primary-5;
 }
 
 </style>
