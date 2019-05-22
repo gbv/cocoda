@@ -273,7 +273,7 @@
             :value="section.page"
             :total-rows="section.totalCount"
             :per-page="searchLimit"
-            class="justify-content-center"
+            class="mappingBrowser-pagination justify-content-center"
             style="flex: none; user-select: none; margin: 0; padding: 0;"
             size="sm"
             @change="$emit('pageChange', { registry: section.registry, page: $event })" />
@@ -589,13 +589,14 @@ export default {
         }
         return mapping
       }).catch(error => {
-        console.warn(error)
+        console.error("MappingBrowser - error in saveMapping:", error)
         return null
       }).then(mapping => {
         this.loadingGlobal = false
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
-        return mapping
+        // Return adjusted mapping
+        return this.adjustMapping(mapping)
       })
     },
     annotationsScore(annotations) {
@@ -808,6 +809,11 @@ export default {
 }
 .mappingBrowser-table[min-width~="700px"] .mappingBrowser-table-concepts {
   display: none;
+}
+
+.mappingBrowser-pagination.pagination .page-item .page-link {
+  border: none;
+  line-height: 1;
 }
 
 </style>

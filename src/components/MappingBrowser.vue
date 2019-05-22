@@ -423,7 +423,6 @@ export default {
       if (tab == 2) {
         // Changed tab to Mapping Navigator, refresh if necessary
         if (this.navigatorNeedsRefresh.length) {
-          console.log(this.navigatorNeedsRefresh)
           // If there's only one item, just run it
           if (this.navigatorNeedsRefresh.length == 1) {
             this.navigatorRefresh(this.navigatorNeedsRefresh[0])
@@ -445,12 +444,6 @@ export default {
           }
         }
       }
-    },
-    searchPages: {
-      handler(newValue) {
-        console.log("searchPages:", newValue)
-      },
-      deep: true
     },
     selected: {
       handler() {
@@ -558,7 +551,6 @@ export default {
         this.searchCancelToken[registry.uri] = cancelToken
         // From here on, check if token is invalid:
         // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
-        console.log(registry)
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
         this.getMappings({
@@ -577,8 +569,8 @@ export default {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             this.$set(this.searchResults, registry.uri, mappings)
             this.$set(this.searchLoading, registry.uri, false)
-            // Concept information possibly needs to be loaded
-            this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
+            // // Concept information possibly needs to be loaded
+            // this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
           }
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
@@ -586,7 +578,6 @@ export default {
       }
     },
     _navigatorRefresh(option) {
-      console.log("_navigatorRefresh", option, this.tab)
       let force, registryToReload
       if (_.isBoolean(option)) {
         force = option
@@ -622,9 +613,6 @@ export default {
         params["to"] = to
       }
 
-      console.log("navigatorRefresh:", force, registryToReload)
-      console.log(this.mappingRegistries)
-
       for (let registry of this.mappingRegistries) {
 
         if (registryToReload && registry.uri != registryToReload) {
@@ -649,10 +637,70 @@ export default {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
           }
+          // Traditional way of sorting navigator results
+          // TODO: Should be improved by getting results from sorted the server
+          mappings = mappings.sort((a, b) => {
+            // Sort mappings
+            if (a._occurrence || b._occurrence) {
+              // Sort by occurrence count descending
+              return _.get(b, "_occurrence.count", 0) - _.get(a, "_occurrence.count", 0)
+            }
+            // TODO: - Put into utils/jskos-tools.
+            const includes = (list, concept) => {
+              for (let item of list) {
+                if (this.$jskos.compare(item, concept)) {
+                  return true
+                }
+              }
+              return false
+            }
+            // TODO: - Put into utils/jskos-tools.
+            const concepts = (mapping, isLeft) => {
+              let fromTo = isLeft ? "from" : "to"
+              return _.get(mapping, `${fromTo}.memberSet`) || _.get(mapping, `${fromTo}.memberChoice`) || _.get(mapping, `${fromTo}.memberList`) || []
+            }
+            let points = {
+              a: 10, b: 10
+            }
+            _.forOwn({ a, b }, (mapping, key) => {
+              let conceptsLeft = concepts(mapping, true)
+              let conceptsRight = concepts(mapping, false)
+              // Left concept is on left side of mapping.
+              if (includes(conceptsLeft, this.selected.concept[true])) {
+                points[key] -= 6
+              }
+              // Right concept is on right side of mapping.
+              if (includes(conceptsRight, this.selected.concept[false])) {
+                points[key] -= 4
+              }
+              // Right concept is on left side of mapping.
+              if (includes(conceptsLeft, this.selected.concept[false])) {
+                points[key] -= 3
+              }
+              // Left concept is on right side of mapping.
+              if (includes(conceptsRight, this.selected.concept[true])) {
+                points[key] -= 2
+              }
+              // Left scheme matches left side of mapping.
+              if (this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true])) {
+                points[key] -= 1
+              }
+              // Right scheme matches right side of mapping.
+              if (this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
+                points[key] -= 1
+              }
+            })
+            if (points.a - points.b != 0) {
+              return points.a - points.b
+            }
+            // If the points are equal, sort by concepts (first from, then to).
+            let value = this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
+            if (value != 0) {
+              return value
+            }
+            return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
+          })
           this.$set(this.navigatorResults, registry.uri, mappings)
-          // Concept information possibly needs to be loaded
-          this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
-          console.log("result:", mappings)
           // TODO: conceptsToLoad
           // Reset cancel token
           this.navigatorCancelToken[registry.uri] = null
@@ -665,7 +713,6 @@ export default {
       }
 
       Promise.all(promises).then(() => {
-        console.log(this.navigatorResults)
         // Load concepts
         // this.mbLoadConcepts(conceptsToLoad)
         // If settings are shown, refresh download
@@ -691,11 +738,10 @@ export default {
         if (mappings.totalCount === undefined) {
           mappings = mappings.slice((section.page - 1) * this.searchLimit, section.page * this.searchLimit)
         }
+        // Concept information possibly needs to be loaded
+        this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
         // Add items
         for (let mapping of mappings) {
-          if (!mapping) {
-            console.log("test")
-          }
           let item = { mapping, registry }
           item.sourceScheme = _.get(mapping, "fromScheme") || undefined
           item.targetScheme = _.get(mapping, "toScheme") || undefined
