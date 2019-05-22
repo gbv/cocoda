@@ -245,11 +245,7 @@
           size="sm" />
         <span
           v-if="item.type == 'noItems'">
-          <registry-notation
-            :registry="item.registry"
-            :disabled="true"
-            :tooltip="false" />
-          {{ $util.prefLabel(item.registry) }}: {{ $t("mappingBrowser.noItems") }}
+          {{ $t("mappingBrowser.noItems") }}
         </span>
       </span>
       <span

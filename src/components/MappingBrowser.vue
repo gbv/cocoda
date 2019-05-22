@@ -1,5 +1,35 @@
 <template>
   <div id="mappingBrowser">
+    <!-- Settings -->
+    <div id="mappingBrowser-settingsButton">
+      <font-awesome-icon
+        id="mappingBrowser-settingsButton-icon"
+        v-b-tooltip.hover="{ title: $t('mappingBrowser.settingsButton'), delay: $util.delay.medium }"
+        icon="cog"
+        class="button" />
+      <b-popover
+        :show.sync="settingsShow"
+        target="mappingBrowser-settingsButton-icon"
+        triggers="click"
+        placement="bottomright">
+        <div
+          ref="settingsPopover">
+          <p><b>{{ $t("navbar.settings") }}</b></p>
+          <b-form-checkbox
+            v-model="showAllSchemes"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
+            style="user-select: none;">
+            {{ $t("mappingBrowser.settingShowAllSchemes") }}
+          </b-form-checkbox>
+          <b-form-checkbox
+            v-model="showAllResults"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllResultsTooltip'), delay: $util.delay.medium }"
+            style="user-select: none;">
+            {{ $t("mappingBrowser.settingShowAllResults") }}
+          </b-form-checkbox>
+        </div>
+      </b-popover>
+    </div>
     <b-tabs
       v-model="tab"
       pills
@@ -182,6 +212,46 @@
       </b-tab>
       <b-tab
         title="Mapping Navigator">
+        <div id="mappingBrowser-settings">
+          <div
+            v-for="group of registryGroups"
+            :key="group.uri"
+            class="mappingBrowser-settings-registryGroup">
+            <span
+              :id="`registryGroup-${group.uri}`"
+              class="mappingBrowser-settings-registryGroup-title fontWeight-heavy button">
+              {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
+            </span>
+            <registry-notation
+              v-for="registry in group.registries"
+              :key="registry.uri"
+              :registry="registry"
+              :disabled="!showRegistry[registry.uri]"
+              class="mappingBrowser-settings-registryGroup-notation"
+              @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+              @mouseover.native="hoveredRegistry = registry"
+              @mouseout.native="hoveredRegistry = null" />
+            <b-popover
+              :target="`registryGroup-${group.uri}`"
+              :show.sync="registryGroupShow[group.uri]"
+              triggers="click"
+              placement="bottom">
+              <div
+                :ref="`registryGroup-${group.uri}-popover`"
+                class="mappingBrowser-settings-registryGroup-popover">
+                <b-form-checkbox
+                  v-for="(registry, index) in group.registries"
+                  :key="`registry_${index}`"
+                  v-model="showRegistry[registry.uri]"
+                  class="mappingBrowser-settings-registryGroup-popover-item"
+                  @mouseover.native="hoveredRegistry = registry"
+                  @mouseout.native="hoveredRegistry = null">
+                  <registry-name :registry="registry" />
+                </b-form-checkbox>
+              </div>
+            </b-popover>
+          </div>
+        </div>
         <mapping-browser-table
           v-if="navigatorSections.length"
           :sections="navigatorSections"
@@ -194,6 +264,8 @@
 <script>
 import MappingBrowserTable from "./MappingBrowserTable"
 import FlexibleTable from "vue-flexible-table"
+import RegistryNotation from "./RegistryNotation"
+import RegistryName from "./RegistryName"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
@@ -204,11 +276,13 @@ import objects from "../mixins/objects"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName },
   mixins: [auth, objects],
   data() {
     return {
       tab: 2,
+      settingsShow: false,
+      registryGroupShow: {},
       concordances: null,
       concordanceFilter: {
         from: "",
@@ -237,6 +311,8 @@ export default {
       // Array of booleans and/or registry URIs (as parameters for navigatorRefresh)
       navigatorNeedsRefresh: [],
       navigatorCancelToken: {},
+      /** Currently hovered registry */
+      hoveredRegistry: null,
     }
   },
   computed: {
@@ -370,6 +446,9 @@ export default {
     needsRefresh() {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
+    searchRegistries() {
+      return this.config.registries.filter(registry => _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings")
+    },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
         registry.provider &&
@@ -411,11 +490,66 @@ export default {
       groups = groups.filter(group => group.registries.length > 0)
       return groups
     },
+    // show registries
+    showRegistry() {
+      let object = {}
+      // Define setter and getter for each registry separately.
+      for (let registry of this.mappingRegistries) {
+        Object.defineProperty(object, registry.uri, {
+          get: () => {
+            let result = this.$settings.mappingBrowserShowRegistry[registry.uri]
+            if (result == null) {
+              return true
+            }
+            return result
+          },
+          set: (value) => {
+            this.$store.commit({
+              type: "settings/set",
+              prop: "mappingBrowserShowRegistry",
+              value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
+            })
+            this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+          }
+        })
+      }
+      return object
+    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading)
     },
     navigatorSections () {
       return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading)
+    },
+    // Setting whether to show mappings from all schemes or only chosen schemes
+    showAllSchemes: {
+      get() {
+        return this.$settings.mappingBrowserAllSchemes
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserAllSchemes",
+          value
+        })
+        // Refresh
+        this.$store.commit("mapping/setRefresh")
+      }
+    },
+    // Setting whether to collapse results by default or to always show results
+    showAllResults: {
+      get() {
+        return this.$settings.mappingBrowserShowAll
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserShowAll",
+          value
+        })
+        // Refresh
+        this.$store.commit("mapping/setRefresh")
+      }
     },
   },
   watch: {
@@ -454,6 +588,7 @@ export default {
           this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
           this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
         )) {
+          this.navigatorPages = {}
           this.navigatorRefresh()
         }
         this.previousSelected = {}
@@ -498,8 +633,30 @@ export default {
       })
     }
     this.navigatorRefresh(true)
+    // Add click event listener
+    document.addEventListener("click", this.handleClickOutside)
+  },
+  destroyed() {
+    // Remove click event listener
+    document.removeEventListener("click", this.handleClickOutside)
   },
   methods: {
+    handleClickOutside(event) {
+      // // Handle registry group popovers
+      // for (let group of this.registryGroups) {
+      //   let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
+      //   let button = document.getElementById(`registryGroup-${group.uri}`)
+      //   if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
+      //     this.registryGroupShow[group.uri] = false
+      //   }
+      // }
+      // Handle settings popover
+      let popover = this.$refs.settingsPopover
+      let button = document.getElementById("mappingBrowser-settingsButton-icon")
+      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
+        this.settingsShow = false
+      }
+    },
     generateCancelToken() {
       return axios.CancelToken.source()
     },
@@ -541,7 +698,7 @@ export default {
     },
     search(registryUri = null, page) {
       // TODO: Use only registries that support search/filter/sort
-      let registries = this.mappingRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
+      let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
         // Cancel previous refreshs
         if (this.searchCancelToken[registry.uri]) {
@@ -566,6 +723,7 @@ export default {
           limit: this.searchLimit,
           cancelToken: cancelToken.token,
         }).then(mappings => {
+          console.log("Results for", registry.uri, mappings)
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             this.$set(this.searchResults, registry.uri, mappings)
             this.$set(this.searchLoading, registry.uri, false)
@@ -617,6 +775,12 @@ export default {
 
         if (registryToReload && registry.uri != registryToReload) {
           // Skip
+          continue
+        }
+
+        // Check if enabled
+        if (!this.showRegistry[registry.uri]) {
+          this.$delete(this.navigatorResults, registry.uri)
           continue
         }
 
@@ -740,6 +904,16 @@ export default {
         }
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
+        // For registries with no mappings, add a "noItems" row
+        if (results[registry.uri] && mappings.length == 0) {
+          section.items.push({
+            "_wholeRow": true,
+            "_rowClass": "mappingBrowser-table-row-loading mappingBrowser-table-row-noItems fontSize-small text-grey",
+            value: "",
+            type: "noItems",
+            registry,
+          })
+        }
         // Add items
         for (let mapping of mappings) {
           let item = { mapping, registry }
@@ -811,6 +985,10 @@ export default {
           item.occurrence = mapping._occurrence
           // Generate unique ID as helper
           item.uniqueId = this.$util.generateID()
+          // Add class to all items of hoveredRegistry
+          if (this.$jskos.compare(item.registry, this.hoveredRegistry)) {
+            item._rowClass += " mappingBrowser-hoveredRegistry"
+          }
           section.items.push(item)
         }
         if (section.loading || section.items.length) {
@@ -832,12 +1010,56 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "../style/main.less";
+
+#mappingBrowser-settingsButton {
+  position: absolute;
+  left: 0px;
+  top: -6px;
+}
+
+#mappingBrowser-settings {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5px 5px 15px 5px;
+  padding: 5px;
+  box-shadow: 0 1px 2px 0 @color-shadow;
+}
+.mappingBrowser-setting {
+  user-select: none;
+  margin: 0 15px;
+}
+.mappingBrowser-settings-registryGroup {
+  flex: 1;
+  text-align: center;
+}
+.mappingBrowser-settings-registryGroup-title {
+  margin-right: 10px;
+}
+.mappingBrowser-settings-registryGroup-notation {
+  margin: 0 4px;
+  cursor: pointer;
+}
+.mappingBrowser-settings-registryGroup-popover {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px;
+}
+.mappingBrowser-settings-registryGroup-popover-item {
+  flex: 1;
+  margin: 5px 0;
+}
 
 #mappingBrowser {
   max-width: 100%;
 }
+
+</style>
+
+<style lang="less">
+@import "../style/main.less";
 
 #mappingBrowser[max-width~="750px"] .mappingBrowser-from750 {
   display: none;
@@ -874,6 +1096,10 @@ export default {
 }
 #mappingBrowser > .tabs > .tab-content > .tab-pane:focus {
   outline: 0;
+}
+
+#mappingBrowser .tabs .nav {
+  padding: 0 20px;
 }
 
 </style>
