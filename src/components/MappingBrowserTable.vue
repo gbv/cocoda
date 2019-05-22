@@ -264,20 +264,31 @@
         </span>
       </span>
       <span
-        slot="AFTER_SECTION"
+        slot="BEFORE_SECTION"
         slot-scope="{ section }">
         <div style="display: flex;">
-          <div style="flex: 1;" />
           <b-pagination
             v-if="section.items.length > 0"
             :value="section.page"
             :total-rows="section.totalCount"
             :per-page="searchLimit"
-            class="mappingBrowser-pagination justify-content-center"
-            style="flex: none; user-select: none; margin: 0; padding: 0;"
+            class="mappingBrowser-pagination justify-content-begin"
+            style="flex: 1; user-select: none; margin: 0; padding: 0;"
             size="sm"
             @change="$emit('pageChange', { registry: section.registry, page: $event })" />
-          <div style="flex: 1; text-align: right;">{{ $tc(`dataModal.mapping`, section.totalCount, { count: section.totalCount.toLocaleString() }) }}</div>
+          <div
+            style="flex: none;"
+            class="fontWeight-heavy">
+            <registry-notation
+              :tooltip="false"
+              :registry="section.registry" />
+            <registry-name :registry="section.registry" />
+          </div>
+          <div
+            style="flex: 1; text-align: right; padding-top: 3px;"
+            class="fontSize-small">
+            {{ $tc(`dataModal.mapping`, section.totalCount, { count: section.totalCount.toLocaleString() }) }}
+          </div>
         </div>
         <loading-indicator-full v-if="section.loading" />
       </span>
@@ -300,6 +311,7 @@ import AutoLink from "./AutoLink"
 import LoadingIndicator from "./LoadingIndicator"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import RegistryNotation from "./RegistryNotation"
+import RegistryName from "./RegistryName"
 import FlexibleTable from "vue-flexible-table"
 import MappingDetail from "./MappingDetail"
 import AnnotationPopover from "./AnnotationPopover"
@@ -314,7 +326,7 @@ import objects from "../mixins/objects"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, MappingDetail, AnnotationPopover },
+  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, RegistryName, MappingDetail, AnnotationPopover },
   mixins: [auth, objects],
   props: {
     sections: {

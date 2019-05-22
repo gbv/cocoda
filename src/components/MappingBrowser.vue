@@ -208,7 +208,7 @@ export default {
   mixins: [auth, objects],
   data() {
     return {
-      tab: 0,
+      tab: 2,
       concordances: null,
       concordanceFilter: {
         from: "",
