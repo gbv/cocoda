@@ -1,6 +1,5 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
-import config from "../../config"
 import Vue from "vue"
 
 // TODO: - Add support for memberChoice and maybe memberList.
@@ -47,7 +46,7 @@ const getters = {
    * Adds a concept to the mapping.
    *
    * @param {object} concept - concept to be added
-   * @param {object} scheme - scheme for concept (can be ommitted if concept has "inScheme")
+   * @param {object} scheme - scheme for concept (can be omitted if concept has "inScheme")
    * @param {bool} isLeft - side of the mapping
    */
   canAdd: (state) => (concept, scheme, isLeft) => {
@@ -132,7 +131,7 @@ const mutations = {
    *
    * Payload object: { concept, scheme, isLeft }
    * - concept: the concept to be added
-   * - scheme: the scheme to which the concept belongs (can be ommitted if concept has "inScheme")
+   * - scheme: the scheme to which the concept belongs (can be omitted if concept has "inScheme")
    * - isLeft: the side to which to add the concept
    */
   add(state, { concept, scheme, isLeft, cardinality = "1-to-n" }) {
@@ -316,14 +315,8 @@ const mutations = {
 
   setRefresh(state, { refresh = true, registry } = {}) {
     // TODO: Refactoring!
-    if (refresh) {
-      if (registry) {
-        let uri = registry
-        registry = config.registries.find(registry => jskos.compare(registry, { uri }))
-      }
-      if (registry) {
-        state.mappingsNeedRefreshRegistry = registry.uri
-      }
+    if (refresh && registry) {
+      state.mappingsNeedRefreshRegistry = registry
     } else {
       state.mappingsNeedRefreshRegistry = null
     }
@@ -335,7 +328,8 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
+  getMappings({ rootGetters, rootState }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+    let config = rootState.config
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
@@ -357,20 +351,20 @@ const actions = {
     let promises = []
     for (let registry of registries) {
       if (all) {
-        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, selected, cancelToken }))
+        promises.push(registry.provider.getAllMappings({ from, to, direction, mode, identifier, selected }))
       } else {
-        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, cancelToken }))
+        promises.push(registry.provider.getMappings({ from, to, direction, mode, identifier }))
       }
     }
     return Promise.all(promises).then(results => {
-      // Use results[0] directly to retain custom properties for single registry results
-      let mappings = results.length == 1 ? results[0] : _.union(...results)
+      let mappings = _.union(...results)
       // TODO: Adjustments, like replacing schemes and concepts with references in store, etc.
       return mappings
     })
   },
 
-  saveMappings({ rootGetters }, { mappings, registry }) {
+  saveMappings({ rootGetters, rootState }, { mappings, registry }) {
+    let config = rootState.config
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
@@ -386,7 +380,8 @@ const actions = {
     return registry.provider.saveMappings(mappings)
   },
 
-  removeMappings({ state, rootGetters, commit }, { mappings, registry }) {
+  removeMappings({ state, rootGetters, commit, rootState }, { mappings, registry }) {
+    let config = rootState.config
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
