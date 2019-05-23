@@ -188,6 +188,16 @@
               style="flex: 2; margin: 3px;"
               size="sm"
               :options="concordanceOptions" />
+            <!-- Registry selection -->
+            <registry-notation
+              v-for="registry in searchRegistries"
+              :key="registry.uri"
+              :registry="registry"
+              :disabled="!showRegistry[registry.uri]"
+              class="mappingBrowser-search-registryNotation"
+              @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+              @mouseover.native="hoveredRegistry = registry"
+              @mouseout.native="hoveredRegistry = null" />
             <b-button
               style="flex: none; margin: 3px;"
               variant="danger"
@@ -449,7 +459,15 @@ export default {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
     searchRegistries() {
-      return this.config.registries.filter(registry => _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings")
+      return this.config.registries.filter(registry => _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings").sort((a, b) => {
+        if (this.$jskos.compare(a, this.currentRegistry)) {
+          return -1
+        }
+        if (this.$jskos.compare(b, this.currentRegistry)) {
+          return 1
+        }
+        return 0
+      })
     },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
@@ -733,6 +751,11 @@ export default {
         // Cancel previous refreshs
         if (this.searchCancelToken[registry.uri]) {
           this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        }
+        // Check if enabled
+        if (!this.showRegistry[registry.uri]) {
+          this.$delete(this.searchResults, registry.uri)
+          continue
         }
         let cancelToken = this.generateCancelToken()
         this.searchCancelToken[registry.uri] = cancelToken
@@ -1055,6 +1078,10 @@ export default {
 }
 .mappingBrowser-settings-registryGroup-notation {
   margin: 0 4px;
+  cursor: pointer;
+}
+.mappingBrowser-search-registryNotation {
+  margin: auto 4px;
   cursor: pointer;
 }
 .mappingBrowser-settings-registryGroup-popover {
