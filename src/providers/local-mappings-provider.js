@@ -196,14 +196,22 @@ class LocalMappingsProvider extends BaseProvider {
       }
       original = original || {}
       // Filter out original mapping and other local mappings with the same content identifier.
-      localMappings = localMappings.filter(m => {
+      let existingFilter = m => {
         let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
         let id1 = m.identifier ? m.identifier.find(findContentId) : null
         let id2 = (original.identifier || []).find(findContentId)
         let id3 = (mapping.identifier || []).find(findContentId)
         return id1 != id2 && id1 != id3
-      })
-      localMappings.push(mapping)
+      }
+      let previousIndex = localMappings.findIndex(m => !existingFilter(m))
+      localMappings = localMappings.filter(existingFilter)
+      if (original && previousIndex != -1) {
+        // Insert mapping at previous index
+        localMappings.splice(previousIndex, 0, mapping)
+      } else {
+        // Insert mapping at the end
+        localMappings.push(mapping)
+      }
 
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
