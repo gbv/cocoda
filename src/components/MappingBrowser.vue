@@ -36,7 +36,8 @@
       no-fade
       justified>
       <b-tab
-        title="Concordances">
+        title="Concordances"
+        @click="handleClickOutside">
         <template v-if="concordances && concordances.length">
           <div style="display: flex;">
             <div
@@ -129,7 +130,8 @@
         </template>
       </b-tab>
       <b-tab
-        title="Mapping Search">
+        title="Mapping Search"
+        @click="handleClickOutside">
         <div style="flex: none;">
           <div style="display: flex;">
             <b-input
@@ -221,7 +223,8 @@
           @pageChange="search($event.registry.uri, $event.page)" />
       </b-tab>
       <b-tab
-        title="Mapping Navigator">
+        title="Mapping Navigator"
+        @click="handleClickOutside">
         <div id="mappingBrowser-settings">
           <div
             v-for="group of registryGroups"
@@ -684,14 +687,14 @@ export default {
   },
   methods: {
     handleClickOutside(event) {
-      // // Handle registry group popovers
-      // for (let group of this.registryGroups) {
-      //   let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
-      //   let button = document.getElementById(`registryGroup-${group.uri}`)
-      //   if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
-      //     this.registryGroupShow[group.uri] = false
-      //   }
-      // }
+      // Handle registry group popovers
+      for (let group of this.registryGroups) {
+        let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
+        let button = document.getElementById(`registryGroup-${group.uri}`)
+        if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
+          this.registryGroupShow[group.uri] = false
+        }
+      }
       // Handle settings popover
       let popover = this.$refs.settingsPopover
       let button = document.getElementById("mappingBrowser-settingsButton-icon")
