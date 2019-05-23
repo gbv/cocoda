@@ -726,8 +726,6 @@ export default {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             this.$set(this.searchResults, registry.uri, mappings)
             this.$set(this.searchLoading, registry.uri, false)
-            // // Concept information possibly needs to be loaded
-            // this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
           }
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
