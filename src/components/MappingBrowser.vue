@@ -888,7 +888,7 @@ export default {
     },
     resultsToSections(results, pages, loading) {
       let sections = []
-      for (let registry of this.mappingRegistries) {
+      for (let registry of this.mappingRegistries.filter(registry => results[registry.uri])) {
         let section = {}
         section.registry = registry
         section.items = []
@@ -901,16 +901,6 @@ export default {
         }
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
-        // For registries with no mappings, add a "noItems" row
-        if (results[registry.uri] && mappings.length == 0) {
-          section.items.push({
-            "_wholeRow": true,
-            "_rowClass": "mappingBrowser-table-row-loading mappingBrowser-table-row-noItems fontSize-small text-grey",
-            value: "",
-            type: "noItems",
-            registry,
-          })
-        }
         // Add items
         for (let mapping of mappings) {
           let item = { mapping, registry }
@@ -988,9 +978,7 @@ export default {
           }
           section.items.push(item)
         }
-        if (section.loading || section.items.length) {
-          sections.push(section)
-        }
+        sections.push(section)
       }
       return sections
     },
