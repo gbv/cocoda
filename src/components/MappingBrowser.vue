@@ -139,12 +139,14 @@
               :state="searchFilter.fromScheme == '' ? true : searchFromScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
-              placeholder="source scheme" />
+              placeholder="source scheme"
+              @keyup.enter.native="searchClicked" />
             <b-input
               v-model="searchFilter.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
-              placeholder="source notation" />
+              placeholder="source notation"
+              @keyup.enter.native="searchClicked" />
             <div
               class="button"
               style="flex: none; font-size: 16px; margin: auto 5px;"
@@ -156,12 +158,14 @@
               :state="searchFilter.toScheme == '' ? true : searchToScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
-              placeholder="target scheme" />
+              placeholder="target scheme"
+              @keyup.enter.native="searchClicked" />
             <b-input
               v-model="searchFilter.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
-              placeholder="target notation" />
+              placeholder="target notation"
+              @keyup.enter.native="searchClicked" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -171,7 +175,8 @@
               v-model="searchFilter.creator"
               style="flex: 2; margin: 3px;"
               size="sm"
-              placeholder="creator" />
+              placeholder="creator"
+              @keyup.enter.native="searchClicked" />
             <div style="text-align: right; flex: none; margin: auto 5px;">
               Type:
             </div>
@@ -179,7 +184,8 @@
               v-model="searchFilter.type"
               style="flex: 2; margin: 3px;"
               size="sm"
-              :options="typeOptions" />
+              :options="typeOptions"
+              @keyup.enter.native="searchClicked" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -189,7 +195,8 @@
               v-model="searchFilter.partOf"
               style="flex: 2; margin: 3px;"
               size="sm"
-              :options="concordanceOptions" />
+              :options="concordanceOptions"
+              @keyup.enter.native="searchClicked" />
             <!-- Registry selection -->
             <registry-notation
               v-for="registry in searchRegistries"
@@ -737,6 +744,7 @@ export default {
         partOf: null,
       }
       this.searchResults = {}
+      this.search()
     },
     searchClicked() {
       this.search(null, 1)
