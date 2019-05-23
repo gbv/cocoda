@@ -73,13 +73,13 @@ class LocalMappingsProvider extends BaseProvider {
       params.from = _.isString(from) ? from : from.uri
     }
     if (fromScheme) {
-      params.fromScheme = _.isString(fromScheme) ? fromScheme : fromScheme.uri
+      params.fromScheme = _.isString(fromScheme) ? { uri: fromScheme } : fromScheme
     }
     if (to) {
       params.to = _.isString(to) ? to : to.uri
     }
     if (toScheme) {
-      params.toScheme = _.isString(toScheme) ? toScheme : toScheme.uri
+      params.toScheme = _.isString(toScheme) ? { uri: toScheme } : toScheme
     }
     if (creator) {
       params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
@@ -149,6 +149,12 @@ class LocalMappingsProvider extends BaseProvider {
             })
           })
         }
+      }
+      if (params.fromScheme) {
+        mappings = mappings.filter(mapping => jskos.compare(mapping.fromScheme, params.fromScheme))
+      }
+      if (params.toScheme) {
+        mappings = mappings.filter(mapping => jskos.compare(mapping.toScheme, params.toScheme))
       }
       // creator
       if (params.creator) {
