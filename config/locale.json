@@ -122,6 +122,7 @@
       "settingShowAllSchemesTooltip": "When turned off, only the results of the currently selected concept schemes will be shown.",
       "settingShowAllResults": "Always show all mappings and suggestions",
       "settingShowAllResultsTooltip": "When turned off, only the first five mappings in each sections are shown, further results will be collapsed.",
+      "settingResultLimit": "Results per page:",
       "chooseConcept": "Select a concept to see mappings and mapping recommendations",
       "settingsButton": "Mapping Browser Settings",
       "creatorIsDifferent": "This is your mapping, but the contained identity does not match your chosen identity. Edit and save it again to update the identity."
@@ -415,6 +416,7 @@
       "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind.",
       "settingShowAllResults": "Immer alle Mappings und Vorschläge anzeigen",
       "settingShowAllResultsTooltip": "Falls ausgeschaltet werden zunächst nur die ersten fünf Resultate jedes Bereichs angezeigt, alle weiteren sind ausgeblendet.",
+      "settingResultLimit": "Ergebnisse pro Seite:",
       "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen",
       "settingsButton": "Mapping-Browser Einstellungen",
       "creatorIsDifferent": "Dies ist dein Mapping, aber die darin gespeicherte Identität entspricht nicht der ausgewählten Identität. Editiere und speichere es erneut, um die Identität anzupassen."

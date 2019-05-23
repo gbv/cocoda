@@ -15,12 +15,26 @@
         <div
           ref="settingsPopover">
           <p><b>{{ $t("navbar.settings") }}</b></p>
-          <b-form-checkbox
-            v-model="showAllSchemes"
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
-            style="user-select: none;">
-            {{ $t("mappingBrowser.settingShowAllSchemes") }}
-          </b-form-checkbox>
+          <b-form
+            inline
+            @submit.stop.prevent>
+            <b-form-checkbox
+              v-model="showAllSchemes"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
+              style="user-select: none;">
+              {{ $t("mappingBrowser.settingShowAllSchemes") }}
+            </b-form-checkbox>
+            <div>
+              {{ $t("mappingBrowser.settingResultLimit") }}
+              <b-input
+                v-model="resultLimit"
+                type="number"
+                min="1"
+                max="20"
+                size="sm"
+                @click="$event.target.select()" />
+            </div>
+          </b-form>
         </div>
       </b-popover>
     </div>
@@ -305,7 +319,6 @@ export default {
       },
       searchFilter: null,
       searchPages: {},
-      searchLimit: 5,
       searchResults: {},
       searchLoading: {},
       searchCancelToken: {},
@@ -560,6 +573,23 @@ export default {
         this.$store.commit("mapping/setRefresh")
       }
     },
+    resultLimit: {
+      get() {
+        return this.$settings.mappingBrowserResultLimit
+      },
+      set(value) {
+        value = parseInt(value) || 5
+        value = Math.max(1, value)
+        value = Math.min(20, value)
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserResultLimit",
+          value
+        })
+        // Refresh
+        this.$store.commit("mapping/setRefresh")
+      }
+    }
   },
   watch: {
     tab(tab) {
@@ -762,8 +792,8 @@ export default {
           typeFilter: this.searchFilter.type,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
-          offset: ((this.searchPages[registry.uri] || 1) - 1) * this.searchLimit,
-          limit: this.searchLimit,
+          offset: ((this.searchPages[registry.uri] || 1) - 1) * this.resultLimit,
+          limit: this.resultLimit,
           cancelToken: cancelToken.token,
         }).then(mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
@@ -961,7 +991,7 @@ export default {
         let mappings = results[registry.uri] || []
         section.totalCount = mappings.totalCount || mappings.length
         if (mappings.totalCount === undefined) {
-          mappings = mappings.slice((section.page - 1) * this.searchLimit, section.page * this.searchLimit)
+          mappings = mappings.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
         }
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
