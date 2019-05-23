@@ -49,7 +49,6 @@ class MappingsApiProvider extends BaseProvider {
     if (identifier) {
       params.identifier = identifier
     }
-    console.log(params)
     options = Object.assign({}, { params }, options)
     return this.get(this.registry.mappings, options, cancelToken).then(mappings => {
       mappings = mappings || []
@@ -144,7 +143,6 @@ class MappingsApiProvider extends BaseProvider {
       return Promise.resolve([])
     }
     return this.get(this.registry.concordances).then(concordances => {
-      console.log(concordances)
       return concordances
     })
   }

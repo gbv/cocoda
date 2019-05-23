@@ -723,7 +723,6 @@ export default {
           limit: this.searchLimit,
           cancelToken: cancelToken.token,
         }).then(mappings => {
-          console.log("Results for", registry.uri, mappings)
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             this.$set(this.searchResults, registry.uri, mappings)
             this.$set(this.searchLoading, registry.uri, false)
