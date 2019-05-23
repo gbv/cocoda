@@ -708,7 +708,7 @@ export default {
         let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
         let button = document.getElementById(`registryGroup-${group.uri}`)
         if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
-          this.registryGroupShow[group.uri] = false
+          this.$set(this.registryGroupShow, group.uri, false)
         }
       }
       // Handle settings popover
