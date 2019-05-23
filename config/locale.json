@@ -16,7 +16,8 @@
       "loading": "Loading...",
       "cancel": "Cancel",
       "authNecessary": "Authentication necessary.",
-      "or": "or"
+      "or": "or",
+      "of": "of"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -256,7 +257,8 @@
       "loading": "Lade...",
       "cancel": "Abbrechen",
       "authNecessary": "Authentifizierung notwendig.",
-      "or": "oder"
+      "or": "oder",
+      "of": "von"
     },
     "navbar": {
       "feedback": "Feedback",

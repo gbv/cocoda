@@ -262,7 +262,7 @@
       <span
         slot="BEFORE_SECTION"
         slot-scope="{ section }">
-        <div style="display: flex;">
+        <div style="display: flex; position: relative;">
           <div
             style="flex: 1; padding-left: 5px;"
             class="fontWeight-heavy">
@@ -281,10 +281,18 @@
             size="sm"
             @change="$emit('pageChange', { registry: section.registry, page: $event })" />
           <div
-            style="flex: 1; text-align: right; padding-top: 3px; padding-right: 5px;"
+            style="flex: 1; text-align: right; padding-top: 3px;"
+            :style="`padding-right: ${section.totalCount > 0 ? 30 : 5}px;`"
             class="fontSize-small">
+            <span v-if="section.items.length < section.totalCount">
+              {{ section.items.length }} {{ $t("general.of") }}
+            </span>
             {{ $tc(`dataModal.mapping`, section.totalCount, { count: section.totalCount.toLocaleString() }) }}
           </div>
+          <data-modal-button
+            v-if="section.totalCount > 0"
+            :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
+            type="mapping" />
         </div>
         <loading-indicator-full v-if="section.loading" />
       </span>
@@ -311,6 +319,7 @@ import RegistryName from "./RegistryName"
 import FlexibleTable from "vue-flexible-table"
 import MappingDetail from "./MappingDetail"
 import AnnotationPopover from "./AnnotationPopover"
+import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 
 // Import mixins
@@ -322,7 +331,7 @@ import objects from "../mixins/objects"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, RegistryName, MappingDetail, AnnotationPopover },
+  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, RegistryName, MappingDetail, AnnotationPopover, DataModalButton },
   mixins: [auth, objects],
   props: {
     sections: {
