@@ -21,12 +21,6 @@
             style="user-select: none;">
             {{ $t("mappingBrowser.settingShowAllSchemes") }}
           </b-form-checkbox>
-          <b-form-checkbox
-            v-model="showAllResults"
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllResultsTooltip'), delay: $util.delay.medium }"
-            style="user-select: none;">
-            {{ $t("mappingBrowser.settingShowAllResults") }}
-          </b-form-checkbox>
         </div>
       </b-popover>
     </div>
@@ -566,21 +560,6 @@ export default {
         this.$store.commit("mapping/setRefresh")
       }
     },
-    // Setting whether to collapse results by default or to always show results
-    showAllResults: {
-      get() {
-        return this.$settings.mappingBrowserShowAll
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserShowAll",
-          value
-        })
-        // Refresh
-        this.$store.commit("mapping/setRefresh")
-      }
-    },
   },
   watch: {
     tab(tab) {
@@ -925,8 +904,29 @@ export default {
             }
             return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
           })
+          // Filter mappings if showAllSchemes is off and schemes don't match
+          // Note: This has to be adjusted or removed when proper pagination for navigator results is implemented!
+          mappings.totalCount = undefined
+          if (!this.showAllSchemes) {
+            mappings = mappings.filter(mapping => {
+              if (this.selected.scheme[true] && this.selected.scheme[false]) {
+                let schemesCorrect = true
+                for (let scheme of [mapping.fromScheme, mapping.toScheme]) {
+                  let schemeCorrect = false
+                  for (let isLeft of [true, false]) {
+                    if (this.$jskos.compare(scheme, this.selected.scheme[isLeft])) {
+                      schemeCorrect = true
+                    }
+                  }
+                  schemesCorrect = schemesCorrect && schemeCorrect
+                }
+                return schemesCorrect
+              }
+              // If one side doesn't have a scheme selected, always show all
+              return true
+            })
+          }
           this.$set(this.navigatorResults, registry.uri, mappings)
-          // TODO: conceptsToLoad
           // Reset cancel token
           this.navigatorCancelToken[registry.uri] = null
         }).catch(error => {
@@ -970,25 +970,6 @@ export default {
           let item = { mapping, registry }
           item.sourceScheme = _.get(mapping, "fromScheme") || undefined
           item.targetScheme = _.get(mapping, "toScheme") || undefined
-          // // Skip mapping if showAllSchemes is off and schemes don't match
-          // if (!this.showAllSchemes) {
-          //   // If one side doesn't have a scheme selected, always show all
-          //   if (this.selected.scheme[true] && this.selected.scheme[false]) {
-          //     let schemesCorrect = true
-          //     for (let scheme of [item.sourceScheme, item.targetScheme]) {
-          //       let schemeCorrect = false
-          //       for (let isLeft of [true, false]) {
-          //         if (this.$jskos.compare(scheme, this.selected.scheme[isLeft])) {
-          //           schemeCorrect = true
-          //         }
-          //       }
-          //       schemesCorrect = schemesCorrect && schemeCorrect
-          //     }
-          //     if (!schemesCorrect) {
-          //       continue
-          //     }
-          //   }
-          // }
           item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
           item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
           // // Load prefLabels for all concepts
