@@ -295,6 +295,8 @@ export default {
       searchResults: {},
       searchLoading: {},
       searchCancelToken: {},
+      // Array of objects with registryUri and page (as parameters for search)
+      searchNeedsRefresh: [],
       previousSelected: {
         concept: {
           [true]: null,
@@ -554,7 +556,27 @@ export default {
   },
   watch: {
     tab(tab) {
-      if (tab == 2) {
+      if (tab == 1) {
+        // Changed tab to Mapping Search, refresh if necessary
+        if (this.searchNeedsRefresh.length) {
+          // If there's only one item, just run it
+          if (this.searchNeedsRefresh.length == 1) {
+            this.search(this.searchNeedsRefresh[0].registryUri, this.searchNeedsRefresh[0].page)
+            return
+          }
+          if (this.searchNeedsRefresh.find(option => !option.registryUri)) {
+            // Refresh all registries
+            this.search()
+          } else {
+            // Refresh some registries
+            let registryUris = _.uniq(this.searchNeedsRefresh.map(option => option.registryUri))
+            for (let registryUri of registryUris) {
+              // Use current page for that registry
+              this.search(registryUri, this.searchPages[registryUri])
+            }
+          }
+        }
+      } else if (tab == 2) {
         // Changed tab to Mapping Navigator, refresh if necessary
         if (this.navigatorNeedsRefresh.length) {
           // If there's only one item, just run it
@@ -608,8 +630,10 @@ export default {
         let registry = this.$store.state.mapping.mappingsNeedRefreshRegistry
         if (registry) {
           this.navigatorRefresh(registry)
+          this.search(registry, this.searchPages[registry])
         } else {
           this.navigatorRefresh(true)
+          this.search()
         }
         this.$store.commit("mapping/setRefresh", { refresh: false })
       }
@@ -697,6 +721,12 @@ export default {
       this.search(null, 1)
     },
     search(registryUri = null, page) {
+      // If it's not currently the search tab, save search refresh for later
+      if (this.tab != 1) {
+        this.searchNeedsRefresh.push({ registryUri, page })
+        return
+      }
+      this.searchNeedsRefresh = []
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
