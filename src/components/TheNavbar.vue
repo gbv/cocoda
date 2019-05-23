@@ -202,8 +202,10 @@ nav.navbar {
   color: @color-text-dark !important;
 }
 .nav-link.active, .btn-link.active {
-  color: white !important;
   font-weight: 700;
+}
+.nav-pills .nav-link.active {
+  color: white !important;
 }
 .nav-link:hover, .btn-link:hover {
   color: @color-text-veryLightGrey !important;
