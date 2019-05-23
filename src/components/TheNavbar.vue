@@ -202,11 +202,11 @@ nav.navbar {
   color: @color-text-dark !important;
 }
 .nav-link.active, .btn-link.active {
-  color: @color-text-veryLightGrey !important;
+  color: white !important;
   font-weight: 700;
 }
 .nav-link:hover, .btn-link:hover {
-  color: @color-text-mediumLightGrey !important;
+  color: @color-text-veryLightGrey !important;
 }
 .feedbackModal .modal-dialog {
   height: 90%;
