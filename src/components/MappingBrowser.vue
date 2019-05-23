@@ -476,15 +476,7 @@ export default {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
     searchRegistries() {
-      return this.config.registries.filter(registry => _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings").sort((a, b) => {
-        if (this.$jskos.compare(a, this.currentRegistry)) {
-          return -1
-        }
-        if (this.$jskos.compare(b, this.currentRegistry)) {
-          return 1
-        }
-        return 0
-      })
+      return _.get(this.registryGroups.find(group => group.uri == "http://coli-conc.gbv.de/registry-group/existing-mappings"), "registries", [])
     },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
@@ -495,13 +487,10 @@ export default {
           (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false]))
         )
       )
-      let currentRegistryIndex = registries.findIndex(registry => this.$jskos.compare(registry, this.currentRegistry))
-      if (currentRegistryIndex !== -1) {
-        let current = registries[currentRegistryIndex]
-        _.pullAt(registries, [currentRegistryIndex])
-        registries = [current].concat(registries)
-      }
       return registries
+    },
+    mappingRegistriesSorted() {
+      return _.flatten(this.registryGroups.map(group => group.registries))
     },
     currentRegistry() {
       return this.$store.getters.getCurrentRegistry
@@ -525,6 +514,17 @@ export default {
       }
       groups.push(otherGroup)
       groups = groups.filter(group => group.registries.length > 0)
+      for (let group of groups) {
+        group.registries = group.registries.sort((a, b) => {
+          if (this.$jskos.compare(a, this.currentRegistry)) {
+            return -1
+          }
+          if (this.$jskos.compare(b, this.currentRegistry)) {
+            return 1
+          }
+          return 0
+        })
+      }
       return groups
     },
     // show registries
@@ -982,7 +982,7 @@ export default {
     },
     resultsToSections(results, pages, loading) {
       let sections = []
-      for (let registry of this.mappingRegistries.filter(registry => results[registry.uri])) {
+      for (let registry of this.mappingRegistriesSorted.filter(registry => results[registry.uri])) {
         let section = {}
         section.registry = registry
         section.items = []
