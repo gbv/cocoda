@@ -36,7 +36,13 @@ class ConceptApiProvider extends BaseProvider {
     if (Array.isArray(this.registry.schemes)) {
       return Promise.resolve(this.registry.schemes)
     }
-    return this.get(this.registry.schemes).then(schemes => schemes || [])
+    // TODO: Should we really do it this way?
+    let options = {
+      params: {
+        limit: 500
+      }
+    }
+    return this.get(this.registry.schemes, options).then(schemes => schemes || [])
   }
 
   _getTop(scheme) {

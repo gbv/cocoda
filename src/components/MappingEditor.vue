@@ -90,15 +90,12 @@
         <!-- Show scheme only if different scheme is selected on that side -->
         <div
           class="mappingScheme fontWeight-heavy">
-          <span v-if="showScheme(isLeft)">
-            <item-name
-              :item="$store.getters['mapping/getScheme'](isLeft)"
-              :is-link="true"
-              :is-left="isLeft"
-              :show-text="false"
-              :show-tooltip="true" />
-          </span>
-          <span v-else>&nbsp;</span>
+          <item-name
+            :item="$store.getters['mapping/getScheme'](isLeft)"
+            :is-link="true"
+            :is-left="isLeft"
+            :show-text="false"
+            :show-tooltip="true" />
         </div>
         <!-- All concepts in mapping -->
         <div class="mappingConceptList">
@@ -444,7 +441,9 @@ export default {
         if (this.clearOnSave) {
           this.clearMapping()
         }
-      }).finally(() => {
+      }).catch(error => {
+        console.error("MappingEditor - error in saveMapping:", error)
+      }).then(() => {
         this.loadingGlobal = false
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
       })
@@ -481,7 +480,9 @@ export default {
         } else {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }
-      }).finally(() => {
+      }).catch(error => {
+        console.error("MappingEditor - error in deleteOriginalMapping:", error)
+      }).then(() => {
         this.loadingGlobal = false
       })
       return true
@@ -564,14 +565,6 @@ export default {
         type: "mapping/removeAll",
         isLeft
       })
-    },
-    /**
-     * Returns whether to show the scheme's label for a specific side
-     */
-    showScheme(isLeft) {
-      let chosenScheme = this.selected.scheme[isLeft]
-      let mappingScheme = this.$store.getters["mapping/getScheme"](isLeft)
-      return !this.$jskos.compare(chosenScheme, mappingScheme)
     },
     droppedConcept(concept, isLeft) {
       if (this.$jskos.isConcept(concept)) {

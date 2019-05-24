@@ -23,6 +23,15 @@
 .mainComponent-minimized {
   overflow: hidden;
 }
+
+// Only show minimizer button when hovering component
+.mainComponent > .minimizer > .minimizeButton {
+  display: none;
+}
+.mainComponent:hover > .minimizer > .minimizeButton {
+  display: block;
+}
+
 .visualComponent {
   background-color: @color-background;
   margin: 4px;

@@ -7,6 +7,7 @@ yarn-debug.log*
 yarn-error.log*
 
 build/build-info.backup.json
+docs/user-manual*
 
 # local config file
 config/cocoda*.json

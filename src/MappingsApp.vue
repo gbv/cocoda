@@ -574,7 +574,7 @@ export default {
         }).catch(error => {
           console.warn("Error fetching mapping schemes:", error)
           this.concordances = []
-        }).finally(() => {
+        }).then(() => {
           // If there are no concordances, jump to second tab.
           if (this.concordances.length == 0 && this.tab == 0) {
             this.tab = 1

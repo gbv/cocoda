@@ -1,6 +1,6 @@
 {
   "name": "cocoda-2018",
-  "version": "0.8.4",
+  "version": "0.8.6",
   "description": "Cocoda - Concordance App",
   "author": "Stefan Peters <stefandesu@exo.pm>",
   "license": "MIT",
@@ -15,7 +15,8 @@
     "test:unit": "vue-cli-service test:unit",
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
-    "styleguide:build": "vue-styleguidist build"
+    "styleguide:build": "vue-styleguidist build",
+    "user-manual": "cd docs; ./convert-user-manual.sh"
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
@@ -66,6 +67,7 @@
     "copy-webpack-plugin": "^5.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "fsevents": "^2.0.6",
     "jsdoc-to-markdown": "^4.0.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",

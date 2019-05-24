@@ -431,7 +431,8 @@ export default {
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       // Insert on the left AND the right
-      for (let isLeft of both ? [true, false] : [isLeft]) {
+      let sides = both ? [true, false] : [isLeft]
+      for (let isLeft of sides) {
         let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Left" : "Right"}[0]`)
         if (conceptSchemeSelection) {
           conceptSchemeSelection.setConceptSearchQuery(regexResult ? regexResult[0] : "")

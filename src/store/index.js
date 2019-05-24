@@ -7,6 +7,7 @@ import auth from "./modules/auth"
 import settings from "./modules/settings"
 import { plugins } from "./plugins"
 import jskos from "jskos-tools"
+import _ from "lodash"
 // Root store
 import actions from "./actions"
 
@@ -32,7 +33,7 @@ const getters = {
     return state.settings.settings.favoriteSchemes || state.config.favoriteSchemes
   },
   favoriteConcepts: (state) => {
-    return state.settings.settings.favoriteConcepts || []
+    return (state.settings.settings.favoriteConcepts || []).map(concept => _.pick(concept, ["uri", "notation", "inScheme"]))
   },
   authAvailable: (state) => {
     return state.config.registries.find(registry => registry.auth) != null

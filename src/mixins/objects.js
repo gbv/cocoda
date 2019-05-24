@@ -392,6 +392,8 @@ export default {
             this.$delete(this.loadingConcepts, index)
           }
         }
+        // Remove all URIs from loadingConcepts
+        this.loadingConcepts = this.loadingConcepts.filter(concept => _.intersection(jskos.getAllUris(concept), uris).length == 0)
       }))
       return Promise.all(promises).then(() => {
         // Move all URIs that were not loaded to errored concepts

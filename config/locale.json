@@ -17,7 +17,8 @@
       "cancel": "Cancel",
       "authNecessary": "Authentication necessary.",
       "or": "or",
-      "of": "of"
+      "of": "of",
+      "resizingSlider": "drag to resize cards"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -258,7 +259,8 @@
       "cancel": "Abbrechen",
       "authNecessary": "Authentifizierung notwendig.",
       "or": "oder",
-      "of": "von"
+      "of": "von",
+      "resizingSlider": "ziehen, um Komponenten-Größen anzupassen"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -394,7 +396,7 @@
       "availableMappings": "Vorhandene Mappings"
     },
     "conceptTree": {
-      "title": "Hierachie",
+      "title": "Hierarchie",
       "noTree": "Keine Hierarchie verfügbar"
     },
     "itemDetail": {
