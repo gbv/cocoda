@@ -240,7 +240,14 @@
       <b-tab
         title="Mapping Navigator"
         @click="handleClickOutside">
-        <div id="mappingBrowser-settings">
+        <div
+          v-show="!selected.concept[true] && !selected.concept[false]"
+          class="noItems fontWeight-heavy">
+          {{ $t("mappingBrowser.chooseConcept") }}
+        </div>
+        <div
+          v-if="selected.concept[true] || selected.concept[false]"
+          id="mappingBrowser-settings">
           <div
             v-for="group of registryGroups"
             :key="group.uri"
@@ -251,7 +258,7 @@
               {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
             </span>
             <registry-notation
-              v-for="registry in group.registries"
+              v-for="registry in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
               :key="registry.uri"
               :registry="registry"
               :disabled="!showRegistry[registry.uri]"
@@ -268,7 +275,7 @@
                 :ref="`registryGroup-${group.uri}-popover`"
                 class="mappingBrowser-settings-registryGroup-popover">
                 <b-form-checkbox
-                  v-for="(registry, index) in group.registries"
+                  v-for="(registry, index) in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
                   :key="`registry_${index}`"
                   v-model="showRegistry[registry.uri]"
                   class="mappingBrowser-settings-registryGroup-popover-item"
@@ -308,7 +315,11 @@ export default {
   mixins: [auth, objects],
   data() {
     return {
-      tab: 2,
+      tab: 1,
+      /** Whether tab was automatically switched to Mapping Navigator once.
+       *  Will not switch automatically again afterwards.
+       */
+      hasSwitchedToNavigator: false,
       settingsShow: false,
       registryGroupShow: {},
       concordances: null,
@@ -481,16 +492,18 @@ export default {
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
         registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences) &&
-        (
-          (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
-          (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false]))
-        )
+        (registry.provider.has.mappings || registry.provider.has.occurrences)
       )
       return registries
     },
     mappingRegistriesSorted() {
       return _.flatten(this.registryGroups.map(group => group.registries))
+    },
+    navigatorRegistries() {
+      return this.mappingRegistriesSorted.filter(registry =>
+        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
+        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false]))
+      )
     },
     currentRegistry() {
       return this.$store.getters.getCurrentRegistry
@@ -658,6 +671,11 @@ export default {
         this.previousSelected.scheme = {
           [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
           [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
+        }
+        // Automatically switch tab if a concept was selected for the first time
+        if (!this.hasSwitchedToNavigator && (this.selected.concept[true] || this.selected.concept[false])) {
+          this.tab = 2
+          this.hasSwitchedToNavigator = true
         }
       },
       deep: true
@@ -841,15 +859,15 @@ export default {
         params["to"] = to
       }
 
-      for (let registry of this.mappingRegistries) {
+      for (let registry of this.navigatorRegistries) {
 
         if (registryToReload && registry.uri != registryToReload) {
           // Skip
           continue
         }
 
-        // Check if enabled
-        if (!this.showRegistry[registry.uri]) {
+        // Check if enabled and at least one concept is selected
+        if (!this.showRegistry[registry.uri] || (!from && !to)) {
           this.$delete(this.navigatorResults, registry.uri)
           continue
         }
@@ -1118,6 +1136,11 @@ export default {
 
 #mappingBrowser {
   max-width: 100%;
+}
+
+.noItems {
+  margin: 50px auto 5px auto;
+  flex: 5 0 auto;
 }
 
 </style>
