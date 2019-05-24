@@ -148,13 +148,15 @@
               style="flex: 1; margin: 3px;"
               size="sm"
               placeholder="source scheme"
-              @keyup.enter.native="searchClicked" />
+              @keyup.enter.native="searchClicked"
+              @drop="drop($event, $event, 'scheme')" />
             <b-input
               v-model="searchFilter.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="source notation"
-              @keyup.enter.native="searchClicked" />
+              @keyup.enter.native="searchClicked"
+              @drop="drop($event, $event, 'concept')" />
             <div
               class="button"
               style="flex: none; font-size: 16px; margin: auto 5px;"
@@ -167,13 +169,15 @@
               style="flex: 1; margin: 3px;"
               size="sm"
               placeholder="target scheme"
-              @keyup.enter.native="searchClicked" />
+              @keyup.enter.native="searchClicked"
+              @drop="drop($event, $event, 'scheme')" />
             <b-input
               v-model="searchFilter.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="target notation"
-              @keyup.enter.native="searchClicked" />
+              @keyup.enter.native="searchClicked"
+              @drop="drop($event, $event, 'concept')" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -308,11 +312,12 @@ import axios from "axios"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
 
 export default {
   name: "MappingBrowser",
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName },
-  mixins: [auth, objects],
+  mixins: [auth, objects, dragandrop],
   data() {
     return {
       tab: 1,
@@ -1083,6 +1088,26 @@ export default {
         }
       }
       this.loadConcepts(toLoad)
+    },
+    droppedConcept(object, event, type) {
+      let text = ""
+      if (type == "scheme") {
+        // For scheme targtet, insert notation of inScheme of concept or notation of scheme
+        if (this.$jskos.isScheme(object)) {
+          text = _.get(object, "notation[0]")
+        } else {
+          text = _.get(object, "inScheme[0].notation[0]")
+        }
+      } else if (type == "concept") {
+        // For concept, insert notation of concept
+        if (this.$jskos.isConcept(object)) {
+          text = _.get(object, "notation[0]")
+        }
+      }
+      let target = event && event.target
+      if (text && target) {
+        target.value = text
+      }
     },
   },
 }
