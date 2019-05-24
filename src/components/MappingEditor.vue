@@ -13,7 +13,7 @@
         :show.sync="settingsShow"
         target="mappingEditor-settingsButton-icon"
         triggers="click"
-        placement="bottomleft">
+        placement="bottomright">
         <div
           ref="settingsPopover">
           <p><b>{{ $t("navbar.settings") }}</b></p>
@@ -408,7 +408,8 @@ export default {
     handleClickOutside(event) {
       // Handle settings popover
       let popover = this.$refs.settingsPopover
-      if (popover && !popover.contains(event.target)) {
+      let button = document.getElementById("mappingEditor-settingsButton")
+      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
         this.settingsShow = false
       }
     },
@@ -626,7 +627,7 @@ export default {
 }
 #mappingEditor-settingsButton {
   position: absolute;
-  right: 20px;
+  left: 0px;
   top: -6px;
   z-index: @zIndex-2;
 }
