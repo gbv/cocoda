@@ -149,14 +149,14 @@
               size="sm"
               placeholder="source scheme"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, $event, 'scheme')" />
+              @drop="drop($event, 'scheme', 'searchFilter.fromScheme')" />
             <b-input
               v-model="searchFilter.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="source notation"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, $event, 'concept')" />
+              @drop="drop($event, 'concept', 'searchFilter.fromNotation')" />
             <div
               class="button"
               style="flex: none; font-size: 16px; margin: auto 5px;"
@@ -170,14 +170,14 @@
               size="sm"
               placeholder="target scheme"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, $event, 'scheme')" />
+              @drop="drop($event, 'scheme', 'searchFilter.toScheme')" />
             <b-input
               v-model="searchFilter.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="target notation"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, $event, 'concept')" />
+              @drop="drop($event, 'concept', 'searchFilter.toNotation')" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -1094,7 +1094,7 @@ export default {
       }
       this.loadConcepts(toLoad)
     },
-    droppedConcept(object, event, type) {
+    droppedConcept(object, type, path) {
       let text = ""
       if (type == "scheme") {
         // For scheme targtet, insert notation of inScheme of concept or notation of scheme
@@ -1109,9 +1109,8 @@ export default {
           text = _.get(object, "notation[0]")
         }
       }
-      let target = event && event.target
-      if (text && target) {
-        target.value = text
+      if (text) {
+        _.set(this, path, text)
       }
     },
   },
