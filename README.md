@@ -20,6 +20,7 @@ Try out the [latest release](https://coli-conc.gbv.de/cocoda/), the [current dev
 git clone https://github.com/gbv/cocoda.git
 cd cocoda
 npm install
+# If developing on macOS, it is recommended to install fsevents: npm i --no-save fsevents
 ```
 
 ## Usage
