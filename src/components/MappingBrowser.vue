@@ -149,14 +149,14 @@
               size="sm"
               placeholder="source scheme"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, 'scheme', 'searchFilter.fromScheme')" />
+              @drop="drop($event, { scheme: 'searchFilter.fromScheme', concept: 'searchFilter.fromNotation' })" />
             <b-input
               v-model="searchFilter.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="source notation"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, 'concept', 'searchFilter.fromNotation')" />
+              @drop="drop($event, { scheme: 'searchFilter.fromScheme', concept: 'searchFilter.fromNotation' })" />
             <div
               class="button"
               style="flex: none; font-size: 16px; margin: auto 5px;"
@@ -170,14 +170,14 @@
               size="sm"
               placeholder="target scheme"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, 'scheme', 'searchFilter.toScheme')" />
+              @drop="drop($event, { scheme: 'searchFilter.toScheme', concept: 'searchFilter.toNotation' })" />
             <b-input
               v-model="searchFilter.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               placeholder="target notation"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, 'concept', 'searchFilter.toNotation')" />
+              @drop="drop($event, { scheme: 'searchFilter.toScheme', concept: 'searchFilter.toNotation' })" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -1094,24 +1094,26 @@ export default {
       }
       this.loadConcepts(toLoad)
     },
-    droppedConcept(object, type, path) {
-      let text = ""
-      if (type == "scheme") {
-        // For scheme targtet, insert notation of inScheme of concept or notation of scheme
-        if (this.$jskos.isScheme(object)) {
-          text = _.get(object, "notation[0]")
-        } else {
-          text = _.get(object, "inScheme[0].notation[0]")
+    droppedConcept(object, targets) {
+      _.forOwn(targets, (path, type) => {
+        let text = ""
+        if (type == "scheme") {
+          // For scheme targtet, insert notation of inScheme of concept or notation of scheme
+          if (this.$jskos.isScheme(object)) {
+            text = _.get(object, "notation[0]")
+          } else {
+            text = _.get(object, "inScheme[0].notation[0]")
+          }
+        } else if (type == "concept") {
+          // For concept, insert notation of concept
+          if (this.$jskos.isConcept(object)) {
+            text = _.get(object, "notation[0]")
+          }
         }
-      } else if (type == "concept") {
-        // For concept, insert notation of concept
-        if (this.$jskos.isConcept(object)) {
-          text = _.get(object, "notation[0]")
+        if (text) {
+          _.set(this, path, text)
         }
-      }
-      if (text) {
-        _.set(this, path, text)
-      }
+      })
     },
   },
 }
