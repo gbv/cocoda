@@ -12,13 +12,16 @@ import _ from "lodash"
 
 let objects = {}
 let topConcepts = {}
+let loadingConcepts = []
+let erroredConcepts = []
 
 export default {
   data() {
     return {
       objects,
       topConcepts,
-      loadingConcepts: [],
+      loadingConcepts,
+      erroredConcepts,
     }
   },
   computed: {
@@ -356,8 +359,8 @@ export default {
           console.warn("Can't load data concept", concept.uri, "- no provider found.")
           continue
         }
-        if (this.loadingConcepts.find(c => this.$jskos.compare(c, concept))) {
-          // Concept is already loading
+        if ([].concat(this.loadingConcepts, this.erroredConcepts).find(c => this.$jskos.compare(c, concept))) {
+          // Concept is already loading or errored
           continue
         }
         uris = uris.concat(jskos.getAllUris(concept))
@@ -375,15 +378,31 @@ export default {
       // Load concepts by provider
       let promises = list.map(({ provider, concepts }) => provider.getConcepts(concepts, options).then(concepts => {
         // Save and adjust results
+        let uris = []
         for (let concept of concepts) {
           concept = this.saveObject(concept)
           this.$set(concept, "__DETAILSLOADED__", true)
           this.adjustConcept(concept)
+          uris = uris.concat(this.$jskos.getAllUris(concept))
         }
-        // Remove all URIs from loadingConcepts
-        this.loadingConcepts = this.loadingConcepts.filter(concept => _.intersection(jskos.getAllUris(concept), uris).length == 0)
+        // Remove all loaded URIs from loadingConcepts
+        for (let uri of uris) {
+          let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
+          if (index >= 0) {
+            this.$delete(this.loadingConcepts, index)
+          }
+        }
       }))
       return Promise.all(promises).then(() => {
+        // Move all URIs that were not loaded to errored concepts
+        for (let uri of uris) {
+          let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
+          if (index >= 0) {
+            let concept =  this.loadingConcepts[index]
+            this.$delete(this.loadingConcepts, index)
+            this.erroredConcepts.push(concept)
+          }
+        }
         // Return objects from store
         return concepts.map(c => this.getObject(c))
       })

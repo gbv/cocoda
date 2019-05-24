@@ -215,7 +215,7 @@ let annotations = {
   creatorName(annotation) {
     let name
     if (_.isString(annotation.creator)) {
-      name = (this.config.creatorNames || {})[annotation.creator]
+      name = _.get(store, "state.config.creatorNames", {})[annotation.creator]
     } else if (annotation.creator) {
       name = annotation.creator.name
     }

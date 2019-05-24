@@ -86,21 +86,6 @@
             <mapping-editor
               v-if="selected.scheme[true] || selected.scheme[false]" />
             <!-- Placeholder -->
-            <!-- ... -->
-            <!-- Minimizer allows component to get minimized -->
-            <minimizer
-              ref="minimizer"
-              :text="$t('mappingEditor.title')" />
-          </div>
-          <!-- Slider -->
-          <resizing-slider :cocoda-red="true" />
-          <div
-            id="mappingBrowserComponent"
-            class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingBrowser -->
-            <mapping-browser
-              v-if="selected.scheme[true] || selected.scheme[false]" />
-            <!-- Placeholder -->
             <div
               v-else
               class="placeholderComponentCenter">
@@ -127,6 +112,18 @@
                 </p>
               </div>
             </div>
+            <!-- Minimizer allows component to get minimized -->
+            <minimizer
+              ref="minimizer"
+              :text="$t('mappingEditor.title')" />
+          </div>
+          <!-- Slider -->
+          <resizing-slider :cocoda-red="true" />
+          <div
+            id="mappingBrowserComponent"
+            class="mappingToolItem mainComponent visualComponent">
+            <!-- MappingBrowser -->
+            <mapping-browser />
             <!-- Minimizer allows component to get minimized -->
             <minimizer :text="$t('mappingBrowser.title')" />
           </div>

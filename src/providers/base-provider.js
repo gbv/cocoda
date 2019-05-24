@@ -103,8 +103,15 @@ class BaseProvider {
         } else {
           promise = Promise.reject("No method called " + method)
         }
-        return promise.then(response => {
-          return response.data
+        return promise.then(({ data, headers }) => {
+          if (_.isArray(data)) {
+            let totalCount = parseInt(headers["x-total-count"])
+            if (totalCount) {
+              // Add total count to array as prop
+              data.totalCount = totalCount
+            }
+          }
+          return data
         }).catch(error => {
           if (_.get(error, "response.status") === 401 && tries > 0) {
             console.warn(`API authorization error => trying again! (${tries})`)
@@ -202,7 +209,12 @@ class BaseProvider {
       return mapping
     }
     this.adjustMappings = (mappings) => {
-      return mappings.map(mapping => this.adjustMapping(mapping))
+      let newMappings = mappings.map(mapping => this.adjustMapping(mapping))
+      // Retain totalCount if available
+      if (mappings.totalCount) {
+        newMappings.totalCount = mappings.totalCount
+      }
+      return newMappings
     }
   }
 

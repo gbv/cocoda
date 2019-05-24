@@ -328,7 +328,7 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters, rootState }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+  getMappings({ rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
     let config = rootState.config
     let registries = []
     if (onlyFromMain) {
@@ -351,13 +351,14 @@ const actions = {
     let promises = []
     for (let registry of registries) {
       if (all) {
-        promises.push(registry.provider.getAllMappings({ from, to, direction, mode, identifier, selected }))
+        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, selected, cancelToken }))
       } else {
-        promises.push(registry.provider.getMappings({ from, to, direction, mode, identifier }))
+        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, cancelToken }))
       }
     }
     return Promise.all(promises).then(results => {
-      let mappings = _.union(...results)
+      // Use results[0] directly to retain custom properties for single registry results
+      let mappings = results.length == 1 ? results[0] : _.union(...results)
       // TODO: Adjustments, like replacing schemes and concepts with references in store, etc.
       return mappings
     })
