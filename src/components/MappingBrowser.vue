@@ -863,6 +863,11 @@ export default {
       if (to) {
         params["to"] = to
       }
+      // If no concept is selected, clear navigator
+      if (!from && !to) {
+        this.navigatorResults = {}
+        return
+      }
 
       for (let registry of this.navigatorRegistries) {
 
@@ -871,8 +876,8 @@ export default {
           continue
         }
 
-        // Check if enabled and at least one concept is selected
-        if (!this.showRegistry[registry.uri] || (!from && !to)) {
+        // Check if enabled
+        if (!this.showRegistry[registry.uri]) {
           this.$delete(this.navigatorResults, registry.uri)
           continue
         }
