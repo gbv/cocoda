@@ -645,58 +645,6 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-#mappingBrowser {
-  position: relative;
-  display: flex;
-}
-#mappingBrowserWrapper {
-  flex: 1;
-  width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.mappingBrowser-title {
-  .componentTitle;
-  flex: none;
-  margin: 0 auto;
-}
-#mappingBrowser-settingsButton {
-  position: absolute;
-  right: 20px;
-  top: -6px;
-}
-#mappingBrowser-settings {
-  flex: none;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 5px 5px 15px 5px;
-  padding: 5px;
-  box-shadow: 0 1px 2px 0 @color-shadow;
-}
-.mappingBrowser-setting {
-  user-select: none;
-  margin: 0 15px;
-}
-.mappingBrowser-settings-registryGroup {
-  flex: 1;
-  text-align: center;
-}
-.mappingBrowser-settings-registryGroup-title {
-  margin-right: 10px;
-}
-.mappingBrowser-settings-registryGroup-notation {
-  margin: 0 4px;
-  cursor: pointer;
-}
-.mappingBrowser-settings-registryGroup-popover {
-  display: flex;
-  flex-direction: column;
-  margin: 10px 10px;
-}
-.mappingBrowser-settings-registryGroup-popover-item {
-  flex: 1;
-  margin: 5px 0;
-}
 .noItems {
   margin: 30px auto 5px auto;
   flex: 5 0 auto;
