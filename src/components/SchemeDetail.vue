@@ -9,7 +9,7 @@
 
     <!-- License -->
     <div
-      v-if="item.license"
+      v-if="item.license || licenseAttribution(item)"
       class="schemeDetail-license">
       <span
         v-for="(license, index) in item.license"
@@ -25,16 +25,16 @@
             {{ license.uri }}
           </span>
         </a>
-        <span v-if="licenseAttribution(item)">
-          by <a
-            v-if="license.uri.indexOf('by') >= 0 && licenseAttribution(item).url"
-            :href="licenseAttribution(item).url"
-            target="_blank">
-            <auto-link :link="licenseAttribution(item).label" />
-          </a>
-          <span v-else>
-            <auto-link :link="licenseAttribution(item).label" />
-          </span>
+      </span>
+      <span v-if="licenseAttribution(item)">
+        by <a
+          v-if="licenseAttribution(item).url"
+          :href="licenseAttribution(item).url"
+          target="_blank">
+          <auto-link :link="licenseAttribution(item).label" />
+        </a>
+        <span v-else>
+          <auto-link :link="licenseAttribution(item).label" />
         </span>
       </span>
     </div>
@@ -129,7 +129,7 @@ export default {
         return null
       }
       return {
-        url: organisation[0].url,
+        url: organisation[0].url || organisation[0].uri,
         label: this.$util.prefLabel(organisation[0])
       }
     },
