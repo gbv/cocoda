@@ -188,6 +188,10 @@ class BaseProvider {
       return schemes
     }
     this.adjustConcordances = (concordances) => {
+      for (let concordance of concordances) {
+        // Add _provider to concordance
+        concordance._provider = this
+      }
       return concordances
     }
     this.adjustMapping = (mapping) => {
