@@ -788,6 +788,21 @@ export default {
         return
       }
       this.searchNeedsRefresh = []
+      // If there is a concordance filter, enable relevant registries
+      if (this.searchFilter.partOf) {
+        let toEnable = []
+        for (let concordance of this.concordances.filter(c => this.$jskos.compare(c, { uri: this.searchFilter.partOf }))) {
+          let registryUri = _.get(concordance, "_provider.registry.uri")
+          if (registryUri && !toEnable.includes(registryUri)) {
+            toEnable.push(registryUri)
+          }
+        }
+        if (toEnable.length > 0) {
+          for (let uri of toEnable) {
+            this.showRegistry[uri] = true
+          }
+        }
+      }
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
