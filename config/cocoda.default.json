@@ -317,7 +317,12 @@
       "prefLabel": { "en": "WebGND" },
       "url": "http://gnd.eurospider.com/s?q={notation}",
       "schemeUris": ["http://bartoc.org/en/node/430"]
-    }
+    },
+	{
+	  "prefLabel": {"de": "Bremer Online Systematik" },
+	  "url": "https://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&term={notation}?&LAN=DE&IHITS=30&FHITS=30&XML_STYLE=/styles/cns-DE.xml&index=C&n_dtyp=1L&n_rtyp=ceEdX&RELEVANCE=55&INDEXINFO=awCN&forward=1&section=ms",
+	  "schemeUris": ["https://bartoc.org/de/node/730"]
+	}
   ],
   "favoriteSchemes": [
     "http://uri.gbv.de/terminology/bk/",
