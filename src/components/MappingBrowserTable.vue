@@ -505,7 +505,7 @@ export default {
           this.$store.commit({
             type: "mapping/set",
             mapping: original,
-            original: canEdit ? original : null
+            original
           })
         })
       } else {
@@ -570,6 +570,7 @@ export default {
       return true
     },
     saveMapping(mapping) {
+      mapping = this.$jskos.copyDeep(mapping)
       this.loading = 1
       this.loadingGlobal = true
       // Adjust creator
