@@ -216,6 +216,12 @@ export default {
     },
   },
   watch: {
+    configLoaded(loaded) {
+      if (loaded) {
+        // Set page title
+        document.title = this.config.title
+      }
+    },
     settingsLoaded() {
       this.$i18n.locale = this.settingsLocale
       this.start()
