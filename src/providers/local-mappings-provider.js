@@ -2,8 +2,11 @@ import _ from "lodash"
 import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
+import uuid from "uuid/v4"
 // TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
 import util from "../util"
+
+const uriPrefix = "urn:uuid:"
 
 /**
  * For saving and retrieving mappings from the browser's local storage.
@@ -15,17 +18,42 @@ class LocalMappingsProvider extends BaseProvider {
     this.queue = []
     this.localStorageKey = "cocoda-mappings--" + this.path
     let oldLocalStorageKey = "mappings"
+    // Function that adds URIs to all existing local mappings that don't yet have one
+    let addUris = () => {
+      return localforage.getItem(this.localStorageKey).then(mappings => {
+        let adjusted = 0
+        for (let mapping of mappings.filter(m => !m.uri || !m.uri.startsWith(uriPrefix))) {
+          if (mapping.uri) {
+            // Keep previous URI in identifier
+            if (!mapping.identifier) {
+              mapping.identifier = []
+            }
+            mapping.identifier.push(mapping.uri)
+          }
+          mapping.uri = `${uriPrefix}${uuid()}`
+          adjusted += 1
+        }
+        if (adjusted) {
+          console.warn(`URIs added to ${adjusted} local mappings.`)
+        }
+        return localforage.setItem(this.localStorageKey, mappings)
+      })
+    }
     // Migration from old local storage key to new one if necessary
-    Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(this.localStorageKey)]).then(results => {
+    let promise = Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(this.localStorageKey)]).then(results => {
       let [oldMappings, newMappings] = results
       if (oldMappings && !newMappings) {
-        localforage.setItem(this.localStorageKey, oldMappings).then(() => {
+        return localforage.setItem(this.localStorageKey, oldMappings).then(() => {
           console.warn(`Migrated from old local storage key (${oldLocalStorageKey}) to new one (${this.localStorageKey})`)
         }).catch(error => {
           console.error("Error attempting to migrate from old storage key to new one:", error)
-        })
+        }).then(addUris)
+      } else {
+        return addUris()
       }
     })
+    // Put promise into queue so that getMappings requests are waiting for migration/adjustments to finish
+    this.queue.push(promise)
   }
 
   /**
@@ -176,7 +204,7 @@ class LocalMappingsProvider extends BaseProvider {
       if (params.identifier) {
         mappings = mappings.filter(mapping => {
           return params.identifier.split("|").map(identifier => {
-            return (mapping.identifier || []).includes(identifier)
+            return (mapping.identifier || []).includes(identifier) || mapping.uri == identifier
           }).reduce((current, total) => current || total)
         })
       }
@@ -197,20 +225,31 @@ class LocalMappingsProvider extends BaseProvider {
     return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
       if (!mapping.created) {
         mapping.created = (new Date()).toISOString()
-      } else if (original) {
+      }
+      if (!mapping.modified) {
+        mapping.modified = mapping.created
+      }
+      if (original) {
         mapping.modified = (new Date()).toISOString()
       }
-      original = original || {}
-      // Filter out original mapping and other local mappings with the same content identifier.
-      let existingFilter = m => {
-        let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
-        let id1 = m.identifier ? m.identifier.find(findContentId) : null
-        let id2 = (original.identifier || []).find(findContentId)
-        let id3 = (mapping.identifier || []).find(findContentId)
-        return id1 != id2 && id1 != id3
+
+      let previousIndex = original ? localMappings.findIndex(m => m.uri == original.uri) : -1
+
+      // Set URI if necessary
+      if (!mapping.uri || !mapping.uri.startsWith(uriPrefix)) {
+        if (mapping.uri) {
+          // Keep previous URI in identifier
+          if (!mapping.identifier) {
+            mapping.identifier = []
+          }
+          mapping.identifier.push(mapping.uri)
+        }
+        mapping.uri = `${uriPrefix}${uuid()}`
       }
-      let previousIndex = localMappings.findIndex(m => !existingFilter(m))
-      localMappings = localMappings.filter(existingFilter)
+
+      if (original) {
+        localMappings = localMappings.filter(m => m.uri != original.uri)
+      }
       if (original && previousIndex != -1) {
         // Insert mapping at previous index
         localMappings.splice(previousIndex, 0, mapping)
@@ -237,17 +276,9 @@ class LocalMappingsProvider extends BaseProvider {
    * Removes mappings from local storage. Returns a Promise with a list of mappings that were removed.
    */
   _removeMapping(mapping) {
-    mapping = jskos.addMappingIdentifiers(mapping)
     return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
-      let filter = (reverse = false) => mapping => m => {
-        let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
-        let id1 = m.identifier ? m.identifier.find(findContentId) : null
-        let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
-        let result = id1 == null || id2 == null || id1 != id2
-        return reverse ? !result : result
-      }
       // Remove by content identifier
-      localMappings = localMappings.filter(filter()(mapping))
+      localMappings = localMappings.filter(m => m.uri != mapping.uri)
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem(this.localStorageKey, localMappings).then(() => {
