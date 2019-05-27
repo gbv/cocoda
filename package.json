@@ -26,6 +26,10 @@
     "src/*.{js,vue}": [
       "eslint --fix",
       "git add"
+    ],
+    "**/*.json": [
+      "./bin/format-json.js",
+      "git add"
     ]
   },
   "gitHooks": {
@@ -67,6 +71,7 @@
     "copy-webpack-plugin": "^5.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "glob": "^7.1.4",
     "jsdoc-to-markdown": "^5.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
