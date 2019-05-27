@@ -147,15 +147,19 @@
             </b-col>
           </b-row>
           <!-- Identifier -->
-          <b-row v-if="mapping.identifier">
+          <b-row v-if="mapping.uri || mapping.identifier">
             <b-col cols="3">
               {{ $t("mappingDetail.identifier") }}:
             </b-col>
             <b-col>
               <p
-                v-for="(identifier, index) in mapping.identifier"
+                v-for="(identifier, index) in [mapping.uri].concat(mapping.identifier).filter(id => id != null)"
                 :key="`mappingDetail-identifier-${index}`">
-                <auto-link :link="identifier" />
+                <auto-link
+                  :class="{
+                    'fontWeight-heavy': identifier == mapping.uri
+                  }"
+                  :link="identifier" />
               </p>
             </b-col>
           </b-row>
