@@ -7,7 +7,7 @@
         v-for="(alert, index) in $store.state.alerts.alerts"
         :key="index"
         :variant="alert.variant"
-        :show="alert.countdown != 0 || !alert.shouldCountdown"
+        :show="alert.countdown || !alert.shouldCountdown"
         :dismissible="!alert.shouldCountdown"
         fade
         @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"

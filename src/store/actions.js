@@ -18,7 +18,7 @@ export default {
         // Show UI alert
         commit("alerts/add", {
           variant: "danger",
-          countdown: -1,
+          countdown: 0,
           text: i18n.t("general.malformedConfig", { file: configFile })
         }, { root: true })
         userConfig = {}
