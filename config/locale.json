@@ -18,7 +18,8 @@
       "authNecessary": "Authentication necessary.",
       "or": "or",
       "of": "of",
-      "resizingSlider": "drag to resize cards"
+      "resizingSlider": "drag to resize cards",
+      "malformedConfig": "The configuration file {file} could not be loaded. The default config will be used instead."
     },
     "navbar": {
       "feedback": "Feedback",
@@ -260,7 +261,8 @@
       "authNecessary": "Authentifizierung notwendig.",
       "or": "oder",
       "of": "von",
-      "resizingSlider": "ziehen, um Komponenten-Größen anzupassen"
+      "resizingSlider": "ziehen, um Komponenten-Größen anzupassen",
+      "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet."
     },
     "navbar": {
       "feedback": "Feedback",

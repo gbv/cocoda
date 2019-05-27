@@ -2,6 +2,7 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import axios from "axios"
 import defaultConfig from "../config"
+import i18n from "../util/i18n"
 // Import registry providers
 import providers from "../providers"
 const buildInfo = require("../../build/build-info.json")
@@ -14,6 +15,12 @@ export default {
     return axios.get(configFile).then(response => response.data).catch(() => null).then(userConfig => {
       if (!_.isObject(userConfig)) {
         console.error(`Error loading config from ${configFile}: Data is not an object.`)
+        // Show UI alert
+        commit("alerts/add", {
+          variant: "danger",
+          countdown: -1,
+          text: i18n.t("general.malformedConfig", { file: configFile })
+        }, { root: true })
         userConfig = {}
       }
       let config = Object.assign({}, defaultConfig, userConfig)
