@@ -27,6 +27,10 @@ echo "Creating a $semver release..."
 echo "- Switching to dev branch..."
 git checkout --quiet dev 2>&1 >/dev/null
 
+echo "- Pulling changes from remote..."
+git pull --quiet --rebase 2>&1 >/dev/null
+iferror "Pulling changes failed, not creating a release."
+
 echo "- Running tests..."
 npm test 2>&1 >/dev/null
 iferror "Tests failed, not creating a release."
