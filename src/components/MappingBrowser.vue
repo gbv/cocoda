@@ -1061,23 +1061,12 @@ export default {
           if (item.sourceConcepts.length + item.targetConcepts.length == 0) {
             continue
           }
-          // Highlight if selected concepts are in mapping and add inScheme to each concept
-          let leftInSource = false
-          for (let concept of item.sourceConcepts) {
-            if (this.selected.concept[true] && concept.uri == this.selected.concept[true].uri) {
-              leftInSource = true
-            }
-            concept.inScheme = _.get(concept, "inScheme") || [mapping.fromScheme]
-          }
-          let rightInSource = false
-          for (let concept of item.targetConcepts) {
-            if (this.selected.concept[false] && concept.uri == this.selected.concept[false].uri) {
-              rightInSource = true
-            }
-            concept.inScheme = _.get(concept, "inScheme") || [mapping.toScheme]
-          }
+          // Highlight if selected concepts or current mapping have same members
+          let selectedConceptsIdentifier = this.$jskos.mappingMembersIdentifier({ from: { memberSet: [this.selected.concept[true]] }, to: { memberSet: [this.selected.concept[false]] }})
+          let currentMappingIdentifier = this.$jskos.mappingMembersIdentifier(this.$store.state.mapping.mapping)
+          let highlight = mapping.identifier.includes(selectedConceptsIdentifier) || mapping.identifier.includes(currentMappingIdentifier)
           item._rowClass = ""
-          if (leftInSource && rightInSource) {
+          if (highlight) {
             item._rowClass = "mappingBrowser-table-row-match"
           }
           item.creator = mapping.creator && mapping.creator[0] || ""
