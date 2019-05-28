@@ -1095,6 +1095,9 @@ export default {
           if (typeof item.creator === "object") {
             item.creator = this.$util.prefLabel(item.creator)
           }
+          // Add modified or created date in extra
+          item.extra = mapping.modified || mapping.created
+          item.extra = item.extra && item.extra.slice(0, 10)
           item.source = this.$util.prefLabel(registry)
           item.sourceShort = this.$util.notation(registry)
           item.type = this.$jskos.mappingTypeByType(mapping.type)

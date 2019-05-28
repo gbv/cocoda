@@ -243,9 +243,11 @@
         </span>
       </span>
       <span
-        slot="count"
+        slot="extra"
         slot-scope="data">
-        <span v-if="data.item.occurrence == null" />
+        <span v-if="data.item.occurrence == null">
+          {{ data.value }}
+        </span>
         <span v-else-if="data.item.occurrence.count == -1">-</span>
         <span v-else>
           <auto-link
@@ -377,7 +379,7 @@ export default {
         {
           key: "sourceConceptsLong",
           label: this.$t("mappingBrowser.from"),
-          width: "25%",
+          width: "22%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -424,7 +426,7 @@ export default {
         {
           key: "targetConceptsLong",
           label: this.$t("mappingBrowser.to"),
-          width: "25%",
+          width: "22%",
           minWidth: "",
           align: "left",
           sortable: false,
@@ -434,22 +436,27 @@ export default {
         {
           key: "creator",
           label: this.$t("mappingBrowser.creator"),
-          width: "9%",
+          width: "10%",
           minWidth: "",
           align: "left",
           sortable: false,
           class: "mappingBrowser-table-creator"
         },
         {
-          key: "count",
-          label: "",
-          width: "4%",
+          key: "extra",
+          label: this.$t("mappingBrowser.date"),
+          width: "10%",
           minWidth: "",
-          align: "right",
+          align: "center",
           sortable: false,
+          class: "mappingBrowser-table-extra",
           compare: (a, b) => {
             let first = _.get(a, "occurrence.count", -1)
             let second = _.get(b, "occurrence.count", -1)
+            if (first == -1 && second == -1) {
+              first = _.get(a, "extra")
+              second = _.get(b, "extra")
+            }
             if (first < second) {
               return -1
             }
@@ -776,6 +783,9 @@ export default {
 }
 
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {
+  display: none;
+}
+.mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-extra {
   display: none;
 }
 .mappingBrowser-table[max-width~="700px"] .mappingBrowser-table-conceptsLong {
