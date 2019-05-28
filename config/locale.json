@@ -19,7 +19,9 @@
       "or": "or",
       "of": "of",
       "resizingSlider": "drag to resize cards",
-      "malformedConfig": "The configuration file {file} could not be loaded. The default config will be used instead."
+      "malformedConfig": "The configuration file {file} could not be loaded. The default config will be used instead.",
+      "showConcordances": "Show Concordances",
+      "showMappingSearch": "Show Mapping Search"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -279,7 +281,9 @@
       "or": "oder",
       "of": "von",
       "resizingSlider": "ziehen, um Komponenten-Größen anzupassen",
-      "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet."
+      "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet.",
+      "showConcordances": "Zeige Konkordanz-Liste",
+      "showMappingSearch": "Zeige die Mapping-Suche"
     },
     "navbar": {
       "feedback": "Feedback",

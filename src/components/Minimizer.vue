@@ -59,6 +59,16 @@ export default {
       type: Boolean,
       default: false
     },
+    /**
+     * Allows parent component to force minimized state.
+     * `true`: Force to be opened.
+     * `false`: Force to be minimized.
+     * `null` or empty: Use user value.
+     */
+    forceMinimized: {
+      type: Boolean,
+      default: null
+    },
   },
   data() {
     return {
@@ -71,7 +81,7 @@ export default {
   computed: {
     minimized: {
       get() {
-        return this.$settings.minimized[this.parentComponentName()] || false
+        return this.forceMinimized != null ? this.forceMinimized : (this.$settings.minimized[this.parentComponentName()] || false)
       },
       set(newValue) {
         let minimized = _.cloneDeep(this.$settings.minimized)
@@ -90,7 +100,7 @@ export default {
     }
   },
   mounted() {
-    // this.refreshMinimize()
+    this.refreshMinimize()
   },
   methods: {
     parentComponentName() {

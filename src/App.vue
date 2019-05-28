@@ -111,6 +111,15 @@
                   <br>
                   {{ $t("general.feedback2") }}
                 </p>
+                <hr v-if="!forceMappingBrowser">
+                <p v-if="!forceMappingBrowser">
+                  <a
+                    href=""
+                    @click.prevent="showConcordances">{{ $t("general.showConcordances") }}</a> -
+                  <a
+                    href=""
+                    @click.prevent="showMappingSearch">{{ $t("general.showMappingSearch") }}</a>
+                </p>
               </div>
             </div>
             <!-- Minimizer allows component to get minimized -->
@@ -121,12 +130,15 @@
           <!-- Slider -->
           <resizing-slider :cocoda-red="true" />
           <div
+            v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
             id="mappingBrowserComponent"
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingBrowser -->
             <mapping-browser ref="mappingBrowser" />
             <!-- Minimizer allows component to get minimized -->
-            <minimizer :text="$t('mappingBrowser.title')" />
+            <minimizer
+              :text="$t('mappingBrowser.title')"
+              :force-minimized="(!selected.scheme[true] && !selected.scheme[false]) ? !forceMappingBrowser : null" />
           </div>
         </div>
 
@@ -182,6 +194,7 @@ export default {
         }
       },
       loadFromParametersOnce: _.once(this.loadFromParameters),
+      forceMappingBrowser: false,
     }
   },
   computed: {
@@ -605,6 +618,17 @@ export default {
       let mappingBrowser = this.$refs.mappingBrowser
       if (mappingBrowser && mappingBrowser.searchWithParams) {
         mappingBrowser.searchWithParams(filter)
+      }
+    },
+    showMappingSearch() {
+      this.forceMappingBrowser = true
+      this.searchMappings({})
+    },
+    showConcordances() {
+      this.forceMappingBrowser = true
+      let mappingBrowser = this.$refs.mappingBrowser
+      if (mappingBrowser && mappingBrowser.tab) {
+        mappingBrowser.tab = 0
       }
     },
   },
