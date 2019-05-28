@@ -762,7 +762,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-width: 600px;
-  max-width: 1200px;
+  max-width: 1400px;
   padding: 20px 20px;
   position: relative;
 }

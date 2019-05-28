@@ -118,14 +118,14 @@ export default {
         {
           key: "sourceScheme",
           label: "",
-          width: "10%",
+          width: "8%",
           minWidth: "",
           sortable: false
         },
         {
           key: "sourceConcepts",
           label: "from",
-          width: "22%",
+          width: "20%",
           minWidth: "",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
@@ -133,7 +133,7 @@ export default {
         {
           key: "type",
           label: "",
-          width: "8%",
+          width: "7%",
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
@@ -151,14 +151,14 @@ export default {
         {
           key: "targetScheme",
           label: "",
-          width: "10%",
+          width: "8%",
           minWidth: "",
           sortable: false
         },
         {
           key: "targetConcepts",
           label: "to",
-          width: "22%",
+          width: "20%",
           minWidth: "",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
@@ -166,14 +166,21 @@ export default {
         {
           key: "creator",
           label: "creator",
-          width: "20%",
+          width: "18%",
+          minWidth: "",
+          sortable: false
+        },
+        {
+          key: "date",
+          label: "date",
+          width: "12%",
           minWidth: "",
           sortable: false
         },
         {
           key: "actions",
           label: "",
-          width: "8%",
+          width: "7%",
           minWidth: "",
           sortable: false
         }
@@ -201,6 +208,8 @@ export default {
             item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
           }
           item.type = this.$jskos.mappingTypeByType(mapping.type)
+          item.date = mapping.modified || mapping.created
+          item.date = item.date && item.date.slice(0, 10)
           items.push(item)
           hashList.push(hash)
         }
