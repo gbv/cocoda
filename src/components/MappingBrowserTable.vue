@@ -259,7 +259,11 @@
         <div style="display: flex; position: relative;">
           <div
             style="flex: 1; padding-left: 5px;"
-            class="fontWeight-heavy">
+            :class="{
+              'fontWeight-heavy': true,
+              'mappingBrowser-registry-selectable': canUseRegistryForSaving(section.registry)
+            }"
+            @click="useRegistryForSaving(section.registry)">
             <registry-notation
               :tooltip="false"
               :registry="section.registry" />
@@ -470,6 +474,16 @@ export default {
     },
   },
   watch: {
+    currentRegistry(registry) {
+      // If registry changes and does not match the registry of the current original mapping, remove original
+      // TODO: Is this the best way to solve this? Maybe use URIs instead?
+      if (!this.$jskos.compare(registry, _.get(this.$store.state.mapping.original, "_provider.registry"))) {
+        this.$store.commit({
+          type: "mapping/set",
+          original: null,
+        })
+      }
+    },
   },
   mounted() {
     this.$util.setupTableScrollSync()
@@ -621,7 +635,19 @@ export default {
     hover(event) {
       this.hoveredMapping = event && event.mapping
       this.hoveredId = event && event.uniqueId
-    }
+    },
+    canUseRegistryForSaving(registry) {
+      return this.config.registries.filter(registry => registry.provider.has.canSaveMappings).find(r => this.$jskos.compare(r, registry)) != null
+    },
+    useRegistryForSaving(registry) {
+      if (this.canUseRegistryForSaving(registry)) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingRegistry",
+          value: registry.uri
+        })
+      }
+    },
   }
 }
 </script>
@@ -738,6 +764,11 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.mappingBrowser-registry-selectable:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .mappingBrowser-table .flexibleTable-section {
