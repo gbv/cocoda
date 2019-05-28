@@ -304,6 +304,12 @@ const mutations = {
       fromScheme: state.mapping.toScheme,
       toScheme: state.mapping.fromScheme
     })
+    // Switch narrower and broad match
+    if (state.mapping.type[0] == "http://www.w3.org/2004/02/skos/core#narrowMatch") {
+      state.mapping.type[0] = "http://www.w3.org/2004/02/skos/core#broadMatch"
+    } else if (state.mapping.type[0] == "http://www.w3.org/2004/02/skos/core#broadMatch") {
+      state.mapping.type[0] = "http://www.w3.org/2004/02/skos/core#narrowMatch"
+    }
   },
 
   setIdentifier(state) {
