@@ -176,12 +176,6 @@
         </span>
       </span>
       <span
-        slot="source"
-        slot-scope="{ item }">
-        <registry-notation
-          :registry="item.registry" />
-      </span>
-      <span
         slot="actions"
         slot-scope="data">
         <!-- Annotation score/button -->
