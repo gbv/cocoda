@@ -239,7 +239,8 @@
         <mapping-browser-table
           v-if="searchSections.length"
           :sections="searchSections"
-          @pageChange="search($event.registry.uri, $event.page)" />
+          :search-limit="resultLimit"
+          @pageChange="$set(searchPages, $event.registry.uri, $event.page); search($event.registry.uri, $event.page)" />
       </b-tab>
       <b-tab
         title="Mapping Navigator"
@@ -294,6 +295,7 @@
         <mapping-browser-table
           v-if="navigatorSections.length"
           :sections="navigatorSections"
+          :search-limit="resultLimit"
           @pageChange="$set(navigatorPages, $event.registry.uri, $event.page)" />
       </b-tab>
     </b-tabs>
@@ -882,6 +884,11 @@ export default {
       if (!from && !to) {
         this.navigatorResults = {}
         return
+      }
+
+      // If no specific registry is reloaded, reset page numbers
+      if (!registryToReload) {
+        this.navigatorPages = {}
       }
 
       for (let registry of this.navigatorRegistries) {
