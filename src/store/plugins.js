@@ -42,8 +42,22 @@ const refreshRouter = (store) => {
   if (router.currentRoute.query.config) {
     query.config = router.currentRoute.query.config
   }
-  // Push route
-  router.push({ query })
+  // Decide whether to push or replace depending on change in schemes/concepts
+  let replace = true
+  for (let kind of kinds) {
+    for (let isLeft of [true, false]) {
+      let key = sides[isLeft] + (kind == "scheme" ? "Scheme" : "")
+      if (query[key] != router.currentRoute.query[key]) {
+        replace = false
+      }
+    }
+  }
+  // Push or replace route
+  if (replace) {
+    router.replace({ query })
+  } else {
+    router.push({ query })
+  }
 }
 
 /**
