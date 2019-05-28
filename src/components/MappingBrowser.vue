@@ -44,7 +44,7 @@
       no-fade
       justified>
       <b-tab
-        title="Concordances"
+        :title="$t('mappingBrowser.concordances')"
         @click="handleClickOutside">
         <template v-if="concordances && concordances.length">
           <div style="display: flex;">
@@ -58,21 +58,21 @@
                 type="text"
                 style="width: 55%; display: inline-block;"
                 size="sm"
-                placeholder="from" />
+                :placeholder="$t('mappingBrowser.from')" />
               <b-input
                 v-if="field.key == 'to'"
                 v-model="concordanceFilter.to"
                 type="text"
                 style="width: 75%; display: inline-block;"
                 size="sm"
-                placeholder="to" />
+                :placeholder="$t('mappingBrowser.to')" />
               <b-input
                 v-if="field.key == 'creator'"
                 v-model="concordanceFilter.creator"
                 type="text"
                 style="width: 80%; display: inline-block;"
                 size="sm"
-                placeholder="creator" />
+                :placeholder="$t('mappingBrowser.creator')" />
               <span
                 v-if="concordanceFilter[field.key] != null"
                 v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
@@ -118,7 +118,7 @@
                 slot="actions"
                 slot-scope="{ item }">
                 <font-awesome-icon
-                  v-b-tooltip.hover="{ title: 'Show Mappings', delay: $util.delay.medium }"
+                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: $util.delay.medium }"
                   icon="external-link-square-alt"
                   class="button"
                   @click="showMappingsForConcordance(item.concordance)" />
@@ -127,10 +127,10 @@
           </div>
           <div style="display: flex;">
             <p style="font-weight: bold; flex: 1;">
-              {{ concordanceTableItems.length }} concordances
+              {{ concordanceTableItems.length }} {{ $t("mappingBrowser.concordances") }}
             </p>
             <p style="text-align: right; font-weight: bold;">
-              Total: {{ concordanceTableItems.reduce((total, current) => {
+              {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
                 return total + parseInt(current.mappings) || 0
               }, 0).toLocaleString() }}
             </p>
@@ -138,7 +138,7 @@
         </template>
       </b-tab>
       <b-tab
-        title="Mapping Search"
+        :title="$t('mappingBrowser.mappingSearch')"
         @click="handleClickOutside">
         <div style="flex: none;">
           <div style="display: flex;">
@@ -147,14 +147,14 @@
               :state="searchFilter.fromScheme == '' ? true : searchFromScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
-              placeholder="source scheme"
+              :placeholder="$t('mappingBrowser.searchSourceScheme')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilter.fromScheme', concept: 'searchFilter.fromNotation' })" />
             <b-input
               v-model="searchFilter.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
-              placeholder="source notation"
+              :placeholder="$t('mappingBrowser.searchSourceNotation')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilter.fromScheme', concept: 'searchFilter.fromNotation' })" />
             <div
@@ -168,29 +168,29 @@
               :state="searchFilter.toScheme == '' ? true : searchToScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
-              placeholder="target scheme"
+              :placeholder="$t('mappingBrowser.searchTargetScheme')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilter.toScheme', concept: 'searchFilter.toNotation' })" />
             <b-input
               v-model="searchFilter.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
-              placeholder="target notation"
+              :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilter.toScheme', concept: 'searchFilter.toNotation' })" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
-              Creator:
+              {{ $t("mappingBrowser.creator") }}:
             </div>
             <b-input
               v-model="searchFilter.creator"
               style="flex: 2; margin: 3px;"
               size="sm"
-              placeholder="creator"
+              :placeholder="$t('mappingBrowser.creator')"
               @keyup.enter.native="searchClicked" />
             <div style="text-align: right; flex: none; margin: auto 5px;">
-              Type:
+              {{ $t("mappingBrowser.searchType") }}:
             </div>
             <b-select
               v-model="searchFilter.type"
@@ -201,7 +201,7 @@
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
-              Concordance:
+              {{ $t("mappingBrowser.concordance") }}:
             </div>
             <b-form-select
               v-model="searchFilter.partOf"
@@ -225,14 +225,14 @@
               size="sm"
               @click="clearSearchFilter">
               <font-awesome-icon icon="ban" />
-              Clear
+              {{ $t("mappingBrowser.searchClear") }}
             </b-button>
             <b-button
               style="flex: none; margin: 3px;"
               variant="primary"
               size="sm"
               @click="searchClicked">
-              <font-awesome-icon icon="search" />Search
+              <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
             </b-button>
           </div>
         </div>
@@ -243,7 +243,7 @@
           @pageChange="$set(searchPages, $event.registry.uri, $event.page); search($event.registry.uri, $event.page)" />
       </b-tab>
       <b-tab
-        title="Mapping Navigator"
+        :title="$t('mappingBrowser.mappingNavigator')"
         @click="handleClickOutside">
         <div
           v-show="!selected.concept[true] && !selected.concept[false]"
@@ -367,7 +367,7 @@ export default {
       return [
         {
           key: "from",
-          label: "from",
+          label: this.$t("mappingBrowser.from"),
           width: "13%",
           minWidth: "",
           sortable: true,
@@ -376,7 +376,7 @@ export default {
         },
         {
           key: "to",
-          label: "to",
+          label: this.$t("mappingBrowser.to"),
           width: "9%",
           minWidth: "",
           sortable: true,
@@ -384,7 +384,7 @@ export default {
         },
         {
           key: "description",
-          label: "description",
+          label: this.$t("mappingBrowser.description"),
           width: "24%",
           minWidth: "",
           sortable: true,
@@ -393,7 +393,7 @@ export default {
         },
         {
           key: "creator",
-          label: "creator",
+          label: this.$t("mappingBrowser.creator"),
           width: "16%",
           minWidth: "",
           sortable: true,
@@ -401,7 +401,7 @@ export default {
         },
         {
           key: "date",
-          label: "date",
+          label: this.$t("mappingBrowser.date"),
           width: "10%",
           minWidth: "",
           sortable: true,
@@ -410,7 +410,7 @@ export default {
         },
         {
           key: "download",
-          label: "download",
+          label: this.$t("mappingBrowser.download"),
           width: "11%",
           minWidth: "",
           sortable: false,
@@ -419,7 +419,7 @@ export default {
         },
         {
           key: "mappings",
-          label: "mappings",
+          label: this.$t("registryInfo.mappings"),
           width: "13%",
           minWidth: "",
           sortable: true,
@@ -454,7 +454,7 @@ export default {
     },
     typeOptions() {
       let options = [{
-        text: "all types",
+        text: this.$t("mappingBrowser.searchAllTypes"),
         value: null
       }]
       for (let type of this.$jskos.mappingTypes) {
@@ -467,7 +467,7 @@ export default {
     },
     concordanceOptions() {
       let options = [
-        { value: null, text: "all concordances" }
+        { value: null, text: this.$t("mappingBrowser.searchAllConcordances") }
       ]
 
       for (let item of this.concordanceTableItems) {
