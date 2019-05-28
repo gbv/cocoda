@@ -674,8 +674,14 @@ export default {
 .mappingBrowser-table-row-match {
   background-color: @color-table-highlight-background-1;
 }
+.flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-match {
+  background-color: @color-table-highlight-background-0;
+}
 .mappingBrowser-table-row-edited {
   background-color: @color-select-2;
+}
+.flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-edited {
+  background-color: @color-select-1;
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
