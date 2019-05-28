@@ -45,7 +45,7 @@
     "bootstrap-vue": "2.0.0-rc.19",
     "css-element-queries": "^1.1.1",
     "file-saver": "^2.0.1",
-    "gbv-login-client": "^0.2.5",
+    "gbv-login-client": "^0.2.6",
     "jquery": "^3.4.0",
     "jskos-tools": "^0.2.0",
     "json-format-highlight": "^1.0.1",
