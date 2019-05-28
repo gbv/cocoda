@@ -58,7 +58,8 @@
               :item="selected.concept[isLeft] || selected.scheme[isLeft]"
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail" />
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
+              @searchMappings="searchMappings($event)" />
             <!-- Slider -->
             <resizing-slider />
             <!-- ConceptTree -->
@@ -123,7 +124,7 @@
             id="mappingBrowserComponent"
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingBrowser -->
-            <mapping-browser />
+            <mapping-browser ref="mappingBrowser" />
             <!-- Minimizer allows component to get minimized -->
             <minimizer :text="$t('mappingBrowser.title')" />
           </div>
@@ -599,7 +600,13 @@ export default {
       } else {
         this.loading = false
       }
-    }
+    },
+    searchMappings(filter) {
+      let mappingBrowser = this.$refs.mappingBrowser
+      if (mappingBrowser && mappingBrowser.searchWithParams) {
+        mappingBrowser.searchWithParams(filter)
+      }
+    },
   },
 }
 </script>

@@ -63,13 +63,18 @@
       <b>{{ $t("schemeDetail.languages") }}:</b> {{ item.languages.join(", ") }}
     </div>
 
-    <!-- Link to MappingsApp -->
+    <!-- Link to mapping search -->
     <div
       v-if="$util.notation(item)"
       class="schemeDetail-identifier">
       <a
-        :href="`mappings.html?${isLeft ? 'fromScheme' : 'toScheme'}=${$util.notation(item)}&tab=1`"
-        target="_blank">
+        href=""
+        @click.prevent="$emit('searchMappings', {
+          fromScheme: isLeft ? $util.notation(item) : null,
+          fromNotation: isLeft ? '' : null,
+          toScheme: !isLeft ? $util.notation(item) : null,
+          toNotation: !isLeft ? '' : null
+        })">
         {{ $t("schemeDetail.availableMappings") }}
       </a>
     </div>

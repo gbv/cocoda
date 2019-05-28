@@ -13,7 +13,8 @@
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
         :is-left="isLeft"
-        :settings="internalSettings" />
+        :settings="internalSettings"
+        @searchMappings="$emit('searchMappings', $event)" />
     </div>
     <div
       v-else-if="!loading"

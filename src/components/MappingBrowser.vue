@@ -780,6 +780,15 @@ export default {
       this.searchResults = {}
       this.search()
     },
+    searchWithParams(filter) {
+      this.tab = 1
+      _.forOwn(filter, (value, key) => {
+        if (value != null) {
+          this.searchFilter[key] = value
+        }
+      })
+      this.searchClicked()
+    },
     searchClicked() {
       this.search(null, 1)
     },
