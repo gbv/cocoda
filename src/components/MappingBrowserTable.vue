@@ -208,7 +208,7 @@
         </div>
         <div class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAndEdit') : $t('mappingBrowser.edit'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.edit'), delay: $util.delay.medium }"
             icon="edit"
             class="button"
             @click="edit(data)" />
@@ -499,22 +499,11 @@ export default {
         return newMapping
       }
       let mapping = copyWithReferences(data.item.mapping)
-      // Save mapping
-      if (this.canSave(mapping)) {
-        this.saveMapping(mapping).then(original => {
-          this.$store.commit({
-            type: "mapping/set",
-            mapping: original,
-            original
-          })
-        })
-      } else {
-        this.$store.commit({
-          type: "mapping/set",
-          mapping,
-          original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.currentRegistry) ? copyWithReferences(mapping) : null
-        })
-      }
+      this.$store.commit({
+        type: "mapping/set",
+        mapping,
+        original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.currentRegistry) ? copyWithReferences(mapping) : null
+      })
     },
     canEdit(data) {
       if (!data.item.mapping) {
