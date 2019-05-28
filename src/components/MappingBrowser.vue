@@ -1069,6 +1069,12 @@ export default {
           if (highlight) {
             item._rowClass = "mappingBrowser-table-row-match"
           }
+          // Highlight if this exact mapping is being edited right now
+          let originalUri = _.get(this.$store.state.mapping.original, "uri")
+          if (originalUri && mapping.uri == originalUri) {
+            item._rowClass = "mappingBrowser-table-row-edited"
+          }
+
           item.creator = mapping.creator && mapping.creator[0] || ""
           if (typeof item.creator === "object") {
             item.creator = this.$util.prefLabel(item.creator)

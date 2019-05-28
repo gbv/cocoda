@@ -685,11 +685,8 @@ export default {
 .mappingBrowser-table-row-match {
   background-color: @color-table-highlight-background-1;
 }
-.mappingBrowser-table-row-editing-saved {
-  background-color: fadein(@color-background-saved, 6%);
-}
-.mappingBrowser-table-row-editing-notSaved {
-  background-color: fadein(@color-background-notSaved, 6%);
+.mappingBrowser-table-row-edited {
+  background-color: @color-select-2;
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
