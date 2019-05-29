@@ -4,7 +4,9 @@
     @dragover="dragOver"
     @drop="drop">
     <!-- Minimizer allows component to get minimized -->
-    <minimizer :text="type + ' Detail'" />
+    <minimizer
+      :name="`itemDetail_${isLeft}`"
+      :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
     <div
       v-if="item != null"

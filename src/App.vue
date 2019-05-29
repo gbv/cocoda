@@ -41,7 +41,9 @@
             order5: !isLeft
           }"
           class="browser mainComponent">
-          <minimizer :is-column="true" />
+          <minimizer
+            :name="`browserComponent_${isLeft}`"
+            :is-column="true" />
           <!-- Concept scheme selection -->
           <concept-scheme-selection
             :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
@@ -125,6 +127,7 @@
             <!-- Minimizer allows component to get minimized -->
             <minimizer
               ref="minimizer"
+              name="mappingEditorComponent"
               :text="$t('mappingEditor.title')" />
           </div>
           <!-- Slider -->
@@ -138,6 +141,7 @@
             <!-- Minimizer allows component to get minimized -->
             <minimizer
               ref="mappingBrowserMinimizer"
+              name="mappingBrowserComponent"
               :text="$t('mappingBrowser.title')" />
           </div>
         </div>

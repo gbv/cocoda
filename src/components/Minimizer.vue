@@ -41,10 +41,20 @@ import _ from "lodash"
  * If it's a vertical component:
  * <minimizer :is-column="true" text="Name of Component" />
  *
+ * If you want the minimized status to be written into local storage, provide a name:
+ * <minimizer name="myComponent" text="Name of Component" />
+ *
  */
 export default {
   name: "Minimizer",
   props: {
+    /**
+     *
+     */
+    name: {
+      type: String,
+      default: null
+    },
     /**
      * The text that is shown when minimized.
      */
@@ -74,6 +84,7 @@ export default {
     return {
       previousFlex: "",
       previousMinSizes: [],
+      minimizedLocal: false,
       minimizerSize: "40px",
       minimizeHovered: false,
     }
@@ -81,16 +92,26 @@ export default {
   computed: {
     minimized: {
       get() {
-        return this.forceMinimized != null ? this.forceMinimized : (this.$settings.minimized[this.parentComponentName()] || false)
+        return this.forceMinimized != null ?
+          this.forceMinimized :
+          (
+            this.name != null ?
+              this.$settings.minimized[this.name] || false :
+              this.minimizedLocal
+          )
       },
       set(newValue) {
-        let minimized = _.cloneDeep(this.$settings.minimized)
-        minimized[this.parentComponentName()] = newValue
-        this.$store.commit({
-          type: "settings/set",
-          prop: "minimized",
-          value: minimized
-        })
+        if (this.name != null) {
+          let minimized = _.cloneDeep(this.$settings.minimized)
+          minimized[this.name] = newValue
+          this.$store.commit({
+            type: "settings/set",
+            prop: "minimized",
+            value: minimized
+          })
+        } else {
+          this.minimizedLocal = newValue
+        }
       }
     }
   },
@@ -103,9 +124,6 @@ export default {
     this.refreshMinimize()
   },
   methods: {
-    parentComponentName() {
-      return this.$el ? this.$el.parentElement.id : "fallback"
-    },
     toggleMinimize(minimized = null) {
       if (minimized != null) {
         this.minimized = minimized

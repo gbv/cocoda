@@ -3,7 +3,9 @@
     :style="`${noTree ? 'min-height: 50px; max-height: 50px;' : ''}`"
     class="conceptTree">
     <!-- Minimizer allows the component to get minimized -->
-    <minimizer :text="$t('conceptTree.title')" />
+    <minimizer
+      :name="`conceptTree_${isLeft}`"
+      :text="$t('conceptTree.title')" />
     <!-- Show top concepts -->
     <div
       ref="conceptTreeItems"
