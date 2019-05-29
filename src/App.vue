@@ -126,9 +126,11 @@
             </div>
             <!-- Minimizer allows component to get minimized -->
             <minimizer
-              ref="minimizer"
+              v-show="!forceMappingEditor"
+              ref="mappingEditorMinimizer"
               name="mappingEditorComponent"
-              :text="$t('mappingEditor.title')" />
+              :text="$t('mappingEditor.title')"
+              :force-minimized="forceMappingEditor ? false : null" />
           </div>
           <!-- Slider -->
           <resizing-slider
@@ -201,6 +203,7 @@ export default {
       },
       loadFromParametersOnce: _.once(this.loadFromParameters),
       forceMappingBrowser: false,
+      forceMappingEditor: false,
     }
   },
   computed: {
@@ -408,6 +411,19 @@ export default {
         minimizer.minimized = false
       }
     },
+    /**
+     * Unminimize mapping editor if no scheme is selected
+     */
+    selected: {
+      handler() {
+        if (!this.selected.scheme[true] && !this.selected.scheme[false]) {
+          this.forceMappingEditor = true
+        } else {
+          this.forceMappingEditor = false
+        }
+      },
+      deep: true
+    }
   },
   created() {
     // Set loading to true if schemes are not loaded yet.
