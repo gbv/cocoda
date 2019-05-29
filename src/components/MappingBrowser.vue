@@ -846,8 +846,15 @@ export default {
           cancelToken: cancelToken.token,
         }).then(mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
-            this.$set(this.searchResults, registry.uri, mappings)
-            this.$set(this.searchLoading, registry.uri, false)
+            let page = (this.searchPages[registry.uri] || 1)
+            if (mappings.length == 0 && page > 1) {
+              // When on a later page and there were zero mappings, go back one page
+              // This can happen if there was a single mapping on a page and it go deleted, or mappings got deleted from the server while browsing
+              this.search(registry.uri, page - 1)
+            } else {
+              this.$set(this.searchResults, registry.uri, mappings)
+              this.$set(this.searchLoading, registry.uri, false)
+            }
           }
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
