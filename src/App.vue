@@ -137,8 +137,8 @@
             <mapping-browser ref="mappingBrowser" />
             <!-- Minimizer allows component to get minimized -->
             <minimizer
-              :text="$t('mappingBrowser.title')"
-              :force-minimized="(!selected.scheme[true] && !selected.scheme[false]) ? !forceMappingBrowser : null" />
+              ref="mappingBrowserMinimizer"
+              :text="$t('mappingBrowser.title')" />
           </div>
         </div>
 
@@ -391,6 +391,15 @@ export default {
             }
           })
         }
+      }
+    },
+    /**
+     * Unminimize mapping browser if force mapping browser is set to true
+     */
+    forceMappingBrowser(force) {
+      if (force) {
+        let minimizer = this.$refs.mappingBrowserMinimizer
+        minimizer.minimized = false
       }
     },
   },
