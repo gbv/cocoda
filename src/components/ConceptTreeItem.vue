@@ -4,10 +4,12 @@
     :style="`padding-left: ${depth * 10}px`"
     :data-uri="concept.uri"
     :class="{
-      hovered: isHovered,
+      hovered: isHovered && !isHovered,
       selected: isSelected
     }"
-    class="conceptTreeItem">
+    class="conceptTreeItem"
+    @mouseover="hovering(concept)"
+    @mouseout="hovering(null)">
     <!-- Concept -->
     <div
       class="conceptBox"
@@ -28,8 +30,6 @@
         :to="url"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
-        @mouseover.native="hovering(concept)"
-        @mouseout.native="hovering(null)"
         @click.native.stop.prevent="onClick">
         <item-name
           :item="concept"
@@ -40,9 +40,7 @@
         v-show="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         class="addToMapping"
-        @click="addConcept()"
-        @mouseover="hovering(concept)"
-        @mouseout="hovering(null)">
+        @click="addConcept()">
         <font-awesome-icon icon="plus-circle" />
       </div>
     </div>
@@ -137,11 +135,14 @@ export default {
       return _.get(this.concept, `__ISOPEN__[${this.isLeft}]`, false)
     },
   },
+  created() {
+    this.hovering = _.debounce(this._hovering, 20)
+  },
   methods: {
     /**
      * Triggers a hovered event.
      */
-    hovering(concept) {
+    _hovering(concept) {
       this.hoveredConcept = concept
       this.isHoveredFromHere = concept != null
       // Set canAddToMapping
@@ -309,7 +310,8 @@ export default {
 
 .hovered,
 .selected.hovered,
-.arrowBox:hover {
+.arrowBox:hover,
+.conceptTreeItem:hover {
   background-color: @color-select-1;
   color: @color-action-2;
 }

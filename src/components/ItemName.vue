@@ -3,10 +3,13 @@
     v-if="item != null"
     :draggable="draggable"
     class="itemName"
+    :class="{
+      'itemName-hoverable': !preventExternalHover
+    }"
     @dragstart="dragStart(item, $event)"
     @dragend="dragEnd"
-    @mouseover="mouseOver"
-    @mouseout="mouseOut">
+    @mouseover="hovering(true)"
+    @mouseout="hovering(false)">
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
@@ -162,33 +165,35 @@ export default {
     if (!this.preventExternalHover && this.isLink) {
       this.isValidLink = true
     }
+    this.hovering = _.debounce(this._hovering, 20)
   },
   methods: {
-    mouseOver() {
-      this.isHoveredFromHere = true
-      this.hoveredConcept = this.item
-      // Set URL
-      this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
-      // Set isValidLink
-      if (!this.isLink) {
-        this.isValidLink = false
-      } else {
-        // Check if scheme is available or item itself is a scheme.
-        this.isValidLink = this.getProvider(this.item) != null
-      }
-      // Check whether mouse is still in element.
-      window.clearInterval(this.interval)
-      this.interval = setInterval(() => {
-        if (!this.isMouseOver()) {
-          this.isHoveredFromHere = false
-          window.clearInterval(this.interval)
+    _hovering(status) {
+      if (status) {
+        this.isHoveredFromHere = true
+        this.hoveredConcept = this.item
+        // Set URL
+        this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
+        // Set isValidLink
+        if (!this.isLink) {
+          this.isValidLink = false
+        } else {
+          // Check if scheme is available or item itself is a scheme.
+          this.isValidLink = this.getProvider(this.item) != null
         }
-      }, 500)
-    },
-    mouseOut() {
-      this.isHoveredFromHere = false
-      this.hoveredConcept = null
-      window.clearInterval(this.interval)
+        // Check whether mouse is still in element.
+        window.clearInterval(this.interval)
+        this.interval = setInterval(() => {
+          if (!this.isMouseOver()) {
+            this.isHoveredFromHere = false
+            window.clearInterval(this.interval)
+          }
+        }, 500)
+      } else {
+        this.isHoveredFromHere = false
+        this.hoveredConcept = null
+        window.clearInterval(this.interval)
+      }
     },
     trimTooltip(text) {
       if (text.length > 80) {
@@ -253,7 +258,7 @@ Vue.component("notation-text", {
   color: @color-text-dark !important;
   display: inline;
 }
-.itemName-hovered {
+.itemName-hovered, .itemName-hoverable:hover > div {
   cursor: pointer;
   text-decoration: underline !important;
 }
