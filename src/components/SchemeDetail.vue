@@ -96,6 +96,9 @@ import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import ItemDetailNarrower from "./ItemDetailNarrower"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * Component that displays a scheme's details (URI, notation, identifier, ...).
  */
@@ -104,6 +107,7 @@ export default {
   components: {
     AutoLink, ItemName, ItemDetailNarrower
   },
+  mixins: [objects],
   props: {
     /**
      * The scheme object whose details should be displayed.
