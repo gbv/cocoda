@@ -492,6 +492,9 @@ export default {
       }
     },
   },
+  created() {
+    this.hover = _.debounce(this._hover, 20)
+  },
   mounted() {
     this.$util.setupTableScrollSync()
   },
@@ -639,7 +642,7 @@ export default {
       let color = `rgb(${r}, ${g}, ${b})`
       return color
     },
-    hover(event) {
+    _hover(event) {
       this.hoveredMapping = event && event.mapping
       this.hoveredId = event && event.uniqueId
     },
