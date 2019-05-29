@@ -131,7 +131,9 @@
               :text="$t('mappingEditor.title')" />
           </div>
           <!-- Slider -->
-          <resizing-slider :cocoda-red="true" />
+          <resizing-slider
+            v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
+            :cocoda-red="true" />
           <div
             v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
             id="mappingBrowserComponent"
