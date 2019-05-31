@@ -195,10 +195,22 @@
             </div>
             <b-select
               v-model="searchFilter.type"
-              style="flex: 2; margin: 3px;"
+              style="flex: 3; margin: 3px;"
               size="sm"
               :options="typeOptions"
               @keyup.enter.native="searchClicked" />
+            <div
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.searchAllTooltip'), delay: $util.delay.medium }"
+              style="text-align: right; flex: none; margin: auto 5px;">
+              All:
+              <b-form-checkbox
+                v-model="searchFilter.direction"
+                style="display: inline-block;"
+                size="sm"
+                value="both"
+                unchecked-value="forward"
+                @keyup.enter.native="searchClicked" />
+            </div>
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -775,6 +787,7 @@ export default {
         toScheme: "",
         toNotation: "",
         creator: "",
+        direction: "forward",
         type: null,
         partOf: null,
       }
@@ -840,6 +853,7 @@ export default {
           toScheme: this.searchToScheme,
           creator: this.searchFilter.creator,
           typeFilter: this.searchFilter.type,
+          direction: this.searchFilter.direction,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.resultLimit,
