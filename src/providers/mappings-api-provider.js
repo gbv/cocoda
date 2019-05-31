@@ -54,6 +54,7 @@ class MappingsApiProvider extends BaseProvider {
     _.forOwn(params, (value, key) => {
       url += `${key}=${encodeURIComponent(value)}&`
     })
+    url = url.slice(0, url.length - 1)
     options = Object.assign({}, { params }, options)
     return this.get(this.registry.mappings, options, cancelToken).then(mappings => {
       mappings = mappings || []
