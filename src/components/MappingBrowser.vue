@@ -87,6 +87,7 @@
                 variant="link"
                 size="sm"
                 style="padding-right: 0; margin-right: -5px;"
+                tabindex="-1"
                 @click="[concordanceFilter.from, concordanceFilter.to] = [concordanceFilter.to, concordanceFilter.from]">
                 <font-awesome-icon icon="exchange-alt" />
               </b-button>
