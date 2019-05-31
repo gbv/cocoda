@@ -134,57 +134,65 @@ class LocalMappingsProvider extends BaseProvider {
       params.identifier = identifier
     }
     return localforage.getItem(this.localStorageKey).then(mappings => mappings || []).catch(() => []).then(mappings => {
-      if (params.direction == "both") {
-        params.mode = "or"
-      }
+      // Check concept with param
+      let checkConcept = (concept, param) => concept.uri == param || (param && concept.notation && concept.notation[0].toLowerCase() == param.toLowerCase())
       // Filter mappings according to params (support for from + to)
       // TODO: - Support more parameters.
       // TODO: - Move to its own things.
-      // TODO: - Support memberList and memberChoice.
       // TODO: - Clean all this up.
-      if (params.mode == "or") {
-        if (params.from || params.to) {
-          mappings = mappings.filter(mapping => {
-            let fromInFrom = null != mapping.from.memberSet.find(concept => {
-              return concept.uri == params.from || (params.from && concept.notation && concept.notation[0].toLowerCase() == params.from.toLowerCase())
-            })
-            let fromInTo = null != mapping.to.memberSet.find(concept => {
-              return concept.uri == params.from || (params.from && concept.notation && concept.notation[0].toLowerCase() == params.from.toLowerCase())
-            })
-            let toInFrom = null != mapping.from.memberSet.find(concept => {
-              return concept.uri == params.to || (params.to && concept.notation && concept.notation[0].toLowerCase() == params.to.toLowerCase())
-            })
-            let toInTo = null != mapping.to.memberSet.find(concept => {
-              return concept.uri == params.to || (params.to && concept.notation && concept.notation[0].toLowerCase() == params.to.toLowerCase())
-            })
-            return (params.direction == "forward" && (fromInFrom || toInTo)) ||
-              (params.direction == "backward" && (fromInTo || toInFrom)) ||
-              (params.direction == "both" && (fromInFrom || fromInTo || toInFrom || toInTo))
-          })
-        }
-      } else {
-        if (params.from) {
-          mappings = mappings.filter(mapping => {
-            let target = params.direction == "backward" ? "to" : "from"
-            return null != mapping[target].memberSet.find(concept => {
-              return concept.uri == params.from || (concept.notation && concept.notation[0].toLowerCase() == params.from.toLowerCase())
-            })
-          })
-        }
-        if (params.to) {
-          mappings = mappings.filter(mapping => {
-            let target = params.direction == "backward" ? "from" : "to"
-            return null != mapping[target].memberSet.find(concept => {
-              return concept.uri == params.to || (concept.notation && concept.notation[0].toLowerCase() == params.to.toLowerCase())
-            })
-          })
-        }
+      if (params.from || params.to) {
+        mappings = mappings.filter(mapping => {
+          let fromInFrom = null != jskos.conceptsOfMapping(mapping, "from").find(concept => checkConcept(concept, params.from))
+          let fromInTo = null != jskos.conceptsOfMapping(mapping, "to").find(concept => checkConcept(concept, params.from))
+          let toInFrom = null != jskos.conceptsOfMapping(mapping, "from").find(concept => checkConcept(concept, params.to))
+          let toInTo = null != jskos.conceptsOfMapping(mapping, "to").find(concept => checkConcept(concept, params.to))
+          if (params.direction == "backward") {
+            if (params.mode == "or") {
+              return (params.from && fromInTo) || (params.to && toInFrom)
+            } else {
+              return (!params.from || fromInTo) && (!params.to || toInFrom)
+            }
+          } else if (params.direction == "both") {
+            if (params.mode == "or") {
+              return (params.from && (fromInFrom || fromInTo)) || (params.to && (toInFrom || toInTo))
+            } else {
+              return ((!params.from || fromInFrom) && (!params.to || toInTo)) || ((!params.from || fromInTo) && (!params.to || toInFrom))
+            }
+          } else {
+            if (params.mode == "or") {
+              return (params.from && fromInFrom) || (params.to && toInTo)
+            } else {
+              return (!params.from || fromInFrom) && (!params.to || toInTo)
+            }
+          }
+        })
       }
-      if (params.fromScheme) {
-        mappings = mappings.filter(mapping => jskos.compare(mapping.fromScheme, params.fromScheme))
-      }
-      if (params.toScheme) {
-        mappings = mappings.filter(mapping => jskos.compare(mapping.toScheme, params.toScheme))
+      if (params.fromScheme || params.toScheme) {
+        mappings = mappings.filter(mapping => {
+          let fromInFrom = jskos.compare(mapping.fromScheme, params.fromScheme)
+          let fromInTo = jskos.compare(mapping.toScheme, params.fromScheme)
+          let toInFrom = jskos.compare(mapping.fromScheme, params.toScheme)
+          let toInTo = jskos.compare(mapping.toScheme, params.toScheme)
+          if (params.direction == "backward") {
+            if (params.mode == "or") {
+              return (params.fromScheme && fromInTo) || (params.toScheme && toInFrom)
+            } else {
+              return (!params.fromScheme || fromInTo) && (!params.toScheme || toInFrom)
+            }
+          } else if (params.direction == "both") {
+            if (params.mode == "or") {
+              return (params.fromScheme && (fromInFrom || fromInTo)) || (params.toScheme && (toInFrom || toInTo))
+            } else {
+              return ((!params.fromScheme || fromInFrom) && (!params.toScheme || toInTo)) || ((!params.fromScheme || fromInTo) && (!params.toScheme || toInFrom))
+            }
+          } else {
+            if (params.mode == "or") {
+              return (params.fromScheme && fromInFrom) || (params.toScheme && toInTo)
+            } else {
+              return (!params.fromScheme || fromInFrom) && (!params.toScheme || toInTo)
+            }
+          }
+        })
       }
       // creator
       if (params.creator) {
