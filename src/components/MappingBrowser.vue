@@ -365,7 +365,6 @@ export default {
       hasSwitchedToNavigator: false,
       settingsShow: false,
       registryGroupShow: {},
-      concordances: null,
       concordanceFilter: {
         from: "",
         to: "",
@@ -748,14 +747,18 @@ export default {
     this.clearSearchFilter()
   },
   mounted() {
-    if (!this.concordances) {
+    if (!this.concordances || !this.concordances.length) {
       let promises = []
       for (let registry of this.config.registries.filter(r => r.provider.has.concordances)) {
         promises.push(registry.provider.getConcordances())
       }
       Promise.all(promises).then(results => {
         let concordances = _.flatten(results)
-        this.concordances = concordances
+        // Set values of concordance array that is managed by objects mixin
+        _.forEach(concordances, (concordance, index) => {
+          this.$set(this.concordances, index, concordance)
+        })
+        this.concordances.length = concordances.length
       })
     }
     this.navigatorRefresh(true)

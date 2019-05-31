@@ -142,7 +142,7 @@
                 :key="`mappingDetail-partOf-${index}`">
                 <auto-link
                   :link="part.uri"
-                  :text="$util.prefLabel(part)" />
+                  :text="displayNameForConcordance(part)" />
               </p>
             </b-col>
           </b-row>
@@ -210,6 +210,19 @@ export default {
   methods: {
     show() {
       this.$refs.mappingDetail.show()
+    },
+    displayNameForConcordance(concordance) {
+      if (!concordance) {
+        return ""
+      }
+      let name = this.$util.prefLabel(concordance, null, false) || this.$util.lmContent(concordance, "scopeNote") || concordance.uri || ""
+      if (concordance.creator && concordance.creator.length) {
+        let creator = this.$util.prefLabel(concordance.creator[0], null, false)
+        if (creator) {
+          name += ` (${creator})`
+        }
+      }
+      return name
     },
   }
 }

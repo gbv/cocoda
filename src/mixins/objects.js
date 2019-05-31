@@ -14,6 +14,7 @@ let objects = {}
 let topConcepts = {}
 let loadingConcepts = []
 let erroredConcepts = []
+let concordances = []
 
 export default {
   data() {
@@ -22,6 +23,7 @@ export default {
       topConcepts,
       loadingConcepts,
       erroredConcepts,
+      concordances,
     }
   },
   computed: {
@@ -556,6 +558,10 @@ export default {
             }
           }
         }
+      }
+      // Replace partOf with concordance objects if possible
+      if (mapping.partOf) {
+        mapping.partOf = mapping.partOf.map(concordance => this.concordances.find(c => this.$jskos.compare(c, concordance)) || concordance)
       }
       return mapping
     },
