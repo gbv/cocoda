@@ -143,23 +143,25 @@ class LocalMappingsProvider extends BaseProvider {
       // TODO: - Support memberList and memberChoice.
       // TODO: - Clean all this up.
       if (params.mode == "or") {
-        mappings = mappings.filter(mapping => {
-          let fromInFrom = null != mapping.from.memberSet.find(concept => {
-            return concept.uri == params.from
+        if (params.from || params.to) {
+          mappings = mappings.filter(mapping => {
+            let fromInFrom = null != mapping.from.memberSet.find(concept => {
+              return concept.uri == params.from || (params.from && concept.notation && concept.notation[0].toLowerCase() == params.from.toLowerCase())
+            })
+            let fromInTo = null != mapping.to.memberSet.find(concept => {
+              return concept.uri == params.from || (params.from && concept.notation && concept.notation[0].toLowerCase() == params.from.toLowerCase())
+            })
+            let toInFrom = null != mapping.from.memberSet.find(concept => {
+              return concept.uri == params.to || (params.to && concept.notation && concept.notation[0].toLowerCase() == params.to.toLowerCase())
+            })
+            let toInTo = null != mapping.to.memberSet.find(concept => {
+              return concept.uri == params.to || (params.to && concept.notation && concept.notation[0].toLowerCase() == params.to.toLowerCase())
+            })
+            return (params.direction == "forward" && (fromInFrom || toInTo)) ||
+              (params.direction == "backward" && (fromInTo || toInFrom)) ||
+              (params.direction == "both" && (fromInFrom || fromInTo || toInFrom || toInTo))
           })
-          let fromInTo = null != mapping.to.memberSet.find(concept => {
-            return concept.uri == params.from
-          })
-          let toInFrom = null != mapping.from.memberSet.find(concept => {
-            return concept.uri == params.to
-          })
-          let toInTo = null != mapping.to.memberSet.find(concept => {
-            return concept.uri == params.to
-          })
-          return (params.direction == "forward" && (fromInFrom || toInTo)) ||
-            (params.direction == "backward" && (fromInTo || toInFrom)) ||
-            (params.direction == "both" && (fromInFrom || fromInTo || toInFrom || toInTo))
-        })
+        }
       } else {
         if (params.from) {
           mappings = mappings.filter(mapping => {
