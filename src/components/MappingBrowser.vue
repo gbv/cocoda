@@ -200,9 +200,9 @@
               :options="typeOptions"
               @keyup.enter.native="searchClicked" />
             <div
-              v-b-tooltip.hover="{ title: $t('mappingBrowser.searchAllTooltip'), delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.searchBidirectionalTooltip'), delay: $util.delay.medium }"
               style="text-align: right; flex: none; margin: auto 5px;">
-              All:
+              {{ $t("mappingBrowser.searchBidirectional") }}:
               <b-form-checkbox
                 v-model="searchFilter.direction"
                 style="display: inline-block;"

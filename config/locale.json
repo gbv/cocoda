@@ -148,7 +148,8 @@
       "searchAllConcordances": "all concordances",
       "searchClear": "Clear",
       "searchSubmit": "Search",
-      "searchAllTooltip": "If checked, mappings in both directions will be searched."
+      "searchBidirectional": "Bidirectional",
+      "searchBidirectionalTooltip": "If checked, mappings in both directions will be searched."
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -465,7 +466,8 @@
       "searchAllConcordances": "Alle Konkordanzen",
       "searchClear": "Leeren",
       "searchSubmit": "Suche",
-      "searchAllTooltip": "Wenn aktiviert werden Mappings in beide Richtungen gesucht."
+      "searchBidirectional": "Bidirektional",
+      "searchBidirectionalTooltip": "Wenn aktiviert werden Mappings in beide Richtungen gesucht."
     },
     "mappingDetail": {
       "title": "Mapping-Details",
