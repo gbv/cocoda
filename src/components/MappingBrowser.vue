@@ -1078,6 +1078,9 @@ export default {
         if (mappings.totalCount === undefined) {
           mappings = mappings.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
         }
+        if (mappings.url) {
+          section.url = mappings.url
+        }
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
         // Add items

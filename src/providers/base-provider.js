@@ -214,9 +214,12 @@ class BaseProvider {
     }
     this.adjustMappings = (mappings) => {
       let newMappings = mappings.map(mapping => this.adjustMapping(mapping))
-      // Retain totalCount if available
+      // Retain custom props if available
       if (mappings.totalCount) {
         newMappings.totalCount = mappings.totalCount
+      }
+      if (mappings.url) {
+        newMappings.url = mappings.url
       }
       return newMappings
     }

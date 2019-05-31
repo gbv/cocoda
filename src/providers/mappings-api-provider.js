@@ -49,6 +49,11 @@ class MappingsApiProvider extends BaseProvider {
     if (identifier) {
       params.identifier = identifier
     }
+    // Build full API URL to be attached to result array later
+    let url = this.registry.mappings + "?"
+    _.forOwn(params, (value, key) => {
+      url += `${key}=${encodeURIComponent(value)}&`
+    })
     options = Object.assign({}, { params }, options)
     return this.get(this.registry.mappings, options, cancelToken).then(mappings => {
       mappings = mappings || []
@@ -65,6 +70,8 @@ class MappingsApiProvider extends BaseProvider {
           mapping.toScheme = _.get(mapping, "to.memberSet[0].inScheme[0]")
         }
       }
+      // Add API URL as property to result array
+      mappings.url = url
       return mappings
     })
   }

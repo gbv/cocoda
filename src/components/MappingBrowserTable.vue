@@ -293,6 +293,7 @@
           <data-modal-button
             v-if="section.totalCount > 0"
             :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
+            :url="section.url"
             type="mapping" />
         </div>
         <loading-indicator-full v-if="section.loading" />
