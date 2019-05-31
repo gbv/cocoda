@@ -208,7 +208,7 @@
                 style="display: inline-block;"
                 size="sm"
                 value="both"
-                unchecked-value="forward"
+                unchecked-value=""
                 @keyup.enter.native="searchClicked" />
             </div>
           </div>
@@ -787,7 +787,7 @@ export default {
         toScheme: "",
         toNotation: "",
         creator: "",
-        direction: "forward",
+        direction: "",
         type: null,
         partOf: null,
       }
