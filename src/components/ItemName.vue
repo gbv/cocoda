@@ -4,7 +4,7 @@
     :draggable="draggable"
     class="itemName"
     :class="{
-      'itemName-hoverable': !preventExternalHover
+      'itemName-hoverable': !preventExternalHover && isValidLink
     }"
     @dragstart="dragStart(item, $event)"
     @dragend="dragEnd"
