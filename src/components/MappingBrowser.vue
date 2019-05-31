@@ -510,7 +510,7 @@ export default {
       ]
 
       for (let item of this.concordanceTableItems) {
-        let text = `${item.from} to ${item.to} (${item.description})`
+        let text = `${item.fromNotation} to ${item.toNotation} (${item.description})`
         options.push({
           value: item.concordance.uri,
           text
