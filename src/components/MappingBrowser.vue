@@ -240,7 +240,7 @@
           v-if="searchSections.length"
           :sections="searchSections"
           :search-limit="resultLimit"
-          @pageChange="$set(searchPages, $event.registry.uri, $event.page); search($event.registry.uri, $event.page)" />
+          @pageChange="changePage('search', $event)" />
       </b-tab>
       <b-tab
         :title="$t('mappingBrowser.mappingNavigator')"
@@ -296,7 +296,7 @@
           v-if="navigatorSections.length"
           :sections="navigatorSections"
           :search-limit="resultLimit"
-          @pageChange="$set(navigatorPages, $event.registry.uri, $event.page)" />
+          @pageChange="changePage('navigator', $event)" />
       </b-tab>
     </b-tabs>
   </div>
@@ -1023,6 +1023,10 @@ export default {
             })
           }
           this.$set(this.navigatorResults, registry.uri, mappings)
+          // Check if refresh leads to an empty page and decrement page if necessary
+          if (this.navigatorPages[registry.uri] > 1 && mappings.length < (this.navigatorPages[registry.uri] - 1) * this.resultLimit + 1) {
+            this.$set(this.navigatorPages, registry.uri, this.navigatorPages[registry.uri] - 1)
+          }
           // Reset cancel token
           this.navigatorCancelToken[registry.uri] = null
         }).catch(error => {
@@ -1151,6 +1155,22 @@ export default {
         }
       })
     },
+    changePage(type, { registry, page, userInitiated }) {
+      let currentPage = this[`${type}Pages`][registry.uri]
+      if (userInitiated) {
+        this.$set(this[`${type}Pages`], registry.uri, page)
+        if (type == "search") {
+          this.search(registry.uri, page)
+        }
+      } else if (page != currentPage) {
+        // This is a workaround for bootstrap-vue's b-pagination to prevent an unwanted jump back to page 1
+        // See: https://github.com/bootstrap-vue/bootstrap-vue/issues/3372
+        this.$set(this[`${type}Pages`], registry.uri, page)
+        this.$nextTick(() => {
+          this.$set(this[`${type}Pages`], registry.uri, currentPage)
+        })
+      }
+    }
   },
 }
 </script>

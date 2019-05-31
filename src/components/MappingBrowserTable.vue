@@ -279,7 +279,8 @@
             class="mappingBrowser-pagination justify-content-center"
             style="flex: none; user-select: none; margin: 0; padding: 0;"
             size="sm"
-            @change="$emit('pageChange', { registry: section.registry, page: $event })" />
+            @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
+            @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div
             style="flex: 1; text-align: right; padding-top: 3px;"
             :style="`padding-right: ${section.totalCount > 0 ? 30 : 5}px;`"
