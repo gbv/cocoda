@@ -13,6 +13,8 @@
           :item="value"
           :show-text="false"
           :show-tooltip="true"
+          :is-link="true"
+          :is-left="true"
           font-size="sm"
           class="fontWeight-heavy" />
         <!-- null means repeating scheme, undefined means no scheme -->
@@ -84,6 +86,8 @@
           :item="value"
           :show-text="false"
           :show-tooltip="true"
+          :is-link="true"
+          :is-left="false"
           font-size="sm"
           class="fontWeight-heavy" />
         <!-- null means repeating scheme, undefined means no scheme -->

@@ -124,6 +124,28 @@
                   class="button"
                   @click="showMappingsForConcordance(item.concordance)" />
               </span>
+              <span
+                slot="from"
+                slot-scope="{ value }">
+                <item-name
+                  :item="value"
+                  :show-text="false"
+                  :show-tooltip="true"
+                  :is-link="value.__SAVED__ === true"
+                  :is-left="true"
+                  font-size="sm" />
+              </span>
+              <span
+                slot="to"
+                slot-scope="{ value }">
+                <item-name
+                  :item="value"
+                  :show-text="false"
+                  :show-tooltip="true"
+                  :is-link="value.__SAVED__"
+                  :is-left="false"
+                  font-size="sm" />
+              </span>
             </flexible-table>
           </div>
           <div style="display: flex;">
@@ -320,6 +342,7 @@ import MappingBrowserTable from "./MappingBrowserTable"
 import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation"
 import RegistryName from "./RegistryName"
+import ItemName from "./ItemName"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
@@ -331,7 +354,7 @@ import dragandrop from "../mixins/dragandrop"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName, ItemName },
   mixins: [auth, objects, dragandrop],
   data() {
     return {
@@ -452,14 +475,18 @@ export default {
       let items = []
       for (let concordance of this.concordances || []) {
         let item = { concordance }
-        item.from = this.$util.notation(_.get(concordance, "fromScheme")) || "-"
-        item.to = this.$util.notation(_.get(concordance, "toScheme")) || "-"
+        item.from = _.get(concordance, "fromScheme")
+        item.from = this._getObject(item.from) || item.from
+        item.fromNotation = this.$util.notation(item.from) || "-"
+        item.to = _.get(concordance, "toScheme")
+        item.to = this._getObject(item.to) || item.to
+        item.toNotation = this.$util.notation(item.to) || "-"
         item.description = _.get(concordance, "scopeNote.de[0]") || _.get(concordance, "scopeNote.en[0]") || "-"
         item.creator = _.get(concordance, "creator[0].prefLabel.de") || _.get(concordance, "creator[0].prefLabel.en") || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
-        if (item.from.toLowerCase().startsWith(this.concordanceFilter.from.toLowerCase()) && item.to.toLowerCase().startsWith(this.concordanceFilter.to.toLowerCase()) && item.creator.toLowerCase().startsWith(this.concordanceFilter.creator.toLowerCase())) {
+        if (item.fromNotation.toLowerCase().startsWith(this.concordanceFilter.from.toLowerCase()) && item.toNotation.toLowerCase().startsWith(this.concordanceFilter.to.toLowerCase()) && item.creator.toLowerCase().startsWith(this.concordanceFilter.creator.toLowerCase())) {
           items.push(item)
         }
       }
