@@ -1,6 +1,8 @@
 <template>
   <!-- Mapping table -->
   <div class="mappingBrowser-table-container">
+    <!-- Put default slot here -->
+    <slot />
     <flexible-table
       :sections="sections"
       :fields="fields"

@@ -275,7 +275,42 @@
           v-if="searchSections.length"
           :sections="searchSections"
           :search-limit="resultLimit"
-          @pageChange="changePage('search', $event)" />
+          @pageChange="changePage('search', $event)">
+          <!-- Share button -->
+          <div
+            id="mappingBrowser-search-shareButton"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.searchShareTooltip'), delay: $util.delay.medium, placement: 'top' }"
+            class="button">
+            <font-awesome-icon icon="share" />
+          </div>
+          <b-popover
+            :show.sync="searchShareShow"
+            target="mappingBrowser-search-shareButton"
+            triggers="click"
+            placement="bottomleft">
+            <div
+              ref="searchSharePopover">
+              <p><b>{{ $t("mappingBrowser.searchShareTitle") }}</b></p>
+              <p style="user-select: none;">
+                <b-form-checkbox
+                  v-model="searchShareIncludeSelected">
+                  {{ $t("mappingBrowser.searchShareInclude") }}
+                </b-form-checkbox>
+              </p>
+              <p id="mappingBrowser-search-shareLinkInput">
+                <pre><code>{{ searchShareLink }}</code></pre>
+              </p>
+              <p style="text-align: right;">
+                <b-button
+                  size="sm"
+                  variant="primary"
+                  @click="copyToClipboard('mappingBrowser-search-shareLinkInput')">
+                  {{ $t("mappingBrowser.searchShareCopy") }}
+                </b-button>
+              </p>
+            </div>
+          </b-popover>
+        </mapping-browser-table>
       </b-tab>
       <b-tab
         :title="$t('mappingBrowser.mappingNavigator')"
@@ -364,6 +399,9 @@ export default {
        */
       hasSwitchedToNavigator: false,
       settingsShow: false,
+      searchShareShow: false,
+      searchShareLinkPart: "",
+      searchShareIncludeSelected: false,
       registryGroupShow: {},
       concordanceFilter: {
         from: "",
@@ -648,7 +686,12 @@ export default {
         // Refresh
         this.$store.commit("mapping/setRefresh")
       }
-    }
+    },
+    searchShareLink () {
+      let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
+      url += `${url.includes("?") ? "&" : "?"}${this.searchShareLinkPart}`
+      return url
+    },
   },
   watch: {
     tab(tab) {
@@ -785,6 +828,12 @@ export default {
       if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
         this.settingsShow = false
       }
+      // Handle search share popover
+      popover = this.$refs.searchSharePopover
+      button = document.getElementById("mappingBrowser-search-shareButton")
+      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
+        this.searchShareShow = false
+      }
     },
     generateCancelToken() {
       return axios.CancelToken.source()
@@ -858,6 +907,7 @@ export default {
           }
         }
       }
+      let promises = []
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
@@ -876,7 +926,7 @@ export default {
         // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
-        this.getMappings({
+        let promise = this.getMappings({
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
           fromScheme: this.searchFromScheme,
@@ -904,7 +954,19 @@ export default {
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
         })
+        promises.push(promise)
       }
+      Promise.all(promises).then(() => {
+        // Set part for share link
+        let shareFilter = {}
+        _.forOwn(this.searchFilter, (value, key) => {
+          if (value) {
+            shareFilter[key] = value
+          }
+        })
+        let searchParam = encodeURIComponent(JSON.stringify(shareFilter))
+        this.searchShareLinkPart = `search=${searchParam}`
+      })
     },
     _navigatorRefresh(option) {
       let force, registryToReload
@@ -1276,6 +1338,13 @@ export default {
 .noItems {
   margin: 50px auto 5px auto;
   flex: 5 0 auto;
+}
+
+#mappingBrowser-search-shareButton {
+  position: absolute;
+  right: 2px;
+  top: 5px;
+  z-index: @zIndex-2;
 }
 
 </style>

@@ -636,6 +636,14 @@ export default {
         Promise.all(promises).then(() => {
           this.loading = false
           refreshRouter(this.$store)
+          if (firstLoad) {
+            // Search share link
+            if (query.search) {
+              let filter = JSON.parse(query.search)
+              this.forceMappingBrowser = true
+              this.searchMappings(filter)
+            }
+          }
         }).catch((error) => {
           this.loading = false
           console.warn(error)

@@ -149,7 +149,11 @@
       "searchClear": "Clear",
       "searchSubmit": "Search",
       "searchBidirectional": "Bidirectional",
-      "searchBidirectionalTooltip": "If checked, mappings in both directions will be searched."
+      "searchBidirectionalTooltip": "If checked, mappings in both directions will be searched.",
+      "searchShareTooltip": "Share link",
+      "searchShareTitle": "Share link to this search",
+      "searchShareInclude": "Include selected schemes and concepts",
+      "searchShareCopy": "Copy link to clipboard"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -467,7 +471,11 @@
       "searchClear": "Leeren",
       "searchSubmit": "Suche",
       "searchBidirectional": "Bidirektional",
-      "searchBidirectionalTooltip": "Wenn aktiviert werden Mappings in beide Richtungen gesucht."
+      "searchBidirectionalTooltip": "Wenn aktiviert werden Mappings in beide Richtungen gesucht.",
+      "searchShareTooltip": "Link teilen",
+      "searchShareTitle": "Einen Link zu dieser Suche teilen",
+      "searchShareInclude": "Einschließlich ausgewählter Vokabulare und Konzepte",
+      "searchShareCopy": "Link in die Zwischenablage kopieren"
     },
     "mappingDetail": {
       "title": "Mapping-Details",
