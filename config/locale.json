@@ -150,7 +150,7 @@
       "searchSubmit": "Search",
       "searchBidirectional": "Bidirectional",
       "searchBidirectionalTooltip": "If checked, mappings in both directions will be searched.",
-      "searchShareTooltip": "Share link",
+      "searchShareLabel": "Link",
       "searchShareTitle": "Share link to this search",
       "searchShareInclude": "Include selected schemes and concepts",
       "searchShareCopy": "Copy link to clipboard"
@@ -472,7 +472,7 @@
       "searchSubmit": "Suche",
       "searchBidirectional": "Bidirektional",
       "searchBidirectionalTooltip": "Wenn aktiviert werden Mappings in beide Richtungen gesucht.",
-      "searchShareTooltip": "Link teilen",
+      "searchShareLabel": "Link",
       "searchShareTitle": "Einen Link zu dieser Suche teilen",
       "searchShareInclude": "Einschließlich ausgewählter Vokabulare und Konzepte",
       "searchShareCopy": "Link in die Zwischenablage kopieren"

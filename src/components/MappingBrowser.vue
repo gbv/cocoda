@@ -279,9 +279,8 @@
           <!-- Share button -->
           <div
             id="mappingBrowser-search-shareButton"
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.searchShareTooltip'), delay: $util.delay.medium, placement: 'top' }"
             class="button">
-            <font-awesome-icon icon="share" />
+            <font-awesome-icon icon="share-alt-square" /> {{ $t("mappingBrowser.searchShareLabel") }}
           </div>
           <b-popover
             :show.sync="searchShareShow"
