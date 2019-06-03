@@ -234,18 +234,17 @@ export default {
               // Check if scheme is already in store
               // TODO: This is currently not possible from here!
               let otherScheme = this._getObject(scheme), prio, otherPrio, override = false
-              // let otherScheme = null, prio, otherPrio
               if (otherScheme) {
                 prio = registry.priority || 0
                 otherPrio = _.get(otherScheme, "_provider.registry.priority", -1)
-                if (!otherScheme.concepts && scheme.concepts && scheme.concepts.includes(null)) {
-                  // Always override if current scheme has concepts and the other one doesn't
+                let currentHasConcepts = !scheme.concepts ? 0 : (scheme.concepts.length == 0 ? -1 : 1)
+                let otherHasConcepts = !otherScheme.concepts ? 0 : (otherScheme.concepts.length == 0 ? -1 : 1)
+                // Use existence of concepts first, priority second
+                if (currentHasConcepts > otherHasConcepts) {
                   override = true
-                } else if (!scheme.concepts && otherScheme.concepts && otherScheme.concepts.includes(null)) {
-                  // Never override if current scheme doesn't have concepts and the other one does
+                } else if (currentHasConcepts < otherHasConcepts) {
                   override = false
                 } else {
-                  // Otherwise use priority
                   override = otherPrio < prio
                 }
               }
