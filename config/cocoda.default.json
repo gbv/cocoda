@@ -1,56 +1,6 @@
 {
   "registries": [
     {
-      "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
-      "notation": [
-        "D"
-      ],
-      "prefLabel": {
-        "en": "DANTE"
-      },
-      "definition": {
-        "en": [
-          "DANTE API with vocabularies at VZG"
-        ],
-        "de": [
-          "DANTE-API der VZG"
-        ]
-      },
-      "baseUrl": "//api.dante.gbv.de/",
-      "provider": "ConceptApi"
-    },
-    {
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
-      "notation": [
-        "J"
-      ],
-      "prefLabel": {
-        "en": "JSKOS Server"
-      },
-      "definition": {
-        "en": [
-          "central JSKOS server instance of coli-conc"
-        ],
-        "de": [
-          "zentrale JSKOS-Server Instanz von coli-conc"
-        ]
-      },
-      "baseUrl": "//coli-conc.gbv.de/api/",
-      "provider": "ConceptApi"
-    },
-    {
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
-      "notation": [
-        "RVK"
-      ],
-      "prefLabel": {
-        "de": "Regensburger Verbundklassifikation"
-      },
-      "baseUrl": "//coli-conc.gbv.de/rvk/api/",
-      "provider": "ConceptApi",
-      "priority": 2
-    },
-    {
       "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
       "notation": [
         "G"
@@ -138,6 +88,55 @@
       "data": "//coli-conc.gbv.de/services/wikidata/concept/",
       "concepts": "//coli-conc.gbv.de/services/wikidata/concept/",
       "suggest": "//coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
+      "provider": "ConceptApi"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
+      "notation": [
+        "RVK"
+      ],
+      "prefLabel": {
+        "de": "Regensburger Verbundklassifikation"
+      },
+      "baseUrl": "//coli-conc.gbv.de/rvk/api/",
+      "provider": "ConceptApi"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
+      "notation": [
+        "J"
+      ],
+      "prefLabel": {
+        "en": "JSKOS Server"
+      },
+      "definition": {
+        "en": [
+          "central JSKOS server instance of coli-conc"
+        ],
+        "de": [
+          "zentrale JSKOS-Server Instanz von coli-conc"
+        ]
+      },
+      "baseUrl": "//coli-conc.gbv.de/api/",
+      "provider": "ConceptApi"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
+      "notation": [
+        "D"
+      ],
+      "prefLabel": {
+        "en": "DANTE"
+      },
+      "definition": {
+        "en": [
+          "DANTE API with vocabularies at VZG"
+        ],
+        "de": [
+          "DANTE-API der VZG"
+        ]
+      },
+      "baseUrl": "//api.dante.gbv.de/",
       "provider": "ConceptApi"
     },
     {

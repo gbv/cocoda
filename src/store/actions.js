@@ -25,22 +25,20 @@ export default {
       }
       let config = Object.assign({}, defaultConfig, userConfig)
       if (!config.overrideRegistries) {
-        config.registries = [].concat(defaultConfig.registries || [], userConfig.registries || [])
-        // Merge registries with the same URI (higher priority overrides lower priority, later in list overrides earlier in list)
+        config.registries = [].concat(userConfig.registries || [], defaultConfig.registries || [])
         let registries = []
         for (let registry of config.registries) {
           let index = registries.findIndex(r => r.uri == registry.uri)
-          if (index != -1) {
-            // Compare priorities
-            let prioCurrent = registry.priority || 0
-            let prioExisting = registries[index].priority || 0
-            // Override except if existing prio is higher than current prio
-            if (!(prioExisting > prioCurrent)) {
-              registries[index] = registry
-            }
-          } else {
+          // Ignore if it's already in the list (the earlier the registry, the higher the priority)
+          if (index == -1) {
             registries.push(registry)
           }
+        }
+        // Assign priority values to registries (for easier comparison at other points)
+        let priority = registries.length
+        for (let registry of registries) {
+          registry.priority = priority
+          priority -= 1
         }
         config.registries = registries
       }
