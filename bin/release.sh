@@ -1,11 +1,29 @@
 #!/bin/bash
 
+revertversion () {
+  # Delete tag
+  git tag -d $(git describe --tags)
+  # Revert commit
+  git reset --hard HEAD~1
+  if [ $? -ne 0 ]; then
+    echo "Error: Reverting version commit failed. Please make sure to clean up your local repository manually."
+  else
+    version=$(node -pe "require('./package.json').version")
+    echo "Version was reverted back to $version."
+  fi
+}
+
 iferror () {
   if [ $? -ne 0 ]; then
     echo "Error: $1"
     echo "Note: The release script was aborted midway. Please make sure to clean up before trying again."
     exit 1
   fi
+}
+
+waitforenter () {
+  echo "Note that aborting this script results in unfinished changes in your local and possibly the remote repository."
+  read -p "Error: $1, press enter to try again."
 }
 
 # 1. Check parameter
@@ -42,18 +60,34 @@ iferror "npm version failed, aborting."
 version=$(node -pe "require('./package.json').version")
 echo "- ... version $version created!"
 
+read -p "Are you sure to push and release version $version? (N/y) " -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+  revertversion
+  exit 1
+fi
+
 echo "- Pushing dev with tags..."
 git push --quiet --tags origin dev 2>&1 >/dev/null
-iferror "Pushing failed, aborting."
+while [ $? -ne 0 ]; do
+  waitforenter "Pushing dev failed"
+  git push --tags origin dev
+done
 
 echo "- Checking out master and merging dev into master..."
 git checkout --quiet master 2>&1 >/dev/null
 git merge dev 2>&1 >/dev/null
-iferror "Merging failed, aborting."
+while [ $? -ne 0 ]; do
+  waitforenter "Merging failed"
+  git merge dev
+done
 
 echo "- Pushing master branch..."
 git push --quiet 2>&1 >/dev/null
-iferror "Pushing failed, aborting."
+while [ $? -ne 0 ]; do
+  waitforenter "Pushing master failed"
+  git push
+done
 
 echo "- Going back to dev..."
 git checkout --quiet dev 2>&1 >/dev/null
