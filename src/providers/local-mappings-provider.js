@@ -219,6 +219,21 @@ class LocalMappingsProvider extends BaseProvider {
         })
       }
       let totalCount = mappings.length
+      // Sort mappings (default: modified/created date descending)
+      mappings = mappings.sort((a, b) => {
+        let aDate = a.modified || a.created
+        let bDate = b.modified || b.created
+        if (bDate == null) {
+          return -1
+        }
+        if (aDate == null) {
+          return 1
+        }
+        if (aDate > bDate) {
+          return -1
+        }
+        return 1
+      })
       mappings = mappings.slice(params.offset || 0)
       mappings = mappings.slice(0, params.limit)
       mappings.totalCount = totalCount
