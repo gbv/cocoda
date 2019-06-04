@@ -12,9 +12,10 @@ install:
 script:
 - npm run lint
 - npm run build
-- mv dist dist-files # prevent styleguide:build overriding dist
+- mv dist cocoda # prevent styleguide:build overriding dist
 - npm run styleguide:build
-- mv dist-files styleguide/dev
+- cp -R cocoda styleguide/dev
+- zip -r "cocoda-$(git describe --tags).zip" cocoda
 deploy:
 - provider: pages
   local_dir: styleguide
@@ -28,7 +29,10 @@ deploy:
     secure: HPlywSEFfP4MM6dM9s1lAGDUYPWbKckSSHB21YKR/9qIhvBqnWRbT/AZo0HGt7IbilHqhaHNDpF1CRBnsmaHWEm7KwJEMpHf+3PSywpNneWAcsNnDKKGKmxQbsE2MRwefDYFYJHu8AWDoNnv5gBo+4zHNUmTDmZ4DU5yWmYo/64D8OqzpwXg2zyP1/vaviaVcnJTKhe24EmMJwmjzfQxPwmTO7pvuNZFBwn4/jC3L4YuC0vR2oSc3jYkQX+0qE33903f3llm4mGlrG9SDELxQ4TQjcykp4lQO4ru3++1azrVofYZOL/J4M7FYJembxhNP6Ezhs9EN43o9keOrCbdFvqNHXTTk6h/QWHCjyqeeHol8uwTcqCGKXA3+1QYz0cGRMqKhAwYCa9KZlfiKV8PdUd+sRWhl4qF0eQFFQ6C2S8PzuFDuZRyLcdFP9eBZQH3LMc+oPRA1NMGGKQIkM3VMIq0huMn2CF4MH2+u0QtMNCBOZEymYxRjJG9tz3UHogCqQmqS9aNZKSm0xN//f97yfhSmMJaVyFO/6weFRvhA4jrUV/QmIjZ5Q1eiaqpbL6RRniSbz2bJO/Z6h8SjTHLcZBolq30KZjB4xVRSe5g5dzs6ggszWA1PptluI1vUptLw89pWQoAP9cdmtPCtS2soWt4blzYv+RHbL/pMl7BjIg=
   name: Cocoda ${TRAVIS_TAG}
   body: TODO
+  file_glob: true
+  file: cocoda*.zip
   draft: true
+  skip_cleanup: true
   on:
     node: '11'
     repo: gbv/cocoda
