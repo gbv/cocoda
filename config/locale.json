@@ -21,7 +21,8 @@
       "resizingSlider": "drag to resize cards",
       "malformedConfig": "The configuration file {file} could not be loaded. The default config will be used instead.",
       "showConcordances": "Show Concordances",
-      "showMappingSearch": "Show Mapping Search"
+      "showMappingSearch": "Show Mapping Search",
+      "tooManyMappings": "There are {count} local mappings stored in your browser. A large number of local mappings can impact performance of the tool."
     },
     "navbar": {
       "feedback": "Feedback",
@@ -289,7 +290,8 @@
       "resizingSlider": "ziehen, um Komponenten-Größen anzupassen",
       "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet.",
       "showConcordances": "Zeige Konkordanz-Liste",
-      "showMappingSearch": "Zeige die Mapping-Suche"
+      "showMappingSearch": "Zeige die Mapping-Suche",
+      "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokaler Mappings kann die Performance des Tools beeinflussen."
     },
     "navbar": {
       "feedback": "Feedback",
