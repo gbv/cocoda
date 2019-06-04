@@ -1216,8 +1216,11 @@ export default {
             item.creator = this.$util.prefLabel(item.creator)
           }
           // Add modified or created date in extra
-          item.extra = mapping.modified || mapping.created
-          item.extra = item.extra && item.extra.slice(0, 10)
+          item.extra = { date: mapping.modified || mapping.created }
+          if (item.extra.date && item.extra.date.length > 10) {
+            item.extra.tooltip = item.extra.date
+            item.extra.date = item.extra.date.slice(0, 10)
+          }
           item.source = this.$util.prefLabel(registry)
           item.sourceShort = this.$util.notation(registry)
           item.type = this.$jskos.mappingTypeByType(mapping.type)

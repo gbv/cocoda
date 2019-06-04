@@ -251,8 +251,10 @@
       <span
         slot="extra"
         slot-scope="data">
-        <span v-if="data.item.occurrence == null">
-          {{ data.value }}
+        <span
+          v-if="data.item.occurrence == null"
+          v-b-tooltip.hover="{ title: data.value.tooltip, delay: $util.delay.medium }">
+          {{ data.value.date }}
         </span>
         <span v-else-if="data.item.occurrence.count == -1">-</span>
         <span v-else>
