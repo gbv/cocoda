@@ -32,10 +32,12 @@ const refreshRouter = (store) => {
   }
   // Add mapping if there is at least one concept
   if (jskos.conceptsOfMapping(store.state.mapping.mapping).length) {
-    query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+    if (store.getters["mapping/hasChangedFromOriginal"]) {
+      query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+    }
     // If an original mapping exists for the current mapping, save its identifier as well
     if (store.state.mapping.original) {
-      query.identifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+      query.mappingUri = store.state.mapping.original.uri
     }
   }
   // Keep certain properties from original route

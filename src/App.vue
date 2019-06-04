@@ -573,7 +573,7 @@ export default {
         }))
       }
       // Prepare application by selecting mapping from URL parameters.
-      if (query["mapping"]) {
+      if (query.mapping || query.mappingUri) {
         let decodeMapping = new Promise(resolve => {
           let mappingFromQuery = null
           try {
@@ -587,11 +587,10 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query["identifier"] ? this.getMappings({ identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
-          if (query["identifier"] && mappings.length) {
+        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : Promise.resolve([])).then(mappings => {
+          if (query.mappingUri && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
-            // TODO: There needs to be a completely unique identifier for this.
             let original = mappings.find(mapping => _.get(mapping, "_provider.has.canSaveMappings")) || mappings[0]
             return decodeMapping.then(this.adjustMapping).then(mapping => {
               if (mapping) {

@@ -95,7 +95,7 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of local mappings.
    */
-  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier } = {}) {
+  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, uri } = {}) {
     let params = {}
     if (from) {
       params.from = _.isString(from) ? from : from.uri
@@ -132,6 +132,9 @@ class LocalMappingsProvider extends BaseProvider {
     }
     if (identifier) {
       params.identifier = identifier
+    }
+    if (uri) {
+      params.uri = uri
     }
     return localforage.getItem(this.localStorageKey).then(mappings => mappings || []).catch(() => []).then(mappings => {
       // Check concept with param
@@ -217,6 +220,9 @@ class LocalMappingsProvider extends BaseProvider {
             return (mapping.identifier || []).includes(identifier) || mapping.uri == identifier
           }).reduce((current, total) => current || total)
         })
+      }
+      if (params.uri) {
+        mappings = mappings.filter(mapping => mapping.uri == params.uri)
       }
       let totalCount = mappings.length
       // Sort mappings (default: modified/created date descending)
