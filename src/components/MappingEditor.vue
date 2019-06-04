@@ -32,6 +32,12 @@
         </div>
       </b-popover>
     </div>
+    <div
+      v-if="canSaveMapping"
+      id="mappingEditor-mappingNotSaved"
+      class="fontSize-small fontWeight-heavy">
+      {{ $t("mappingEditor.notSaved") }}
+    </div>
     <div class="mappingEditorToolbar">
       <div
         v-b-tooltip.hover="{ title: canSwapMapping ? $t('mappingEditor.swapMapping') : '', delay: $util.delay.medium }"
@@ -762,6 +768,13 @@ export default {
 .mappingEditor-deleteModal button {
   margin: 10px 0;
   width: 100%;
+}
+
+#mappingEditor-mappingNotSaved {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  color: @color-button-delete;
 }
 
 </style>

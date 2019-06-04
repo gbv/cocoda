@@ -109,7 +109,8 @@
       "settingClearOnSave": "Clear on save",
       "settingClearOnSaveTooltip": "When turned on, the editor will be cleared after a mapping was saved.",
       "settingOnly1to1mappings": "Only allow 1-to-1 mappings (1-to-n otherwise)",
-      "settingOnly1to1mappingsTooltip": "When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed."
+      "settingOnly1to1mappingsTooltip": "When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed.",
+      "notSaved": "not saved"
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -343,7 +344,8 @@
       "settingClearOnSave": "Leere Editor nach Speichern",
       "settingClearOnSaveTooltip": "Falls eingeschaltet wird der Editor nach dem Speichern eines Mappings geleert.",
       "settingOnly1to1mappings": "Nur 1-zu-1 Mappings erlauben (sonst 1-zu-n)",
-      "settingOnly1to1mappingsTooltip": "Falls eingeschaltet werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet werden 1-zu-n Mappings erlaubt."
+      "settingOnly1to1mappingsTooltip": "Falls eingeschaltet werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet werden 1-zu-n Mappings erlaubt.",
+      "notSaved": "nicht gespeichert"
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
