@@ -280,7 +280,7 @@
             <registry-name :registry="section.registry" />
           </div>
           <b-pagination
-            v-if="section.totalCount > 0"
+            v-if="section.totalCount > searchLimit"
             :value="section.page"
             :total-rows="section.totalCount"
             :per-page="searchLimit"
