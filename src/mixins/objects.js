@@ -233,7 +233,7 @@ export default {
               scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
               // Check if scheme is already in store
               // TODO: This is currently not possible from here!
-              let otherScheme = this._getObject(scheme), prio, otherPrio, override = false
+              let otherScheme = schemes.find(s => this.$jskos.compare(s, scheme)), prio, otherPrio, override = false
               if (otherScheme) {
                 prio = registry.priority || 0
                 otherPrio = _.get(otherScheme, "_provider.registry.priority", -1)
@@ -251,21 +251,24 @@ export default {
               if (!otherScheme || override) {
                 if (override) {
                   // Find and remove scheme from schemes array
-                  let otherSchemeIndex = -1
-                  for (let index = 0; index < schemes.length; index += 1) {
-                    if (this.$jskos.compare(scheme, schemes[index])) {
-                      otherSchemeIndex = index
-                      break
-                    }
+                  let otherSchemeIndex = schemes.findIndex(s => this.$jskos.compare(s, otherScheme))
+                  if (otherSchemeIndex != -1) {
+                    schemes.splice(otherSchemeIndex, 1)
                   }
-                  schemes.splice(otherSchemeIndex, 1)
-                  // Remove otherScheme from objects
-                  for (let uri of this.$jskos.getAllUris(otherScheme)) {
-                    this.$set(this.objects, uri, null)
-                  }
+                  // Integrate details from existing scheme
+                  scheme = this.$jskos.merge(scheme, otherScheme, { mergeUris: true, skipPaths: ["_provider"] })
                 }
+                scheme._provider = provider
                 // Save scheme in objects and push into schemes array
-                schemes.push(this.saveObject(scheme, { provider, type: "scheme" }))
+                schemes.push(scheme)
+              } else {
+                // Integrate details into existing scheme
+                let index = schemes.findIndex(s => this.$jskos.compare(s, scheme))
+                if (index != -1) {
+                  let provider = schemes[index]._provider
+                  schemes[index] = this.$jskos.merge(schemes[index], scheme, { mergeUris: true, skipPaths: ["_provider"] })
+                  schemes[index]._provider = provider
+                }
               }
             }
           }).catch(error => {
@@ -281,8 +284,18 @@ export default {
       }
 
       return Promise.all(promises).then(() => {
-        schemes = this.$jskos.sortSchemes(schemes)
+        // Remove certain properties from objects
+        for (let scheme of schemes) {
+          if (scheme.concepts && scheme.concepts.length == 0) {
+            delete scheme.concepts
+          }
+          if (scheme.topConcepts && scheme.topConcepts.length == 0) {
+            delete scheme.topConcepts
+          }
+        }
         schemes = schemes.filter(scheme => scheme != null)
+        schemes = schemes.map(scheme => this.saveObject(scheme, { provider: scheme._provider, type: "scheme" }))
+        schemes = this.$jskos.sortSchemes(schemes)
         // Commit schemes to store
         this.$store.commit({
           type: "setSchemes",
