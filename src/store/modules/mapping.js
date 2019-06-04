@@ -1,6 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
+import util from "../../util"
 
 // TODO: - Add support for memberChoice and maybe memberList.
 
@@ -115,7 +116,29 @@ const getters = {
     if (!_.isEqual(state.mapping.note, state.original.note)) {
       return true
     }
-    if (!_.isEqual(state.mapping.creator, state.original.creator)) {
+    let isCreatorEqual = (a, b) => {
+      if (!a && !b) {
+        return true
+      }
+      if ((a || []).length != (b || []).length) {
+        return false
+      }
+      let aCreator = a && a[0], bCreator = b && b[0]
+      if (!aCreator && !bCreator) {
+        return true
+      }
+      if (aCreator && !bCreator || !aCreator && bCreator) {
+        return false
+      }
+      if (aCreator.uri != bCreator.uri) {
+        return false
+      }
+      if (util.prefLabel(aCreator) != util.prefLabel(bCreator)) {
+        return false
+      }
+      return true
+    }
+    if (!isCreatorEqual(state.mapping.creator, state.original.creator)) {
       return true
     }
     return !jskos.compareMappings(state.original, state.mapping)
