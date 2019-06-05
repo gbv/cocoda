@@ -51,7 +51,10 @@ const getters = {
    */
   creator: (state) => {
     let creator = {}
-    let language = state.settings.settings.locale || "en"
+    let language = state.settings.settings.locale
+    if (!(state.config.languages || []).includes(language)) {
+      language = "en"
+    }
     let name = state.settings.settings.creator
     let uri = state.settings.settings.creatorUri
     if (uri) {
