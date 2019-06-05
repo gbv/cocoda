@@ -21,6 +21,7 @@ class LocalMappingsProvider extends BaseProvider {
     // Function that adds URIs to all existing local mappings that don't yet have one
     let addUris = () => {
       return localforage.getItem(this.localStorageKey).then(mappings => {
+        mappings = mappings || []
         let adjusted = 0
         for (let mapping of mappings.filter(m => !m.uri || !m.uri.startsWith(uriPrefix))) {
           if (mapping.uri) {
