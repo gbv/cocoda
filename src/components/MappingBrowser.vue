@@ -432,6 +432,8 @@ export default {
       navigatorCancelToken: {},
       /** Currently hovered registry */
       hoveredRegistry: null,
+      /** An object for refresh timers for registries */
+      refreshTimers: {},
     }
   },
   computed: {
@@ -837,6 +839,19 @@ export default {
     generateCancelToken() {
       return axios.CancelToken.source()
     },
+    clearAutoRefresh(registry) {
+      if (this.refreshTimers[registry.uri]) {
+        window.clearInterval(this.refreshTimers[registry.uri])
+      }
+    },
+    scheduleAutoRefresh(registry) {
+      if (registry.autoRefresh) {
+        this.clearAutoRefresh(registry)
+        this.refreshTimers[registry.uri] = setInterval(() => {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+        }, Math.max(_.isInteger(registry.autoRefresh) ? registry.autoRefresh : 5000, 3000))
+      }
+    },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
       this.tab = 1
@@ -910,6 +925,7 @@ export default {
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
+        this.clearAutoRefresh(registry)
         // Cancel previous refreshs
         if (this.searchCancelToken[registry.uri]) {
           this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
@@ -952,6 +968,9 @@ export default {
           }
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
+        }).then(() => {
+          // Schedule auto refresh
+          this.scheduleAutoRefresh(registry)
         })
         promises.push(promise)
       }
@@ -1025,6 +1044,8 @@ export default {
           this.$delete(this.navigatorResults, registry.uri)
           continue
         }
+
+        this.clearAutoRefresh(registry)
 
         // Cancel previous refreshs
         if (this.navigatorCancelToken[registry.uri]) {
@@ -1130,6 +1151,9 @@ export default {
           this.navigatorCancelToken[registry.uri] = null
         }).catch(error => {
           console.warn("Mapping Browser: Error during refresh:", error)
+        }).then(() => {
+          // Schedule auto refresh
+          this.scheduleAutoRefresh(registry)
         })
 
         promises.push(promise)
