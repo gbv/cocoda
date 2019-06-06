@@ -1051,53 +1051,46 @@ export default {
               // Sort by occurrence count descending
               return _.get(b, "_occurrence.count", 0) - _.get(a, "_occurrence.count", 0)
             }
-            // TODO: - Put into utils/jskos-tools.
-            const includes = (list, concept) => {
-              for (let item of list) {
-                if (this.$jskos.compare(item, concept)) {
-                  return true
-                }
-              }
-              return false
-            }
-            // TODO: - Put into utils/jskos-tools.
-            const concepts = (mapping, isLeft) => {
-              let fromTo = isLeft ? "from" : "to"
-              return _.get(mapping, `${fromTo}.memberSet`) || _.get(mapping, `${fromTo}.memberChoice`) || _.get(mapping, `${fromTo}.memberList`) || []
-            }
             let points = {
               a: 10, b: 10
             }
             _.forOwn({ a, b }, (mapping, key) => {
-              let conceptsLeft = concepts(mapping, true)
-              let conceptsRight = concepts(mapping, false)
-              // Left concept is on left side of mapping.
-              if (includes(conceptsLeft, this.selected.concept[true])) {
-                points[key] -= 6
+              let conceptsLeft = this.$jskos.conceptsOfMapping(mapping, "from")
+              let conceptsRight = this.$jskos.conceptsOfMapping(mapping, "to")
+
+              let leftIsLeft = this.$jskos.isContainedIn(this.selected.concept[true], conceptsLeft)
+              let rightIsRight = this.$jskos.isContainedIn(this.selected.concept[false], conceptsRight)
+
+              if (leftIsLeft && rightIsRight) {
+                // Mapping gets full score
+                return
               }
-              // Right concept is on right side of mapping.
-              if (includes(conceptsRight, this.selected.concept[false])) {
+              points[key] -= 1
+
+              let leftIsRight = this.$jskos.isContainedIn(this.selected.concept[true], conceptsRight)
+              let rightIsLeft = this.$jskos.isContainedIn(this.selected.concept[false], conceptsLeft)
+
+              if (leftIsRight && rightIsLeft) {
+                // Reverse mapping gets second highest score
+                return
+              }
+              points[key] -= 1
+
+              if (!leftIsLeft) {
                 points[key] -= 4
               }
-              // Right concept is on left side of mapping.
-              if (includes(conceptsLeft, this.selected.concept[false])) {
+              if (!rightIsRight) {
                 points[key] -= 3
               }
-              // Left concept is on right side of mapping.
-              if (includes(conceptsRight, this.selected.concept[true])) {
+              if (!rightIsLeft) {
                 points[key] -= 2
               }
-              // Left scheme matches left side of mapping.
-              if (this.$jskos.compare(mapping.fromScheme, this.selected.scheme[true])) {
-                points[key] -= 1
-              }
-              // Right scheme matches right side of mapping.
-              if (this.$jskos.compare(mapping.toScheme, this.selected.scheme[false])) {
+              if (!leftIsRight) {
                 points[key] -= 1
               }
             })
-            if (points.a - points.b != 0) {
-              return points.a - points.b
+            if (points.b - points.a != 0) {
+              return points.b - points.a
             }
             // If the points are equal, sort by concepts (first from, then to).
             let value = this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
