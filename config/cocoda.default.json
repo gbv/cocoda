@@ -165,7 +165,7 @@
           "Mappings, die lokal im Browser gespeichert wurden"
         ]
       },
-      "autoRefresh": 15000
+      "autoRefresh": 5000
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
@@ -196,7 +196,7 @@
           "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
         }
       ],
-      "autoRefresh": 15000
+      "autoRefresh": 10000
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
