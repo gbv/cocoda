@@ -45,7 +45,8 @@
       "popoverShow": "show scheme selection",
       "popoverHide": "hide scheme selection",
       "showAllSchemes": "Show {count} more",
-      "hideAllSchemes": "Hide {count}"
+      "hideAllSchemes": "Hide {count}",
+      "insertPrefLabel": "Automatically insert concept label from other side into search field"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -187,7 +188,6 @@
       "languageContribution": "To contribute to the translation of Cocoda, see these <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>instructions in the documentation</a>.",
       "showAllAncestors": "Always show all ancestors in concept details.",
       "truncateNotes": "Do not truncate notes in concept details.",
-      "autoInsertLabels": "Automatically insert label in search field on opposite side.",
       "resetSizes": "Reset card sizes",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
@@ -315,7 +315,8 @@
       "popoverShow": "Vokabular-Auswahl öffnen",
       "popoverHide": "Vokabular-Auswahl ausblenden",
       "showAllSchemes": "Alle {count} anzeigen",
-      "hideAllSchemes": "{count} ausblenden"
+      "hideAllSchemes": "{count} ausblenden",
+      "insertPrefLabel": "Benennung des Konzepts der anderen Seite automatisch in das Suchfeld einfügen"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -358,7 +359,6 @@
       "languageContribution": "Um zur Übersetzung von Cocoda beizutragen, siehe diese <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>Anweisungen in der Dokumentation</a> (Englisch).",
       "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",
       "truncateNotes": "Notizen für Konzepte nicht abschneiden.",
-      "autoInsertLabels": "Automatisch das Label in das Suchfeld auf der anderen Seite einfügen.",
       "resetSizes": "Komponenten-Größen zurücksetzen",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",

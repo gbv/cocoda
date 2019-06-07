@@ -329,8 +329,8 @@ export default {
         })
         // Also re-insert prefLabels after delay
         _.delay(() => {
-          this.insertPrefLabel(true, false)
-          this.insertPrefLabel(false, false)
+          this.insertPrefLabel(true)
+          this.insertPrefLabel(false)
         }, 300)
       }
     },
@@ -477,20 +477,16 @@ export default {
         this.loadFromParametersOnce(true)
       })
     },
-    insertPrefLabel(isLeft, both = true) {
-      if (!this.$settings.autoInsertLabels) {
+    insertPrefLabel(isLeft) {
+      if (!this.$settings.schemeSelectionInsertPrefLabel[!isLeft]) {
         return
       }
       let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
-      // Insert on the left AND the right
-      let sides = both ? [true, false] : [isLeft]
-      for (let isLeft of sides) {
-        let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Left" : "Right"}[0]`)
-        if (conceptSchemeSelection) {
-          conceptSchemeSelection.setConceptSearchQuery(regexResult ? regexResult[0] : "")
-        }
+      let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Right" : "Left"}[0]`)
+      if (conceptSchemeSelection) {
+        conceptSchemeSelection.setConceptSearchQuery(regexResult ? regexResult[0] : "")
       }
     },
     refresh(key) {
@@ -515,8 +511,8 @@ export default {
       this.loadFromParameters()
       // Also re-insert prefLabels after delay
       _.delay(() => {
-        this.insertPrefLabel(true, false)
-        this.insertPrefLabel(false, false)
+        this.insertPrefLabel(true)
+        this.insertPrefLabel(false)
       }, 300)
     },
     loadFromParameters(firstLoad = false) {

@@ -8,6 +8,16 @@
     <div
       v-if="scheme"
       class="conceptSchemeSelection-collapsed">
+      <!-- Settings -->
+      <component-settings>
+        <p><b>{{ $t("navbar.settings") }}</b></p>
+        <b-form-checkbox
+          v-model="insertPrefLabel"
+          v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
+          style="user-select: none;">
+          {{ $t("schemeSelection.insertPrefLabel") }}
+        </b-form-checkbox>
+      </component-settings>
       <!-- Expand button -->
       <div
         :id="`${id}-expandButton`"
@@ -162,6 +172,7 @@
 <script>
 import ItemName from "./ItemName"
 import ConceptSearch from "./ConceptSearch"
+import ComponentSettings from "./ComponentSettings"
 
 import _ from "lodash"
 
@@ -177,7 +188,7 @@ import clickHandler from "../mixins/click-handler"
  */
 export default {
   name: "ConceptSchemeSelection",
-  components: { ItemName, ConceptSearch },
+  components: { ItemName, ConceptSearch, ComponentSettings },
   mixins: [objects, clickHandler],
   props: {
     /**
@@ -247,6 +258,18 @@ export default {
           this.hidePopover()
         }
       }]
+    },
+    insertPrefLabel: {
+      get() {
+        return this.$settings.schemeSelectionInsertPrefLabel[this.isLeft]
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: `schemeSelectionInsertPrefLabel[${this.isLeft}]`,
+          value
+        })
+      }
     },
   },
   watch: {
@@ -356,10 +379,12 @@ export default {
 }
 
 .conceptSchemeSelection-collapsed {
+  position: relative;
   padding: 5px 5px 0 5px;
 }
 .conceptSchemeSelection-schemeName {
   padding-right: 30px;
+  padding-left: 28px;
 }
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;

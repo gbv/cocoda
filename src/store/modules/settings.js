@@ -1,4 +1,5 @@
 import localforage from "localforage"
+import _ from "lodash"
 
 const localStorageKey = "cocoda-settings--" + window.location.pathname
 
@@ -15,12 +16,15 @@ const defaultSettings = {
   flex: {},
   typesForSchemes: {},
   locale: window.navigator.language || "en",
-  autoInsertLabels: true,
   mappingEditorClearOnSave: true,
   favoriteConcepts: [],
   favoriteSchemes: null,
   mappingCardinality: "1-to-n",
   mappingRegistry: null,
+  schemeSelectionInsertPrefLabel: {
+    [true]: true,
+    [false]: true
+  }
 }
 
 // initial state
@@ -43,7 +47,7 @@ const mutations = {
 
   set(state, { prop, value }) {
     if (state.loaded) {
-      state.settings[prop] = value
+      _.set(state.settings, prop, value)
       localforage.setItem(localStorageKey, state.settings)
     } else {
       console.warn("Tried to save settings before they were loaded.")
