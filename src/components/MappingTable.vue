@@ -137,8 +137,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = _.get(a, "type.prefLabel.en", "")
-            let labelB = _.get(b, "type.prefLabel.en", "")
+            let labelA = this.$util.prefLabel(_.get(a, "type"), null, false)
+            let labelB = this.$util.prefLabel(_.get(b, "type"), null, false)
             if (labelA < labelB) {
               return -1
             }
