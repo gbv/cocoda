@@ -318,7 +318,7 @@ export default {
         return Promise.resolve(scheme)
       }
       let promise
-      if (!scheme || !scheme._getTypes) {
+      if (!scheme || !_.isFunction(scheme._getTypes)) {
         promise = Promise.resolve([])
       } else {
         promise = scheme._getTypes()
@@ -342,7 +342,7 @@ export default {
         return Promise.resolve(scheme)
       }
       let promise
-      if (!scheme || !scheme._getTop) {
+      if (!scheme || !_.isFunction(scheme._getTop)) {
         promise = Promise.resolve([])
       } else {
         promise = scheme._getTop()

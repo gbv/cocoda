@@ -803,6 +803,8 @@ export default {
           this.$set(this.concordances, index, concordance)
         })
         this.concordances.length = concordances.length
+      }).catch(error => {
+        console.error("MappingBrowser - Error loading concordances", error)
       })
     }
     this.navigatorRefresh(true)
@@ -954,6 +956,9 @@ export default {
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.resultLimit,
           limit: this.resultLimit,
           cancelToken: cancelToken.token,
+        }).catch(error => {
+          console.warn("Mapping Browser: Error during search:", error)
+          return []
         }).then(mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             let page = (this.searchPages[registry.uri] || 1)
@@ -965,12 +970,9 @@ export default {
               this.$set(this.searchResults, registry.uri, mappings)
               this.$set(this.searchLoading, registry.uri, false)
             }
+            // Schedule auto refresh
+            this.scheduleAutoRefresh(registry)
           }
-        }).catch(error => {
-          console.warn("Mapping Browser: Error during search:", error)
-        }).then(() => {
-          // Schedule auto refresh
-          this.scheduleAutoRefresh(registry)
         })
         promises.push(promise)
       }
@@ -1060,7 +1062,10 @@ export default {
           this.$set(this.navigatorResults, registry.uri, [null])
         }
 
-        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken: cancelToken.token }).then(mappings => {
+        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken: cancelToken.token }).catch(error => {
+          console.warn("Mapping Browser: Error during refresh (1)", error)
+          return []
+        }).then(mappings => {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
           }
@@ -1150,24 +1155,14 @@ export default {
           // Reset cancel token
           this.navigatorCancelToken[registry.uri] = null
         }).catch(error => {
-          console.warn("Mapping Browser: Error during refresh:", error)
+          console.warn("Mapping Browser: Error during refresh (2)", error)
         }).then(() => {
           // Schedule auto refresh
           this.scheduleAutoRefresh(registry)
         })
 
         promises.push(promise)
-
       }
-
-      Promise.all(promises).then(() => {
-        // Load concepts
-        // this.mbLoadConcepts(conceptsToLoad)
-        // If settings are shown, refresh download
-        // if (this.settingsShow) {
-        //   this.refreshSettingsDownload()
-        // }
-      })
     },
     swapClicked() {
       [this.searchFilter.fromScheme, this.searchFilter.fromNotation, this.searchFilter.toScheme, this.searchFilter.toNotation] = [this.searchFilter.toScheme, this.searchFilter.toNotation, this.searchFilter.fromScheme, this.searchFilter.fromNotation]

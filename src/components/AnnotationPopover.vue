@@ -250,7 +250,9 @@ export default {
           promise = this.remove(this.annotations.indexOf(this.ownAssessment))
         }
       }
-      promise.then(() => {
+      promise.catch(error => {
+        console.error("AnnotationPopover - Error adding annotation", error)
+      }).then(() => {
         this.loading = false
       })
     },

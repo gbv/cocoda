@@ -233,7 +233,7 @@ export default {
       this.loadNarrower(this.concept).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
-        if (concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
+        if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
           this.scrollTo()
         }
       })

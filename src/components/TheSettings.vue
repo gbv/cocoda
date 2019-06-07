@@ -413,6 +413,8 @@ export default {
             this.$refs.fileUpload.reset()
             this.refreshDownloads()
             this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+          }).catch(error => {
+            console.error("TheSettings - Error uploading mappings", error)
           })
         }
         reader.readAsText(this.uploadedFile)
@@ -517,6 +519,8 @@ export default {
           download.filename = `${this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$util.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
         }
         this.dlMappingsReady = true
+      }).catch(error => {
+        console.error("TheSettings - Error refreshing local mappings download", error)
       })
     },
     rewriteCreator() {
@@ -534,6 +538,8 @@ export default {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
+      }).catch(error => {
+        console.error("TheSettings - Error rewriting creator", error)
       })
     },
     resetFlex() {
@@ -560,6 +566,8 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           this.refreshDownloads()
           this.deleteMappingsButtons = false
+        }).catch(error => {
+          console.error("TheSettings - Error deleting local mappings", error)
         })
       })
     },

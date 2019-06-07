@@ -563,6 +563,8 @@ export default {
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
+      }).catch(error => {
+        console.error("MappingBrowserTable - Error removing mapping", error)
       }).then(() => {
         this.loadingGlobal = false
       })
@@ -588,8 +590,6 @@ export default {
     },
     saveMapping(mapping) {
       mapping = this.$jskos.copyDeep(mapping)
-      this.loading = 1
-      this.loadingGlobal = true
       // Adjust creator
       let creator = this.creator
       let creatorName = this.$util.prefLabel(creator, null, false)
@@ -601,6 +601,7 @@ export default {
       }
       mapping.creator = [creator]
 
+      this.loadingGlobal = true
       return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
         return mappings[0]
       }).catch(() => {
@@ -615,7 +616,7 @@ export default {
         }
         return mapping
       }).catch(error => {
-        console.error("MappingBrowser - error in saveMapping:", error)
+        console.error("MappingBrowserTable - error in saveMapping:", error)
         return null
       }).then(mapping => {
         this.loadingGlobal = false
