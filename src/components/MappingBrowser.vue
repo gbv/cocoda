@@ -307,44 +307,28 @@
         </div>
         <div
           v-if="selected.concept[true] || selected.concept[false]"
-          id="mappingBrowser-settings">
+          id="mappingBrowser-registryGroup-list">
           <div
             v-for="group of registryGroups"
             :key="group.uri"
-            class="mappingBrowser-settings-registryGroup">
+            class="mappingBrowser-registryGroup">
             <span
               :id="`registryGroup-${group.uri}`"
-              class="mappingBrowser-settings-registryGroup-title fontWeight-heavy button">
-              {{ $util.prefLabel(group) }} <font-awesome-icon icon="caret-down" /><br>
+              class="mappingBrowser-registryGroup-title">
+              {{ $util.prefLabel(group) }}:
             </span>
-            <registry-notation
-              v-for="registry in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
-              :key="registry.uri"
-              :registry="registry"
-              :disabled="!showRegistry[registry.uri]"
-              class="mappingBrowser-settings-registryGroup-notation"
-              @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
-              @mouseover.native="hoveredRegistry = registry"
-              @mouseout.native="hoveredRegistry = null" />
-            <b-popover
-              :target="`registryGroup-${group.uri}`"
-              :show.sync="registryGroupShow[group.uri]"
-              triggers="click"
-              placement="bottom">
-              <div
-                :ref="`registryGroup-${group.uri}-popover`"
-                class="mappingBrowser-settings-registryGroup-popover">
-                <b-form-checkbox
-                  v-for="(registry, index) in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
-                  :key="`registry_${index}`"
-                  v-model="showRegistry[registry.uri]"
-                  class="mappingBrowser-settings-registryGroup-popover-item"
-                  @mouseover.native="hoveredRegistry = registry"
-                  @mouseout.native="hoveredRegistry = null">
-                  <registry-name :registry="registry" />
-                </b-form-checkbox>
-              </div>
-            </b-popover>
+            <span
+              style="white-space: nowrap">
+              <registry-notation
+                v-for="registry in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
+                :key="registry.uri"
+                :registry="registry"
+                :disabled="!showRegistry[registry.uri]"
+                class="mappingBrowser-registryGroup-notation"
+                @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+                @mouseover.native="hoveredRegistry = registry"
+                @mouseout.native="hoveredRegistry = null" />
+            </span>
           </div>
         </div>
         <mapping-browser-table
@@ -361,7 +345,6 @@
 import MappingBrowserTable from "./MappingBrowserTable"
 import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation"
-import RegistryName from "./RegistryName"
 import ItemName from "./ItemName"
 import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
@@ -376,7 +359,7 @@ import clickHandler from "../mixins/click-handler"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName, ItemName, ComponentSettings },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings },
   mixins: [auth, objects, dragandrop, clickHandler],
   data() {
     return {
@@ -588,8 +571,8 @@ export default {
       let otherGroup = {
         uri: "http://coli-conc.gbv.de/registry-group/other-mappings",
         prefLabel: {
-          de: "Andere Mappings",
-          en: "Other Mappings"
+          de: "Andere",
+          en: "Other"
         },
         registries: []
       }
@@ -1288,26 +1271,20 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-#mappingBrowser-settings {
+#mappingBrowser-registryGroup-list {
   flex: none;
   display: flex;
   flex-wrap: wrap;
   margin: 5px 5px 15px 5px;
-  padding: 5px;
-  box-shadow: 0 1px 2px 0 @color-shadow;
 }
-.mappingBrowser-setting {
-  user-select: none;
-  margin: 0 15px;
-}
-.mappingBrowser-settings-registryGroup {
+.mappingBrowser-registryGroup {
   flex: 1;
   text-align: center;
 }
-.mappingBrowser-settings-registryGroup-title {
-  margin-right: 10px;
+.mappingBrowser-registryGroup-title {
+  display:inline-block;
 }
-.mappingBrowser-settings-registryGroup-notation {
+.mappingBrowser-registryGroup-notation {
   margin: 0 4px;
   cursor: pointer;
 }
@@ -1315,12 +1292,12 @@ export default {
   margin: auto 4px;
   cursor: pointer;
 }
-.mappingBrowser-settings-registryGroup-popover {
+.mappingBrowser-registryGroup-popover {
   display: flex;
   flex-direction: column;
   margin: 10px 10px;
 }
-.mappingBrowser-settings-registryGroup-popover-item {
+.mappingBrowser-registryGroup-popover-item {
   flex: 1;
   margin: 5px 0;
 }
