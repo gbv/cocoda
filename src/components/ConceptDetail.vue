@@ -135,6 +135,14 @@
             <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
           </div>
           <div
+            v-for="type in types"
+            :key="`conceptDetail-type-${type.uri}`"
+            class="conceptDetail-identifier">
+            <b>Type:</b> <auto-link
+              :link="type.uri"
+              :text="$util.prefLabel(type)" />
+          </div>
+          <div
             v-if="item.creator && item.creator.length"
             class="conceptDetail-identifier">
             <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
@@ -342,6 +350,25 @@ export default {
         ))
       )
       return searchLinks
+    },
+    // Returns null or an array of type objects
+    types() {
+      if (!this.item || (this.item.type || []).length <= 1) {
+        return []
+      }
+      let types = []
+      let schemeTypes = _.get(this.item, "inScheme[0].types", [])
+      for (let typeUri of this.item.type || []) {
+        if (typeUri == "http://www.w3.org/2004/02/skos/core#Concept") {
+          continue
+        }
+        let type = { uri: typeUri }
+        // Try to find type in scheme types
+        type = schemeTypes.find(t => this.$jskos.compare(t, type)) || type
+        types.push(type)
+      }
+      console.log(types)
+      return types
     },
   },
   watch: {
