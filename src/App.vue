@@ -583,7 +583,7 @@ export default {
         let decodeMapping = new Promise(resolve => {
           let mappingFromQuery = null
           try {
-            mappingFromQuery = JSON.parse(query["mapping"])
+            mappingFromQuery = this.$jskos.normalize(JSON.parse(query["mapping"]))
           } catch(error) {
             // do nothing
           }

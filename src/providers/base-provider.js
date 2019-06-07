@@ -104,6 +104,9 @@ class BaseProvider {
           promise = Promise.reject("No method called " + method)
         }
         return promise.then(({ data, headers }) => {
+          // Apply unicode normalization
+          data = jskos.normalize(data)
+
           if (_.isArray(data)) {
             let totalCount = parseInt(headers["x-total-count"])
             if (totalCount) {
