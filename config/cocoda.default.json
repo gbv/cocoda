@@ -397,15 +397,15 @@
     {
       "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings",
       "prefLabel": {
-        "de": "Vorhandene Mappings",
-        "en": "Available Mappings"
+        "de": "Mappings",
+        "en": "Mappings"
       }
     },
     {
       "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings",
       "prefLabel": {
-        "de": "Automatische Mappings",
-        "en": "Automatic Mappings"
+        "de": "Vorschläge",
+        "en": "Recommendations"
       }
     }
   ],
