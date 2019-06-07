@@ -700,6 +700,7 @@ export default {
         let
           fromScheme = item.mapping.fromScheme.uri,
           toScheme = item.mapping.toScheme.uri,
+          uri = item.mapping.uri,
           identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:")),
           concepts = { from: "", to: "" }
         for (let fromTo of Object.keys(concepts)) {
@@ -710,8 +711,8 @@ export default {
             }
           }
         }
-        if (fromScheme && toScheme && identifier) {
-          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`
+        if (fromScheme && toScheme && (uri || identifier)) {
+          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&${uri ? "mappingUri" : "mappingIdentifier"}=${uri || identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`
           if (name == "open") {
             window.open(cocodaUrl)
           } else {

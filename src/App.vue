@@ -593,8 +593,8 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : Promise.resolve([])).then(mappings => {
-          if (query.mappingUri && mappings.length) {
+        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+          if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
             let original = mappings.find(mapping => _.get(mapping, "_provider.has.canSaveMappings")) || mappings[0]
