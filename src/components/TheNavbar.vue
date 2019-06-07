@@ -37,15 +37,15 @@
         extra-menu-classes="favoriteConceptsDropdown"
         no-caret
         right
+        @dragover.native="dragOver"
+        @drop.native="drop"
         @hide="favoriteConceptsDropdownHide"
         @mouseover.native="favoriteConceptsDropdownSetStatus(true); _favoriteConceptsDropdownSetStatus(true)"
         @mouseout.native="favoriteConceptsDropdownSetStatus(false)">
         <template slot="button-content">
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
-            icon="star"
-            @dragover="dragOver"
-            @drop="drop" />
+            icon="star" />
         </template>
         <b-dropdown-header>Favorite Concepts</b-dropdown-header>
         <b-dropdown-item
@@ -157,6 +157,7 @@ export default {
       this.$refs.favoriteConceptsDropdown.$el.getElementsByClassName("favoriteConceptsDropdown")[0].scrollTop = 0
     },
     droppedConcept(concept) {
+      console.log(concept)
       // Save concept to favorites
       this.$store.dispatch("addConceptToFavorites", concept)
     },
