@@ -514,17 +514,7 @@ export default {
      * Returns whether the add button should be enabled for a specific side
      */
     isAddButtonEnabled(isLeft) {
-      let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
-      if (!this.$store.getters["mapping/checkScheme"](isLeft ? this.selected.scheme[true] : this.selected.scheme[false], isLeft)) {
-        return false
-      }
-      if (concept == null) {
-        return false
-      }
-      if (this.$store.getters["mapping/added"](concept, isLeft)) {
-        return false
-      }
-      return true
+      return this.$store.getters["mapping/canAdd"](this.selected.concept[isLeft], this.selected.scheme[isLeft], isLeft)
     },
     /**
      * Returns whether the delete all button should be enabled for a specific side
