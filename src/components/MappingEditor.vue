@@ -3,35 +3,21 @@
     id="mappingEditor"
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <!-- Settings -->
-    <div id="mappingEditor-settingsButton">
-      <font-awesome-icon
-        id="mappingEditor-settingsButton-icon"
-        v-b-tooltip.hover="{ title: $t('mappingEditor.settingsButton'), delay: $util.delay.medium }"
-        icon="cog"
-        class="button" />
-      <b-popover
-        :show.sync="settingsShow"
-        target="mappingEditor-settingsButton-icon"
-        triggers="click"
-        placement="bottomright">
-        <div
-          ref="settingsPopover">
-          <p><b>{{ $t("navbar.settings") }}</b></p>
-          <b-form-checkbox
-            v-model="clearOnSave"
-            v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
-            style="user-select: none;">
-            {{ $t("mappingEditor.settingClearOnSave") }}
-          </b-form-checkbox>
-          <b-form-checkbox
-            v-model="only1to1mappings"
-            v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
-            style="user-select: none;">
-            {{ $t("mappingEditor.settingOnly1to1mappings") }}
-          </b-form-checkbox>
-        </div>
-      </b-popover>
-    </div>
+    <component-settings :tooltip="$t('mappingEditor.settingsButton')">
+      <p><b>{{ $t("navbar.settings") }}</b></p>
+      <b-form-checkbox
+        v-model="clearOnSave"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
+        style="user-select: none;">
+        {{ $t("mappingEditor.settingClearOnSave") }}
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model="only1to1mappings"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
+        style="user-select: none;">
+        {{ $t("mappingEditor.settingOnly1to1mappings") }}
+      </b-form-checkbox>
+    </component-settings>
     <div
       v-if="canSaveMapping"
       id="mappingEditor-mappingNotSaved"
@@ -248,23 +234,22 @@ import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import DataModalButton from "./DataModalButton"
 import _ from "lodash"
+import ComponentSettings from "./ComponentSettings"
 
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
-import clickHandler from "../mixins/click-handler"
 
 /**
  * The mapping editor component.
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, DataModalButton },
-  mixins: [auth, objects, clickHandler],
+  components: { ItemName, MappingTypeSelection, DataModalButton, ComponentSettings },
+  mixins: [auth, objects],
   data() {
     return {
       comments: [""],
-      settingsShow: false,
     }
   },
   computed: {
@@ -334,19 +319,6 @@ export default {
           value: value ? "1-to-1" : "1-to-n"
         })
       }
-    },
-    // for click-handler mixin
-    clickHandlers() {
-      return [{
-        elements: [
-          this.$refs.settingsPopover,
-          document.getElementById("mappingEditor-settingsButton"),
-        ],
-        handler: () => {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.settingsShow = false
-        },
-      }]
     },
   },
   watch: {
@@ -613,12 +585,6 @@ export default {
   position: relative;
   display: flex;
   border: 1px solid @color-background;
-}
-#mappingEditor-settingsButton {
-  position: absolute;
-  left: 0px;
-  top: -6px;
-  z-index: @zIndex-2;
 }
 .mappingEditor-cantSave {
   background-color: @color-background;

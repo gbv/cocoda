@@ -1,43 +1,29 @@
 <template>
   <div id="mappingBrowser">
     <!-- Settings -->
-    <div id="mappingBrowser-settingsButton">
-      <font-awesome-icon
-        id="mappingBrowser-settingsButton-icon"
-        v-b-tooltip.hover="{ title: $t('mappingBrowser.settingsButton'), delay: $util.delay.medium }"
-        icon="cog"
-        class="button" />
-      <b-popover
-        :show.sync="settingsShow"
-        target="mappingBrowser-settingsButton-icon"
-        triggers="click"
-        placement="bottomright">
-        <div
-          ref="settingsPopover">
-          <p><b>{{ $t("navbar.settings") }}</b></p>
-          <b-form
-            inline
-            @submit.stop.prevent>
-            <b-form-checkbox
-              v-model="showAllSchemes"
-              v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
-              style="user-select: none;">
-              {{ $t("mappingBrowser.settingShowAllSchemes") }}
-            </b-form-checkbox>
-            <div>
-              {{ $t("mappingBrowser.settingResultLimit") }}
-              <b-input
-                v-model="resultLimit"
-                type="number"
-                min="1"
-                max="20"
-                size="sm"
-                @click="$event.target.select()" />
-            </div>
-          </b-form>
+    <component-settings :tooltip="$t('mappingBrowser.settingsButton')">
+      <p><b>{{ $t("navbar.settings") }}</b></p>
+      <b-form
+        inline
+        @submit.stop.prevent>
+        <b-form-checkbox
+          v-model="showAllSchemes"
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingShowAllSchemes") }}
+        </b-form-checkbox>
+        <div>
+          {{ $t("mappingBrowser.settingResultLimit") }}
+          <b-input
+            v-model="resultLimit"
+            type="number"
+            min="1"
+            max="20"
+            size="sm"
+            @click="$event.target.select()" />
         </div>
-      </b-popover>
-    </div>
+      </b-form>
+    </component-settings>
     <b-tabs
       v-model="tab"
       pills
@@ -377,6 +363,7 @@ import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation"
 import RegistryName from "./RegistryName"
 import ItemName from "./ItemName"
+import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
@@ -389,7 +376,7 @@ import clickHandler from "../mixins/click-handler"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName, ItemName },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName, ItemName, ComponentSettings },
   mixins: [auth, objects, dragandrop, clickHandler],
   data() {
     return {
@@ -398,7 +385,6 @@ export default {
        *  Will not switch automatically again afterwards.
        */
       hasSwitchedToNavigator: false,
-      settingsShow: false,
       searchShareShow: false,
       searchShareLinkPart: "",
       searchShareIncludeSelected: false,
@@ -708,17 +694,6 @@ export default {
           }
         })
       }
-      // Settings popover
-      popovers.push({
-        elements: [
-          this.$refs.settingsPopover,
-          document.getElementById("mappingBrowser-settingsButton-icon")
-        ],
-        handler: () => {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.settingsShow = false
-        }
-      })
       // Search Link popover
       popovers.push({
         elements: [
@@ -1312,12 +1287,6 @@ export default {
 
 <style lang="less" scoped>
 @import "../style/main.less";
-
-#mappingBrowser-settingsButton {
-  position: absolute;
-  left: 0px;
-  top: -6px;
-}
 
 #mappingBrowser-settings {
   flex: none;
