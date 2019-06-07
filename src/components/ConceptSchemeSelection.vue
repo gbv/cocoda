@@ -167,6 +167,7 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import clickHandler from "../mixins/click-handler"
 
 /**
  * Concept scheme selection component.
@@ -177,7 +178,7 @@ import objects from "../mixins/objects"
 export default {
   name: "ConceptSchemeSelection",
   components: { ItemName, ConceptSearch },
-  mixins: [objects],
+  mixins: [objects, clickHandler],
   props: {
     /**
      * Tells the component on which side of the application it is.
@@ -235,6 +236,18 @@ export default {
       options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
       return options
     },
+    clickHandlers() {
+      return [{
+        elements: [
+          this.$refs.popover,
+          document.getElementById(`${this.id}-expandButton`)
+        ],
+        handler: () => {
+          // this.popoverShown
+          this.hidePopover()
+        }
+      }]
+    },
   },
   watch: {
     popoverShown(show) {
@@ -247,14 +260,8 @@ export default {
     },
   },
   mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
     // Enable shortcuts
     this.enableShortcuts()
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
   },
   methods: {
     shortcutHandler({ action, isLeft }) {
@@ -275,12 +282,6 @@ export default {
             }
             break
         }
-      }
-    },
-    handleClickOutside(evt) {
-      // Handle popover
-      if (this.popoverShown && this.$refs.popover && !this.$refs.popover.contains(evt.target)) {
-        this.hidePopover()
       }
     },
     /**

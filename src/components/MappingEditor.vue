@@ -252,6 +252,7 @@ import _ from "lodash"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import clickHandler from "../mixins/click-handler"
 
 /**
  * The mapping editor component.
@@ -259,7 +260,7 @@ import objects from "../mixins/objects"
 export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, DataModalButton },
-  mixins: [auth, objects],
+  mixins: [auth, objects, clickHandler],
   data() {
     return {
       comments: [""],
@@ -334,6 +335,19 @@ export default {
         })
       }
     },
+    // for click-handler mixin
+    clickHandlers() {
+      return [{
+        elements: [
+          this.$refs.settingsPopover,
+          document.getElementById("mappingEditor-settingsButton"),
+        ],
+        handler: () => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.settingsShow = false
+        },
+      }]
+    },
   },
   watch: {
     mappingEncoded() {
@@ -379,16 +393,6 @@ export default {
       this.setCreator()
     },
   },
-  mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
-    // Enable shortcuts
-    this.enableShortcuts()
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
-  },
   methods: {
     shortcutHandler({ action, isLeft }) {
       switch(action) {
@@ -406,14 +410,6 @@ export default {
             this.$refs.commentModal.show()
           }
           break
-      }
-    },
-    handleClickOutside(event) {
-      // Handle settings popover
-      let popover = this.$refs.settingsPopover
-      let button = document.getElementById("mappingEditor-settingsButton")
-      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
-        this.settingsShow = false
       }
     },
     saveMapping() {

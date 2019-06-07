@@ -100,6 +100,7 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import clickHandler from "../mixins/click-handler"
 
 /**
  * Component that represents a typeahead-enabled search field for concepts.
@@ -109,7 +110,7 @@ export default {
   components: {
     LoadingIndicator
   },
-  mixins: [objects],
+  mixins: [objects, clickHandler],
   props: {
     /**
      * Tells the component on which side of the application it is.
@@ -182,6 +183,35 @@ export default {
     provider() {
       return _.get(this.scheme, "_provider")
     },
+    clickHandlers() {
+      return [
+        // Result list
+        {
+          elements: [
+            this.$el
+          ],
+          handler: () => {
+            if (!this.filterPopoverShow) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.isOpen = false
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.searchSelected = -1
+            }
+          }
+        },
+        // Types popover
+        {
+          elements: [
+            document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`),
+            this.$refs.filterPopover
+          ],
+          handler: () => {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.filterPopoverShow = false
+          }
+        }
+      ]
+    },
   },
   watch: {
     /**
@@ -234,14 +264,6 @@ export default {
     // Create a unique ID for the DOM IDs
     this.uniqueID = this.$util.generateID()
   },
-  mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
-  },
   methods: {
     /**
      * Chooses a search result and resets search field.
@@ -292,22 +314,6 @@ export default {
             this.searchResult = [["Error! Could not reach the API. " + error]]
           }
         })
-    },
-    /**
-     * Closes search results when clicked outside of search field.
-     *
-     * @param {object} evt - event object for the click
-     */
-    handleClickOutside(evt) {
-      if (!this.filterPopoverShow && !this.$el.contains(evt.target)) {
-        this.isOpen = false
-        this.searchSelected = -1
-      }
-      // Handle types popover
-      let button = document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`)
-      if (this.$refs.filterPopover && !this.$refs.filterPopover.contains(evt.target) && !button.contains(evt.target)) {
-        this.filterPopoverShow = false
-      }
     },
     /**
      * Handles an arrow down event.

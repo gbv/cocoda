@@ -45,7 +45,7 @@
       justified>
       <b-tab
         :title="$t('mappingBrowser.concordances')"
-        @click="handleClickOutside">
+        @click="handleClick">
         <template v-if="concordances && concordances.length">
           <div style="display: flex;">
             <div
@@ -162,7 +162,7 @@
       </b-tab>
       <b-tab
         :title="$t('mappingBrowser.mappingSearch')"
-        @click="handleClickOutside">
+        @click="handleClick">
         <div style="flex: none;">
           <div style="display: flex;">
             <b-input
@@ -313,7 +313,7 @@
       </b-tab>
       <b-tab
         :title="$t('mappingBrowser.mappingNavigator')"
-        @click="handleClickOutside">
+        @click="handleClick">
         <div
           v-show="!selected.concept[true] && !selected.concept[false]"
           class="noItems fontWeight-heavy">
@@ -385,11 +385,12 @@ import axios from "axios"
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
 import dragandrop from "../mixins/dragandrop"
+import clickHandler from "../mixins/click-handler"
 
 export default {
   name: "MappingBrowser",
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, RegistryName, ItemName },
-  mixins: [auth, objects, dragandrop],
+  mixins: [auth, objects, dragandrop, clickHandler],
   data() {
     return {
       tab: 1,
@@ -693,6 +694,44 @@ export default {
       url += `${url.includes("?") ? "&" : "?"}${this.searchShareLinkPart}`
       return url
     },
+    clickHandlers() {
+      let popovers = []
+      // Registry group popovers
+      for (let group of this.registryGroups) {
+        popovers.push({
+          elements: [
+            _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]"),
+            document.getElementById(`registryGroup-${group.uri}`)
+          ],
+          handler: () => {
+            this.$set(this.registryGroupShow, group.uri, false)
+          }
+        })
+      }
+      // Settings popover
+      popovers.push({
+        elements: [
+          this.$refs.settingsPopover,
+          document.getElementById("mappingBrowser-settingsButton-icon")
+        ],
+        handler: () => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.settingsShow = false
+        }
+      })
+      // Search Link popover
+      popovers.push({
+        elements: [
+          this.$refs.searchSharePopover,
+          document.getElementById("mappingBrowser-search-shareButton")
+        ],
+        handler: () => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.searchShareShow = false
+        }
+      })
+      return popovers
+    }
   },
   watch: {
     tab(tab) {
@@ -808,36 +847,8 @@ export default {
       })
     }
     this.navigatorRefresh(true)
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
   },
   methods: {
-    handleClickOutside(event) {
-      // Handle registry group popovers
-      for (let group of this.registryGroups) {
-        let popover = _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]")
-        let button = document.getElementById(`registryGroup-${group.uri}`)
-        if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
-          this.$set(this.registryGroupShow, group.uri, false)
-        }
-      }
-      // Handle settings popover
-      let popover = this.$refs.settingsPopover
-      let button = document.getElementById("mappingBrowser-settingsButton-icon")
-      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
-        this.settingsShow = false
-      }
-      // Handle search share popover
-      popover = this.$refs.searchSharePopover
-      button = document.getElementById("mappingBrowser-search-shareButton")
-      if (popover && !popover.contains(event.target) && !button.contains(event.target)) {
-        this.searchShareShow = false
-      }
-    },
     generateCancelToken() {
       return axios.CancelToken.source()
     },
