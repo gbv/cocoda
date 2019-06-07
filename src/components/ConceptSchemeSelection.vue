@@ -22,8 +22,8 @@
         <!-- Favorite star -->
         <font-awesome-icon
           v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
-          :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
-          class="conceptSchemeSelection-star"
+          :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
+          class="star"
           icon="star"
           @click="toggleFavoriteScheme(scheme)" />
         <!-- Name of scheme -->
@@ -102,7 +102,7 @@
             :key="_scheme.uri + '-favorite-scheme-list-' + id + index">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $t('schemeSelection.starRemove'), delay: $util.delay.medium }"
-              class="conceptSchemeSelection-star conceptSchemeSelection-starFavorite"
+              class="star starFavorite"
               icon="star"
               @click="toggleFavoriteScheme(_scheme)" />
             <item-name
@@ -124,8 +124,8 @@
             :key="_scheme.uri + '-scheme-list-' + id + index">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
-              :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
-              class="conceptSchemeSelection-star"
+              :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
+              class="star"
               icon="star"
               @click="toggleFavoriteScheme(_scheme)" />
             <item-name
@@ -402,19 +402,6 @@ export default {
 .conceptSchemeSelection-favoriteConcepts {
   max-height: 300px;
   padding-top: 5px;
-}
-
-.conceptSchemeSelection-star {
-  cursor: pointer;
-}
-.conceptSchemeSelection-starFavorite {
-  color: darken(@color-select, 12%);
-}
-.conceptSchemeSelection-starFavorite:hover, .conceptSchemeSelection-starNormal:hover {
-  color: @color-button-hover;
-}
-.conceptSchemeSelection-starNormal {
-  color: @color-button-faded;
 }
 
 </style>

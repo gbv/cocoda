@@ -144,6 +144,21 @@ ul {
   color: @color-button-hover;
 }
 
+// Favorite stars
+
+.star {
+  cursor: pointer;
+}
+.starFavorite {
+  color: darken(@color-select, 12%);
+}
+.starFavorite:hover, .starNormal:hover {
+  color: @color-button-hover;
+}
+.starNormal {
+  color: @color-button-faded;
+}
+
 // Other styles // --------------------------------------------------
 
 .selected {
