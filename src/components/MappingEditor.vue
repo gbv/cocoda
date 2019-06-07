@@ -393,6 +393,10 @@ export default {
       this.setCreator()
     },
   },
+  mounted() {
+    // Enable shortcuts
+    this.enableShortcuts()
+  },
   methods: {
     shortcutHandler({ action, isLeft }) {
       switch(action) {
