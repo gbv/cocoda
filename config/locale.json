@@ -33,8 +33,7 @@
     },
     "schemeSelection": {
       "title": "Select a scheme",
-      "schemeQuick": "Scheme Quick Selection",
-      "conceptQuick": "Concept Quick Selection",
+      "conceptQuick": "Favorite Concepts",
       "source": "Source Scheme",
       "target": "Target Scheme",
       "languageFilter": "Language",
@@ -303,7 +302,6 @@
     },
     "schemeSelection": {
       "title": "Wähle ein Vokabular",
-      "schemeQuick": "Vokabular-Schnellauswahl",
       "conceptQuick": "Konzept-Schnellauswahl",
       "source": "Quell-Vokabular",
       "target": "Ziel-Vokabular",

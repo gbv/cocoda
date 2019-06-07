@@ -47,7 +47,9 @@
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
             icon="star" />
         </template>
-        <b-dropdown-header>Favorite Concepts</b-dropdown-header>
+        <b-dropdown-header>
+          {{ $t('schemeSelection.conceptQuick') }}
+        </b-dropdown-header>
         <b-dropdown-item
           v-for="concept in favoriteConcepts"
           :key="'theNavbar-' + concept.uri + '-favorite'"
