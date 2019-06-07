@@ -38,8 +38,8 @@
         no-caret
         right
         @hide="favoriteConceptsDropdownHide"
-        @mouseover.native="favoriteConceptsDropdownMouseover"
-        @mouseout.native="favoriteConceptsDropdownMouseout">
+        @mouseover.native="favoriteConceptsDropdownSetStatus(true); _favoriteConceptsDropdownSetStatus(true)"
+        @mouseout.native="favoriteConceptsDropdownSetStatus(false)">
         <template slot="button-content">
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
@@ -128,6 +128,9 @@ export default {
       }
     },
   },
+  created() {
+    this.favoriteConceptsDropdownSetStatus = _.debounce(this._favoriteConceptsDropdownSetStatus, 500)
+  },
   methods: {
     favoriteConceptDragStart(concept) {
       event.dataTransfer.setData("text", concept.uri)
@@ -142,11 +145,12 @@ export default {
       }
       this.draggedConcept = null
     },
-    favoriteConceptsDropdownMouseover() {
-      this.$refs.favoriteConceptsDropdown.show()
-    },
-    favoriteConceptsDropdownMouseout() {
-      this.$refs.favoriteConceptsDropdown.hide()
+    _favoriteConceptsDropdownSetStatus(status) {
+      if (status) {
+        this.$refs.favoriteConceptsDropdown.show()
+      } else {
+        this.$refs.favoriteConceptsDropdown.hide()
+      }
     },
     favoriteConceptsDropdownHide() {
       // Scroll back to the top
