@@ -367,7 +367,6 @@ export default {
         type = schemeTypes.find(t => this.$jskos.compare(t, type)) || type
         types.push(type)
       }
-      console.log(types)
       return types
     },
   },
