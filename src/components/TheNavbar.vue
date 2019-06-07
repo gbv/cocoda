@@ -157,7 +157,6 @@ export default {
       this.$refs.favoriteConceptsDropdown.$el.getElementsByClassName("favoriteConceptsDropdown")[0].scrollTop = 0
     },
     droppedConcept(concept) {
-      console.log(concept)
       // Save concept to favorites
       this.$store.dispatch("addConceptToFavorites", concept)
     },
