@@ -92,7 +92,12 @@ const getters = {
    * @param {bool} isLeft - side of the mapping
    */
   getConcepts: (state) => (isLeft) => {
-    return state.mapping[helpers.fromTo(isLeft)].memberSet || state.mapping[helpers.fromTo(isLeft)].memberList || state.mapping[helpers.fromTo(isLeft)].memberChoice || []
+    if (_.isBoolean(isLeft)) {
+      let side = helpers.fromTo(isLeft)
+      return jskos.conceptsOfMapping(state.mapping, side)
+    } else {
+      return jskos.conceptsOfMapping(state.mapping)
+    }
   },
 
   /**
