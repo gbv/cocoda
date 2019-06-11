@@ -441,10 +441,9 @@ export default {
 
 .conceptSearch-icon {
   position: absolute;
-  margin: 0 auto;
-  padding: 4px 0;
+  top: 6px;
   text-align: center;
-  left: 5px;
+  left: 0;
 }
 
 .conceptSearch-resultCount {
@@ -464,7 +463,7 @@ export default {
 
 .conceptSearch-inputWrapper {
   position: relative;
-  margin-left: 28px;
+  margin-left: 18px;
 }
 
 .conceptSearch-results {

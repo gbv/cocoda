@@ -380,11 +380,11 @@ export default {
 
 .conceptSchemeSelection-collapsed {
   position: relative;
-  padding: 5px 5px 0 5px;
+  padding: 0 5px 0 5px;
 }
 .conceptSchemeSelection-schemeName {
   padding-right: 30px;
-  padding-left: 28px;
+  padding-left: 18px;
 }
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;
