@@ -751,12 +751,7 @@ html, body {
 }
 #mappingBrowserComponent {
   flex: 2;
-}
-#occurrencesBrowserComponent {
-  flex: 2;
-}
-#mappingBrowserComponent {
-  flex: 2;
+  min-height: 220px;
 }
 
 .placeholderComponent {
