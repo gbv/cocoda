@@ -158,20 +158,20 @@
         <div style="flex: none;">
           <div style="display: flex;">
             <b-input
-              v-model="searchFilter.fromScheme"
-              :state="searchFilter.fromScheme == '' ? true : searchFromScheme != null"
+              v-model="searchFilterInput.fromScheme"
+              :state="searchFilterInput.fromScheme == '' ? true : searchFromScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceScheme')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilter.fromScheme', concept: 'searchFilter.fromNotation' })" />
+              @drop="drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <b-input
-              v-model="searchFilter.fromNotation"
+              v-model="searchFilterInput.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceNotation')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilter.fromScheme', concept: 'searchFilter.fromNotation' })" />
+              @drop="drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <div
               class="button"
               style="flex: none; font-size: 16px; margin: auto 5px;"
@@ -179,27 +179,27 @@
               <font-awesome-icon icon="exchange-alt" />
             </div>
             <b-input
-              v-model="searchFilter.toScheme"
-              :state="searchFilter.toScheme == '' ? true : searchToScheme != null"
+              v-model="searchFilterInput.toScheme"
+              :state="searchFilterInput.toScheme == '' ? true : searchToScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetScheme')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilter.toScheme', concept: 'searchFilter.toNotation' })" />
+              @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <b-input
-              v-model="searchFilter.toNotation"
+              v-model="searchFilterInput.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilter.toScheme', concept: 'searchFilter.toNotation' })" />
+              @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
           </div>
           <div style="display: flex;">
             <div style="text-align: right; flex: none; margin: auto 5px;">
               {{ $t("mappingBrowser.creator") }}:
             </div>
             <b-input
-              v-model="searchFilter.creator"
+              v-model="searchFilterInput.creator"
               style="flex: 2; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.creator')"
@@ -208,7 +208,7 @@
               {{ $t("mappingBrowser.searchType") }}:
             </div>
             <b-select
-              v-model="searchFilter.type"
+              v-model="searchFilterInput.type"
               style="flex: 3; margin: 3px;"
               size="sm"
               :options="typeOptions"
@@ -218,7 +218,7 @@
               style="text-align: right; flex: none; margin: auto 5px;">
               {{ $t("mappingBrowser.searchBidirectional") }}:
               <b-form-checkbox
-                v-model="searchFilter.direction"
+                v-model="searchFilterInput.direction"
                 style="display: inline-block;"
                 size="sm"
                 value="both"
@@ -231,7 +231,7 @@
               {{ $t("mappingBrowser.concordance") }}:
             </div>
             <b-form-select
-              v-model="searchFilter.partOf"
+              v-model="searchFilterInput.partOf"
               style="flex: 2; margin: 3px;"
               size="sm"
               :options="concordanceOptions"
@@ -384,6 +384,9 @@ export default {
         to: "",
         creator: "",
       },
+      // Search filter directly from input
+      searchFilterInput: null,
+      // Search filter to be set when "Search" is clicked
       searchFilter: null,
       searchPages: {},
       searchResults: {},
@@ -536,14 +539,10 @@ export default {
       return options
     },
     searchFromScheme() {
-      return this.schemes.find(scheme => {
-        return this.$jskos.compare(scheme, { uri: this.searchFilter.fromScheme }) || this.$util.notation(scheme).toLowerCase() == this.searchFilter.fromScheme.toLowerCase()
-      })
+      return this.getSchemeForFilter(this.searchFilterInput.fromScheme)
     },
     searchToScheme() {
-      return this.schemes.find(scheme => {
-        return this.$jskos.compare(scheme, { uri: this.searchFilter.toScheme }) || this.$util.notation(scheme).toLowerCase() == this.searchFilter.toScheme.toLowerCase()
-      })
+      return this.getSchemeForFilter(this.searchFilterInput.toScheme)
     },
     needsRefresh() {
       return this.$store.state.mapping.mappingsNeedRefresh
@@ -850,7 +849,7 @@ export default {
       // Clear all other search parameters.
       this.clearSearchFilter()
       // Change concordance.
-      this.searchFilter.partOf = concordance.uri
+      this.searchFilterInput.partOf = concordance.uri
       // Search.
       this.searchClicked()
     },
@@ -864,8 +863,13 @@ export default {
       }
       return null
     },
+    getSchemeForFilter(filter) {
+      return this.schemes.find(scheme => {
+        return this.$jskos.compare(scheme, { uri: filter }) || this.$util.notation(scheme).toLowerCase() == filter.toLowerCase()
+      })
+    },
     clearSearchFilter() {
-      this.searchFilter = {
+      this.searchFilterInput = {
         fromScheme: "",
         fromNotation: "",
         toScheme: "",
@@ -876,18 +880,20 @@ export default {
         partOf: null,
       }
       this.searchResults = {}
-      this.search()
+      this.searchClicked()
     },
     searchWithParams(filter) {
       this.tab = 1
       _.forOwn(filter, (value, key) => {
         if (value != null) {
-          this.searchFilter[key] = value
+          this.searchFilterInput[key] = value
         }
       })
       this.searchClicked()
     },
     searchClicked() {
+      // Copy over input search filters to search filters
+      this.searchFilter = _.cloneDeep(this.searchFilterInput)
       this.search(null, 1)
     },
     search(registryUri = null, page) {
@@ -935,8 +941,8 @@ export default {
         let promise = this.getMappings({
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
-          fromScheme: this.searchFromScheme,
-          toScheme: this.searchToScheme,
+          fromScheme: this.getSchemeForFilter(this.searchFilter.fromScheme),
+          toScheme: this.getSchemeForFilter(this.searchFilter.toScheme),
           creator: this.searchFilter.creator,
           typeFilter: this.searchFilter.type,
           direction: this.searchFilter.direction,
@@ -1154,7 +1160,7 @@ export default {
       }
     },
     swapClicked() {
-      [this.searchFilter.fromScheme, this.searchFilter.fromNotation, this.searchFilter.toScheme, this.searchFilter.toNotation] = [this.searchFilter.toScheme, this.searchFilter.toNotation, this.searchFilter.fromScheme, this.searchFilter.fromNotation]
+      [this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation, this.searchFilterInput.toScheme, this.searchFilterInput.toNotation] = [this.searchFilterInput.toScheme, this.searchFilterInput.toNotation, this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation]
       this.searchClicked()
     },
     resultsToSections(results, pages, loading) {
