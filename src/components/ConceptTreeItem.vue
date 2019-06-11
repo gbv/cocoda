@@ -26,7 +26,8 @@
             down: isOpen
           }" />
       </div>
-      <router-link
+      <div
+        :is="url ? 'router-link' : 'div'"
         :to="url"
         :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
@@ -35,7 +36,7 @@
           :item="concept"
           :is-highlighted="isSelected"
           :prevent-external-hover="true" />
-      </router-link>
+      </div>
       <div
         v-show="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
@@ -117,7 +118,7 @@ export default {
       canAddToMapping: false,
       interval: null,
       /** URL of currently hovered concept */
-      url: "",
+      url: null,
     }
   },
   computed: {
@@ -161,7 +162,7 @@ export default {
       if (concept) {
         this.url = this.getRouterUrl(concept, this.isLeft)
       } else {
-        this.url = ""
+        this.url = null
       }
     },
     /**
