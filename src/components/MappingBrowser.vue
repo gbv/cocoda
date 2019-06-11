@@ -305,6 +305,12 @@
             </div>
           </b-popover>
         </mapping-browser-table>
+        <div
+          v-else
+          class="fontWeight-heavy"
+          style="text-align: center; margin-top: 20px;">
+          {{ $t("search.noResults") }}
+        </div>
       </b-tab>
       <b-tab
         :title="$t('mappingBrowser.mappingNavigator')"
@@ -348,6 +354,12 @@
           :sections="navigatorSections"
           :search-limit="resultLimit"
           @pageChange="changePage('navigator', $event)" />
+        <div
+          v-else
+          class="fontWeight-heavy"
+          style="text-align: center; margin-top: 20px;">
+          {{ $t("search.noResults") }}
+        </div>
       </b-tab>
     </b-tabs>
   </div>
