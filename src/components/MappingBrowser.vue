@@ -361,7 +361,7 @@
           :search-limit="resultLimit"
           @pageChange="changePage('navigator', $event)" />
         <div
-          v-else
+          v-else-if="selected.concept[true] || selected.concept[false]"
           class="fontWeight-heavy"
           style="text-align: center; margin-top: 20px;">
           {{ $t("search.noResults") }}
