@@ -123,6 +123,7 @@
           </li>
           <li v-show="!isFiltered">
             <a
+              ref="showAllSchemesLink"
               href=""
               @click.prevent="showAllSchemes = !showAllSchemes">
               {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes", { count: filteredSchemes.length }) : $t("schemeSelection.showAllSchemes", { count: filteredSchemes.length }) }}
@@ -253,7 +254,8 @@ export default {
       return [{
         elements: [
           this.$refs.popover,
-          document.getElementById(`${this.id}-expandButton`)
+          document.getElementById(`${this.id}-expandButton`),
+          this.$refs.showAllSchemesLink
         ],
         handler: () => {
           // this.popoverShown
