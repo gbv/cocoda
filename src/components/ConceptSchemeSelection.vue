@@ -395,7 +395,7 @@ export default {
 .conceptSchemeSelection-expandButton {
   position: absolute;
   top: 0px;
-  right: 20px;
+  right: 12px;
   font-size: 24px;
   height: 30px;
   width: 20px;
