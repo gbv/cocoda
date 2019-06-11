@@ -38,6 +38,7 @@ import { scroller } from "vue-scrollto/src/scrollTo"
 
 // Import mixins
 import objects from "../mixins/objects"
+import computed from "../mixins/computed"
 
 /**
  * Component that represents a (navigatable) concept tree.
@@ -47,7 +48,7 @@ export default {
   components: {
     LoadingIndicatorFull, ConceptTreeItem, Minimizer
   },
-  mixins: [objects],
+  mixins: [objects, computed],
   props: {
     /**
      * Tells the component on which side of the application it is.

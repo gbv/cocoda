@@ -314,7 +314,7 @@
     <!-- Mapping annotations popover -->
     <annotation-popover
       :id="hoveredId"
-      :mapping="hoveredMapping"
+      :mapping="this.$store.state.hoveredMapping"
       id-prefix="mappingBrowser-hoveredMapping-annotationButton-" />
   </div>
 </template>
@@ -335,6 +335,7 @@ import _ from "lodash"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import computed from "../mixins/computed"
 
 /**
  * The mapping suggestion browser component.
@@ -342,7 +343,7 @@ import objects from "../mixins/objects"
 export default {
   name: "MappingBrowser",
   components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, RegistryName, MappingDetail, AnnotationPopover, DataModalButton },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
   props: {
     sections: {
       type: Array,
@@ -654,7 +655,10 @@ export default {
       return color
     },
     _hover(event) {
-      this.hoveredMapping = event && event.mapping
+      this.$store.commit({
+        type: "setHoveredMapping",
+        mapping: event && event.mapping
+      })
       this.hoveredId = event && event.uniqueId
     },
     canUseRegistryForSaving(registry) {

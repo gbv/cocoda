@@ -73,7 +73,7 @@
       :style="{ order: index0 * 2 }"
       :class="{
         'mappingEditorPart-noConcepts': $store.getters['mapping/getScheme'](isLeft) == null || !$store.getters['mapping/getConcepts'](isLeft).length,
-        'mappingEditorPart-dropTarget': draggedConcept != null,
+        'mappingEditorPart-dropTarget': $store.state.draggedConcept != null,
       }"
       class="mappingEditorPart"
       @dragover="dragOver"
@@ -119,7 +119,7 @@
       <div v-else>
         <div class="mappingNoConcepts">
           <div
-            v-if="draggedConcept == null"
+            v-if="$store.state.draggedConcept == null"
             style="margin-bottom: -12px;">
             {{ $t("mappingEditor.placeholder") }}<br><br>
           </div>
@@ -129,7 +129,7 @@
             {{ $t("mappingEditor.placeholderDragging") }}
           </div>
           <div
-            v-if="draggedConcept == null"
+            v-if="$store.state.draggedConcept == null"
             v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
@@ -238,6 +238,9 @@ import ComponentSettings from "./ComponentSettings"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
+import hotkeys from "../mixins/hotkeys"
+import computed from "../mixins/computed"
 
 /**
  * The mapping editor component.
@@ -245,7 +248,7 @@ import objects from "../mixins/objects"
 export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, DataModalButton, ComponentSettings },
-  mixins: [auth, objects],
+  mixins: [auth, objects, dragandrop, hotkeys, computed],
   data() {
     return {
       comments: [""],

@@ -43,6 +43,8 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
+import computed from "../mixins/computed"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -52,7 +54,7 @@ export default {
   components: {
     LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton
   },
-  mixins: [objects],
+  mixins: [objects, dragandrop, computed],
   props: {
     /**
      * The concept object whose details should be displayed.

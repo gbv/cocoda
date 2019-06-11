@@ -53,12 +53,14 @@
 
 <script>
 import _ from "lodash"
+import dragandrop from "../mixins/dragandrop"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
  */
 export default {
   name: "ItemName",
+  mixins: [dragandrop],
   props: {
     /**
      * The item whose notation and name this component will display.
@@ -145,7 +147,7 @@ export default {
   },
   computed: {
     isHovered() {
-      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.hoveredConcept, this.item))
+      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this.item))
     },
     notation() {
       return this.$util.notation(this.item)
@@ -171,7 +173,10 @@ export default {
     _hovering(status) {
       if (status) {
         this.isHoveredFromHere = true
-        this.hoveredConcept = this.item
+        this.$store.commit({
+          type: "setHoveredConcept",
+          concept: this.item
+        })
         // Set URL
         this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
         // Set isValidLink
@@ -191,7 +196,10 @@ export default {
         }, 500)
       } else {
         this.isHoveredFromHere = false
-        this.hoveredConcept = null
+        this.$store.commit({
+          type: "setHoveredConcept",
+          concept: null
+        })
         window.clearInterval(this.interval)
       }
     },

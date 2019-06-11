@@ -179,6 +179,8 @@ import _ from "lodash"
 // Import mixins
 import objects from "../mixins/objects"
 import clickHandler from "../mixins/click-handler"
+import hotkeys from "../mixins/hotkeys"
+import computed from "../mixins/computed"
 
 /**
  * Concept scheme selection component.
@@ -189,7 +191,7 @@ import clickHandler from "../mixins/click-handler"
 export default {
   name: "ConceptSchemeSelection",
   components: { ItemName, ConceptSearch, ComponentSettings },
-  mixins: [objects, clickHandler],
+  mixins: [objects, clickHandler, hotkeys, computed],
   props: {
     /**
      * Tells the component on which side of the application it is.

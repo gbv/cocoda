@@ -335,6 +335,7 @@ import RegistryInfo from "./RegistryInfo"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import computed from "../mixins/computed"
 
 /**
  * The settings modal.
@@ -342,7 +343,7 @@ import objects from "../mixins/objects"
 export default {
   name: "TheSettings",
   components: { RegistryInfo },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
   data() {
     return {
       localSettings: null,

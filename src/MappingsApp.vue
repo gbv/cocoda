@@ -300,6 +300,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 // Import mixins
 import auth from "./mixins/auth"
 import objects from "./mixins/objects"
+import computed from "./mixins/computed"
 
 /**
  * The main application.
@@ -309,7 +310,7 @@ export default {
   components: {
     MappingTable, LoadingIndicatorFull, FlexibleTable
   },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
   data () {
     return {
       loading: false,

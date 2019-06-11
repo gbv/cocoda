@@ -31,6 +31,7 @@
 
 <script>
 import _ from "lodash"
+import computed from "../mixins/computed"
 
 /**
  * Adds minimizing functionality to another component.
@@ -47,6 +48,7 @@ import _ from "lodash"
  */
 export default {
   name: "Minimizer",
+  mixins: [computed],
   props: {
     /**
      *

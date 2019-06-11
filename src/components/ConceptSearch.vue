@@ -101,6 +101,8 @@ import _ from "lodash"
 // Import mixins
 import objects from "../mixins/objects"
 import clickHandler from "../mixins/click-handler"
+import dragandrop from "../mixins/dragandrop"
+import computed from "../mixins/computed"
 
 /**
  * Component that represents a typeahead-enabled search field for concepts.
@@ -110,7 +112,7 @@ export default {
   components: {
     LoadingIndicator
   },
-  mixins: [objects, clickHandler],
+  mixins: [objects, clickHandler, dragandrop, computed],
   props: {
     /**
      * Tells the component on which side of the application it is.

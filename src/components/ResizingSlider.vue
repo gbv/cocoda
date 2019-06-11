@@ -12,12 +12,14 @@
 
 <script>
 import _ from "lodash"
+import computed from "../mixins/computed"
 
 /**
  * Resizing slider.
  */
 export default {
   name: "ResizingSlider",
+  mixins: [computed],
   props: {
     isColumn: {
       type: Boolean,

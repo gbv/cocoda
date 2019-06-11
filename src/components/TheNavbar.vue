@@ -104,6 +104,8 @@ import _ from "lodash"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
+import computed from "../mixins/computed"
 
 /**
  * The navigation bar.
@@ -113,8 +115,19 @@ export default {
   components: {
     TheSettings, ItemName, RegistryNotation
   },
-  mixins: [auth, objects],
+  mixins: [auth, objects, dragandrop, computed],
   computed: {
+    draggedConcept: {
+      get() {
+        return this.$store.state.draggedConcept
+      },
+      set(concept) {
+        this.$store.commit({
+          type: "setDraggedConcept",
+          concept
+        })
+      }
+    },
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
     },

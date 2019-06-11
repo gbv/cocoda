@@ -176,6 +176,7 @@ import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
 // Import mixins
 import auth from "./mixins/auth"
 import objects from "./mixins/objects"
+import computed from "./mixins/computed"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 const ElementQueries = require("css-element-queries/src/ElementQueries")
@@ -189,7 +190,7 @@ export default {
   components: {
     TheNavbar, ConceptTree, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
   },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
   data () {
     return {
       loading: false,

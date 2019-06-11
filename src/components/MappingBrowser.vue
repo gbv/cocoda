@@ -362,11 +362,12 @@ import auth from "../mixins/auth"
 import objects from "../mixins/objects"
 import dragandrop from "../mixins/dragandrop"
 import clickHandler from "../mixins/click-handler"
+import computed from "../mixins/computed"
 
 export default {
   name: "MappingBrowser",
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings },
-  mixins: [auth, objects, dragandrop, clickHandler],
+  mixins: [auth, objects, dragandrop, clickHandler, computed],
   data() {
     return {
       tab: 1,

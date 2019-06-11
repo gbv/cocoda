@@ -207,6 +207,7 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import computed from "../mixins/computed"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -216,7 +217,7 @@ export default {
   components: {
     AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower
   },
-  mixins: [objects],
+  mixins: [objects, computed],
   props: {
     /**
      * The concept object whose details should be displayed.

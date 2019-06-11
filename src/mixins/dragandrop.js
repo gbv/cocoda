@@ -6,10 +6,16 @@ export default {
   methods: {
     dragStart(concept, event) {
       event.dataTransfer.setData("text", concept.uri)
-      this.draggedConcept = concept
+      this.$store.commit({
+        type: "setDraggedConcept",
+        concept
+      })
     },
     dragEnd() {
-      this.draggedConcept = null
+      this.$store.commit({
+        type: "setDraggedConcept",
+        concept: null
+      })
     },
     dragOver(event) {
       event.preventDefault()
@@ -17,7 +23,7 @@ export default {
     drop(event, ...params) {
       event.preventDefault()
       let uri = event.dataTransfer.getData("text")
-      let concept = this.draggedConcept || this._getObject({ uri })
+      let concept = this.$store.state.draggedConcept || this._getObject({ uri })
       if (concept) {
         this.droppedConcept(concept, ...params)
       }

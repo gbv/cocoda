@@ -60,6 +60,7 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
 
 /**
  * Component that represents one concept item in a ConceptTree and possibly its children.
@@ -69,7 +70,7 @@ export default {
   components: {
     LoadingIndicator, ItemName
   },
-  mixins: [objects],
+  mixins: [objects, dragandrop],
   props: {
     /**
      * The concept object that this tree item represents.
@@ -126,7 +127,6 @@ export default {
       return  _.get(this.concept, "narrower.length", 1) != 0
     },
     isHovered() {
-      // return this.$jskos.compare(this.hoveredConcept, this.concept)
       return this.isHoveredFromHere
     },
     childrenLoaded() {
@@ -144,10 +144,13 @@ export default {
      * Triggers a hovered event.
      */
     _hovering(concept) {
-      this.hoveredConcept = concept
+      this.$store.commit({
+        type: "setHoveredConcept",
+        concept
+      })
       this.isHoveredFromHere = concept != null
       // Set canAddToMapping
-      this.canAddToMapping = this.$store.getters["mapping/canAdd"](this.concept, this.selected.scheme[this.isLeft], this.isLeft)
+      this.canAddToMapping = this.$store.getters["mapping/canAdd"](this.concept, this.$store.state.selected.scheme[this.isLeft], this.isLeft)
       // Check whether mouse is still in element.
       window.clearInterval(this.interval)
       if (concept != null) {
@@ -215,12 +218,12 @@ export default {
      * Clicked the plus icon to add a concept.
      */
     addConcept() {
-      if (!this.isSelected && this.$settings.conceptTreeAddToMappingSelectsConcept) {
+      if (!this.isSelected && this.$store.state.settings.settings.conceptTreeAddToMappingSelectsConcept) {
         this.select(this.concept)
       }
       this.addToMapping({
         concept: this.concept,
-        scheme: this.selected.scheme[this.isLeft],
+        scheme: this.$store.state.selected.scheme[this.isLeft],
         isLeft: this.isLeft
       })
     },
