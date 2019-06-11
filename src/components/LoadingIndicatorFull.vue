@@ -1,10 +1,15 @@
 <template>
   <div class="fillAndCenter loadingIndicatorFull">
-    <loading-indicator
-      size="lg"
-      class="loadingIndicatorFull-indicator" />
-    <div class="loadingIndicatorFull-text fontWeight-heavy">
-      {{ $t("general.loading") }}
+    <div>
+      <loading-indicator
+        :size="size"
+        class="loadingIndicatorFull-indicator"
+        :style="size == 'sm' ? 'display: inline-block;' : 'margin: 0 auto;'" />
+      <div
+        class="loadingIndicatorFull-text fontWeight-heavy"
+        :style="size == 'sm' ? 'display: inline-block;' : ''">
+        {{ $t("general.loading") }}
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +24,18 @@ export default {
   name: "LoadingIndicatorFull",
   components: {
     LoadingIndicator
+  },
+  props: {
+    /**
+     * The size of the loading indicator.
+     * `sm, md, lg`
+     *
+     * Size `sm` causes loading text to be inline with loading indicator.
+     */
+    size: {
+      type: String,
+      default: "lg"
+    }
   }
 }
 </script>

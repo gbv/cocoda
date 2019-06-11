@@ -304,7 +304,9 @@
             :url="section.url"
             type="mapping" />
         </div>
-        <loading-indicator-full v-if="section.loading" />
+        <loading-indicator-full
+          v-if="section.loading"
+          size="sm" />
       </span>
     </flexible-table>
     <!-- Mapping detail modal -->

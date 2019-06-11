@@ -1177,6 +1177,10 @@ export default {
         if (mappings.totalCount === undefined) {
           mappings = mappings.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
         }
+        // Set section.loading if there is null in the results
+        if (mappings.length == 1 && mappings[0] == null) {
+          section.loading = true
+        }
         // Hide empty section if necessary
         if (section.totalCount == 0 && this.hideEmpty) {
           continue
