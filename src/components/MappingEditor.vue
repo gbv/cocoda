@@ -398,6 +398,7 @@ export default {
       // Hide comment modal if open
       this.$refs.commentModal.hide()
       let mapping = this.prepareMapping()
+      mapping.modified = (new Date()).toISOString()
       let original = this.original
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
