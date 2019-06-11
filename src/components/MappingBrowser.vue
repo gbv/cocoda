@@ -767,7 +767,8 @@ export default {
           this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
         )) {
           this.navigatorPages = {}
-          this.navigatorRefresh()
+          this.navigatorResults = {}
+          this.navigatorRefresh(true)
         }
         this.previousSelected = {}
         this.previousSelected.concept = {
