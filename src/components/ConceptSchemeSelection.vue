@@ -33,7 +33,7 @@
         <font-awesome-icon
           v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
           :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
-          class="star"
+          class="pointer"
           icon="star"
           @click="toggleFavoriteScheme(scheme)" />
         <!-- Name of scheme -->
@@ -112,7 +112,7 @@
             :key="_scheme.uri + '-favorite-scheme-list-' + id + index">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $t('schemeSelection.starRemove'), delay: $util.delay.medium }"
-              class="star starFavorite"
+              class="pointer starFavorite"
               icon="star"
               @click="toggleFavoriteScheme(_scheme)" />
             <item-name
@@ -136,7 +136,7 @@
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
               :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
-              class="star"
+              class="pointer"
               icon="star"
               @click="toggleFavoriteScheme(_scheme)" />
             <item-name

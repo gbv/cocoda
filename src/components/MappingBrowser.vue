@@ -243,6 +243,9 @@
               :registry="registry"
               :disabled="!showRegistry[registry.uri]"
               class="mappingBrowser-search-registryNotation"
+              :class="{
+                pointer: !$jskos.compare(registry, currentRegistry)
+              }"
               @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
               @mouseover.native="hoveredRegistry = registry"
               @mouseout.native="hoveredRegistry = null" />
@@ -331,6 +334,9 @@
                 :registry="registry"
                 :disabled="!showRegistry[registry.uri]"
                 class="mappingBrowser-registryGroup-notation"
+                :class="{
+                  pointer: !$jskos.compare(registry, currentRegistry)
+                }"
                 @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
                 @mouseover.native="hoveredRegistry = registry"
                 @mouseout.native="hoveredRegistry = null" />
@@ -615,12 +621,15 @@ export default {
             return result
           },
           set: (value) => {
-            this.$store.commit({
-              type: "settings/set",
-              prop: "mappingBrowserShowRegistry",
-              value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
-            })
-            this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+            // Only allow if it's not the current registry
+            if (value || !this.$jskos.compare(registry, this.currentRegistry)) {
+              this.$store.commit({
+                type: "settings/set",
+                prop: "mappingBrowserShowRegistry",
+                value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
+              })
+              this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+            }
           }
         })
       }
@@ -799,6 +808,10 @@ export default {
         }
         this.$store.commit("mapping/setRefresh", { refresh: false })
       }
+    },
+    currentRegistry(registry) {
+      // Enable registry
+      this.showRegistry[registry.uri] = true
     },
   },
   created() {
@@ -1321,11 +1334,9 @@ export default {
 }
 .mappingBrowser-registryGroup-notation {
   margin: 0 4px;
-  cursor: pointer;
 }
 .mappingBrowser-search-registryNotation {
   margin: auto 4px;
-  cursor: pointer;
 }
 .mappingBrowser-registryGroup-popover {
   display: flex;
