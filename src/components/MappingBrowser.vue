@@ -28,6 +28,12 @@
           style="user-select: none;">
           {{ $t("mappingBrowser.settingHideEmpty") }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-model="showIdentityWarning"
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowIdentityWarningTooltip'), delay: $util.delay.medium }"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingShowIdentityWarning") }}
+        </b-form-checkbox>
       </b-form>
     </component-settings>
     <b-tabs
@@ -652,6 +658,19 @@ export default {
     },
     navigatorSections () {
       return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading)
+    },
+    // Setting whether to show identity mismatch warning
+    showIdentityWarning: {
+      get() {
+        return this.$settings.mappingBrowserShowIdentityWarning
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserShowIdentityWarning",
+          value
+        })
+      }
     },
     // Setting whether to hide empty sections
     hideEmpty: {

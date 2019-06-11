@@ -169,7 +169,7 @@
         slot="creator"
         slot-scope="{ item }">
         <span
-          v-if="item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($util.prefLabel(item.mapping.creator[0]) != $util.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
+          v-if="$settings.mappingBrowserShowIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($util.prefLabel(item.mapping.creator[0]) != $util.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
           <font-awesome-icon
             v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
             icon="exclamation"

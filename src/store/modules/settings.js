@@ -9,6 +9,7 @@ const defaultSettings = {
   mappingBrowserAllSchemes: true,
   mappingBrowserResultLimit: 5,
   mappingBrowserHideEmpty: false,
+  mappingBrowserShowIdentityWarning: true,
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
   conceptTreeAddToMappingSelectsConcept: true,
