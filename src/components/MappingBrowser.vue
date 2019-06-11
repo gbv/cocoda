@@ -22,6 +22,12 @@
             size="sm"
             @click="$event.target.select()" />
         </div>
+        <b-form-checkbox
+          v-model="hideEmpty"
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingHideEmptyTooltip'), delay: $util.delay.medium }"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingHideEmpty") }}
+        </b-form-checkbox>
       </b-form>
     </component-settings>
     <b-tabs
@@ -626,6 +632,19 @@ export default {
     navigatorSections () {
       return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading)
     },
+    // Setting whether to hide empty sections
+    hideEmpty: {
+      get() {
+        return this.$settings.mappingBrowserHideEmpty
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserHideEmpty",
+          value
+        })
+      }
+    },
     // Setting whether to show mappings from all schemes or only chosen schemes
     showAllSchemes: {
       get() {
@@ -1149,6 +1168,10 @@ export default {
         section.totalCount = mappings.totalCount || mappings.length
         if (mappings.totalCount === undefined) {
           mappings = mappings.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
+        }
+        // Hide empty section if necessary
+        if (section.totalCount == 0 && this.hideEmpty) {
+          continue
         }
         if (mappings.url) {
           section.url = mappings.url
