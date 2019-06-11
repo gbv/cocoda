@@ -155,7 +155,6 @@
     <!-- Selecting of mapping type (in between source and target sides via flex order) -->
     <div class="mappingTypeSelection">
       <mapping-type-selection
-        v-show="selected.scheme[true] != null || selected.scheme[false] != null"
         :mapping="$store.state.mapping.mapping" />
     </div>
     <div class="mappingEditor-comment">

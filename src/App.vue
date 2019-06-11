@@ -87,7 +87,7 @@
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingEditor -->
             <mapping-editor
-              v-if="selected.scheme[true] || selected.scheme[false]" />
+              v-if="selected.scheme[true] || selected.scheme[false] || $store.getters['mapping/getConcepts']().length > 0" />
             <!-- Placeholder -->
             <div
               v-else
