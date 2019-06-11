@@ -16,14 +16,13 @@
         {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
       <div
-        v-if="scheme.types && scheme.types.length"
+        v-show="scheme.types && scheme.types.length > 0"
         :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
         class="conceptSearch-filter button">
         <font-awesome-icon icon="filter" />
       </div>
       <!-- Filter Popover -->
       <b-popover
-        v-if="scheme.types && scheme.types.length"
         :target="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
         :show.sync="filterPopoverShow"
         triggers="click"
