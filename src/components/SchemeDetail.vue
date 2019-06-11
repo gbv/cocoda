@@ -73,7 +73,8 @@
           fromScheme: isLeft ? $util.notation(item) : null,
           fromNotation: isLeft ? '' : null,
           toScheme: !isLeft ? $util.notation(item) : null,
-          toNotation: !isLeft ? '' : null
+          toNotation: !isLeft ? '' : null,
+          direction: 'both'
         })">
         {{ $t("schemeDetail.availableMappings") }}
       </a>
