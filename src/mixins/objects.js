@@ -161,7 +161,7 @@ export default {
         this.adjustConcept(object)
 
         // Provider adjustments
-        let provider = _.get(this._getObject(_.get(object, "inScheme[0]")), "_provider", options.provider)
+        let provider = _.get(object, "_provider") || _.get(this._getObject(_.get(object, "inScheme[0]")), "_provider") || options.provider
         if (provider) {
           if (type == "scheme") {
             provider.adjustSchemes([object])

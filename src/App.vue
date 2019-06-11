@@ -462,7 +462,8 @@ export default {
           this.$store.dispatch("auth/init", this.config.auth)
         }
         // Look up local mappings count and show warning if there are too many.
-        this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 }).then(mappings => {
+        // Note: Do not use this.getMappings here because it leads to issues when schemes are not loaded yet.
+        this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 }).then(mappings => {
           if (mappings.totalCount && mappings.totalCount >= 500) {
             this.alert(this.$t("general.tooManyMappings", { count: mappings.totalCount }), 0)
           }
