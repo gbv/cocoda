@@ -54,8 +54,8 @@
           v-for="concept in favoriteConcepts"
           :key="'theNavbar-' + concept.uri + '-favorite'"
           draggable
-          @dragstart="favoriteConceptDragStart(concept)"
-          @dragend="favoriteConceptDragEnd">
+          @dragstart.native="favoriteConceptDragStart(concept)"
+          @dragend.native="favoriteConceptDragEnd">
           <item-name :item="concept" />
           <div
             class="button favoriteConceptsDropdown-removeButton"
