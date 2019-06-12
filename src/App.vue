@@ -115,9 +115,11 @@
                 </p>
                 <hr v-if="!forceMappingBrowser">
                 <p v-if="!forceMappingBrowser">
-                  <a
-                    href=""
-                    @click.prevent="showConcordances">{{ $t("general.showConcordances") }}</a> -
+                  <span v-if="$refs.mappingBrowser && $refs.mappingBrowser.tabIndexes && $refs.mappingBrowser.tabIndexes.concordances != null">
+                    <a
+                      href=""
+                      @click.prevent="showConcordances">{{ $t("general.showConcordances") }}</a> -
+                  </span>
                   <a
                     href=""
                     @click.prevent="showMappingSearch">{{ $t("general.showMappingSearch") }}</a>
@@ -669,8 +671,8 @@ export default {
     showConcordances() {
       this.forceMappingBrowser = true
       let mappingBrowser = this.$refs.mappingBrowser
-      if (mappingBrowser && mappingBrowser.tab) {
-        mappingBrowser.tab = 0
+      if (mappingBrowser && mappingBrowser.tab && mappingBrowser.tabIndexes && mappingBrowser.tabIndexes.concordances != null) {
+        mappingBrowser.tab = mappingBrowser.tabIndexes.concordances
       }
     },
   },

@@ -42,7 +42,7 @@
       no-fade
       justified>
       <b-tab
-        v-if="!concordances || (concordances && concordances.length)"
+        v-if="concordancesShown"
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
         <template v-if="concordances && concordances.length">
@@ -535,6 +535,16 @@ export default {
       }
       return items
     },
+    concordancesShown() {
+      return !this.concordances || (this.concordances && this.concordances.length)
+    },
+    tabIndexes() {
+      return {
+        concordances: this.concordancesShown ? 0 : null,
+        search: this.concordancesShown ? 1 : 0,
+        navigator: this.concordancesShown ? 2 : 1,
+      }
+    },
     typeOptions() {
       let options = [{
         text: this.$t("mappingBrowser.searchAllTypes"),
@@ -753,7 +763,7 @@ export default {
   },
   watch: {
     tab(tab) {
-      if (tab == 1) {
+      if (tab == this.tabIndexes.search) {
         // Changed tab to Mapping Search, refresh if necessary
         if (this.searchNeedsRefresh.length) {
           // If there's only one item, just run it
@@ -773,7 +783,7 @@ export default {
             }
           }
         }
-      } else if (tab == 2) {
+      } else if (tab == this.tabIndexes.navigator) {
         // Changed tab to Mapping Navigator, refresh if necessary
         if (this.navigatorNeedsRefresh.length) {
           // If there's only one item, just run it
@@ -822,7 +832,7 @@ export default {
         }
         // Automatically switch tab if a concept was selected for the first time
         if (!this.hasSwitchedToNavigator && (this.selected.concept[true] || this.selected.concept[false])) {
-          this.tab = 2
+          this.tab = this.tabIndexes.navigator
           this.hasSwitchedToNavigator = true
         }
       },
@@ -890,7 +900,7 @@ export default {
     },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
-      this.tab = 1
+      this.tab = this.tabIndexes.search
       concordance
       // Clear all other search parameters.
       this.clearSearchFilter()
@@ -929,7 +939,7 @@ export default {
       this.searchClicked()
     },
     searchWithParams(filter) {
-      this.tab = 1
+      this.tab = this.tabIndexes.search
       _.forOwn(filter, (value, key) => {
         if (value != null) {
           this.searchFilterInput[key] = value
@@ -944,7 +954,7 @@ export default {
     },
     search(registryUri = null, page) {
       // If it's not currently the search tab, save search refresh for later
-      if (this.tab != 1) {
+      if (this.tab != this.tabIndexes.search) {
         this.searchNeedsRefresh.push({ registryUri, page })
         return
       }
@@ -1041,7 +1051,7 @@ export default {
         force = false
         registryToReload = null
       }
-      if (this.tab != 2) {
+      if (this.tab != this.tabIndexes.navigator) {
         this.navigatorNeedsRefresh.push(registryToReload || force)
         return
       }
