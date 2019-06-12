@@ -19,6 +19,7 @@ const state = {
   original: null,
   mappingsNeedRefresh: false,
   mappingsNeedRefreshRegistry: null,
+  mappingTrash: [],
 }
 
 // helper functions
@@ -147,7 +148,17 @@ const getters = {
       return true
     }
     return !jskos.compareMappings(state.original, state.mapping)
-  }
+  },
+
+  mappingTrash: (state, getters, rootState) => {
+    let config = rootState.config
+    let trash = []
+    for (let item of state.mappingTrash) {
+      let registry = config.registries.find(registry => jskos.compare(registry, item.registry))
+      trash.push(Object.assign({}, item, { registry }))
+    }
+    return trash
+  },
 
 }
 
@@ -356,6 +367,23 @@ const mutations = {
     }
     state.mappingsNeedRefresh = refresh
   },
+
+  addToTrash(state, { mapping, registry } = {}) {
+    let item = {
+      mapping: jskos.minifyMapping(mapping),
+      registry: { uri: registry.uri }
+    }
+    state.mappingTrash = [item].concat(state.mappingTrash)
+    // Max 10 items
+    if (state.mappingTrash.length > 5) {
+      state.mappingTrash = state.mappingTrash.slice(0, 5)
+    }
+  },
+
+  removeFromTrash(state, { uri } = {}) {
+    state.mappingTrash = state.mappingTrash.filter(item => item.mapping.uri != uri)
+  },
+
 }
 
 // actions
@@ -428,17 +456,50 @@ const actions = {
       return Promise.resolve([])
     }
     return registry.provider.removeMappings(mappings).then(removedMappings => {
-      // Check if current original was amongst the removed mappings
       removedMappings.forEach((deleted, index) => {
         if (deleted) {
           let mapping = mappings[index]
+          // Check if current original was amongst the removed mappings
           if (_.isEqual(jskos.minifyMapping(mapping), jskos.minifyMapping(state.original)) && jskos.compare(_.get(mapping, "_provider.registry"), _.get(state.original, "_provider.registry"))) {
             // Set original to null
             commit({ type: "set" })
           }
+          // Add mappings to trash
+          if (mapping) {
+            commit({
+              type: "addToTrash",
+              mapping,
+              registry
+            })
+          }
         }
       })
       return removedMappings
+    })
+  },
+
+  restoreMappingFromTrash({ state, rootState, commit }, { uri }) {
+    let config = rootState.config
+    let item = state.mappingTrash.find(item => item.mapping.uri == uri)
+    let registry = config.registries.find(registry => jskos.compare(registry, item.registry))
+    if (!item || !registry || !registry.provider) {
+      console.warn("Tried to restore mapping from trash, but could not determine provider.", item)
+      return Promise.resolve(null)
+    }
+    return registry.provider.saveMapping(item.mapping).then(mapping => {
+      if (mapping) {
+        // Remove item from trash
+        commit({
+          type: "removeFromTrash",
+          uri
+        })
+        // Set refresh
+        commit({
+          type: "setRefresh",
+          registry: registry.uri
+        })
+      }
+      return mapping
     })
   },
 

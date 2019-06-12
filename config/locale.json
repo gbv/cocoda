@@ -29,7 +29,9 @@
       "help": "Help",
       "github": "GitHub",
       "settings": "Settings",
-      "settingsLoading": "@:general.loading"
+      "settingsLoading": "@:general.loading",
+      "trashTitle": "Recently Deleted Mappings",
+      "trashRestoreTooltip": "restore mapping"
     },
     "schemeSelection": {
       "title": "Select a scheme",
@@ -302,7 +304,9 @@
       "help": "Hilfe",
       "github": "GitHub",
       "settings": "Einstellungen",
-      "settingsLoading": "@:general.loading"
+      "settingsLoading": "@:general.loading",
+      "trashTitle": "Kürzlich gelöschte Mappings",
+      "trashRestoreTooltip": "Mapping wiederherstellen"
     },
     "schemeSelection": {
       "title": "Wähle ein Vokabular",

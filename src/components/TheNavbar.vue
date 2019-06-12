@@ -29,6 +29,31 @@
         target="_blank">
         {{ $util.prefLabel(item) }}
       </b-nav-item>
+      <!-- Mapping trash -->
+      <b-nav-item-dropdown
+        v-if="mappingTrash.length > 0"
+        id="mappingTrashDropdown"
+        ref="mappingTrashDropdown"
+        no-caret
+        right>
+        <template slot="button-content">
+          <font-awesome-icon icon="trash-alt" />
+        </template>
+        <b-dropdown-header>
+          {{ $t("navbar.trashTitle") }}
+        </b-dropdown-header>
+        <mapping-table
+          :mappings="mappingTrash.map(item => item.mapping)"
+          :actions="[{
+            title: $t('navbar.trashRestoreTooltip'),
+            name: 'restore',
+            icon: 'recycle'
+          }]"
+          :show-labels="true"
+          :show-tooltip="false"
+          style="width: 700px;"
+          @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri })" />
+      </b-nav-item-dropdown>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown
         id="favoriteConceptsDropdown"
@@ -99,6 +124,7 @@
 import TheSettings from "./TheSettings"
 import ItemName from "./ItemName"
 import RegistryNotation from "./RegistryNotation"
+import MappingTable from "./MappingTable"
 import _ from "lodash"
 
 // Import mixins
@@ -113,7 +139,7 @@ import computed from "../mixins/computed"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName, RegistryNotation
+    TheSettings, ItemName, RegistryNotation, MappingTable
   },
   mixins: [auth, objects, dragandrop, computed],
   computed: {
@@ -130,6 +156,10 @@ export default {
     },
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
+    },
+    mappingTrash() {
+      let trash = this.$store.state.mapping.mappingTrash
+      return trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(item.mapping) }))
     },
   },
   watch: {
