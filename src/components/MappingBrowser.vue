@@ -42,6 +42,7 @@
       no-fade
       justified>
       <b-tab
+        v-if="!concordances || (concordances && concordances.length)"
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
         <template v-if="concordances && concordances.length">
