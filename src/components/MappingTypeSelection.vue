@@ -6,7 +6,7 @@
     <div
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
-      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType), delay: $util.delay.medium }"
+      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType) + definition(mappingType), delay: $util.delay.medium }"
       :class="{
         mappingTypeSelected: hovered && (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
@@ -57,7 +57,14 @@ export default {
         type: "mapping/setType",
         uri: mappingType.uri
       })
-    }
+    },
+    definition(mappingType) {
+      let definition = this.$util.definition(mappingType)
+      if (definition.length) {
+        return ": " + definition.join(", ")
+      }
+      return ""
+    },
   }
 }
 </script>
