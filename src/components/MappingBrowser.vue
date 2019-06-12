@@ -151,11 +151,15 @@
             <p style="font-weight: bold; flex: 1;">
               {{ concordanceTableItems.length }} {{ $t("mappingBrowser.concordances") }}
             </p>
-            <p style="text-align: right; font-weight: bold;">
+            <p style="text-align: right; font-weight: bold; padding-right: 20px;">
               {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
                 return total + parseInt(current.mappings) || 0
               }, 0).toLocaleString() }}
             </p>
+            <data-modal-button
+              v-if="concordances && concordances.length > 0"
+              :data="concordances"
+              type="concordance" />
           </div>
         </template>
       </b-tab>
@@ -378,6 +382,7 @@ import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation"
 import ItemName from "./ItemName"
 import ComponentSettings from "./ComponentSettings"
+import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
@@ -391,7 +396,7 @@ import computed from "../mixins/computed"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton },
   mixins: [auth, objects, dragandrop, clickHandler, computed],
   data() {
     return {

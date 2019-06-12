@@ -87,7 +87,7 @@ export default {
       type: String,
       default: null,
       validator: function (value) {
-        return ["concept", "scheme", "mapping", "annotation"].indexOf(value) !== -1
+        return ["concept", "scheme", "mapping", "annotation", "concordance"].indexOf(value) !== -1
       }
     },
     /**

@@ -259,6 +259,7 @@
       "scheme": "No Concept Scheme | 1 Concept Scheme | {count} Concept Schemes",
       "mapping": "No Mappings | 1 Mapping | {count} Mappings",
       "annotation": "No Annotations | 1 Annotation | {count} Annotations",
+      "concordance": "No Concordances | 1 Concordance | {count} Concordances",
       "resource": "No Resources | 1 Resource | {count} Resources"
     },
     "registryInfo": {
@@ -534,6 +535,7 @@
       "scheme": "Keine Vokabulare | 1 Vokabular | {count} Vokabulare",
       "mapping": "Keine Mappings | 1 Mapping | {count} Mappings",
       "annotation": "Keine Annotationen | 1 Annotation | {count} Annotationen",
+      "concordance": "Keine Konkordanzen | 1 Konkordanz | {count} Konkordanzen",
       "resource": "Keine Ressourcen | 1 Ressource | {count} Ressourcen"
     },
     "registryInfo": {
