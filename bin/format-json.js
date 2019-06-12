@@ -11,7 +11,7 @@ let raw = fs.readFileSync(input, { encoding: "utf-8" })
 let pretty
 
 try {
-  pretty = JSON.stringify(JSON.parse(raw), null, 2)
+  pretty = JSON.stringify(JSON.parse(raw), null, 2) + "\n"
 } catch(error) {
   console.error(`${input} is not a valid JSON file!`)
   process.exit(1)
