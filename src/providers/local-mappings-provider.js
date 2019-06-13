@@ -200,8 +200,9 @@ class LocalMappingsProvider extends BaseProvider {
       }
       // creator
       if (params.creator) {
+        let creators = params.creator.split("|")
         mappings = mappings.filter(mapping => {
-          return (mapping.creator && mapping.creator.find(creator => util.prefLabel(creator) == params.creator)) != null
+          return (mapping.creator && mapping.creator.find(creator => creators.includes(util.prefLabel(creator)) || creators.includes(creator.uri))) != null
         })
       }
       // type
