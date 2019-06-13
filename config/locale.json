@@ -31,7 +31,10 @@
       "settings": "Settings",
       "settingsLoading": "@:general.loading",
       "trashTitle": "Recently Deleted Mappings",
-      "trashRestoreTooltip": "restore mapping"
+      "trashRestoreTooltip": "restore mapping",
+      "openLeft": "open on left side",
+      "openRight": "open on right side",
+      "removeFromFavorites": "remove from favorites"
     },
     "schemeSelection": {
       "title": "Select a scheme",
@@ -309,7 +312,10 @@
       "settings": "Einstellungen",
       "settingsLoading": "@:general.loading",
       "trashTitle": "Kürzlich gelöschte Mappings",
-      "trashRestoreTooltip": "Mapping wiederherstellen"
+      "trashRestoreTooltip": "Mapping wiederherstellen",
+      "openLeft": "auf der linken Seite öffnen",
+      "openRight": "auf der rechten Seite öffnen",
+      "removeFromFavorites": "aus den Favoriten entfernen"
     },
     "schemeSelection": {
       "title": "Wähle ein Vokabular",

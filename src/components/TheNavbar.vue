@@ -75,19 +75,35 @@
         <b-dropdown-header>
           {{ $t('schemeSelection.conceptQuick') }}
         </b-dropdown-header>
-        <b-dropdown-item
+        <div
           v-for="concept in favoriteConcepts"
           :key="'theNavbar-' + concept.uri + '-favorite'"
+          class="dropdown-item"
           draggable
-          @dragstart.native="favoriteConceptDragStart(concept)"
-          @dragend.native="favoriteConceptDragEnd">
+          @dragstart="favoriteConceptDragStart(concept)"
+          @dragend="favoriteConceptDragEnd">
           <item-name :item="concept" />
-          <div
-            class="button favoriteConceptsDropdown-removeButton"
-            @click="removeFavoriteConcept(concept)">
-            <font-awesome-icon icon="times-circle" />
+          <div class="favoriteConceptsDropdown-buttons">
+            <div
+              v-b-tooltip.hover="{ title: $t('navbar.openLeft'), delay: $util.delay.medium }"
+              class="button"
+              @click="setSelected({ concept, isLeft: true })">
+              <font-awesome-icon icon="caret-square-left" />
+            </div>
+            <div
+              v-b-tooltip.hover="{ title: $t('navbar.openRight'), delay: $util.delay.medium }"
+              class="button"
+              @click="setSelected({ concept, isLeft: false })">
+              <font-awesome-icon icon="caret-square-right" />
+            </div>
+            <div
+              v-b-tooltip.hover="{ title: $t('navbar.removeFromFavorites'), delay: $util.delay.medium }"
+              class="button"
+              @click="removeFavoriteConcept(concept)">
+              <font-awesome-icon icon="times-circle" />
+            </div>
           </div>
-        </b-dropdown-item>
+        </div>
       </b-nav-item-dropdown>
       <!-- Identity icon -->
       <b-nav-item
@@ -294,11 +310,15 @@ nav.navbar {
 .favoriteConceptsDropdown-iconTarget {
   color: @color-select;
 }
-.favoriteConceptsDropdown-removeButton {
+.favoriteConceptsDropdown-buttons {
   position: absolute;
   right: 10px;
   top: 53%;
   transform: translateY(-50%);
   font-size: 14px;
+  display: flex;
+}
+.favoriteConceptsDropdown-buttons > div {
+  padding: 0 3px;
 }
 </style>
