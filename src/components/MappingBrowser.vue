@@ -400,7 +400,7 @@ export default {
   mixins: [auth, objects, dragandrop, clickHandler, computed],
   data() {
     return {
-      tab: 1,
+      tab: 0,
       /** Whether tab was automatically switched to Mapping Navigator once.
        *  Will not switch automatically again afterwards.
        */
@@ -866,6 +866,8 @@ export default {
     this.navigatorRefresh = _.debounce(this._navigatorRefresh, 100)
     // Clear search
     this.clearSearchFilter()
+    // Set tab to search on start
+    this.tab = this.tabIndexes.search
   },
   mounted() {
     if (!this.concordances || !this.concordances.length) {
