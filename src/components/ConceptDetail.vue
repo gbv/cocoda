@@ -98,7 +98,7 @@
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
+          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
@@ -121,6 +121,27 @@
             </a>
           </div>
         </b-tab>
+        <b-tab :title="$t('conceptDetail.labels')">
+          <div
+            v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
+            :key="`conceptDetail-prefLabel-${language}`"
+            class="conceptDetail-identifier">
+            <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
+          </div>
+          <!-- Explanation:
+            1. Get all language keys for altLabels (Object.keys)
+            2. Create objects in the form { language, label } (map)
+            3. Flatten the array (reduce)
+            4. Filter `-` language (filter)
+            5. Sort current language higher (sort)
+           -->
+          <div
+            v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
+            :key="`conceptDetail-altLabel-${language}-${index}`"
+            class="conceptDetail-identifier">
+            <b>{{ $t("conceptDetail.altLabel") }} ({{ language }}):</b> {{ label }}
+          </div>
+        </b-tab>
         <b-tab
           :key="'zzzzzzzzzz'+iteration"
           :title="$t('conceptDetail.info')">
@@ -133,12 +154,6 @@
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
               @dblclick="copyToClipboard(elementForEvent($event))" />
             <auto-link :link="identifier" />
-          </div>
-          <div
-            v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
-            :key="`conceptDetail-prefLabel-${language}`"
-            class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
           </div>
           <div
             v-for="type in types"
