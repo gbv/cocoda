@@ -3,6 +3,9 @@ import _ from "lodash"
 import Vue from "vue"
 import util from "../../util"
 
+import localforage from "localforage"
+const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
+
 // TODO: - Add support for memberChoice and maybe memberList.
 
 const emptyMapping = {
@@ -20,6 +23,7 @@ const state = {
   mappingsNeedRefresh: false,
   mappingsNeedRefreshRegistry: null,
   mappingTrash: [],
+  mappingTrashLoaded: false,
 }
 
 // helper functions
@@ -368,6 +372,11 @@ const mutations = {
     state.mappingsNeedRefresh = refresh
   },
 
+  setTrash(state, { trash } = {}) {
+    state.mappingTrash = trash
+    state.mappingTrashLoaded = true
+  },
+
   addToTrash(state, { mapping, registry } = {}) {
     let item = {
       mapping: jskos.minifyMapping(mapping),
@@ -475,6 +484,22 @@ const actions = {
         }
       })
       return removedMappings
+    })
+  },
+
+  loadMappingTrash({ commit }) {
+    return localforage.getItem(localStorageKey).then(trash => {
+      if (trash) {
+        commit({
+          type: "setTrash",
+          trash
+        })
+      } else {
+        commit({
+          type: "setTrash",
+          trash: []
+        })
+      }
     })
   },
 

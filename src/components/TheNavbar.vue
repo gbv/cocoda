@@ -159,7 +159,7 @@ export default {
     },
     mappingTrash() {
       let trash = this.$store.state.mapping.mappingTrash
-      return trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(item.mapping) }))
+      return trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(this.$jskos.copyDeep(item.mapping)) }))
     },
   },
   watch: {

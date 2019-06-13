@@ -13,6 +13,19 @@ const mappingIdentifierPlugin = store => {
   })
 }
 
+import localforage from "localforage"
+const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
+/**
+ * Plugin that synchronizes the mapping trash to local storage.
+ */
+const mappingTrashPlugin = store => {
+  store.subscribe((mutation) => {
+    if (["mapping/addToTrash", "mapping/removeFromTrash"].includes(mutation.type) && store.state.mapping.mappingTrashLoaded) {
+      localforage.setItem(localStorageKey, store.state.mapping.mappingTrash)
+    }
+  })
+}
+
 /**
  * Helper function that refreshes the router with the current mapping and selected concepts/schemes.
  */
@@ -87,5 +100,5 @@ const routerParamPlugin = store => {
   })
 }
 
-let plugins = [mappingIdentifierPlugin, routerParamPlugin]
+let plugins = [mappingIdentifierPlugin, mappingTrashPlugin, routerParamPlugin]
 export { plugins, refreshRouter }

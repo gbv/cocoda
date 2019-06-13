@@ -476,8 +476,12 @@ export default {
      * Properly start the application (called by settingsLoaded watcher).
      */
     start() {
-      // Load schemes
-      this.loadSchemes().then(() => {
+      // Load schemes and mapping trash
+      let promises = [
+        this.loadSchemes(),
+        this.$store.dispatch("mapping/loadMappingTrash")
+      ]
+      Promise.all(promises).then(() => {
         this.loadFromParametersOnce(true)
       })
     },
