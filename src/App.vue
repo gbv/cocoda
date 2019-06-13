@@ -61,7 +61,8 @@
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
               class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
-              @searchMappings="searchMappings($event)" />
+              @searchMappings="searchMappings($event)"
+              @searchConcept="setConceptSearchQuery(isLeft, $event, true)" />
             <!-- Slider -->
             <resizing-slider />
             <!-- ConceptTree -->
@@ -492,9 +493,12 @@ export default {
       let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
+      this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : "")
+    },
+    setConceptSearchQuery(isLeft, query, open) {
       let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Right" : "Left"}[0]`)
       if (conceptSchemeSelection) {
-        conceptSchemeSelection.setConceptSearchQuery(regexResult ? regexResult[0] : "")
+        conceptSchemeSelection.setConceptSearchQuery(query, open)
       }
     },
     refresh(key) {

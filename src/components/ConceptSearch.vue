@@ -408,12 +408,18 @@ export default {
       newResult += _.escape(result.slice(currentIndex))
       return newResult
     },
-    setSearchQuery(query, isOpen = false) {
+    setSearchQuery(query, open = false) {
       this.searchQuery = query
       // Wait for nextTick before setting isOpen to override the searchQuery watcher
       this.$nextTick(() => {
-        this.isOpen = isOpen
+        this.isOpen = open
       })
+      // Set small timeout to override click handler
+      setTimeout(() => {
+        if (open) {
+          this.focusSearch()
+        }
+      }, 10)
     },
     _loadTypes(item) {
       // Load types for scheme

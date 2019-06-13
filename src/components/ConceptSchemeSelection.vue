@@ -336,9 +336,9 @@ export default {
     /**
      * Sets concept search query to a certain string.
      */
-    setConceptSearchQuery(query) {
+    setConceptSearchQuery(query, open = false) {
       if (this.$refs.conceptSearch) {
-        this.$refs.conceptSearch.setSearchQuery(query)
+        this.$refs.conceptSearch.setSearchQuery(query, open)
       }
     },
     toggleFavoriteScheme(scheme) {

@@ -126,7 +126,10 @@
             v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
             :key="`conceptDetail-prefLabel-${language}`"
             class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
+            <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b>
+            <span @click="copyAndSearch($util.prefLabel(item, language))">
+              {{ $util.prefLabel(item, language) }}
+            </span>
           </div>
           <!-- Explanation:
             1. Get all language keys for altLabels (Object.keys)
@@ -139,7 +142,10 @@
             v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
             :key="`conceptDetail-altLabel-${language}-${index}`"
             class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.altLabel") }} ({{ language }}):</b> {{ label }}
+            <b>{{ $t("conceptDetail.altLabel") }} ({{ language }}):</b>
+            <span @click="copyAndSearch(label)">
+              {{ label }}
+            </span>
           </div>
         </b-tab>
         <b-tab
@@ -521,6 +527,12 @@ export default {
         hasNotes = hasNotes || (concept != null && concept[part] != null && concept[part].de != null && concept[part].de.length > 0)
       }
       return hasNotes
+    },
+    /**
+     * Copy and search on other side
+     */
+    copyAndSearch(label) {
+      this.$emit("searchConcept", label)
     },
   }
 }

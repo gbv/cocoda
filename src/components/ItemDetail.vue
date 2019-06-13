@@ -16,7 +16,8 @@
         :item="item"
         :is-left="isLeft"
         :settings="internalSettings"
-        @searchMappings="$emit('searchMappings', $event)" />
+        @searchMappings="$emit('searchMappings', $event)"
+        @searchConcept="$emit('searchConcept', $event)" />
     </div>
     <div
       v-else-if="!loading"
