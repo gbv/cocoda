@@ -209,12 +209,21 @@
             <div style="text-align: right; flex: none; margin: auto 5px;">
               {{ $t("mappingBrowser.creator") }}:
             </div>
-            <b-input
-              v-model="searchFilterInput.creator"
-              style="flex: 2; margin: 3px;"
-              size="sm"
-              :placeholder="$t('mappingBrowser.creator')"
-              @keyup.enter.native="searchClicked" />
+            <div style="flex: 2; margin: 3px; display: flex; align-items: center;">
+              <b-input
+                v-model="searchFilterInput.creator"
+                size="sm"
+                :placeholder="$t('mappingBrowser.creator')"
+                @keyup.enter.native="searchClicked" />
+              <div
+                v-if="authorized && searchFilterInput.creator != userUris.join('|')"
+                v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: $util.delay.medium }"
+                class="button"
+                style="margin-left: 2px;"
+                @click="searchFilterInput.creator = userUris.join('|')">
+                <font-awesome-icon icon="user" />
+              </div>
+            </div>
             <div style="text-align: right; flex: none; margin: auto 5px;">
               {{ $t("mappingBrowser.searchType") }}:
             </div>
