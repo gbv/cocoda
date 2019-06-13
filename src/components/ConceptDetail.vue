@@ -405,9 +405,11 @@ export default {
         this.refresh()
       }
     },
-    settings() {
-      // Refresh component if settings changed
-      this.refresh()
+    settings(newSettings, oldSettings) {
+      if (!_.isEqual(newSettings, oldSettings)) {
+        // Refresh component if settings changed
+        this.refresh()
+      }
     }
   },
   mounted() {
