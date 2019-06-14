@@ -7,7 +7,7 @@
       hovered: isHovered && !isHovered,
       selected: isSelected
     }"
-    class="conceptTreeItem"
+    class="conceptListItem"
     @mouseover="hovering(concept)"
     @mouseout="hovering(null)">
     <!-- Concept -->
@@ -17,7 +17,7 @@
       @dragstart="dragStart(concept, $event)"
       @dragend="dragEnd()">
       <div
-        v-if="hasChildren"
+        v-if="showChildren && hasChildren"
         class="arrowBox"
         @click="openByArrow(!isOpen)">
         <i
@@ -47,7 +47,7 @@
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="hasChildren && isOpen && concept.narrower.includes(null)"
+      v-show="showChildren && hasChildren && isOpen && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -63,17 +63,17 @@ import objects from "../mixins/objects"
 import dragandrop from "../mixins/dragandrop"
 
 /**
- * Component that represents one concept item in a ConceptTree and possibly its children.
+ * Component that represents one concept item in a ConceptList and possibly its children.
  */
 export default {
-  name: "ConceptTreeItem",
+  name: "ConceptListItem",
   components: {
     LoadingIndicator, ItemName
   },
   mixins: [objects, dragandrop],
   props: {
     /**
-     * The concept object that this tree item represents.
+     * The concept object that this list item represents.
      */
     concept: {
       type: Object,
@@ -104,6 +104,13 @@ export default {
      * Tells the component whether the item is selected.
      */
     isSelected: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Whether to show children of concepts, i.e. a concept hierarchy.
+     */
+    showChildren: {
       type: Boolean,
       default: false
     },
@@ -237,7 +244,7 @@ export default {
       this.loadNarrower(this.concept).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
-        if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
+        if (this.showChildren && concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
           this.scrollTo()
         }
       })
@@ -315,7 +322,7 @@ export default {
 .hovered,
 .selected.hovered,
 .arrowBox:hover,
-.conceptTreeItem:hover {
+.conceptListItem:hover {
   background-color: @color-select-1;
   color: @color-action-2;
 }

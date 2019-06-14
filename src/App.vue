@@ -61,7 +61,7 @@
             :is-left="isLeft"
             :style="selected.scheme[isLeft] != null ? '' : 'flex: 1;'"
             class="mainComponent visualComponent" />
-          <!-- ItemDetail and ConceptTree -->
+          <!-- ItemDetail and ConceptList -->
           <div
             v-if="selected.scheme[isLeft] != null"
             class="conceptBrowser">
@@ -76,12 +76,12 @@
               @searchConcept="setConceptSearchQuery(isLeft, $event, true)" />
             <!-- Slider -->
             <resizing-slider />
-            <!-- ConceptTree -->
-            <concept-tree
-              :id="'conceptTreeComponent_' + isLeft"
-              :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
+            <!-- ConceptList -->
+            <concept-list-wrapper
+              :id="'conceptListComponent_' + isLeft"
+              :ref="isLeft ? 'conceptListLeft' : 'conceptListRight'"
               :is-left="isLeft"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemTree" />
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemList" />
           </div>
         </div>
 
@@ -177,7 +177,7 @@
 import TheNavbar from "./components/TheNavbar"
 import MappingEditor from "./components/MappingEditor"
 import MappingBrowser from "./components/MappingBrowser"
-import ConceptTree from "./components/ConceptTree"
+import ConceptListWrapper from "./components/ConceptListWrapper"
 import ItemDetail from "./components/ItemDetail"
 import ResizingSlider from "./components/ResizingSlider"
 import _ from "lodash"
@@ -202,7 +202,7 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
+    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
   },
   mixins: [auth, objects, computed],
   data () {
@@ -517,16 +517,16 @@ export default {
     refresh(key) {
       if (key == "minimize") {
         // Minimizer causes a refresh, therefore recheck item detail settings
-        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft() != null && this.conceptTreeLeft().$el.dataset.minimized == "1"
-        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight() != null && this.conceptTreeRight().$el.dataset.minimized == "1"
+        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptListLeft() != null && this.conceptListLeft().$el.dataset.minimized == "1"
+        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptListRight() != null && this.conceptListRight().$el.dataset.minimized == "1"
       }
     },
     // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
-    conceptTreeLeft() {
-      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
+    conceptListLeft() {
+      return Array.isArray(this.$refs.conceptListLeft) ? this.$refs.conceptListLeft[0] : this.$refs.conceptListLeft
     },
-    conceptTreeRight() {
-      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
+    conceptListRight() {
+      return Array.isArray(this.$refs.conceptListRight) ? this.$refs.conceptListRight[0] : this.$refs.conceptListRight
     },
     swapSides() {
       let query = this.$route.query
@@ -752,7 +752,7 @@ html, body {
 .conceptBrowserItemDetail {
   flex: 4;
 }
-.conceptBrowserItemTree {
+.conceptBrowserItemList {
   flex: 6;
 }
 

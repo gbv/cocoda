@@ -1,38 +1,32 @@
 <template>
-  <div
-    :style="`${noTree ? 'min-height: 50px; max-height: 50px;' : ''}`"
-    class="conceptTree">
-    <!-- Minimizer allows the component to get minimized -->
-    <minimizer
-      :name="`conceptTree_${isLeft}`"
-      :text="$t('conceptTree.title')" />
-    <!-- Show top concepts -->
+  <div class="conceptList">
+    <!-- Show concepts -->
     <div
-      ref="conceptTreeItems"
-      class="conceptTreeItems scrollable">
-      <concept-tree-item
+      ref="conceptListItems"
+      class="conceptListItems scrollable">
+      <concept-list-item
         v-for="({ concept, depth, isSelected }, index) in items"
-        :key="index"
+        :key="`conceptListItems-${isLeft}-${index}`"
         :concept="concept"
         :depth="depth"
         :is-selected="isSelected"
         :index="index"
-        :is-left="isLeft" />
+        :is-left="isLeft"
+        :show-children="showChildren" />
     </div>
     <div
-      v-if="noTree"
+      v-if="noItems"
       class="fillAndCenter fontWeight-heavy">
       {{ $t("conceptTree.noTree") }}
     </div>
     <!-- Full screen loading indicator -->
-    <loading-indicator-full v-if="loading || _topConcepts.includes(null)" />
+    <loading-indicator-full v-if="loading || concepts.includes(null)" />
   </div>
 </template>
 
 <script>
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import ConceptTreeItem from "./ConceptTreeItem"
-import Minimizer from "./Minimizer"
+import ConceptListItem from "./ConceptListItem"
 import _ from "lodash"
 import { scroller } from "vue-scrollto/src/scrollTo"
 
@@ -41,12 +35,12 @@ import objects from "../mixins/objects"
 import computed from "../mixins/computed"
 
 /**
- * Component that represents a (navigatable) concept tree.
+ * Component that represents a (navigatable) concept list.
  */
 export default {
-  name: "ConceptTree",
+  name: "ConceptList",
   components: {
-    LoadingIndicatorFull, ConceptTreeItem, Minimizer
+    LoadingIndicatorFull, ConceptListItem
   },
   mixins: [objects, computed],
   props: {
@@ -56,7 +50,21 @@ export default {
     isLeft: {
       type: Boolean,
       default: true
-    }
+    },
+    /**
+     * List of concepts to be shown.
+     */
+    concepts: {
+      type: Array,
+      default: () => [null]
+    },
+    /**
+     * Whether to show children of concepts, i.e. a concept hierarchy.
+     */
+    showChildren: {
+      type: Boolean,
+      default: false
+    },
   },
   data () {
     return {
@@ -75,13 +83,16 @@ export default {
     },
     items() {
       let concepts = []
-      for (let concept of this._topConcepts) {
+      for (let concept of this.concepts) {
         concepts.push(concept)
-        let children = this.children(concept)
-        concepts = concepts.concat(children)
+        if (this.showChildren) {
+          let children = this.children(concept)
+          concepts = concepts.concat(children)
+        }
       }
       let items = []
       for (let concept of concepts) {
+        // TODO: depth has to be determine differently!
         items.push({
           concept,
           depth: (concept && concept.ancestors && concept.ancestors.length) || 0,
@@ -90,11 +101,7 @@ export default {
       }
       return items
     },
-    _topConcepts() {
-      let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
-      return _.get(this.topConcepts, uri)
-    },
-    noTree() {
+    noItems() {
       return this.items.length == 0 && !this.loading
     },
   },
@@ -109,18 +116,20 @@ export default {
         }
         if (this.$jskos.isConcept(concept)) {
           // Check if concept is fully loaded
-          if (concept.ancestors && !concept.ancestors.includes(null)) {
+          if (!this.showChildren || (concept.ancestors && !concept.ancestors.includes(null))) {
             let fullyLoaded = true
             for (let ancestor of concept.ancestors) {
-              if (!ancestor.narrower || ancestor.narrower.includes(null)) {
+              if (this.showChildren && (!ancestor.narrower || ancestor.narrower.includes(null))) {
                 fullyLoaded = false
               }
             }
             if (fullyLoaded && this.shouldScroll) {
               this.shouldScroll = false
               // Open ancestors
-              for (let ancestor of this.conceptSelected.ancestors) {
-                this.open(ancestor, this.isLeft, true)
+              if (this.showChildren) {
+                for (let ancestor of this.conceptSelected.ancestors) {
+                  this.open(ancestor, this.isLeft, true)
+                }
               }
               _.delay(() => {
                 // Don't scroll if concept changed in the meantime
@@ -128,7 +137,7 @@ export default {
                 let el = document.querySelectorAll(`[data-uri='${concept.uri}']`)[0]
                 // Scroll element
                 var options = {
-                  container: this.$refs.conceptTreeItems,
+                  container: this.$refs.conceptListItems,
                   easing: "ease-in",
                   offset: -50,
                   cancelable: true,
@@ -168,11 +177,13 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.conceptTree {
+.conceptList {
   position: relative;
+  width: 100%;
+  height: 100%;
   overflow-y: hidden;
 }
-.conceptTreeNotLoading {
+.conceptListNotLoading {
   padding: 2px 8px 2px 8px;
 }
 .concept {
@@ -187,14 +198,14 @@ export default {
   margin-top: 10px;
   margin-bottom: 5px;
 }
-.conceptTreeItems {
+.conceptListItems {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
 }
-.conceptTreeItems {
+.conceptListItems {
   padding: 2px 0px;
 }
 </style>
