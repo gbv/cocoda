@@ -178,12 +178,14 @@ export default {
      * @param {*} countdown - countdown seconds, 0 for no countdown
      * @param {*} variant - a bootstrap variant, e.g. "danger", "warning", ...
      */
-    alert(text, countdown, variant) {
+    alert(text, countdown, variant, buttonText, buttonHandler) {
       this.$store.commit({
         type: "alerts/add",
         text,
         countdown,
-        variant
+        variant,
+        buttonText,
+        buttonHandler,
       })
     },
     /**

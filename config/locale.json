@@ -22,7 +22,8 @@
       "malformedConfig": "The configuration file {file} could not be loaded. The default config will be used instead.",
       "showConcordances": "Show Concordances",
       "showMappingSearch": "Show Mapping Search",
-      "tooManyMappings": "There are {count} local mappings stored in your browser. A large number of local mappings can impact performance of the tool."
+      "tooManyMappings": "There are {count} local mappings stored in your browser. A large number of local mappings can impact performance of the tool.",
+      "undo": "undo"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -245,6 +246,8 @@
       "mappingNotDeleted": "Mapping could not be deleted.",
       "mappingSaved": "Mapping was saved.",
       "mappingNotSaved": "Mapping could not be saved.",
+      "mappingRestored": "Mapping was restored.",
+      "mappingNotRestored": "Mapping could not be restored.",
       "newVersionText": "There is a new version of Cocoda.",
       "newVersionLink": "Refresh site",
       "loggedIn": "You are now logged in.",
@@ -303,7 +306,8 @@
       "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet.",
       "showConcordances": "Zeige Konkordanz-Liste",
       "showMappingSearch": "Zeige die Mapping-Suche",
-      "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokaler Mappings kann die Performance des Tools beeinflussen."
+      "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokaler Mappings kann die Performance des Tools beeinflussen.",
+      "undo": "rückgängig"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -526,6 +530,8 @@
       "mappingNotDeleted": "Mapping konnte nicht gelöscht werden.",
       "mappingSaved": "Mapping wurde gespeichert.",
       "mappingNotSaved": "Mapping konnte nicht gespeichert werden.",
+      "mappingRestored": "Mapping wurde wiederhergestellt.",
+      "mappingNotRestored": "Mapping konnte nicht wiederhergestellt werden.",
       "newVersionText": "Es gibt eine neue Version von Cocoda.",
       "newVersionLink": "Seite neu laden",
       "loggedIn": "Du bist jetzt eingeloggt.",

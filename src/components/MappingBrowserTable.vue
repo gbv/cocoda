@@ -564,7 +564,15 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
+          this.alert(this.$t("alerts.mappingDeleted"), null, "success2", "undo", () => {
+            this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: mapping.uri }).then(success => {
+              if (success) {
+                this.alert(this.$t("alerts.mappingRestored"), null, "success2")
+              } else {
+                this.alert(this.$t("alerts.mappingNotRestored"), null, "danger")
+              }
+            })
+          })
         } else {
           this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
         }

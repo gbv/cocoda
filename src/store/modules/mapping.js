@@ -506,9 +506,9 @@ const actions = {
   restoreMappingFromTrash({ state, rootState, commit }, { uri }) {
     let config = rootState.config
     let item = state.mappingTrash.find(item => item.mapping.uri == uri)
-    let registry = config.registries.find(registry => jskos.compare(registry, item.registry))
+    let registry = config.registries.find(registry => jskos.compare(registry, item && item.registry))
     if (!item || !registry || !registry.provider) {
-      console.warn("Tried to restore mapping from trash, but could not determine provider.", item)
+      console.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)
     }
     return registry.provider.saveMapping(item.mapping).then(mapping => {

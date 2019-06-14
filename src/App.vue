@@ -10,9 +10,20 @@
         :show="alert.countdown || !alert.shouldCountdown"
         :dismissible="!alert.shouldCountdown"
         fade
+        style="display: flex;"
         @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
         @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })">
-        <span v-html="alert.text" />
+        <div
+          style="flex: 1;"
+          v-html="alert.text" />
+        <div
+          v-if="alert.buttonText"
+          class="fontWeight-heavy">
+          <a
+            href=""
+            @click.prevent="alert.buttonHandler"
+            v-html="alert.buttonText" />
+        </div>
       </b-alert>
     </div>
     <the-navbar v-if="configLoaded" />
