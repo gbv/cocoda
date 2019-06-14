@@ -609,5 +609,6 @@
       }
     }
   ],
-  "impressum": "https://www.gbv.de/impressum"
+  "impressum": "https://www.gbv.de/impressum",
+  "privacyPolicy": "https://www.gbv.de/datenschutz"
 }

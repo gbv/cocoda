@@ -316,6 +316,14 @@
             {{ $t("settings.impressum") }}
           </a>
         </span>
+        <span v-if="config.privacyPolicy">
+          •
+          <a
+            :href="config.privacyPolicy"
+            target="_blank">
+            {{ $t("settings.privacyPolicy") }}
+          </a>
+        </span>
         <br>
         <span>
           {{ $t("settings.suggestions1") }}

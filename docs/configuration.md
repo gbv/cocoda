@@ -13,6 +13,8 @@ For the pre-built version, configuration options can be overridden by using `coc
 
 * **impressum**: URL of an Impressum
 
+* **privacyPolicy**: URL of a privacy policy
+
 * **searchLinks**: a list of search links to quickly link to external resources from concepts. Each searchlink has subfields:
   * `url` an URL template with possible parameters `{prefLabel}` and/or `{notation}`
   * `prefLabel`: mapping of language codes to link titles
