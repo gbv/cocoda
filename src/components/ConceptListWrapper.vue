@@ -5,11 +5,27 @@
     <minimizer
       :name="`conceptTree_${isLeft}`"
       :text="$t('conceptTree.title')" />
+    <!-- Data Selection -->
+    <div style="width: 100%; text-align: center;">
+      <b-dropdown
+        class="conceptListWrapper-dataChoiceDropdown"
+        size="sm"
+        variant="light"
+        :text="dataChoices[dataChoice].label">
+        <b-dropdown-item
+          v-for="(choice, index) in dataChoices"
+          :key="`conceptListWrapper-dataChoice-${index}`"
+          href="#"
+          @click="dataChoice = index">
+          {{ choice.label }}
+        </b-dropdown-item>
+      </b-dropdown>
+    </div>
     <!-- List of concepts -->
     <concept-list
       :is-left="isLeft"
       :concepts="concepts"
-      :show-children="true" />
+      :show-children="dataChoices[dataChoice].showChildren" />
   </div>
 </template>
 
@@ -34,15 +50,31 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      dataChoice: 0,
+    }
   },
   computed: {
+    dataChoices() {
+      return [
+        {
+          label: "Tree",
+          concepts: this._topConcepts,
+          showChildren: true,
+        },
+        {
+          label: "Favorite Concepts",
+          concepts: this.favoriteConcepts,
+          showChildren: false,
+        }
+      ]
+    },
     _topConcepts() {
       let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
       return _.get(this.topConcepts, uri)
     },
     concepts() {
-      return this._topConcepts
+      return this.dataChoices[this.dataChoice].concepts
     },
   },
 }
