@@ -82,22 +82,18 @@ export default {
       return this.selected.concept[this.isLeft]
     },
     items() {
-      let concepts = []
-      for (let concept of this.concepts) {
-        concepts.push(concept)
-        if (this.showChildren) {
-          let children = this.children(concept)
-          concepts = concepts.concat(children)
-        }
-      }
       let items = []
-      for (let concept of concepts) {
-        // TODO: depth has to be determine differently!
-        items.push({
+      for (let concept of this.concepts) {
+        let item = {
           concept,
-          depth: (concept && concept.ancestors && concept.ancestors.length) || 0,
+          depth: 0,
           isSelected: this.$jskos.compare(this.conceptSelected, concept),
-        })
+        }
+        items.push(item)
+        if (this.showChildren) {
+          let childrenItems = this.children(item)
+          items = items.concat(childrenItems)
+        }
       }
       return items
     },
@@ -159,12 +155,19 @@ export default {
     },
   },
   methods: {
-    children(concept) {
+    children(item) {
       let items = []
+      let concept = item.concept
+      let depth = item.depth + 1
       if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
         for (let child of concept.narrower) {
-          items.push(child)
-          items = items.concat(this.children(child))
+          let item = {
+            concept: child,
+            depth,
+            isSelected: this.$jskos.compare(this.conceptSelected, child),
+          }
+          items.push(item)
+          items = items.concat(this.children(item))
         }
       }
       return items

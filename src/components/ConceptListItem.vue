@@ -29,7 +29,7 @@
       <div
         :is="url ? 'router-link' : 'div'"
         :to="url"
-        :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
+        :class="{ labelBoxFull: showChildren && !hasChildren, labelBoxSelected: isSelected }"
         class="labelBox"
         @click.native.stop.prevent="onClick">
         <item-name
