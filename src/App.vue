@@ -462,7 +462,9 @@ export default {
         }
       }).then(response => response.data).then(buildInfo => {
         if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
-          this.alert(`${this.$t("alerts.newVersionText")} <a href="" class="alert-link">${this.$t("alerts.newVersionLink")}</a>`, 0, "info")
+          this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+            location.reload(true)
+          })
           updateMessageShown = true
         }
       }).catch(() => null)
