@@ -52,7 +52,13 @@
           :show-labels="true"
           :show-tooltip="false"
           style="width: 700px;"
-          @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri })" />
+          @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
+            if (success) {
+              alert($t('alerts.mappingRestored'), null, 'success2')
+            } else {
+              alert($t('alerts.mappingNotRestored'), null, 'danger')
+            }
+          })" />
       </b-nav-item-dropdown>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown
