@@ -747,33 +747,6 @@ export default {
       url += `${url.includes("?") ? "&" : "?"}${this.searchShareLinkPart}`
       return url
     },
-    clickHandlers() {
-      let popovers = []
-      // Registry group popovers
-      for (let group of this.registryGroups) {
-        popovers.push({
-          elements: [
-            _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]"),
-            document.getElementById(`registryGroup-${group.uri}`)
-          ],
-          handler: () => {
-            this.$set(this.registryGroupShow, group.uri, false)
-          }
-        })
-      }
-      // Search Link popover
-      popovers.push({
-        elements: [
-          this.$refs.searchSharePopover,
-          document.getElementById("mappingBrowser-search-shareButton")
-        ],
-        handler: () => {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.searchShareShow = false
-        }
-      })
-      return popovers
-    }
   },
   watch: {
     tab(tab) {
@@ -898,6 +871,33 @@ export default {
     this.navigatorRefresh(true)
   },
   methods: {
+    clickHandlers() {
+      let popovers = []
+      // Registry group popovers
+      for (let group of this.registryGroups) {
+        popovers.push({
+          elements: [
+            _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]"),
+            document.getElementById(`registryGroup-${group.uri}`)
+          ],
+          handler: () => {
+            this.$set(this.registryGroupShow, group.uri, false)
+          }
+        })
+      }
+      // Search Link popover
+      popovers.push({
+        elements: [
+          this.$refs.searchSharePopover,
+          document.getElementById("mappingBrowser-search-shareButton")
+        ],
+        handler: () => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.searchShareShow = false
+        }
+      })
+      return popovers
+    },
     generateCancelToken() {
       return axios.CancelToken.source()
     },

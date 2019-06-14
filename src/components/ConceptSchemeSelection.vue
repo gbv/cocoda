@@ -250,19 +250,6 @@ export default {
       options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
       return options
     },
-    clickHandlers() {
-      return [{
-        elements: [
-          this.$refs.popover,
-          document.getElementById(`${this.id}-expandButton`),
-          this.$refs.showAllSchemesLink
-        ],
-        handler: () => {
-          // this.popoverShown
-          this.hidePopover()
-        }
-      }]
-    },
     insertPrefLabel: {
       get() {
         return this.$settings.schemeSelectionInsertPrefLabel[this.isLeft]
@@ -291,6 +278,19 @@ export default {
     this.enableShortcuts()
   },
   methods: {
+    clickHandlers() {
+      return [{
+        elements: [
+          this.$refs.popover,
+          document.getElementById(`${this.id}-expandButton`),
+          this.$refs.showAllSchemesLink
+        ],
+        handler: () => {
+          // this.popoverShown
+          this.hidePopover()
+        }
+      }]
+    },
     shortcutHandler({ action, isLeft }) {
       if (this.isLeft === isLeft) {
         switch(action) {

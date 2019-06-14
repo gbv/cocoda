@@ -38,7 +38,10 @@ export default {
       isShown: false,
     }
   },
-  computed: {
+  created() {
+    this.id = this.$util.generateID()
+  },
+  methods: {
     clickHandlers() {
       return [{
         elements: [
@@ -49,12 +52,7 @@ export default {
           this.hide()
         }
       }]
-    }
-  },
-  created() {
-    this.id = this.$util.generateID()
-  },
-  methods: {
+    },
     show() {
       this.isShown = true
     },

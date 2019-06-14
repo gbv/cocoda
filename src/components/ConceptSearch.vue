@@ -184,35 +184,6 @@ export default {
     provider() {
       return _.get(this.scheme, "_provider")
     },
-    clickHandlers() {
-      return [
-        // Result list
-        {
-          elements: [
-            this.$el
-          ],
-          handler: () => {
-            if (!this.filterPopoverShow) {
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              this.isOpen = false
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              this.searchSelected = -1
-            }
-          }
-        },
-        // Types popover
-        {
-          elements: [
-            document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`),
-            this.$refs.filterPopover
-          ],
-          handler: () => {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.filterPopoverShow = false
-          }
-        }
-      ]
-    },
   },
   watch: {
     /**
@@ -266,6 +237,35 @@ export default {
     this.uniqueID = this.$util.generateID()
   },
   methods: {
+    clickHandlers() {
+      return [
+        // Result list
+        {
+          elements: [
+            this.$el
+          ],
+          handler: () => {
+            if (!this.filterPopoverShow) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.isOpen = false
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.searchSelected = -1
+            }
+          }
+        },
+        // Types popover
+        {
+          elements: [
+            document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`),
+            this.$refs.filterPopover
+          ],
+          handler: () => {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.filterPopoverShow = false
+          }
+        }
+      ]
+    },
     /**
      * Chooses a search result and resets search field.
      *

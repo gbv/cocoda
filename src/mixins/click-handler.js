@@ -3,7 +3,7 @@
  *
  * Handles clicks in the application, e.g. to hide popovers when clicked outside.
  *
- * A component implementing this mixin has to provide a `clickHandlers` array (in `data` or `computed`).
+ * A component implementing this mixin has to provide a `clickHandlers` method that returns an array.
  * Each item in the array is an object with the following properties:
  * - elements: An array of elements that the click should be checked against.
  * - handler: A function that is called when a click outside the elements is registered.
@@ -36,12 +36,15 @@ export default {
   },
   methods: {
     handleClick(event) {
-      for (let popover of this.clickHandlers || []) {
+      for (let popover of this.clickHandlers()) {
         let isInside = (popover.elements || []).reduce((total, current) => total || (current && current.contains(event.target)), false)
         if (!isInside) {
           popover.handler(event)
         }
       }
+    },
+    clickHandlers() {
+      return []
     },
   },
 }
