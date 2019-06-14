@@ -98,7 +98,7 @@
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
         <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
+          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [{ de: gndTerms }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
           :key="'note'+index+'-'+iteration"
           :title="title"
           :active="title == 'GND' && !hasNotes(item)"
@@ -397,6 +397,26 @@ export default {
       }
       return types
     },
+    gndTerms() {
+      // Assemble gndTerms array for display
+      let concepts = _.get(this.item, "__GNDCONCEPTS__", [])
+      let gndTerms = []
+      let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow"]
+      for (let relevance of relevanceOrder) {
+        let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
+        let terms = []
+        for (let concept of concepts.filter(concept => concept.__GNDTYPE__.RELEVANCE == this.$t(relevance, "en"))) {
+          if (concept && (this.$util.prefLabel(concept, null, false))) {
+            terms.push(_.escape(this.$util.prefLabel(concept)))
+          }
+        }
+        if (terms.length > 0) {
+          term = term + terms.join(", ")
+          gndTerms.push(term)
+        }
+      }
+      return gndTerms
+    },
   },
   watch: {
     item(newItem, oldItem) {
@@ -431,72 +451,31 @@ export default {
       // TODO: Refactoring necessary!
       if (!this.item) return
       let itemBefore = this.item
-      // Load GND mappings from and to item
-      let promises = []
-      let params = {
-        direction: "both",
-        from: this.item,
-      }
       let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
-      promises.push(this.getMappings(params))
-      Promise.all(promises).then(results => {
-        if (!this.$jskos.compare(itemBefore, this.item)) {
-          // Abort if item changed in the meantime
-          return []
-        }
+      // Don't load GND terms for GND items
+      if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
+        return
+      }
+      this.getMappings({
+        direction: "both",
+        from: itemBefore,
+      }).then(mappings => {
         let gndConcepts = []
-        for (let mappings of results) {
-          for (let fromTo of ["from", "to"]) {
-            let toFrom = fromTo == "from" ? "to" : "from"
-            for(let mapping of mappings) {
-              let startIndex = gndConcepts.length
-              if (this.$jskos.compare(mapping[toFrom+"Scheme"], gnd)) {
-                gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
-              }
-              // Save GND mapping type to concept
-              while (startIndex < gndConcepts.length) {
-                this.$set(gndConcepts[startIndex], "__GNDTYPE__", this.$jskos.mappingTypeByType(mapping.type))
-                startIndex += 1
-              }
+        for (let mapping of mappings) {
+          let concepts = this.$jskos.conceptsOfMapping(mapping)
+          for (let concept of concepts) {
+            if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]"))) {
+              this.$set(concept, "__GNDTYPE__", this.$jskos.mappingTypeByType(mapping.type))
+              gndConcepts.push(concept)
             }
           }
         }
-        // Load concept objects from API
-        let promises = []
-        for (let concept of gndConcepts) {
-          // Only add GND concepts that are different from the item.
-          if (!this.$jskos.compare(concept, itemBefore)) {
-            promises.push(this.loadDetails(concept, {
-              scheme: gnd
-            }).then(object => {
-              if (object) {
-                this.$set(object, "__GNDTYPE__", concept.__GNDTYPE__)
-              }
-              return object
-            }))
-          }
-        }
-        return Promise.all(promises)
-      }).then(results => {
+        gndConcepts = _.uniqWith(gndConcepts, this.$jskos.compare)
+        return this.loadConcepts(gndConcepts)
+      }).then(concepts => {
         // Filter out all null values
-        results = results.filter(concept => concept != null)
-        // Assemble gndTerms array for display
-        let gndTerms = []
-        let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow"]
-        for (let relevance of relevanceOrder) {
-          let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
-          let terms = []
-          for (let concept of results.filter(concept => concept.__GNDTYPE__.RELEVANCE == this.$t(relevance, "en"))) {
-            if (concept && (this.$util.prefLabel(concept, null, false))) {
-              terms.push(_.escape(this.$util.prefLabel(concept)))
-            }
-          }
-          if (terms.length > 0) {
-            term = term + terms.join(", ")
-            gndTerms.push(term)
-          }
-        }
-        this.$set(itemBefore, "__GNDTERMS__", gndTerms)
+        concepts = concepts.filter(concept => concept != null)
+        this.$set(itemBefore, "__GNDCONCEPTS__", concepts)
       }).catch(error => {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })
