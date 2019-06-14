@@ -17,7 +17,7 @@
     <div
       v-if="noItems"
       class="fillAndCenter fontWeight-heavy">
-      {{ $t("conceptTree.noTree") }}
+      {{ noItemsLabel || $t("conceptList.noItems") }}
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading || concepts.includes(null)" />
@@ -64,6 +64,13 @@ export default {
     showChildren: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Optional label to show when there are no items.
+     */
+    noItemsLabel: {
+      type: String,
+      default: null
     },
   },
   data () {

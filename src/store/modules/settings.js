@@ -12,7 +12,7 @@ const defaultSettings = {
   mappingBrowserShowIdentityWarning: true,
   conceptDetailShowAllAncestors: false,
   conceptDetailDoNotTruncateNotes: false,
-  conceptTreeAddToMappingSelectsConcept: true,
+  conceptListAddToMappingSelectsConcept: true,
   mappingBrowserShowRegistry: {},
   minimized: {},
   flex: {},

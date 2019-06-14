@@ -3,8 +3,8 @@
     :style="`${concepts.length == 0 ? 'min-height: 80px; max-height: 80px;' : ''}`">
     <!-- Minimizer allows the component to get minimized -->
     <minimizer
-      :name="`conceptTree_${isLeft}`"
-      :text="$t('conceptTree.title')" />
+      :name="`conceptList_${isLeft}`"
+      :text="$t('conceptList.title')" />
     <!-- Data Selection -->
     <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
       <div style="flex: none; width: 100%; text-align: center;">
@@ -27,7 +27,8 @@
         style="flex: 1;"
         :is-left="isLeft"
         :concepts="concepts"
-        :show-children="dataChoices[dataChoice].showChildren" />
+        :show-children="dataChoices[dataChoice].showChildren"
+        :no-items-label="dataChoices[dataChoice].noItemsLabel" />
     </div>
   </div>
 </template>
@@ -61,12 +62,13 @@ export default {
     dataChoices() {
       return [
         {
-          label: "Tree",
+          label: this.$t("conceptList.topConcepts"),
+          noItemsLabel: this.$t("schemeDetail.noTopConcepts"),
           concepts: this._topConcepts,
           showChildren: true,
         },
         {
-          label: "Favorite Concepts",
+          label: this.$t("schemeSelection.conceptQuick"),
           concepts: this.favoriteConcepts,
           showChildren: false,
         }

@@ -86,9 +86,10 @@
       "languages": "Available languages",
       "availableMappings": "Available mappings"
     },
-    "conceptTree": {
-      "title": "Concept Tree",
-      "noTree": "No Tree Available"
+    "conceptList": {
+      "title": "Concept List",
+      "noItems": "No Concepts",
+      "topConcepts": "Top Concepts"
     },
     "itemDetail": {
       "pleaseSelect": "Please select a scheme or concept.",
@@ -239,7 +240,7 @@
       "privacyPolicy": "Privacy Policy",
       "sources": "Sources",
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage.",
-      "conceptTreeAddToMappingSelectsConcept": "Concept Tree: Adding a concept to the mapping will also select that concept."
+      "conceptListAddToMappingSelectsConcept": "Concept List: Adding a concept to the mapping will also select that concept."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -418,7 +419,7 @@
       "privacyPolicy": "Datenschutz",
       "sources": "Quellcode",
       "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert.",
-      "conceptTreeAddToMappingSelectsConcept": "Concept-Tree: Durch Hinzufügen eines Konzepts zum Mapping wird dieses auch ausgewählt."
+      "conceptListAddToMappingSelectsConcept": "Concept-List: Durch Hinzufügen eines Konzepts zum Mapping wird dieses auch ausgewählt."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",
@@ -448,9 +449,10 @@
       "languages": "Vorhandene Sprachen",
       "availableMappings": "Vorhandene Mappings"
     },
-    "conceptTree": {
+    "conceptList": {
       "title": "Hierarchie",
-      "noTree": "Keine Hierarchie verfügbar"
+      "noItems": "Keine Konzepte",
+      "topConcepts": "Oberkonzepte"
     },
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",

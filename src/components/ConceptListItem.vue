@@ -225,7 +225,7 @@ export default {
      * Clicked the plus icon to add a concept.
      */
     addConcept() {
-      if (!this.isSelected && this.$store.state.settings.settings.conceptTreeAddToMappingSelectsConcept) {
+      if (!this.isSelected && this.$store.state.settings.settings.conceptListAddToMappingSelectsConcept) {
         this.select(this.concept)
       }
       this.addToMapping({
@@ -253,7 +253,7 @@ export default {
      * Scrolls the concept further to the top.
      */
     scrollTo() {
-      // Determine conceptTree element because it is the scrolling container
+      // Determine conceptList element because it is the scrolling container
       let parent = this.$el.parentElement
       while (!parent.classList.contains("scrollable")) {
         parent = parent.parentElement

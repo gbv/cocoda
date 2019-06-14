@@ -163,8 +163,8 @@
             </b-form-checkbox>
           </p>
           <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptTreeAddToMappingSelectsConcept">
-              {{ $t("settings.conceptTreeAddToMappingSelectsConcept") }}
+            <b-form-checkbox v-model="localSettings.conceptListAddToMappingSelectsConcept">
+              {{ $t("settings.conceptListAddToMappingSelectsConcept") }}
             </b-form-checkbox>
           </p>
           <p>
