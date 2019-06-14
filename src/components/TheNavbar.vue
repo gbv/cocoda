@@ -21,6 +21,19 @@
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
+      <!-- Imprint and privacy policy -->
+      <b-nav-item
+        v-if="config.impressum"
+        :href="config.impressum"
+        target="_blank">
+        {{ $t("settings.impressum") }}
+      </b-nav-item>
+      <b-nav-item
+        v-if="config.privacyPolicy"
+        :href="config.privacyPolicy"
+        target="_blank">
+        {{ $t("settings.privacyPolicy") }}
+      </b-nav-item>
       <!-- Menu buttons (from configuration) -->
       <b-nav-item
         v-for="item in config.menu"
