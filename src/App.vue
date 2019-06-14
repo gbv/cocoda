@@ -21,7 +21,7 @@
           class="fontWeight-heavy">
           <a
             href=""
-            @click.prevent="alert.buttonHandler"
+            @click.prevent="alert.buttonHandler(alert, $event)"
             v-html="alert.buttonText" />
         </div>
       </b-alert>
