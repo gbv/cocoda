@@ -36,12 +36,11 @@
         </b-form-checkbox>
       </b-form>
     </component-settings>
-    <b-tabs
+    <tabs
       v-model="tab"
-      pills
-      no-fade
-      justified>
-      <b-tab
+      style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
+      fill>
+      <tab
         v-if="concordancesShown"
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
@@ -162,8 +161,8 @@
               type="concordance" />
           </div>
         </template>
-      </b-tab>
-      <b-tab
+      </tab>
+      <tab
         :title="$t('mappingBrowser.mappingSearch')"
         @click="handleClick">
         <div style="flex: none;">
@@ -331,8 +330,8 @@
           style="text-align: center; margin-top: 20px;">
           {{ $t("search.noResults") }}
         </div>
-      </b-tab>
-      <b-tab
+      </tab>
+      <tab
         :title="$t('mappingBrowser.mappingNavigator')"
         @click="handleClick">
         <div
@@ -380,8 +379,8 @@
           style="text-align: center; margin-top: 20px;">
           {{ $t("search.noResults") }}
         </div>
-      </b-tab>
-    </b-tabs>
+      </tab>
+    </tabs>
   </div>
 </template>
 
@@ -1435,6 +1434,12 @@ export default {
 }
 #mappingBrowser[max-width~="550px"] .mappingBrowser-from550 {
   display: none;
+}
+
+#mappingBrowser > .cocoda-vue-tabs > .cocoda-vue-tabs-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 #mappingBrowser > .tabs {

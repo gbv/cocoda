@@ -3,7 +3,7 @@
     <!-- Show concepts -->
     <div
       ref="conceptListItems"
-      class="conceptListItems scrollable">
+      class="conceptListItems">
       <concept-list-item
         v-for="({ concept, depth, isSelected }, index) in items"
         :key="`conceptListItems-${isLeft}-${index}`"
@@ -16,7 +16,7 @@
     </div>
     <div
       v-if="noItems"
-      class="fillAndCenter fontWeight-heavy">
+      class="conceptListItems-noItems fontWeight-heavy">
       {{ noItemsLabel || $t("conceptList.noItems") }}
     </div>
     <!-- Full screen loading indicator -->
@@ -187,35 +187,9 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-.conceptList {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden;
+.conceptListItems-noItems {
+  margin-top: 5px;
+  text-align: center;
 }
-.conceptListNotLoading {
-  padding: 2px 8px 2px 8px;
-}
-.concept {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  line-height: 1.2;
-}
-.concept > li {
-  margin-left: 20px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-.conceptListItems {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.conceptListItems {
-  padding: 2px 0px;
-}
+
 </style>

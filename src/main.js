@@ -20,6 +20,11 @@ Vue.prototype.$util = util
 import jskos from "jskos-tools"
 Vue.prototype.$jskos = jskos
 
+// Add cocoda-vue-tabs
+import { Tabs, Tab } from "cocoda-vue-tabs"
+Vue.component("tabs", Tabs)
+Vue.component("tab", Tab)
+
 // Add fontawesome
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt, faPuzzlePiece, faExclamation, faShareAltSquare, faRecycle, faCaretSquareLeft, faCaretSquareRight } from "@fortawesome/free-solid-svg-icons"

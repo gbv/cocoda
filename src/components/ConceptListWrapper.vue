@@ -5,31 +5,22 @@
     <minimizer
       :name="`conceptList_${isLeft}`"
       :text="$t('conceptList.title')" />
-    <!-- Data Selection -->
-    <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
-      <div style="flex: none; width: 100%; text-align: center;">
-        <b-dropdown
-          class="conceptListWrapper-dataChoiceDropdown"
-          size="sm"
-          variant="light"
-          :text="dataChoices[dataChoice].label">
-          <b-dropdown-item
-            v-for="(choice, index) in dataChoices"
-            :key="`conceptListWrapper-dataChoice-${index}`"
-            href="#"
-            @click="dataChoice = index">
-            {{ choice.label }}
-          </b-dropdown-item>
-        </b-dropdown>
-      </div>
-      <!-- List of concepts -->
-      <concept-list
-        style="flex: 1;"
-        :is-left="isLeft"
-        :concepts="concepts"
-        :show-children="dataChoices[dataChoice].showChildren"
-        :no-items-label="dataChoices[dataChoice].noItemsLabel" />
-    </div>
+    <tabs
+      v-model="dataChoice"
+      style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
+      fill>
+      <tab
+        v-for="(choice, index) in dataChoices"
+        :key="`conceptListWrapper-dataChoice-${index}`"
+        :title="choice.label">
+        <!-- List of concepts -->
+        <concept-list
+          :is-left="isLeft"
+          :concepts="choice.concepts"
+          :show-children="choice.showChildren"
+          :no-items-label="choice.noItemsLabel" />
+      </tab>
+    </tabs>
   </div>
 </template>
 
@@ -85,8 +76,11 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../style/main.less";
 
+.cocoda-vue-tabs-content {
+  padding: 5px 0 0 0 !important;
+}
 
 </style>
