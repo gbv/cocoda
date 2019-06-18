@@ -9,11 +9,8 @@
     <b-card
       no-body
       footer-tag="footer">
-      <b-tabs
-        pills
-        card
-        vertical>
-        <b-tab
+      <tabs fill>
+        <tab
           :title="$t('settings.tabAccount')"
           active>
           <div v-if="localSettings">
@@ -137,8 +134,8 @@
               </p>
             </div>
           </div>
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           :title="$t('settings.tabLayout')">
           <p v-if="localSettings">
             <b>{{ $t("settings.language") }}</b>
@@ -175,8 +172,8 @@
             </b-button>
           </p>
           <br>
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           v-if="config.shortcuts && config.shortcuts.length"
           :title="$t('settings.tabShortcuts')">
           <h4> {{ $t("settings.tabShortcuts") }}</h4>
@@ -186,16 +183,16 @@
             <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b><br>
             <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
           </p>
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           :title="$t('settings.tabSources')">
           <registry-info
             v-for="(registry, index) in config.registries"
             :key="`settingsModal-registries-${index}`"
             :registry="registry"
             class="settings-sources" />
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           v-if="localMappingsSupported"
           :title="$t('settings.tabLocalMappings')">
           <div>
@@ -282,8 +279,8 @@
               </b-button>
             </p>
           </div>
-        </b-tab>
-      </b-tabs>
+        </tab>
+      </tabs>
       <span slot="footer">
         <a
           href="https://github.com/gbv/cocoda"
@@ -645,20 +642,14 @@ p {
   bottom: 0;
   right: 0;
   left: 0;
+  /* Note: This is a Firefox workaround. Footer will be hidden if the content is too tall. */
+  overflow: hidden;
 }
-#settingsModal .modal-body .card .tabs {
+#settingsModal .modal-body .card .cocoda-vue-tabs {
   height: 100%;
 }
-#settingsModal .modal-body .card .col .card-body {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: scroll;
-}
-#settingsModal .modal-body .card .col-auto {
-  min-width: 200px;
+#settingsModal .modal-body .card .cocoda-vue-tabs .cocoda-vue-tabs-content {
+  padding: 20px 20px 5px 20px;
 }
 
 </style>
