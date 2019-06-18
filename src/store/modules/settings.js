@@ -26,7 +26,11 @@ const defaultSettings = {
   schemeSelectionInsertPrefLabel: {
     [true]: true,
     [false]: true
-  }
+  },
+  conceptListChoice: {
+    [true]: 0,
+    [false]: 0
+  },
 }
 
 // initial state

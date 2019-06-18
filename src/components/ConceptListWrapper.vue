@@ -51,13 +51,13 @@ export default {
   },
   data() {
     return {
-      dataChoice: 0,
     }
   },
   computed: {
     dataChoices() {
       return [
         {
+          id: "topConcepts",
           label: this.$t("conceptList.topConcepts"),
           noItemsLabel: this.$t("schemeDetail.noTopConcepts"),
           concepts: this._topConcepts,
@@ -65,6 +65,7 @@ export default {
           showScheme: false,
         },
         {
+          id: "favoriteConcepts",
           label: this.$t("schemeSelection.conceptQuick"),
           concepts: this.favoriteConcepts,
           showChildren: false,
@@ -78,6 +79,21 @@ export default {
     },
     concepts() {
       return this.dataChoices[this.dataChoice].concepts
+    },
+    dataChoice: {
+      get() {
+        let id = this.$settings.conceptListChoice[this.isLeft]
+        let index = this.dataChoices.findIndex(choice => choice.id === id)
+        return index != -1 ? index : 0
+      },
+      set(value) {
+        let id = _.get(this.dataChoices, `[${value}].id`)
+        this.$store.commit({
+          type: "settings/set",
+          prop: `conceptListChoice[${this.isLeft}]`,
+          value: id
+        })
+      }
     },
   },
   methods: {
