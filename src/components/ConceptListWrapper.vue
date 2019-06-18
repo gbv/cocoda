@@ -5,7 +5,7 @@
     <!-- Minimizer allows the component to get minimized -->
     <minimizer
       :name="`conceptList_${isLeft}`"
-      :text="$t('conceptList.title')" />
+      :text="dataChoices[dataChoice].label" />
     <tabs
       v-model="dataChoice"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
