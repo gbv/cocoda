@@ -14,7 +14,7 @@
       </div>
       <div
         v-for="(concept, index) in ancestors.filter(concept => concept != null)"
-        :key="concept.uri">
+        :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`">
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
             class="u-flip-horizontal"
@@ -38,7 +38,7 @@
       <!-- Broader -->
       <div
         v-for="(concept) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
-        :key="concept.uri">
+        :key="`conceptDetail-${isLeft}-broader-${concept.uri}-${index}`">
         <font-awesome-icon
           icon="sort-up" />
         <item-name
@@ -90,66 +90,11 @@
     <tabs
       style="margin-top: 3px;"
       size="sm">
-      <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
-      <!-- TODO: Should altLabels really be called "Register Entries"? -->
-      <tab
-        v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [{ de: gndTerms }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
-        :key="'note'+index+'-'+iteration"
-        :title="title"
-        :active="title == 'GND' && !hasNotes(item)"
-        class="conceptDetail-notes">
-        <div class="conceptDetail-note">
-          <span v-html="notesOptions.visiblePart($util.lmContent(notes))" />
-          <b-collapse
-            :id="'note'+index"
-            tag="span"
-            class="no-transition">
-            <span v-html="notesOptions.hiddenPart($util.lmContent(notes))" />
-          </b-collapse>
-          <a
-            v-if="notesOptions.isTruncated($util.lmContent(notes))"
-            v-b-toggle="'note'+index"
-            href=""
-            @click.prevent>
-            <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
-            <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
-          </a>
-        </div>
-      </tab>
-      <tab :title="$t('conceptDetail.labels')">
-        <div
-          v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
-          :key="`conceptDetail-prefLabel-${language}`"
-          class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b>
-          <span @click="copyAndSearch($util.prefLabel(item, language))">
-            {{ $util.prefLabel(item, language) }}
-          </span>
-        </div>
-        <!-- Explanation:
-            1. Get all language keys for altLabels (Object.keys)
-            2. Create objects in the form { language, label } (map)
-            3. Flatten the array (reduce)
-            4. Filter `-` language (filter)
-            5. Sort current language higher (sort)
-           -->
-        <div
-          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
-          :key="`conceptDetail-altLabel-${language}-${index}`"
-          class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.altLabel") }} ({{ language }}):</b>
-          <span @click="copyAndSearch(label)">
-            {{ label }}
-          </span>
-        </div>
-      </tab>
-      <tab
-        :key="'zzzzzzzzzz'+iteration"
-        :title="$t('conceptDetail.info')">
-        <!-- URI and identifier -->
+      <!-- URI and identifier -->
+      <tab :title="$t('conceptDetail.info')">
         <div
           v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
-          :key="index"
+          :key="`conceptDetail-${isLeft}-identifier-${index}`"
           :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
           <font-awesome-icon
             :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
@@ -158,7 +103,7 @@
         </div>
         <div
           v-for="type in types"
-          :key="`conceptDetail-type-${type.uri}`"
+          :key="`conceptDetail-${isLeft}-type-${type.uri}`"
           class="conceptDetail-identifier">
           <b>Type:</b> <auto-link
             :link="type.uri"
@@ -182,20 +127,76 @@
         <template v-if="item.definition">
           <div
             v-for="language in [$util.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $util.getLanguage(item.definition) && language != '-'))"
-            :key="`conceptDetail-defintion-${language}`"
+            :key="`conceptDetail-${isLeft}-defintion-${language}`"
             class="conceptDetail-identifier">
             <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
           </div>
         </template>
       </tab>
+      <tab :title="$t('conceptDetail.labels')">
+        <div
+          v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
+          :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
+          class="conceptDetail-identifier">
+          <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b>
+          <span @click="copyAndSearch($util.prefLabel(item, language))">
+            {{ $util.prefLabel(item, language) }}
+          </span>
+        </div>
+        <!-- Explanation:
+            1. Get all language keys for altLabels (Object.keys)
+            2. Create objects in the form { language, label } (map)
+            3. Flatten the array (reduce)
+            4. Filter `-` language (filter)
+            5. Sort current language higher (sort)
+           -->
+        <div
+          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
+          :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
+          class="conceptDetail-identifier">
+          <b>{{ $t("conceptDetail.altLabel") }} ({{ language }}):</b>
+          <span @click="copyAndSearch(label)">
+            {{ label }}
+          </span>
+        </div>
+      </tab>
+      <!-- GND terms, scopeNotes, editorialNotes -->
+      <template
+        v-for="([notes, title], index) in [[{ de: gndTerms }, $t('conceptDetail.gnd')], [item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')]].map(([notes, title]) => ([$util.lmContent(notes), title])).map(([notes, title]) => ([notes || '', title]))">
+        <!-- TODO: Adjust this as soon as cocoda-vue-tabs has the option to hide tabs -->
+        <tab
+          v-if="notes != ''"
+          :key="`conceptDetail-${isLeft}-notes-${index}-${iteration}`"
+          :title="title"
+          class="conceptDetail-notes">
+          <div class="conceptDetail-note">
+            <span v-html="notesOptions.visiblePart(notes)" />
+            <b-collapse
+              :id="'note'+index"
+              tag="span"
+              class="no-transition">
+              <span v-html="notesOptions.hiddenPart(notes)" />
+            </b-collapse>
+            <a
+              v-if="notesOptions.isTruncated(notes)"
+              v-b-toggle="'note'+index"
+              href=""
+              @click.prevent>
+              <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
+              <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
+            </a>
+          </div>
+        </tab>
+      </template>
       <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
       <tab
         v-if="config.searchLinks"
+        :key="`conceptDetail-${isLeft}-searchLinks-${iteration}`"
         :title="$t('conceptDetail.searchLinks')">
         <ul style="margin-bottom: 0;">
           <li
             v-for="(searchLink, index) of searchLinks"
-            :key="'searchLink' + isLeft + index">
+            :key="`searchLink-${isLeft}-${index}`">
             <a
               :href="searchLink.url"
               target="_blank">
@@ -409,6 +410,8 @@ export default {
           gndTerms.push(term)
         }
       }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.iteration += 1
       return gndTerms
     },
   },
