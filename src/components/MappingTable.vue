@@ -3,6 +3,13 @@
     :items="items"
     :fields="fields">
     <span
+      slot="registry"
+      slot-scope="{ value }">
+      <registry-notation
+        :registry="value"
+        :tooltip="false" />
+    </span>
+    <span
       slot="sourceConcepts"
       slot-scope="{ value }">
       <item-name
@@ -61,10 +68,11 @@
 <script>
 import ItemName from "./ItemName"
 import FlexibleTable from "vue-flexible-table"
+import RegistryNotation from "./RegistryNotation"
 
 export default {
   name: "MappingTable",
-  components: { ItemName, FlexibleTable },
+  components: { ItemName, FlexibleTable, RegistryNotation },
   props: {
     /**
      * The list of mappings to be displayed.
@@ -103,6 +111,13 @@ export default {
       type: Boolean,
       default: false
     },
+    /**
+     * Whether to show the mapping registry.
+     */
+    showRegistry: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -114,7 +129,7 @@ export default {
      * List of fields (columns) to be used in bootstrap table
      */
     fields() {
-      return [
+      let fields = [
         {
           key: "sourceScheme",
           label: "",
@@ -125,7 +140,7 @@ export default {
         {
           key: "sourceConcepts",
           label: this.$t("mappingBrowser.from"),
-          width: "20%",
+          width: "19%",
           minWidth: "",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
@@ -158,7 +173,7 @@ export default {
         {
           key: "targetConcepts",
           label: this.$t("mappingBrowser.to"),
-          width: "20%",
+          width: "19%",
           minWidth: "",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
@@ -166,7 +181,7 @@ export default {
         {
           key: "creator",
           label: this.$t("mappingBrowser.creator"),
-          width: "18%",
+          width: "15%",
           minWidth: "",
           sortable: false
         },
@@ -185,6 +200,16 @@ export default {
           sortable: false
         }
       ]
+      if (this.showRegistry) {
+        fields = [{
+          key: "registry",
+          label: "",
+          width: "5%",
+          minWidth: "",
+          sortable: false
+        }].concat(fields)
+      }
+      return fields
     },
     /**
      * List of items to be used in bootstrap table
@@ -199,6 +224,9 @@ export default {
         if (!this.hideDuplicates || !hash || !hashList.includes(hash)) {
           let item = {}
           item.mapping = mapping
+          if (this.showRegistry) {
+            item.registry = mapping._registry
+          }
           item.sourceScheme = this.$util.notation(mapping.fromScheme)
           item.targetScheme = this.$util.notation(mapping.toScheme)
           item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice

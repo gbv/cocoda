@@ -65,6 +65,7 @@
           }]"
           :show-labels="true"
           :show-tooltip="false"
+          :show-registry="true"
           :hide-duplicates="false"
           style="width: 700px;"
           @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
@@ -196,7 +197,11 @@ export default {
     },
     mappingTrash() {
       let trash = this.$store.state.mapping.mappingTrash
-      return trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(this.$jskos.copyDeep(item.mapping)) }))
+      trash = trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(this.$jskos.copyDeep(item.mapping)) }))
+      for (let item of trash) {
+        item.mapping._registry = this.config.registries.find(registry => this.$jskos.compare(registry, item.registry))
+      }
+      return trash
     },
   },
   watch: {
