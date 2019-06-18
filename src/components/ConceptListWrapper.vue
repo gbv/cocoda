@@ -9,13 +9,15 @@
     <tabs
       v-model="dataChoice"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
-      fill>
+      fill
+      @change="tabChanged">
       <tab
         v-for="(choice, index) in dataChoices"
         :key="`conceptListWrapper-dataChoice-${index}`"
         :title="choice.label">
         <!-- List of concepts -->
         <concept-list
+          ref="conceptList"
           :is-left="isLeft"
           :concepts="choice.concepts"
           :show-children="choice.showChildren"
@@ -28,6 +30,7 @@
 <script>
 import Minimizer from "./Minimizer"
 import ConceptList from "./ConceptList"
+import _ from "lodash"
 
 import computed from "../mixins/computed"
 import objects from "../mixins/objects"
@@ -73,6 +76,15 @@ export default {
     concepts() {
       return this.dataChoices[this.dataChoice].concepts
     },
+  },
+  methods: {
+    /**
+     * When the tab changed, instruct conceptList to scroll.
+     */
+    tabChanged({ index }) {
+      let conceptList = _.get(this, `$refs.conceptList[${index}]`)
+      conceptList && conceptList.scroll && conceptList.scroll()
+    }
   },
 }
 </script>

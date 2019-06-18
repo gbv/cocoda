@@ -137,7 +137,7 @@ export default {
               _.delay(() => {
                 // Don't scroll if concept changed in the meantime
                 if (this.shouldScroll) return
-                let el = document.querySelectorAll(`[data-uri='${concept.uri}']`)[0]
+                let el = this.$refs.conceptListItems.querySelectorAll(`[data-uri='${concept.uri}']`)[0]
                 // Find container element
                 let container = this.$refs.conceptListItems
                 while (container != null && !container.classList.contains("cocoda-vue-tabs-content")) {
@@ -152,7 +152,7 @@ export default {
                   x: false,
                   y: true
                 }
-                if (el) this.scrollTo(el, 200, options)
+                if (el) this.scrollToInternal(el, options)
                 this.loading = false
               }, 100)
             } else if (!fullyLoaded) {
@@ -167,6 +167,23 @@ export default {
     },
   },
   methods: {
+    scrollToInternal(el, options) {
+      let container = options.container
+      if (container.style.display == "none") {
+        // Wait for later to scroll
+        this.scrollLater = { el, options }
+      } else {
+        this.scrollTo(el, 200, options)
+        this.scrollLater = null
+      }
+    },
+    scroll() {
+      if (this.scrollLater) {
+        this.$nextTick(() => {
+          this.scrollToInternal(this.scrollLater.el, this.scrollLater.options)
+        })
+      }
+    },
     children(item) {
       let items = []
       let concept = item.concept
