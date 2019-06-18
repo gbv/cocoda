@@ -827,4 +827,14 @@ html, body {
 .cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
   border-bottom-color: @color-primary-0 !important;
 }
+// Override font-size for all cocoda-vue-tabs
+.cocoda-vue-tabs-sm {
+  font-size: 0.8rem !important;
+}
+.cocoda-vue-tabs-md {
+  font-size: 0.9rem !important;
+}
+.cocoda-vue-tabs-lg {
+  font-size: 1.1rem !important;
+}
 </style>

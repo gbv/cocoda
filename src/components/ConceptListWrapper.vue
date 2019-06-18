@@ -1,5 +1,6 @@
 <template>
   <div
+    class="conceptListWrapper"
     :style="`${concepts.length == 0 ? 'min-height: 80px; max-height: 80px;' : ''}`">
     <!-- Minimizer allows the component to get minimized -->
     <minimizer
@@ -79,7 +80,7 @@ export default {
 <style lang="less">
 @import "../style/main.less";
 
-.cocoda-vue-tabs-content {
+.conceptListWrapper .cocoda-vue-tabs-content {
   padding: 5px 0 0 0 !important;
 }
 
