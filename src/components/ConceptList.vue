@@ -12,7 +12,8 @@
         :is-selected="isSelected"
         :index="index"
         :is-left="isLeft"
-        :show-children="showChildren" />
+        :show-children="showChildren"
+        :show-scheme="showScheme" />
     </div>
     <div
       v-if="noItems"
@@ -71,6 +72,13 @@ export default {
     noItemsLabel: {
       type: String,
       default: null
+    },
+    /**
+     * Whether to show the scheme in front of concepts.
+     */
+    showScheme: {
+      type: Boolean,
+      default: false
     },
   },
   data () {

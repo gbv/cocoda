@@ -21,6 +21,7 @@
           :is-left="isLeft"
           :concepts="choice.concepts"
           :show-children="choice.showChildren"
+          :show-scheme="choice.showScheme"
           :no-items-label="choice.noItemsLabel" />
       </tab>
     </tabs>
@@ -61,11 +62,13 @@ export default {
           noItemsLabel: this.$t("schemeDetail.noTopConcepts"),
           concepts: this._topConcepts,
           showChildren: true,
+          showScheme: false,
         },
         {
           label: this.$t("schemeSelection.conceptQuick"),
           concepts: this.favoriteConcepts,
           showChildren: false,
+          showScheme: true,
         }
       ]
     },

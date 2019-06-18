@@ -33,6 +33,13 @@
         class="labelBox"
         @click.native.stop.prevent="onClick">
         <item-name
+          v-if="scheme && showScheme"
+          :item="scheme"
+          :show-text="false"
+          :is-link="false"
+          :prevent-external-hover="true"
+          :draggable="false" />
+        <item-name
           :item="concept"
           :is-highlighted="isSelected"
           :prevent-external-hover="true" />
@@ -114,6 +121,13 @@ export default {
       type: Boolean,
       default: false
     },
+    /**
+     * Whether to show the scheme in front of concepts.
+     */
+    showScheme: {
+      type: Boolean,
+      default: false
+    },
   },
   data () {
     return {
@@ -141,6 +155,9 @@ export default {
     },
     isOpen() {
       return _.get(this.concept, `__ISOPEN__[${this.isLeft}]`, false)
+    },
+    scheme() {
+      return _.get(this.concept, "inScheme[0]")
     },
   },
   created() {
