@@ -384,8 +384,8 @@ const mutations = {
     }
     state.mappingTrash = [item].concat(state.mappingTrash)
     // Max 10 items
-    if (state.mappingTrash.length > 5) {
-      state.mappingTrash = state.mappingTrash.slice(0, 5)
+    if (state.mappingTrash.length > 10) {
+      state.mappingTrash = state.mappingTrash.slice(0, 10)
     }
   },
 
