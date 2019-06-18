@@ -170,7 +170,7 @@ export default {
       }
       // Set URL to router URL for this concept
       if (concept) {
-        this.url = this.getRouterUrl(concept, this.isLeft)
+        this.url = this.getRouterUrl(concept, this.isLeft, true)
       } else {
         this.url = null
       }
