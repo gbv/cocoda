@@ -138,9 +138,14 @@ export default {
                 // Don't scroll if concept changed in the meantime
                 if (this.shouldScroll) return
                 let el = document.querySelectorAll(`[data-uri='${concept.uri}']`)[0]
+                // Find container element
+                let container = this.$refs.conceptListItems
+                while (container != null && !container.classList.contains("cocoda-vue-tabs-content")) {
+                  container = container.parentElement
+                }
                 // Scroll element
                 var options = {
-                  container: this.$refs.conceptListItems,
+                  container,
                   easing: "ease-in",
                   offset: -50,
                   cancelable: true,
