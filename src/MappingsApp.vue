@@ -713,7 +713,7 @@ export default {
           }
         }
         if (fromScheme && toScheme && (uri || identifier)) {
-          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&${uri ? "mappingUri" : "mappingIdentifier"}=${uri || identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`
+          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&${uri ? "mappingUri" : "mappingIdentifier"}=${encodeURIComponent(uri || identifier)}&fromScheme=${encodeURIComponent(fromScheme)}&toScheme=${encodeURIComponent(toScheme)}&from=${encodeURIComponent(concepts.from)}&to=${encodeURIComponent(concepts.to)}`
           if (name == "open") {
             window.open(cocodaUrl)
           } else {
