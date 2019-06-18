@@ -48,7 +48,9 @@
         id="mappingTrashDropdown"
         ref="mappingTrashDropdown"
         no-caret
-        right>
+        right
+        @mouseover.native="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.mappingTrashDropdown, false)">
         <template slot="button-content">
           <font-awesome-icon icon="trash-alt" />
         </template>
@@ -87,8 +89,8 @@
         @dragover.native="dragOver"
         @drop.native="drop"
         @hide="favoriteConceptsDropdownHide"
-        @mouseover.native="favoriteConceptsDropdownSetStatus(true); _favoriteConceptsDropdownSetStatus(true)"
-        @mouseout.native="favoriteConceptsDropdownSetStatus(false)">
+        @mouseover.native="dropdownSetStatus($refs.favoriteConceptsDropdown, true); _dropdownSetStatus($refs.favoriteConceptsDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.favoriteConceptsDropdown, false)">
         <template slot="button-content">
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
@@ -216,7 +218,7 @@ export default {
     },
   },
   created() {
-    this.favoriteConceptsDropdownSetStatus = _.debounce(this._favoriteConceptsDropdownSetStatus, 500)
+    this.dropdownSetStatus = _.debounce(this._dropdownSetStatus, 500)
   },
   methods: {
     favoriteConceptDragStart(concept) {
@@ -232,11 +234,11 @@ export default {
       }
       this.draggedConcept = null
     },
-    _favoriteConceptsDropdownSetStatus(status) {
+    _dropdownSetStatus(dropdown, status) {
       if (status) {
-        this.$refs.favoriteConceptsDropdown.show()
+        dropdown.show()
       } else {
-        this.$refs.favoriteConceptsDropdown.hide()
+        dropdown.hide()
       }
     },
     favoriteConceptsDropdownHide() {
