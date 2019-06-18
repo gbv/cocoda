@@ -824,7 +824,7 @@ html, body {
   pointer-events: none !important;
 }
 // Override border color for all cocoda-vue-tabs
-.cocoda-vue-tabs-header-item-active {
+.cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
   border-bottom-color: @color-primary-0 !important;
 }
 </style>
