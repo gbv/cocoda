@@ -48,7 +48,7 @@
       <font-awesome-icon
         v-for="(action, index) in actions"
         :key="index"
-        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium, placement: 'left' }"
         :icon="action.icon"
         class="button"
         @click="$emit('click', { name: action.name, item: data.item })" />
@@ -124,7 +124,7 @@ export default {
         },
         {
           key: "sourceConcepts",
-          label: "from",
+          label: this.$t("mappingBrowser.from"),
           width: "20%",
           minWidth: "",
           sortable: false,
@@ -157,7 +157,7 @@ export default {
         },
         {
           key: "targetConcepts",
-          label: "to",
+          label: this.$t("mappingBrowser.to"),
           width: "20%",
           minWidth: "",
           sortable: false,
@@ -165,14 +165,14 @@ export default {
         },
         {
           key: "creator",
-          label: "creator",
+          label: this.$t("mappingBrowser.creator"),
           width: "18%",
           minWidth: "",
           sortable: false
         },
         {
           key: "date",
-          label: "date",
+          label: this.$t("mappingBrowser.date"),
           width: "12%",
           minWidth: "",
           sortable: false

@@ -56,6 +56,7 @@
           {{ $t("navbar.trashTitle") }}
         </b-dropdown-header>
         <mapping-table
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
           :mappings="mappingTrash.map(item => item.mapping)"
           :actions="[{
             title: $t('navbar.trashRestoreTooltip'),
@@ -64,6 +65,7 @@
           }]"
           :show-labels="true"
           :show-tooltip="false"
+          :hide-duplicates="false"
           style="width: 700px;"
           @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
             if (success) {
