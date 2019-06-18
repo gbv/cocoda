@@ -92,12 +92,10 @@
       :key="'conceptDetail-note-tabs'+iteration"
       no-body
       class="conceptDetail-note-tabs">
-      <b-tabs
-        no-fade
-        card>
+      <tabs size="sm">
         <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
         <!-- TODO: Should altLabels really be called "Register Entries"? -->
-        <b-tab
+        <tab
           v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [{ de: gndTerms }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
           :key="'note'+index+'-'+iteration"
           :title="title"
@@ -120,8 +118,8 @@
               <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
             </a>
           </div>
-        </b-tab>
-        <b-tab :title="$t('conceptDetail.labels')">
+        </tab>
+        <tab :title="$t('conceptDetail.labels')">
           <div
             v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
             :key="`conceptDetail-prefLabel-${language}`"
@@ -147,8 +145,8 @@
               {{ label }}
             </span>
           </div>
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           :key="'zzzzzzzzzz'+iteration"
           :title="$t('conceptDetail.info')">
           <!-- URI and identifier -->
@@ -192,9 +190,9 @@
               <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
             </div>
           </template>
-        </b-tab>
+        </tab>
         <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
-        <b-tab
+        <tab
           v-if="config.searchLinks"
           :title="$t('conceptDetail.searchLinks')">
           <ul style="margin-bottom: 0;">
@@ -208,8 +206,8 @@
               </a>
             </li>
           </ul>
-        </b-tab>
-      </b-tabs>
+        </tab>
+      </tabs>
     </b-card>
 
     <!-- Narrower concepts -->
@@ -579,27 +577,7 @@ export default {
 .conceptDetail-note-tabs {
   margin-top: 5px;
 }
-.conceptDetail-note-tabs .tabs {
-  box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
-}
-.conceptDetail-note-tabs .card-header {
-  padding: 2px 10px 10px 10px;
-  background-color: @color-primary-5;
-  user-select: none;
-  .fontWeight-heavy;
-}
-.conceptDetail-note-tabs .card-header-tabs {
-  margin-bottom: -10px;
-}
-.conceptDetail-note-tabs .nav-link {
-  padding: 4px 12px 0px 12px;
-}
-.conceptDetail-note-tabs .card-body {
-  .m-borderRadius(0px 0px 5px 5px;);
-  padding: 15px 10px;
-  background-color: @color-background-card;
-}
-.conceptDetail-note-tabs .card-body br {
-  line-height: 24px;
+.conceptDetail-note-tabs .cocoda-vue-tabs-sm .cocoda-vue-tabs-content {
+  padding-bottom: 0px !important;
 }
 </style>
