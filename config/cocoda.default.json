@@ -614,6 +614,20 @@
   "title": "Cocoda Mapping Tool",
   "menu": [
     {
+      "url": "https://www.gbv.de/impressum",
+      "prefLabel": {
+        "en": "Imprint",
+        "de": "Impressum"
+      }
+    },
+    {
+      "url": "https://www.gbv.de/datenschutz",
+      "prefLabel": {
+        "en": "Privacy Policy",
+        "de": "Datenschutz"
+      }
+    },
+    {
       "url": "https://gbv.github.io/cocoda/",
       "prefLabel": {
         "en": "Help",
@@ -626,7 +640,5 @@
         "en": "Feedback"
       }
     }
-  ],
-  "impressum": "https://www.gbv.de/impressum",
-  "privacyPolicy": "https://www.gbv.de/datenschutz"
+  ]
 }

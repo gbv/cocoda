@@ -305,20 +305,14 @@
           •
           {{ $t("settings.buildDate") }}: {{ $util.dateToString(config.buildInfo.buildDate) }}
         </span>
-        <span v-if="config.impressum">
+        <span
+          v-for="(item, index) in config.menu"
+          :key="`settings-menuItems-${index}`">
           •
           <a
-            :href="config.impressum"
+            :href="item.url"
             target="_blank">
-            {{ $t("settings.impressum") }}
-          </a>
-        </span>
-        <span v-if="config.privacyPolicy">
-          •
-          <a
-            :href="config.privacyPolicy"
-            target="_blank">
-            {{ $t("settings.privacyPolicy") }}
+            {{ $util.prefLabel(item) }}
           </a>
         </span>
         <br>

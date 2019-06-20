@@ -219,7 +219,7 @@
       "version": "Version",
       "currentCommit": "Current Commit",
       "buildDate": "Build Date",
-      "impressum": "Impressum",
+      "impressum": "Imprint",
       "creatorUri": "Identity (must be an URI, is automatically filled after login)",
       "creatorCredentials": "Credentials",
       "credentialsCorrect": "Credentials successfully validated.",
