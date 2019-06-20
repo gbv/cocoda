@@ -139,10 +139,12 @@
           v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
           :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
           class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b>
-          <span @click="copyAndSearch($util.prefLabel(item, language))">
+          <span
+            class="fontWeight-medium"
+            @click="copyAndSearch($util.prefLabel(item, language))">
             {{ $util.prefLabel(item, language) }}
           </span>
+          <span class="text-lightGrey">({{ language }})</span>
         </div>
         <!-- Explanation:
             1. Get all language keys for altLabels (Object.keys)
@@ -152,13 +154,19 @@
             5. Sort current language higher (sort)
            -->
         <div
+          v-if="$util.lmContent(item, 'altLabel')"
+          class="fontWeight-heavy"
+          style="margin-top: 10px;">
+          {{ $t("conceptDetail.altLabels") }}:
+        </div>
+        <div
           v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
           :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
           class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.altLabel") }} ({{ language }}):</b>
           <span @click="copyAndSearch(label)">
             {{ label }}
           </span>
+          <span class="text-lightGrey">({{ language }})</span>
         </div>
       </tab>
       <!-- GND terms, scopeNotes, editorialNotes -->
