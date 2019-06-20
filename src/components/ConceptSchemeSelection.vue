@@ -146,25 +146,6 @@
               :is-left="isLeft" />
           </li>
         </ul>
-        <!-- Concept quick selection title -->
-        <div
-          v-if="favoriteConcepts && favoriteConcepts.length"
-          class="componentTitle"
-          style="margin-top: 30px;">
-          {{ $t("schemeSelection.conceptQuick") }}
-        </div>
-        <!-- Quick selection concepts -->
-        <div class="conceptSchemeSelection-favoriteConcepts scrollable">
-          <p
-            v-for="concept in favoriteConcepts"
-            :key="concept.uri + '-favorite-' + id">
-            <item-name
-              :item="concept"
-              :is-left="isLeft"
-              is-link
-              force-side />
-          </p>
-        </div>
       </div>
     </div>
   </div>
@@ -409,8 +390,8 @@ export default {
   flex-direction: column;
   padding: 5px 10px;
   // Make the component take up almost all of the visible height.
-  min-height: 88vh;
-  max-height: 88vh;
+  min-height: 94vh;
+  max-height: 94vh;
 }
 
 .conceptSchemeSelection-expanded > * {
@@ -425,13 +406,8 @@ export default {
   padding-left: 3px;
   margin-bottom: 0px;
 }
-.conceptSchemeSelection-schemeList > li, .conceptSchemeSelection-favoriteConcepts > p {
+.conceptSchemeSelection-schemeList > li {
   padding-top: 8px;
-}
-
-.conceptSchemeSelection-favoriteConcepts {
-  max-height: 300px;
-  padding-top: 5px;
 }
 
 </style>
