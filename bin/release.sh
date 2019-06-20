@@ -95,7 +95,7 @@ git checkout --quiet dev 2>&1 >/dev/null
 echo
 echo "Release $version seemed to be successful!"
 echo "Next steps:"
-echo "- Update master instance on esx-206 (\"./update.sh cocoda\")."
 echo "- Wait until Travis is finished and edit and publish the release draft for $version under https://github.com/gbv/cocoda/releases."
+echo "- After publishing the release on GitHub, the master instance under https://coli-conc.gbv.de/cocoda/app/ should be updated automatically via a webhook (please check a few minutes after publishing the release)."
 echo "- Optional: Create new screencast with updates."
 echo "- Optional: Post about update on social media."
