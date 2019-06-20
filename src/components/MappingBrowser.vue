@@ -1380,7 +1380,7 @@ export default {
   flex: none;
   display: flex;
   flex-wrap: wrap;
-  margin: 5px 5px 15px 5px;
+  margin: 5px;
 }
 .mappingBrowser-registryGroup {
   flex: 1;
@@ -1440,36 +1440,10 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 5px 0px 0px 3px;
 }
 
-#mappingBrowser > .tabs {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-#mappingBrowser > .tabs > div:first-child {
-  flex: none;
-}
-#mappingBrowser > .tabs > div:first-child > ul > li > a {
-  padding: 2px 0;
-}
-#mappingBrowser > .tabs > .tab-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-#mappingBrowser > .tabs > .tab-content > .tab-pane {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 5px;
-}
-#mappingBrowser > .tabs > .tab-content > .tab-pane:focus {
-  outline: 0;
-}
-
-#mappingBrowser .tabs .nav {
+#mappingBrowser .cocoda-vue-tabs-header {
   padding: 0 20px;
 }
 
