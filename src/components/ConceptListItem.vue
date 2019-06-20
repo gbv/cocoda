@@ -29,7 +29,11 @@
       <div
         :is="url ? 'router-link' : 'div'"
         :to="url"
-        :class="{ labelBoxFull: showChildren && !hasChildren, labelBoxSelected: isSelected }"
+        :class="{
+          labelBoxFull: showChildren && !hasChildren,
+          labelBoxSelected: isSelected,
+          labelBoxSingle: !showChildren,
+        }"
         class="labelBox"
         @click.native.stop.prevent="onClick">
         <item-name
@@ -312,13 +316,16 @@ export default {
 .labelBox {
   flex: 1;
   vertical-align: center;
-  padding-right: 12px;
+  padding-right: 20px;
 }
 .labelBoxSelected {
-  padding-right: 4px;
+  padding-right: 16px;
 }
 .labelBoxFull {
   padding-left: 18px;
+}
+.labelBoxSingle {
+  padding-left: 8px;
 }
 .addToMapping {
   .fontSize-large;
