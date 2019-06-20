@@ -1,4 +1,4 @@
-For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory. The default options are given in the file [`config/cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json). When using a manual build, create file `config/cocoda.json` and rebuild (`npm run build`) after editing. The following fields are recognized so far:
+For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory. The default options are given in the file [`config/cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json) (please consult this file for examples on how to use the configuration options). When using a manual build, create file `config/cocoda.json` and rebuild (`npm run build`) after editing. The following fields are recognized so far:
 
 * **title**: the main title of the instance as plain string
 

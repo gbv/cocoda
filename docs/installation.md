@@ -7,7 +7,7 @@ unzip cocoda-*.zip
 rm cocoda-*.zip
 ```
 
-The directory `cocoda` is then ready to be served.
+The directory `cocoda` is then ready to be [served with any web server](#serving-the-files).
 
 Alternatively, it's possible to clone the [Cocoda repository](https://github.com/gbv/cocoda):
 
@@ -23,4 +23,27 @@ npm install
 npm run build
 ```
 
-Files are created in directory `dist` to be served with any web server.
+Files are created in directory `dist` to be [served with any web server](#serving-the-files).
+
+### Serving the Files
+
+Any file server can be used to serve the files. No special configuration is necessary. Some examples:
+
+**Using the `http-server` npm package:**
+```bash
+npm install -g http-server
+# using the pre-built release:
+http-server -p 8000 cocoda/
+# or using the manual build:
+http-server -p 8000 dist/
+```
+
+**Using `php`:**
+```bash
+# using the pre-built release:
+php -S 127.0.0.1:8000 -t cocoda/
+# or using the manual build:
+php -S 127.0.0.1:8000 -t dist/
+```
+
+The Cocoda instance will be available at http://localhost:8000. Other alternatives can be found [here](https://gist.github.com/willurd/5720255).
