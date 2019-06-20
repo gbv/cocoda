@@ -37,7 +37,7 @@
       </div>
       <!-- Broader -->
       <div
-        v-for="(concept) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
+        v-for="(concept, index) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
         :key="`conceptDetail-${isLeft}-broader-${concept.uri}-${index}`">
         <font-awesome-icon
           icon="sort-up" />
