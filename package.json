@@ -43,7 +43,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.19.0",
     "bootstrap-vue": "2.0.0-rc.19",
-    "cocoda-vue-tabs": "^0.1.4",
+    "cocoda-vue-tabs": "^0.1.5",
     "css-element-queries": "^1.1.1",
     "file-saver": "^2.0.1",
     "gbv-login-client": "^0.2.6",

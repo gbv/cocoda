@@ -89,6 +89,7 @@
 
     <tabs
       style="margin-top: 3px;"
+      borders="bottom"
       size="sm">
       <!-- URI and identifier -->
       <tab :title="$t('conceptDetail.info')">
@@ -165,9 +166,9 @@
         v-for="([notes, title], index) in [[{ de: gndTerms }, $t('conceptDetail.gnd')], [item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')]].map(([notes, title]) => ([$util.lmContent(notes), title])).map(([notes, title]) => ([notes || '', title]))">
         <!-- TODO: Adjust this as soon as cocoda-vue-tabs has the option to hide tabs -->
         <tab
-          v-if="notes != ''"
-          :key="`conceptDetail-${isLeft}-notes-${index}-${iteration}`"
+          :key="`conceptDetail-${isLeft}-notes-${index}`"
           :title="title"
+          :hidden="notes == ''"
           class="conceptDetail-notes">
           <div class="conceptDetail-note">
             <span v-html="notesOptions.visiblePart(notes)" />
@@ -191,7 +192,7 @@
       <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
       <tab
         v-if="config.searchLinks"
-        :key="`conceptDetail-${isLeft}-searchLinks-${iteration}`"
+        :key="`conceptDetail-${isLeft}-searchLinks`"
         :title="$t('conceptDetail.searchLinks')">
         <ul style="margin-bottom: 0;">
           <li
@@ -261,8 +262,6 @@ export default {
     return {
       /** Temporarily show all ancestors if user clicked the ellipsis */
       showAncestors: false,
-      /** Force some elements to reload by incrementing this value to prevent showing old text */
-      iteration: 0,
       /**
        * A helper object that deals with showing and truncating the notes and alternative labels
        */
@@ -410,8 +409,6 @@ export default {
           gndTerms.push(term)
         }
       }
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.iteration += 1
       return gndTerms
     },
   },
@@ -441,8 +438,6 @@ export default {
       // Reset notes
       this.notesOptions.showMore = {}
       this.notesOptions.showAll = this.settings.showAllNotes
-      // Increment iteration to force reload some elements
-      this.iteration += 1
     },
     loadGndTerms() {
       // TODO: Refactoring necessary!
@@ -493,7 +488,6 @@ export default {
      */
     notesShowMore(status, index) {
       this.notesOptions.showMore[index] = status
-      this.iteration += 1
     },
     /**
      * Determines whether a concept has notes (scopeNote, editorialNote, or altLabel)
@@ -553,6 +547,9 @@ export default {
 .conceptDetail-identifier {
   margin: 2px 5px;
 }
+.conceptDetail-identifier:last-child {
+  margin-bottom: 0;
+}
 .conceptDetail-identifier a {
   padding: 0 3px;
 }
@@ -569,4 +566,10 @@ export default {
   flex: 1;
 }
 
+</style>
+
+<style>
+.conceptDetail .cocoda-vue-tabs .cocoda-vue-tabs-content {
+  padding: 10px 5px 0px 5px;
+}
 </style>
