@@ -277,6 +277,9 @@ export default {
       // Determine conceptList element because it is the scrolling container
       let parent = this.$el.parentElement
       while (!parent.classList.contains("scrollable")) {
+        if (!parent.parentElement) {
+          break
+        }
         parent = parent.parentElement
       }
       // Scroll element
