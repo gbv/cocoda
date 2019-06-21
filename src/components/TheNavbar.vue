@@ -126,6 +126,7 @@
       <!-- Settings button -->
       <b-nav-item
         v-b-popover.hover="identityPopoverOptions"
+        class="navbar-settingsButton"
         @click="$refs.settings.show()">
         <!-- Identity icon -->
         <span v-if="userIdentityImage && creator.uri">
@@ -279,18 +280,17 @@ nav.navbar {
   color: @color-text-lightGrey;
 }
 
-.navbar-identitySettings img, .navbar-identitySettings svg {
+.navbar-settingsButton > a > span > img, .navbar-settingsButton > a > span > svg {
   opacity: 1;
   height: 17px;
-  margin-right: -10px;
 }
-.navbar-identitySettings img {
+.navbar-settingsButton > a > span > img {
   margin-top: -3px;
 }
-.navbar-identitySettings svg {
+.navbar-settingsButton > a > span > svg {
   margin-top: 1px;
 }
-.navbar-identitySettings:hover img, .navbar-identitySettings:hover svg {
+.navbar-settingsButton:hover > a > span > img, .navbar-settingsButton:hover > a > span > svg {
   opacity: .5;
 }
 </style>
