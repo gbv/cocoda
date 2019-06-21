@@ -206,8 +206,13 @@ export default {
         placement: "bottom",
         html: true
       }
-      let content = `<b>${this.$util.prefLabel(this.creator)}</b><br>`
-      content += `${this.creator.uri}<br>`
+      let content =  ""
+      if (this.$util.prefLabel(this.creator)) {
+        content += `<b>${this.$util.prefLabel(this.creator)}</b><br>`
+      }
+      if (this.creator.uri) {
+        content += `URI: ${this.creator.uri}<br>`
+      }
       if (this.authorized) {
         content += `<span class="text-success">${this.$t("settings.loggedIn")}</span>`
         content += ` (${(this.userIdentityProvider && this.userIdentityProvider.name) || "Login Server"})<br>`
