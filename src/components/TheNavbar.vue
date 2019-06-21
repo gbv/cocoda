@@ -93,6 +93,13 @@
           draggable
           @dragstart="favoriteConceptDragStart(concept)"
           @dragend="favoriteConceptDragEnd">
+          <item-name
+            v-if="concept.inScheme && concept.inScheme[0]"
+            :item="concept.inScheme[0]"
+            :show-text="false"
+            :is-link="false"
+            :prevent-external-hover="true"
+            :draggable="false" />
           <item-name :item="concept" />
           <div class="favoriteConceptsDropdown-buttons">
             <div
@@ -308,7 +315,7 @@ nav.navbar {
 }
 .favoriteConceptsDropdown {
   max-height: 700px;
-  width: 300px;
+  width: 400px;
   overflow-x: hidden;
   // Offset to the right
   right: -50px !important;
@@ -318,6 +325,7 @@ nav.navbar {
 .favoriteConceptsDropdown .dropdown-item {
   white-space: normal;
   position: relative;
+  padding-right: 60px;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
   background-color: @color-primary-5;
