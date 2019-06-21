@@ -1,57 +1,74 @@
 <template>
   <b-modal
     ref="dataModal"
-    :title="$t('dataModal.title')"
+    :title="`${$t('dataModal.title')} (${numberText})`"
     class="fontSize-normal"
     centered
+    hide-footer
     size="lg">
-    <span slot="modal-footer">
-      <span>
-        {{ numberText }} |
-      </span>
-      <span v-if="url">
+    <div class="dataModal-links">
+      <div>
         <a
-          :href="url"
-          target="_blank">
-          API URL
+          href=""
+          @click.prevent="copyToClipboard($refs.jsonCode)">
+          <font-awesome-icon icon="clipboard" />
+          {{ $t("dataModal.exportClipboard") }}
         </a>
-        |
-      </span>
-      <!-- JSKOS validation (uncommented because validate was removed from jskos-tools, possibly readd later for dev branch) -->
-      <!-- {{ $t("dataModal.validation") }}:
-      <span :class="validated ? 'text-success' : 'text-danger'">
-        {{ validated ? $t("dataModal.validationSuccess") : $t("dataModal.validationFailure") }}
-      </span>
-      | -->
-      JSKOS {{ $t("settings.version") }} {{ $jskos.version }}
-      |
-      <a
-        href="https://gbv.github.io/jskos/jskos.html"
-        target="_blank">
-        {{ $t("dataModal.jskosSpecification") }}
-      </a>
-    </span>
-    <p>
-      <b-button
-        @click.stop.prevent="copyToClipboard($refs.jsonCode)">
-        {{ $t("dataModal.exportClipboard") }}
-      </b-button>
-      <b-button
-        :href="'data:application/json;charset=utf-8,' + encodedData"
-        :download="filename + '.json'"
-        target="_blank"
-        variant="outline-warning">
-        {{ $t("dataModal.exportJson") }}
-      </b-button>
-      <b-button
-        v-if="encodedDataNdjson"
-        :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
-        :download="filename + '.ndjson'"
-        target="_blank"
-        variant="outline-warning">
-        {{ $t("dataModal.exportNdjson") }}
-      </b-button>
-    </p>
+      </div>
+      <div class="dataModal-links-withTitle">
+        <div class="fontWeight-heavy">
+          {{ $t("dataModal.localDownload") }}
+        </div>
+        <div>
+          <div>
+            <a
+              :href="'data:application/json;charset=utf-8,' + encodedData"
+              :download="filename + '.json'"
+              target="_blank">
+              <font-awesome-icon icon="download" />
+              .json
+            </a>
+          </div>
+          <div v-if="encodedDataNdjson">
+            <a
+              :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
+              :download="filename + '.ndjson'"
+              target="_blank">
+              <font-awesome-icon icon="download" />
+              .ndjson
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="dataModal-links-withTitle">
+        <div class="fontWeight-heavy">
+          {{ $t("dataModal.apiLinks") }}
+        </div>
+        <div v-if="url">
+          <div>
+            <a
+              :href="url"
+              target="_blank">
+              <font-awesome-icon icon="link" />
+              {{ $t("dataModal.apiUrl") }}
+            </a>
+          </div>
+          <div
+            v-for="(download, index) in apiDownloadUrls"
+            :key="`dataModal-links-apiDownload-${index}`">
+            <a
+              :href="download.url"
+              target="_blank">
+              <font-awesome-icon icon="download" />
+              {{ `.${download.type}` }}
+            </a>
+          </div>
+        </div>
+        <div v-else>
+          <div>{{ $t("dataModal.noApiUrls") }}</div>
+        </div>
+      </div>
+    </div>
     <div class="dataModal-json">
       <pre><code
           ref="jsonCode"
@@ -160,10 +177,11 @@ export default {
       return encodeURIComponent(this.jsonData)
     },
     encodedDataNdjson() {
+      let data = this.preparedData
       if (!this.isArray) {
-        return null
+        data = [this.preparedData]
       }
-      return this.preparedData.map(object => JSON.stringify(object)).join("\n")
+      return encodeURIComponent(data.map(object => JSON.stringify(object)).join("\n"))
     },
     validated() {
       let type = this.computedType
@@ -176,7 +194,30 @@ export default {
         validated = validated && validate(object)
       }
       return validated
-    }
+    },
+    apiDownloadUrls() {
+      if (!this.url) {
+        return []
+      }
+      // Restrict type to mapping and concordance for download
+      if (this.type !== "mapping" && this.type !== "concordance") {
+        return []
+      }
+      let urls = []
+      for (let type of ["json", "ndjson"]) {
+        try {
+          let url = new URL(this.url.startsWith("http") ? this.url : location.protocol + this.url)
+          url.searchParams.set("download", type)
+          urls.push({
+            url,
+            type
+          })
+        } catch(error) {
+          // Do nothing
+        }
+      }
+      return urls
+    },
   },
   watch: {
 
@@ -191,6 +232,27 @@ export default {
 
 <style lang="less" scoped>
 @import "../style/main.less";
+
+.dataModal-links {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+}
+.dataModal-links > * {
+  flex: 1;
+}
+
+.dataModal-links-withTitle {
+  display: flex;
+  flex-direction: column;
+}
+.dataModal-links-withTitle > *:last-child {
+  display: flex;
+}
+.dataModal-links-withTitle > *:last-child > * {
+  flex: 1;
+}
 
 .dataModal-json {
   height: 600px;
