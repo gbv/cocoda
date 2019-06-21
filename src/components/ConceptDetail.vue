@@ -179,21 +179,7 @@
           :hidden="notes == ''"
           class="conceptDetail-notes">
           <div class="conceptDetail-note">
-            <span v-html="notesOptions.visiblePart(notes)" />
-            <b-collapse
-              :id="'note'+index"
-              tag="span"
-              class="no-transition">
-              <span v-html="notesOptions.hiddenPart(notes)" />
-            </b-collapse>
-            <a
-              v-if="notesOptions.isTruncated(notes)"
-              v-b-toggle="'note'+index"
-              href=""
-              @click.prevent>
-              <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
-              <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
-            </a>
+            <span v-html="Array.isArray(notes) ? notes.join('<br>') : notes" />
           </div>
         </tab>
       </template>
@@ -270,66 +256,6 @@ export default {
     return {
       /** Temporarily show all ancestors if user clicked the ellipsis */
       showAncestors: false,
-      /**
-       * A helper object that deals with showing and truncating the notes and alternative labels
-       */
-      notesOptions: {
-        divider: "∤",
-        maximumCharacters: 140,
-        /**
-         * Rejoin notes back together
-         */
-        join(notes) {
-          if (Array.isArray(notes)) {
-            return notes.join(this.divider)
-          } else {
-            return notes
-          }
-        },
-        /**
-         * Returns visible part of notes
-         */
-        visiblePart(notes) {
-          let notesString = this.join(notes)
-          notesString = notesString.substring(0, this.cutPosition(notesString))
-          return this.replaceDivider(notesString)
-        },
-        /**
-         * Returns hidden part of notes
-         */
-        hiddenPart(notes) {
-          let notesString = this.join(notes)
-          return this.replaceDivider(notesString.substring(this.cutPosition(notesString)))
-        },
-        /**
-         * Returns the index between visible and hidden part of notes
-         */
-        cutPosition(notesString) {
-          let re = new RegExp(this.divider, "g")
-          let maximumCharacters = this.maximumCharacters - Math.min((notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length, 9) * 10
-          if (this.showAll || notesString.length - maximumCharacters <= 20) {
-            return notesString.length
-          }
-          // Go back from position maximumCharacters and find next space, newLine, or divider
-          let lastSpace = notesString.substring(0, maximumCharacters).lastIndexOf(" ")
-          let lastNewline = notesString.substring(0, maximumCharacters).lastIndexOf("\n")
-          let lastDivider = notesString.substring(0, maximumCharacters).lastIndexOf(this.divider)
-          return Math.max(lastSpace, lastNewline, lastDivider)
-        },
-        /**
-         * Returns whether notes should be truncated
-         */
-        isTruncated(notes) {
-          let notesString = this.join(notes)
-          return !this.showAll && notesString.length > this.cutPosition(notesString)
-        },
-        /**
-         * Replaces dividers with line breaks
-         */
-        replaceDivider(notes) {
-          return notes.split(this.divider).join("<br>")
-        }
-      }
     }
   },
   computed: {
@@ -443,9 +369,6 @@ export default {
       this.showAncestors = false
       // Load GND terms
       this.loadGndTerms()
-      // Reset notes
-      this.notesOptions.showMore = {}
-      this.notesOptions.showAll = this.settings.showAllNotes
     },
     loadGndTerms() {
       // TODO: Refactoring necessary!
@@ -490,12 +413,6 @@ export default {
       }
       element = element.nextElementSibling
       return element
-    },
-    /**
-     * Enable show more for a specific note
-     */
-    notesShowMore(status, index) {
-      this.notesOptions.showMore[index] = status
     },
     /**
      * Determines whether a concept has notes (scopeNote, editorialNote, or altLabel)
