@@ -123,11 +123,11 @@
           </div>
         </div>
       </b-nav-item-dropdown>
-      <!-- Identity icon -->
+      <!-- Settings button -->
       <b-nav-item
-        :href="userIdentityImage && creator && creator.uri"
-        class="navbar-identitySettings"
-        target="_blank">
+        v-b-popover.hover="identityPopoverOptions"
+        @click="$refs.settings.show()">
+        <!-- Identity icon -->
         <span v-if="userIdentityImage && creator.uri">
           <img :src="userIdentityImage">
         </span>
@@ -136,9 +136,6 @@
           :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
           <font-awesome-icon icon="user" />
         </span>
-      </b-nav-item>
-      <!-- Settings button -->
-      <b-nav-item @click="$refs.settings.show()">
         <!-- Name -->
         {{ creatorName || $t("navbar.settings") }}
       </b-nav-item>
@@ -198,6 +195,22 @@ export default {
         item.mapping._registry = this.config.registries.find(registry => this.$jskos.compare(registry, item.registry))
       }
       return trash
+    },
+    identityPopoverOptions() {
+      let options = {
+        placement: "bottom",
+        html: true
+      }
+      let content = `<b>${this.$util.prefLabel(this.creator)}</b><br>`
+      content += `${this.creator.uri}<br>`
+      if (this.authorized) {
+        content += `<span class="text-success">${this.$t("settings.loggedIn")}</span>`
+        content += ` (${(this.userIdentityProvider && this.userIdentityProvider.name) || "Login Server"})<br>`
+      } else {
+        content += `<span class="text-danger">${this.$t("settings.loggedOut")}</span><br>`
+      }
+      options.content = `<div class="fontSize-small">${content}</div>`
+      return options
     },
   },
   watch: {
