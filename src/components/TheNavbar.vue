@@ -190,6 +190,10 @@ export default {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
     },
     mappingTrash() {
+      // Don't load trash before schemes are loaded
+      if (!this.$store.state.configLoaded || !this.schemes.length) {
+        return []
+      }
       let trash = this.$store.state.mapping.mappingTrash
       trash = trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(this.$jskos.copyDeep(item.mapping)) }))
       for (let item of trash) {
