@@ -53,8 +53,14 @@
               <span v-if="!user || !userUris || !userUris.length">
                 <b-form-input
                   v-model="localSettings.creatorUri"
+                  :state="!localSettings.creatorUri || $util.isValidUri(localSettings.creatorUri)"
                   placeholder="https://"
                   type="text" />
+                <span
+                  v-if="localSettings.creatorUri && !$util.isValidUri(localSettings.creatorUri)"
+                  class="text-danger">
+                  {{ $t("settings.creatorUriInvalid") }}
+                </span>
               </span>
               <span v-else>
                 <b-form-select v-model="localSettings.creatorUri">
