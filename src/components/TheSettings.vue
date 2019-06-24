@@ -9,9 +9,12 @@
     <b-card
       no-body
       footer-tag="footer">
-      <tabs fill>
+      <tabs
+        fill
+        :value="tab"
+        @change="$emit('update:tab', $event.index)">
         <tab
-          :title="$t('settings.tabAccount')"
+          :title="$t('settingsTabs')[0]"
           active>
           <div v-if="localSettings">
             <h4>{{ $t("settings.creatorTitle") }}</h4>
@@ -142,7 +145,7 @@
           </div>
         </tab>
         <tab
-          :title="$t('settings.tabLayout')">
+          :title="$t('settingsTabs')[1]">
           <p v-if="localSettings">
             <b>{{ $t("settings.language") }}</b>
             <b-form-select v-model="$i18n.locale">
@@ -181,8 +184,8 @@
         </tab>
         <tab
           v-if="config.shortcuts && config.shortcuts.length"
-          :title="$t('settings.tabShortcuts')">
-          <h4> {{ $t("settings.tabShortcuts") }}</h4>
+          :title="$t('settingsTabs')[2]">
+          <h4> {{ $t("settingsTabs")[2] }}</h4>
           <p
             v-for="shortcut in config.shortcuts"
             :key="`settingsModal-shortcuts-${shortcut.id}`">
@@ -191,7 +194,7 @@
           </p>
         </tab>
         <tab
-          :title="$t('settings.tabSources')">
+          :title="$t('settingsTabs')[3]">
           <registry-info
             v-for="(registry, index) in config.registries"
             :key="`settingsModal-registries-${index}`"
@@ -200,9 +203,9 @@
         </tab>
         <tab
           v-if="localMappingsSupported"
-          :title="$t('settings.tabLocalMappings')">
+          :title="$t('settingsTabs')[4]">
           <div>
-            <h4>{{ $t('settings.tabLocalMappings') }}</h4>
+            <h4>{{ $t('settingsTabs')[4] }}</h4>
             <p>{{ $t("settings.localMappingsInfo") }}</p>
           </div>
           <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
@@ -339,6 +342,12 @@ export default {
   name: "TheSettings",
   components: { RegistryInfo },
   mixins: [auth, objects, computed],
+  props: {
+    tab: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       localSettings: null,

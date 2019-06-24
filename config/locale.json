@@ -38,6 +38,7 @@
       "openLeft": "open on left side",
       "openRight": "open on right side",
       "removeFromFavorites": "remove from favorites",
+      "loggedInAs": "Logged in as",
       "currentRegistry": "Current Registry",
       "switchTo": "Switch to"
     },
@@ -195,13 +196,15 @@
       "minimize": "minimize card",
       "maximize": "maximize card"
     },
+    "settingsTabs": [
+      "Account",
+      "Layout",
+      "Keyboard Shortcuts",
+      "Data Sources",
+      "Local Mappings"
+    ],
     "settings": {
       "title": "Cocoda @:navbar.settings",
-      "tabAccount": "Account",
-      "tabLayout": "Layout",
-      "tabShortcuts": "Keyboard Shortcuts",
-      "tabSources": "Data Sources",
-      "tabLocalMappings": "Local Mappings",
       "language": "Interface Language",
       "languageContribution": "To contribute to the translation of Cocoda, see these <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>instructions in the documentation</a>.",
       "showAllAncestors": "Always show all ancestors in concept details.",
@@ -330,6 +333,7 @@
       "openLeft": "auf der linken Seite öffnen",
       "openRight": "auf der rechten Seite öffnen",
       "removeFromFavorites": "aus den Favoriten entfernen",
+      "loggedInAs": "Eingeloggt als",
       "currentRegistry": "Aktuelle Registry",
       "switchTo": "Wechseln zu"
     },
@@ -379,13 +383,15 @@
       "settingOnly1to1mappingsTooltip": "Falls eingeschaltet werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet werden 1-zu-n Mappings erlaubt.",
       "notSaved": "nicht gespeichert"
     },
+    "settingsTabs": [
+      "Account",
+      "Layout",
+      "Tastatur-Shortcuts",
+      "Datenquellen",
+      "Lokale Mappings"
+    ],
     "settings": {
       "title": "Cocoda @:navbar.settings",
-      "tabAccount": "Account",
-      "tabLayout": "Layout",
-      "tabShortcuts": "Tastatur-Shortcuts",
-      "tabSources": "Datenquellen",
-      "tabLocalMappings": "Lokale Mappings",
       "language": "Sprache der Oberfläche",
       "languageContribution": "Um zur Übersetzung von Cocoda beizutragen, siehe diese <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>Anweisungen in der Dokumentation</a> (Englisch).",
       "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",

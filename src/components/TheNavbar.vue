@@ -164,20 +164,32 @@
         <div
           class="font-default text-dark color-primary-0-bg fontSize-small"
           style="padding: 0 10px;">
-          <p
-            v-if="$util.prefLabel(creator)"
-            class="fontWeight-heavy">
-            {{ $util.prefLabel(creator) }}
+          <p class="fontWeight-heavy">
+            <span
+              v-if="authorized"
+              class="text-success">
+              {{ $t("navbar.loggedInAs") }}
+            </span>
+            <span
+              v-else
+              class="text-danger">
+              {{ $t("settings.loggedOut") }}
+            </span>
+            <span
+              v-if="$util.prefLabel(creator)">
+              {{ $util.prefLabel(creator) }}.
+            </span>
           </p>
           <p v-if="creator.uri">
             URI: {{ creator.uri }}
           </p>
-          <p v-if="authorized">
-            <span class="text-success">{{ $t("settings.loggedIn") }}</span>
-            ({{ (userIdentityProvider && userIdentityProvider.name) || "Login Server" }})
-          </p>
-          <p v-else>
-            <span class="text-danger">{{ $t("settings.loggedOut") }}</span>
+          <hr>
+          <p
+            v-for="(tab, index) in $t('settingsTabs')"
+            :key="`navbar-settingsTabs-${index}`"
+            class="navbar-settingsTabs-row"
+            @click="settingsTab = index; $refs.settings.show()">
+            {{ tab }}
           </p>
         </div>
       </b-nav-item-dropdown>
@@ -230,7 +242,9 @@
       </b-nav-item-dropdown>
 
       <!-- Settings modal -->
-      <the-settings ref="settings" />
+      <the-settings
+        ref="settings"
+        :tab.sync="settingsTab" />
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -258,6 +272,11 @@ export default {
     TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable
   },
   mixins: [auth, objects, dragandrop, computed],
+  data() {
+    return {
+      settingsTab: 0,
+    }
+  },
   computed: {
     draggedConcept: {
       get() {
@@ -423,5 +442,12 @@ nav.navbar {
 .navbar-currentRegistryDropdown-mappingRegistryItem:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+.navbar-settingsTabs-row {
+  padding: 3px 5px;
+}
+.navbar-settingsTabs-row:hover {
+  cursor: pointer;
+  background-color: @color-select-1;
 }
 </style>
