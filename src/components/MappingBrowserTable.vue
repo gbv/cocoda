@@ -193,6 +193,16 @@
           class="button fontWeight-heavy">
           {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
         </div>
+        <!-- Mapping transfer button -->
+        <div
+          v-if="authorized && data.item.mapping && data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings'"
+          class="mappingBrowser-toolbar-button">
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.transferMapping'), delay: $util.delay.medium }"
+            icon="angle-double-right"
+            class="button"
+            @click="transferMapping(data.item.mapping)" />
+        </div>
         <div
           v-if="data.item.mapping"
           class="mappingBrowser-toolbar-button">
@@ -605,7 +615,7 @@ export default {
       }
       return true
     },
-    saveMapping(mapping) {
+    copyMappingAndAdjustCreator(mapping) {
       mapping = this.$jskos.copyDeep(mapping)
       // Adjust creator
       let creator = this.creator
@@ -617,7 +627,10 @@ export default {
         this.$delete(mapping, "contributor")
       }
       mapping.creator = [creator]
-
+      return mapping
+    },
+    saveMapping(mapping) {
+      mapping = this.copyMappingAndAdjustCreator(mapping)
       this.loadingGlobal = true
       return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
         return mappings[0]
@@ -688,6 +701,32 @@ export default {
           value: registry.uri
         })
       }
+    },
+    // transfers a mapping from local mappings to concordance registry
+    transferMapping(mapping) {
+      mapping = this.copyMappingAndAdjustCreator(mapping)
+      let fromRegistry = "http://coli-conc.gbv.de/registry/local-mappings"
+      let toRegistry = this.config.registries.find(registry => registry.provider.has.canSaveMappings && registry.uri != fromRegistry)
+      toRegistry = toRegistry && toRegistry.uri
+      let promise
+      if (toRegistry) {
+        promise = this.$store.dispatch({
+          type: "mapping/transferMapping",
+          mapping,
+          fromRegistry,
+          toRegistry
+        })
+      } else {
+        promise = Promise.resolve(null)
+      }
+      promise.then(mapping => {
+        if (mapping) {
+          this.alert(this.$t("alerts.mappingTransferred"), null, "success2")
+        } else {
+          this.alert(this.$t("alerts.mappingNotTransferred"), null, "danger")
+        }
+        this.$store.commit("mapping/setRefresh")
+      })
     },
   }
 }

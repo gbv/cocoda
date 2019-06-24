@@ -487,6 +487,27 @@ const actions = {
     })
   },
 
+  async transferMapping({ dispatch }, { mapping, fromRegistry, toRegistry }) {
+    let savedMapping = (await dispatch({
+      type: "saveMappings",
+      mappings: [{ mapping }],
+      registry: toRegistry
+    }))[0]
+    if (savedMapping) {
+      let deletedMapping = (await dispatch({
+        type: "removeMappings",
+        mappings: [mapping],
+        registry: fromRegistry
+      }))[0]
+      if (!deletedMapping) {
+        console.warn("transferMapping: Mapping saved, but could not be deleted from source.")
+      }
+      return savedMapping
+    }
+    console.warn("transferMapping: Save mapping failed.")
+    return null
+  },
+
   loadMappingTrash({ commit }) {
     return localforage.getItem(localStorageKey).then(trash => {
       if (trash) {
