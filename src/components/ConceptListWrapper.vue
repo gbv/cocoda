@@ -14,7 +14,9 @@
       <tab
         v-for="(choice, index) in dataChoices"
         :key="`conceptListWrapper-dataChoice-${index}`"
-        :title="choice.label">
+        :title="choice.label"
+        @dragover.native="dragOver"
+        @drop.native="drop($event, choice.droppedConcept)">
         <!-- List of concepts -->
         <concept-list
           ref="conceptList"
@@ -23,9 +25,7 @@
           :show-children="choice.showChildren"
           :show-scheme="choice.showScheme"
           :no-items-label="choice.noItemsLabel"
-          :buttons="choice.buttons"
-          @dragover.native="dragOver"
-          @drop.native="drop($event, choice.droppedConcept)" />
+          :buttons="choice.buttons" />
       </tab>
     </tabs>
   </div>
