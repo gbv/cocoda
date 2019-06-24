@@ -384,17 +384,15 @@ export default {
     fromScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          _.get(scheme, "prefLabel.de", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          _.get(scheme, "prefLabel.en", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          _.get(scheme, "notation[0]", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase()
+          (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
+          (this.$util.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase()
       )
     },
     toScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          _.get(scheme, "prefLabel.de", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          _.get(scheme, "prefLabel.en", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          _.get(scheme, "notation[0]", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase()
+          (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
+          (this.$util.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase()
       )
     },
     page: {
@@ -498,8 +496,8 @@ export default {
         let item = { concordance }
         item.from = this.$util.notation(_.get(concordance, "fromScheme")) || "-"
         item.to = this.$util.notation(_.get(concordance, "toScheme")) || "-"
-        item.description = _.get(concordance, "scopeNote.de[0]") || _.get(concordance, "scopeNote.en[0]") || "-"
-        item.creator = _.get(concordance, "creator[0].prefLabel.de") || _.get(concordance, "creator[0].prefLabel.en") || "-"
+        item.description = (this.$util.lmContent(concordance, "scopeNote") || [])[0] || "-"
+        item.creator = this.$util.prefLabel(_.get(concordance, "creator[0]"), null, false) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")

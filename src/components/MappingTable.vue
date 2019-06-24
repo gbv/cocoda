@@ -233,7 +233,7 @@ export default {
           item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
           item.creator = mapping.creator && mapping.creator[0] || "?"
           if (typeof item.creator === "object") {
-            item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
+            item.creator = this.$util.prefLabel(item.creator)
           }
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.date = mapping.modified || mapping.created

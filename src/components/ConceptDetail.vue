@@ -421,7 +421,7 @@ export default {
       let parts = ["scopeNote", "editorialNote", "altLabel"]
       let hasNotes = false
       for (let part of parts) {
-        hasNotes = hasNotes || (concept != null && concept[part] != null && concept[part].de != null && concept[part].de.length > 0)
+        hasNotes = hasNotes || (this.$util.lmContent(concept, part) && this.$util.lmContent(concept, part).length)
       }
       return hasNotes
     },

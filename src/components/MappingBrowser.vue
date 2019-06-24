@@ -548,7 +548,7 @@ export default {
         item.to = _.get(concordance, "toScheme")
         item.to = this._getObject(item.to) || item.to
         item.toNotation = this.$util.notation(item.to) || "-"
-        item.description = _.get(concordance, "scopeNote.de[0]") || _.get(concordance, "scopeNote.en[0]") || "-"
+        item.description = (this.$util.lmContent(concordance, "scopeNote") || [])[0] || "-"
         item.creator = this.$util.prefLabel(_.get(concordance, "creator[0]"), null, false) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
