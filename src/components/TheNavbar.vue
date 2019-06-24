@@ -34,6 +34,7 @@
         v-if="mappingTrash.length > 0"
         id="mappingTrashDropdown"
         ref="mappingTrashDropdown"
+        extra-menu-classes="navbar-dropdown"
         no-caret
         right
         @mouseover.native="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
@@ -70,7 +71,7 @@
         id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
         v-b-tooltip.right="favoriteCanBeDropped ? 'drop here to favorite' : ''"
-        extra-menu-classes="favoriteConceptsDropdown"
+        extra-menu-classes="navbar-dropdown favoriteConceptsDropdown"
         no-caret
         right
         @dragover.native="dragOver"
@@ -339,14 +340,16 @@ nav.navbar {
   left:0;
   right:0;
 }
+.navbar-dropdown {
+  overflow-x: hidden;
+  // Offset to the right
+  right: -15px !important;
+  // Move a little to the top
+  top: 95% !important;
+}
 .favoriteConceptsDropdown {
   max-height: 700px;
   width: 400px;
-  overflow-x: hidden;
-  // Offset to the right
-  right: -50px !important;
-  // Move a little to the top
-  top: 95% !important;
 }
 .favoriteConceptsDropdown .dropdown-item {
   white-space: normal;
