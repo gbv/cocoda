@@ -35,6 +35,16 @@
           style="user-select: none;">
           {{ $t("mappingBrowser.settingShowAllSchemes") }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-model="mappingNavigatorShowResultsFor[true]"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingNavigatorShowResultsForLeft") }}
+        </b-form-checkbox>
+        <b-form-checkbox
+          v-model="mappingNavigatorShowResultsFor[false]"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingNavigatorShowResultsForRight") }}
+        </b-form-checkbox>
       </b-form>
     </component-settings>
     <tabs
@@ -678,6 +688,31 @@ export default {
       }
       return object
     },
+    mappingNavigatorShowResultsFor() {
+      let object = {}
+      // Define setter and getter for each side separately.
+      for (let isLeft of [true, false]) {
+        Object.defineProperty(object, isLeft, {
+          get: () => {
+            return this.$settings.mappingNavigatorShowResultsFor[isLeft]
+          },
+          set: (value) => {
+            let newValue = Object.assign({}, this.$settings.mappingNavigatorShowResultsFor, { [isLeft]: value })
+            // Force at least one side to be true
+            if (!value && !newValue[!isLeft]) {
+              newValue[!isLeft] = true
+            }
+            this.$store.commit({
+              type: "settings/set",
+              prop: "mappingNavigatorShowResultsFor",
+              value: newValue
+            })
+            this.$store.commit("mapping/setRefresh")
+          }
+        })
+      }
+      return object
+    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading)
     },
@@ -1082,8 +1117,8 @@ export default {
         mode: "or",
         selected: this.selected,
       }
-      let from = _.get(this, "selected.concept[true]")
-      let to = _.get(this, "selected.concept[false]")
+      let from = this.mappingNavigatorShowResultsFor[true] ? _.get(this, "selected.concept[true]") : null
+      let to = this.mappingNavigatorShowResultsFor[false] ? _.get(this, "selected.concept[false]") : null
       if (from) {
         params["from"] = from
       }

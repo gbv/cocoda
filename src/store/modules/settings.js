@@ -31,6 +31,10 @@ const defaultSettings = {
     [true]: 0,
     [false]: 0
   },
+  mappingNavigatorShowResultsFor: {
+    [true]: true,
+    [false]: true,
+  },
 }
 
 // initial state
