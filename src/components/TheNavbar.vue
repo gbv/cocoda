@@ -145,12 +145,54 @@
         <!-- Name -->
         {{ creatorName || $t("navbar.settings") }}
       </b-nav-item>
-      <!-- Current registry notation -->
-      <b-nav-item v-if="$store.getters.getCurrentRegistry">
-        <registry-notation
-          :registry="$store.getters.getCurrentRegistry"
-          style="opacity: 0.7; cursor: default;" />
-      </b-nav-item>
+      <!-- Current registry -->
+      <b-nav-item-dropdown
+        v-if="$store.getters.getCurrentRegistry"
+        id="currentRegistryDropdown"
+        ref="currentRegistryDropdown"
+        extra-menu-classes="navbar-dropdown"
+        no-caret
+        right
+        @mouseover.native="dropdownSetStatus($refs.currentRegistryDropdown, true); _dropdownSetStatus($refs.currentRegistryDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.currentRegistryDropdown, false)">
+        <template slot="button-content">
+          <registry-notation
+            :registry="$store.getters.getCurrentRegistry"
+            :tooltip="false"
+            style="opacity: 0.7; cursor: default;" />
+        </template>
+        <div
+          class="font-default text-dark color-primary-0-bg fontSize-small"
+          style="padding: 0 10px;;">
+          <p><b>{{ $t("navbar.currentRegistry") }}:</b></p>
+          <p>
+            <registry-notation
+              :registry="$store.getters.getCurrentRegistry"
+              :tooltip="false" />
+            <registry-name
+              :registry="$store.getters.getCurrentRegistry"
+              :tooltip="false" />
+          </p>
+          <p><b>{{ $t("navbar.switchTo") }}:</b></p>
+          <p
+            v-for="registry in config.registries.filter(registry => registry.provider.has.canSaveMappings && !$jskos.compare(registry, $store.getters.getCurrentRegistry))"
+            :key="`navbar-mappingRegistry-${registry.uri}`"
+            class="navbar-currentRegistryDropdown-mappingRegistryItem"
+            @click="$store.commit({
+              type: 'settings/set',
+              prop: 'mappingRegistry',
+              value: registry.uri
+            })">
+            <registry-notation
+              :registry="registry"
+              :tooltip="false" />
+            <registry-name
+              :registry="registry"
+              :tooltip="false" />
+          </p>
+        </div>
+      </b-nav-item-dropdown>
+
       <!-- Settings modal -->
       <the-settings ref="settings" />
     </b-navbar-nav>
@@ -161,6 +203,7 @@
 import TheSettings from "./TheSettings"
 import ItemName from "./ItemName"
 import RegistryNotation from "./RegistryNotation"
+import RegistryName from "./RegistryName"
 import MappingTable from "./MappingTable"
 import _ from "lodash"
 
@@ -176,7 +219,7 @@ import computed from "../mixins/computed"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName, RegistryNotation, MappingTable
+    TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable
   },
   mixins: [auth, objects, dragandrop, computed],
   computed: {
@@ -343,7 +386,7 @@ nav.navbar {
 .navbar-dropdown {
   overflow-x: hidden;
   // Offset to the right
-  right: -15px !important;
+  right: -8px !important;
   // Move a little to the top
   top: 95% !important;
 }
@@ -361,5 +404,9 @@ nav.navbar {
 }
 .favoriteConceptsDropdown-iconTarget {
   color: @color-select;
+}
+.navbar-currentRegistryDropdown-mappingRegistryItem:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

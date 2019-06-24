@@ -35,7 +35,9 @@
       "trashRestoreTooltip": "restore mapping",
       "openLeft": "open on left side",
       "openRight": "open on right side",
-      "removeFromFavorites": "remove from favorites"
+      "removeFromFavorites": "remove from favorites",
+      "currentRegistry": "Current Registry",
+      "switchTo": "Switch to"
     },
     "schemeSelection": {
       "title": "Select a scheme",
@@ -319,7 +321,9 @@
       "trashRestoreTooltip": "Mapping wiederherstellen",
       "openLeft": "auf der linken Seite öffnen",
       "openRight": "auf der rechten Seite öffnen",
-      "removeFromFavorites": "aus den Favoriten entfernen"
+      "removeFromFavorites": "aus den Favoriten entfernen",
+      "currentRegistry": "Aktuelle Registry",
+      "switchTo": "Wechseln zu"
     },
     "schemeSelection": {
       "title": "Wähle ein Vokabular",
