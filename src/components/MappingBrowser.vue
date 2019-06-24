@@ -6,12 +6,6 @@
       <b-form
         inline
         @submit.stop.prevent>
-        <b-form-checkbox
-          v-model="showAllSchemes"
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingShowAllSchemes") }}
-        </b-form-checkbox>
         <div>
           {{ $t("mappingBrowser.settingResultLimit") }}
           <b-input
@@ -33,6 +27,13 @@
           v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowIdentityWarningTooltip'), delay: $util.delay.medium }"
           style="user-select: none;">
           {{ $t("mappingBrowser.settingShowIdentityWarning") }}
+        </b-form-checkbox>
+        <p><b>{{ $t("mappingBrowser.mappingNavigator") }}</b></p>
+        <b-form-checkbox
+          v-model="showAllSchemes"
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingShowAllSchemes") }}
         </b-form-checkbox>
       </b-form>
     </component-settings>
