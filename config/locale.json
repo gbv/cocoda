@@ -197,7 +197,7 @@
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
-      "tabAccount": "Accounts",
+      "tabAccount": "Account",
       "tabLayout": "Layout",
       "tabShortcuts": "Keyboard Shortcuts",
       "tabSources": "Data Sources",
@@ -381,7 +381,7 @@
     },
     "settings": {
       "title": "Cocoda @:navbar.settings",
-      "tabAccount": "Accounts",
+      "tabAccount": "Account",
       "tabLayout": "Layout",
       "tabShortcuts": "Tastatur-Shortcuts",
       "tabSources": "Datenquellen",
