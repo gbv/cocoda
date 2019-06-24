@@ -305,16 +305,6 @@
           •
           {{ $t("settings.buildDate") }}: {{ $util.dateToString(config.buildInfo.buildDate) }}
         </span>
-        <span
-          v-for="(item, index) in config.menu"
-          :key="`settings-menuItems-${index}`">
-          •
-          <a
-            :href="item.url"
-            target="_blank">
-            {{ $util.prefLabel(item) }}
-          </a>
-        </span>
         <br>
         <span>
           {{ $t("settings.suggestions1") }}
