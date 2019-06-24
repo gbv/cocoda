@@ -557,6 +557,8 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           this.refreshDownloads()
           this.deleteMappingsButtons = false
+          // Also clear mapping trash
+          this.$store.commit("mapping/clearTrash")
         }).catch(error => {
           console.error("TheSettings - Error deleting local mappings", error)
         })
