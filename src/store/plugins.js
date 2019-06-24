@@ -20,7 +20,7 @@ const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
  */
 const mappingTrashPlugin = store => {
   store.subscribe((mutation) => {
-    if (["mapping/addToTrash", "mapping/removeFromTrash"].includes(mutation.type) && store.state.mapping.mappingTrashLoaded) {
+    if (["mapping/addToTrash", "mapping/removeFromTrash", "mapping/clearTrash"].includes(mutation.type) && store.state.mapping.mappingTrashLoaded) {
       localforage.setItem(localStorageKey, store.state.mapping.mappingTrash)
     }
   })

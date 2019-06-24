@@ -393,6 +393,10 @@ const mutations = {
     state.mappingTrash = state.mappingTrash.filter(item => item.mapping.uri != uri)
   },
 
+  clearTrash(state) {
+    state.mappingTrash = []
+  },
+
 }
 
 // actions

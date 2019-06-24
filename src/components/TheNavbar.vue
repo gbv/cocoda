@@ -44,6 +44,13 @@
         </template>
         <b-dropdown-header>
           {{ $t("navbar.trashTitle") }}
+          <div
+            v-b-tooltip.hover="{ title: $t('navbar.trashClearButtonTooltip'), delay: $util.delay.medium }"
+            class="button"
+            style="position: absolute; right: 15px; top: 15px;"
+            @click="$store.commit('mapping/clearTrash')">
+            <font-awesome-icon icon="trash-alt" /> {{ $t("navbar.trashClearButton") }}
+          </div>
         </b-dropdown-header>
         <mapping-table
           class="font-default text-dark color-primary-0-bg fontSize-normal"
