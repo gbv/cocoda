@@ -321,7 +321,7 @@ nav.navbar {
   color: white !important;
 }
 .nav-link:hover, .btn-link:hover {
-  color: @color-text-veryLightGrey !important;
+  color: @color-text-lightGrey !important;
 }
 .feedbackModal .modal-dialog {
   height: 90%;
