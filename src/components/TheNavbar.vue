@@ -129,22 +129,51 @@
         </div>
       </b-nav-item-dropdown>
       <!-- Settings button -->
-      <b-nav-item
-        v-b-popover.hover="identityPopoverOptions"
-        class="navbar-settingsButton"
-        @click="$refs.settings.show()">
-        <!-- Identity icon -->
-        <span v-if="userIdentityImage && creator.uri">
-          <img :src="userIdentityImage">
-        </span>
-        <span
-          v-else
-          :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
-          <font-awesome-icon icon="user" />
-        </span>
-        <!-- Name -->
-        {{ creatorName || $t("navbar.settings") }}
-      </b-nav-item>
+      <b-nav-item-dropdown
+        id="accountDropdown"
+        ref="accountDropdown"
+        extra-menu-classes="navbar-dropdown"
+        no-caret
+        right
+        @mouseover.native="dropdownSetStatus($refs.accountDropdown, true); _dropdownSetStatus($refs.accountDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.accountDropdown, false)">
+        <template slot="button-content">
+          <div
+            class="navbar-settingsButton"
+            @click="$refs.settings.show()">
+            <!-- Identity icon -->
+            <span v-if="userIdentityImage && creator.uri">
+              <img :src="userIdentityImage">
+            </span>
+            <span
+              v-else
+              :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
+              <font-awesome-icon icon="user" />
+            </span>
+            <!-- Name -->
+            {{ creatorName || $t("navbar.settings") }}
+          </div>
+        </template>
+        <div
+          class="font-default text-dark color-primary-0-bg fontSize-small"
+          style="padding: 0 10px;">
+          <p
+            v-if="$util.prefLabel(creator)"
+            class="fontWeight-heavy">
+            {{ $util.prefLabel(creator) }}
+          </p>
+          <p v-if="creator.uri">
+            URI: {{ creator.uri }}
+          </p>
+          <p v-if="authorized">
+            <span class="text-success">{{ $t("settings.loggedIn") }}</span>
+            ({{ (userIdentityProvider && userIdentityProvider.name) || "Login Server" }})
+          </p>
+          <p v-else>
+            <span class="text-danger">{{ $t("settings.loggedOut") }}</span>
+          </p>
+        </div>
+      </b-nav-item-dropdown>
       <!-- Current registry -->
       <b-nav-item-dropdown
         v-if="$store.getters.getCurrentRegistry"
@@ -163,7 +192,7 @@
         </template>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-small"
-          style="padding: 0 10px;;">
+          style="padding: 0 10px;">
           <p><b>{{ $t("navbar.currentRegistry") }}:</b></p>
           <p>
             <registry-notation
@@ -249,27 +278,6 @@ export default {
       }
       return trash
     },
-    identityPopoverOptions() {
-      let options = {
-        placement: "bottom",
-        html: true
-      }
-      let content =  ""
-      if (this.$util.prefLabel(this.creator)) {
-        content += `<b>${this.$util.prefLabel(this.creator)}</b><br>`
-      }
-      if (this.creator.uri) {
-        content += `URI: ${this.creator.uri}<br>`
-      }
-      if (this.authorized) {
-        content += `<span class="text-success">${this.$t("settings.loggedIn")}</span>`
-        content += ` (${(this.userIdentityProvider && this.userIdentityProvider.name) || "Login Server"})<br>`
-      } else {
-        content += `<span class="text-danger">${this.$t("settings.loggedOut")}</span><br>`
-      }
-      options.content = `<div class="fontSize-small">${content}</div>`
-      return options
-    },
   },
   watch: {
     draggedConcept(concept) {
@@ -337,17 +345,17 @@ nav.navbar {
   color: @color-text-lightGrey;
 }
 
-.navbar-settingsButton > a > span > img, .navbar-settingsButton > a > span > svg {
+.navbar-settingsButton > span > img, .navbar-settingsButton > span > svg {
   opacity: 1;
   height: 17px;
 }
-.navbar-settingsButton > a > span > img {
+.navbar-settingsButton > span > img {
   margin-top: -3px;
 }
-.navbar-settingsButton > a > span > svg {
+.navbar-settingsButton > span > svg {
   margin-top: 1px;
 }
-.navbar-settingsButton:hover > a > span > img, .navbar-settingsButton:hover > a > span > svg {
+.navbar-settingsButton:hover > span > img, .navbar-settingsButton:hover > span > svg {
   opacity: .5;
 }
 </style>
