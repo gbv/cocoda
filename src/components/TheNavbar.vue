@@ -93,33 +93,37 @@
           draggable
           @dragstart="favoriteConceptDragStart(concept)"
           @dragend="favoriteConceptDragEnd">
-          <item-name
-            v-if="concept.inScheme && concept.inScheme[0]"
-            :item="concept.inScheme[0]"
-            :show-text="false"
-            :is-link="false"
-            :prevent-external-hover="true"
-            :draggable="false" />
-          <item-name :item="concept" />
-          <div class="favoriteConceptsDropdown-buttons">
-            <div
+          <div style="padding-right: 8px;">
+            <span
+              v-b-tooltip.hover="{ title: $t('navbar.removeFromFavorites'), delay: $util.delay.medium }"
+              class="button fontSize-verySmall"
+              @click="removeFavoriteConcept(concept)">
+              <font-awesome-icon icon="times-circle" />
+            </span>
+          </div>
+          <div style="flex: 1">
+            <item-name
+              v-if="concept.inScheme && concept.inScheme[0]"
+              :item="concept.inScheme[0]"
+              :show-text="false"
+              :is-link="false"
+              :prevent-external-hover="true"
+              :draggable="false" />
+            <item-name :item="concept" />
+          </div>
+          <div>
+            <span
               v-b-tooltip.hover="{ title: $t('navbar.openLeft'), delay: $util.delay.medium }"
               class="button"
               @click="setSelected({ concept, isLeft: true })">
               <font-awesome-icon icon="caret-square-left" />
-            </div>
-            <div
+            </span>
+            <span
               v-b-tooltip.hover="{ title: $t('navbar.openRight'), delay: $util.delay.medium }"
               class="button"
               @click="setSelected({ concept, isLeft: false })">
               <font-awesome-icon icon="caret-square-right" />
-            </div>
-            <div
-              v-b-tooltip.hover="{ title: $t('navbar.removeFromFavorites'), delay: $util.delay.medium }"
-              class="button"
-              @click="removeFavoriteConcept(concept)">
-              <font-awesome-icon icon="times-circle" />
-            </div>
+            </span>
           </div>
         </div>
       </b-nav-item-dropdown>
@@ -347,23 +351,12 @@ nav.navbar {
 .favoriteConceptsDropdown .dropdown-item {
   white-space: normal;
   position: relative;
-  padding-right: 60px;
+  display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
   background-color: @color-primary-5;
 }
 .favoriteConceptsDropdown-iconTarget {
   color: @color-select;
-}
-.favoriteConceptsDropdown-buttons {
-  position: absolute;
-  right: 10px;
-  top: 53%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  display: flex;
-}
-.favoriteConceptsDropdown-buttons > div {
-  padding: 0 3px;
 }
 </style>
