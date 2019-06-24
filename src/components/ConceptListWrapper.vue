@@ -23,7 +23,9 @@
           :show-children="choice.showChildren"
           :show-scheme="choice.showScheme"
           :no-items-label="choice.noItemsLabel"
-          :buttons="choice.buttons" />
+          :buttons="choice.buttons"
+          @dragover.native="dragOver"
+          @drop.native="drop($event, choice.droppedConcept)" />
       </tab>
     </tabs>
   </div>
@@ -36,11 +38,12 @@ import _ from "lodash"
 
 import computed from "../mixins/computed"
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
 
 export default {
   name: "ConceptListWrapper",
   components: { Minimizer, ConceptList },
-  mixins: [computed, objects],
+  mixins: [computed, objects, dragandrop],
   props: {
     /**
      * Tells the component on which side of the application it is.
@@ -81,6 +84,9 @@ export default {
               }
             }
           ],
+          droppedConcept: concept => {
+            this.$store.dispatch("addConceptToFavorites", concept)
+          },
         }
       ]
     },
@@ -114,7 +120,12 @@ export default {
     tabChanged({ index }) {
       let conceptList = _.get(this, `$refs.conceptList[${index}]`)
       conceptList && conceptList.scroll && conceptList.scroll()
-    }
+    },
+    droppedConcept(concept, droppedConcept) {
+      if (droppedConcept) {
+        droppedConcept(concept)
+      }
+    },
   },
 }
 </script>
