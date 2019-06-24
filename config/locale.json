@@ -39,6 +39,7 @@
       "openRight": "open on right side",
       "removeFromFavorites": "remove from favorites",
       "loggedInAs": "Logged in as",
+      "identity": "Current Identity",
       "currentRegistry": "Current Registry",
       "switchTo": "Switch to"
     },
@@ -334,6 +335,7 @@
       "openRight": "auf der rechten Seite öffnen",
       "removeFromFavorites": "aus den Favoriten entfernen",
       "loggedInAs": "Eingeloggt als",
+      "identity": "Aktuelle Identität",
       "currentRegistry": "Aktuelle Registry",
       "switchTo": "Wechseln zu"
     },

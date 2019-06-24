@@ -180,9 +180,32 @@
               {{ $util.prefLabel(creator) }}.
             </span>
           </p>
-          <p v-if="creator.uri">
-            URI: {{ creator.uri }}
+          <hr>
+          <p class="fontWeight-heavy">
+            {{ $t("navbar.identity") }}:
           </p>
+          <p v-if="creator.uri">
+            {{ creator.uri }}
+          </p>
+          <p v-else>
+            None
+          </p>
+          <template v-if="(userUris || []).filter(uri => uri != creator.uri).length">
+            <p class="fontWeight-heavy">
+              {{ $t("navbar.switchTo") }}:
+            </p>
+            <p
+              v-for="(uri, index) in (userUris || []).filter(uri => uri != creator.uri)"
+              :key="`navbar-switchToIdentity-${index}`"
+              class="navbar-clickableItem"
+              @click="$store.commit({
+                type: 'settings/set',
+                prop: 'creatorUri',
+                value: uri
+              })">
+              {{ uri }}
+            </p>
+          </template>
           <hr>
           <p
             v-for="(tab, index) in $t('settingsTabs')"
@@ -225,7 +248,7 @@
           <p
             v-for="registry in config.registries.filter(registry => registry.provider.has.canSaveMappings && !$jskos.compare(registry, $store.getters.getCurrentRegistry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
-            class="navbar-currentRegistryDropdown-mappingRegistryItem"
+            class="navbar-clickableItem"
             @click="$store.commit({
               type: 'settings/set',
               prop: 'mappingRegistry',
@@ -439,7 +462,7 @@ nav.navbar {
 .favoriteConceptsDropdown-iconTarget {
   color: @color-select;
 }
-.navbar-currentRegistryDropdown-mappingRegistryItem:hover {
+.navbar-clickableItem:hover {
   cursor: pointer;
   text-decoration: underline;
 }
