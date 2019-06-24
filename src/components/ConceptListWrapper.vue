@@ -22,7 +22,8 @@
           :concepts="choice.concepts"
           :show-children="choice.showChildren"
           :show-scheme="choice.showScheme"
-          :no-items-label="choice.noItemsLabel" />
+          :no-items-label="choice.noItemsLabel"
+          :buttons="choice.buttons" />
       </tab>
     </tabs>
   </div>
@@ -70,6 +71,16 @@ export default {
           concepts: this.favoriteConcepts,
           showChildren: false,
           showScheme: true,
+          buttons: [
+            {
+              position: "before",
+              icon: "times-circle",
+              tooltip: this.$t("schemeSelection.starRemove"),
+              onClick: (event, concept) => {
+                this.$store.dispatch("removeConceptFromFavorites", concept)
+              }
+            }
+          ],
         }
       ]
     },

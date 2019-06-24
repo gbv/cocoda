@@ -13,7 +13,8 @@
         :index="index"
         :is-left="isLeft"
         :show-children="showChildren"
-        :show-scheme="showScheme" />
+        :show-scheme="showScheme"
+        :buttons="buttons" />
     </div>
     <div
       v-if="noItems"
@@ -79,6 +80,13 @@ export default {
     showScheme: {
       type: Boolean,
       default: false
+    },
+    /**
+     * List of buttons (array of objects with props `position`, `icon`, and `onClick`).
+     */
+    buttons: {
+      type: Array,
+      default: () => []
     },
   },
   data () {

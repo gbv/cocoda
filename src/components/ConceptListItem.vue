@@ -26,6 +26,14 @@
             down: isOpen
           }" />
       </div>
+      <span
+        v-for="(button, index2) in buttons.filter(b => b.position == 'before')"
+        :key="`conceptListItem-buttons-${index2}`"
+        v-b-tooltip.hover="{ title: button.tooltip, delay: $util.delay.medium}"
+        class="button fontSize-verySmall conceptListItem-buttonBefore"
+        @click="button.onClick($event, concept)">
+        <font-awesome-icon :icon="button.icon" />
+      </span>
       <div
         :is="url ? 'router-link' : 'div'"
         :to="url"
@@ -131,6 +139,13 @@ export default {
     showScheme: {
       type: Boolean,
       default: false
+    },
+    /**
+     * List of buttons (array of objects with props `position`, `icon`, and `onClick`).
+     */
+    buttons: {
+      type: Array,
+      default: () => []
     },
   },
   data () {
@@ -328,7 +343,7 @@ export default {
   padding-left: 18px;
 }
 .labelBoxSingle {
-  padding-left: 8px;
+  padding-left: 5px;
 }
 .addToMapping {
   .fontSize-large;
@@ -352,6 +367,10 @@ export default {
 .conceptListItem:hover {
   background-color: @color-select-1;
   color: @color-action-2;
+}
+
+.conceptListItem-buttonBefore {
+  padding-top: 2px;
 }
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
