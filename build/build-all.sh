@@ -30,7 +30,6 @@ do
   mv dist releases/$TAG
   # 7. Reset repo for next checkout
   git reset --hard
-  break
 done
 
 rm -r temp
