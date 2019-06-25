@@ -10,8 +10,8 @@
     "start": "npm run dev",
     "serve": "vue-cli-service serve",
     "build": "./build/build.sh",
-    "lint": "vue-cli-service lint",
-    "fix": "./node_modules/.bin/eslint --fix ./src/*.{js,vue} ./src/**/*.{js,vue}",
+    "lint": "vue-cli-service lint --no-fix",
+    "fix": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
@@ -20,12 +20,8 @@
     "release": "./bin/release.sh"
   },
   "lint-staged": {
-    "src/**/*.{js,vue}": [
-      "eslint --fix",
-      "git add"
-    ],
-    "src/*.{js,vue}": [
-      "eslint --fix",
+    "**/*.{js,vue}": [
+      "vue-cli-service lint",
       "git add"
     ],
     "**/*.json": [
