@@ -20,15 +20,15 @@ export default {
      */
     link: {
       type: String,
-      default: ""
+      default: "",
     },
     /**
      * The text that is shown (defaults to URL).
      */
     text: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
     // from: https://stackoverflow.com/a/43467144/11050851
@@ -39,7 +39,7 @@ export default {
       } catch (_) {
         return false
       }
-    }
-  }
+    },
+  },
 }
 </script>

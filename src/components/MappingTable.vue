@@ -69,6 +69,7 @@
 import ItemName from "./ItemName"
 import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation"
+import _ from "lodash"
 
 export default {
   name: "MappingTable",
@@ -79,7 +80,7 @@ export default {
      */
     mappings: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Whether to hide duplicate mappings.
@@ -88,28 +89,28 @@ export default {
      */
     hideDuplicates: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      *
      */
     actions: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Whether to show a tooltip with prefLabels for concepts.
      */
     showTooltip: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Whether to show the concepts' labels
      */
     showLabels: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Whether to show the mapping registry.
@@ -135,7 +136,7 @@ export default {
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: false
+          sortable: false,
         },
         {
           key: "sourceConcepts",
@@ -143,7 +144,7 @@ export default {
           width: "19%",
           minWidth: "",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
         },
         {
           key: "type",
@@ -161,14 +162,14 @@ export default {
               return 1
             }
             return 0
-          }
+          },
         },
         {
           key: "targetScheme",
           label: "",
           width: "8%",
           minWidth: "",
-          sortable: false
+          sortable: false,
         },
         {
           key: "targetConcepts",
@@ -176,29 +177,29 @@ export default {
           width: "19%",
           minWidth: "",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
         },
         {
           key: "creator",
           label: this.$t("mappingBrowser.creator"),
           width: "15%",
           minWidth: "",
-          sortable: false
+          sortable: false,
         },
         {
           key: "date",
           label: this.$t("mappingBrowser.date"),
           width: "12%",
           minWidth: "",
-          sortable: false
+          sortable: false,
         },
         {
           key: "actions",
           label: "",
           width: "7%",
           minWidth: "",
-          sortable: false
-        }
+          sortable: false,
+        },
       ]
       if (this.showRegistry) {
         fields = [{
@@ -206,7 +207,7 @@ export default {
           label: "",
           width: "5%",
           minWidth: "",
-          sortable: false
+          sortable: false,
         }].concat(fields)
       }
       return fields
@@ -250,7 +251,7 @@ export default {
   },
   methods: {
 
-  }
+  },
 }
 </script>
 

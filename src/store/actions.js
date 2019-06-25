@@ -19,7 +19,7 @@ export default {
         commit("alerts/add", {
           variant: "danger",
           countdown: 0,
-          text: i18n.t("general.malformedConfig", { file: configFile })
+          text: i18n.t("general.malformedConfig", { file: configFile }),
         }, { root: true })
         userConfig = {}
       }
@@ -112,7 +112,7 @@ export default {
       commit({
         type: "settings/set",
         prop: "favoriteSchemes",
-        value: getters.favoriteSchemes.concat([scheme.uri])
+        value: getters.favoriteSchemes.concat([scheme.uri]),
       })
     }
   },
@@ -120,7 +120,7 @@ export default {
     commit({
       type: "settings/set",
       prop: "favoriteSchemes",
-      value: getters.favoriteSchemes.filter(uri => !jskos.compare({ uri }, scheme))
+      value: getters.favoriteSchemes.filter(uri => !jskos.compare({ uri }, scheme)),
     })
   },
   addConceptToFavorites({ commit, getters }, concept) {
@@ -135,7 +135,7 @@ export default {
       commit({
         type: "settings/set",
         prop: "favoriteConcepts",
-        value: getters.favoriteConcepts.concat([newConcept])
+        value: getters.favoriteConcepts.concat([newConcept]),
       })
     }
   },
@@ -143,7 +143,7 @@ export default {
     commit({
       type: "settings/set",
       prop: "favoriteConcepts",
-      value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other))
+      value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other)),
     })
   },
 

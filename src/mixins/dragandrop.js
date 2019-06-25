@@ -8,13 +8,13 @@ export default {
       event.dataTransfer.setData("text", concept.uri)
       this.$store.commit({
         type: "setDraggedConcept",
-        concept
+        concept,
       })
     },
     dragEnd() {
       this.$store.commit({
         type: "setDraggedConcept",
-        concept: null
+        concept: null,
       })
     },
     dragOver(event) {
@@ -30,5 +30,5 @@ export default {
     },
     // Supposed to be overridden by components
     droppedConcept() {},
-  }
+  },
 }

@@ -106,7 +106,7 @@ import objects from "../mixins/objects"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, ItemDetailNarrower
+    AutoLink, ItemName, ItemDetailNarrower,
   },
   mixins: [objects],
   props: {
@@ -115,22 +115,22 @@ export default {
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Settings - see [`ItemDetail`](#itemdetail).
      */
     settings: {
       type: Object,
-      default: () => { return {} }
-    }
+      default: () => { return {} },
+    },
   },
   methods: {
     licenseAttribution(detail) {
@@ -140,10 +140,10 @@ export default {
       }
       return {
         url: organisation[0].url || organisation[0].uri,
-        label: this.$util.prefLabel(organisation[0])
+        label: this.$util.prefLabel(organisation[0]),
       }
     },
-  }
+  },
 }
 </script>
 

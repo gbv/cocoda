@@ -39,8 +39,8 @@ class ConceptApiProvider extends BaseProvider {
     // TODO: Should we really do it this way?
     let options = {
       params: {
-        limit: 500
-      }
+        limit: 500,
+      },
     }
     return this.get(this.registry.schemes, options).then(schemes => schemes || [])
   }
@@ -54,7 +54,7 @@ class ConceptApiProvider extends BaseProvider {
         uri: scheme.uri,
         properties: this.properties.default,
         limit: 10000,
-      }
+      },
     }
     return this.get(this.registry.top, options).then(top => top || [])
   }
@@ -72,7 +72,7 @@ class ConceptApiProvider extends BaseProvider {
       params: {
         uri: uris.join("|"),
         properties,
-      }
+      },
     }
     return this.get(this.registry.concepts, options).then(concepts => concepts || [])
   }
@@ -86,7 +86,7 @@ class ConceptApiProvider extends BaseProvider {
         uri: concept.uri,
         properties: this.properties.default,
         limit: 10000,
-      }
+      },
     }
     return this.get(this.registry.narrower, options).then(narrower => narrower || [])
   }
@@ -99,7 +99,7 @@ class ConceptApiProvider extends BaseProvider {
       params: {
         uri: concept.uri,
         properties: this.properties.default,
-      }
+      },
     }
     return this.get(this.registry.ancestors, options).then(ancestors => ancestors || [])
   }
@@ -117,7 +117,7 @@ class ConceptApiProvider extends BaseProvider {
         count: limit, // Some endpoints use count instead of limit
         use,
         type: types.join("|"),
-      }
+      },
     }
     // Some registries use URL templates with {searchTerms}
     let url = this.registry.suggest.replace("{searchTerms}", search)

@@ -20,12 +20,12 @@ export default {
       set(value) {
         this.$store.commit({
           type: "setLoading",
-          value
+          value,
         })
-      }
+      },
     },
     locale() {
       return this.$i18n.locale
     },
-  }
+  },
 }

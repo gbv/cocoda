@@ -109,7 +109,7 @@ import computed from "../mixins/computed"
 export default {
   name: "ConceptSearch",
   components: {
-    LoadingIndicator
+    LoadingIndicator,
   },
   mixins: [objects, clickHandler, dragandrop, computed],
   props: {
@@ -118,15 +118,15 @@ export default {
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Currently selected scheme, needed to detect changes.
      */
     scheme: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data () {
     return {
@@ -177,9 +177,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "typesForSchemes",
-          value: typesForSchemes
+          value: typesForSchemes,
         })
-      }
+      },
     },
     provider() {
       return _.get(this.scheme, "_provider")
@@ -242,7 +242,7 @@ export default {
         // Result list
         {
           elements: [
-            this.$el
+            this.$el,
           ],
           handler: () => {
             if (!this.filterPopoverShow) {
@@ -251,19 +251,19 @@ export default {
               // eslint-disable-next-line vue/no-side-effects-in-computed-properties
               this.searchSelected = -1
             }
-          }
+          },
         },
         // Types popover
         {
           elements: [
             document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`),
-            this.$refs.filterPopover
+            this.$refs.filterPopover,
           ],
           handler: () => {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             this.filterPopoverShow = false
-          }
-        }
+          },
+        },
       ]
     },
     /**
@@ -282,7 +282,7 @@ export default {
       let uri = _.last(result)
       let concept = {
         uri: uri,
-        inScheme: [this.scheme]
+        inScheme: [this.scheme],
       }
       // Get concept from store
       concept = this.saveObject(concept, { type: "concept", scheme: this.scheme, provider: this.provider })

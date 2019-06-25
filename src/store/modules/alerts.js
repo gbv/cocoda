@@ -1,6 +1,6 @@
 // initial state
 const state = {
-  alerts: []
+  alerts: [],
 }
 
 // mutations
@@ -31,7 +31,7 @@ const mutations = {
    */
   setCountdown (state, { alert, countdown }) {
     alert.countdown = countdown
-  }
+  },
 }
 
 export default {

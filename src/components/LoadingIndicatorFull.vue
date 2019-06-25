@@ -23,7 +23,7 @@ import LoadingIndicator from "./LoadingIndicator"
 export default {
   name: "LoadingIndicatorFull",
   components: {
-    LoadingIndicator
+    LoadingIndicator,
   },
   props: {
     /**
@@ -34,9 +34,9 @@ export default {
      */
     size: {
       type: String,
-      default: "lg"
-    }
-  }
+      default: "lg",
+    },
+  },
 }
 </script>
 

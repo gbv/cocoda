@@ -50,8 +50,8 @@ export default {
      */
     isLeft: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -81,13 +81,13 @@ export default {
               tooltip: this.$t("schemeSelection.starRemove"),
               onClick: (event, concept) => {
                 this.$store.dispatch("removeConceptFromFavorites", concept)
-              }
-            }
+              },
+            },
           ],
           droppedConcept: concept => {
             this.$store.dispatch("addConceptToFavorites", concept)
           },
-        }
+        },
       ]
     },
     _topConcepts() {
@@ -108,9 +108,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: `conceptListChoice[${this.isLeft}]`,
-          value: id
+          value: id,
         })
-      }
+      },
     },
   },
   methods: {

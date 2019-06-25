@@ -18,7 +18,7 @@ const state = {
 
 let windowManager = {
   window: null,
-  eventType: null
+  eventType: null,
 }
 
 const mutations = {
@@ -52,7 +52,7 @@ const mutations = {
         windowManager.window = null
       }, 100)
     }
-  }
+  },
 
 }
 
@@ -80,40 +80,40 @@ const actions = {
           commit({
             type: "set",
             prop: "connected",
-            value: true
+            value: true,
           })
           break
         case LoginClient.events.disconnect:
           commit({
             type: "set",
             prop: "connected",
-            value: false
+            value: false,
           })
           break
         case LoginClient.events.login:
           commit({
             type: "set",
             prop: "user",
-            value: event.user
+            value: event.user,
           })
           break
         case LoginClient.events.logout:
           commit({
             type: "set",
             prop: "user",
-            value: null
+            value: null,
           })
           commit({
             type: "set",
             prop: "authorized",
-            value: false
+            value: false,
           })
           break
         case LoginClient.events.update:
           commit({
             type: "set",
             prop: "user",
-            value: event.user
+            value: event.user,
           })
           break
         case LoginClient.events.about:
@@ -121,14 +121,14 @@ const actions = {
           commit({
             type: "set",
             prop: "about",
-            value: event
+            value: event,
           })
           break
         case LoginClient.events.providers:
           commit({
             type: "set",
             prop: "providers",
-            value: event.providers
+            value: event.providers,
           })
           break
         case LoginClient.events.token:
@@ -143,7 +143,7 @@ const actions = {
           commit({
             type: "set",
             prop: "authorized",
-            value: true
+            value: true,
           })
           // Create new timeout to unset authorized
           commit({
@@ -153,13 +153,13 @@ const actions = {
               commit({
                 type: "set",
                 prop: "authorized",
-                value: false
+                value: false,
               })
               // Set auth to null for all providers
               for (let registry of registries) {
                 registry.provider.setAuth(null)
               }
-            }, event.expiresIn * 1000)
+            }, event.expiresIn * 1000),
           })
           break
         case LoginClient.events.error:
@@ -173,7 +173,7 @@ const actions = {
     commit({
       type: "set",
       prop: "available",
-      value: true
+      value: true,
     })
 
   },

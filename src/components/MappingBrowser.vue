@@ -451,7 +451,7 @@ export default {
         scheme: {
           [true]: null,
           [false]: null,
-        }
+        },
       },
       navigatorPages: {},
       navigatorResults: {},
@@ -492,7 +492,7 @@ export default {
           minWidth: "",
           sortable: true,
           align: "left",
-          class: "mappingBrowser-from750"
+          class: "mappingBrowser-from750",
         },
         {
           key: "creator",
@@ -509,7 +509,7 @@ export default {
           minWidth: "",
           sortable: true,
           align: "left",
-          class: "mappingBrowser-from550"
+          class: "mappingBrowser-from550",
         },
         {
           key: "download",
@@ -518,7 +518,7 @@ export default {
           minWidth: "",
           sortable: false,
           align: "left",
-          class: "mappingBrowser-from650"
+          class: "mappingBrowser-from650",
         },
         {
           key: "mappings",
@@ -572,26 +572,26 @@ export default {
     typeOptions() {
       let options = [{
         text: this.$t("mappingBrowser.searchAllTypes"),
-        value: null
+        value: null,
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
           text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
-          value: type.uri
+          value: type.uri,
         })
       }
       return options
     },
     concordanceOptions() {
       let options = [
-        { value: null, text: this.$t("mappingBrowser.searchAllConcordances") }
+        { value: null, text: this.$t("mappingBrowser.searchAllConcordances") },
       ]
 
       for (let item of this.concordanceTableItems) {
         let text = `${item.fromNotation} to ${item.toNotation} (${item.description})`
         options.push({
           value: item.concordance.uri,
-          text
+          text,
         })
       }
 
@@ -637,9 +637,9 @@ export default {
         uri: "http://coli-conc.gbv.de/registry-group/other-mappings",
         prefLabel: {
           de: "Andere",
-          en: "Other"
+          en: "Other",
         },
-        registries: []
+        registries: [],
       }
       for (let registry of this.mappingRegistries) {
         let group = groups.find(group => group.uri == _.get(registry, "subject[0].uri")) || otherGroup
@@ -679,11 +679,11 @@ export default {
               this.$store.commit({
                 type: "settings/set",
                 prop: "mappingBrowserShowRegistry",
-                value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value })
+                value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value }),
               })
               this.$store.commit("mapping/setRefresh", { registry: registry.uri })
             }
-          }
+          },
         })
       }
       return object
@@ -705,10 +705,10 @@ export default {
             this.$store.commit({
               type: "settings/set",
               prop: "mappingNavigatorShowResultsFor",
-              value: newValue
+              value: newValue,
             })
             this.$store.commit("mapping/setRefresh")
-          }
+          },
         })
       }
       return object
@@ -728,9 +728,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingBrowserShowIdentityWarning",
-          value
+          value,
         })
-      }
+      },
     },
     // Setting whether to hide empty sections
     hideEmpty: {
@@ -741,9 +741,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingBrowserHideEmpty",
-          value
+          value,
         })
-      }
+      },
     },
     // Setting whether to show mappings from all schemes or only chosen schemes
     showAllSchemes: {
@@ -754,11 +754,11 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingBrowserAllSchemes",
-          value
+          value,
         })
         // Refresh
         this.$store.commit("mapping/setRefresh")
-      }
+      },
     },
     resultLimit: {
       get() {
@@ -771,11 +771,11 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingBrowserResultLimit",
-          value
+          value,
         })
         // Refresh
         this.$store.commit("mapping/setRefresh")
-      }
+      },
     },
     searchShareLink () {
       let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
@@ -858,7 +858,7 @@ export default {
           this.hasSwitchedToNavigator = true
         }
       },
-      deep: true
+      deep: true,
     },
     needsRefresh(refresh) {
       if (refresh) {
@@ -913,23 +913,23 @@ export default {
         popovers.push({
           elements: [
             _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]"),
-            document.getElementById(`registryGroup-${group.uri}`)
+            document.getElementById(`registryGroup-${group.uri}`),
           ],
           handler: () => {
             this.$set(this.registryGroupShow, group.uri, false)
-          }
+          },
         })
       }
       // Search Link popover
       popovers.push({
         elements: [
           this.$refs.searchSharePopover,
-          document.getElementById("mappingBrowser-search-shareButton")
+          document.getElementById("mappingBrowser-search-shareButton"),
         ],
         handler: () => {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.searchShareShow = false
-        }
+        },
       })
       return popovers
     },
@@ -1180,7 +1180,7 @@ export default {
               return _.get(b, "_occurrence.count", 0) - _.get(a, "_occurrence.count", 0)
             }
             let points = {
-              a: 10, b: 10
+              a: 10, b: 10,
             }
             _.forOwn({ a, b }, (mapping, key) => {
               let conceptsLeft = this.$jskos.conceptsOfMapping(mapping, "from")
@@ -1404,7 +1404,7 @@ export default {
           this.$set(this[`${type}Pages`], registry.uri, currentPage)
         })
       }
-    }
+    },
   },
 }
 </script>

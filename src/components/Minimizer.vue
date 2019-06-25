@@ -55,21 +55,21 @@ export default {
      */
     name: {
       type: String,
-      default: null
+      default: null,
     },
     /**
      * The text that is shown when minimized.
      */
     text: {
       type: String,
-      default: ""
+      default: "",
     },
     /**
      * Determines whether the component is a vertical component.
      */
     isColumn: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Allows parent component to force minimized state.
@@ -79,7 +79,7 @@ export default {
      */
     forceMinimized: {
       type: Boolean,
-      default: null
+      default: null,
     },
   },
   data() {
@@ -109,18 +109,18 @@ export default {
           this.$store.commit({
             type: "settings/set",
             prop: "minimized",
-            value: minimized
+            value: minimized,
           })
         } else {
           this.minimizedLocal = newValue
         }
-      }
-    }
+      },
+    },
   },
   watch: {
     minimized() {
       this.refreshMinimize()
-    }
+    },
   },
   mounted() {
     this.refreshMinimize()
@@ -152,7 +152,7 @@ export default {
           }
           this.previousMinSizes.push({
             element: current,
-            minSize
+            minSize,
           })
           if (this.isColumn) {
             current.style.minWidth = this.minimizerSize
@@ -200,8 +200,8 @@ export default {
         current.dataset.minimized = 0
         this.refresh("minimize")
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -64,7 +64,7 @@ class OccurrencesApiProvider extends BaseProvider {
           params: {
             member: uri,
             scheme: "*",
-            threshold: 5
+            threshold: 5,
           },
         }).catch(() => {
           return []
@@ -76,7 +76,7 @@ class OccurrencesApiProvider extends BaseProvider {
         promises.push(this.__getOccurrences({
           params: {
             member: urisString,
-            threshold: 5
+            threshold: 5,
           },
         }).catch(() => {
           return []
@@ -129,7 +129,7 @@ class OccurrencesApiProvider extends BaseProvider {
     return this.get(this.registry.occurrences, options).then(data => {
       this.occurrencesCache.push({
         options,
-        data
+        data,
       })
       return data
     })

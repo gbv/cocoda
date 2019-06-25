@@ -60,7 +60,7 @@ export default {
   props: {
     registry: {
       type: Object,
-      default: null
+      default: null,
     },
   },
 }

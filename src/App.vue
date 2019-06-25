@@ -202,7 +202,7 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
+    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
   },
   mixins: [auth, objects, computed],
   data () {
@@ -210,11 +210,11 @@ export default {
       loading: false,
       itemDetailSettings: {
         left: {
-          showTopConceptsInScheme: false
+          showTopConceptsInScheme: false,
         },
         right: {
-          showTopConceptsInScheme: false
-        }
+          showTopConceptsInScheme: false,
+        },
       },
       loadFromParametersOnce: _.once(this.loadFromParameters),
       forceMappingBrowser: false,
@@ -298,7 +298,7 @@ export default {
         }
         this.insertPrefLabel(true)
       },
-      deep: true
+      deep: true,
     },
     /**
      * Insert prefLabel into target search field if the scheme on the right changes.
@@ -320,7 +320,7 @@ export default {
         }
         this.insertPrefLabel(false)
       },
-      deep: true
+      deep: true,
     },
     /**
      * Insert prefLabel into target search field if the scheme on the right changes.
@@ -340,7 +340,7 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "locale",
-          value: newValue
+          value: newValue,
         })
         // Also re-insert prefLabels after delay
         _.delay(() => {
@@ -367,7 +367,7 @@ export default {
           this.$store.commit({
             type: "settings/set",
             prop: "creator",
-            value: this.user.name
+            value: this.user.name,
           })
         }
       }
@@ -392,7 +392,7 @@ export default {
           this.$store.commit({
             type: "settings/set",
             prop: "creatorUri",
-            value: this.userUris[0]
+            value: this.userUris[0],
           })
         }
       }
@@ -409,7 +409,7 @@ export default {
               this.$store.commit({
                 type: "settings/set",
                 prop: "creator",
-                value: this.user.name
+                value: this.user.name,
               })
               this.alert(this.$t("alerts.nameError"), null, "danger")
             }
@@ -437,8 +437,8 @@ export default {
           this.forceMappingEditor = false
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   created() {
     // Set loading to true if schemes are not loaded yet.
@@ -450,7 +450,7 @@ export default {
       this.$store.commit({
         type: "setMousePosition",
         x: event.pageX,
-        y: event.pageY
+        y: event.pageY,
       })
     }
     // Check for update every 60 seconds
@@ -458,8 +458,8 @@ export default {
     setInterval(() => {
       axios.get("./build-info.json", {
         headers: {
-          "Cache-Control": "no-cache"
-        }
+          "Cache-Control": "no-cache",
+        },
       }).then(response => response.data).then(buildInfo => {
         if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
           this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
@@ -493,7 +493,7 @@ export default {
       // Load schemes and mapping trash
       let promises = [
         this.loadSchemes(),
-        this.$store.dispatch("mapping/loadMappingTrash")
+        this.$store.dispatch("mapping/loadMappingTrash"),
       ]
       Promise.all(promises).then(() => {
         this.loadFromParametersOnce(true)
@@ -572,12 +572,12 @@ export default {
       let selected = {
         scheme: {
           true: query.fromScheme,
-          false: query.toScheme
+          false: query.toScheme,
         },
         concept: {
           true: query.from,
-          false: query.to
-        }
+          false: query.to,
+        },
       }
 
       for (let isLeft of [true, false]) {
@@ -652,7 +652,7 @@ export default {
               type: "mapping/set",
               mapping: mappingFromQuery,
               original,
-              noQueryRefresh: true
+              noQueryRefresh: true,
             })
           })
         }))

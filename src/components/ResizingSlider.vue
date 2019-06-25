@@ -23,24 +23,24 @@ export default {
   props: {
     isColumn: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       resizing: false,
-      savedValues: {}
+      savedValues: {},
     }
   },
   computed: {
     flex() {
       return this.$settings.flex || {}
-    }
+    },
   },
   watch: {
     flex() {
       this.refreshFlex()
-    }
+    },
   },
   mounted() {
     // Set flex values on first mount
@@ -209,7 +209,7 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "flex",
-          value: flex
+          value: flex,
         })
       }
     },
@@ -224,7 +224,7 @@ export default {
         }
       }
     },
-  }
+  },
 }
 </script>
 

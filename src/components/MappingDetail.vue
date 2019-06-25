@@ -203,7 +203,7 @@ export default {
      */
     mapping: {
       type: Object,
-      default: null
+      default: null,
     },
 
   },
@@ -224,7 +224,7 @@ export default {
       }
       return name
     },
-  }
+  },
 }
 </script>
 

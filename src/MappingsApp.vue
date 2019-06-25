@@ -308,7 +308,7 @@ import computed from "./mixins/computed"
 export default {
   name: "MappingsApp",
   components: {
-    MappingTable, LoadingIndicatorFull, FlexibleTable
+    MappingTable, LoadingIndicatorFull, FlexibleTable,
   },
   mixins: [auth, objects, computed],
   data () {
@@ -324,8 +324,8 @@ export default {
       totalCount: 0,
       itemDetailSettings: {
         left: {
-          showTopConceptsInScheme: true
-        }
+          showTopConceptsInScheme: true,
+        },
       },
       type: null,
       concordance: null,
@@ -338,13 +338,13 @@ export default {
         {
           name: "feedback",
           title: "Send Feedback",
-          icon: "comment"
+          icon: "comment",
         },
         {
           name: "open",
           title: "Open in Cocoda",
-          icon: "external-link-alt"
-        }
+          icon: "external-link-alt",
+        },
       ],
       showLabels: "1",
       // Properties for URL parameters
@@ -371,12 +371,12 @@ export default {
     typeOptions() {
       let options = [{
         text: "all types",
-        value: null
+        value: null,
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
           text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
-          value: type.uri
+          value: type.uri,
         })
       }
       return options
@@ -401,18 +401,18 @@ export default {
       },
       set(value) {
         this.currentPage = value
-      }
+      },
     },
     concordanceOptions() {
       let options = [
-        { value: null, text: "all concordances" }
+        { value: null, text: "all concordances" },
       ]
 
       for (let item of this.concordanceTableItems) {
         let text = `${item.from} to ${item.to} (${item.description})`
         options.push({
           value: item.concordance.uri,
-          text
+          text,
         })
       }
 
@@ -675,7 +675,7 @@ export default {
           from, to, fromScheme, toScheme, type, creator, partOf,
           limit: 10,
           offset: (this.page - 1) * 10,
-        }
+        },
       }).then(({ data, headers }) => {
         if (this.loadingId == loadingId) {
           for (let mapping of data || []) {

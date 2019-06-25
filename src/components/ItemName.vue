@@ -67,49 +67,49 @@ export default {
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * The font size for the text (small, normal, large).
      */
     fontSize: {
       type: String,
-      default: "normal"
+      default: "normal",
     },
     /**
      * Determines whether to show or hide the label text.
      */
     showText: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Determines whether it is a link.
      */
     isLink: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Only for isLink: Side on which to open item.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Determines whether to show the concepts label as a tooltip.
      */
     showTooltip: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Determines whether the item is highlighted
      */
     isHighlighted: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * If true, this ItemName will not be hovered if the same concept is hovered elsewhere.
@@ -117,22 +117,22 @@ export default {
      */
     preventExternalHover: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Determines whether the item is draggable
      */
     draggable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Determines whether the item should be forced to open on the specified side in `isLeft`
      */
     forceSide: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data () {
     return {
@@ -161,7 +161,7 @@ export default {
           this.$refs.tooltip && this.$refs.tooltip.$emit("open")
         }
       }, 50)
-    }
+    },
   },
   created() {
     if (!this.preventExternalHover && this.isLink) {
@@ -175,7 +175,7 @@ export default {
         this.isHoveredFromHere = true
         this.$store.commit({
           type: "setHoveredConcept",
-          concept: this.item
+          concept: this.item,
         })
         // Set URL
         this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
@@ -198,7 +198,7 @@ export default {
         this.isHoveredFromHere = false
         this.$store.commit({
           type: "setHoveredConcept",
-          concept: null
+          concept: null,
         })
         window.clearInterval(this.interval)
       }
@@ -210,7 +210,7 @@ export default {
         return text
       }
     },
-  }
+  },
 }
 
 import Vue from "vue"
@@ -222,17 +222,17 @@ Vue.component("notation-text", {
   props: {
     item: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       ddc: {
         uri : "http://dewey.info/scheme/edition/e23/",
         identifier : [
-          "http://bartoc.org/en/node/241"
-        ]
-      }
+          "http://bartoc.org/en/node/241",
+        ],
+      },
     }
   },
   computed: {
@@ -250,7 +250,7 @@ Vue.component("notation-text", {
       return fill
     },
   },
-  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-mediumLightGrey'>{{ fill }}</span></span>"
+  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-mediumLightGrey'>{{ fill }}</span></span>",
 })
 
 </script>

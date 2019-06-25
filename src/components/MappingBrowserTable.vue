@@ -387,7 +387,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          class: "fontSize-small"
+          class: "fontSize-small",
         },
         {
           key: "sourceConcepts",
@@ -397,7 +397,7 @@ export default {
           align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
-          class: "mappingBrowser-table-concepts"
+          class: "mappingBrowser-table-concepts",
         },
         {
           key: "sourceConceptsLong",
@@ -407,7 +407,7 @@ export default {
           align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
-          class: "mappingBrowser-table-conceptsLong"
+          class: "mappingBrowser-table-conceptsLong",
         },
         {
           key: "type",
@@ -425,7 +425,7 @@ export default {
               return 1
             }
             return 0
-          }
+          },
         },
         {
           key: "targetScheme",
@@ -434,7 +434,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          class: "fontSize-small"
+          class: "fontSize-small",
         },
         {
           key: "targetConcepts",
@@ -444,7 +444,7 @@ export default {
           align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
-          class: "mappingBrowser-table-concepts"
+          class: "mappingBrowser-table-concepts",
         },
         {
           key: "targetConceptsLong",
@@ -454,7 +454,7 @@ export default {
           align: "left",
           sortable: false,
           compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
-          class: "mappingBrowser-table-conceptsLong"
+          class: "mappingBrowser-table-conceptsLong",
         },
         {
           key: "creator",
@@ -463,7 +463,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          class: "mappingBrowser-table-creator"
+          class: "mappingBrowser-table-creator",
         },
         {
           key: "extra",
@@ -487,7 +487,7 @@ export default {
               return 1
             }
             return 0
-          }
+          },
         },
         {
           key: "actions",
@@ -495,8 +495,8 @@ export default {
           width: "12%",
           minWidth: "",
           align: "right",
-          sortable: false
-        }
+          sortable: false,
+        },
       ]
     },
     currentRegistry() {
@@ -543,7 +543,7 @@ export default {
       this.$store.commit({
         type: "mapping/set",
         mapping,
-        original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.currentRegistry) ? copyWithReferences(mapping) : null
+        original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.currentRegistry) ? copyWithReferences(mapping) : null,
       })
     },
     canEdit(data) {
@@ -686,7 +686,7 @@ export default {
     _hover(event) {
       this.$store.commit({
         type: "setHoveredMapping",
-        mapping: event && event.mapping
+        mapping: event && event.mapping,
       })
       this.hoveredId = event && event.uniqueId
     },
@@ -698,7 +698,7 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingRegistry",
-          value: registry.uri
+          value: registry.uri,
         })
       }
     },
@@ -714,7 +714,7 @@ export default {
           type: "mapping/transferMapping",
           mapping,
           fromRegistry,
-          toRegistry
+          toRegistry,
         })
       } else {
         promise = Promise.resolve(null)
@@ -728,7 +728,7 @@ export default {
         this.$store.commit("mapping/setRefresh")
       })
     },
-  }
+  },
 }
 </script>
 

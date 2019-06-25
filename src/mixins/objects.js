@@ -9,6 +9,7 @@
 
 import jskos from "jskos-tools"
 import _ from "lodash"
+import util from "../util"
 
 let objects = {}
 let topConcepts = {}
@@ -276,7 +277,7 @@ export default {
             this.$store.commit({
               type: "alerts/add",
               text: `Could not load concept schemes for provider ${util.prefLabel(registry)}. Please open an issue on GitHub.`,
-              variant: "danger"
+              variant: "danger",
             })
           })
           promises.push(promise)
@@ -299,11 +300,11 @@ export default {
         // Commit schemes to store
         this.$store.commit({
           type: "setSchemes",
-          schemes
+          schemes,
         })
         this.$store.commit({
           type: "setSchemesLoaded",
-          value: true
+          value: true,
         })
       })
     },
@@ -385,7 +386,7 @@ export default {
         } else {
           list.push({
             provider,
-            concepts: [concept]
+            concepts: [concept],
           })
         }
       }

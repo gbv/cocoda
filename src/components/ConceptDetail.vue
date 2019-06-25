@@ -226,7 +226,7 @@ import computed from "../mixins/computed"
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower
+    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower,
   },
   mixins: [objects, computed],
   props: {
@@ -235,22 +235,22 @@ export default {
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Settings - see [`ItemDetail`](#itemdetail).
      */
     settings: {
       type: Object,
-      default: () => { return {} }
-    }
+      default: () => { return {} },
+    },
   },
   data () {
     return {
@@ -296,7 +296,7 @@ export default {
         })
         searchLinks.push({
           url,
-          label: this.$util.prefLabel(searchLink)
+          label: this.$util.prefLabel(searchLink),
         })
       }
       // Filter out duplicate URLs (e.g. Wikipedia)
@@ -358,7 +358,7 @@ export default {
         // Refresh component if settings changed
         this.refresh()
       }
-    }
+    },
   },
   mounted() {
     // Initial refresh
@@ -431,7 +431,7 @@ export default {
     copyAndSearch(label) {
       this.$emit("searchConcept", label)
     },
-  }
+  },
 }
 </script>
 

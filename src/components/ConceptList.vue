@@ -42,7 +42,7 @@ import computed from "../mixins/computed"
 export default {
   name: "ConceptList",
   components: {
-    LoadingIndicatorFull, ConceptListItem
+    LoadingIndicatorFull, ConceptListItem,
   },
   mixins: [objects, computed],
   props: {
@@ -51,42 +51,42 @@ export default {
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * List of concepts to be shown.
      */
     concepts: {
       type: Array,
-      default: () => [null]
+      default: () => [null],
     },
     /**
      * Whether to show children of concepts, i.e. a concept hierarchy.
      */
     showChildren: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Optional label to show when there are no items.
      */
     noItemsLabel: {
       type: String,
-      default: null
+      default: null,
     },
     /**
      * Whether to show the scheme in front of concepts.
      */
     showScheme: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * List of buttons (array of objects with props `position`, `icon`, and `onClick`).
      */
     buttons: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
   },
   data () {
@@ -166,7 +166,7 @@ export default {
                   offset: -50,
                   cancelable: true,
                   x: false,
-                  y: true
+                  y: true,
                 }
                 if (el) this.scrollToInternal(el, options)
                 this.loading = false
@@ -179,7 +179,7 @@ export default {
           }
         }
       },
-      deep: true
+      deep: true,
     },
   },
   methods: {
@@ -217,7 +217,7 @@ export default {
       }
       return items
     },
-  }
+  },
 }
 
 </script>

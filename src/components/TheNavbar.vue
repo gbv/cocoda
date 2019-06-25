@@ -292,7 +292,7 @@ import computed from "../mixins/computed"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable
+    TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable,
   },
   mixins: [auth, objects, dragandrop, computed],
   data() {
@@ -308,9 +308,9 @@ export default {
       set(concept) {
         this.$store.commit({
           type: "setDraggedConcept",
-          concept
+          concept,
         })
-      }
+      },
     },
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)

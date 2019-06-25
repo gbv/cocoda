@@ -87,7 +87,7 @@ import dragandrop from "../mixins/dragandrop"
 export default {
   name: "ConceptListItem",
   components: {
-    LoadingIndicator, ItemName
+    LoadingIndicator, ItemName,
   },
   mixins: [objects, dragandrop],
   props: {
@@ -96,56 +96,56 @@ export default {
      */
     concept: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * The depth of the current item.
      */
     depth: {
       type: Number,
-      default: null
+      default: null,
     },
     /**
      * The index of the current item.
      */
     index: {
       type: Number,
-      default: null
+      default: null,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Tells the component whether the item is selected.
      */
     isSelected: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Whether to show children of concepts, i.e. a concept hierarchy.
      */
     showChildren: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Whether to show the scheme in front of concepts.
      */
     showScheme: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * List of buttons (array of objects with props `position`, `icon`, and `onClick`).
      */
     buttons: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
   },
   data () {
@@ -189,7 +189,7 @@ export default {
     _hovering(concept) {
       this.$store.commit({
         type: "setHoveredConcept",
-        concept
+        concept,
       })
       this.isHoveredFromHere = concept != null
       // Set canAddToMapping
@@ -267,7 +267,7 @@ export default {
       this.addToMapping({
         concept: this.concept,
         scheme: this.$store.state.selected.scheme[this.isLeft],
-        isLeft: this.isLeft
+        isLeft: this.isLeft,
       })
     },
     /**
@@ -304,11 +304,11 @@ export default {
         offset: -20,
         cancelable: true,
         x: false,
-        y: true
+        y: true,
       }
       this.$scrollTo(this.$el, 200, options)
     },
-  }
+  },
 }
 
 </script>

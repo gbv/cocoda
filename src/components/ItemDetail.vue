@@ -53,7 +53,7 @@ import computed from "../mixins/computed"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton,
   },
   mixins: [objects, dragandrop, computed],
   props: {
@@ -62,21 +62,21 @@ export default {
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * `true` means item is a scheme, `false` means item is a concept.
      */
     isScheme: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Settings - An object with a subset of the following properties:
@@ -89,8 +89,8 @@ export default {
      */
     settings: {
       type: Object,
-      default: () => { return {} }
-    }
+      default: () => { return {} },
+    },
   },
   data () {
     return {
@@ -100,7 +100,7 @@ export default {
         showSchemeInAncestors: true,
         showTopConceptsInScheme: false,
         showAllAncestors: false,
-        showAllNotes: false
+        showAllNotes: false,
       },
     }
   },
@@ -144,7 +144,7 @@ export default {
      */
     item: function() {
       this.$el.scrollTop = 0
-    }
+    },
   },
   mounted() {
     this.$el.scrollTop = 0

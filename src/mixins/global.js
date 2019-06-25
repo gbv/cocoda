@@ -240,5 +240,5 @@ export default {
       var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
       FileSaver.saveAs(blob, filename)
     },
-  }
+  },
 }

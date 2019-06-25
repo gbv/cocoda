@@ -10,7 +10,7 @@ export default {
   props: {
     registry: {
       type: Object,
-      default: null
+      default: null,
     },
     tooltip: {
       type: Boolean,
@@ -31,6 +31,6 @@ export default {
     tooltipHtml() {
       return this.$util.definition(this.registry).join("<br>")
     },
-  }
+  },
 }
 </script>

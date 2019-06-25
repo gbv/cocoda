@@ -25,11 +25,11 @@ const defaultSettings = {
   mappingRegistry: null,
   schemeSelectionInsertPrefLabel: {
     [true]: true,
-    [false]: true
+    [false]: true,
   },
   conceptListChoice: {
     [true]: 0,
-    [false]: 0
+    [false]: 0,
   },
   mappingNavigatorShowResultsFor: {
     [true]: true,
@@ -66,7 +66,7 @@ const mutations = {
 
   loaded(state, { loaded = true }) {
     state.loaded = loaded
-  }
+  },
 
 }
 
@@ -91,15 +91,15 @@ const actions = {
     }).then(settings => {
       let newSettings = Object.assign({}, defaultSettings, settings || {})
       commit({
-        type: "loaded"
+        type: "loaded",
       })
       commit({
         type: "save",
-        settings: newSettings
+        settings: newSettings,
       })
       return
     })
-  }
+  },
 }
 
 export default {

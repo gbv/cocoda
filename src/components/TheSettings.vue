@@ -374,11 +374,11 @@ export default {
       handler() {
         this.$store.commit({
           type: "settings/save",
-          settings: this.localSettings
+          settings: this.localSettings,
         })
         this.creatorRewritten = false
       },
-      deep: true
+      deep: true,
     },
     uploadedFile() {
       if (this.uploadedFile && this.localMappingsSupported) {
@@ -550,7 +550,7 @@ export default {
       this.$store.commit({
         type: "settings/set",
         prop: "flex",
-        value: flex
+        value: flex,
       })
     },
     deleteMappings() {
@@ -588,7 +588,7 @@ export default {
       this.$store.commit({
         type: "auth/openWindow",
         url,
-        eventType
+        eventType,
       })
     },
     replaceKey(key) {
@@ -601,8 +601,8 @@ export default {
         "command": "Cmd",
       }
       return replacements[key] || key
-    }
-  }
+    },
+  },
 }
 </script>
 

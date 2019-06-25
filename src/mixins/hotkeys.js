@@ -76,7 +76,7 @@ export default {
             metaKey: true,
             altKey: false,
             shiftKey: false,
-          }
+          },
         ]
         let skip = false
         for (let sc of toSkip) {
@@ -127,8 +127,8 @@ export default {
         this.hotkeys.push({
           handler,
           shortcut: {
-            key, metaKey, ctrlKey, altKey, shiftKey
-          }
+            key, metaKey, ctrlKey, altKey, shiftKey,
+          },
         })
       }
     },

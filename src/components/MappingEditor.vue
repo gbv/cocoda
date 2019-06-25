@@ -305,9 +305,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingEditorClearOnSave",
-          value
+          value,
         })
-      }
+      },
     },
     // Setting whether to only allow 1-to-1 mappings
     only1to1mappings: {
@@ -318,9 +318,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingCardinality",
-          value: value ? "1-to-1" : "1-to-n"
+          value: value ? "1-to-1" : "1-to-n",
         })
-      }
+      },
     },
   },
   watch: {
@@ -334,7 +334,7 @@ export default {
       this.$store.commit({
         type: "mapping/setScheme",
         isLeft: false,
-        scheme: this.selected.scheme[false]
+        scheme: this.selected.scheme[false],
       })
     },
     comments() {
@@ -357,7 +357,7 @@ export default {
       this.$store.commit({
         type: "mapping/setScheme",
         isLeft: false,
-        scheme: this.selected.scheme[false]
+        scheme: this.selected.scheme[false],
       })
     },
     creator() {
@@ -417,7 +417,7 @@ export default {
         let newMapping = mappings[0]
         this.$store.commit({
           type: "mapping/set",
-          original: newMapping
+          original: newMapping,
         })
         if (this.clearOnSave) {
           this.clearMapping()
@@ -436,11 +436,11 @@ export default {
       let creator = [this.creator]
       this.$store.commit({
         type: "mapping/setCreator",
-        creator
+        creator,
       })
       this.$store.commit({
         type: "mapping/setContributor",
-        contributor
+        contributor,
       })
     },
     deleteMapping() {
@@ -471,7 +471,7 @@ export default {
     clearMapping() {
       if (!this.canClearMapping) return false
       this.$store.commit({
-        type: "mapping/empty"
+        type: "mapping/empty",
       })
       // Hide comment modal if open
       this.$refs.commentModal.hide()
@@ -525,7 +525,7 @@ export default {
       this.addToMapping({
         concept,
         scheme: this.selected.scheme[isLeft],
-        isLeft
+        isLeft,
       })
     },
     /**
@@ -534,7 +534,7 @@ export default {
     deleteAll(isLeft) {
       this.$store.commit({
         type: "mapping/removeAll",
-        isLeft
+        isLeft,
       })
     },
     droppedConcept(concept, isLeft) {
@@ -543,7 +543,7 @@ export default {
         this.addToMapping({
           concept,
           scheme: (concept.inScheme && concept.inScheme[0]) || this.selected.scheme[isLeft],
-          isLeft: isLeft
+          isLeft: isLeft,
         })
         // Load details if necessary
         this.loadDetails(concept)
@@ -557,8 +557,8 @@ export default {
         this.$store.commit({
           type: "mapping/setNote",
           note: {
-            [language]: comments
-          }
+            [language]: comments,
+          },
         })
       }
     },
@@ -577,7 +577,7 @@ export default {
       }
       this.$store.commit({ type: "mapping/switch" })
     },
-  }
+  },
 }
 </script>
 

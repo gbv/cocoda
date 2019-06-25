@@ -29,7 +29,7 @@ export default {
      */
     tooltip: {
       type: String,
-      default: ""
+      default: "",
     },
   },
   data() {
@@ -46,11 +46,11 @@ export default {
       return [{
         elements: [
           this.$refs.popover,
-          document.getElementById(`componentSettings-icon-${this.id}`)
+          document.getElementById(`componentSettings-icon-${this.id}`),
         ],
         handler: () => {
           this.hide()
-        }
+        },
       }]
     },
     show() {

@@ -3,15 +3,15 @@
 const state = {
   scheme: {
     true: null,
-    false: null
+    false: null,
   },
   concept: {
     true: null,
-    false: null
+    false: null,
   },
   loadingId: {
     true: "",
-    false: ""
+    false: "",
   },
 }
 

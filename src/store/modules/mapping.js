@@ -13,7 +13,7 @@ const emptyMapping = {
   to: { "memberSet": [] },
   fromScheme: null,
   toScheme: null,
-  type: [jskos.defaultMappingType.uri]
+  type: [jskos.defaultMappingType.uri],
 }
 
 // initial state
@@ -345,7 +345,7 @@ const mutations = {
       from: state.mapping.to,
       to: state.mapping.from,
       fromScheme: state.mapping.toScheme,
-      toScheme: state.mapping.fromScheme
+      toScheme: state.mapping.fromScheme,
     })
     // Switch narrower and broad match
     if (state.mapping.type[0] == "http://www.w3.org/2004/02/skos/core#narrowMatch") {
@@ -380,7 +380,7 @@ const mutations = {
   addToTrash(state, { mapping, registry } = {}) {
     let item = {
       mapping: jskos.minifyMapping(mapping),
-      registry: { uri: registry.uri }
+      registry: { uri: registry.uri },
     }
     state.mappingTrash = [item].concat(state.mappingTrash)
     // Max 10 items
@@ -482,7 +482,7 @@ const actions = {
             commit({
               type: "addToTrash",
               mapping,
-              registry
+              registry,
             })
           }
         }
@@ -495,13 +495,13 @@ const actions = {
     let savedMapping = (await dispatch({
       type: "saveMappings",
       mappings: [{ mapping }],
-      registry: toRegistry
+      registry: toRegistry,
     }))[0]
     if (savedMapping) {
       let deletedMapping = (await dispatch({
         type: "removeMappings",
         mappings: [mapping],
-        registry: fromRegistry
+        registry: fromRegistry,
       }))[0]
       if (!deletedMapping) {
         console.warn("transferMapping: Mapping saved, but could not be deleted from source.")
@@ -517,12 +517,12 @@ const actions = {
       if (trash) {
         commit({
           type: "setTrash",
-          trash
+          trash,
         })
       } else {
         commit({
           type: "setTrash",
-          trash: []
+          trash: [],
         })
       }
     })
@@ -541,12 +541,12 @@ const actions = {
         // Remove item from trash
         commit({
           type: "removeFromTrash",
-          uri
+          uri,
         })
         // Set refresh
         commit({
           type: "setRefresh",
-          registry: registry.uri
+          registry: registry.uri,
         })
       }
       return mapping

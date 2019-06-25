@@ -180,7 +180,7 @@ export default {
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
   data() {
@@ -224,8 +224,8 @@ export default {
       let options = [
         {
           value: null,
-          text: this.$t("schemeSelection.allLanguages")
-        }
+          text: this.$t("schemeSelection.allLanguages"),
+        },
       ]
       let languages = _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
       options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
@@ -239,9 +239,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: `schemeSelectionInsertPrefLabel[${this.isLeft}]`,
-          value
+          value,
         })
-      }
+      },
     },
   },
   watch: {
@@ -264,12 +264,12 @@ export default {
         elements: [
           this.$refs.popover,
           document.getElementById(`${this.id}-expandButton`),
-          this.$refs.showAllSchemesLink
+          this.$refs.showAllSchemesLink,
         ],
         handler: () => {
           // this.popoverShown
           this.hidePopover()
-        }
+        },
       }]
     },
     shortcutHandler({ action, isLeft }) {
@@ -352,7 +352,7 @@ export default {
         this.showPopover()
       }
     },
-  }
+  },
 }
 </script>
 

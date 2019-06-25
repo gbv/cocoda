@@ -25,7 +25,7 @@ const state = {
   hoveredMapping: null,
   mousePosition: {
     x: 0,
-    y: 0
+    y: 0,
   },
 }
 
@@ -117,7 +117,7 @@ const mutations = {
 
 const store = new Vuex.Store({
   modules: {
-    selected, mapping, alerts, auth, settings
+    selected, mapping, alerts, auth, settings,
   },
   plugins,
   state,

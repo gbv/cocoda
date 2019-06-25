@@ -90,11 +90,11 @@ export default {
     },
     idPrefix: {
       type: String,
-      default: ""
+      default: "",
     },
     mapping: {
       type: Object,
-      default: null
+      default: null,
     },
   },
   data() {
@@ -222,7 +222,7 @@ export default {
         if (this.creator && this.creator.uri && this.creatorName) {
           annotation.creator = {
             id: this.creator.uri,
-            name: this.creatorName
+            name: this.creatorName,
           }
         }
         promise = provider.addAnnotation(annotation).then(annotation => {

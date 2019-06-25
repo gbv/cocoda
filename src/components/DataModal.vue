@@ -93,7 +93,7 @@ export default {
      */
     data: {
       type: [Object, Array],
-      default: null
+      default: null,
     },
     /**
      * JSKOS type (one of `concept`, `scheme`, or `mapping`)
@@ -105,15 +105,15 @@ export default {
       default: null,
       validator: function (value) {
         return ["concept", "scheme", "mapping", "annotation", "concordance"].indexOf(value) !== -1
-      }
+      },
     },
     /**
      * API URL for data (if it exists).
      */
     url: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
@@ -210,7 +210,7 @@ export default {
           url.searchParams.set("download", type)
           urls.push({
             url,
-            type
+            type,
           })
         } catch(error) {
           // Do nothing
@@ -226,7 +226,7 @@ export default {
     show() {
       this.$refs.dataModal.show()
     },
-  }
+  },
 }
 </script>
 
