@@ -78,5 +78,9 @@
     "lint-staged": "^8.1.5",
     "vue-styleguidist": "^3.11.7",
     "vue-template-compiler": "^2.5.21"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.8.0"
   }
 }

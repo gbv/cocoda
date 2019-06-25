@@ -18,6 +18,8 @@ Try out the [latest release](https://coli-conc.gbv.de/cocoda/), the [current dev
 - [License](#license)
 
 ## Install
+It is recommended to use Node.js v10 or above.
+
 ```bash
 git clone https://github.com/gbv/cocoda.git
 cd cocoda

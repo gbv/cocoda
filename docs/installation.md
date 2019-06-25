@@ -23,7 +23,7 @@ npm install
 npm run build
 ```
 
-Files are created in directory `dist` to be [served with any web server](#serving-the-files).
+Files are created in directory `dist` to be [served with any web server](#serving-the-files). Note: It is recommended to use Node.js v10 or above.
 
 ### Serving the Files
 
