@@ -17,6 +17,9 @@ config/cocoda*.json
 # local colors file
 src/style/user-colors.less
 
+# Relases (when using bin/build-all.sh)
+releases/
+
 # Editor directories and files
 .idea
 .vscode
