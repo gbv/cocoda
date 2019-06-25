@@ -3,22 +3,19 @@
 # move current current build-info.json to build-info.backup.json
 mv build/build-info.json build/build-info.backup.json
 
-# write build info to build-info.js
-VERSION=$(node -pe "require('./package.json').version")
-GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
+# get github-milestones.json if it doesn't exist yet
+DELETE_TEMP=
+if [ ! -e ./temp/github-milestones.json ]; then
+  DELETE_TEMP=yes
+  mkdir temp
+  wget https://api.github.com/repos/gbv/cocoda/milestones?state=closed -O temp/github-milestones.json
+fi
 
-GIT_COMMIT=$(git rev-parse --verify HEAD)
+# write build info to build-info.json
+./build/build-info.sh > ./build/build-info.json
+
+GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
-DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-cat > ./build/build-info.json <<EOL
-{
-  "version": "${VERSION}",
-  "gitBranch": "${GIT_BRANCH}",
-  "gitCommit": "${GIT_COMMIT}",
-  "gitCommitShort": "${GIT_COMMIT_SHORT}",
-  "buildDate": "${DATE}"
-}
-EOL
 
 echo "Building for branch $GIT_BRANCH ($GIT_COMMIT_SHORT)..."
 
@@ -64,6 +61,9 @@ mv ./build/build-info.backup.json ./build/build-info.json
 
 # # delete config file if it was generated during this script
 [ ! $USERCONFIG ] && echo "Removing config generated during build..." && rm ./config/cocoda.json
+
+# delete temp folder if it was created during build
+[ $DELETE_TEMP ] && rm -r temp/
 
 [ $success -eq 0 ] && echo "Build successfully deployed to folder dist/."
 

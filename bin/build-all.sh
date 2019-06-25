@@ -1,9 +1,12 @@
 #!/bin/bash
 
+mkdir temp
+wget https://api.github.com/repos/gbv/cocoda/milestones?state=closed -O temp/github-milestones.json
+# Copy build-info.sh to a temporary directory so it will be accessible throughout all the builds
+cp build/build-info.sh temp/build-info.sh
+
 # Stash changes before running script
 git stash save -u before-build-all
-
-wget https://api.github.com/repos/gbv/cocoda/milestones?state=closed -O github-milestones.json
 
 GIT_BRANCH=master
 
@@ -22,32 +25,19 @@ do
   # 4. Create build
   npm run build
   # 5 Create build-info.json from scratch (due to new properties)
-  # VERSION=$(node -pe "require('./package.json').version")
-  VERSION=$TAG
-  GIT_COMMIT=$(git rev-parse --verify HEAD)
-  GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
-  BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-  DATE=$(node -pe "var date = new Date($(git show -s --format=%ct)*1000); console.log(date); process.exit(0);")
-  MILESTONE_URL=$(node -pe "let ms = require('./github-milestones.json'); let m = ms.find(a => a.title == '$VERSION'); if(m) console.log('\"' + m.html_url + '?closed=1\"'); else console.log('null'); process.exit(0)")
-  cat > dist/build-info.json <<EOL
-{
-  "version": "${VERSION}",
-  "gitBranch": "${GIT_BRANCH}",
-  "gitCommit": "${GIT_COMMIT}",
-  "gitCommitShort": "${GIT_COMMIT_SHORT}",
-  "buildDate": "${BUILD_DATE}",
-  "date": "${DATE}",
-  "milestoneUrl": ${MILESTONE_URL}
-}
-EOL
+  VERSION=$TAG GIT_BRANCH=$GIT_BRANCH temp/build-info.sh > dist/build-info.json
   # 6. Move build to separate folder
   mv dist releases/$TAG
   # 7. Reset repo for next checkout
   git reset --hard
+  break
 done
 
-rm github-milestones.json
+rm -r temp
 git checkout dev
 
 # Apply stash after script
 git stash pop
+
+# Run one more install to get back to current dependencies
+npm i
