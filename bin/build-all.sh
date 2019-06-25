@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Stash changes before running script
+git stash save -u before-build-all
+
 GIT_BRANCH=master
 
 git checkout $GIT_BRANCH
@@ -40,3 +43,6 @@ EOL
 done
 
 git checkout dev
+
+# Apply stash after script
+git stash pop
