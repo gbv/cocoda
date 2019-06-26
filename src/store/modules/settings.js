@@ -11,7 +11,6 @@ const defaultSettings = {
   mappingBrowserHideEmpty: false,
   mappingBrowserShowIdentityWarning: true,
   conceptDetailShowAllAncestors: false,
-  conceptDetailDoNotTruncateNotes: false,
   conceptListAddToMappingSelectsConcept: true,
   mappingBrowserShowRegistry: {},
   minimized: {},

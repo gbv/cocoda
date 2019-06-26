@@ -28,6 +28,14 @@
           :buttons="choice.buttons" />
       </tab>
     </tabs>
+    <!-- Settings -->
+    <component-settings>
+      <b-form-checkbox
+        v-model="conceptListAddToMappingSelectsConcept"
+        style="user-select: none;">
+        {{ $t("settings.conceptListAddToMappingSelectsConcept") }}
+      </b-form-checkbox>
+    </component-settings>
   </div>
 </template>
 
@@ -35,6 +43,7 @@
 import Minimizer from "./Minimizer"
 import ConceptList from "./ConceptList"
 import _ from "lodash"
+import ComponentSettings from "./ComponentSettings"
 
 import computed from "../mixins/computed"
 import objects from "../mixins/objects"
@@ -42,7 +51,7 @@ import dragandrop from "../mixins/dragandrop"
 
 export default {
   name: "ConceptListWrapper",
-  components: { Minimizer, ConceptList },
+  components: { Minimizer, ConceptList, ComponentSettings },
   mixins: [computed, objects, dragandrop],
   props: {
     /**
@@ -112,6 +121,18 @@ export default {
         })
       },
     },
+    conceptListAddToMappingSelectsConcept: {
+      get() {
+        return this.$settings.conceptListAddToMappingSelectsConcept
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "conceptListAddToMappingSelectsConcept",
+          value,
+        })
+      },
+    },
   },
   methods: {
     /**
@@ -135,6 +156,9 @@ export default {
 
 .conceptListWrapper .cocoda-vue-tabs-content {
   padding: 5px 0 0 0 !important;
+}
+.conceptListWrapper .componentSettings {
+  right: 3px;
 }
 
 </style>

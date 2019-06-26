@@ -208,7 +208,6 @@
       "language": "Interface Language",
       "languageContribution": "To contribute to the translation of Cocoda, see these <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>instructions in the documentation</a>.",
       "showAllAncestors": "Always show all ancestors in concept details.",
-      "truncateNotes": "Do not truncate notes in concept details.",
       "resetSizes": "Reset card sizes",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
@@ -250,7 +249,7 @@
       "privacyPolicy": "Privacy Policy",
       "sources": "Sources",
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage.",
-      "conceptListAddToMappingSelectsConcept": "Concept List: Adding a concept to the mapping will also select that concept."
+      "conceptListAddToMappingSelectsConcept": "Adding a concept to the mapping will also select that concept."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted.",
@@ -395,7 +394,6 @@
       "language": "Sprache der Oberfläche",
       "languageContribution": "Um zur Übersetzung von Cocoda beizutragen, siehe diese <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>Anweisungen in der Dokumentation</a> (Englisch).",
       "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",
-      "truncateNotes": "Notizen für Konzepte nicht abschneiden.",
       "resetSizes": "Komponenten-Größen zurücksetzen",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
@@ -437,7 +435,7 @@
       "privacyPolicy": "Datenschutz",
       "sources": "Quellcode",
       "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert.",
-      "conceptListAddToMappingSelectsConcept": "Concept-List: Durch Hinzufügen eines Konzepts zum Mapping wird dieses auch ausgewählt."
+      "conceptListAddToMappingSelectsConcept": "Durch Hinzufügen eines Konzepts zum Mapping wird dieses auch ausgewählt."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",

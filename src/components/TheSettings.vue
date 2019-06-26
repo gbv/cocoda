@@ -158,21 +158,6 @@
             </b-form-select>
             <br><br><span v-html="$t('settings.languageContribution')" />
           </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
-              {{ $t("settings.showAllAncestors") }}
-            </b-form-checkbox>
-          </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptDetailDoNotTruncateNotes">
-              {{ $t("settings.truncateNotes") }}
-            </b-form-checkbox>
-          </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptListAddToMappingSelectsConcept">
-              {{ $t("settings.conceptListAddToMappingSelectsConcept") }}
-            </b-form-checkbox>
-          </p>
           <p>
             <b-button
               variant="primary"

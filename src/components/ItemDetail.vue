@@ -18,16 +18,26 @@
         :settings="internalSettings"
         @searchMappings="$emit('searchMappings', $event)"
         @searchConcept="$emit('searchConcept', $event)" />
+
+      <!-- Settings -->
+      <component-settings>
+        <b-form-checkbox
+          v-model="conceptDetailShowAllAncestors"
+          style="user-select: none;">
+          {{ $t("settings.showAllAncestors") }}
+        </b-form-checkbox>
+      </component-settings>
+
+      <data-modal-button
+        :data="item"
+        :position-right="15"
+        :url="apiUrl" />
     </div>
     <div
       v-else-if="!loading"
       class="fillAndCenter fontSize-normal fontWeight-heavy">
       {{ $t("itemDetail.pleaseSelect") }}
     </div>
-
-    <data-modal-button
-      :data="item"
-      :url="apiUrl" />
 
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
@@ -40,6 +50,7 @@ import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
 import DataModalButton from "./DataModalButton"
+import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
 
 // Import mixins
@@ -53,7 +64,7 @@ import computed from "../mixins/computed"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton,
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton, ComponentSettings,
   },
   mixins: [objects, dragandrop, computed],
   props: {
@@ -85,7 +96,6 @@ export default {
      * - showSchemeInAncestors: (default true)
      * - showTopConceptsInScheme: (default false)
      * - showAllAncestors: always show all ancestors (default false)
-     * - showAllNotes: do not truncate notes (default false)
      */
     settings: {
       type: Object,
@@ -116,7 +126,6 @@ export default {
       // Merge prop settings and default settings
       return Object.assign({}, this.defaultSettings, {
         showAllAncestors: this.$settings.conceptDetailShowAllAncestors,
-        showAllNotes: this.$settings.conceptDetailDoNotTruncateNotes,
       },this.settings)
     },
     apiUrl() {
@@ -136,6 +145,18 @@ export default {
         return null
       }
       return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
+    },
+    conceptDetailShowAllAncestors: {
+      get() {
+        return this.$settings.conceptDetailShowAllAncestors
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "conceptDetailShowAllAncestors",
+          value,
+        })
+      },
     },
   },
   watch: {
