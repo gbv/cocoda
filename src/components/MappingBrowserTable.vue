@@ -312,6 +312,7 @@
             v-if="section.totalCount > 0"
             :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
             :url="section.url"
+            :total-count="section.totalCount"
             type="mapping" />
         </div>
         <loading-indicator-full

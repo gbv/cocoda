@@ -12,7 +12,8 @@
       ref="dataModal"
       :data="data"
       :type="type"
-      :url="url" />
+      :url="url"
+      :total-count="totalCount" />
   </div>
 </template>
 
@@ -50,6 +51,13 @@ export default {
      */
     url: {
       type: String,
+      default: null,
+    },
+    /**
+     * Total count of data if available from the API.
+     */
+    totalCount: {
+      type: Number,
       default: null,
     },
     /**

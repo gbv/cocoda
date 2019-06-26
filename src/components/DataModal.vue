@@ -17,7 +17,7 @@
       </div>
       <div class="dataModal-links-withTitle">
         <div class="fontWeight-heavy">
-          {{ $t("dataModal.localDownload") }}
+          {{ $t("dataModal.localDownload") }} ({{ count.toLocaleString() }})
         </div>
         <div>
           <div>
@@ -25,8 +25,7 @@
               :href="'data:application/json;charset=utf-8,' + encodedData"
               :download="filename + '.json'"
               target="_blank">
-              <font-awesome-icon icon="download" />
-              .json
+              <font-awesome-icon icon="download" /><br>.json
             </a>
           </div>
           <div v-if="encodedDataNdjson">
@@ -34,23 +33,22 @@
               :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
               :download="filename + '.ndjson'"
               target="_blank">
-              <font-awesome-icon icon="download" />
-              .ndjson
+              <font-awesome-icon icon="download" /><br>.ndjson
             </a>
           </div>
         </div>
       </div>
+      <div />
       <div class="dataModal-links-withTitle">
         <div class="fontWeight-heavy">
-          {{ $t("dataModal.apiLinks") }}
+          {{ $t("dataModal.apiLinks") }} ({{ (totalCount || count).toLocaleString() }})
         </div>
         <div v-if="url">
           <div>
             <a
               :href="url"
               target="_blank">
-              <font-awesome-icon icon="link" />
-              {{ $t("dataModal.apiUrl") }}
+              <font-awesome-icon icon="link" /><br>{{ $t("dataModal.apiUrl") }}
             </a>
           </div>
           <div
@@ -59,8 +57,7 @@
             <a
               :href="download.url"
               target="_blank">
-              <font-awesome-icon icon="download" />
-              {{ `.${download.type}` }}
+              <font-awesome-icon icon="download" /><br>{{ `.${download.type}` }}
             </a>
           </div>
         </div>
@@ -114,6 +111,13 @@ export default {
       type: String,
       default: null,
     },
+    /**
+     * Total count of data if available from the API.
+     */
+    totalCount: {
+      type: Number,
+      default: null,
+    },
   },
   data() {
     return {
@@ -124,9 +128,16 @@ export default {
     computedType() {
       return this.type || (this.$jskos.isConcept(this.isArray ? this.data[0] : this.data) ? "concept" : (this.$jskos.isScheme(this.isArray ? this.data[0] : this.data) ? "scheme" : null))
     },
+    count() {
+      return _.isArray(this.data) ? this.data.length : (this.data ? 1 : 0)
+    },
     numberText() {
-      let count = _.isArray(this.data) ? this.data.length : (this.data ? 1 : 0)
-      return this.$tc(`dataModal.${this.computedType}`, count, { count })
+      let count = this.count
+      if (this.totalCount && count != this.totalCount) {
+        return `${count.toLocaleString()} ${this.$t("general.of")} ` + this.$tc(`dataModal.${this.computedType}`, this.totalCount, { count: this.totalCount.toLocaleString() })
+      } else {
+        return this.$tc(`dataModal.${this.computedType}`, count, { count })
+      }
     },
     isArray() {
       return _.isArray(this.data)
