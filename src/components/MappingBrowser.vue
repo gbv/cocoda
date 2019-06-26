@@ -1479,8 +1479,4 @@ export default {
   padding: 5px 0px 0px 3px;
 }
 
-#mappingBrowser .cocoda-vue-tabs-header {
-  padding: 0 20px;
-}
-
 </style>

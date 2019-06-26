@@ -463,7 +463,7 @@ nav.navbar {
 .navbar-dropdown-selectable {
   word-break: break-all;
   user-select: none;
-  padding: 3px 5px;
+  padding: 3px 10px;
   padding-right: 12px;
 }
 .navbar-dropdown-selectable-icon {
@@ -484,7 +484,7 @@ nav.navbar {
   padding-right: 5px;
 }
 .navbar-settingsTabs-row {
-  padding: 3px 5px;
+  padding: 3px 10px;
 }
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
