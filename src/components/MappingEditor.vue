@@ -55,6 +55,16 @@
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
+        v-b-tooltip.hover="{ title: canCloneMapping ? $t('mappingEditor.cloneMapping') : '', delay: $util.delay.medium }"
+        :class="{
+          'button': canCloneMapping,
+          'button-disabled': !canCloneMapping
+        }"
+        class="mappingEditorToolbarItem"
+        @click="cloneMapping">
+        <font-awesome-icon icon="clone" />
+      </div>
+      <div
         v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canClearMapping,
@@ -275,6 +285,9 @@ export default {
     },
     canSwapMapping() {
       return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
+    },
+    canCloneMapping() {
+      return this.original != null
     },
     /**
      * Returns an encoded version of the mapping for export
@@ -576,6 +589,18 @@ export default {
         return
       }
       this.$store.commit({ type: "mapping/switch" })
+    },
+    cloneMapping() {
+      let mapping = this.$jskos.copyDeep(this.mapping)
+      delete mapping.uri
+      this.$store.commit({
+        type: "mapping/set",
+        original: null,
+      })
+      this.$store.commit({
+        type: "mapping/set",
+        mapping,
+      })
     },
   },
 }
