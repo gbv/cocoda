@@ -3,6 +3,7 @@
     <!-- Button -->
     <div
       class="dataModalButton"
+      :style="`right: ${positionRight}px;`"
       @click="openDataModal">
       <font-awesome-icon icon="code" />
     </div>
@@ -51,6 +52,13 @@ export default {
       type: String,
       default: null,
     },
+    /**
+     * Absolut position right (override if there are other buttons in the bottom left).
+     */
+    positionRight: {
+      type: Number,
+      default: 5,
+    },
   },
   methods: {
     openDataModal() {
@@ -65,6 +73,13 @@ export default {
 
 .dataModalButton {
   z-index: @zIndex-3;
+  position: absolute;
+  bottom: 0px;
+  color: @color-text-mediumLightGrey;
+  cursor: pointer;
+}
+.dataModalButton:hover {
+  color: @color-button-hover;
 }
 
 </style>

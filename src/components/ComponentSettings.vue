@@ -71,8 +71,14 @@ export default {
 
 .componentSettings {
   position: absolute;
-  left: 0px;
-  top: -6px;
+  right: 0px;
+  bottom: 2px;
   z-index: @zIndex-2;
+}
+.componentSettings > .button {
+  color: @color-text-mediumLightGrey;
+}
+.componentSettings > .button:hover {
+  color: @color-button-hover;
 }
 </style>

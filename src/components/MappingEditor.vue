@@ -4,7 +4,6 @@
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <!-- Settings -->
     <component-settings :tooltip="$t('mappingEditor.settingsButton')">
-      <p><b>{{ $t("navbar.settings") }}</b></p>
       <b-form-checkbox
         v-model="clearOnSave"
         v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
@@ -224,6 +223,7 @@
     </b-modal>
     <data-modal-button
       :data="mapping"
+      :position-right="18"
       type="mapping" />
   </div>
 </template>
@@ -699,7 +699,7 @@ export default {
 .mappingEditor-creator {
   position: absolute;
   bottom: 2px;
-  right: 30px;
+  right: 43px;
 }
 .mappingEditor-comment {
   position: absolute;

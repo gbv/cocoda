@@ -10,7 +10,6 @@
       class="conceptSchemeSelection-collapsed">
       <!-- Settings -->
       <component-settings>
-        <p><b>{{ $t("navbar.settings") }}</b></p>
         <b-form-checkbox
           v-model="insertPrefLabel"
           v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
@@ -369,10 +368,10 @@ export default {
 }
 .conceptSchemeSelection-schemeName {
   padding-right: 30px;
-  padding-left: 18px;
 }
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;
+  margin-right: 13px;
 }
 
 .conceptSchemeSelection-expandButton {

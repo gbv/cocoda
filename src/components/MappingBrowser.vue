@@ -2,7 +2,6 @@
   <div id="mappingBrowser">
     <!-- Settings -->
     <component-settings :tooltip="$t('mappingBrowser.settingsButton')">
-      <p><b>{{ $t("navbar.settings") }}</b></p>
       <b-form
         inline
         @submit.stop.prevent>
@@ -169,6 +168,7 @@
             <data-modal-button
               v-if="concordances && concordances.length > 0"
               :data="concordances"
+              :position-right="18"
               type="concordance" />
           </div>
         </template>
