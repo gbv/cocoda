@@ -109,8 +109,13 @@
               ref="filterPopover"
               class="conceptSchemeSelection-filterPopover">
               <p class="fontWeight-heavy">
-                Filter
+                {{ $t("schemeSelection.filter") }}
               </p>
+              <b-form-checkbox
+                v-model="onlyFavorites"
+                size="sm">
+                {{ $t("schemeSelection.filterOnlyFavorites") }}
+              </b-form-checkbox>
               <!-- Language filter -->
               <div
                 v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`"
@@ -183,31 +188,7 @@
         <!-- List of all schemes, showing favorites first -->
         <ul class="conceptSchemeSelection-schemeList scrollable">
           <li
-            v-for="(_scheme, index) in favoriteSchemes || []"
-            v-show="!isFiltered"
-            :key="_scheme.uri + '-favorite-scheme-list-' + id + index">
-            <font-awesome-icon
-              v-b-tooltip.hover="{ title: $t('schemeSelection.starRemove'), delay: $util.delay.medium }"
-              class="pointer starFavorite"
-              icon="star"
-              @click="toggleFavoriteScheme(_scheme)" />
-            <item-name
-              :ref="index == 0 && !isFiltered ? 'firstScheme' : null"
-              :item="_scheme"
-              :is-link="true"
-              :is-left="isLeft" />
-          </li>
-          <li v-show="!isFiltered">
-            <a
-              ref="showAllSchemesLink"
-              href=""
-              @click.prevent="showAllSchemes = !showAllSchemes">
-              {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes", { count: filteredSchemes.length }) : $t("schemeSelection.showAllSchemes", { count: filteredSchemes.length }) }}
-            </a>
-          </li>
-          <li
             v-for="(_scheme, index) in filteredSchemes"
-            v-show="showAllSchemes || isFiltered"
             :key="_scheme.uri + '-scheme-list-' + id + index">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
@@ -216,10 +197,18 @@
               icon="star"
               @click="toggleFavoriteScheme(_scheme)" />
             <item-name
-              :ref="(index == 0 && (isFiltered || !favoriteSchemes.length)) ? 'firstScheme' : null"
+              :ref="index == 0 ? 'firstScheme' : null"
               :item="_scheme"
               :is-link="true"
               :is-left="isLeft" />
+          </li>
+          <li v-show="isFiltered">
+            <a
+              ref="showAllSchemesLink"
+              href=""
+              @click.prevent="onlyFavorites = false; schemeFilter = ''; languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+              {{ $t("schemeSelection.showAllSchemes", { count: schemes.length }) }}
+            </a>
           </li>
         </ul>
       </div>
@@ -273,8 +262,8 @@ export default {
       languageFilter: [],
       // Filter for scheme types (access only via computed prop typeFilter)
       typeFilter: [],
-      // Flag whether to show all schemes
-      showAllSchemes: false,
+      // Flag whether to show only favorite concepts
+      onlyFavorites: true,
     }
   },
   computed: {
@@ -283,7 +272,7 @@ export default {
       return this.selected.scheme[this.isLeft]
     },
     isFiltered() {
-      return this.schemeFilter != "" || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.filteredSchemes.length <= 10
+      return this.schemeFilter != "" || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
     },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
@@ -299,8 +288,11 @@ export default {
             _.intersection(scheme.languages || [], this.languageFilter).length
           ) &&
           (
-            (this.typeFilter.includes(null) && !(scheme.type || []).length) ||
+            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
             _.intersection(scheme.type || [], this.typeFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
           )
       )
     },
@@ -308,12 +300,13 @@ export default {
       return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
     },
     languageFilterOptions() {
-      let options = [
-        {
+      let options = []
+      if (this.schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
+        options.push({
           value: null,
           text: this.$t("schemeSelection.filterOther"),
-        },
-      ]
+        })
+      }
       options = this.availableLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
       return options
     },
@@ -321,12 +314,13 @@ export default {
       return _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
     },
     typeFilterOptions() {
-      let options = [
-        {
+      let options = []
+      if (this.schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
+        options.push({
           value: null,
           text: this.$t("schemeSelection.filterOther"),
-        },
-      ]
+        })
+      }
       options = this.availableTypes.map(type => ({ value: type, text: type })).concat(options)
       return options
     },
