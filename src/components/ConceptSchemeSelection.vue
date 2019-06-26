@@ -95,13 +95,70 @@
             size="sm"
             style="flex: 1; margin-right: 5px;"
             @keyup.esc.native="hidePopover" />
-          <!-- Language filter selection -->
-          <b-form-select
-            v-model="languageFilter"
-            :options="languageFilterOptions"
-            size="sm"
-            class="fontSize-normal"
-            @change="focusAndSelectInput" />
+          <div
+            :id="`conceptSchemeSelection-filterButton-${id}`"
+            class="button">
+            <font-awesome-icon icon="filter" />
+          </div>
+          <b-popover
+            :target="`conceptSchemeSelection-filterButton-${id}`"
+            :show.sync="filterPopoverShow"
+            triggers="click"
+            placement="auto">
+            <div
+              ref="filterPopover"
+              class="conceptSchemeSelection-filterPopover">
+              <p class="fontWeight-heavy">
+                Filter
+              </p>
+              <!-- Language filter -->
+              <div
+                v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`"
+                class="button">
+                <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
+                <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
+                {{ $t("schemeSelection.languageFilter") }}
+                ({{ languageFilter.includes(null) ? "all" : languageFilter.length }})
+              </div>
+              <!-- Language filter selection -->
+              <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`">
+                <b-form-checkbox
+                  v-for="option in languageFilterOptions"
+                  :key="`conceptSchemeSelection-filterPopover-${id}-languageFilter-${option.value}`"
+                  v-model="languageFilter"
+                  :value="option.value"
+                  size="sm"
+                  class="fontSize-normal"
+                  stacked
+                  @change="focusAndSelectInput">
+                  {{ option.text }}
+                </b-form-checkbox>
+              </b-collapse>
+              <!-- Scheme type filter -->
+              <div
+                v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-typeFilterCollapse`"
+                class="button">
+                <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
+                <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
+                {{ $t("schemeSelection.typeFilter") }}
+                ({{ typeFilter.includes(null) ? "all" : typeFilter.length }})
+              </div>
+              <!-- Language filter selection -->
+              <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-typeFilterCollapse`">
+                <b-form-checkbox
+                  v-for="option in typeFilterOptions"
+                  :key="`conceptSchemeSelection-filterPopover-${id}-typeFilter-${option.value}`"
+                  v-model="typeFilter"
+                  :value="option.value"
+                  size="sm"
+                  class="fontSize-normal"
+                  stacked
+                  @change="focusAndSelectInput">
+                  {{ option.text }}
+                </b-form-checkbox>
+              </b-collapse>
+            </div>
+          </b-popover>
         </b-form>
         <!-- List of all schemes, showing favorites first -->
         <ul class="conceptSchemeSelection-schemeList scrollable">
@@ -188,10 +245,14 @@ export default {
       id: this.$util.generateID(),
       // Boolean whether popover is shown.
       popoverShown: false,
+      // Whether filter popover is shown.
+      filterPopoverShow: false,
       // Filter text for scheme selection.
       schemeFilter: "",
-      // Filter for language
-      languageFilter: null,
+      // Filter for language (access only via computed prop languageFilter)
+      languageFilter_: [null],
+      // Filter for scheme types (access only via computed prop typeFilter)
+      typeFilter_: [null],
       // Flag whether to show all schemes
       showAllSchemes: false,
     }
@@ -201,8 +262,38 @@ export default {
     scheme() {
       return this.selected.scheme[this.isLeft]
     },
+    languageFilter: {
+      get() {
+        return this.languageFilter_
+      },
+      set(value) {
+        if (_.isEqual(value, this.languageFilter_)) {
+          return
+        }
+        if (!value.length || !this.languageFilter_.includes(null) && value.includes(null)) {
+          this.languageFilter_ = [null]
+        } else {
+          this.languageFilter_ = value.filter(lang => lang != null)
+        }
+      },
+    },
+    typeFilter: {
+      get() {
+        return this.typeFilter_
+      },
+      set(value) {
+        if (_.isEqual(value, this.typeFilter_)) {
+          return
+        }
+        if (!value.length || !this.typeFilter_.includes(null) && value.includes(null)) {
+          this.typeFilter_ = [null]
+        } else {
+          this.typeFilter_ = value.filter(lang => lang != null)
+        }
+      },
+    },
     isFiltered() {
-      return this.schemeFilter != "" || this.languageFilter != null || this.filteredSchemes.length <= 10
+      return this.schemeFilter != "" || !this.languageFilter.includes(null) || !this.typeFilter.includes(null) || this.filteredSchemes.length <= 10
     },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
@@ -214,8 +305,12 @@ export default {
             (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
           ) &&
           (
-            this.languageFilter == null ||
-            (scheme.languages || []).includes(this.languageFilter)
+            this.languageFilter.includes(null) ||
+            _.intersection(scheme.languages || [], this.languageFilter).length
+          ) &&
+          (
+            this.typeFilter.includes(null) ||
+            _.intersection(scheme.type || [], this.typeFilter).length
           )
       )
     },
@@ -228,6 +323,17 @@ export default {
       ]
       let languages = _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
       options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
+      return options
+    },
+    typeFilterOptions() {
+      let options = [
+        {
+          value: null,
+          text: this.$t("schemeSelection.allTypes"),
+        },
+      ]
+      let types = _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
+      options = options.concat(types.map(type => ({ value: type, text: type })))
       return options
     },
     insertPrefLabel: {
@@ -259,17 +365,31 @@ export default {
   },
   methods: {
     clickHandlers() {
-      return [{
-        elements: [
-          this.$refs.popover,
-          document.getElementById(`${this.id}-expandButton`),
-          this.$refs.showAllSchemesLink,
-        ],
-        handler: () => {
-          // this.popoverShown
-          this.hidePopover()
+      return [
+        {
+          elements: [
+            this.$refs.popover,
+            document.getElementById(`${this.id}-expandButton`),
+            this.$refs.showAllSchemesLink,
+            // Also include filter popover
+            document.getElementById(`conceptSchemeSelection-filterButton-${this.id}`),
+            this.$refs.filterPopover,
+          ],
+          handler: () => {
+            // this.popoverShown
+            this.hidePopover()
+          },
         },
-      }]
+        {
+          elements: [
+            document.getElementById(`conceptSchemeSelection-filterButton-${this.id}`),
+            this.$refs.filterPopover,
+          ],
+          handler: () => {
+            this.filterPopoverShow = false
+          },
+        },
+      ]
     },
     shortcutHandler({ action, isLeft }) {
       if (this.isLeft === isLeft) {
@@ -409,6 +529,15 @@ export default {
   padding-top: 8px;
 }
 
+.conceptSchemeSelection-filterPopover {
+  word-break: break-all;
+  // Popovers have a hardcoded max width of 276px and 12px padding on each side -> maximum width of content is 252px.
+  min-width: 252px;
+  max-width: 252px;
+}
+.conceptSchemeSelection-filterPopover .custom-control {
+  height: unset !important;
+}
 </style>
 
 <style>
