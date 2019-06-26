@@ -4,19 +4,19 @@
     class="conceptSchemeSelection"
     style="overflow: visible;">
     <!-- ^^^ overflow: visible is necessary to properly shown concept search results which go over the edge of the component. -->
+    <!-- Settings -->
+    <component-settings>
+      <b-form-checkbox
+        v-model="insertPrefLabel"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
+        style="user-select: none;">
+        {{ $t("schemeSelection.insertPrefLabel") }}
+      </b-form-checkbox>
+    </component-settings>
     <!-- This is shown when a scheme is selected. -->
     <div
       v-if="scheme"
       class="conceptSchemeSelection-collapsed">
-      <!-- Settings -->
-      <component-settings>
-        <b-form-checkbox
-          v-model="insertPrefLabel"
-          v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
-          style="user-select: none;">
-          {{ $t("schemeSelection.insertPrefLabel") }}
-        </b-form-checkbox>
-      </component-settings>
       <!-- Expand button -->
       <div
         :id="`${id}-expandButton`"
@@ -371,7 +371,7 @@ export default {
 }
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;
-  margin-right: 13px;
+  margin-right: 10px;
 }
 
 .conceptSchemeSelection-expandButton {
@@ -419,5 +419,9 @@ export default {
 }
 .conceptSchemeSelection .popover > .popover-body {
   padding: 4px 6px;
+}
+.conceptSchemeSelection .componentSettings {
+  right: 3px;
+  bottom: 7px;
 }
 </style>
