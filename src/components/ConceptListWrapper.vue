@@ -159,6 +159,7 @@ export default {
 }
 .conceptListWrapper .componentSettings {
   right: 3px;
+  bottom: 7px;
 }
 
 </style>
