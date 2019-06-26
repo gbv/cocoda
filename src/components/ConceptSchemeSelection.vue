@@ -118,10 +118,20 @@
                 <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
                 <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
                 {{ $t("schemeSelection.languageFilter") }}
-                ({{ languageFilter.includes(null) ? "all" : languageFilter.length }})
+                ({{ languageFilter.length - 1 == availableLanguages.length ? "all" : languageFilter.length }})
               </div>
               <!-- Language filter selection -->
               <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`">
+                <a
+                  href=""
+                  @click.prevent="languageFilter = availableLanguages.concat([null])">
+                  {{ $t("schemeSelection.filterSelectAll") }}
+                </a>•
+                <a
+                  href=""
+                  @click.prevent="languageFilter = []">
+                  {{ $t("schemeSelection.filterDeselectAll") }}
+                </a>
                 <b-form-checkbox
                   v-for="option in languageFilterOptions"
                   :key="`conceptSchemeSelection-filterPopover-${id}-languageFilter-${option.value}`"
@@ -141,10 +151,20 @@
                 <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
                 <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
                 {{ $t("schemeSelection.typeFilter") }}
-                ({{ typeFilter.includes(null) ? "all" : typeFilter.length }})
+                ({{ typeFilter.length - 1 == availableTypes.length ? "all" : typeFilter.length }})
               </div>
               <!-- Language filter selection -->
               <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-typeFilterCollapse`">
+                <a
+                  href=""
+                  @click.prevent="typeFilter = availableTypes.concat([null])">
+                  {{ $t("schemeSelection.filterSelectAll") }}
+                </a>•
+                <a
+                  href=""
+                  @click.prevent="typeFilter = []">
+                  {{ $t("schemeSelection.filterDeselectAll") }}
+                </a>
                 <b-form-checkbox
                   v-for="option in typeFilterOptions"
                   :key="`conceptSchemeSelection-filterPopover-${id}-typeFilter-${option.value}`"
@@ -250,9 +270,9 @@ export default {
       // Filter text for scheme selection.
       schemeFilter: "",
       // Filter for language (access only via computed prop languageFilter)
-      languageFilter_: [null],
+      languageFilter: [],
       // Filter for scheme types (access only via computed prop typeFilter)
-      typeFilter_: [null],
+      typeFilter: [],
       // Flag whether to show all schemes
       showAllSchemes: false,
     }
@@ -262,38 +282,8 @@ export default {
     scheme() {
       return this.selected.scheme[this.isLeft]
     },
-    languageFilter: {
-      get() {
-        return this.languageFilter_
-      },
-      set(value) {
-        if (_.isEqual(value, this.languageFilter_)) {
-          return
-        }
-        if (!value.length || !this.languageFilter_.includes(null) && value.includes(null)) {
-          this.languageFilter_ = [null]
-        } else {
-          this.languageFilter_ = value.filter(lang => lang != null)
-        }
-      },
-    },
-    typeFilter: {
-      get() {
-        return this.typeFilter_
-      },
-      set(value) {
-        if (_.isEqual(value, this.typeFilter_)) {
-          return
-        }
-        if (!value.length || !this.typeFilter_.includes(null) && value.includes(null)) {
-          this.typeFilter_ = [null]
-        } else {
-          this.typeFilter_ = value.filter(lang => lang != null)
-        }
-      },
-    },
     isFiltered() {
-      return this.schemeFilter != "" || !this.languageFilter.includes(null) || !this.typeFilter.includes(null) || this.filteredSchemes.length <= 10
+      return this.schemeFilter != "" || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.filteredSchemes.length <= 10
     },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
@@ -305,35 +295,39 @@ export default {
             (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
           ) &&
           (
-            this.languageFilter.includes(null) ||
+            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
             _.intersection(scheme.languages || [], this.languageFilter).length
           ) &&
           (
-            this.typeFilter.includes(null) ||
+            (this.typeFilter.includes(null) && !(scheme.type || []).length) ||
             _.intersection(scheme.type || [], this.typeFilter).length
           )
       )
+    },
+    availableLanguages() {
+      return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
     },
     languageFilterOptions() {
       let options = [
         {
           value: null,
-          text: this.$t("schemeSelection.allLanguages"),
+          text: this.$t("schemeSelection.filterOther"),
         },
       ]
-      let languages = _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
-      options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
+      options = this.availableLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
       return options
+    },
+    availableTypes() {
+      return _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
     },
     typeFilterOptions() {
       let options = [
         {
           value: null,
-          text: this.$t("schemeSelection.allTypes"),
+          text: this.$t("schemeSelection.filterOther"),
         },
       ]
-      let types = _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
-      options = options.concat(types.map(type => ({ value: type, text: type })))
+      options = this.availableTypes.map(type => ({ value: type, text: type })).concat(options)
       return options
     },
     insertPrefLabel: {
@@ -362,6 +356,9 @@ export default {
   mounted() {
     // Enable shortcuts
     this.enableShortcuts()
+    // Set filters to all
+    this.languageFilter = this.availableLanguages.concat([null])
+    this.typeFilter = this.availableTypes.concat([null])
   },
   methods: {
     clickHandlers() {
