@@ -13,7 +13,7 @@
       class="schemeDetail-license">
       <span
         v-for="(license, index) in item.license"
-        :key="index">
+        :key="`schemeDetail-${isLeft}-license-${index}`">
         <a
           :href="license.uri"
           target="_blank">
@@ -42,7 +42,7 @@
     <!-- URI and identifier -->
     <div
       v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
-      :key="index"
+      :key="`schemeDetail-${isLeft}-identifier-${index}`"
       class="schemeDetail-identifier">
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
       <auto-link :link="identifier" />
