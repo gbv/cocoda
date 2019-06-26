@@ -18,7 +18,8 @@
     "styleguide": "vue-styleguidist server",
     "styleguide:build": "vue-styleguidist build",
     "user-manual": "cd docs; ./build-user-manual.sh",
-    "release": "./bin/release.sh"
+    "release": "./bin/release.sh",
+    "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
   },
   "lint-staged": {
     "**/*.{js,vue}": [

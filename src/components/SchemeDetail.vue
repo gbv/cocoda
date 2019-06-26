@@ -69,7 +69,9 @@
       <span
         v-for="(type, index) in item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
         :key="`schemeDetail-${isLeft}-type-${index}`">
-        <auto-link :link="type" />
+        <auto-link
+          :link="type"
+          :text="$util.prefLabel(kosTypes.find(t => t.uri == type))" />
         <span v-if="index != item.type.length - 2">,</span>
       </span>
     </div>
@@ -111,6 +113,9 @@ import ItemDetailNarrower from "./ItemDetailNarrower"
 // Import mixins
 import objects from "../mixins/objects"
 
+// KOS types
+import kosTypes from "../../config/kos-types.json"
+
 /**
  * Component that displays a scheme's details (URI, notation, identifier, ...).
  */
@@ -142,6 +147,11 @@ export default {
       type: Object,
       default: () => { return {} },
     },
+  },
+  data() {
+    return {
+      kosTypes,
+    }
   },
   methods: {
     licenseAttribution(detail) {

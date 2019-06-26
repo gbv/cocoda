@@ -1,0 +1,549 @@
+[
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#gazetteer",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "gazetteer"
+        ],
+        "prefLabel": {
+            "en": "Gazetteer",
+            "de": "Gazetteer"
+        },
+        "altLabel": {
+            "de": [
+                "Ortsverzeichnis",
+                "Ortslexikon"
+            ]
+        },
+        "scopeNote": {
+            "en": [
+                "geospatial dictionary of named and typed places"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#glossary",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "glossary"
+        ],
+        "prefLabel": {
+            "en": "Glossary",
+            "de": "Glossar"
+        },
+        "scopeNote": {
+            "en": [
+                "a collection of textual glosses or of specialized terms with their meanings"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#categorization_schema",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "categorization_schema"
+        ],
+        "prefLabel": {
+            "en": "Categorization schema",
+            "de": "Kategorienschema"
+        },
+        "scopeNote": {
+            "en": [
+                "schedule of concepts and pre-coordinated combinations of concepts, arranged by classification"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#classification_schema",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "classification_schema"
+        ],
+        "prefLabel": {
+            "en": "Classification schema",
+            "de": "Klassifikation"
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#list",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "list"
+        ],
+        "prefLabel": {
+            "en": "List",
+            "de": "Liste"
+        },
+        "scopeNote": {
+            "en": [
+                "a limited set of terms arranged as a simple alphabetical list or in some other logically evident way; containing no relationships of any kind"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#name_authority_list",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "name_authority_list"
+        ],
+        "prefLabel": {
+            "en": "Name authority list",
+            "de": "Namensdatei"
+        },
+        "scopeNote": {
+            "en": [
+                "controlled vocabulary for use in naming particular entities consistently"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#ontology",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "ontology"
+        ],
+        "prefLabel": {
+            "en": "Ontology",
+            "de": "Ontologie"
+        },
+        "scopeNote": {
+            "en": [
+                "A formal model that allows knowledge to be represented for a specific domain. An ontology describes the types of things that exist (classes), the relationships between them (properties) and the logical ways those classes and properties can be used together (axioms)"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#subject_heading_scheme",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "subject_heading_scheme"
+        ],
+        "prefLabel": {
+            "en": "Subject heading scheme",
+            "de": "Schlagwortliste"
+        },
+        "scopeNote": {
+            "en": [
+                "structured vocabulary comprising terms available for subject indexing, plus rules for combining them into pre-coordinated strings of terms where necessary"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#semantic_network",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "semantic_network"
+        ],
+        "prefLabel": {
+            "en": "Semantic network",
+            "de": "Semantisches Netz"
+        },
+        "scopeNote": {
+            "en": [
+                "set of terms representing concepts, modeled as the nodes in a network of variable relationship types"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#synonym_ring",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "synonym_ring"
+        ],
+        "prefLabel": {
+            "en": "Synonym ring",
+            "de": "Synset"
+        },
+        "scopeNote": {
+            "en": [
+                "set of synonymous or almost synonymous terms, any of which can be used to refer to a particular concept"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#taxonomy",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "taxonomy"
+        ],
+        "prefLabel": {
+            "en": "Taxonomy",
+            "de": "Taxonomie"
+        },
+        "scopeNote": {
+            "en": [
+                "scheme of categories and subcategories that can be used to sort and otherwise organize items of knowledge or information"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#terminology",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "terminology"
+        ],
+        "prefLabel": {
+            "en": "Terminology",
+            "de": "Terminologie"
+        },
+        "scopeNote": {
+            "en": [
+                "set of designations belonging to one special language [ISO 1087-1:2000, definition 3.5.1]"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#thesaurus",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "thesaurus"
+        ],
+        "prefLabel": {
+            "en": "Thesaurus",
+            "de": "Thesaurus"
+        },
+        "scopeNote": {
+            "en": [
+                "controlled and structured vocabulary in which concepts are represented by terms, organized so that relationships between concepts are made explicit, and preferred terms are accompanied by lead-in entries for synonyms or quasi-synonyms"
+            ]
+        },
+        "narrower": []
+    },
+    {
+        "uri": "http:\/\/w3id.org\/nkos\/nkostype#dictionary",
+        "type": [
+            "http:\/\/www.w3.org\/2004\/02\/skos\/core#Concept"
+        ],
+        "@context": "http:\/\/gbv.github.io\/jskos\/context.json",
+        "inScheme": [
+            {
+                "uri": "http:\/\/w3id.org\/nkos\/nkostype",
+                "prefLabel": {
+                    "de": "KOS Typ Vokabular"
+                },
+                "type": [
+                    "http:\/\/www.w3.org\/2004\/02\/skos\/core#ConceptScheme",
+                    "http:\/\/w3id.org\/nkos\/nkostype#list"
+                ]
+            }
+        ],
+        "publisher": [
+            {
+                "prefLabel": {
+                    "de": "DCMI\/NKOS Task Group"
+                }
+            }
+        ],
+        "notation": [
+            "dictionary"
+        ],
+        "prefLabel": {
+            "en": "Dictionary",
+            "de": "W\u00f6rterbuch"
+        },
+        "scopeNote": {
+            "en": [
+                "a reference source containing words usually alphabetically arranged along with information about their forms, pronunciations, functions, etymologies, meanings, and syntactical and idiomatic uses"
+            ]
+        },
+        "narrower": []
+    }
+]

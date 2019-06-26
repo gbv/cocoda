@@ -229,6 +229,9 @@ import clickHandler from "../mixins/click-handler"
 import hotkeys from "../mixins/hotkeys"
 import computed from "../mixins/computed"
 
+// KOS types
+import kosTypes from "../../config/kos-types.json"
+
 /**
  * Concept scheme selection component.
  *
@@ -322,6 +325,13 @@ export default {
         })
       }
       options = this.availableTypes.map(type => ({ value: type, text: type })).concat(options)
+      // Look up names for types
+      for (let option of options) {
+        let type = kosTypes.find(t => t.uri == option.value)
+        if (type) {
+          option.text = this.$util.prefLabel(type)
+        }
+      }
       return options
     },
     insertPrefLabel: {
