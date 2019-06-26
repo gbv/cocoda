@@ -17,7 +17,7 @@
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
     "styleguide:build": "vue-styleguidist build",
-    "user-manual": "cd docs; ./convert-user-manual.sh",
+    "user-manual": "cd docs; ./build-user-manual.sh",
     "release": "./bin/release.sh"
   },
   "lint-staged": {
