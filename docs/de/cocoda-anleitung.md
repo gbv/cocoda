@@ -4,8 +4,7 @@ title: Cocoda-Anleitung
 
 ## Einführung
 
-Cococda ist eine Webanwendung, zur Erstellung und Verwaltung Mappings zwischen Wissensorganisationssystemen. Dazu zählen beispielsweise: Klassifikationen, NormdatMittwoch, 26. Juni 2019 01:53 
-en, und Thesauri. Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
+Cococda ist eine Webanwendung, zur Erstellung und Verwaltung Mappings zwischen Wissensorganisationssystemen. Dazu zählen beispielsweise: Klassifikationen, Normdaten, und Thesauri. Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
 
 Die aktuelle Version von Cocoda ist verfügbar unter <https://coli-conc.gbv.de/cocoda/app/>.
 Die Entwicklungsversion ist unter <https://coli-conc.gbv.de/cocoda/dev/> zu finden.
@@ -22,7 +21,7 @@ Die Benutzeroberfläche ist in mehrere Komponenten aufgeteilt, die frei nach Bel
 
 - In der Mitte sind Komponenten um Mappings und Mapping-Vorschläge zu erstellen, bearbeiten, suchen und zu bewerten.
 
-![Cocoda-Startbildschirm](../img/cocoda-homepage-en.png)
+![Cocoda-Startbildschirm](../img/cocoda-homepage-de.png)
 
 Oben rechts in der Menüleiste sind: der Mülleimer, der auch gelöschte Mappings wiederherstellen kann. Ein Stern, der auf die Favoriten-Konzepte-Schnellauswahl verweist, die Benutzereinstellungen und die Registry, in der die Mappings gespeichert werden. Alle vier Punkte können mit Maushovern aufgeklappt werden.
 
@@ -32,25 +31,25 @@ Es muss kein klassischer Account erstellt werden, dann werden die Mappings aller
 
 Zum einloggen klicken Sie einfach auf das "Einstellungen"-Feld in der Menüleiste.
 
-![Account-Login](../img/cocoda-login1-en.png)
+![Account-Login](../img/cocoda-login1-de.png)
 
-Auf dem Einstellungsfenster unter dem Reiter "Accounts" genügt nun ein Klick auf eins der verfügbaren Login-Felder (momentan GitHub, ORCID und VZG ELDAP). Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
+Auf dem Einstellungsfenster unter dem Reiter "Account" genügt nun ein Klick auf eins der verfügbaren Login-Felder (momentan GitHub, ORCID und VZG ELDAP). Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
 
-![Accounts](../img/cocoda-settings-account1-en.png)
+![Account](../img/cocoda-settings-account1-de.png)
 
-Nach dem einloggen sollte Ihre Accounts-Seite ungefähr so aussehen:
+Nach dem einloggen sollte Ihre Account-Seite ungefähr so aussehen:
 
-![Accounts ausgefüllt](../img/cocoda-settings-account2-en.png)
+![Account ausgefüllt](../img/cocoda-settings-account2-de.png)
 
 Sie können nun die Mapping-Registry umstellen von Lokal(speichert in Browser) zu Konkordanz-Registry(Datenbank der GBV), zudem können Sie ihren Anzeigenamen und ihre Identität ändern, welche in den Mappings, die Sie bearbeiten hinterlegt wird.
 
 Mit einem Klick auf "Account-Seite", werden Sie zu einer seperaten Login-Seite weitergeleitet, auf dieser können Sie ihre angegebenen Informationen einsehen, verknüpfte Konten hinzufügen oder entfernen, sich ausloggen oder ihr gesamte Nutzerkonto löschen. 
 
-![Login-Verwaltung](../img/cocoda-loginserver-en.png)
+![Login-Verwaltung](../img/cocoda-loginserver-de.png)
 
 Wenn Sie sich eingeloggt haben, finden sie neben ihrem Anzeigenamen in der Menüleiste ein grünes Icon, sowie eine Anzeige ihres ausgewählten Speicher-Repositorys.
 
-![Startseite - Eingeloggt](../img/cocoda-homepage2-en.png)
+![Startseite - Eingeloggt](../img/cocoda-homepage2-de.png)
 
 ## Vokabulare
 
@@ -65,7 +64,7 @@ Ein vokabular ist eine organisierte Ansammlung von Konzepten und zusätzlichen I
 
 Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular oder Konzept. Im Falle eines Vokabulars werden Notation, Bezeichnung, Lizenz, Publisher, und der identifier angezeigt. Wenn die Komponente "Oberkonzepte" minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt. Im Falle eines Konzepts werden die Ober- und Unterkonzepte von diesem, sowie Notation, Bezeichnung, Notizen, Registereinträge, zusätzliche Bezeichnungen, Identifier, und GND-Bezeichnungen angezeigt. Meistens ist für ein Konzept jedoch nicht alles vorhanden.
 
-![Vokabulardetails](../img/cocoda-classdet-en.png)
+![Vokabulardetails](../img/cocoda-classdet-de.png)
 
 ## Konzepte
 
@@ -81,13 +80,13 @@ Die rechte und linke Komponente ermöglichen die Suche in Vokabularen um Konzept
 
 ### Konzeptdetails
 
-![Konzeptdetails](../img/cocoda-concdet-en.png)
+![Konzeptdetails](../img/cocoda-concdet-de.png)
 
 ### Hierarchische Ansicht
 
 Wenn das ausgewählte Vokabular hierarchische Navigation unterstützt, zeigt der Oberkonzepte-Baum die Oberkonzepte. Ein Klick auf ein Konzept im Baum wählt das Konzept aus, die Informationen werden in der Detail-Unterkomponente gezeigt. Man kann Unterkonzepte untersuchen, indem man auf den Pfeil vor der Bezeichnung klickt. Ein Doppelklick auf ein Konzept wählt dieses aus und zeigt die Unterkonzepte, man kann auch die Detail-Unterkomponente benutzen, da dort auch eine Art Baumstruktur vorliegt, der richtige Baum wird jedoch empfohlen.
 
-![Hierarchischer Baum](../img/cocoda-conctree-en.png)
+![Hierarchischer Baum](../img/cocoda-conctree-de.png)
 
 ### Listenansicht
 ...
@@ -108,7 +107,9 @@ In der Mitte des Mapping Editors, kann die Art des Mappings ausgewählt werden.
 Unten im Editor kann man verschiedene Aktionen durchführen: Quell- und Zielkonzepte tauschcen, Mappping speichern, Mapping löschen, Mapping duplizieren und Mapping Editor leeren.
 Ist das Mapping nicht gespeichert färbt sich der Hintergrund rötlich, außerdem steht oben rechts "nicht gespeichert", bei einem gespeichertem Mapping, verfärbt sich der Hintergrund grün.
 
-![Mapping Editor](../img/cocoda-mappingeditor-en.png)
+![Mapping Editor rot](../img/cocoda-mappingeditor1-de.png)
+
+![Mapping Editor grün](../img/cocoda-mappingeditor2-de.png)
 
 ### Mapping-Browser
 
@@ -123,10 +124,13 @@ Eine Registry ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mapp
 Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 
 #### Konkordanzen
+![Konkordanzen](../img/cocoda-mapping-browser-con.de.png)
 
 #### Mapping-Suche
+![Mapping-Suche](../img/cocoda-mapping-browser-sea.de.png)
 
 #### Mapping-Navigator
+![Mapping-Navigator](../img/cocoda-mapping-browser-nav.de.png)
 
 ## Einstellungen
 
@@ -136,19 +140,19 @@ Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um i
 ### Layout
 In den Einstellungen unter dem Reiter "Layout" kann man die Sprache der Seite anpassen.
 
-![Einstellungen - Layout](../img/cocoda-settings-layout-en.png)
+![Einstellungen - Layout](../img/cocoda-settings-layout-de.png)
 
 ### Shortcuts
 Unter dem Reiter "Tastatur-Shortcuts" kann man Tastenkürzel einsehen.
 
-![Einstellungen - Tastatrukürzel](../img/cocoda-settings-keysho-en.png)
+![Einstellungen - Tastatrukürzel](../img/cocoda-settings-keysho-de.png)
 
 ### Datenquellen
 Unter dem Reiter "Datenquellen" kann man eine Übersicht aller Quellen bekommen, die in Cocoda benutzt werden.
 
-![Einstellungen - Datenquellen](../img/cocoda-settings-datsor-en.png)
+![Einstellungen - Datenquellen](../img/cocoda-settings-datsor-de.png)
 
 ### Lokale Mappings
 Unter dem Reiter "Lokale Mappings" kann man lokale Mappings hochladen, runterladen, löschen und den Ersteller des Mappings überschreiben.
 
-![Einstellungen - Lokale Mappings](../img/cocoda-settings-locmap-en.png)
+![Einstellungen - Lokale Mappings](../img/cocoda-settings-locmap-de.png)
