@@ -161,10 +161,10 @@
             {{ creatorName || $t("navbar.settings") }}
           </div>
         </template>
-        <div
-          class="font-default text-dark color-primary-0-bg fontSize-small"
-          style="padding: 0 10px;">
-          <p class="fontWeight-heavy">
+        <b-dropdown-header>
+          <p
+            class="fontWeight-heavy"
+            style="padding: 0 10px;">
             <span
               v-if="authorized"
               class="text-success">
@@ -180,30 +180,32 @@
               {{ $util.prefLabel(creator) }}.
             </span>
           </p>
-          <hr>
-          <p class="fontWeight-heavy">
-            {{ $t("navbar.identity") }}:
-          </p>
-          <p v-if="creator.uri">
-            {{ creator.uri }}
-          </p>
-          <p v-else>
-            None
-          </p>
-          <template v-if="(userUris || []).filter(uri => uri != creator.uri).length">
-            <p class="fontWeight-heavy">
-              {{ $t("navbar.switchTo") }}:
-            </p>
+        </b-dropdown-header>
+        <div
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          style="min-width: 200px;">
+          <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
             <p
-              v-for="(uri, index) in (userUris || []).filter(uri => uri != creator.uri)"
+              v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
               :key="`navbar-switchToIdentity-${index}`"
-              class="navbar-clickableItem"
+              :class="{
+                'navbar-dropdown-selectable': true,
+                'navbar-dropdown-selectable-selected': uri == creator.uri
+              }"
               @click="$store.commit({
                 type: 'settings/set',
                 prop: 'creatorUri',
                 value: uri
               })">
-              {{ uri }}
+              <span class="navbar-dropdown-selectable-icon">
+                <img
+                  v-if="imageForIdentityUri(uri)"
+                  :src="imageForIdentityUri(uri)">
+                <font-awesome-icon
+                  v-else
+                  icon="user" />
+              </span>
+              {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
             </p>
           </template>
           <hr>
@@ -232,23 +234,19 @@
             :tooltip="false"
             style="opacity: 0.7; cursor: default;" />
         </template>
+        <b-dropdown-header>
+          {{ $t("navbar.mappingRegistryHeader") }}
+        </b-dropdown-header>
         <div
-          class="font-default text-dark color-primary-0-bg fontSize-small"
-          style="padding: 0 10px;">
-          <p><b>{{ $t("navbar.currentRegistry") }}:</b></p>
-          <p>
-            <registry-notation
-              :registry="$store.getters.getCurrentRegistry"
-              :tooltip="false" />
-            <registry-name
-              :registry="$store.getters.getCurrentRegistry"
-              :tooltip="false" />
-          </p>
-          <p><b>{{ $t("navbar.switchTo") }}:</b></p>
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          style="min-width: 200px;">
           <p
-            v-for="registry in config.registries.filter(registry => registry.provider.has.canSaveMappings && !$jskos.compare(registry, $store.getters.getCurrentRegistry))"
+            v-for="registry in config.registries.filter(registry => registry.provider.has.canSaveMappings)"
             :key="`navbar-mappingRegistry-${registry.uri}`"
-            class="navbar-clickableItem"
+            :class="{
+              'navbar-dropdown-selectable': true,
+              'navbar-dropdown-selectable-selected': $jskos.compare(registry, $store.getters.getCurrentRegistry)
+            }"
             @click="$store.commit({
               type: 'settings/set',
               prop: 'mappingRegistry',
@@ -462,15 +460,34 @@ nav.navbar {
 .favoriteConceptsDropdown-iconTarget {
   color: @color-select;
 }
-.navbar-clickableItem:hover {
-  cursor: pointer;
-  text-decoration: underline;
+.navbar-dropdown-selectable {
+  word-break: break-all;
+  user-select: none;
+  padding: 3px 5px;
+  padding-right: 12px;
+}
+.navbar-dropdown-selectable-icon {
+  display: inline-block;
+  width: 17px;
+}
+.navbar-dropdown-selectable-icon > img {
+  height: 17px;
+  margin-top: -3px;
+}
+.navbar-dropdown-selectable-icon > svg {
+  height: 17px;
+  margin-top: 1px;
+  margin-left: 2px;
+}
+.navbar-dropdown-selectable-selected {
+  .fontWeight-heavy;
+  padding-right: 5px;
 }
 .navbar-settingsTabs-row {
   padding: 3px 5px;
 }
-.navbar-settingsTabs-row:hover {
+.navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
-  background-color: @color-select-1;
+  background-color: @color-primary-5;
 }
 </style>
