@@ -482,6 +482,7 @@ nav.navbar {
 .navbar-dropdown-selectable-selected {
   .fontWeight-heavy;
   padding-right: 5px;
+  background-color: @color-button-disabled;
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;
