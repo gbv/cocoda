@@ -279,17 +279,22 @@ export default {
     },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
-      // Filter schemes, prepend favorites if filter is empty.
+      // Filter schemes, use either text filter or other filters
+      if (filter) {
+        return this.schemes.filter(
+          scheme =>
+            (
+              Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
+              (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
+            ) &&
+            (
+              (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+              _.intersection(scheme.languages || [], this.languageFilter).length
+            )
+        )
+      }
       return this.schemes.filter(
         scheme =>
-          (
-            Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
-            (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
-          ) &&
-          (
-            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
-            _.intersection(scheme.languages || [], this.languageFilter).length
-          ) &&
           (
             (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
             _.intersection(scheme.type || [], this.typeFilter).length
@@ -355,6 +360,15 @@ export default {
           this.focusAndSelectInput()
         }, 100)
       }
+    },
+    onlyFavorites() {
+      this.schemeFilter = ""
+    },
+    languageFilter() {
+      this.schemeFilter = ""
+    },
+    typeFilter() {
+      this.schemeFilter = ""
     },
   },
   mounted() {
