@@ -274,9 +274,11 @@ export default {
     scheme() {
       return this.selected.scheme[this.isLeft]
     },
+    // Indicates whether there is a filter active.
     isFiltered() {
       return this.schemeFilter != "" || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
     },
+    // Returns schemes with filters applied.
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
       // Filter schemes, use either text filter or other filters
@@ -304,9 +306,25 @@ export default {
           )
       )
     },
+    // Returns an array of all available languages.
     availableLanguages() {
       return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
     },
+    // Returns an array of all available languages with other filters applied (faceted browsing).
+    shownLanguages() {
+      let schemes = this.schemes.filter(
+        scheme =>
+          (
+            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
+            _.intersection(scheme.type || [], this.typeFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          )
+      )
+      return _.uniq([].concat(...schemes.map(scheme => scheme.languages || [])))
+    },
+    // Returns an array of available language filter options based on `shownLanguages`.
     languageFilterOptions() {
       let options = []
       if (this.schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
@@ -315,12 +333,28 @@ export default {
           text: this.$t("schemeSelection.filterOther"),
         })
       }
-      options = this.availableLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
+      options = this.shownLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
       return options
     },
+    // Returns an array of all available scheme types.
     availableTypes() {
       return _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
     },
+    // Returns an array of all available scheme types with other filters applied (faceted browsing).
+    shownTypes() {
+      let schemes = this.schemes.filter(
+        scheme =>
+          (
+            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+            _.intersection(scheme.languages || [], this.languageFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          )
+      )
+      return _.uniq(_.flatten(schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
+    },
+    // Returns an array of available scheme type filter options based on `shownTypes`.
     typeFilterOptions() {
       let options = []
       if (this.schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
@@ -329,7 +363,7 @@ export default {
           text: this.$t("schemeSelection.filterOther"),
         })
       }
-      options = this.availableTypes.map(type => ({ value: type, text: type })).concat(options)
+      options = this.shownTypes.map(type => ({ value: type, text: type })).concat(options)
       // Look up names for types
       for (let option of options) {
         let type = kosTypes.find(t => t.uri == option.value)
@@ -339,6 +373,7 @@ export default {
       }
       return options
     },
+    // insertPrefLabel option.
     insertPrefLabel: {
       get() {
         return this.$settings.schemeSelectionInsertPrefLabel[this.isLeft]
