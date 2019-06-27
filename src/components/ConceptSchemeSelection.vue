@@ -97,8 +97,16 @@
             @keyup.esc.native="hidePopover" />
           <div
             :id="`conceptSchemeSelection-filterButton-${id}`"
+            style="position: relative;"
             class="button">
             <font-awesome-icon icon="filter" />
+            <!-- Small indicator whether a filter is currently applied. -->
+            <span
+              v-if="isFiltered"
+              style="position: absolute; top: -10px; right: -5px;"
+              class="text-success">
+              •
+            </span>
           </div>
           <b-popover
             :target="`conceptSchemeSelection-filterButton-${id}`"
