@@ -78,11 +78,12 @@ import AnnotationList from "./AnnotationList"
 
 // Import mixins
 import auth from "../mixins/auth"
+import hoverHandler from "../mixins/hover-handler"
 
 export default {
   name: "AnnotationPopover",
   components: { LoadingIndicatorFull, AnnotationList },
-  mixins: [auth],
+  mixins: [auth, hoverHandler],
   props: {
     id: {
       type: String,
@@ -114,9 +115,6 @@ export default {
     },
     element() {
       return document.getElementById(this.elementId)
-    },
-    mousePosition() {
-      return this.$store.state.mousePosition
     },
     annotations() {
       return _.get(this.imapping, "annotations") || []
@@ -150,21 +148,6 @@ export default {
         }, 50)
       }
     },
-    mousePosition({ x, y }) {
-      // Show/hide popover depending on mouse position relative to popover and originating button
-      if (this.element) {
-        let show = false
-        for (let [element, delta] of [[this.$refs.annotationPopoverDiv, 25], [this.element, 0]]) {
-          if (element) {
-            let { top, bottom, left, right } = element.getBoundingClientRect()
-            if (y < bottom + delta && y > top - delta && x < right + delta && x > left - delta) {
-              show = true
-            }
-          }
-        }
-        this.show = show
-      }
-    },
     /**
      * Make sure the div is always scrolled to the bottom
      */
@@ -179,6 +162,20 @@ export default {
     },
   },
   methods: {
+    hoverHandlers() {
+      return [
+        {
+          elements: [
+            this.$refs.annotationPopoverDiv,
+            this.element,
+          ],
+          delta: 5,
+          handler: (isInside) => {
+            this.show = isInside
+          },
+        },
+      ]
+    },
     scrollToBottom() {
       if (this.show) {
         // Scroll to bottom of list of annotations
