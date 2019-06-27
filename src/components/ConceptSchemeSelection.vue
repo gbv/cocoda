@@ -286,15 +286,15 @@ export default {
             (
               Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
               (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
-            ) &&
-            (
-              (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
-              _.intersection(scheme.languages || [], this.languageFilter).length
             )
         )
       }
       return this.schemes.filter(
         scheme =>
+          (
+            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+            _.intersection(scheme.languages || [], this.languageFilter).length
+          ) &&
           (
             (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
             _.intersection(scheme.type || [], this.typeFilter).length
