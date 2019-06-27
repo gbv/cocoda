@@ -1,7 +1,10 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
-import config from "../../config"
 import Vue from "vue"
+import util from "../../util"
+
+import localforage from "localforage"
+const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
 
 // TODO: - Add support for memberChoice and maybe memberList.
 
@@ -10,7 +13,7 @@ const emptyMapping = {
   to: { "memberSet": [] },
   fromScheme: null,
   toScheme: null,
-  type: [jskos.defaultMappingType.uri]
+  type: [jskos.defaultMappingType.uri],
 }
 
 // initial state
@@ -19,6 +22,8 @@ const state = {
   original: null,
   mappingsNeedRefresh: false,
   mappingsNeedRefreshRegistry: null,
+  mappingTrash: [],
+  mappingTrashLoaded: false,
 }
 
 // helper functions
@@ -47,7 +52,7 @@ const getters = {
    * Adds a concept to the mapping.
    *
    * @param {object} concept - concept to be added
-   * @param {object} scheme - scheme for concept (can be ommitted if concept has "inScheme")
+   * @param {object} scheme - scheme for concept (can be omitted if concept has "inScheme")
    * @param {bool} isLeft - side of the mapping
    */
   canAdd: (state) => (concept, scheme, isLeft) => {
@@ -92,7 +97,12 @@ const getters = {
    * @param {bool} isLeft - side of the mapping
    */
   getConcepts: (state) => (isLeft) => {
-    return state.mapping[helpers.fromTo(isLeft)].memberSet || state.mapping[helpers.fromTo(isLeft)].memberList || state.mapping[helpers.fromTo(isLeft)].memberChoice || []
+    if (_.isBoolean(isLeft)) {
+      let side = helpers.fromTo(isLeft)
+      return jskos.conceptsOfMapping(state.mapping, side)
+    } else {
+      return jskos.conceptsOfMapping(state.mapping)
+    }
   },
 
   /**
@@ -116,11 +126,43 @@ const getters = {
     if (!_.isEqual(state.mapping.note, state.original.note)) {
       return true
     }
-    if (!_.isEqual(state.mapping.creator, state.original.creator)) {
+    let isCreatorEqual = (a, b) => {
+      if (!a && !b) {
+        return true
+      }
+      if ((a || []).length != (b || []).length) {
+        return false
+      }
+      let aCreator = a && a[0], bCreator = b && b[0]
+      if (!aCreator && !bCreator) {
+        return true
+      }
+      if (aCreator && !bCreator || !aCreator && bCreator) {
+        return false
+      }
+      if (aCreator.uri != bCreator.uri) {
+        return false
+      }
+      if (util.prefLabel(aCreator) != util.prefLabel(bCreator)) {
+        return false
+      }
+      return true
+    }
+    if (!isCreatorEqual(state.mapping.creator, state.original.creator)) {
       return true
     }
     return !jskos.compareMappings(state.original, state.mapping)
-  }
+  },
+
+  mappingTrash: (state, getters, rootState) => {
+    let config = rootState.config
+    let trash = []
+    for (let item of state.mappingTrash) {
+      let registry = config.registries.find(registry => jskos.compare(registry, item.registry))
+      trash.push(Object.assign({}, item, { registry }))
+    }
+    return trash
+  },
 
 }
 
@@ -132,7 +174,7 @@ const mutations = {
    *
    * Payload object: { concept, scheme, isLeft }
    * - concept: the concept to be added
-   * - scheme: the scheme to which the concept belongs (can be ommitted if concept has "inScheme")
+   * - scheme: the scheme to which the concept belongs (can be omitted if concept has "inScheme")
    * - isLeft: the side to which to add the concept
    */
   add(state, { concept, scheme, isLeft, cardinality = "1-to-n" }) {
@@ -303,8 +345,14 @@ const mutations = {
       from: state.mapping.to,
       to: state.mapping.from,
       fromScheme: state.mapping.toScheme,
-      toScheme: state.mapping.fromScheme
+      toScheme: state.mapping.fromScheme,
     })
+    // Switch narrower and broad match
+    if (state.mapping.type[0] == "http://www.w3.org/2004/02/skos/core#narrowMatch") {
+      state.mapping.type[0] = "http://www.w3.org/2004/02/skos/core#broadMatch"
+    } else if (state.mapping.type[0] == "http://www.w3.org/2004/02/skos/core#broadMatch") {
+      state.mapping.type[0] = "http://www.w3.org/2004/02/skos/core#narrowMatch"
+    }
   },
 
   setIdentifier(state) {
@@ -316,26 +364,47 @@ const mutations = {
 
   setRefresh(state, { refresh = true, registry } = {}) {
     // TODO: Refactoring!
-    if (refresh) {
-      if (registry) {
-        let uri = registry
-        registry = config.registries.find(registry => jskos.compare(registry, { uri }))
-      }
-      if (registry) {
-        state.mappingsNeedRefreshRegistry = registry.uri
-      }
+    if (refresh && registry) {
+      state.mappingsNeedRefreshRegistry = registry
     } else {
       state.mappingsNeedRefreshRegistry = null
     }
     state.mappingsNeedRefresh = refresh
   },
+
+  setTrash(state, { trash } = {}) {
+    state.mappingTrash = trash
+    state.mappingTrashLoaded = true
+  },
+
+  addToTrash(state, { mapping, registry } = {}) {
+    let item = {
+      mapping: jskos.minifyMapping(mapping),
+      registry: { uri: registry.uri },
+    }
+    state.mappingTrash = [item].concat(state.mappingTrash)
+    // Max 10 items
+    if (state.mappingTrash.length > 10) {
+      state.mappingTrash = state.mappingTrash.slice(0, 10)
+    }
+  },
+
+  removeFromTrash(state, { uri } = {}) {
+    state.mappingTrash = state.mappingTrash.filter(item => item.mapping.uri != uri)
+  },
+
+  clearTrash(state) {
+    state.mappingTrash = []
+  },
+
 }
 
 // actions
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters }, { from, to, direction, mode, identifier, registry, onlyFromMain = false, all = false, selected } = {}) {
+  getMappings({ rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, uri, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
+    let config = rootState.config
     let registries = []
     if (onlyFromMain) {
       // Try to find registry that fits state.mappingRegistry
@@ -357,19 +426,21 @@ const actions = {
     let promises = []
     for (let registry of registries) {
       if (all) {
-        promises.push(registry.provider.getAllMappings({ from, to, direction, mode, identifier, selected }))
+        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, selected, cancelToken }))
       } else {
-        promises.push(registry.provider.getMappings({ from, to, direction, mode, identifier }))
+        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, cancelToken }))
       }
     }
     return Promise.all(promises).then(results => {
-      let mappings = _.union(...results)
+      // Use results[0] directly to retain custom properties for single registry results
+      let mappings = results.length == 1 ? results[0] : _.union(...results)
       // TODO: Adjustments, like replacing schemes and concepts with references in store, etc.
       return mappings
     })
   },
 
-  saveMappings({ rootGetters }, { mappings, registry }) {
+  saveMappings({ rootGetters, rootState }, { mappings, registry }) {
+    let config = rootState.config
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
@@ -385,7 +456,8 @@ const actions = {
     return registry.provider.saveMappings(mappings)
   },
 
-  removeMappings({ state, rootGetters, commit }, { mappings, registry }) {
+  removeMappings({ state, rootGetters, commit, rootState }, { mappings, registry }) {
+    let config = rootState.config
     let uri = registry
     if (uri) {
       registry = config.registries.find(registry => jskos.compare(registry, { uri }))
@@ -397,17 +469,87 @@ const actions = {
       return Promise.resolve([])
     }
     return registry.provider.removeMappings(mappings).then(removedMappings => {
-      // Check if current original was amongst the removed mappings
       removedMappings.forEach((deleted, index) => {
         if (deleted) {
           let mapping = mappings[index]
+          // Check if current original was amongst the removed mappings
           if (_.isEqual(jskos.minifyMapping(mapping), jskos.minifyMapping(state.original)) && jskos.compare(_.get(mapping, "_provider.registry"), _.get(state.original, "_provider.registry"))) {
             // Set original to null
             commit({ type: "set" })
           }
+          // Add mappings to trash
+          if (mapping) {
+            commit({
+              type: "addToTrash",
+              mapping,
+              registry,
+            })
+          }
         }
       })
       return removedMappings
+    })
+  },
+
+  async transferMapping({ dispatch }, { mapping, fromRegistry, toRegistry }) {
+    let savedMapping = (await dispatch({
+      type: "saveMappings",
+      mappings: [{ mapping }],
+      registry: toRegistry,
+    }))[0]
+    if (savedMapping) {
+      let deletedMapping = (await dispatch({
+        type: "removeMappings",
+        mappings: [mapping],
+        registry: fromRegistry,
+      }))[0]
+      if (!deletedMapping) {
+        console.warn("transferMapping: Mapping saved, but could not be deleted from source.")
+      }
+      return savedMapping
+    }
+    console.warn("transferMapping: Save mapping failed.")
+    return null
+  },
+
+  loadMappingTrash({ commit }) {
+    return localforage.getItem(localStorageKey).then(trash => {
+      if (trash) {
+        commit({
+          type: "setTrash",
+          trash,
+        })
+      } else {
+        commit({
+          type: "setTrash",
+          trash: [],
+        })
+      }
+    })
+  },
+
+  restoreMappingFromTrash({ state, rootState, commit }, { uri }) {
+    let config = rootState.config
+    let item = state.mappingTrash.find(item => item.mapping.uri == uri)
+    let registry = config.registries.find(registry => jskos.compare(registry, item && item.registry))
+    if (!item || !registry || !registry.provider) {
+      console.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
+      return Promise.resolve(null)
+    }
+    return registry.provider.saveMapping(item.mapping).then(mapping => {
+      if (mapping) {
+        // Remove item from trash
+        commit({
+          type: "removeFromTrash",
+          uri,
+        })
+        // Set refresh
+        commit({
+          type: "setRefresh",
+          registry: registry.uri,
+        })
+      }
+      return mapping
     })
   },
 

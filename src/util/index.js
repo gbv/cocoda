@@ -9,12 +9,10 @@ function selectText(el){
   if (window.getSelection && document.createRange) { //Browser compatibility
     sel = window.getSelection()
     if(sel.toString() == ""){ //no text selection
-      window.setTimeout(function(){
-        range = document.createRange() //range object
-        range.selectNodeContents(el) //sets Range
-        sel.removeAllRanges() //remove all ranges from selection
-        sel.addRange(range)//add Range to a Selection.
-      },1)
+      range = document.createRange() //range object
+      range.selectNodeContents(el) //sets Range
+      sel.removeAllRanges() //remove all ranges from selection
+      sel.addRange(range)//add Range to a Selection.
     }
   }else if (document.selection) { //older ie
     sel = document.selection.createRange()
@@ -51,7 +49,7 @@ let generateID = () => Math.random().toString(36).substring(2, 15) + Math.random
 let delay = {
   short: { show: 250, hide: 0 },
   medium: { show: 500, hide: 0 },
-  long: { show: 1000, hide: 0 }
+  long: { show: 1000, hide: 0 },
 }
 
 /**
@@ -215,7 +213,7 @@ let annotations = {
   creatorName(annotation) {
     let name
     if (_.isString(annotation.creator)) {
-      name = (this.config.creatorNames || {})[annotation.creator]
+      name = _.get(store, "state.config.creatorNames", {})[annotation.creator]
     } else if (annotation.creator) {
       name = annotation.creator.name
     }
@@ -223,7 +221,7 @@ let annotations = {
   },
   creatorMatches(annotation, uris) {
     return annotation && _.isString(annotation.creator) ? uris && uris.includes(annotation.creator) : uris && annotation.creator && uris.includes(annotation.creator.id)
-  }
+  },
 }
 
 /** Image URLs for specific licenses */
@@ -235,7 +233,13 @@ let licenseBadges = {
   "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
   "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
   "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
-  "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg"
+  "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg",
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations }
+let isValidUri = (uri) => {
+  // from: http://jmrware.com/articles/2009/uri_regexp/URI_regex.html
+  var re_js_rfc3986_URI = /^[A-Za-z][A-Za-z0-9+\-.]*:(?:\/\/(?:(?:[A-Za-z0-9\-._~!$&'()*+,;=:]|%[0-9A-Fa-f]{2})*@)?(?:\[(?:(?:(?:(?:[0-9A-Fa-f]{1,4}:){6}|::(?:[0-9A-Fa-f]{1,4}:){5}|(?:[0-9A-Fa-f]{1,4})?::(?:[0-9A-Fa-f]{1,4}:){4}|(?:(?:[0-9A-Fa-f]{1,4}:){0,1}[0-9A-Fa-f]{1,4})?::(?:[0-9A-Fa-f]{1,4}:){3}|(?:(?:[0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})?::(?:[0-9A-Fa-f]{1,4}:){2}|(?:(?:[0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})?::[0-9A-Fa-f]{1,4}:|(?:(?:[0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})?::)(?:[0-9A-Fa-f]{1,4}:[0-9A-Fa-f]{1,4}|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(?:(?:[0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})?::[0-9A-Fa-f]{1,4}|(?:(?:[0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})?::)|[Vv][0-9A-Fa-f]+\.[A-Za-z0-9\-._~!$&'()*+,;=:]+)\]|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:[A-Za-z0-9\-._~!$&'()*+,;=]|%[0-9A-Fa-f]{2})*)(?::[0-9]*)?(?:\/(?:[A-Za-z0-9\-._~!$&'()*+,;=:@]|%[0-9A-Fa-f]{2})*)*|\/(?:(?:[A-Za-z0-9\-._~!$&'()*+,;=:@]|%[0-9A-Fa-f]{2})+(?:\/(?:[A-Za-z0-9\-._~!$&'()*+,;=:@]|%[0-9A-Fa-f]{2})*)*)?|(?:[A-Za-z0-9\-._~!$&'()*+,;=:@]|%[0-9A-Fa-f]{2})+(?:\/(?:[A-Za-z0-9\-._~!$&'()*+,;=:@]|%[0-9A-Fa-f]{2})*)*|)(?:\?(?:[A-Za-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9A-Fa-f]{2})*)?(?:#(?:[A-Za-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9A-Fa-f]{2})*)?$/
+  return uri.match(re_js_rfc3986_URI) !== null
+}
+
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri }

@@ -8,12 +8,12 @@ The left and right side of Cocoda user interface allow browsing in a concept sch
 
 * a card that shows **details** about the selected scheme or the selected concept
 
-* a **concept tree** for hierarchical browsing if the selected scheme is a
-  classification or taxonomy
+* a **concept tree** for hierarchical browsing if the selected scheme is a classification or taxonomy
 
-A list of bookmarked concept schemes is shown if no concept scheme was selected.
+* A list of bookmarked concept schemes is shown if no concept scheme was selected.
 
 ### Concept Details
+
 ![](img/cocoda-concdet-en.png)
 
 ### Concept Tree

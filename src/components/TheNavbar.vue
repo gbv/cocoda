@@ -29,66 +29,243 @@
         target="_blank">
         {{ $util.prefLabel(item) }}
       </b-nav-item>
+      <!-- Mapping trash -->
+      <b-nav-item-dropdown
+        v-if="mappingTrash.length > 0"
+        id="mappingTrashDropdown"
+        ref="mappingTrashDropdown"
+        extra-menu-classes="navbar-dropdown"
+        no-caret
+        right
+        @mouseover.native="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.mappingTrashDropdown, false)">
+        <template slot="button-content">
+          <font-awesome-icon icon="trash-alt" />
+        </template>
+        <b-dropdown-header>
+          {{ $t("navbar.trashTitle") }}
+          <div
+            v-b-tooltip.hover="{ title: $t('navbar.trashClearButtonTooltip'), delay: $util.delay.medium }"
+            class="button"
+            style="position: absolute; right: 15px; top: 15px;"
+            @click="$store.commit('mapping/clearTrash')">
+            <font-awesome-icon icon="trash-alt" /> {{ $t("navbar.trashClearButton") }}
+          </div>
+        </b-dropdown-header>
+        <mapping-table
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          :mappings="mappingTrash.map(item => item.mapping)"
+          :actions="[{
+            title: $t('navbar.trashRestoreTooltip'),
+            name: 'restore',
+            icon: 'recycle'
+          }]"
+          :show-labels="true"
+          :show-tooltip="false"
+          :show-registry="true"
+          :hide-duplicates="false"
+          style="width: 700px;"
+          @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
+            if (success) {
+              alert($t('alerts.mappingRestored'), null, 'success2')
+            } else {
+              alert($t('alerts.mappingNotRestored'), null, 'danger')
+            }
+          })" />
+      </b-nav-item-dropdown>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown
         id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
         v-b-tooltip.right="favoriteCanBeDropped ? 'drop here to favorite' : ''"
-        extra-menu-classes="favoriteConceptsDropdown"
+        extra-menu-classes="navbar-dropdown favoriteConceptsDropdown"
         no-caret
         right
+        @dragover.native="dragOver"
+        @drop.native="drop"
         @hide="favoriteConceptsDropdownHide"
-        @mouseover.native="favoriteConceptsDropdownMouseover"
-        @mouseout.native="favoriteConceptsDropdownMouseout">
+        @mouseover.native="dropdownSetStatus($refs.favoriteConceptsDropdown, true); _dropdownSetStatus($refs.favoriteConceptsDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.favoriteConceptsDropdown, false)">
         <template slot="button-content">
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
-            icon="star"
-            @dragover="dragOver"
-            @drop="drop" />
+            icon="star" />
         </template>
-        <b-dropdown-header>Favorite Concepts</b-dropdown-header>
-        <b-dropdown-item
+        <b-dropdown-header>
+          {{ $t('schemeSelection.conceptQuick') }}
+        </b-dropdown-header>
+        <div
           v-for="concept in favoriteConcepts"
           :key="'theNavbar-' + concept.uri + '-favorite'"
+          class="dropdown-item"
           draggable
           @dragstart="favoriteConceptDragStart(concept)"
           @dragend="favoriteConceptDragEnd">
-          <item-name :item="concept" />
-          <div
-            class="button favoriteConceptsDropdown-removeButton"
-            @click="removeFavoriteConcept(concept)">
-            <font-awesome-icon icon="times-circle" />
+          <div style="padding-right: 8px;">
+            <span
+              v-b-tooltip.hover="{ title: $t('navbar.removeFromFavorites'), delay: $util.delay.medium }"
+              class="button fontSize-verySmall"
+              @click="removeFavoriteConcept(concept)">
+              <font-awesome-icon icon="times-circle" />
+            </span>
           </div>
-        </b-dropdown-item>
+          <div style="flex: 1">
+            <item-name
+              v-if="concept.inScheme && concept.inScheme[0]"
+              :item="concept.inScheme[0]"
+              :show-text="false"
+              :is-link="false"
+              :prevent-external-hover="true"
+              :draggable="false" />
+            <item-name :item="concept" />
+          </div>
+          <div>
+            <span
+              v-b-tooltip.hover="{ title: $t('navbar.openLeft'), delay: $util.delay.medium }"
+              class="button"
+              @click="setSelected({ concept, isLeft: true })">
+              <font-awesome-icon icon="caret-square-left" />
+            </span>
+            <span
+              v-b-tooltip.hover="{ title: $t('navbar.openRight'), delay: $util.delay.medium }"
+              class="button"
+              @click="setSelected({ concept, isLeft: false })">
+              <font-awesome-icon icon="caret-square-right" />
+            </span>
+          </div>
+        </div>
       </b-nav-item-dropdown>
-      <!-- Identity icon -->
-      <b-nav-item
-        :href="userIdentityImage && creator && creator.uri"
-        class="navbar-identitySettings"
-        target="_blank">
-        <span v-if="userIdentityImage && creator.uri">
-          <img :src="userIdentityImage">
-        </span>
-        <span
-          v-else
-          :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
-          <font-awesome-icon icon="user" />
-        </span>
-      </b-nav-item>
       <!-- Settings button -->
-      <b-nav-item @click="$refs.settings.show()">
-        <!-- Name -->
-        {{ creatorName || $t("navbar.settings") }}
-      </b-nav-item>
-      <!-- Current registry notation -->
-      <b-nav-item v-if="$store.getters.getCurrentRegistry">
-        <registry-notation
-          :registry="$store.getters.getCurrentRegistry"
-          style="opacity: 0.7; cursor: default;" />
-      </b-nav-item>
+      <b-nav-item-dropdown
+        id="accountDropdown"
+        ref="accountDropdown"
+        extra-menu-classes="navbar-dropdown"
+        no-caret
+        right
+        @mouseover.native="dropdownSetStatus($refs.accountDropdown, true); _dropdownSetStatus($refs.accountDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.accountDropdown, false)">
+        <template slot="button-content">
+          <div
+            class="navbar-settingsButton"
+            @click="$refs.settings.show()">
+            <!-- Identity icon -->
+            <span v-if="userIdentityImage && creator.uri">
+              <img :src="userIdentityImage">
+            </span>
+            <span
+              v-else
+              :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
+              <font-awesome-icon icon="user" />
+            </span>
+            <!-- Name -->
+            {{ creatorName || $t("navbar.settings") }}
+          </div>
+        </template>
+        <b-dropdown-header>
+          <p
+            class="fontWeight-heavy"
+            style="padding: 0 10px;">
+            <span
+              v-if="authorized"
+              class="text-success">
+              {{ $t("navbar.loggedInAs") }}
+            </span>
+            <span
+              v-else
+              class="text-danger">
+              {{ $t("settings.loggedOut") }}
+            </span>
+            <span
+              v-if="$util.prefLabel(creator)">
+              {{ $util.prefLabel(creator) }}.
+            </span>
+          </p>
+        </b-dropdown-header>
+        <div
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          style="min-width: 200px;">
+          <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
+            <p
+              v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
+              :key="`navbar-switchToIdentity-${index}`"
+              :class="{
+                'navbar-dropdown-selectable': true,
+                'navbar-dropdown-selectable-selected': uri == creator.uri
+              }"
+              @click="$store.commit({
+                type: 'settings/set',
+                prop: 'creatorUri',
+                value: uri
+              })">
+              <span class="navbar-dropdown-selectable-icon">
+                <img
+                  v-if="imageForIdentityUri(uri)"
+                  :src="imageForIdentityUri(uri)">
+                <font-awesome-icon
+                  v-else
+                  icon="user" />
+              </span>
+              {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
+            </p>
+          </template>
+          <hr>
+          <p
+            v-for="(tab, index) in $t('settingsTabs')"
+            :key="`navbar-settingsTabs-${index}`"
+            class="navbar-settingsTabs-row"
+            @click="settingsTab = index; $refs.settings.show()">
+            {{ tab }}
+          </p>
+        </div>
+      </b-nav-item-dropdown>
+      <!-- Current registry -->
+      <b-nav-item-dropdown
+        v-if="$store.getters.getCurrentRegistry"
+        id="currentRegistryDropdown"
+        ref="currentRegistryDropdown"
+        extra-menu-classes="navbar-dropdown"
+        no-caret
+        right
+        @mouseover.native="dropdownSetStatus($refs.currentRegistryDropdown, true); _dropdownSetStatus($refs.currentRegistryDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.currentRegistryDropdown, false)">
+        <template slot="button-content">
+          <registry-notation
+            :registry="$store.getters.getCurrentRegistry"
+            :tooltip="false"
+            style="opacity: 0.7; cursor: default;" />
+        </template>
+        <b-dropdown-header>
+          {{ $t("navbar.mappingRegistryHeader") }}
+        </b-dropdown-header>
+        <div
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          style="min-width: 200px;">
+          <p
+            v-for="registry in config.registries.filter(registry => registry.provider.has.canSaveMappings)"
+            :key="`navbar-mappingRegistry-${registry.uri}`"
+            :class="{
+              'navbar-dropdown-selectable': true,
+              'navbar-dropdown-selectable-selected': $jskos.compare(registry, $store.getters.getCurrentRegistry)
+            }"
+            @click="$store.commit({
+              type: 'settings/set',
+              prop: 'mappingRegistry',
+              value: registry.uri
+            })">
+            <registry-notation
+              :registry="registry"
+              :tooltip="false" />
+            <registry-name
+              :registry="registry"
+              :tooltip="false" />
+          </p>
+        </div>
+      </b-nav-item-dropdown>
+
       <!-- Settings modal -->
-      <the-settings ref="settings" />
+      <the-settings
+        ref="settings"
+        :tab.sync="settingsTab" />
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -97,11 +274,15 @@
 import TheSettings from "./TheSettings"
 import ItemName from "./ItemName"
 import RegistryNotation from "./RegistryNotation"
+import RegistryName from "./RegistryName"
+import MappingTable from "./MappingTable"
 import _ from "lodash"
 
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
+import computed from "../mixins/computed"
 
 /**
  * The navigation bar.
@@ -109,12 +290,40 @@ import objects from "../mixins/objects"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName, RegistryNotation
+    TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable,
   },
-  mixins: [auth, objects],
+  mixins: [auth, objects, dragandrop, computed],
+  data() {
+    return {
+      settingsTab: 0,
+    }
+  },
   computed: {
+    draggedConcept: {
+      get() {
+        return this.$store.state.draggedConcept
+      },
+      set(concept) {
+        this.$store.commit({
+          type: "setDraggedConcept",
+          concept,
+        })
+      },
+    },
     favoriteCanBeDropped() {
       return this.draggedConcept != null && !this.$jskos.isScheme(this.draggedConcept) && !this.$jskos.isContainedIn(this.draggedConcept, this.favoriteConcepts)
+    },
+    mappingTrash() {
+      // Don't load trash before schemes are loaded
+      if (!this.$store.state.configLoaded || !this.schemes.length) {
+        return []
+      }
+      let trash = this.$store.state.mapping.mappingTrash
+      trash = trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(this.$jskos.copyDeep(item.mapping)) }))
+      for (let item of trash) {
+        item.mapping._registry = this.config.registries.find(registry => this.$jskos.compare(registry, item.registry))
+      }
+      return trash
     },
   },
   watch: {
@@ -127,6 +336,9 @@ export default {
         this.$root.$emit("bv::hide::tooltip", "favoriteConceptsDropdown")
       }
     },
+  },
+  created() {
+    this.dropdownSetStatus = _.debounce(this._dropdownSetStatus, 500)
   },
   methods: {
     favoriteConceptDragStart(concept) {
@@ -142,11 +354,12 @@ export default {
       }
       this.draggedConcept = null
     },
-    favoriteConceptsDropdownMouseover() {
-      this.$refs.favoriteConceptsDropdown.show()
-    },
-    favoriteConceptsDropdownMouseout() {
-      this.$refs.favoriteConceptsDropdown.hide()
+    _dropdownSetStatus(dropdown, status) {
+      if (status) {
+        dropdown.show()
+      } else {
+        dropdown.hide()
+      }
     },
     favoriteConceptsDropdownHide() {
       // Scroll back to the top
@@ -179,18 +392,17 @@ nav.navbar {
   color: @color-text-lightGrey;
 }
 
-.navbar-identitySettings img, .navbar-identitySettings svg {
+.navbar-settingsButton > span > img, .navbar-settingsButton > span > svg {
   opacity: 1;
   height: 17px;
-  margin-right: -10px;
 }
-.navbar-identitySettings img {
+.navbar-settingsButton > span > img {
   margin-top: -3px;
 }
-.navbar-identitySettings svg {
+.navbar-settingsButton > span > svg {
   margin-top: 1px;
 }
-.navbar-identitySettings:hover img, .navbar-identitySettings:hover svg {
+.navbar-settingsButton:hover > span > img, .navbar-settingsButton:hover > span > svg {
   opacity: .5;
 }
 </style>
@@ -200,6 +412,12 @@ nav.navbar {
 
 .nav-link, .nav-link > span, .btn-link {
   color: @color-text-dark !important;
+}
+.nav-link.active, .btn-link.active {
+  font-weight: 700;
+}
+.nav-pills .nav-link.active {
+  color: white !important;
 }
 .nav-link:hover, .btn-link:hover {
   color: @color-text-lightGrey !important;
@@ -220,18 +438,21 @@ nav.navbar {
   left:0;
   right:0;
 }
-.favoriteConceptsDropdown {
-  max-height: 700px;
-  width: 300px;
+.navbar-dropdown {
   overflow-x: hidden;
   // Offset to the right
-  right: -50px !important;
+  right: -8px !important;
   // Move a little to the top
   top: 95% !important;
+}
+.favoriteConceptsDropdown {
+  max-height: 700px;
+  width: 400px;
 }
 .favoriteConceptsDropdown .dropdown-item {
   white-space: normal;
   position: relative;
+  display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
   background-color: @color-primary-5;
@@ -239,11 +460,35 @@ nav.navbar {
 .favoriteConceptsDropdown-iconTarget {
   color: @color-select;
 }
-.favoriteConceptsDropdown-removeButton {
-  position: absolute;
-  right: 10px;
-  top: 53%;
-  transform: translateY(-50%);
-  font-size: 14px;
+.navbar-dropdown-selectable {
+  word-break: break-all;
+  user-select: none;
+  padding: 3px 10px;
+  padding-right: 12px;
+}
+.navbar-dropdown-selectable-icon {
+  display: inline-block;
+  width: 17px;
+}
+.navbar-dropdown-selectable-icon > img {
+  height: 17px;
+  margin-top: -3px;
+}
+.navbar-dropdown-selectable-icon > svg {
+  height: 17px;
+  margin-top: 1px;
+  margin-left: 2px;
+}
+.navbar-dropdown-selectable-selected {
+  .fontWeight-heavy;
+  padding-right: 5px;
+  background-color: @color-select;
+}
+.navbar-settingsTabs-row {
+  padding: 3px 10px;
+}
+.navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
+  cursor: pointer;
+  background-color: @color-primary-5;
 }
 </style>

@@ -6,7 +6,7 @@
     <div
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
-      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType), delay: $util.delay.medium }"
+      v-b-tooltip.hover.right="{ title: $util.prefLabel(mappingType) + definition(mappingType), delay: $util.delay.medium }"
       :class="{
         mappingTypeSelected: hovered && (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
@@ -32,14 +32,14 @@ export default {
      */
     mapping: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data () {
     return {
       hovered: false,
       mappingTypes: this.$jskos.mappingTypes,
-      mappingTypeHovered: null
+      mappingTypeHovered: null,
     }
   },
   computed: {
@@ -49,16 +49,23 @@ export default {
     mappingTypeSelected() {
       let mapping = this.mapping
       return this.$jskos.mappingTypeByType(mapping ? mapping.type : null)
-    }
+    },
   },
   methods: {
     choose(mappingType) {
       this.$store.commit({
         type: "mapping/setType",
-        uri: mappingType.uri
+        uri: mappingType.uri,
       })
-    }
-  }
+    },
+    definition(mappingType) {
+      let definition = this.$util.definition(mappingType)
+      if (definition.length) {
+        return ": " + definition.join(", ")
+      }
+      return ""
+    },
+  },
 }
 </script>
 

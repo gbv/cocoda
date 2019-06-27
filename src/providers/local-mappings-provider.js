@@ -2,6 +2,11 @@ import _ from "lodash"
 import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
+import uuid from "uuid/v4"
+// TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
+import util from "../util"
+
+const uriPrefix = "urn:uuid:"
 
 /**
  * For saving and retrieving mappings from the browser's local storage.
@@ -13,17 +18,43 @@ class LocalMappingsProvider extends BaseProvider {
     this.queue = []
     this.localStorageKey = "cocoda-mappings--" + this.path
     let oldLocalStorageKey = "mappings"
+    // Function that adds URIs to all existing local mappings that don't yet have one
+    let addUris = () => {
+      return localforage.getItem(this.localStorageKey).then(mappings => {
+        mappings = mappings || []
+        let adjusted = 0
+        for (let mapping of mappings.filter(m => !m.uri || !m.uri.startsWith(uriPrefix))) {
+          if (mapping.uri) {
+            // Keep previous URI in identifier
+            if (!mapping.identifier) {
+              mapping.identifier = []
+            }
+            mapping.identifier.push(mapping.uri)
+          }
+          mapping.uri = `${uriPrefix}${uuid()}`
+          adjusted += 1
+        }
+        if (adjusted) {
+          console.warn(`URIs added to ${adjusted} local mappings.`)
+        }
+        return localforage.setItem(this.localStorageKey, mappings)
+      })
+    }
     // Migration from old local storage key to new one if necessary
-    Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(this.localStorageKey)]).then(results => {
+    let promise = Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(this.localStorageKey)]).then(results => {
       let [oldMappings, newMappings] = results
       if (oldMappings && !newMappings) {
-        localforage.setItem(this.localStorageKey, oldMappings).then(() => {
+        return localforage.setItem(this.localStorageKey, oldMappings).then(() => {
           console.warn(`Migrated from old local storage key (${oldLocalStorageKey}) to new one (${this.localStorageKey})`)
         }).catch(error => {
           console.error("Error attempting to migrate from old storage key to new one:", error)
-        })
+        }).then(addUris)
+      } else {
+        return addUris()
       }
     })
+    // Put promise into queue so that getMappings requests are waiting for migration/adjustments to finish
+    this.queue.push(promise)
   }
 
   /**
@@ -65,13 +96,34 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of local mappings.
    */
-  _getMappings({ from, to, direction, mode, identifier } = {}) {
+  _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, uri } = {}) {
     let params = {}
     if (from) {
-      params.from = from.uri
+      params.from = _.isString(from) ? from : from.uri
+    }
+    if (fromScheme) {
+      params.fromScheme = _.isString(fromScheme) ? { uri: fromScheme } : fromScheme
     }
     if (to) {
-      params.to = to.uri
+      params.to = _.isString(to) ? to : to.uri
+    }
+    if (toScheme) {
+      params.toScheme = _.isString(toScheme) ? { uri: toScheme } : toScheme
+    }
+    if (creator) {
+      params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
+    }
+    if (type) {
+      params.type = _.isString(type) ? type : type.uri
+    }
+    if (partOf) {
+      params.partOf = _.isString(partOf) ? partOf : partOf.uri
+    }
+    if (offset) {
+      params.offset = offset
+    }
+    if (limit) {
+      params.limit = limit
     }
     if (direction) {
       params.direction = direction
@@ -82,58 +134,117 @@ class LocalMappingsProvider extends BaseProvider {
     if (identifier) {
       params.identifier = identifier
     }
+    if (uri) {
+      params.uri = uri
+    }
     return localforage.getItem(this.localStorageKey).then(mappings => mappings || []).catch(() => []).then(mappings => {
-      if (params.direction == "both") {
-        params.mode = "or"
-      }
+      // Check concept with param
+      let checkConcept = (concept, param) => concept.uri == param || (param && concept.notation && concept.notation[0].toLowerCase() == param.toLowerCase())
       // Filter mappings according to params (support for from + to)
       // TODO: - Support more parameters.
       // TODO: - Move to its own things.
-      // TODO: - Support memberList and memberChoice.
       // TODO: - Clean all this up.
-      if (params.mode == "or") {
+      if (params.from || params.to) {
         mappings = mappings.filter(mapping => {
-          let fromInFrom = null != mapping.from.memberSet.find(concept => {
-            return concept.uri == params.from
-          })
-          let fromInTo = null != mapping.to.memberSet.find(concept => {
-            return concept.uri == params.from
-          })
-          let toInFrom = null != mapping.from.memberSet.find(concept => {
-            return concept.uri == params.to
-          })
-          let toInTo = null != mapping.to.memberSet.find(concept => {
-            return concept.uri == params.to
-          })
-          return (params.direction == "forward" && (fromInFrom || toInTo)) ||
-            (params.direction == "backward" && (fromInTo || toInFrom)) ||
-            (params.direction == "both" && (fromInFrom || fromInTo || toInFrom || toInTo))
+          let fromInFrom = null != jskos.conceptsOfMapping(mapping, "from").find(concept => checkConcept(concept, params.from))
+          let fromInTo = null != jskos.conceptsOfMapping(mapping, "to").find(concept => checkConcept(concept, params.from))
+          let toInFrom = null != jskos.conceptsOfMapping(mapping, "from").find(concept => checkConcept(concept, params.to))
+          let toInTo = null != jskos.conceptsOfMapping(mapping, "to").find(concept => checkConcept(concept, params.to))
+          if (params.direction == "backward") {
+            if (params.mode == "or") {
+              return (params.from && fromInTo) || (params.to && toInFrom)
+            } else {
+              return (!params.from || fromInTo) && (!params.to || toInFrom)
+            }
+          } else if (params.direction == "both") {
+            if (params.mode == "or") {
+              return (params.from && (fromInFrom || fromInTo)) || (params.to && (toInFrom || toInTo))
+            } else {
+              return ((!params.from || fromInFrom) && (!params.to || toInTo)) || ((!params.from || fromInTo) && (!params.to || toInFrom))
+            }
+          } else {
+            if (params.mode == "or") {
+              return (params.from && fromInFrom) || (params.to && toInTo)
+            } else {
+              return (!params.from || fromInFrom) && (!params.to || toInTo)
+            }
+          }
         })
-      } else {
-        if (params.from) {
-          mappings = mappings.filter(mapping => {
-            let target = params.direction == "backward" ? "to" : "from"
-            return null != mapping[target].memberSet.find(concept => {
-              return concept.uri == params.from
-            })
-          })
-        }
-        if (params.to) {
-          mappings = mappings.filter(mapping => {
-            let target = params.direction == "backward" ? "from" : "to"
-            return null != mapping[target].memberSet.find(concept => {
-              return concept.uri == params.to
-            })
-          })
-        }
       }
+      if (params.fromScheme || params.toScheme) {
+        mappings = mappings.filter(mapping => {
+          let fromInFrom = jskos.compare(mapping.fromScheme, params.fromScheme)
+          let fromInTo = jskos.compare(mapping.toScheme, params.fromScheme)
+          let toInFrom = jskos.compare(mapping.fromScheme, params.toScheme)
+          let toInTo = jskos.compare(mapping.toScheme, params.toScheme)
+          if (params.direction == "backward") {
+            if (params.mode == "or") {
+              return (params.fromScheme && fromInTo) || (params.toScheme && toInFrom)
+            } else {
+              return (!params.fromScheme || fromInTo) && (!params.toScheme || toInFrom)
+            }
+          } else if (params.direction == "both") {
+            if (params.mode == "or") {
+              return (params.fromScheme && (fromInFrom || fromInTo)) || (params.toScheme && (toInFrom || toInTo))
+            } else {
+              return ((!params.fromScheme || fromInFrom) && (!params.toScheme || toInTo)) || ((!params.fromScheme || fromInTo) && (!params.toScheme || toInFrom))
+            }
+          } else {
+            if (params.mode == "or") {
+              return (params.fromScheme && fromInFrom) || (params.toScheme && toInTo)
+            } else {
+              return (!params.fromScheme || fromInFrom) && (!params.toScheme || toInTo)
+            }
+          }
+        })
+      }
+      // creator
+      if (params.creator) {
+        let creators = params.creator.split("|")
+        mappings = mappings.filter(mapping => {
+          return (mapping.creator && mapping.creator.find(creator => creators.includes(util.prefLabel(creator)) || creators.includes(creator.uri))) != null
+        })
+      }
+      // type
+      if (params.type) {
+        mappings = mappings.filter(mapping => (mapping.type || [jskos.defaultMappingType.uri]).includes(params.type))
+      }
+      // concordance
+      if (params.partOf) {
+        mappings = mappings.filter(mapping => {
+          return mapping.partOf != null && mapping.partOf.find(partOf => jskos.compare(partOf, { uri: params.partOf })) != null
+        })
+      }
+      // identifier
       if (params.identifier) {
         mappings = mappings.filter(mapping => {
           return params.identifier.split("|").map(identifier => {
-            return (mapping.identifier || []).includes(identifier)
+            return (mapping.identifier || []).includes(identifier) || mapping.uri == identifier
           }).reduce((current, total) => current || total)
         })
       }
+      if (params.uri) {
+        mappings = mappings.filter(mapping => mapping.uri == params.uri)
+      }
+      let totalCount = mappings.length
+      // Sort mappings (default: modified/created date descending)
+      mappings = mappings.sort((a, b) => {
+        let aDate = a.modified || a.created
+        let bDate = b.modified || b.created
+        if (bDate == null) {
+          return -1
+        }
+        if (aDate == null) {
+          return 1
+        }
+        if (aDate > bDate) {
+          return -1
+        }
+        return 1
+      })
+      mappings = mappings.slice(params.offset || 0)
+      mappings = mappings.slice(0, params.limit)
+      mappings.totalCount = totalCount
       return mappings
     })
   }
@@ -147,19 +258,38 @@ class LocalMappingsProvider extends BaseProvider {
     return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
       if (!mapping.created) {
         mapping.created = (new Date()).toISOString()
-      } else if (original) {
+      }
+      if (!mapping.modified) {
+        mapping.modified = mapping.created
+      }
+      if (original) {
         mapping.modified = (new Date()).toISOString()
       }
-      original = original || {}
-      // Filter out original mapping and other local mappings with the same content identifier.
-      localMappings = localMappings.filter(m => {
-        let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
-        let id1 = m.identifier ? m.identifier.find(findContentId) : null
-        let id2 = (original.identifier || []).find(findContentId)
-        let id3 = (mapping.identifier || []).find(findContentId)
-        return id1 != id2 && id1 != id3
-      })
-      localMappings.push(mapping)
+
+      let previousIndex = original ? localMappings.findIndex(m => m.uri == original.uri) : -1
+
+      // Set URI if necessary
+      if (!mapping.uri || !mapping.uri.startsWith(uriPrefix)) {
+        if (mapping.uri) {
+          // Keep previous URI in identifier
+          if (!mapping.identifier) {
+            mapping.identifier = []
+          }
+          mapping.identifier.push(mapping.uri)
+        }
+        mapping.uri = `${uriPrefix}${uuid()}`
+      }
+
+      if (original) {
+        localMappings = localMappings.filter(m => m.uri != original.uri)
+      }
+      if (original && previousIndex != -1) {
+        // Insert mapping at previous index
+        localMappings.splice(previousIndex, 0, mapping)
+      } else {
+        // Insert mapping at the end
+        localMappings.push(mapping)
+      }
 
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
@@ -179,17 +309,9 @@ class LocalMappingsProvider extends BaseProvider {
    * Removes mappings from local storage. Returns a Promise with a list of mappings that were removed.
    */
   _removeMapping(mapping) {
-    mapping = jskos.addMappingIdentifiers(mapping)
     return this.getMappingsQueue().then(({ mappings: localMappings, done }) => {
-      let filter = (reverse = false) => mapping => m => {
-        let findContentId = id => id.startsWith("urn:jskos:mapping:content:")
-        let id1 = m.identifier ? m.identifier.find(findContentId) : null
-        let id2 = mapping.identifier ? mapping.identifier.find(findContentId) : null
-        let result = id1 == null || id2 == null || id1 != id2
-        return reverse ? !result : result
-      }
       // Remove by content identifier
-      localMappings = localMappings.filter(filter()(mapping))
+      localMappings = localMappings.filter(m => m.uri != mapping.uri)
       // Minify mappings before saving back to local storage
       localMappings = localMappings.map(mapping => jskos.minifyMapping(mapping))
       return localforage.setItem(this.localStorageKey, localMappings).then(() => {

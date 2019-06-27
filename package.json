@@ -1,6 +1,6 @@
 {
   "name": "cocoda-2018",
-  "version": "0.8.5",
+  "version": "0.9.3",
   "description": "Cocoda - Concordance App",
   "author": "Stefan Peters <stefandesu@exo.pm>",
   "license": "MIT",
@@ -10,21 +10,24 @@
     "start": "npm run dev",
     "serve": "vue-cli-service serve",
     "build": "./build/build.sh",
-    "lint": "vue-cli-service lint",
-    "fix": "./node_modules/.bin/eslint --fix ./src/*.{js,vue} ./src/**/*.{js,vue}",
+    "build-all": "./build/build-all.sh",
+    "lint": "vue-cli-service lint --no-fix",
+    "fix": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
     "styleguide:build": "vue-styleguidist build",
-    "user-manual": "cd docs; ./convert-user-manual.sh"
+    "user-manual": "cd docs; ./build-user-manual.sh",
+    "release": "./bin/release.sh",
+    "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
   },
   "lint-staged": {
-    "src/**/*.{js,vue}": [
-      "eslint --fix",
+    "**/*.{js,vue}": [
+      "vue-cli-service lint",
       "git add"
     ],
-    "src/*.{js,vue}": [
-      "eslint --fix",
+    "**/*.json": [
+      "./bin/format-json.js",
       "git add"
     ]
   },
@@ -36,20 +39,22 @@
     "@fortawesome/free-brands-svg-icons": "^5.8.0",
     "@fortawesome/free-solid-svg-icons": "^5.8.0",
     "@fortawesome/vue-fontawesome": "^0.1.6",
-    "axios": "^0.18.0",
-    "bootstrap-vue": "^2.0.0-rc.15",
+    "axios": "^0.19.0",
+    "bootstrap-vue": "2.0.0-rc.19",
+    "cocoda-vue-tabs": "^0.1.5",
     "css-element-queries": "^1.1.1",
     "file-saver": "^2.0.1",
-    "gbv-login-client": "^0.2.5",
+    "gbv-login-client": "^0.2.6",
     "jquery": "^3.4.0",
-    "jskos-tools": "^0.2.0",
+    "jskos-tools": "^0.2.8",
     "json-format-highlight": "^1.0.1",
     "localforage": "^1.7.3",
     "lodash": "^4.17.11",
     "qs": "^6.6.0",
     "simple-sha1": "^2.1.2",
+    "uuid": "^3.3.2",
     "vue": "^2.6.6",
-    "vue-flexible-table": "^0.2.5",
+    "vue-flexible-table": "^0.3.1",
     "vue-i18n": "^8.9.0",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.15.0",
@@ -66,12 +71,18 @@
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^5.0.1",
     "eslint": "^5.8.0",
+    "eslint-config-gbv": "git+https://github.com/gbv/eslint-config-gbv.git",
     "eslint-plugin-vue": "^5.0.0",
-    "jsdoc-to-markdown": "^4.0.1",
+    "glob": "^7.1.4",
+    "jsdoc-to-markdown": "^5.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "lint-staged": "^8.1.5",
     "vue-styleguidist": "^3.11.7",
     "vue-template-compiler": "^2.5.21"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.8.0"
   }
 }

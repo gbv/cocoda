@@ -20,21 +20,26 @@ export default {
      */
     link: {
       type: String,
-      default: ""
+      default: "",
     },
     /**
      * The text that is shown (defaults to URL).
      */
     text: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
-    // from: https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url (User VicJordan)
-    isValidURL: function(string) {
-      return string && !!string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g)
-    }
-  }
+    // from: https://stackoverflow.com/a/43467144/11050851
+    isValidURL(string) {
+      try {
+        new URL(string)
+        return true
+      } catch (_) {
+        return false
+      }
+    },
+  },
 }
 </script>

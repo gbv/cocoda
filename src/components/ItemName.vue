@@ -3,10 +3,13 @@
     v-if="item != null"
     :draggable="draggable"
     class="itemName"
+    :class="{
+      'itemName-hoverable': !preventExternalHover && isValidLink
+    }"
     @dragstart="dragStart(item, $event)"
     @dragend="dragEnd"
-    @mouseover="mouseOver"
-    @mouseout="mouseOut">
+    @mouseover="hovering(true)"
+    @mouseout="hovering(false)">
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
@@ -50,61 +53,63 @@
 
 <script>
 import _ from "lodash"
+import dragandrop from "../mixins/dragandrop"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
  */
 export default {
   name: "ItemName",
+  mixins: [dragandrop],
   props: {
     /**
      * The item whose notation and name this component will display.
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * The font size for the text (small, normal, large).
      */
     fontSize: {
       type: String,
-      default: "normal"
+      default: "normal",
     },
     /**
      * Determines whether to show or hide the label text.
      */
     showText: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Determines whether it is a link.
      */
     isLink: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Only for isLink: Side on which to open item.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Determines whether to show the concepts label as a tooltip.
      */
     showTooltip: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Determines whether the item is highlighted
      */
     isHighlighted: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * If true, this ItemName will not be hovered if the same concept is hovered elsewhere.
@@ -112,22 +117,22 @@ export default {
      */
     preventExternalHover: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Determines whether the item is draggable
      */
     draggable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Determines whether the item should be forced to open on the specified side in `isLeft`
      */
     forceSide: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data () {
     return {
@@ -142,7 +147,7 @@ export default {
   },
   computed: {
     isHovered() {
-      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.hoveredConcept, this.item))
+      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this.item))
     },
     notation() {
       return this.$util.notation(this.item)
@@ -156,39 +161,47 @@ export default {
           this.$refs.tooltip && this.$refs.tooltip.$emit("open")
         }
       }, 50)
-    }
+    },
   },
   created() {
     if (!this.preventExternalHover && this.isLink) {
       this.isValidLink = true
     }
+    this.hovering = _.debounce(this._hovering, 20)
   },
   methods: {
-    mouseOver() {
-      this.isHoveredFromHere = true
-      this.hoveredConcept = this.item
-      // Set URL
-      this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
-      // Set isValidLink
-      if (!this.isLink) {
-        this.isValidLink = false
-      } else {
-        // Check if scheme is available or item itself is a scheme.
-        this.isValidLink = this.getProvider(this.item) != null
-      }
-      // Check whether mouse is still in element.
-      window.clearInterval(this.interval)
-      this.interval = setInterval(() => {
-        if (!this.isMouseOver()) {
-          this.isHoveredFromHere = false
-          window.clearInterval(this.interval)
+    _hovering(status) {
+      if (status) {
+        this.isHoveredFromHere = true
+        this.$store.commit({
+          type: "setHoveredConcept",
+          concept: this.item,
+        })
+        // Set URL
+        this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
+        // Set isValidLink
+        if (!this.isLink) {
+          this.isValidLink = false
+        } else {
+          // Check if scheme is available or item itself is a scheme.
+          this.isValidLink = this.getProvider(this.item) != null
         }
-      }, 500)
-    },
-    mouseOut() {
-      this.isHoveredFromHere = false
-      this.hoveredConcept = null
-      window.clearInterval(this.interval)
+        // Check whether mouse is still in element.
+        window.clearInterval(this.interval)
+        this.interval = setInterval(() => {
+          if (!this.isMouseOver()) {
+            this.isHoveredFromHere = false
+            window.clearInterval(this.interval)
+          }
+        }, 500)
+      } else {
+        this.isHoveredFromHere = false
+        this.$store.commit({
+          type: "setHoveredConcept",
+          concept: null,
+        })
+        window.clearInterval(this.interval)
+      }
     },
     trimTooltip(text) {
       if (text.length > 80) {
@@ -197,7 +210,7 @@ export default {
         return text
       }
     },
-  }
+  },
 }
 
 import Vue from "vue"
@@ -209,17 +222,17 @@ Vue.component("notation-text", {
   props: {
     item: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       ddc: {
         uri : "http://dewey.info/scheme/edition/e23/",
         identifier : [
-          "http://bartoc.org/en/node/241"
-        ]
-      }
+          "http://bartoc.org/en/node/241",
+        ],
+      },
     }
   },
   computed: {
@@ -237,7 +250,7 @@ Vue.component("notation-text", {
       return fill
     },
   },
-  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-mediumLightGrey'>{{ fill }}</span></span>"
+  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-mediumLightGrey'>{{ fill }}</span></span>",
 })
 
 </script>
@@ -253,7 +266,7 @@ Vue.component("notation-text", {
   color: @color-text-dark !important;
   display: inline;
 }
-.itemName-hovered {
+.itemName-hovered, .itemName-hoverable:hover > div {
   cursor: pointer;
   text-decoration: underline !important;
 }

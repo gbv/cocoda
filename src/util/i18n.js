@@ -7,7 +7,7 @@ import messages from "../../config/locale.json"
 const i18n = new VueI18n({
   locale: "en",
   fallbackLocale: "en",
-  messages
+  messages,
 })
 
 export default i18n

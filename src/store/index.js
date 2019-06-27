@@ -7,6 +7,8 @@ import auth from "./modules/auth"
 import settings from "./modules/settings"
 import { plugins } from "./plugins"
 import jskos from "jskos-tools"
+import _ from "lodash"
+import util from "../util"
 // Root store
 import actions from "./actions"
 
@@ -23,7 +25,7 @@ const state = {
   hoveredMapping: null,
   mousePosition: {
     x: 0,
-    y: 0
+    y: 0,
   },
 }
 
@@ -32,7 +34,7 @@ const getters = {
     return state.settings.settings.favoriteSchemes || state.config.favoriteSchemes
   },
   favoriteConcepts: (state) => {
-    return state.settings.settings.favoriteConcepts || []
+    return (state.settings.settings.favoriteConcepts || []).map(concept => _.pick(concept, ["uri", "notation", "inScheme"]))
   },
   authAvailable: (state) => {
     return state.config.registries.find(registry => registry.auth) != null
@@ -50,9 +52,15 @@ const getters = {
    */
   creator: (state) => {
     let creator = {}
-    let language = state.settings.settings.locale || "en"
+    let language = state.settings.settings.locale
+    if (!(state.config.languages || []).includes(language)) {
+      language = "en"
+    }
     let name = state.settings.settings.creator
     let uri = state.settings.settings.creatorUri
+    if (!util.isValidUri(uri)) {
+      uri = null
+    }
     if (uri) {
       creator.uri = uri
       // Override name with name from chosen identity
@@ -109,7 +117,7 @@ const mutations = {
 
 const store = new Vuex.Store({
   modules: {
-    selected, mapping, alerts, auth, settings
+    selected, mapping, alerts, auth, settings,
   },
   plugins,
   state,

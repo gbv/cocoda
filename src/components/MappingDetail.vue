@@ -142,20 +142,24 @@
                 :key="`mappingDetail-partOf-${index}`">
                 <auto-link
                   :link="part.uri"
-                  :text="$util.prefLabel(part)" />
+                  :text="displayNameForConcordance(part)" />
               </p>
             </b-col>
           </b-row>
           <!-- Identifier -->
-          <b-row v-if="mapping.identifier">
+          <b-row v-if="mapping.uri || mapping.identifier">
             <b-col cols="3">
               {{ $t("mappingDetail.identifier") }}:
             </b-col>
             <b-col>
               <p
-                v-for="(identifier, index) in mapping.identifier"
+                v-for="(identifier, index) in [mapping.uri].concat(mapping.identifier).filter(id => id != null)"
                 :key="`mappingDetail-identifier-${index}`">
-                <auto-link :link="identifier" />
+                <auto-link
+                  :class="{
+                    'fontWeight-heavy': identifier == mapping.uri
+                  }"
+                  :link="identifier" />
               </p>
             </b-col>
           </b-row>
@@ -199,7 +203,7 @@ export default {
      */
     mapping: {
       type: Object,
-      default: null
+      default: null,
     },
 
   },
@@ -207,7 +211,20 @@ export default {
     show() {
       this.$refs.mappingDetail.show()
     },
-  }
+    displayNameForConcordance(concordance) {
+      if (!concordance) {
+        return ""
+      }
+      let name = this.$util.prefLabel(concordance, null, false) || this.$util.lmContent(concordance, "scopeNote") || concordance.uri || ""
+      if (concordance.creator && concordance.creator.length) {
+        let creator = this.$util.prefLabel(concordance.creator[0], null, false)
+        if (creator) {
+          name += ` (${creator})`
+        }
+      }
+      return name
+    },
+  },
 }
 </script>
 

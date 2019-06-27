@@ -10,9 +10,20 @@
         :show="alert.countdown || !alert.shouldCountdown"
         :dismissible="!alert.shouldCountdown"
         fade
+        style="display: flex;"
         @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
         @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })">
-        <span v-html="alert.text" />
+        <div
+          style="flex: 1;"
+          v-html="alert.text" />
+        <div
+          v-if="alert.buttonText"
+          class="fontWeight-heavy">
+          <a
+            href=""
+            @click.prevent="alert.buttonHandler(alert, $event)"
+            v-html="alert.buttonText" />
+        </div>
       </b-alert>
     </div>
     <the-navbar v-if="configLoaded" />
@@ -41,14 +52,16 @@
             order5: !isLeft
           }"
           class="browser mainComponent">
-          <minimizer :is-column="true" />
+          <minimizer
+            :name="`browserComponent_${isLeft}`"
+            :is-column="true" />
           <!-- Concept scheme selection -->
           <concept-scheme-selection
             :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
             :is-left="isLeft"
             :style="selected.scheme[isLeft] != null ? '' : 'flex: 1;'"
             class="mainComponent visualComponent" />
-          <!-- ItemDetail and ConceptTree -->
+          <!-- ItemDetail and ConceptList -->
           <div
             v-if="selected.scheme[isLeft] != null"
             class="conceptBrowser">
@@ -58,15 +71,17 @@
               :item="selected.concept[isLeft] || selected.scheme[isLeft]"
               :is-left="isLeft"
               :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail" />
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
+              @searchMappings="searchMappings($event)"
+              @searchConcept="setConceptSearchQuery(isLeft, $event, true)" />
             <!-- Slider -->
             <resizing-slider />
-            <!-- ConceptTree -->
-            <concept-tree
-              :id="'conceptTreeComponent_' + isLeft"
-              :ref="isLeft ? 'conceptTreeLeft' : 'conceptTreeRight'"
+            <!-- ConceptList -->
+            <concept-list-wrapper
+              :id="'conceptListComponent_' + isLeft"
+              :ref="isLeft ? 'conceptListLeft' : 'conceptListRight'"
               :is-left="isLeft"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemTree" />
+              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemList" />
           </div>
         </div>
 
@@ -84,22 +99,7 @@
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingEditor -->
             <mapping-editor
-              v-if="selected.scheme[true] || selected.scheme[false]" />
-            <!-- Placeholder -->
-            <!-- ... -->
-            <!-- Minimizer allows component to get minimized -->
-            <minimizer
-              ref="minimizer"
-              :text="$t('mappingEditor.title')" />
-          </div>
-          <!-- Slider -->
-          <resizing-slider :cocoda-red="true" />
-          <div
-            id="mappingBrowserComponent"
-            class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingBrowser -->
-            <mapping-browser
-              v-if="selected.scheme[true] || selected.scheme[false]" />
+              v-if="selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0)" />
             <!-- Placeholder -->
             <div
               v-else
@@ -125,10 +125,42 @@
                   <br>
                   {{ $t("general.feedback2") }}
                 </p>
+                <hr v-if="!forceMappingBrowser">
+                <p v-if="!forceMappingBrowser">
+                  <span v-if="$refs.mappingBrowser && $refs.mappingBrowser.tabIndexes && $refs.mappingBrowser.tabIndexes.concordances != null">
+                    <a
+                      href=""
+                      @click.prevent="showConcordances">{{ $t("general.showConcordances") }}</a> -
+                  </span>
+                  <a
+                    href=""
+                    @click.prevent="showMappingSearch">{{ $t("general.showMappingSearch") }}</a>
+                </p>
               </div>
             </div>
             <!-- Minimizer allows component to get minimized -->
-            <minimizer :text="$t('mappingBrowser.title')" />
+            <minimizer
+              v-show="!forceMappingEditor"
+              ref="mappingEditorMinimizer"
+              name="mappingEditorComponent"
+              :text="$t('mappingEditor.title')"
+              :force-minimized="forceMappingEditor ? false : null" />
+          </div>
+          <!-- Slider -->
+          <resizing-slider
+            v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
+            :cocoda-red="true" />
+          <div
+            v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
+            id="mappingBrowserComponent"
+            class="mappingToolItem mainComponent visualComponent">
+            <!-- MappingBrowser -->
+            <mapping-browser ref="mappingBrowser" />
+            <!-- Minimizer allows component to get minimized -->
+            <minimizer
+              ref="mappingBrowserMinimizer"
+              name="mappingBrowserComponent"
+              :text="$t('mappingBrowser.title')" />
           </div>
         </div>
 
@@ -145,7 +177,7 @@
 import TheNavbar from "./components/TheNavbar"
 import MappingEditor from "./components/MappingEditor"
 import MappingBrowser from "./components/MappingBrowser"
-import ConceptTree from "./components/ConceptTree"
+import ConceptListWrapper from "./components/ConceptListWrapper"
 import ItemDetail from "./components/ItemDetail"
 import ResizingSlider from "./components/ResizingSlider"
 import _ from "lodash"
@@ -158,6 +190,7 @@ import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
 // Import mixins
 import auth from "./mixins/auth"
 import objects from "./mixins/objects"
+import computed from "./mixins/computed"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 const ElementQueries = require("css-element-queries/src/ElementQueries")
@@ -169,21 +202,23 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptTree, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection
+    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
   },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
   data () {
     return {
       loading: false,
       itemDetailSettings: {
         left: {
-          showTopConceptsInScheme: false
+          showTopConceptsInScheme: false,
         },
         right: {
-          showTopConceptsInScheme: false
-        }
+          showTopConceptsInScheme: false,
+        },
       },
       loadFromParametersOnce: _.once(this.loadFromParameters),
+      forceMappingBrowser: false,
+      forceMappingEditor: false,
     }
   },
   computed: {
@@ -219,6 +254,12 @@ export default {
     },
   },
   watch: {
+    configLoaded(loaded) {
+      if (loaded) {
+        // Set page title
+        document.title = this.config.title
+      }
+    },
     settingsLoaded() {
       this.$i18n.locale = this.settingsLocale
       this.start()
@@ -257,7 +298,7 @@ export default {
         }
         this.insertPrefLabel(true)
       },
-      deep: true
+      deep: true,
     },
     /**
      * Insert prefLabel into target search field if the scheme on the right changes.
@@ -279,7 +320,7 @@ export default {
         }
         this.insertPrefLabel(false)
       },
-      deep: true
+      deep: true,
     },
     /**
      * Insert prefLabel into target search field if the scheme on the right changes.
@@ -299,12 +340,12 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "locale",
-          value: newValue
+          value: newValue,
         })
         // Also re-insert prefLabels after delay
         _.delay(() => {
-          this.insertPrefLabel(true, false)
-          this.insertPrefLabel(false, false)
+          this.insertPrefLabel(true)
+          this.insertPrefLabel(false)
         }, 300)
       }
     },
@@ -326,7 +367,7 @@ export default {
           this.$store.commit({
             type: "settings/set",
             prop: "creator",
-            value: this.user.name
+            value: this.user.name,
           })
         }
       }
@@ -351,7 +392,7 @@ export default {
           this.$store.commit({
             type: "settings/set",
             prop: "creatorUri",
-            value: this.userUris[0]
+            value: this.userUris[0],
           })
         }
       }
@@ -368,13 +409,35 @@ export default {
               this.$store.commit({
                 type: "settings/set",
                 prop: "creator",
-                value: this.user.name
+                value: this.user.name,
               })
               this.alert(this.$t("alerts.nameError"), null, "danger")
             }
           })
         }
       }
+    },
+    /**
+     * Unminimize mapping browser if force mapping browser is set to true
+     */
+    forceMappingBrowser(force) {
+      if (force) {
+        let minimizer = this.$refs.mappingBrowserMinimizer
+        minimizer.minimized = false
+      }
+    },
+    /**
+     * Unminimize mapping editor if no scheme is selected
+     */
+    selected: {
+      handler() {
+        if (!this.selected.scheme[true] && !this.selected.scheme[false]) {
+          this.forceMappingEditor = true
+        } else {
+          this.forceMappingEditor = false
+        }
+      },
+      deep: true,
     },
   },
   created() {
@@ -387,7 +450,7 @@ export default {
       this.$store.commit({
         type: "setMousePosition",
         x: event.pageX,
-        y: event.pageY
+        y: event.pageY,
       })
     }
     // Check for update every 60 seconds
@@ -395,11 +458,13 @@ export default {
     setInterval(() => {
       axios.get("./build-info.json", {
         headers: {
-          "Cache-Control": "no-cache"
-        }
+          "Cache-Control": "no-cache",
+        },
       }).then(response => response.data).then(buildInfo => {
         if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
-          this.alert(`${this.$t("alerts.newVersionText")} <a href="" class="alert-link">${this.$t("alerts.newVersionLink")}</a>`, 0, "info")
+          this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+            location.reload(true)
+          })
           updateMessageShown = true
         }
       }).catch(() => null)
@@ -412,45 +477,56 @@ export default {
         if (this.config.auth) {
           this.$store.dispatch("auth/init", this.config.auth)
         }
+        // Look up local mappings count and show warning if there are too many.
+        // Note: Do not use this.getMappings here because it leads to issues when schemes are not loaded yet.
+        this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 }).then(mappings => {
+          if (mappings.totalCount && mappings.totalCount >= 500) {
+            this.alert(this.$t("general.tooManyMappings", { count: mappings.totalCount }), 0)
+          }
+        })
       })
     },
     /**
      * Properly start the application (called by settingsLoaded watcher).
      */
     start() {
-      // Load schemes
-      this.loadSchemes().then(() => {
+      // Load schemes and mapping trash
+      let promises = [
+        this.loadSchemes(),
+        this.$store.dispatch("mapping/loadMappingTrash"),
+      ]
+      Promise.all(promises).then(() => {
         this.loadFromParametersOnce(true)
       })
     },
-    insertPrefLabel(isLeft, both = true) {
-      if (!this.$settings.autoInsertLabels) {
+    insertPrefLabel(isLeft) {
+      if (!this.$settings.schemeSelectionInsertPrefLabel[!isLeft]) {
         return
       }
       let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
-      // Insert on the left AND the right
-      for (let isLeft of both ? [true, false] : [isLeft]) {
-        let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Left" : "Right"}[0]`)
-        if (conceptSchemeSelection) {
-          conceptSchemeSelection.setConceptSearchQuery(regexResult ? regexResult[0] : "")
-        }
+      this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : "")
+    },
+    setConceptSearchQuery(isLeft, query, open) {
+      let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Right" : "Left"}[0]`)
+      if (conceptSchemeSelection) {
+        conceptSchemeSelection.setConceptSearchQuery(query, open)
       }
     },
     refresh(key) {
       if (key == "minimize") {
         // Minimizer causes a refresh, therefore recheck item detail settings
-        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptTreeLeft() != null && this.conceptTreeLeft().$el.dataset.minimized == "1"
-        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptTreeRight() != null && this.conceptTreeRight().$el.dataset.minimized == "1"
+        this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptListLeft() != null && this.conceptListLeft().$el.dataset.minimized == "1"
+        this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptListRight() != null && this.conceptListRight().$el.dataset.minimized == "1"
       }
     },
     // Using ref in v-for results in an array as well as refreshing ItemDetail settings.
-    conceptTreeLeft() {
-      return Array.isArray(this.$refs.conceptTreeLeft) ? this.$refs.conceptTreeLeft[0] : this.$refs.conceptTreeLeft
+    conceptListLeft() {
+      return Array.isArray(this.$refs.conceptListLeft) ? this.$refs.conceptListLeft[0] : this.$refs.conceptListLeft
     },
-    conceptTreeRight() {
-      return Array.isArray(this.$refs.conceptTreeRight) ? this.$refs.conceptTreeRight[0] : this.$refs.conceptTreeRight
+    conceptListRight() {
+      return Array.isArray(this.$refs.conceptListRight) ? this.$refs.conceptListRight[0] : this.$refs.conceptListRight
     },
     swapSides() {
       let query = this.$route.query
@@ -460,8 +536,8 @@ export default {
       this.loadFromParameters()
       // Also re-insert prefLabels after delay
       _.delay(() => {
-        this.insertPrefLabel(true, false)
-        this.insertPrefLabel(false, false)
+        this.insertPrefLabel(true)
+        this.insertPrefLabel(false)
       }, 300)
     },
     loadFromParameters(firstLoad = false) {
@@ -496,12 +572,12 @@ export default {
       let selected = {
         scheme: {
           true: query.fromScheme,
-          false: query.toScheme
+          false: query.toScheme,
         },
         concept: {
           true: query.from,
-          false: query.to
-        }
+          false: query.to,
+        },
       }
 
       for (let isLeft of [true, false]) {
@@ -524,11 +600,11 @@ export default {
         }))
       }
       // Prepare application by selecting mapping from URL parameters.
-      if (query["mapping"]) {
+      if (query.mapping || query.mappingUri) {
         let decodeMapping = new Promise(resolve => {
           let mappingFromQuery = null
           try {
-            mappingFromQuery = JSON.parse(query["mapping"])
+            mappingFromQuery = this.$jskos.normalize(JSON.parse(query["mapping"]))
           } catch(error) {
             // do nothing
           }
@@ -538,11 +614,10 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query["identifier"] ? this.getMappings({ identifier: query["identifier"] }) : Promise.resolve([])).then(mappings => {
-          if (query["identifier"] && mappings.length) {
+        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+          if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
-            // TODO: There needs to be a completely unique identifier for this.
             let original = mappings.find(mapping => _.get(mapping, "_provider.has.canSaveMappings")) || mappings[0]
             return decodeMapping.then(this.adjustMapping).then(mapping => {
               if (mapping) {
@@ -577,7 +652,7 @@ export default {
               type: "mapping/set",
               mapping: mappingFromQuery,
               original,
-              noQueryRefresh: true
+              noQueryRefresh: true,
             })
           })
         }))
@@ -587,6 +662,14 @@ export default {
         Promise.all(promises).then(() => {
           this.loading = false
           refreshRouter(this.$store)
+          if (firstLoad) {
+            // Search share link
+            if (query.search) {
+              let filter = JSON.parse(query.search)
+              this.forceMappingBrowser = true
+              this.searchMappings(filter)
+            }
+          }
         }).catch((error) => {
           this.loading = false
           console.warn(error)
@@ -595,7 +678,24 @@ export default {
       } else {
         this.loading = false
       }
-    }
+    },
+    searchMappings(filter) {
+      let mappingBrowser = this.$refs.mappingBrowser
+      if (mappingBrowser && mappingBrowser.searchWithParams) {
+        mappingBrowser.searchWithParams(filter)
+      }
+    },
+    showMappingSearch() {
+      this.forceMappingBrowser = true
+      this.searchMappings({})
+    },
+    showConcordances() {
+      this.forceMappingBrowser = true
+      let mappingBrowser = this.$refs.mappingBrowser
+      if (mappingBrowser && mappingBrowser.tab && mappingBrowser.tabIndexes && mappingBrowser.tabIndexes.concordances != null) {
+        mappingBrowser.tab = mappingBrowser.tabIndexes.concordances
+      }
+    },
   },
 }
 </script>
@@ -652,7 +752,7 @@ html, body {
 .conceptBrowserItemDetail {
   flex: 4;
 }
-.conceptBrowserItemTree {
+.conceptBrowserItemList {
   flex: 6;
 }
 
@@ -675,12 +775,7 @@ html, body {
 }
 #mappingBrowserComponent {
   flex: 2;
-}
-#occurrencesBrowserComponent {
-  flex: 2;
-}
-#mappingBrowserComponent {
-  flex: 2;
+  min-height: 220px;
 }
 
 .placeholderComponent {
@@ -727,5 +822,19 @@ html, body {
 
 .tooltip {
   pointer-events: none !important;
+}
+// Override border color for all cocoda-vue-tabs
+.cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
+  border-bottom-color: @color-primary-0 !important;
+}
+// Override font-size for all cocoda-vue-tabs
+.cocoda-vue-tabs-sm {
+  font-size: 0.8rem !important;
+}
+.cocoda-vue-tabs-md {
+  font-size: 0.9rem !important;
+}
+.cocoda-vue-tabs-lg {
+  font-size: 1.1rem !important;
 }
 </style>

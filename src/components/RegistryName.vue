@@ -1,6 +1,6 @@
 <template>
   <span
-    v-b-tooltip.html.right="tooltip"
+    v-b-tooltip.html.right="tooltip ? tooltipHtml : ''"
     v-html="registryName" />
 </template>
 
@@ -10,8 +10,12 @@ export default {
   props: {
     registry: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
+    tooltip: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     registryName: function () {
@@ -24,9 +28,9 @@ export default {
         return notation || "?"
       }
     },
-    tooltip() {
+    tooltipHtml() {
       return this.$util.definition(this.registry).join("<br>")
     },
-  }
+  },
 }
 </script>

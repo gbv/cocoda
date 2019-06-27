@@ -133,15 +133,19 @@ ul {
   background-color: fadeout(@color-button-disabled, 60%);
 }
 
-.dataModalButton {
-  position: absolute;
-  bottom: 0px;
-  right: 5px;
-  color: @color-text-mediumLightGrey;
+// Favorite stars
+
+.pointer {
   cursor: pointer;
 }
-.dataModalButton:hover {
+.starFavorite {
+  color: darken(@color-select, 12%);
+}
+.starFavorite:hover, .starNormal:hover {
   color: @color-button-hover;
+}
+.starNormal {
+  color: @color-button-faded;
 }
 
 // Other styles // --------------------------------------------------
@@ -158,14 +162,6 @@ ul {
 .collapsed > .when-opened,
 :not(.collapsed) > .when-closed {
   display: none;
-}
-.collapsing {
-  -webkit-transition: none;
-  transition: none;
-  display: none;
-}
-.no-transition {
-  transition: none !important;
 }
 
 /* Overwrite the default to keep the scrollbar always visible */

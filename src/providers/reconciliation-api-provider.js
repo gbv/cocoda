@@ -70,8 +70,8 @@ class ReconciliationApiProvider extends BaseProvider {
         toScheme: this.registry.scheme,
         to: { memberSet: [
           {
-            uri: this.registry.namespace ? this.registry.namespace + result.id : result.id
-          }
+            uri: this.registry.namespace ? this.registry.namespace + result.id : result.id,
+          },
         ] },
         type: [
           result.match ?
@@ -80,8 +80,8 @@ class ReconciliationApiProvider extends BaseProvider {
               result.score >= 80 ?
                 "http://www.w3.org/2004/02/skos/core#closeMatch" :
                 "http://www.w3.org/2004/02/skos/core#mappingRelation"
-            )
-        ]
+            ),
+        ],
       }))
       if (swap) {
         // Swap mapping sides if only `to` was set
@@ -115,7 +115,7 @@ class ReconciliationApiProvider extends BaseProvider {
     let index = 0
     for (let label of labels) {
       queries[`q${index}`] = {
-        query: label
+        query: label,
       }
       index += 1
     }
@@ -129,14 +129,14 @@ class ReconciliationApiProvider extends BaseProvider {
     }
     return this.post(url, qs.stringify({ queries }), {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     }).then(data => {
       data = data || {}
       this.cache.push({
         labels,
         language,
-        data
+        data,
       })
       return data
     })

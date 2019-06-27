@@ -37,7 +37,7 @@ import LoadingIndicator from "./LoadingIndicator"
 export default {
   name: "ItemDetailNarrower",
   components: {
-    ItemName, LoadingIndicator
+    ItemName, LoadingIndicator,
   },
   props: {
     /**
@@ -45,23 +45,23 @@ export default {
      */
     narrower: {
       type: Array,
-      default: () => new Array()
+      default: () => new Array(),
     },
     /**
      * The text to be displayed on the top.
      */
     text: {
       type: String,
-      default: null
+      default: null,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
-  }
+  },
 }
 </script>
 

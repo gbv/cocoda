@@ -9,12 +9,12 @@
     <b-card
       no-body
       footer-tag="footer">
-      <b-tabs
-        pills
-        card
-        vertical>
-        <b-tab
-          :title="$t('settings.tabAccount')"
+      <tabs
+        fill
+        :value="tab"
+        @change="$emit('update:tab', $event.index)">
+        <tab
+          :title="$t('settingsTabs')[0]"
           active>
           <div v-if="localSettings">
             <h4>{{ $t("settings.creatorTitle") }}</h4>
@@ -56,8 +56,14 @@
               <span v-if="!user || !userUris || !userUris.length">
                 <b-form-input
                   v-model="localSettings.creatorUri"
+                  :state="!localSettings.creatorUri || $util.isValidUri(localSettings.creatorUri)"
                   placeholder="https://"
                   type="text" />
+                <span
+                  v-if="localSettings.creatorUri && !$util.isValidUri(localSettings.creatorUri)"
+                  class="text-danger">
+                  {{ $t("settings.creatorUriInvalid") }}
+                </span>
               </span>
               <span v-else>
                 <b-form-select v-model="localSettings.creatorUri">
@@ -137,9 +143,9 @@
               </p>
             </div>
           </div>
-        </b-tab>
-        <b-tab
-          :title="$t('settings.tabLayout')">
+        </tab>
+        <tab
+          :title="$t('settingsTabs')[1]">
           <p v-if="localSettings">
             <b>{{ $t("settings.language") }}</b>
             <b-form-select v-model="$i18n.locale">
@@ -152,26 +158,6 @@
             </b-form-select>
             <br><br><span v-html="$t('settings.languageContribution')" />
           </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptDetailShowAllAncestors">
-              {{ $t("settings.showAllAncestors") }}
-            </b-form-checkbox>
-          </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptDetailDoNotTruncateNotes">
-              {{ $t("settings.truncateNotes") }}
-            </b-form-checkbox>
-          </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.autoInsertLabels">
-              {{ $t("settings.autoInsertLabels") }}
-            </b-form-checkbox>
-          </p>
-          <p v-if="localSettings">
-            <b-form-checkbox v-model="localSettings.conceptTreeAddToMappingSelectsConcept">
-              {{ $t("settings.conceptTreeAddToMappingSelectsConcept") }}
-            </b-form-checkbox>
-          </p>
           <p>
             <b-button
               variant="primary"
@@ -180,31 +166,31 @@
             </b-button>
           </p>
           <br>
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           v-if="config.shortcuts && config.shortcuts.length"
-          :title="$t('settings.tabShortcuts')">
-          <h4> {{ $t("settings.tabShortcuts") }}</h4>
+          :title="$t('settingsTabs')[2]">
+          <h4> {{ $t("settingsTabs")[2] }}</h4>
           <p
             v-for="shortcut in config.shortcuts"
             :key="`settingsModal-shortcuts-${shortcut.id}`">
             <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b><br>
             <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
           </p>
-        </b-tab>
-        <b-tab
-          :title="$t('settings.tabSources')">
+        </tab>
+        <tab
+          :title="$t('settingsTabs')[3]">
           <registry-info
             v-for="(registry, index) in config.registries"
             :key="`settingsModal-registries-${index}`"
             :registry="registry"
             class="settings-sources" />
-        </b-tab>
-        <b-tab
+        </tab>
+        <tab
           v-if="localMappingsSupported"
-          :title="$t('settings.tabLocalMappings')">
+          :title="$t('settingsTabs')[4]">
           <div>
-            <h4>{{ $t('settings.tabLocalMappings') }}</h4>
+            <h4>{{ $t('settingsTabs')[4] }}</h4>
             <p>{{ $t("settings.localMappingsInfo") }}</p>
           </div>
           <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
@@ -287,8 +273,8 @@
               </b-button>
             </p>
           </div>
-        </b-tab>
-      </b-tabs>
+        </tab>
+      </tabs>
       <span slot="footer">
         <a
           href="https://github.com/gbv/cocoda"
@@ -313,14 +299,6 @@
           •
           {{ $t("settings.buildDate") }}: {{ $util.dateToString(config.buildInfo.buildDate) }}
         </span>
-        <span v-if="config.impressum">
-          •
-          <a
-            :href="config.impressum"
-            target="_blank">
-            {{ $t("settings.impressum") }}
-          </a>
-        </span>
         <br>
         <span>
           {{ $t("settings.suggestions1") }}
@@ -340,6 +318,7 @@ import RegistryInfo from "./RegistryInfo"
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import computed from "../mixins/computed"
 
 /**
  * The settings modal.
@@ -347,7 +326,13 @@ import objects from "../mixins/objects"
 export default {
   name: "TheSettings",
   components: { RegistryInfo },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
+  props: {
+    tab: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       localSettings: null,
@@ -374,11 +359,11 @@ export default {
       handler() {
         this.$store.commit({
           type: "settings/save",
-          settings: this.localSettings
+          settings: this.localSettings,
         })
         this.creatorRewritten = false
       },
-      deep: true
+      deep: true,
     },
     uploadedFile() {
       if (this.uploadedFile && this.localMappingsSupported) {
@@ -413,6 +398,8 @@ export default {
             this.$refs.fileUpload.reset()
             this.refreshDownloads()
             this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+          }).catch(error => {
+            console.error("TheSettings - Error uploading mappings", error)
           })
         }
         reader.readAsText(this.uploadedFile)
@@ -517,6 +504,8 @@ export default {
           download.filename = `${this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$util.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
         }
         this.dlMappingsReady = true
+      }).catch(error => {
+        console.error("TheSettings - Error refreshing local mappings download", error)
       })
     },
     rewriteCreator() {
@@ -534,6 +523,8 @@ export default {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
+      }).catch(error => {
+        console.error("TheSettings - Error rewriting creator", error)
       })
     },
     resetFlex() {
@@ -544,7 +535,7 @@ export default {
       this.$store.commit({
         type: "settings/set",
         prop: "flex",
-        value: flex
+        value: flex,
       })
     },
     deleteMappings() {
@@ -560,6 +551,10 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           this.refreshDownloads()
           this.deleteMappingsButtons = false
+          // Also clear mapping trash
+          this.$store.commit("mapping/clearTrash")
+        }).catch(error => {
+          console.error("TheSettings - Error deleting local mappings", error)
         })
       })
     },
@@ -578,7 +573,7 @@ export default {
       this.$store.commit({
         type: "auth/openWindow",
         url,
-        eventType
+        eventType,
       })
     },
     replaceKey(key) {
@@ -591,8 +586,8 @@ export default {
         "command": "Cmd",
       }
       return replacements[key] || key
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -633,20 +628,14 @@ p {
   bottom: 0;
   right: 0;
   left: 0;
+  /* Note: This is a Firefox workaround. Footer will be hidden if the content is too tall. */
+  overflow: hidden;
 }
-#settingsModal .modal-body .card .tabs {
+#settingsModal .modal-body .card .cocoda-vue-tabs {
   height: 100%;
 }
-#settingsModal .modal-body .card .col .card-body {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: scroll;
-}
-#settingsModal .modal-body .card .col-auto {
-  min-width: 200px;
+#settingsModal .modal-body .card .cocoda-vue-tabs .cocoda-vue-tabs-content {
+  padding: 20px 20px 5px 20px;
 }
 
 </style>

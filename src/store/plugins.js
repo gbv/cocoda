@@ -13,6 +13,19 @@ const mappingIdentifierPlugin = store => {
   })
 }
 
+import localforage from "localforage"
+const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
+/**
+ * Plugin that synchronizes the mapping trash to local storage.
+ */
+const mappingTrashPlugin = store => {
+  store.subscribe((mutation) => {
+    if (["mapping/addToTrash", "mapping/removeFromTrash", "mapping/clearTrash"].includes(mutation.type) && store.state.mapping.mappingTrashLoaded) {
+      localforage.setItem(localStorageKey, store.state.mapping.mappingTrash)
+    }
+  })
+}
+
 /**
  * Helper function that refreshes the router with the current mapping and selected concepts/schemes.
  */
@@ -32,18 +45,34 @@ const refreshRouter = (store) => {
   }
   // Add mapping if there is at least one concept
   if (jskos.conceptsOfMapping(store.state.mapping.mapping).length) {
-    query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+    if (store.getters["mapping/hasChangedFromOriginal"]) {
+      query.mapping = JSON.stringify(jskos.minifyMapping(store.state.mapping.mapping))
+    }
     // If an original mapping exists for the current mapping, save its identifier as well
     if (store.state.mapping.original) {
-      query.identifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+      query.mappingUri = store.state.mapping.original.uri
     }
   }
   // Keep certain properties from original route
   if (router.currentRoute.query.config) {
     query.config = router.currentRoute.query.config
   }
-  // Push route
-  router.push({ query })
+  // Decide whether to push or replace depending on change in schemes/concepts
+  let replace = true
+  for (let kind of kinds) {
+    for (let isLeft of [true, false]) {
+      let key = sides[isLeft] + (kind == "scheme" ? "Scheme" : "")
+      if (query[key] != router.currentRoute.query[key]) {
+        replace = false
+      }
+    }
+  }
+  // Push or replace route
+  if (replace) {
+    router.replace({ query })
+  } else {
+    router.push({ query })
+  }
 }
 
 /**
@@ -71,5 +100,5 @@ const routerParamPlugin = store => {
   })
 }
 
-let plugins = [mappingIdentifierPlugin, routerParamPlugin]
+let plugins = [mappingIdentifierPlugin, mappingTrashPlugin, routerParamPlugin]
 export { plugins, refreshRouter }

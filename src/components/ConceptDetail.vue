@@ -14,7 +14,7 @@
       </div>
       <div
         v-for="(concept, index) in ancestors.filter(concept => concept != null)"
-        :key="concept.uri">
+        :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`">
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
             class="u-flip-horizontal"
@@ -37,8 +37,8 @@
       </div>
       <!-- Broader -->
       <div
-        v-for="(concept) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
-        :key="concept.uri">
+        v-for="(concept, index) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
+        :key="`conceptDetail-${isLeft}-broader-${concept.uri}-${index}`">
         <font-awesome-icon
           icon="sort-up" />
         <item-name
@@ -67,9 +67,16 @@
         :item="item"
         :is-highlighted="true"
         font-size="normal" />
+      <font-awesome-icon
+        v-b-tooltip.hover="{ title: $jskos.isContainedIn(item, favoriteConcepts) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
+        :class="$jskos.isContainedIn(item, favoriteConcepts) ? 'starFavorite' : 'starNormal'"
+        class="pointer fontSize-verySmall"
+        icon="star"
+        @click="$jskos.isContainedIn(item, favoriteConcepts) ? $store.dispatch('removeConceptFromFavorites', item) : $store.dispatch('addConceptToFavorites', item)" />
       <div
-        v-b-tooltip.hover="{ title: showAddToMappingButton ? $t('general.addToMapping') : '', delay: $util.delay.medium }"
-        :class="{ button: showAddToMappingButton, 'button-disabled': !showAddToMappingButton }"
+        v-if="showAddToMappingButton"
+        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium }"
+        :class="{ button: showAddToMappingButton }"
         class="conceptDetail-name-addButton"
         @click="addToMapping({
           concept: item,
@@ -80,120 +87,138 @@
       </div>
     </div>
 
-    <!-- Notes and alternative labels -->
-    <b-card
-      :key="'conceptDetail-note-tabs'+iteration"
-      no-body
-      class="conceptDetail-note-tabs">
-      <b-tabs
-        no-fade
-        card>
-        <!-- scopeNotes, editorialNotes, altLabels, and GND terms -->
-        <!-- TODO: Should altLabels really be called "Register Entries"? -->
-        <b-tab
-          v-for="([notes, title], index) in [[item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')], [item.altLabel, $t('conceptDetail.registerEntries')], [{ de: item.__GNDTERMS__ }, $t('conceptDetail.gnd')]].filter(element => element[0] != null && $util.lmContent(element[0]) != null && $util.lmContent(element[0]).length)"
-          :key="'note'+index+'-'+iteration"
+    <tabs
+      style="margin-top: 3px;"
+      borders="bottom"
+      size="sm">
+      <!-- URI and identifier -->
+      <tab :title="$t('conceptDetail.info')">
+        <div
+          v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
+          :key="`conceptDetail-${isLeft}-identifier-${index}`"
+          :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
+          <font-awesome-icon
+            :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
+            @dblclick="copyToClipboard(elementForEvent($event))" />
+          <auto-link :link="identifier" />
+        </div>
+        <div
+          v-for="type in types"
+          :key="`conceptDetail-${isLeft}-type-${type.uri}`"
+          class="conceptDetail-identifier">
+          <b>Type:</b> <auto-link
+            :link="type.uri"
+            :text="$util.prefLabel(type)" />
+        </div>
+        <div
+          v-if="item.creator && item.creator.length"
+          class="conceptDetail-identifier">
+          <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
+        </div>
+        <div
+          v-if="item.created"
+          class="conceptDetail-identifier">
+          <b>{{ $t("conceptDetail.created") }}:</b> {{ $util.dateToString(item.created, true) }}
+        </div>
+        <div
+          v-if="item.modified"
+          class="conceptDetail-identifier">
+          <b>{{ $t("conceptDetail.modified") }}:</b> {{ $util.dateToString(item.modified, true) }}
+        </div>
+        <template v-if="item.definition">
+          <div
+            v-for="language in [$util.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $util.getLanguage(item.definition) && language != '-'))"
+            :key="`conceptDetail-${isLeft}-defintion-${language}`"
+            class="conceptDetail-identifier">
+            <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
+          </div>
+        </template>
+      </tab>
+      <tab :title="$t('conceptDetail.labels')">
+        <div
+          v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
+          :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
+          class="conceptDetail-identifier">
+          <span
+            class="fontWeight-medium"
+            @click="copyAndSearch($util.prefLabel(item, language))">
+            {{ $util.prefLabel(item, language) }}
+          </span>
+          <span class="text-lightGrey">({{ language }})</span>
+        </div>
+        <!-- Explanation:
+            1. Get all language keys for altLabels (Object.keys)
+            2. Create objects in the form { language, label } (map)
+            3. Flatten the array (reduce)
+            4. Filter `-` language (filter)
+            5. Sort current language higher (sort)
+           -->
+        <div
+          v-if="$util.lmContent(item, 'altLabel')"
+          class="fontWeight-heavy"
+          style="margin-top: 10px;">
+          {{ $t("conceptDetail.altLabels") }}:
+        </div>
+        <div
+          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
+          :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
+          class="conceptDetail-identifier">
+          <span @click="copyAndSearch(label)">
+            {{ label }}
+          </span>
+          <span class="text-lightGrey">({{ language }})</span>
+        </div>
+      </tab>
+      <!-- GND terms, scopeNotes, editorialNotes -->
+      <template
+        v-for="([notes, title], index) in [[{ de: gndTerms }, $t('conceptDetail.gnd')], [item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')]].map(([notes, title]) => ([$util.lmContent(notes), title])).map(([notes, title]) => ([notes || '', title]))">
+        <!-- TODO: Adjust this as soon as cocoda-vue-tabs has the option to hide tabs -->
+        <tab
+          :key="`conceptDetail-${isLeft}-notes-${index}`"
           :title="title"
-          :active="title == 'GND' && !hasNotes(item)"
+          :hidden="notes == ''"
           class="conceptDetail-notes">
           <div class="conceptDetail-note">
-            <span v-html="notesOptions.visiblePart($util.lmContent(notes))" />
-            <b-collapse
-              :id="'note'+index"
-              tag="span"
-              class="no-transition">
-              <span v-html="notesOptions.hiddenPart($util.lmContent(notes))" />
-            </b-collapse>
+            <span v-html="Array.isArray(notes) ? notes.join('<br>') : notes" />
+          </div>
+        </tab>
+      </template>
+      <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
+      <tab
+        v-if="config.searchLinks"
+        :key="`conceptDetail-${isLeft}-searchLinks`"
+        :title="$t('conceptDetail.searchLinks')">
+        <ul style="margin-bottom: 0;">
+          <li
+            v-for="(searchLink, index) of searchLinks"
+            :key="`searchLink-${isLeft}-${index}`">
             <a
-              v-if="notesOptions.isTruncated($util.lmContent(notes))"
-              v-b-toggle="'note'+index"
-              href=""
-              @click.prevent>
-              <span class="when-opened">{{ $t("conceptDetail.showLess") }}</span>
-              <span class="when-closed">{{ $t("conceptDetail.showMore") }}</span>
+              :href="searchLink.url"
+              target="_blank">
+              {{ searchLink.label }}
             </a>
-          </div>
-        </b-tab>
-        <b-tab
-          :key="'zzzzzzzzzz'+iteration"
-          :title="$t('conceptDetail.info')">
-          <!-- URI and identifier -->
-          <div
-            v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
-            :key="index"
-            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
-            <font-awesome-icon
-              :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
-              @dblclick="copyToClipboard(elementForEvent($event))" />
-            <auto-link :link="identifier" />
-          </div>
-          <div
-            v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
-            :key="`conceptDetail-prefLabel-${language}`"
-            class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.prefLabel") }} ({{ language }}):</b> {{ $util.prefLabel(item, language) }}
-          </div>
-          <div
-            v-if="item.creator && item.creator.length"
-            class="conceptDetail-identifier">
-            <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
-          </div>
-          <div
-            v-if="item.created"
-            class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.created") }}:</b> {{ $util.dateToString(item.created, true) }}
-          </div>
-          <div
-            v-if="item.modified"
-            class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.modified") }}:</b> {{ $util.dateToString(item.modified, true) }}
-          </div>
-          <template v-if="item.definition">
-            <div
-              v-for="language in [$util.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $util.getLanguage(item.definition) && language != '-'))"
-              :key="`conceptDetail-defintion-${language}`"
-              class="conceptDetail-identifier">
-              <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
-            </div>
-          </template>
-        </b-tab>
-        <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
-        <b-tab
-          v-if="config.searchLinks"
-          :title="$t('conceptDetail.searchLinks')">
-          <ul style="margin-bottom: 0;">
-            <li
-              v-for="(searchLink, index) of searchLinks"
-              :key="'searchLink' + isLeft + index">
-              <a
-                :href="searchLink.url"
-                target="_blank">
-                {{ searchLink.label }}
-              </a>
-            </li>
-          </ul>
-        </b-tab>
-        <b-tab
-          title="coli-ana">
-          <pre>
- 700.90440747471
- 7                  Arts & recreation
- 70                 Arts
- 700                The arts
- 700.904            Modern arts
-T1--0904            20th century, 1900-1999
-T1--09044           1940-1949
-     T1--074        Museums, collections, exhibits
-        T2--7       North America
-        T2--74      Northeastern United States
-                    (New England and Middle Atlantic states)
-        T2--747-749 Middle Atlantic states
-        T2--747     New York (State)
-        T2--7471    New York Metropolitan Area
-          </pre>
-        </b-tab>
-      </b-tabs>
-    </b-card>
+          </li>
+        </ul>
+      </tab>
+      <tab title="coli-ana">
+        <div class="coli-ana-table">
+          <code>700.90440747471</code><br>
+          <code>7<span class="text-mediumLightGrey">--.-----------</span></code> Arts & recreation<br>
+          70                 Arts<br>
+          700                The arts<br>
+          700.904            Modern arts<br>
+          T1--0904            20th century, 1900-1999<br>
+          T1--09044           1940-1949<br>
+          T1--074        Museums, collections, exhibits<br>
+          T2--7       North America<br>
+          T2--74      Northeastern United States<br>
+          (New England and Middle Atlantic states)<br>
+          T2--747-749 Middle Atlantic states<br>
+          T2--747     New York (State)<br>
+          T2--7471    New York Metropolitan Area
+        </div>
+      </tab>
+    </tabs>
 
     <!-- Narrower concepts -->
     <item-detail-narrower
@@ -211,6 +236,7 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import computed from "../mixins/computed"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -218,98 +244,36 @@ import objects from "../mixins/objects"
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower
+    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower,
   },
-  mixins: [objects],
+  mixins: [objects, computed],
   props: {
     /**
      * The concept object whose details should be displayed.
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Settings - see [`ItemDetail`](#itemdetail).
      */
     settings: {
       type: Object,
-      default: () => { return {} }
-    }
+      default: () => { return {} },
+    },
   },
   data () {
     return {
       /** Temporarily show all ancestors if user clicked the ellipsis */
       showAncestors: false,
-      /** Force some elements to reload by incrementing this value to prevent showing old text */
-      iteration: 0,
-      /**
-       * A helper object that deals with showing and truncating the notes and alternative labels
-       */
-      notesOptions: {
-        divider: "∤",
-        maximumCharacters: 140,
-        /**
-         * Rejoin notes back together
-         */
-        join(notes) {
-          if (Array.isArray(notes)) {
-            return notes.join(this.divider)
-          } else {
-            return notes
-          }
-        },
-        /**
-         * Returns visible part of notes
-         */
-        visiblePart(notes) {
-          let notesString = this.join(notes)
-          notesString = notesString.substring(0, this.cutPosition(notesString))
-          return this.replaceDivider(notesString)
-        },
-        /**
-         * Returns hidden part of notes
-         */
-        hiddenPart(notes) {
-          let notesString = this.join(notes)
-          return this.replaceDivider(notesString.substring(this.cutPosition(notesString)))
-        },
-        /**
-         * Returns the index between visible and hidden part of notes
-         */
-        cutPosition(notesString) {
-          let re = new RegExp(this.divider, "g")
-          let maximumCharacters = this.maximumCharacters - Math.min((notesString.substring(0, this.maximumCharacters - 20).match(re) || []).length, 9) * 10
-          if (this.showAll || notesString.length - maximumCharacters <= 20) {
-            return notesString.length
-          }
-          // Go back from position maximumCharacters and find next space, newLine, or divider
-          let lastSpace = notesString.substring(0, maximumCharacters).lastIndexOf(" ")
-          let lastNewline = notesString.substring(0, maximumCharacters).lastIndexOf("\n")
-          let lastDivider = notesString.substring(0, maximumCharacters).lastIndexOf(this.divider)
-          return Math.max(lastSpace, lastNewline, lastDivider)
-        },
-        /**
-         * Returns whether notes should be truncated
-         */
-        isTruncated(notes) {
-          let notesString = this.join(notes)
-          return !this.showAll && notesString.length > this.cutPosition(notesString)
-        },
-        /**
-         * Replaces dividers with line breaks
-         */
-        replaceDivider(notes) {
-          return notes.split(this.divider).join("<br>")
-        }
-      }
     }
   },
   computed: {
@@ -350,7 +314,7 @@ export default {
         })
         searchLinks.push({
           url,
-          label: this.$util.prefLabel(searchLink)
+          label: this.$util.prefLabel(searchLink),
         })
       }
       // Filter out duplicate URLs (e.g. Wikipedia)
@@ -361,6 +325,44 @@ export default {
       )
       return searchLinks
     },
+    // Returns null or an array of type objects
+    types() {
+      if (!this.item || (this.item.type || []).length <= 1) {
+        return []
+      }
+      let types = []
+      let schemeTypes = _.get(this.item, "inScheme[0].types", [])
+      for (let typeUri of this.item.type || []) {
+        if (typeUri == "http://www.w3.org/2004/02/skos/core#Concept") {
+          continue
+        }
+        let type = { uri: typeUri }
+        // Try to find type in scheme types
+        type = schemeTypes.find(t => this.$jskos.compare(t, type)) || type
+        types.push(type)
+      }
+      return types
+    },
+    gndTerms() {
+      // Assemble gndTerms array for display
+      let concepts = _.get(this.item, "__GNDCONCEPTS__", [])
+      let gndTerms = []
+      let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow"]
+      for (let relevance of relevanceOrder) {
+        let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
+        let terms = []
+        for (let concept of concepts.filter(concept => concept.__GNDTYPE__.RELEVANCE == this.$t(relevance, "en"))) {
+          if (concept && (this.$util.prefLabel(concept, null, false))) {
+            terms.push(_.escape(this.$util.prefLabel(concept)))
+          }
+        }
+        if (terms.length > 0) {
+          term = term + terms.join(", ")
+          gndTerms.push(term)
+        }
+      }
+      return gndTerms
+    },
   },
   watch: {
     item(newItem, oldItem) {
@@ -369,10 +371,12 @@ export default {
         this.refresh()
       }
     },
-    settings() {
-      // Refresh component if settings changed
-      this.refresh()
-    }
+    settings(newSettings, oldSettings) {
+      if (!_.isEqual(newSettings, oldSettings)) {
+        // Refresh component if settings changed
+        this.refresh()
+      }
+    },
   },
   mounted() {
     // Initial refresh
@@ -383,83 +387,36 @@ export default {
       this.showAncestors = false
       // Load GND terms
       this.loadGndTerms()
-      // Reset notes
-      this.notesOptions.showMore = {}
-      this.notesOptions.showAll = this.settings.showAllNotes
-      // Increment iteration to force reload some elements
-      this.iteration += 1
     },
     loadGndTerms() {
       // TODO: Refactoring necessary!
       if (!this.item) return
       let itemBefore = this.item
-      // Load GND mappings from and to item
-      let promises = []
-      let params = {
-        direction: "both",
-        from: this.item,
-      }
       let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
-      promises.push(this.getMappings(params))
-      Promise.all(promises).then(results => {
-        if (!this.$jskos.compare(itemBefore, this.item)) {
-          // Abort if item changed in the meantime
-          return []
-        }
+      // Don't load GND terms for GND items
+      if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
+        return
+      }
+      this.getMappings({
+        direction: "both",
+        from: itemBefore,
+      }).then(mappings => {
         let gndConcepts = []
-        for (let mappings of results) {
-          for (let fromTo of ["from", "to"]) {
-            let toFrom = fromTo == "from" ? "to" : "from"
-            for(let mapping of mappings) {
-              let startIndex = gndConcepts.length
-              if (this.$jskos.compare(mapping[toFrom+"Scheme"], gnd)) {
-                gndConcepts = gndConcepts.concat(mapping[toFrom].memberSet || mapping[toFrom].memberChoice || [])
-              }
-              // Save GND mapping type to concept
-              while (startIndex < gndConcepts.length) {
-                this.$set(gndConcepts[startIndex], "__GNDTYPE__", this.$jskos.mappingTypeByType(mapping.type))
-                startIndex += 1
-              }
+        for (let mapping of mappings) {
+          let concepts = this.$jskos.conceptsOfMapping(mapping)
+          for (let concept of concepts) {
+            if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]"))) {
+              this.$set(concept, "__GNDTYPE__", this.$jskos.mappingTypeByType(mapping.type))
+              gndConcepts.push(concept)
             }
           }
         }
-        // Load concept objects from API
-        let promises = []
-        for (let concept of gndConcepts) {
-          // Only add GND concepts that are different from the item.
-          if (!this.$jskos.compare(concept, itemBefore)) {
-            promises.push(this.loadDetails(concept, {
-              scheme: gnd
-            }).then(object => {
-              if (object) {
-                this.$set(object, "__GNDTYPE__", concept.__GNDTYPE__)
-              }
-              return object
-            }))
-          }
-        }
-        return Promise.all(promises)
-      }).then(results => {
+        gndConcepts = _.uniqWith(gndConcepts, this.$jskos.compare)
+        return this.loadConcepts(gndConcepts)
+      }).then(concepts => {
         // Filter out all null values
-        results = results.filter(concept => concept != null)
-        // Assemble gndTerms array for display
-        let gndTerms = []
-        // Use this.$parent.$t instead of this.$t to prevent a rare, very weird bug.
-        let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow"]
-        for (let relevance of relevanceOrder) {
-          let term = `<strong>${this.$parent.$t("conceptDetail.relevance")}: ${this.$parent.$t(relevance)}</strong> - `
-          let terms = []
-          for (let concept of results.filter(concept => concept.__GNDTYPE__.RELEVANCE == this.$parent.$t(relevance, "en"))) {
-            if (concept && (this.$util.prefLabel(concept, null, false))) {
-              terms.push(_.escape(this.$util.prefLabel(concept)))
-            }
-          }
-          if (terms.length > 0) {
-            term = term + terms.join(", ")
-            gndTerms.push(term)
-          }
-        }
-        this.$set(itemBefore, "__GNDTERMS__", gndTerms)
+        concepts = concepts.filter(concept => concept != null)
+        this.$set(itemBefore, "__GNDCONCEPTS__", concepts)
       }).catch(error => {
         console.error("ConceptDetail: Error when loading GND mappings:", error)
       })
@@ -476,24 +433,23 @@ export default {
       return element
     },
     /**
-     * Enable show more for a specific note
-     */
-    notesShowMore(status, index) {
-      this.notesOptions.showMore[index] = status
-      this.iteration += 1
-    },
-    /**
      * Determines whether a concept has notes (scopeNote, editorialNote, or altLabel)
      */
     hasNotes(concept) {
       let parts = ["scopeNote", "editorialNote", "altLabel"]
       let hasNotes = false
       for (let part of parts) {
-        hasNotes = hasNotes || (concept != null && concept[part] != null && concept[part].de != null && concept[part].de.length > 0)
+        hasNotes = hasNotes || (this.$util.lmContent(concept, part) && this.$util.lmContent(concept, part).length)
       }
       return hasNotes
     },
-  }
+    /**
+     * Copy and search on other side
+     */
+    copyAndSearch(label) {
+      this.$emit("searchConcept", label)
+    },
+  },
 }
 </script>
 
@@ -534,6 +490,9 @@ export default {
 .conceptDetail-identifier {
   margin: 2px 5px;
 }
+.conceptDetail-identifier:last-child {
+  margin-bottom: 0;
+}
 .conceptDetail-identifier a {
   padding: 0 3px;
 }
@@ -550,34 +509,14 @@ export default {
   flex: 1;
 }
 
+.coli-ana-table code {
+  color: black;
+}
+
 </style>
 
-<style lang="less">
-@import "../style/main.less";
-.conceptDetail-note-tabs {
-  margin-top: 5px;
-}
-.conceptDetail-note-tabs .tabs {
-  box-shadow: 0 0px 0px 0 hsla(0, 0%, 0%, 0.1);
-}
-.conceptDetail-note-tabs .card-header {
-  padding: 2px 10px 10px 10px;
-  background-color: @color-primary-5;
-  user-select: none;
-  .fontWeight-heavy;
-}
-.conceptDetail-note-tabs .card-header-tabs {
-  margin-bottom: -10px;
-}
-.conceptDetail-note-tabs .nav-link {
-  padding: 4px 12px 0px 12px;
-}
-.conceptDetail-note-tabs .card-body {
-  .m-borderRadius(0px 0px 5px 5px;);
-  padding: 15px 10px;
-  background-color: @color-background-card;
-}
-.conceptDetail-note-tabs .card-body br {
-  line-height: 24px;
+<style>
+.conceptDetail .cocoda-vue-tabs .cocoda-vue-tabs-content {
+  padding: 10px 5px 0px 5px;
 }
 </style>

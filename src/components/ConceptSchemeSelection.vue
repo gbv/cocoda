@@ -4,6 +4,15 @@
     class="conceptSchemeSelection"
     style="overflow: visible;">
     <!-- ^^^ overflow: visible is necessary to properly shown concept search results which go over the edge of the component. -->
+    <!-- Settings -->
+    <component-settings>
+      <b-form-checkbox
+        v-model="insertPrefLabel"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
+        style="user-select: none;">
+        {{ $t("schemeSelection.insertPrefLabel") }}
+      </b-form-checkbox>
+    </component-settings>
     <!-- This is shown when a scheme is selected. -->
     <div
       v-if="scheme"
@@ -22,8 +31,8 @@
         <!-- Favorite star -->
         <font-awesome-icon
           v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
-          :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
-          class="conceptSchemeSelection-star"
+          :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
+          class="pointer"
           icon="star"
           @click="toggleFavoriteScheme(scheme)" />
         <!-- Name of scheme -->
@@ -86,74 +95,122 @@
             size="sm"
             style="flex: 1; margin-right: 5px;"
             @keyup.esc.native="hidePopover" />
-          <!-- Language filter selection -->
-          <b-form-select
-            v-model="languageFilter"
-            :options="languageFilterOptions"
-            size="sm"
-            class="fontSize-normal"
-            @change="focusAndSelectInput" />
+          <div
+            :id="`conceptSchemeSelection-filterButton-${id}`"
+            class="button">
+            <font-awesome-icon icon="filter" />
+          </div>
+          <b-popover
+            :target="`conceptSchemeSelection-filterButton-${id}`"
+            :show.sync="filterPopoverShow"
+            triggers="click"
+            placement="auto">
+            <div
+              ref="filterPopover"
+              class="conceptSchemeSelection-filterPopover">
+              <p class="fontWeight-heavy">
+                {{ $t("schemeSelection.filter") }}
+              </p>
+              <b-form-checkbox
+                v-model="onlyFavorites"
+                size="sm">
+                {{ $t("schemeSelection.filterOnlyFavorites") }}
+              </b-form-checkbox>
+              <!-- Language filter -->
+              <div
+                v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`"
+                class="button">
+                <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
+                <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
+                {{ $t("schemeSelection.languageFilter") }}
+                ({{ languageFilter.length - 1 == availableLanguages.length ? "all" : languageFilter.length }})
+              </div>
+              <!-- Language filter selection -->
+              <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`">
+                <a
+                  href=""
+                  @click.prevent="languageFilter = availableLanguages.concat([null])">
+                  {{ $t("schemeSelection.filterSelectAll") }}
+                </a>•
+                <a
+                  href=""
+                  @click.prevent="languageFilter = []">
+                  {{ $t("schemeSelection.filterDeselectAll") }}
+                </a>
+                <b-form-checkbox
+                  v-for="option in languageFilterOptions"
+                  :key="`conceptSchemeSelection-filterPopover-${id}-languageFilter-${option.value}`"
+                  v-model="languageFilter"
+                  :value="option.value"
+                  size="sm"
+                  class="fontSize-normal"
+                  stacked
+                  @change="focusAndSelectInput">
+                  {{ option.text }}
+                </b-form-checkbox>
+              </b-collapse>
+              <!-- Scheme type filter -->
+              <div
+                v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-typeFilterCollapse`"
+                class="button">
+                <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
+                <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
+                {{ $t("schemeSelection.typeFilter") }}
+                ({{ typeFilter.length - 1 == availableTypes.length ? "all" : typeFilter.length }})
+              </div>
+              <!-- Language filter selection -->
+              <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-typeFilterCollapse`">
+                <a
+                  href=""
+                  @click.prevent="typeFilter = availableTypes.concat([null])">
+                  {{ $t("schemeSelection.filterSelectAll") }}
+                </a>•
+                <a
+                  href=""
+                  @click.prevent="typeFilter = []">
+                  {{ $t("schemeSelection.filterDeselectAll") }}
+                </a>
+                <b-form-checkbox
+                  v-for="option in typeFilterOptions"
+                  :key="`conceptSchemeSelection-filterPopover-${id}-typeFilter-${option.value}`"
+                  v-model="typeFilter"
+                  :value="option.value"
+                  size="sm"
+                  class="fontSize-normal"
+                  stacked
+                  @change="focusAndSelectInput">
+                  {{ option.text }}
+                </b-form-checkbox>
+              </b-collapse>
+            </div>
+          </b-popover>
         </b-form>
         <!-- List of all schemes, showing favorites first -->
         <ul class="conceptSchemeSelection-schemeList scrollable">
           <li
-            v-for="(_scheme, index) in favoriteSchemes || []"
-            v-show="!isFiltered"
-            :key="_scheme.uri + '-favorite-scheme-list-' + id + index">
-            <font-awesome-icon
-              v-b-tooltip.hover="{ title: $t('schemeSelection.starRemove'), delay: $util.delay.medium }"
-              class="conceptSchemeSelection-star conceptSchemeSelection-starFavorite"
-              icon="star"
-              @click="toggleFavoriteScheme(_scheme)" />
-            <item-name
-              :ref="index == 0 && !isFiltered ? 'firstScheme' : null"
-              :item="_scheme"
-              :is-link="true"
-              :is-left="isLeft" />
-          </li>
-          <li v-show="!isFiltered">
-            <a
-              href=""
-              @click.prevent="showAllSchemes = !showAllSchemes">
-              {{ showAllSchemes ? $t("schemeSelection.hideAllSchemes", { count: filteredSchemes.length }) : $t("schemeSelection.showAllSchemes", { count: filteredSchemes.length }) }}
-            </a>
-          </li>
-          <li
             v-for="(_scheme, index) in filteredSchemes"
-            v-show="showAllSchemes || isFiltered"
             :key="_scheme.uri + '-scheme-list-' + id + index">
             <font-awesome-icon
               v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
-              :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'conceptSchemeSelection-starFavorite' : 'conceptSchemeSelection-starNormal'"
-              class="conceptSchemeSelection-star"
+              :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
+              class="pointer"
               icon="star"
               @click="toggleFavoriteScheme(_scheme)" />
             <item-name
-              :ref="(index == 0 && (isFiltered || !favoriteSchemes.length)) ? 'firstScheme' : null"
+              :ref="index == 0 ? 'firstScheme' : null"
               :item="_scheme"
               :is-link="true"
               :is-left="isLeft" />
           </li>
+          <li v-show="isFiltered">
+            <a
+              ref="showAllSchemesLink"
+              href=""
+              @click.prevent="onlyFavorites = false; schemeFilter = ''; languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+              {{ $t("schemeSelection.showAllSchemes", { count: schemes.length }) }}
+            </a>
+          </li>
         </ul>
-        <!-- Concept quick selection title -->
-        <div
-          v-if="favoriteConcepts && favoriteConcepts.length"
-          class="componentTitle"
-          style="margin-top: 30px;">
-          {{ $t("schemeSelection.conceptQuick") }}
-        </div>
-        <!-- Quick selection concepts -->
-        <div class="conceptSchemeSelection-favoriteConcepts scrollable">
-          <p
-            v-for="concept in favoriteConcepts"
-            :key="concept.uri + '-favorite-' + id">
-            <item-name
-              :item="concept"
-              :is-left="isLeft"
-              is-link
-              force-side />
-          </p>
-        </div>
       </div>
     </div>
   </div>
@@ -162,11 +219,18 @@
 <script>
 import ItemName from "./ItemName"
 import ConceptSearch from "./ConceptSearch"
+import ComponentSettings from "./ComponentSettings"
 
 import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import clickHandler from "../mixins/click-handler"
+import hotkeys from "../mixins/hotkeys"
+import computed from "../mixins/computed"
+
+// KOS types
+import kosTypes from "../../config/kos-types.json"
 
 /**
  * Concept scheme selection component.
@@ -176,15 +240,15 @@ import objects from "../mixins/objects"
  */
 export default {
   name: "ConceptSchemeSelection",
-  components: { ItemName, ConceptSearch },
-  mixins: [objects],
+  components: { ItemName, ConceptSearch, ComponentSettings },
+  mixins: [objects, clickHandler, hotkeys, computed],
   props: {
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
   data() {
@@ -193,12 +257,16 @@ export default {
       id: this.$util.generateID(),
       // Boolean whether popover is shown.
       popoverShown: false,
+      // Whether filter popover is shown.
+      filterPopoverShow: false,
       // Filter text for scheme selection.
       schemeFilter: "",
-      // Filter for language
-      languageFilter: null,
-      // Flag whether to show all schemes
-      showAllSchemes: false,
+      // Filter for language (access only via computed prop languageFilter)
+      languageFilter: [],
+      // Filter for scheme types (access only via computed prop typeFilter)
+      typeFilter: [],
+      // Flag whether to show only favorite concepts
+      onlyFavorites: true,
     }
   },
   computed: {
@@ -207,33 +275,81 @@ export default {
       return this.selected.scheme[this.isLeft]
     },
     isFiltered() {
-      return this.schemeFilter != "" || this.languageFilter != null || this.filteredSchemes.length <= 10
+      return this.schemeFilter != "" || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
     },
     filteredSchemes() {
       let filter = this.schemeFilter.toLowerCase()
-      // Filter schemes, prepend favorites if filter is empty.
+      // Filter schemes, use either text filter or other filters
+      if (filter) {
+        return this.schemes.filter(
+          scheme =>
+            (
+              Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
+              (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
+            ) &&
+            (
+              (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+              _.intersection(scheme.languages || [], this.languageFilter).length
+            )
+        )
+      }
       return this.schemes.filter(
         scheme =>
           (
-            Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
-            (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
+            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
+            _.intersection(scheme.type || [], this.typeFilter).length
           ) &&
           (
-            this.languageFilter == null ||
-            (scheme.languages || []).includes(this.languageFilter)
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
           )
       )
     },
+    availableLanguages() {
+      return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
+    },
     languageFilterOptions() {
-      let options = [
-        {
+      let options = []
+      if (this.schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
+        options.push({
           value: null,
-          text: this.$t("schemeSelection.allLanguages")
-        }
-      ]
-      let languages = _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
-      options = options.concat(languages.map(lang => ({ value: lang, text: lang })))
+          text: this.$t("schemeSelection.filterOther"),
+        })
+      }
+      options = this.availableLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
       return options
+    },
+    availableTypes() {
+      return _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
+    },
+    typeFilterOptions() {
+      let options = []
+      if (this.schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
+        options.push({
+          value: null,
+          text: this.$t("schemeSelection.filterOther"),
+        })
+      }
+      options = this.availableTypes.map(type => ({ value: type, text: type })).concat(options)
+      // Look up names for types
+      for (let option of options) {
+        let type = kosTypes.find(t => t.uri == option.value)
+        if (type) {
+          option.text = this.$util.prefLabel(type)
+        }
+      }
+      return options
+    },
+    insertPrefLabel: {
+      get() {
+        return this.$settings.schemeSelectionInsertPrefLabel[this.isLeft]
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: `schemeSelectionInsertPrefLabel[${this.isLeft}]`,
+          value,
+        })
+      },
     },
   },
   watch: {
@@ -245,18 +361,51 @@ export default {
         }, 100)
       }
     },
+    onlyFavorites() {
+      this.schemeFilter = ""
+    },
+    languageFilter() {
+      this.schemeFilter = ""
+    },
+    typeFilter() {
+      this.schemeFilter = ""
+    },
   },
   mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
     // Enable shortcuts
     this.enableShortcuts()
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
+    // Set filters to all
+    this.languageFilter = this.availableLanguages.concat([null])
+    this.typeFilter = this.availableTypes.concat([null])
   },
   methods: {
+    clickHandlers() {
+      return [
+        {
+          elements: [
+            this.$refs.popover,
+            document.getElementById(`${this.id}-expandButton`),
+            this.$refs.showAllSchemesLink,
+            // Also include filter popover
+            document.getElementById(`conceptSchemeSelection-filterButton-${this.id}`),
+            this.$refs.filterPopover,
+          ],
+          handler: () => {
+            // this.popoverShown
+            this.hidePopover()
+          },
+        },
+        {
+          elements: [
+            document.getElementById(`conceptSchemeSelection-filterButton-${this.id}`),
+            this.$refs.filterPopover,
+          ],
+          handler: () => {
+            this.filterPopoverShow = false
+          },
+        },
+      ]
+    },
     shortcutHandler({ action, isLeft }) {
       if (this.isLeft === isLeft) {
         switch(action) {
@@ -275,12 +424,6 @@ export default {
             }
             break
         }
-      }
-    },
-    handleClickOutside(evt) {
-      // Handle popover
-      if (this.popoverShown && this.$refs.popover && !this.$refs.popover.contains(evt.target)) {
-        this.hidePopover()
       }
     },
     /**
@@ -308,9 +451,9 @@ export default {
     /**
      * Sets concept search query to a certain string.
      */
-    setConceptSearchQuery(query) {
+    setConceptSearchQuery(query, open = false) {
       if (this.$refs.conceptSearch) {
-        this.$refs.conceptSearch.setSearchQuery(query)
+        this.$refs.conceptSearch.setSearchQuery(query, open)
       }
     },
     toggleFavoriteScheme(scheme) {
@@ -343,7 +486,7 @@ export default {
         this.showPopover()
       }
     },
-  }
+  },
 }
 </script>
 
@@ -355,19 +498,21 @@ export default {
 }
 
 .conceptSchemeSelection-collapsed {
-  padding: 5px 5px 0 5px;
+  position: relative;
+  padding: 0 5px 0 5px;
 }
 .conceptSchemeSelection-schemeName {
   padding-right: 30px;
 }
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;
+  margin-right: 10px;
 }
 
 .conceptSchemeSelection-expandButton {
   position: absolute;
   top: 0px;
-  right: 20px;
+  right: 12px;
   font-size: 24px;
   height: 30px;
   width: 20px;
@@ -379,8 +524,8 @@ export default {
   flex-direction: column;
   padding: 5px 10px;
   // Make the component take up almost all of the visible height.
-  min-height: 88vh;
-  max-height: 88vh;
+  min-height: 94vh;
+  max-height: 94vh;
 }
 
 .conceptSchemeSelection-expanded > * {
@@ -395,28 +540,19 @@ export default {
   padding-left: 3px;
   margin-bottom: 0px;
 }
-.conceptSchemeSelection-schemeList > li, .conceptSchemeSelection-favoriteConcepts > p {
+.conceptSchemeSelection-schemeList > li {
   padding-top: 8px;
 }
 
-.conceptSchemeSelection-favoriteConcepts {
-  max-height: 300px;
-  padding-top: 5px;
+.conceptSchemeSelection-filterPopover {
+  word-break: break-all;
+  // Popovers have a hardcoded max width of 276px and 12px padding on each side -> maximum width of content is 252px.
+  min-width: 252px;
+  max-width: 252px;
 }
-
-.conceptSchemeSelection-star {
-  cursor: pointer;
+.conceptSchemeSelection-filterPopover .custom-control {
+  height: unset !important;
 }
-.conceptSchemeSelection-starFavorite {
-  color: darken(@color-select, 12%);
-}
-.conceptSchemeSelection-starFavorite:hover, .conceptSchemeSelection-starNormal:hover {
-  color: @color-button-hover;
-}
-.conceptSchemeSelection-starNormal {
-  color: @color-button-faded;
-}
-
 </style>
 
 <style>
@@ -427,5 +563,9 @@ export default {
 }
 .conceptSchemeSelection .popover > .popover-body {
   padding: 4px 6px;
+}
+.conceptSchemeSelection .componentSettings {
+  right: 3px;
+  bottom: 7px;
 }
 </style>

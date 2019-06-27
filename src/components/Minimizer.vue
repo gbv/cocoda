@@ -31,6 +31,7 @@
 
 <script>
 import _ from "lodash"
+import computed from "../mixins/computed"
 
 /**
  * Adds minimizing functionality to another component.
@@ -41,29 +42,51 @@ import _ from "lodash"
  * If it's a vertical component:
  * <minimizer :is-column="true" text="Name of Component" />
  *
+ * If you want the minimized status to be written into local storage, provide a name:
+ * <minimizer name="myComponent" text="Name of Component" />
+ *
  */
 export default {
   name: "Minimizer",
+  mixins: [computed],
   props: {
+    /**
+     *
+     */
+    name: {
+      type: String,
+      default: null,
+    },
     /**
      * The text that is shown when minimized.
      */
     text: {
       type: String,
-      default: ""
+      default: "",
     },
     /**
      * Determines whether the component is a vertical component.
      */
     isColumn: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    /**
+     * Allows parent component to force minimized state.
+     * `true`: Force to be opened.
+     * `false`: Force to be minimized.
+     * `null` or empty: Use user value.
+     */
+    forceMinimized: {
+      type: Boolean,
+      default: null,
     },
   },
   data() {
     return {
       previousFlex: "",
       previousMinSizes: [],
+      minimizedLocal: false,
       minimizerSize: "40px",
       minimizeHovered: false,
     }
@@ -71,31 +94,38 @@ export default {
   computed: {
     minimized: {
       get() {
-        return this.$settings.minimized[this.parentComponentName()] || false
+        return this.forceMinimized != null ?
+          this.forceMinimized :
+          (
+            this.name != null ?
+              this.$settings.minimized[this.name] || false :
+              this.minimizedLocal
+          )
       },
       set(newValue) {
-        let minimized = _.cloneDeep(this.$settings.minimized)
-        minimized[this.parentComponentName()] = newValue
-        this.$store.commit({
-          type: "settings/set",
-          prop: "minimized",
-          value: minimized
-        })
-      }
-    }
+        if (this.name != null) {
+          let minimized = _.cloneDeep(this.$settings.minimized)
+          minimized[this.name] = newValue
+          this.$store.commit({
+            type: "settings/set",
+            prop: "minimized",
+            value: minimized,
+          })
+        } else {
+          this.minimizedLocal = newValue
+        }
+      },
+    },
   },
   watch: {
     minimized() {
       this.refreshMinimize()
-    }
+    },
   },
   mounted() {
-    // this.refreshMinimize()
+    this.refreshMinimize()
   },
   methods: {
-    parentComponentName() {
-      return this.$el ? this.$el.parentElement.id : "fallback"
-    },
     toggleMinimize(minimized = null) {
       if (minimized != null) {
         this.minimized = minimized
@@ -122,7 +152,7 @@ export default {
           }
           this.previousMinSizes.push({
             element: current,
-            minSize
+            minSize,
           })
           if (this.isColumn) {
             current.style.minWidth = this.minimizerSize
@@ -170,8 +200,8 @@ export default {
         current.dataset.minimized = 0
         this.refresh("minimize")
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

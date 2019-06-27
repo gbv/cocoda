@@ -3,6 +3,13 @@
     :items="items"
     :fields="fields">
     <span
+      slot="registry"
+      slot-scope="{ value }">
+      <registry-notation
+        :registry="value"
+        :tooltip="false" />
+    </span>
+    <span
       slot="sourceConcepts"
       slot-scope="{ value }">
       <item-name
@@ -48,7 +55,7 @@
       <font-awesome-icon
         v-for="(action, index) in actions"
         :key="index"
-        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium, placement: 'left' }"
         :icon="action.icon"
         class="button"
         @click="$emit('click', { name: action.name, item: data.item })" />
@@ -61,17 +68,19 @@
 <script>
 import ItemName from "./ItemName"
 import FlexibleTable from "vue-flexible-table"
+import RegistryNotation from "./RegistryNotation"
+import _ from "lodash"
 
 export default {
   name: "MappingTable",
-  components: { ItemName, FlexibleTable },
+  components: { ItemName, FlexibleTable, RegistryNotation },
   props: {
     /**
      * The list of mappings to be displayed.
      */
     mappings: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Whether to hide duplicate mappings.
@@ -80,28 +89,35 @@ export default {
      */
     hideDuplicates: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      *
      */
     actions: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Whether to show a tooltip with prefLabels for concepts.
      */
     showTooltip: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Whether to show the concepts' labels
      */
     showLabels: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    /**
+     * Whether to show the mapping registry.
+     */
+    showRegistry: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -114,31 +130,31 @@ export default {
      * List of fields (columns) to be used in bootstrap table
      */
     fields() {
-      return [
+      let fields = [
         {
           key: "sourceScheme",
-          label: "",
-          width: "10%",
-          minWidth: "",
-          sortable: false
-        },
-        {
-          key: "sourceConcepts",
-          label: "from",
-          width: "22%",
-          minWidth: "",
-          sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
-        },
-        {
-          key: "type",
           label: "",
           width: "8%",
           minWidth: "",
           sortable: false,
+        },
+        {
+          key: "sourceConcepts",
+          label: this.$t("mappingBrowser.from"),
+          width: "19%",
+          minWidth: "",
+          sortable: false,
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
+        },
+        {
+          key: "type",
+          label: "",
+          width: "7%",
+          minWidth: "",
+          sortable: false,
           compare: (a ,b) => {
-            let labelA = _.get(a, "type.prefLabel.en", "")
-            let labelB = _.get(b, "type.prefLabel.en", "")
+            let labelA = this.$util.prefLabel(_.get(a, "type"), null, false)
+            let labelB = this.$util.prefLabel(_.get(b, "type"), null, false)
             if (labelA < labelB) {
               return -1
             }
@@ -146,38 +162,55 @@ export default {
               return 1
             }
             return 0
-          }
+          },
         },
         {
           key: "targetScheme",
           label: "",
-          width: "10%",
+          width: "8%",
           minWidth: "",
-          sortable: false
+          sortable: false,
         },
         {
           key: "targetConcepts",
-          label: "to",
-          width: "22%",
+          label: this.$t("mappingBrowser.to"),
+          width: "19%",
           minWidth: "",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
+          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
         },
         {
           key: "creator",
-          label: "creator",
-          width: "20%",
+          label: this.$t("mappingBrowser.creator"),
+          width: "15%",
           minWidth: "",
-          sortable: false
+          sortable: false,
+        },
+        {
+          key: "date",
+          label: this.$t("mappingBrowser.date"),
+          width: "12%",
+          minWidth: "",
+          sortable: false,
         },
         {
           key: "actions",
           label: "",
-          width: "8%",
+          width: "7%",
           minWidth: "",
-          sortable: false
-        }
+          sortable: false,
+        },
       ]
+      if (this.showRegistry) {
+        fields = [{
+          key: "registry",
+          label: "",
+          width: "5%",
+          minWidth: "",
+          sortable: false,
+        }].concat(fields)
+      }
+      return fields
     },
     /**
      * List of items to be used in bootstrap table
@@ -192,15 +225,20 @@ export default {
         if (!this.hideDuplicates || !hash || !hashList.includes(hash)) {
           let item = {}
           item.mapping = mapping
+          if (this.showRegistry) {
+            item.registry = mapping._registry
+          }
           item.sourceScheme = this.$util.notation(mapping.fromScheme)
           item.targetScheme = this.$util.notation(mapping.toScheme)
           item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
           item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
           item.creator = mapping.creator && mapping.creator[0] || "?"
           if (typeof item.creator === "object") {
-            item.creator = item.creator.prefLabel.de || item.creator.prefLabel.en || "?"
+            item.creator = this.$util.prefLabel(item.creator)
           }
           item.type = this.$jskos.mappingTypeByType(mapping.type)
+          item.date = mapping.modified || mapping.created
+          item.date = item.date && item.date.slice(0, 10)
           items.push(item)
           hashList.push(hash)
         }
@@ -213,7 +251,7 @@ export default {
   },
   methods: {
 
-  }
+  },
 }
 </script>
 

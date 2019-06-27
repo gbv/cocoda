@@ -1,4 +1,5 @@
 import localforage from "localforage"
+import _ from "lodash"
 
 const localStorageKey = "cocoda-settings--" + window.location.pathname
 
@@ -6,26 +7,33 @@ const defaultSettings = {
   creator: "",
   creatorUri: "",
   mappingBrowserAllSchemes: true,
-  mappingBrowserOnlyLocal: false,
-  mappingBrowserShowReverse: true,
+  mappingBrowserResultLimit: 5,
+  mappingBrowserHideEmpty: false,
+  mappingBrowserShowIdentityWarning: true,
   conceptDetailShowAllAncestors: false,
-  conceptDetailDoNotTruncateNotes: false,
-  conceptTreeAddToMappingSelectsConcept: true,
-  mappingBrowserLocal: true,
-  mappingBrowserProvider: {},
-  mappingBrowserCatalog: true,
+  conceptListAddToMappingSelectsConcept: true,
   mappingBrowserShowRegistry: {},
   minimized: {},
   flex: {},
-  mappingBrowserShowAll: false,
   typesForSchemes: {},
   locale: window.navigator.language || "en",
-  autoInsertLabels: true,
   mappingEditorClearOnSave: true,
   favoriteConcepts: [],
   favoriteSchemes: null,
   mappingCardinality: "1-to-n",
   mappingRegistry: null,
+  schemeSelectionInsertPrefLabel: {
+    [true]: true,
+    [false]: true,
+  },
+  conceptListChoice: {
+    [true]: 0,
+    [false]: 0,
+  },
+  mappingNavigatorShowResultsFor: {
+    [true]: true,
+    [false]: true,
+  },
 }
 
 // initial state
@@ -48,7 +56,7 @@ const mutations = {
 
   set(state, { prop, value }) {
     if (state.loaded) {
-      state.settings[prop] = value
+      _.set(state.settings, prop, value)
       localforage.setItem(localStorageKey, state.settings)
     } else {
       console.warn("Tried to save settings before they were loaded.")
@@ -57,7 +65,7 @@ const mutations = {
 
   loaded(state, { loaded = true }) {
     state.loaded = loaded
-  }
+  },
 
 }
 
@@ -82,15 +90,15 @@ const actions = {
     }).then(settings => {
       let newSettings = Object.assign({}, defaultSettings, settings || {})
       commit({
-        type: "loaded"
+        type: "loaded",
       })
       commit({
         type: "save",
-        settings: newSettings
+        settings: newSettings,
       })
       return
     })
-  }
+  },
 }
 
 export default {

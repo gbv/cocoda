@@ -71,7 +71,7 @@ class SearchSuggestionProvider extends BaseProvider {
         from: { memberSet: [concept] },
         toScheme: targetScheme,
         to: { memberSet: [result] },
-        type: ["http://www.w3.org/2004/02/skos/core#mappingRelation"]
+        type: ["http://www.w3.org/2004/02/skos/core#mappingRelation"],
       }))
       if (swap) {
         // Swap mapping sides if only `to` was set
@@ -109,7 +109,7 @@ class SearchSuggestionProvider extends BaseProvider {
         query: label,
         limit: 10,
         voc: targetScheme.uri,
-      }
+      },
     }).then(data => {
       data = data || []
       // Save result in cache

@@ -1,3 +1,4 @@
 {
-  "cocodaBaseUrl": "https://coli-conc.gbv.de/cocoda/app/"
+  "cocodaBaseUrl": "https://coli-conc.gbv.de/cocoda/app/",
+  "auth": "https://coli-conc.gbv.de/login/"
 }

@@ -1,4 +1,4 @@
-Default settings are given in file `config/cocoda.default.json`. To change the configuration, create file `config/cocoda.json` and override selected fields. The following fields are recognized so far:
+For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory. The default options are given in the file [`config/cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json) (please consult this file for examples on how to use the configuration options). When using a manual build, create file `config/cocoda.json` and rebuild (`npm run build`) after editing. The following fields are recognized so far:
 
 * **title**: the main title of the instance as plain string
 
@@ -11,17 +11,11 @@ Default settings are given in file `config/cocoda.default.json`. To change the c
   * `url`: the link URL
   * `prefLabel`: mapping of language codes to link titles
 
-* **impressum**: URL of an Impressum
-
 * **searchLinks**: a list of search links to quickly link to external resources from concepts. Each searchlink has subfields:
   * `url` an URL template with possible parameters `{prefLabel}` and/or `{notation}`
   * `prefLabel`: mapping of language codes to link titles
 
-The following fields may be changed in a later version:
-
 * **favoriteSchemes**: list of vocabulary URIs to be favorited by default.
-
-* **language**
 
 * **languages**: array with supported interface languages
 
@@ -32,4 +26,6 @@ The following fields may be changed in a later version:
 
 * **registryGroups**
 
-The application has to be rebuilt to activate changes.
+* **auth**: URL to a [login-server](https://github.com/gbv/login-server) instance to be used for authentication
+
+Using the pre-built version, the application only has to be reloaded after editing the configuration file.

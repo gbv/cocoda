@@ -3,34 +3,25 @@
     id="mappingEditor"
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <!-- Settings -->
-    <div id="mappingEditor-settingsButton">
-      <font-awesome-icon
-        id="mappingEditor-settingsButton-icon"
-        v-b-tooltip.hover="{ title: $t('mappingEditor.settingsButton'), delay: $util.delay.medium }"
-        icon="cog"
-        class="button" />
-      <b-popover
-        :show.sync="settingsShow"
-        target="mappingEditor-settingsButton-icon"
-        triggers="click"
-        placement="bottomleft">
-        <div
-          ref="settingsPopover">
-          <p><b>{{ $t("navbar.settings") }}</b></p>
-          <b-form-checkbox
-            v-model="clearOnSave"
-            v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
-            style="user-select: none;">
-            {{ $t("mappingEditor.settingClearOnSave") }}
-          </b-form-checkbox>
-          <b-form-checkbox
-            v-model="only1to1mappings"
-            v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
-            style="user-select: none;">
-            {{ $t("mappingEditor.settingOnly1to1mappings") }}
-          </b-form-checkbox>
-        </div>
-      </b-popover>
+    <component-settings :tooltip="$t('mappingEditor.settingsButton')">
+      <b-form-checkbox
+        v-model="clearOnSave"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
+        style="user-select: none;">
+        {{ $t("mappingEditor.settingClearOnSave") }}
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model="only1to1mappings"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
+        style="user-select: none;">
+        {{ $t("mappingEditor.settingOnly1to1mappings") }}
+      </b-form-checkbox>
+    </component-settings>
+    <div
+      v-if="canSaveMapping"
+      id="mappingEditor-mappingNotSaved"
+      class="fontSize-small fontWeight-heavy">
+      {{ $t("mappingEditor.notSaved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -64,6 +55,16 @@
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
+        v-b-tooltip.hover="{ title: canCloneMapping ? $t('mappingEditor.cloneMapping') : '', delay: $util.delay.medium }"
+        :class="{
+          'button': canCloneMapping,
+          'button-disabled': !canCloneMapping
+        }"
+        class="mappingEditorToolbarItem"
+        @click="cloneMapping">
+        <font-awesome-icon icon="clone" />
+      </div>
+      <div
         v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: $util.delay.medium }"
         :class="{
           button: canClearMapping,
@@ -81,7 +82,7 @@
       :style="{ order: index0 * 2 }"
       :class="{
         'mappingEditorPart-noConcepts': $store.getters['mapping/getScheme'](isLeft) == null || !$store.getters['mapping/getConcepts'](isLeft).length,
-        'mappingEditorPart-dropTarget': draggedConcept != null,
+        'mappingEditorPart-dropTarget': $store.state.draggedConcept != null,
       }"
       class="mappingEditorPart"
       @dragover="dragOver"
@@ -127,7 +128,7 @@
       <div v-else>
         <div class="mappingNoConcepts">
           <div
-            v-if="draggedConcept == null"
+            v-if="$store.state.draggedConcept == null"
             style="margin-bottom: -12px;">
             {{ $t("mappingEditor.placeholder") }}<br><br>
           </div>
@@ -137,7 +138,7 @@
             {{ $t("mappingEditor.placeholderDragging") }}
           </div>
           <div
-            v-if="draggedConcept == null"
+            v-if="$store.state.draggedConcept == null"
             v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
@@ -163,7 +164,6 @@
     <!-- Selecting of mapping type (in between source and target sides via flex order) -->
     <div class="mappingTypeSelection">
       <mapping-type-selection
-        v-show="selected.scheme[true] != null || selected.scheme[false] != null"
         :mapping="$store.state.mapping.mapping" />
     </div>
     <div class="mappingEditor-comment">
@@ -233,6 +233,7 @@
     </b-modal>
     <data-modal-button
       :data="mapping"
+      :position-right="18"
       type="mapping" />
   </div>
 </template>
@@ -242,22 +243,25 @@ import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
 import DataModalButton from "./DataModalButton"
 import _ from "lodash"
+import ComponentSettings from "./ComponentSettings"
 
 // Import mixins
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
+import hotkeys from "../mixins/hotkeys"
+import computed from "../mixins/computed"
 
 /**
  * The mapping editor component.
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, DataModalButton },
-  mixins: [auth, objects],
+  components: { ItemName, MappingTypeSelection, DataModalButton, ComponentSettings },
+  mixins: [auth, objects, dragandrop, hotkeys, computed],
   data() {
     return {
       comments: [""],
-      settingsShow: false,
     }
   },
   computed: {
@@ -281,6 +285,9 @@ export default {
     },
     canSwapMapping() {
       return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
+    },
+    canCloneMapping() {
+      return this.original != null
     },
     /**
      * Returns an encoded version of the mapping for export
@@ -311,9 +318,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingEditorClearOnSave",
-          value
+          value,
         })
-      }
+      },
     },
     // Setting whether to only allow 1-to-1 mappings
     only1to1mappings: {
@@ -324,9 +331,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingCardinality",
-          value: value ? "1-to-1" : "1-to-n"
+          value: value ? "1-to-1" : "1-to-n",
         })
-      }
+      },
     },
   },
   watch: {
@@ -340,7 +347,7 @@ export default {
       this.$store.commit({
         type: "mapping/setScheme",
         isLeft: false,
-        scheme: this.selected.scheme[false]
+        scheme: this.selected.scheme[false],
       })
     },
     comments() {
@@ -363,7 +370,7 @@ export default {
       this.$store.commit({
         type: "mapping/setScheme",
         isLeft: false,
-        scheme: this.selected.scheme[false]
+        scheme: this.selected.scheme[false],
       })
     },
     creator() {
@@ -374,14 +381,8 @@ export default {
     },
   },
   mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
     // Enable shortcuts
     this.enableShortcuts()
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
   },
   methods: {
     shortcutHandler({ action, isLeft }) {
@@ -402,13 +403,6 @@ export default {
           break
       }
     },
-    handleClickOutside(event) {
-      // Handle settings popover
-      let popover = this.$refs.settingsPopover
-      if (popover && !popover.contains(event.target)) {
-        this.settingsShow = false
-      }
-    },
     saveMapping() {
       if (!this.canSaveMapping) return false
       if (!this.creatorName || this.creatorName == "") {
@@ -420,6 +414,7 @@ export default {
       // Hide comment modal if open
       this.$refs.commentModal.hide()
       let mapping = this.prepareMapping()
+      mapping.modified = (new Date()).toISOString()
       let original = this.original
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
@@ -435,7 +430,7 @@ export default {
         let newMapping = mappings[0]
         this.$store.commit({
           type: "mapping/set",
-          original: newMapping
+          original: newMapping,
         })
         if (this.clearOnSave) {
           this.clearMapping()
@@ -454,11 +449,11 @@ export default {
       let creator = [this.creator]
       this.$store.commit({
         type: "mapping/setCreator",
-        creator
+        creator,
       })
       this.$store.commit({
         type: "mapping/setContributor",
-        contributor
+        contributor,
       })
     },
     deleteMapping() {
@@ -489,7 +484,7 @@ export default {
     clearMapping() {
       if (!this.canClearMapping) return false
       this.$store.commit({
-        type: "mapping/empty"
+        type: "mapping/empty",
       })
       // Hide comment modal if open
       this.$refs.commentModal.hide()
@@ -507,17 +502,7 @@ export default {
      * Returns whether the add button should be enabled for a specific side
      */
     isAddButtonEnabled(isLeft) {
-      let concept = isLeft ? this.selected.concept[true] : this.selected.concept[false]
-      if (!this.$store.getters["mapping/checkScheme"](isLeft ? this.selected.scheme[true] : this.selected.scheme[false], isLeft)) {
-        return false
-      }
-      if (concept == null) {
-        return false
-      }
-      if (this.$store.getters["mapping/added"](concept, isLeft)) {
-        return false
-      }
-      return true
+      return this.$store.getters["mapping/canAdd"](this.selected.concept[isLeft], this.selected.scheme[isLeft], isLeft)
     },
     /**
      * Returns whether the delete all button should be enabled for a specific side
@@ -553,7 +538,7 @@ export default {
       this.addToMapping({
         concept,
         scheme: this.selected.scheme[isLeft],
-        isLeft
+        isLeft,
       })
     },
     /**
@@ -562,7 +547,7 @@ export default {
     deleteAll(isLeft) {
       this.$store.commit({
         type: "mapping/removeAll",
-        isLeft
+        isLeft,
       })
     },
     droppedConcept(concept, isLeft) {
@@ -571,7 +556,7 @@ export default {
         this.addToMapping({
           concept,
           scheme: (concept.inScheme && concept.inScheme[0]) || this.selected.scheme[isLeft],
-          isLeft: isLeft
+          isLeft: isLeft,
         })
         // Load details if necessary
         this.loadDetails(concept)
@@ -585,8 +570,8 @@ export default {
         this.$store.commit({
           type: "mapping/setNote",
           note: {
-            [language]: comments
-          }
+            [language]: comments,
+          },
         })
       }
     },
@@ -605,7 +590,19 @@ export default {
       }
       this.$store.commit({ type: "mapping/switch" })
     },
-  }
+    cloneMapping() {
+      let mapping = this.$jskos.copyDeep(this.mapping)
+      delete mapping.uri
+      this.$store.commit({
+        type: "mapping/set",
+        original: null,
+      })
+      this.$store.commit({
+        type: "mapping/set",
+        mapping,
+      })
+    },
+  },
 }
 </script>
 
@@ -616,12 +613,6 @@ export default {
   position: relative;
   display: flex;
   border: 1px solid @color-background;
-}
-#mappingEditor-settingsButton {
-  position: absolute;
-  right: 20px;
-  top: -6px;
-  z-index: @zIndex-2;
 }
 .mappingEditor-cantSave {
   background-color: @color-background;
@@ -733,7 +724,7 @@ export default {
 .mappingEditor-creator {
   position: absolute;
   bottom: 2px;
-  right: 30px;
+  right: 43px;
 }
 .mappingEditor-comment {
   position: absolute;
@@ -761,6 +752,13 @@ export default {
 .mappingEditor-deleteModal button {
   margin: 10px 0;
   width: 100%;
+}
+
+#mappingEditor-mappingNotSaved {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  color: @color-button-delete;
 }
 
 </style>

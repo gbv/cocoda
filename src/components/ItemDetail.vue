@@ -4,7 +4,9 @@
     @dragover="dragOver"
     @drop="drop">
     <!-- Minimizer allows component to get minimized -->
-    <minimizer :text="type + ' Detail'" />
+    <minimizer
+      :name="`itemDetail_${isLeft}`"
+      :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
     <div
       v-if="item != null"
@@ -13,7 +15,9 @@
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
         :item="item"
         :is-left="isLeft"
-        :settings="internalSettings" />
+        :settings="internalSettings"
+        @searchMappings="$emit('searchMappings', $event)"
+        @searchConcept="$emit('searchConcept', $event)" />
     </div>
     <div
       v-else-if="!loading"
@@ -21,8 +25,18 @@
       {{ $t("itemDetail.pleaseSelect") }}
     </div>
 
+    <!-- Settings -->
+    <component-settings>
+      <b-form-checkbox
+        v-model="conceptDetailShowAllAncestors"
+        style="user-select: none;">
+        {{ $t("settings.showAllAncestors") }}
+      </b-form-checkbox>
+    </component-settings>
+
     <data-modal-button
       :data="item"
+      :position-right="20"
       :url="apiUrl" />
 
     <!-- Full screen loading indicator -->
@@ -36,7 +50,13 @@ import Minimizer from "./Minimizer"
 import ConceptDetail from "./ConceptDetail"
 import SchemeDetail from "./SchemeDetail"
 import DataModalButton from "./DataModalButton"
+import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
+
+// Import mixins
+import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
+import computed from "../mixins/computed"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -44,29 +64,30 @@ import _ from "lodash"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton
+    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton, ComponentSettings,
   },
+  mixins: [objects, dragandrop, computed],
   props: {
     /**
      * The concept object whose details should be displayed.
      */
     item: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * `true` means item is a scheme, `false` means item is a concept.
      */
     isScheme: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Settings - An object with a subset of the following properties:
@@ -75,12 +96,11 @@ export default {
      * - showSchemeInAncestors: (default true)
      * - showTopConceptsInScheme: (default false)
      * - showAllAncestors: always show all ancestors (default false)
-     * - showAllNotes: do not truncate notes (default false)
      */
     settings: {
       type: Object,
-      default: () => { return {} }
-    }
+      default: () => { return {} },
+    },
   },
   data () {
     return {
@@ -90,7 +110,7 @@ export default {
         showSchemeInAncestors: true,
         showTopConceptsInScheme: false,
         showAllAncestors: false,
-        showAllNotes: false
+        showAllNotes: false,
       },
     }
   },
@@ -106,7 +126,6 @@ export default {
       // Merge prop settings and default settings
       return Object.assign({}, this.defaultSettings, {
         showAllAncestors: this.$settings.conceptDetailShowAllAncestors,
-        showAllNotes: this.$settings.conceptDetailDoNotTruncateNotes,
       },this.settings)
     },
     apiUrl() {
@@ -127,6 +146,18 @@ export default {
       }
       return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
     },
+    conceptDetailShowAllAncestors: {
+      get() {
+        return this.$settings.conceptDetailShowAllAncestors
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "conceptDetailShowAllAncestors",
+          value,
+        })
+      },
+    },
   },
   watch: {
     /**
@@ -134,7 +165,7 @@ export default {
      */
     item: function() {
       this.$el.scrollTop = 0
-    }
+    },
   },
   mounted() {
     this.$el.scrollTop = 0
@@ -164,6 +195,10 @@ export default {
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;
+}
+
+.itemDetail .componentSettings {
+  right: 3px;
 }
 
 </style>

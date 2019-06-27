@@ -34,14 +34,7 @@ export default {
       }
     },
     userIdentityProvider() {
-      let result = null
-      _.forEach((this.user && this.user.identities) || {}, (identity, providerId) => {
-        let provider = this.providers.find(provider => provider.id === providerId)
-        if (this.creator.uri === identity.uri && provider) {
-          result = provider
-        }
-      })
-      return result
+      return this.providerForIdentityUri(this.creator.uri)
     },
     authorized() {
       return _.get(this, "$store.state.auth.authorized")
@@ -50,6 +43,23 @@ export default {
   methods: {
     setName(name) {
       return this.$store.dispatch("auth/setName", name)
+    },
+    providerForIdentityUri(uri) {
+      let result = null
+      _.forEach((this.user && this.user.identities) || {}, (identity, providerId) => {
+        let provider = this.providers.find(provider => provider.id === providerId)
+        if (uri === identity.uri && provider) {
+          result = provider
+        }
+      })
+      return result
+    },
+    imageForIdentityUri(uri) {
+      let provider = this.providerForIdentityUri(uri)
+      if (provider && provider.image) {
+        return provider.image
+      }
+      return null
     },
   },
 }

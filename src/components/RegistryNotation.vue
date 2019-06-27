@@ -17,15 +17,15 @@ export default {
   props: {
     registry: {
       type: Object,
-      default: null
+      default: null,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tooltip: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
   computed: {

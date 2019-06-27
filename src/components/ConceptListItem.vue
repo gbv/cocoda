@@ -4,10 +4,12 @@
     :style="`padding-left: ${depth * 10}px`"
     :data-uri="concept.uri"
     :class="{
-      hovered: isHovered,
+      hovered: isHovered && !isHovered,
       selected: isSelected
     }"
-    class="conceptTreeItem">
+    class="conceptListItem"
+    @mouseover="hovering(concept)"
+    @mouseout="hovering(null)">
     <!-- Concept -->
     <div
       class="conceptBox"
@@ -15,7 +17,7 @@
       @dragstart="dragStart(concept, $event)"
       @dragend="dragEnd()">
       <div
-        v-if="hasChildren"
+        v-if="showChildren && hasChildren"
         class="arrowBox"
         @click="openByArrow(!isOpen)">
         <i
@@ -24,31 +26,47 @@
             down: isOpen
           }" />
       </div>
-      <router-link
+      <span
+        v-for="(button, index2) in buttons.filter(b => b.position == 'before')"
+        :key="`conceptListItem-buttons-${index2}`"
+        v-b-tooltip.hover="{ title: button.tooltip, delay: $util.delay.medium}"
+        class="button fontSize-verySmall conceptListItem-buttonBefore"
+        @click="button.onClick($event, concept)">
+        <font-awesome-icon :icon="button.icon" />
+      </span>
+      <div
+        :is="url ? 'router-link' : 'div'"
         :to="url"
-        :class="{ labelBoxFull: !hasChildren, labelBoxSelected: isSelected }"
+        :class="{
+          labelBoxFull: showChildren && !hasChildren,
+          labelBoxSelected: isSelected,
+          labelBoxSingle: !showChildren,
+        }"
         class="labelBox"
-        @mouseover.native="hovering(concept)"
-        @mouseout.native="hovering(null)"
         @click.native.stop.prevent="onClick">
+        <item-name
+          v-if="scheme && showScheme"
+          :item="scheme"
+          :show-text="false"
+          :is-link="false"
+          :prevent-external-hover="true"
+          :draggable="false" />
         <item-name
           :item="concept"
           :is-highlighted="isSelected"
           :prevent-external-hover="true" />
-      </router-link>
+      </div>
       <div
         v-show="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         class="addToMapping"
-        @click="addConcept()"
-        @mouseover="hovering(concept)"
-        @mouseout="hovering(null)">
+        @click="addConcept()">
         <font-awesome-icon icon="plus-circle" />
       </div>
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="hasChildren && isOpen && concept.narrower.includes(null)"
+      v-show="showChildren && hasChildren && isOpen && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -61,51 +79,73 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import dragandrop from "../mixins/dragandrop"
 
 /**
- * Component that represents one concept item in a ConceptTree and possibly its children.
+ * Component that represents one concept item in a ConceptList and possibly its children.
  */
 export default {
-  name: "ConceptTreeItem",
+  name: "ConceptListItem",
   components: {
-    LoadingIndicator, ItemName
+    LoadingIndicator, ItemName,
   },
-  mixins: [objects],
+  mixins: [objects, dragandrop],
   props: {
     /**
-     * The concept object that this tree item represents.
+     * The concept object that this list item represents.
      */
     concept: {
       type: Object,
-      default: null
+      default: null,
     },
     /**
      * The depth of the current item.
      */
     depth: {
       type: Number,
-      default: null
+      default: null,
     },
     /**
      * The index of the current item.
      */
     index: {
       type: Number,
-      default: null
+      default: null,
     },
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Tells the component whether the item is selected.
      */
     isSelected: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    /**
+     * Whether to show children of concepts, i.e. a concept hierarchy.
+     */
+    showChildren: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Whether to show the scheme in front of concepts.
+     */
+    showScheme: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * List of buttons (array of objects with props `position`, `icon`, and `onClick`).
+     */
+    buttons: {
+      type: Array,
+      default: () => [],
     },
   },
   data () {
@@ -119,7 +159,7 @@ export default {
       canAddToMapping: false,
       interval: null,
       /** URL of currently hovered concept */
-      url: "",
+      url: null,
     }
   },
   computed: {
@@ -127,7 +167,6 @@ export default {
       return  _.get(this.concept, "narrower.length", 1) != 0
     },
     isHovered() {
-      // return this.$jskos.compare(this.hoveredConcept, this.concept)
       return this.isHoveredFromHere
     },
     childrenLoaded() {
@@ -136,16 +175,25 @@ export default {
     isOpen() {
       return _.get(this.concept, `__ISOPEN__[${this.isLeft}]`, false)
     },
+    scheme() {
+      return _.get(this.concept, "inScheme[0]")
+    },
+  },
+  created() {
+    this.hovering = _.debounce(this._hovering, 20)
   },
   methods: {
     /**
      * Triggers a hovered event.
      */
-    hovering(concept) {
-      this.hoveredConcept = concept
+    _hovering(concept) {
+      this.$store.commit({
+        type: "setHoveredConcept",
+        concept,
+      })
       this.isHoveredFromHere = concept != null
       // Set canAddToMapping
-      this.canAddToMapping = this.$store.getters["mapping/canAdd"](this.concept, this.selected.scheme[this.isLeft], this.isLeft)
+      this.canAddToMapping = this.$store.getters["mapping/canAdd"](this.concept, this.$store.state.selected.scheme[this.isLeft], this.isLeft)
       // Check whether mouse is still in element.
       window.clearInterval(this.interval)
       if (concept != null) {
@@ -158,9 +206,9 @@ export default {
       }
       // Set URL to router URL for this concept
       if (concept) {
-        this.url = this.getRouterUrl(concept, this.isLeft)
+        this.url = this.getRouterUrl(concept, this.isLeft, true)
       } else {
-        this.url = ""
+        this.url = null
       }
     },
     /**
@@ -213,13 +261,13 @@ export default {
      * Clicked the plus icon to add a concept.
      */
     addConcept() {
-      if (!this.isSelected && this.$settings.conceptTreeAddToMappingSelectsConcept) {
+      if (!this.isSelected && this.$store.state.settings.settings.conceptListAddToMappingSelectsConcept) {
         this.select(this.concept)
       }
       this.addToMapping({
         concept: this.concept,
-        scheme: this.selected.scheme[this.isLeft],
-        isLeft: this.isLeft
+        scheme: this.$store.state.selected.scheme[this.isLeft],
+        isLeft: this.isLeft,
       })
     },
     /**
@@ -232,7 +280,7 @@ export default {
       this.loadNarrower(this.concept).then(concept => {
         this.loadingChildren = false
         // Only scroll when concept is open
-        if (concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
+        if (this.showChildren && concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
           this.scrollTo()
         }
       })
@@ -241,9 +289,12 @@ export default {
      * Scrolls the concept further to the top.
      */
     scrollTo() {
-      // Determine conceptTree element because it is the scrolling container
+      // Determine conceptList element because it is the scrolling container
       let parent = this.$el.parentElement
       while (!parent.classList.contains("scrollable")) {
+        if (!parent.parentElement) {
+          break
+        }
         parent = parent.parentElement
       }
       // Scroll element
@@ -253,11 +304,11 @@ export default {
         offset: -20,
         cancelable: true,
         x: false,
-        y: true
+        y: true,
       }
       this.$scrollTo(this.$el, 200, options)
     },
-  }
+  },
 }
 
 </script>
@@ -283,20 +334,23 @@ export default {
 .labelBox {
   flex: 1;
   vertical-align: center;
-  padding-right: 12px;
+  padding-right: 20px;
 }
 .labelBoxSelected {
-  padding-right: 4px;
+  padding-right: 16px;
 }
 .labelBoxFull {
   padding-left: 18px;
+}
+.labelBoxSingle {
+  padding-left: 5px;
 }
 .addToMapping {
   .fontSize-large;
   position: absolute;
   color: @color-background;
   top: -1px;
-  right: 0px;
+  right: 8px;
   opacity: 0.7;
 }
 
@@ -309,9 +363,14 @@ export default {
 
 .hovered,
 .selected.hovered,
-.arrowBox:hover {
+.arrowBox:hover,
+.conceptListItem:hover {
   background-color: @color-select-1;
   color: @color-action-2;
+}
+
+.conceptListItem-buttonBefore {
+  padding-top: 2px;
 }
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */

@@ -16,15 +16,13 @@
         {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
       <div
-        v-if="scheme.types && scheme.types.length"
+        v-show="scheme.types && scheme.types.length > 0"
         :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
-        :disabled="filterPopoverShow"
         class="conceptSearch-filter button">
         <font-awesome-icon icon="filter" />
       </div>
       <!-- Filter Popover -->
       <b-popover
-        v-if="scheme.types && scheme.types.length"
         :target="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
         :show.sync="filterPopoverShow"
         triggers="click"
@@ -101,6 +99,9 @@ import _ from "lodash"
 
 // Import mixins
 import objects from "../mixins/objects"
+import clickHandler from "../mixins/click-handler"
+import dragandrop from "../mixins/dragandrop"
+import computed from "../mixins/computed"
 
 /**
  * Component that represents a typeahead-enabled search field for concepts.
@@ -108,24 +109,24 @@ import objects from "../mixins/objects"
 export default {
   name: "ConceptSearch",
   components: {
-    LoadingIndicator
+    LoadingIndicator,
   },
-  mixins: [objects],
+  mixins: [objects, clickHandler, dragandrop, computed],
   props: {
     /**
      * Tells the component on which side of the application it is.
      */
     isLeft: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Currently selected scheme, needed to detect changes.
      */
     scheme: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data () {
     return {
@@ -176,9 +177,9 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "typesForSchemes",
-          value: typesForSchemes
+          value: typesForSchemes,
         })
-      }
+      },
     },
     provider() {
       return _.get(this.scheme, "_provider")
@@ -235,15 +236,36 @@ export default {
     // Create a unique ID for the DOM IDs
     this.uniqueID = this.$util.generateID()
   },
-  mounted() {
-    // Add click event listener
-    document.addEventListener("click", this.handleClickOutside)
-  },
-  destroyed() {
-    // Remove click event listener
-    document.removeEventListener("click", this.handleClickOutside)
-  },
   methods: {
+    clickHandlers() {
+      return [
+        // Result list
+        {
+          elements: [
+            this.$el,
+          ],
+          handler: () => {
+            if (!this.filterPopoverShow) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.isOpen = false
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.searchSelected = -1
+            }
+          },
+        },
+        // Types popover
+        {
+          elements: [
+            document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`),
+            this.$refs.filterPopover,
+          ],
+          handler: () => {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.filterPopoverShow = false
+          },
+        },
+      ]
+    },
     /**
      * Chooses a search result and resets search field.
      *
@@ -260,7 +282,7 @@ export default {
       let uri = _.last(result)
       let concept = {
         uri: uri,
-        inScheme: [this.scheme]
+        inScheme: [this.scheme],
       }
       // Get concept from store
       concept = this.saveObject(concept, { type: "concept", scheme: this.scheme, provider: this.provider })
@@ -293,21 +315,6 @@ export default {
             this.searchResult = [["Error! Could not reach the API. " + error]]
           }
         })
-    },
-    /**
-     * Closes search results when clicked outside of search field.
-     *
-     * @param {object} evt - event object for the click
-     */
-    handleClickOutside(evt) {
-      if (!this.filterPopoverShow && !this.$el.contains(evt.target)) {
-        this.isOpen = false
-        this.searchSelected = -1
-      }
-      // Handle types popover
-      if (this.$refs.filterPopover && !this.$refs.filterPopover.contains(evt.target)) {
-        this.filterPopoverShow = false
-      }
     },
     /**
      * Handles an arrow down event.
@@ -401,12 +408,18 @@ export default {
       newResult += _.escape(result.slice(currentIndex))
       return newResult
     },
-    setSearchQuery(query, isOpen = false) {
+    setSearchQuery(query, open = false) {
       this.searchQuery = query
       // Wait for nextTick before setting isOpen to override the searchQuery watcher
       this.$nextTick(() => {
-        this.isOpen = isOpen
+        this.isOpen = open
       })
+      // Set small timeout to override click handler
+      setTimeout(() => {
+        if (open) {
+          this.focusSearch()
+        }
+      }, 10)
     },
     _loadTypes(item) {
       // Load types for scheme
@@ -435,10 +448,9 @@ export default {
 
 .conceptSearch-icon {
   position: absolute;
-  margin: 0 auto;
-  padding: 4px 0;
+  top: 6px;
   text-align: center;
-  left: 5px;
+  left: 0;
 }
 
 .conceptSearch-resultCount {
@@ -458,7 +470,7 @@ export default {
 
 .conceptSearch-inputWrapper {
   position: relative;
-  margin-left: 28px;
+  margin-left: 18px;
 }
 
 .conceptSearch-results {

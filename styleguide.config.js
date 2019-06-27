@@ -22,7 +22,7 @@ const providerSections =
       let options = {
         files: [providerBase + jsFile],
         "index-format": "none",
-        "global-index-format": "none"
+        "global-index-format": "none",
       }
 
       let markdown = jsdoc2md.renderSync(options)
@@ -38,19 +38,19 @@ const providerSections =
 module.exports = {
   title: "Cocoda Docs",
   ribbon: {
-    url: "https://github.com/gbv/cocoda"
+    url: "https://github.com/gbv/cocoda",
   },
   template: {
-    favicon: "/favicon.ico"
+    favicon: "/favicon.ico",
   },
   require: [
-    path.join(__dirname, "public/styleguide.css")
+    path.join(__dirname, "public/styleguide.css"),
   ],
   assetsDir: "public",
   sections: [
     {
       name: "Cocoda",
-      content: "docs/introduction.md"
+      content: "docs/introduction.md",
     },
     {
       name: "Manual",
@@ -58,46 +58,46 @@ module.exports = {
       sections: [
         {
           name: "User Interface",
-          content: "docs/guide-interface.md"
+          content: "docs/guide-interface.md",
         },
         {
           name: "Login",
-          content: "docs/guide-login.md"
+          content: "docs/guide-login.md",
         },
         {
           name: "Concept Schemes",
-          content: "docs/guide-concept-schemes.md"
+          content: "docs/guide-concept-schemes.md",
         },
         {
           name: "Concepts",
-          content: "docs/guide-concepts.md"
+          content: "docs/guide-concepts.md",
         },
         {
           name: "Mappings",
-          content: "docs/guide-mappings.md"
+          content: "docs/guide-mappings.md",
         },
         {
           name: "Registries",
-          content: "docs/registries.md"
+          content: "docs/registries.md",
         },
         {
           name: "Settings",
-          content: "docs/guide-settings.md"
-        }
-      ]
+          content: "docs/guide-settings.md",
+        },
+      ],
     },
     {
       name: "Administration",
       sections: [
         {
           name: "Installation",
-          content: "docs/installation.md"
+          content: "docs/installation.md",
         },
         {
           name: "Configuration",
-          content: "docs/configuration.md"
-        }
-      ]
+          content: "docs/configuration.md",
+        },
+      ],
     },
     {
       name: "Development",
@@ -105,40 +105,40 @@ module.exports = {
       sections: [
         {
           name: "Getting Started",
-          content: "docs/setup.md"
+          content: "docs/setup.md",
         },
         {
           name: "Background",
-          content: "docs/background.md"
+          content: "docs/background.md",
         },
         {
           name: "Design Guidelines",
-          content: "docs/design-guidelines.md"
+          content: "docs/design-guidelines.md",
         },
         {
           name: "Creating Providers",
-          content: "docs/dev-providers.md"
+          content: "docs/dev-providers.md",
         },
         {
           name: "Releasing a New Version",
-          content: "docs/releasing.md"
+          content: "docs/releasing.md",
         },
         {
           name: "Translation",
-          content: "docs/translation.md"
-        }
-      ]
+          content: "docs/translation.md",
+        },
+      ],
     },
     {
       name: "Providers",
       content: "docs/providers.md",
-      sections: providerSections
+      sections: providerSections,
     },
     {
       name: "Components",
       content: "docs/components.md",
-      components: "src/components/*.vue"
-    }
+      components: "src/components/*.vue",
+    },
   ],
-  usageMode: "expand"
+  usageMode: "expand",
 }

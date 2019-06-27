@@ -300,6 +300,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 // Import mixins
 import auth from "./mixins/auth"
 import objects from "./mixins/objects"
+import computed from "./mixins/computed"
 
 /**
  * The main application.
@@ -307,9 +308,9 @@ import objects from "./mixins/objects"
 export default {
   name: "MappingsApp",
   components: {
-    MappingTable, LoadingIndicatorFull, FlexibleTable
+    MappingTable, LoadingIndicatorFull, FlexibleTable,
   },
-  mixins: [auth, objects],
+  mixins: [auth, objects, computed],
   data () {
     return {
       loading: false,
@@ -323,8 +324,8 @@ export default {
       totalCount: 0,
       itemDetailSettings: {
         left: {
-          showTopConceptsInScheme: true
-        }
+          showTopConceptsInScheme: true,
+        },
       },
       type: null,
       concordance: null,
@@ -337,13 +338,13 @@ export default {
         {
           name: "feedback",
           title: "Send Feedback",
-          icon: "comment"
+          icon: "comment",
         },
         {
           name: "open",
           title: "Open in Cocoda",
-          icon: "external-link-alt"
-        }
+          icon: "external-link-alt",
+        },
       ],
       showLabels: "1",
       // Properties for URL parameters
@@ -370,12 +371,12 @@ export default {
     typeOptions() {
       let options = [{
         text: "all types",
-        value: null
+        value: null,
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
           text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
-          value: type.uri
+          value: type.uri,
         })
       }
       return options
@@ -383,17 +384,15 @@ export default {
     fromScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          _.get(scheme, "prefLabel.de", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          _.get(scheme, "prefLabel.en", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          _.get(scheme, "notation[0]", "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase()
+          (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
+          (this.$util.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase()
       )
     },
     toScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          _.get(scheme, "prefLabel.de", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          _.get(scheme, "prefLabel.en", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          _.get(scheme, "notation[0]", "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase()
+          (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
+          (this.$util.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase()
       )
     },
     page: {
@@ -402,18 +401,18 @@ export default {
       },
       set(value) {
         this.currentPage = value
-      }
+      },
     },
     concordanceOptions() {
       let options = [
-        { value: null, text: "all concordances" }
+        { value: null, text: "all concordances" },
       ]
 
       for (let item of this.concordanceTableItems) {
         let text = `${item.from} to ${item.to} (${item.description})`
         options.push({
           value: item.concordance.uri,
-          text
+          text,
         })
       }
 
@@ -497,8 +496,8 @@ export default {
         let item = { concordance }
         item.from = this.$util.notation(_.get(concordance, "fromScheme")) || "-"
         item.to = this.$util.notation(_.get(concordance, "toScheme")) || "-"
-        item.description = _.get(concordance, "scopeNote.de[0]") || _.get(concordance, "scopeNote.en[0]") || "-"
-        item.creator = _.get(concordance, "creator[0].prefLabel.de") || _.get(concordance, "creator[0].prefLabel.en") || "-"
+        item.description = (this.$util.lmContent(concordance, "scopeNote") || [])[0] || "-"
+        item.creator = this.$util.prefLabel(_.get(concordance, "creator[0]"), null, false) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
@@ -676,7 +675,7 @@ export default {
           from, to, fromScheme, toScheme, type, creator, partOf,
           limit: 10,
           offset: (this.page - 1) * 10,
-        }
+        },
       }).then(({ data, headers }) => {
         if (this.loadingId == loadingId) {
           for (let mapping of data || []) {
@@ -700,6 +699,7 @@ export default {
         let
           fromScheme = item.mapping.fromScheme.uri,
           toScheme = item.mapping.toScheme.uri,
+          uri = item.mapping.uri,
           identifier = item.mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:")),
           concepts = { from: "", to: "" }
         for (let fromTo of Object.keys(concepts)) {
@@ -710,8 +710,8 @@ export default {
             }
           }
         }
-        if (fromScheme && toScheme && identifier) {
-          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&identifier=${identifier}&fromScheme=${fromScheme}&toScheme=${toScheme}&from=${concepts.from}&to=${concepts.to}`
+        if (fromScheme && toScheme && (uri || identifier)) {
+          let cocodaUrl = `${this.config.cocodaBaseUrl || "./"}?mapping={}&${uri ? "mappingUri" : "mappingIdentifier"}=${encodeURIComponent(uri || identifier)}&fromScheme=${encodeURIComponent(fromScheme)}&toScheme=${encodeURIComponent(toScheme)}&from=${encodeURIComponent(concepts.from)}&to=${encodeURIComponent(concepts.to)}`
           if (name == "open") {
             window.open(cocodaUrl)
           } else {
@@ -762,7 +762,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-width: 600px;
-  max-width: 1200px;
+  max-width: 1400px;
   padding: 20px 20px;
   position: relative;
 }

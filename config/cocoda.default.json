@@ -1,60 +1,45 @@
 {
   "registries": [
     {
-      "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
-      "notation": ["D"],
-      "prefLabel": {
-        "en": "DANTE"
-      },
-      "definition": {
-        "en": ["DANTE API with vocabularies at VZG"],
-        "de": ["DANTE-API der VZG"]
-      },
-      "baseUrl": "//api.dante.gbv.de/",
-      "provider": "ConceptApi"
-    },
-    {
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
-      "notation": ["J"],
-      "prefLabel": {
-        "en": "JSKOS Server"
-      },
-      "definition": {
-        "en": ["central JSKOS server instance of coli-conc"],
-        "de": ["zentrale JSKOS-Server Instanz von coli-conc"]
-      },
-      "baseUrl": "//coli-conc.gbv.de/api/",
-      "provider": "ConceptApi"
-    },
-    {
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
-      "notation": ["RVK"],
-      "prefLabel": {
-        "de": "Regensburger Verbundklassifikation"
-      },
-      "baseUrl": "//coli-conc.gbv.de/rvk/api/",
-      "provider": "ConceptApi",
-      "priority": 2
-    },
-    {
       "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
-      "notation": ["G"],
+      "notation": [
+        "G"
+      ],
       "prefLabel": {
         "de": "Gemeinsame Normdatei",
         "en": "Integrated Authority File"
       },
       "definition": {
-        "en": ["Access to a copy of GND at VZG"],
-        "de": ["Zugriff auf eine GND-Kopie an der VZG"]
+        "en": [
+          "Access to a copy of GND at VZG"
+        ],
+        "de": [
+          "Zugriff auf eine GND-Kopie an der VZG"
+        ]
       },
-      "schemes": [ {
-        "uri": "http://bartoc.org/en/node/430",
-        "identifier": ["http://www.wikidata.org/entity/Q36578"],
-        "prefLabel": { "de": "Gemeinsame Normdatei", "en": "Integrated Authority File" },
-        "notation": ["GND"],
-        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ],
-        "languages": ["de"]
-      } ],
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/430",
+          "identifier": [
+            "http://www.wikidata.org/entity/Q36578"
+          ],
+          "prefLabel": {
+            "de": "Gemeinsame Normdatei",
+            "en": "Integrated Authority File"
+          },
+          "notation": [
+            "GND"
+          ],
+          "license": [
+            {
+              "uri": "http://creativecommons.org/publicdomain/zero/1.0/"
+            }
+          ],
+          "languages": [
+            "de"
+          ]
+        }
+      ],
       "data": "//coli-conc.gbv.de/services/gnd.php",
       "concepts": "//coli-conc.gbv.de/services/gnd.php",
       "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
@@ -63,30 +48,102 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-concepts",
-      "notation": ["WD"],
+      "notation": [
+        "WD"
+      ],
       "prefLabel": {
         "en": "Wikidata"
       },
       "definition": {
-        "en": ["Access to Wikidata in JSKOS format"],
-        "de": ["Zugriff auf Wikidata im JSKOS-Format"]
+        "en": [
+          "Access to Wikidata in JSKOS format"
+        ],
+        "de": [
+          "Zugriff auf Wikidata im JSKOS-Format"
+        ]
       },
-      "schemes": [ {
-        "uri": "http://bartoc.org/en/node/1940",
-        "identifier": ["http://www.wikidata.org/entity/2013"],
-        "prefLabel": { "en": "Wikidata" },
-        "notation": ["WD"],
-        "license": [ { "uri": "http://creativecommons.org/publicdomain/zero/1.0/" } ],
-        "languages": ["de", "en"]
-      } ],
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1940",
+          "identifier": [
+            "http://www.wikidata.org/entity/2013"
+          ],
+          "prefLabel": {
+            "en": "Wikidata"
+          },
+          "notation": [
+            "WD"
+          ],
+          "license": [
+            {
+              "uri": "http://creativecommons.org/publicdomain/zero/1.0/"
+            }
+          ],
+          "languages": [
+            "de",
+            "en"
+          ]
+        }
+      ],
       "data": "//coli-conc.gbv.de/services/wikidata/concept/",
       "concepts": "//coli-conc.gbv.de/services/wikidata/concept/",
       "suggest": "//coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
       "provider": "ConceptApi"
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
+      "notation": [
+        "RVK"
+      ],
+      "prefLabel": {
+        "de": "Regensburger Verbundklassifikation"
+      },
+      "baseUrl": "//coli-conc.gbv.de/rvk/api/",
+      "provider": "ConceptApi"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
+      "notation": [
+        "J"
+      ],
+      "prefLabel": {
+        "en": "JSKOS Server"
+      },
+      "definition": {
+        "en": [
+          "central JSKOS server instance of coli-conc"
+        ],
+        "de": [
+          "zentrale JSKOS-Server Instanz von coli-conc"
+        ]
+      },
+      "baseUrl": "//coli-conc.gbv.de/api/",
+      "provider": "ConceptApi"
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
+      "notation": [
+        "D"
+      ],
+      "prefLabel": {
+        "en": "DANTE"
+      },
+      "definition": {
+        "en": [
+          "DANTE API with vocabularies at VZG"
+        ],
+        "de": [
+          "DANTE-API der VZG"
+        ]
+      },
+      "baseUrl": "//api.dante.gbv.de/",
+      "provider": "ConceptApi"
+    },
+    {
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
-      "notation": ["L"],
+      "notation": [
+        "L"
+      ],
       "prefLabel": {
         "de": "Lokal",
         "en": "Local"
@@ -95,64 +152,91 @@
       "canSaveMappings": true,
       "canRemoveMappings": true,
       "provider": "LocalMappings",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-      }],
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
+        }
+      ],
       "definition": {
-        "en": ["Mappings saved locally in the browser"],
-        "de": ["Mappings, die lokal im Browser gespeichert wurden"]
+        "en": [
+          "Mappings saved locally in the browser"
+        ],
+        "de": [
+          "Mappings, die lokal im Browser gespeichert wurden"
+        ]
       },
-      "autoRefresh": 15000
+      "autoRefresh": 5000
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
-      "notation": ["C"],
+      "notation": [
+        "C"
+      ],
       "prefLabel": {
         "de": "Konkordanz-Register",
         "en": "Concordance Registry"
       },
       "definition": {
-        "en": ["Central concordance registry of coli-conc"],
-        "de": ["Zentrale Konkordanz-Datenbank von coli-conc"]
+        "en": [
+          "Central concordance registry of coli-conc"
+        ],
+        "de": [
+          "Zentrale Konkordanz-Datenbank von coli-conc"
+        ]
       },
       "mappings": "https://coli-conc.gbv.de/api/mappings/",
+      "concordances": "https://coli-conc.gbv.de/api/concordances/",
       "annotations": "https://coli-conc.gbv.de/api/annotations/",
       "auth": true,
       "canSaveMappings": true,
       "canRemoveMappings": true,
       "provider": "MappingsApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-      }],
-      "autoRefresh": 15000
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
+        }
+      ],
+      "autoRefresh": 10000
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
-      "notation": ["W"],
+      "notation": [
+        "W"
+      ],
       "prefLabel": {
         "en": "Wikidata-Mappings"
       },
       "definition": {
-        "en": ["Access to Wikidata mappings in JSKOS format"],
-        "de": ["Zugriff auf Wikidata-Mappings im JSKOS-Format"]
+        "en": [
+          "Access to Wikidata mappings in JSKOS format"
+        ],
+        "de": [
+          "Zugriff auf Wikidata-Mappings im JSKOS-Format"
+        ]
       },
       "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
       "provider": "MappingsApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-      }]
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
+        }
+      ]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
-      "notation": ["CR"],
+      "notation": [
+        "CR"
+      ],
       "prefLabel": {
         "en": "coli-conc Recommendations",
         "de": "coli-conc Vorschläge"
       },
       "provider": "SearchSuggestion",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }],
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+        }
+      ],
       "searchUris": {
         "http://coli-conc.gbv.de/registry/coli-conc-concepts": "//coli-conc.gbv.de/api/search",
         "http://coli-conc.gbv.de/registry/coli-conc-rvk": "//coli-conc.gbv.de/rvk/api/search",
@@ -172,53 +256,77 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/ccmapper-mapping-recommendations",
-      "notation": ["CC"],
+      "notation": [
+        "CC"
+      ],
       "prefLabel": {
-        "de": "ccmapper Mapping Recommendations",
-        "en": "ccmapper Mapping-Vorschläge"
+        "en": "ccmapper Mapping Recommendations",
+        "de": "ccmapper Mapping-Vorschläge"
       },
       "definition": {
-        "en": [""],
-        "de": [""]
+        "en": [
+          ""
+        ],
+        "de": [
+          ""
+        ]
       },
       "mappings": "//coli-conc.gbv.de/ccmapper/api/mappings",
       "provider": "MappingsApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }]
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+        }
+      ]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
-      "notation": ["CO"],
+      "notation": [
+        "CO"
+      ],
       "prefLabel": {
         "de": "Katalogvorschläge",
         "en": "Co-/Occurrences"
       },
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
       "provider": "OccurrencesApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }],
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+        }
+      ],
       "definition": {
-        "en": ["Suggestions based on catalog co-/occurrences"],
-        "de": ["Vorschläge auf Basis der Katalogvorkommen"]
+        "en": [
+          "Suggestions based on catalog co-/occurrences"
+        ],
+        "de": [
+          "Vorschläge auf Basis der Katalogvorkommen"
+        ]
       }
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
-      "notation": ["WR"],
+      "notation": [
+        "WR"
+      ],
       "prefLabel": {
         "de": "Wikidata-Reconciliation",
         "en": "Wikidata Reconciliation"
       },
       "definition": {
-        "en": ["Wikidata Reconciliation API"],
-        "de": ["Wikidata-Reconciliation API"]
+        "en": [
+          "Wikidata Reconciliation API"
+        ],
+        "de": [
+          "Wikidata-Reconciliation API"
+        ]
       },
       "provider": "ReconciliationApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }],
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+        }
+      ],
       "scheme": {
         "uri": "http://bartoc.org/en/node/1940"
       },
@@ -227,19 +335,27 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
-      "notation": ["GR"],
+      "notation": [
+        "GR"
+      ],
       "prefLabel": {
         "de": "GND-Reconciliation",
         "en": "GND Reconciliation"
       },
       "definition": {
-        "en": ["GND Reconciliation API (lobid.org)"],
-        "de": ["GND-Reconciliation API (lobid.org)"]
+        "en": [
+          "GND Reconciliation API (lobid.org)"
+        ],
+        "de": [
+          "GND-Reconciliation API (lobid.org)"
+        ]
       },
       "provider": "ReconciliationApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }],
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+        }
+      ],
       "scheme": {
         "uri": "http://bartoc.org/en/node/430"
       },
@@ -248,19 +364,27 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
-      "notation": ["NR"],
+      "notation": [
+        "NR"
+      ],
       "prefLabel": {
         "de": "Nomisma-Reconciliation",
         "en": "Nomisma Reconciliation"
       },
       "definition": {
-        "en": ["Nomisma Reconciliation API"],
-        "de": ["Nomisma-Reconciliation API"]
+        "en": [
+          "Nomisma Reconciliation API"
+        ],
+        "de": [
+          "Nomisma-Reconciliation API"
+        ]
       },
       "provider": "ReconciliationApi",
-      "subject": [{
-        "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-      }],
+      "subject": [
+        {
+          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+        }
+      ],
       "scheme": {
         "uri": "http://nomisma.org/id/"
       },
@@ -273,50 +397,99 @@
     {
       "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings",
       "prefLabel": {
-        "de": "Vorhandene Mappings",
-        "en": "Available Mappings"
+        "de": "Mappings",
+        "en": "Mappings"
       }
     },
     {
       "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings",
       "prefLabel": {
-        "de": "Automatische Mappings",
-        "en": "Automatic Mappings"
+        "de": "Vorschläge",
+        "en": "Recommendations"
       }
     }
   ],
   "searchLinks": [
     {
-      "prefLabel": { "de": "ccmapper" },
+      "prefLabel": {
+        "de": "ccmapper"
+      },
       "url": "https://ccmapper-de.pansoft.de/m/mapping.html?id={notation}",
-      "schemeUris": ["http://bartoc.org/en/node/533"]
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
     },
     {
-      "prefLabel": { "de": "Wikipedia (de)" },
+      "prefLabel": {
+        "de": "Wikipedia (de)"
+      },
       "url": "https://de.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
     },
     {
-      "prefLabel": { "de": "Wikipedia (en)" },
+      "prefLabel": {
+        "de": "Wikipedia (en)"
+      },
       "url": "https://en.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
     },
     {
-      "prefLabel": { "de": "Wikipedia" },
+      "prefLabel": {
+        "de": "Wikipedia"
+      },
       "url": "https://{language}.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
     },
     {
-      "prefLabel": { "de": "RVK Online" },
+      "prefLabel": {
+        "de": "RVK Online"
+      },
       "url": "https://rvk.uni-regensburg.de/regensburger-verbundklassifikation-online#notation/{notation}",
-      "schemeUris": ["http://bartoc.org/en/node/533"]
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
     },
     {
-      "prefLabel": { "en": "WebDewey Search" },
+      "prefLabel": {
+        "en": "WebDewey Search"
+      },
       "url": "https://deweysearchde.pansoft.de/webdeweysearch/executeSearch.html?query={notation}",
-      "schemeUris": ["http://bartoc.org/en/node/241"]
+      "schemeUris": [
+        "http://bartoc.org/en/node/241"
+      ]
     },
     {
-      "prefLabel": { "en": "WebGND" },
+      "prefLabel": {
+        "en": "K10plus (Normdatensatz)"
+      },
+      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd{notation}&REC=2",
+      "schemeUris": [
+        "http://bartoc.org/en/node/430"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus (Suche)"
+      },
+      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd{notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/430"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "WebGND"
+      },
       "url": "http://gnd.eurospider.com/s?q={notation}",
-      "schemeUris": ["http://bartoc.org/en/node/430"]
+      "schemeUris": [
+        "http://bartoc.org/en/node/430"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Bremer Online Systematik"
+      },
+      "url": "https://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&term={notation}?&LAN=DE&IHITS=30&FHITS=30&XML_STYLE=/styles/cns-DE.xml&index=C&n_dtyp=1L&n_rtyp=ceEdX&RELEVANCE=55&INDEXINFO=awCN&forward=1&section=ms",
+      "schemeUris": [
+        "https://bartoc.org/de/node/730"
+      ]
     }
   ],
   "favoriteSchemes": [
@@ -427,7 +600,10 @@
       "isLeft": false
     }
   ],
-  "languages": ["en", "de"],
+  "languages": [
+    "en",
+    "de"
+  ],
   "logos": [
     {
       "file": "coli-conc-logo.svg",
@@ -437,6 +613,20 @@
   ],
   "title": "Cocoda Mapping Tool",
   "menu": [
+    {
+      "url": "https://www.gbv.de/impressum",
+      "prefLabel": {
+        "en": "Imprint",
+        "de": "Impressum"
+      }
+    },
+    {
+      "url": "https://www.gbv.de/datenschutz",
+      "prefLabel": {
+        "en": "Privacy Policy",
+        "de": "Datenschutz"
+      }
+    },
     {
       "url": "https://gbv.github.io/cocoda/",
       "prefLabel": {
@@ -450,7 +640,5 @@
         "en": "Feedback"
       }
     }
-  ],
-  "impressum": "https://www.gbv.de/impressum",
-  "auth": "https://coli-conc.gbv.de/login/"
+  ]
 }

@@ -2,6 +2,7 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import axios from "axios"
 import defaultConfig from "../config"
+import i18n from "../util/i18n"
 // Import registry providers
 import providers from "../providers"
 const buildInfo = require("../../build/build-info.json")
@@ -14,26 +15,30 @@ export default {
     return axios.get(configFile).then(response => response.data).catch(() => null).then(userConfig => {
       if (!_.isObject(userConfig)) {
         console.error(`Error loading config from ${configFile}: Data is not an object.`)
+        // Show UI alert
+        commit("alerts/add", {
+          variant: "danger",
+          countdown: 0,
+          text: i18n.t("general.malformedConfig", { file: configFile }),
+        }, { root: true })
         userConfig = {}
       }
       let config = Object.assign({}, defaultConfig, userConfig)
       if (!config.overrideRegistries) {
-        config.registries = [].concat(defaultConfig.registries || [], userConfig.registries || [])
-        // Merge registries with the same URI (higher priority overrides lower priority, later in list overrides earlier in list)
+        config.registries = [].concat(userConfig.registries || [], defaultConfig.registries || [])
         let registries = []
         for (let registry of config.registries) {
           let index = registries.findIndex(r => r.uri == registry.uri)
-          if (index != -1) {
-            // Compare priorities
-            let prioCurrent = registry.priority || 0
-            let prioExisting = registries[index].priority || 0
-            // Override except if existing prio is higher than current prio
-            if (!(prioExisting > prioCurrent)) {
-              registries[index] = registry
-            }
-          } else {
+          // Ignore if it's already in the list (the earlier the registry, the higher the priority)
+          if (index == -1) {
             registries.push(registry)
           }
+        }
+        // Assign priority values to registries (for easier comparison at other points)
+        let priority = registries.length
+        for (let registry of registries) {
+          registry.priority = priority
+          priority -= 1
         }
         config.registries = registries
       }
@@ -107,7 +112,7 @@ export default {
       commit({
         type: "settings/set",
         prop: "favoriteSchemes",
-        value: getters.favoriteSchemes.concat([scheme.uri])
+        value: getters.favoriteSchemes.concat([scheme.uri]),
       })
     }
   },
@@ -115,7 +120,7 @@ export default {
     commit({
       type: "settings/set",
       prop: "favoriteSchemes",
-      value: getters.favoriteSchemes.filter(uri => !jskos.compare({ uri }, scheme))
+      value: getters.favoriteSchemes.filter(uri => !jskos.compare({ uri }, scheme)),
     })
   },
   addConceptToFavorites({ commit, getters }, concept) {
@@ -124,13 +129,13 @@ export default {
     }
     if (!jskos.isContainedIn(concept, getters.favoriteConcepts)) {
       // Filter properties of concepts
-      let newConcept = _.pick(jskos.copyDeep(concept), ["uri", "notation", "inScheme", "prefLabel"])
+      let newConcept = _.pick(jskos.copyDeep(concept), ["uri", "notation", "inScheme"])
       // Prepare inScheme
       newConcept.inScheme = newConcept.inScheme.map(scheme => ({ uri: scheme.uri }))
       commit({
         type: "settings/set",
         prop: "favoriteConcepts",
-        value: getters.favoriteConcepts.concat([newConcept])
+        value: getters.favoriteConcepts.concat([newConcept]),
       })
     }
   },
@@ -138,7 +143,7 @@ export default {
     commit({
       type: "settings/set",
       prop: "favoriteConcepts",
-      value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other))
+      value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other)),
     })
   },
 

@@ -40,8 +40,8 @@ export default {
     annotations: {
       type: Array,
       default: () => [],
-    }
-  }
+    },
+  },
 }
 </script>
 
