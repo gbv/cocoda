@@ -180,7 +180,7 @@
           <div style="display: flex;">
             <b-input
               v-model="searchFilterInput.fromScheme"
-              :state="searchFilterInput.fromScheme == '' ? true : searchFromScheme != null"
+              :state="searchFilterInput.fromScheme == '' ? null : searchFromScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceScheme')"
@@ -201,7 +201,7 @@
             </div>
             <b-input
               v-model="searchFilterInput.toScheme"
-              :state="searchFilterInput.toScheme == '' ? true : searchToScheme != null"
+              :state="searchFilterInput.toScheme == '' ? null : searchToScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetScheme')"
