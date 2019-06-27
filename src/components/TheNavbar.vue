@@ -216,6 +216,19 @@
             @click="settingsTab = index; $refs.settings.show()">
             {{ tab }}
           </p>
+          <hr>
+          <p style="padding: 0 10px;">
+            <a
+              href="https://github.com/gbv/cocoda"
+              target="_blank">
+              <font-awesome-icon :icon="['fab', 'github']" />
+              GitHub
+            </a>
+            <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
+              •
+              {{ $t("settings.version") }} {{ config.buildInfo.version }}
+            </span>
+          </p>
         </div>
       </b-nav-item-dropdown>
       <!-- Current registry -->
