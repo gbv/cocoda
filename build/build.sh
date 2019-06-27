@@ -8,7 +8,7 @@ DELETE_TEMP=
 if [ ! -e ./temp/github-milestones.json ]; then
   DELETE_TEMP=yes
   mkdir temp
-  wget https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100 -O temp/github-milestones.json
+  wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100' -O temp/github-milestones.json
 fi
 
 # write build info to build-info.json

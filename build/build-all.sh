@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir temp
-wget https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100 -O temp/github-milestones.json
+wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100' -O temp/github-milestones.json
 # Copy build-info.sh to a temporary directory so it will be accessible throughout all the builds
 cp build/build-info.sh temp/build-info.sh
 
