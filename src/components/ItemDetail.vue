@@ -18,26 +18,26 @@
         :settings="internalSettings"
         @searchMappings="$emit('searchMappings', $event)"
         @searchConcept="$emit('searchConcept', $event)" />
-
-      <!-- Settings -->
-      <component-settings>
-        <b-form-checkbox
-          v-model="conceptDetailShowAllAncestors"
-          style="user-select: none;">
-          {{ $t("settings.showAllAncestors") }}
-        </b-form-checkbox>
-      </component-settings>
-
-      <data-modal-button
-        :data="item"
-        :position-right="15"
-        :url="apiUrl" />
     </div>
     <div
       v-else-if="!loading"
       class="fillAndCenter fontSize-normal fontWeight-heavy">
       {{ $t("itemDetail.pleaseSelect") }}
     </div>
+
+    <!-- Settings -->
+    <component-settings>
+      <b-form-checkbox
+        v-model="conceptDetailShowAllAncestors"
+        style="user-select: none;">
+        {{ $t("settings.showAllAncestors") }}
+      </b-form-checkbox>
+    </component-settings>
+
+    <data-modal-button
+      :data="item"
+      :position-right="20"
+      :url="apiUrl" />
 
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
@@ -195,6 +195,10 @@ export default {
 }
 .itemDetail-content {
   padding: 2px 8px 2px 8px;
+}
+
+.itemDetail .componentSettings {
+  right: 3px;
 }
 
 </style>
