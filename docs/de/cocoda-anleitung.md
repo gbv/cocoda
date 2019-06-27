@@ -126,11 +126,28 @@ Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um i
 #### Konkordanzen
 ![Konkordanzen](../img/cocoda-mapping-browser-con.de.png)
 
+Hier finden sich alle Konkordanzen, die schon erstellt wurden und sich im Konkordanz-Register befinden.
+
 #### Mapping-Suche
 ![Mapping-Suche](../img/cocoda-mapping-browser-sea.de.png)
 
+Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Zeigt auch Empfehlungen an.
+
 #### Mapping-Navigator
 ![Mapping-Navigator](../img/cocoda-mapping-browser-nav.de.png)
+
+Hier kann man Mappings bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen.
+
+#### Registries
+![Registries](../img/cocoda-mapping-browser-reg.de.png)
+
+Mit einem Klick auf die Buttons können die Registries ausgeblendet werden
+- L: Lokal, Mappings werden im Browser gespeichert
+- C: Konkordanz-Register, öffentliche Datenbank des GBV
+- W: Wikidata-Mappings, Wikidata-Mappings im [JSKOS-Format](https://gbv.github.io/jskos/jskos)
+- CR: coli-conc-Vorschläge, Vorschläge auf Grundlage der Benennungen
+- CC: ccmapper-Vorschläge, Verknüpfung mit pansofts [CCMapper](https://ccmapper-de.pansoft.de/)
+- CO: Katalogvorschläge, Verknüpfung mit dem GVK, welche sonstigen Notationen zum gesuchten passen
 
 ## Einstellungen
 
