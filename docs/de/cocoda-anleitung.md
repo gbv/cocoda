@@ -31,7 +31,7 @@ Es muss kein klassischer Account erstellt werden, dann werden die Mappings aller
 
 Zum einloggen klicken Sie einfach auf das "Einstellungen"-Feld in der Menüleiste.
 
-![Account-Login](img/cocoda-login1-de.png)
+![Account-Login](img/cocoda-login1-de.png){width=100%}
 
 Auf dem Einstellungsfenster unter dem Reiter "Account" genügt nun ein Klick auf eins der verfügbaren Login-Felder (momentan GitHub, ORCID und VZG ELDAP). Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
 
@@ -49,7 +49,7 @@ Mit einem Klick auf "Account-Seite", werden Sie zu einer seperaten Login-Seite w
 
 Wenn Sie sich eingeloggt haben, finden sie neben ihrem Anzeigenamen in der Menüleiste ein grünes Icon, sowie eine Anzeige ihres ausgewählten Speicher-Repositorys.
 
-![Startseite - Eingeloggt](img/cocoda-homepage2-de.png)
+![Startseite - Eingeloggt](img/cocoda-homepage2-de.png){width=100%}
 
 ## Vokabulare
 
@@ -64,7 +64,7 @@ Ein vokabular ist eine organisierte Ansammlung von Konzepten und zusätzlichen I
 
 Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular oder Konzept. Im Falle eines Vokabulars werden Notation, Bezeichnung, Lizenz, Publisher, und der identifier angezeigt. Wenn die Komponente "Oberkonzepte" minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt. Im Falle eines Konzepts werden die Ober- und Unterkonzepte von diesem, sowie Notation, Bezeichnung, Notizen, Registereinträge, zusätzliche Bezeichnungen, Identifier, und GND-Bezeichnungen angezeigt. Meistens ist für ein Konzept jedoch nicht alles vorhanden.
 
-![Vokabulardetails](img/cocoda-classdet-de.png)
+![Vokabulardetails](img/cocoda-classdet-de.png){width=100%}
 
 ## Konzepte
 
@@ -80,13 +80,13 @@ Die rechte und linke Komponente ermöglichen die Suche in Vokabularen um Konzept
 
 ### Konzeptdetails
 
-![Konzeptdetails](img/cocoda-concdet-de.png)
+![Konzeptdetails](img/cocoda-concdet-de.png){width=100%}
 
 ### Hierarchische Ansicht
 
 Wenn das ausgewählte Vokabular hierarchische Navigation unterstützt, zeigt der Oberkonzepte-Baum die Oberkonzepte. Ein Klick auf ein Konzept im Baum wählt das Konzept aus, die Informationen werden in der Detail-Unterkomponente gezeigt. Man kann Unterkonzepte untersuchen, indem man auf den Pfeil vor der Bezeichnung klickt. Ein Doppelklick auf ein Konzept wählt dieses aus und zeigt die Unterkonzepte, man kann auch die Detail-Unterkomponente benutzen, da dort auch eine Art Baumstruktur vorliegt, der richtige Baum wird jedoch empfohlen.
 
-![Hierarchischer Baum](img/cocoda-conctree-de.png)
+![Hierarchischer Baum](img/cocoda-conctree-de.png){width=100%}
 
 ### Listenansicht
 ...
@@ -124,24 +124,25 @@ Eine Registry ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mapp
 Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 
 #### Konkordanzen
-![Konkordanzen](img/cocoda-mapping-browser-con.de.png)
+![Konkordanzen](img/cocoda-mapping-browser-con.de.png){width=100%}
 
 Hier finden sich alle Konkordanzen, die schon erstellt wurden und sich im Konkordanz-Register befinden.
 
 #### Mapping-Suche
-![Mapping-Suche](img/cocoda-mapping-browser-sea.de.png)
+![Mapping-Suche](img/cocoda-mapping-browser-sea.de.png){width=100%}
 
 Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Zeigt auch Empfehlungen an.
 
 #### Mapping-Navigator
-![Mapping-Navigator](img/cocoda-mapping-browser-nav.de.png)
+![Mapping-Navigator](img/cocoda-mapping-browser-nav.de.png){width=100%}
 
 Hier kann man Mappings bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen.
 
 #### Registries
-![Registries](../img/cocoda-mapping-browser-reg.de.png)
+![Registries](../img/cocoda-mapping-browser-reg.de.png){width=100%}
 
 Mit einem Klick auf die Buttons können die Registries ausgeblendet werden
+
 - L: Lokal, Mappings werden im Browser gespeichert
 - C: Konkordanz-Register, öffentliche Datenbank des GBV
 - W: Wikidata-Mappings, Wikidata-Mappings im [JSKOS-Format](https://gbv.github.io/jskos/jskos)
