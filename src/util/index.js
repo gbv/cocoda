@@ -46,16 +46,16 @@ let setupTableScrollSync = function() {
 
 let generateID = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
-// from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-let hash = (string) => {
-  var hash = 0
-  if (string.length == 0) return hash
-  for (let i = 0; i < string.length; i++) {
-    let char = string.charCodeAt(i)
-    hash = ((hash<<5)-hash)+char
-    hash = hash & hash // Convert to 32bit integer
+// adapted from: https://stackoverflow.com/a/22429679/11050851
+let hash = (str) => {
+  var FNV1_32A_INIT = 0x811c9dc5
+  var hval = FNV1_32A_INIT
+  for ( var i = 0; i < str.length; ++i )
+  {
+    hval ^= str.charCodeAt(i)
+    hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24)
   }
-  return hash
+  return ("0000000" + (hval >>> 0).toString(16)).substr(-8)
 }
 
 let delay = {
