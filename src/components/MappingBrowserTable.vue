@@ -177,9 +177,35 @@
         </span>
         <span
           v-if="item.creator != null"
-          v-b-tooltip.hover="{ title: item.creator, delay: $util.delay.long }">
+          :id="`mappingBrowserTable-item-${item.uniqueId}-creator`">
           {{ item.creator }}
         </span>
+        <!-- Creator popover -->
+        <b-popover
+          v-if="item.creator != null"
+          :target="`mappingBrowserTable-item-${item.uniqueId}-creator`"
+          :show.sync="popoverShown[`creator-${item.uniqueId}`]"
+          triggers="hover"
+          :delay="$util.delay.long"
+          placement="auto"
+          @hide="popoverHide($event, `creator-${item.uniqueId}`)">
+          <div class="font-default text-dark color-primary-0-bg fontSize-normal">
+            <p class="fontWeight-heavy">{{ item.creator }}</p>
+            <template v-if="item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri">
+              <p class="fontSize-small">
+                <auto-link :link="item.mapping.creator[0].uri" />
+              </p>
+              <p
+                class="button"
+                @click="$set(popoverShown, `creator-${item.uniqueId}`, false); searchForCreator(item.mapping.creator[0].uri)">
+                <font-awesome-icon
+                  class="fontSize-small"
+                  icon="search" />
+                {{ $t("mappingBrowser.searchForMappingsByCreator") }}
+              </p>
+            </template>
+          </div>
+        </b-popover>
       </span>
       <span
         slot="actions"
@@ -326,7 +352,7 @@
       :mapping="mappingDetailMapping" />
     <!-- Mapping annotations popover -->
     <annotation-popover
-      :id="hoveredId"
+      :id="`mappingBrowserTable-annotationPopover-${hoveredId}`"
       :mapping="this.$store.state.hoveredMapping"
       id-prefix="mappingBrowser-hoveredMapping-annotationButton-" />
   </div>
@@ -349,6 +375,7 @@ import _ from "lodash"
 import auth from "../mixins/auth"
 import objects from "../mixins/objects"
 import computed from "../mixins/computed"
+import hoverHandler from "../mixins/hover-handler"
 
 /**
  * The mapping suggestion browser component.
@@ -356,7 +383,7 @@ import computed from "../mixins/computed"
 export default {
   name: "MappingBrowser",
   components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, RegistryName, MappingDetail, AnnotationPopover, DataModalButton },
-  mixins: [auth, objects, computed],
+  mixins: [auth, objects, computed, hoverHandler],
   props: {
     sections: {
       type: Array,
@@ -373,6 +400,8 @@ export default {
       hoveredId: null,
       /** Current mapping for mapping detail */
       mappingDetailMapping: null,
+      popoverShown: {},
+      currentPopovers: {},
     }
   },
   computed: {
@@ -728,6 +757,47 @@ export default {
         }
         this.$store.commit("mapping/setRefresh")
       })
+    },
+    // Gets called by popovers @hide function to add them to currentPopovers
+    popoverHide(event, id) {
+      if (this.popoverShown[id]) {
+        event.preventDefault()
+        this.currentPopovers[id] = event
+      }
+    },
+    hoverHandlers() {
+      let handlers = []
+      _.forEach(this.currentPopovers, (event, id) => {
+        handlers.push({
+          elements: [event.target, event.relatedTarget],
+          delta: 5,
+          handler: (isInside) => {
+            if (!isInside) {
+              this.$set(this.popoverShown, id, false)
+              this.$delete(this.currentPopovers, id)
+            }
+          },
+        })
+      })
+      return handlers
+    },
+    searchForCreator(uri) {
+      let mappingBrowser = this.$parent
+      while (mappingBrowser && mappingBrowser.$options.name != "MappingBrowser") {
+        mappingBrowser = mappingBrowser.$parent
+      }
+      if (mappingBrowser && mappingBrowser.searchWithParams) {
+        mappingBrowser.searchWithParams({
+          fromScheme: "",
+          fromNotation: "",
+          toScheme: "",
+          toNotation: "",
+          creator: uri,
+          direction: "",
+          type: null,
+          partOf: null,
+        })
+      }
     },
   },
 }

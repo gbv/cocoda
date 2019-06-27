@@ -46,6 +46,18 @@ let setupTableScrollSync = function() {
 
 let generateID = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
+// from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+let hash = (string) => {
+  var hash = 0
+  if (string.length == 0) return hash
+  for (let i = 0; i < string.length; i++) {
+    let char = string.charCodeAt(i)
+    hash = ((hash<<5)-hash)+char
+    hash = hash & hash // Convert to 32bit integer
+  }
+  return hash
+}
+
 let delay = {
   short: { show: 250, hide: 0 },
   medium: { show: 500, hide: 0 },
@@ -242,4 +254,4 @@ let isValidUri = (uri) => {
   return uri.match(re_js_rfc3986_URI) !== null
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri }

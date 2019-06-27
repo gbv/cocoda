@@ -181,7 +181,8 @@
       "searchShareTitle": "Share link to this search",
       "searchShareInclude": "Include selected schemes and concepts",
       "searchShareCopy": "Copy link to clipboard",
-      "searchInsertSelfIntoCreator": "Insert my own identities"
+      "searchInsertSelfIntoCreator": "Insert my own identities",
+      "searchForMappingsByCreator": "Search mappings from this creator"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -537,7 +538,8 @@
       "searchShareTitle": "Einen Link zu dieser Suche teilen",
       "searchShareInclude": "Einschließlich ausgewählter Vokabulare und Konzepte",
       "searchShareCopy": "Link in die Zwischenablage kopieren",
-      "searchInsertSelfIntoCreator": "Meine eigenen Identitäten einfügen"
+      "searchInsertSelfIntoCreator": "Meine eigenen Identitäten einfügen",
+      "searchForMappingsByCreator": "Suche Mappings dieses Erstellers"
     },
     "mappingDetail": {
       "title": "Mapping-Details",
