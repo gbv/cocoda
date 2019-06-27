@@ -202,20 +202,18 @@
       </tab>
       <tab title="coli-ana">
         <div class="coli-ana-table">
-          <code>700.90440747471</code><br>
-          <code>7<span class="text-mediumLightGrey">--.-----------</span></code> Arts & recreation<br>
-          70                 Arts<br>
-          700                The arts<br>
-          700.904            Modern arts<br>
-          T1--0904            20th century, 1900-1999<br>
-          T1--09044           1940-1949<br>
-          T1--074        Museums, collections, exhibits<br>
-          T2--7       North America<br>
-          T2--74      Northeastern United States<br>
-          (New England and Middle Atlantic states)<br>
-          T2--747-749 Middle Atlantic states<br>
-          T2--747     New York (State)<br>
-          T2--7471    New York Metropolitan Area
+          <code><b>&nbsp;&nbsp;700.90440747471 </b></code><br>
+          <code>&nbsp;&nbsp;7<span class="text-mediumLightGrey">--------------</span></code> Arts & recreation<br>
+          <code>&nbsp;&nbsp;70<span class="text-mediumLightGrey">-------------</span></code> Arts<br>
+          <code>&nbsp;&nbsp;700<span class="text-mediumLightGrey">------------</span></code> The arts<br>
+          <code>&nbsp;&nbsp;<b>700.</b>904<span class="text-mediumLightGrey">--------</span></code> <b>Modern arts</b><br>
+          <code>T1--0.904<span class="text-mediumLightGrey">--------</span></code> 20th century, 1900-1999<br>
+          <code>T1--0.<b>9044</b><span class="text-mediumLightGrey">-------</span></code> <b>1940-1949</b><br>
+          <code><span class="text-mediumLightGrey">&nbsp;&nbsp;---.</span>T1--<b>074</b> <span class="text-mediumLightGrey">---</span></code> <b>Museums, collections, exhibits</b><br>
+          <code><span class="text-mediumLightGrey">&nbsp;&nbsp;---.---</span>T2--7<span class="text-mediumLightGrey">---</span></code> North America<br>
+          <code><span class="text-mediumLightGrey">&nbsp;&nbsp;---.---</span>T2--74<span class="text-mediumLightGrey">--</span></code> Northeastern United States (New England and Middle Atlantic states)<br>
+          <code><span class="text-mediumLightGrey">&nbsp;&nbsp;---.---</span>T2--747<span class="text-mediumLightGrey">-</span></code> New York (State)<br>
+          <code><span class="text-mediumLightGrey">&nbsp;&nbsp;---.---</span>T2--<b>7471</b><span class="text-mediumLightGrey" /></code><b> New York Metropolitan Area</b>
         </div>
       </tab>
     </tabs>
