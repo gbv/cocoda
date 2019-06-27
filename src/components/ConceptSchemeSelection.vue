@@ -119,6 +119,14 @@
               <p class="fontWeight-heavy">
                 {{ $t("schemeSelection.filter") }}
               </p>
+              <p v-show="isFiltered">
+                <a
+                  ref="removeAllFiltersLink"
+                  href=""
+                  @click.prevent="onlyFavorites = false; schemeFilter = ''; languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+                  {{ $t("schemeSelection.filtersRemove") }}
+                </a>
+              </p>
               <b-form-checkbox
                 v-model="onlyFavorites"
                 size="sm">
@@ -432,6 +440,7 @@ export default {
             // Also include filter popover
             document.getElementById(`conceptSchemeSelection-filterButton-${this.id}`),
             this.$refs.filterPopover,
+            this.$refs.removeAllFiltersLink,
           ],
           handler: () => {
             // this.popoverShown
@@ -442,6 +451,7 @@ export default {
           elements: [
             document.getElementById(`conceptSchemeSelection-filterButton-${this.id}`),
             this.$refs.filterPopover,
+            this.$refs.removeAllFiltersLink,
           ],
           handler: () => {
             this.filterPopoverShow = false
@@ -589,6 +599,7 @@ export default {
 
 .conceptSchemeSelection-filterPopover {
   word-break: break-all;
+  user-select: none;
   // Popovers have a hardcoded max width of 276px and 12px padding on each side -> maximum width of content is 252px.
   min-width: 252px;
   max-width: 252px;
