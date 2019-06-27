@@ -1,8 +1,6 @@
 #!/bin/bash
 
 echo "---"
-echo title: 'Cocoda User Manual'
-echo author: 
 echo date: $(date +%F)
 echo "..."
 

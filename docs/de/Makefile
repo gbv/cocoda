@@ -3,12 +3,10 @@ NAME=cocoda-anleitung
 all: $(NAME).html $(NAME).pdf
 
 html: $(NAME).html
+	mkdir -p ../../dist/
+	cp $(NAME).html ../../dist/user-manual-de.html
+
 pdf: $(NAME).pdf
 
-# tested with Pandoc 2.2.1
-
-$(NAME).html: $(NAME).md
-	pandoc -s --toc -o $@ $<
-
-$(NAME).pdf: $(NAME).md
-	pandoc -o $@ $< --template ../template.tex
+CURDIR=..
+include ../Makefile

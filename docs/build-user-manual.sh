@@ -1,9 +1,13 @@
 #!/bin/bash
 
-./combine-user-manual.sh > user-manual.md
+NAME=user-manual-en
 
-# tested with Pandoc 2.2.1
-pandoc -s -o user-manual.html user-manual.md
-pandoc -o user-manual.pdf user-manual.md --template template.tex
+./combine-user-manual.sh > $NAME.md
 
-rm user-manual.md
+make $NAME.html
+mkdir -p ../dist/
+cp $NAME.html ../dist/
+
+make $NAME.pdf
+
+rm $NAME.md
