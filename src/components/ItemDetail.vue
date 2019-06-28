@@ -198,7 +198,7 @@ export default {
 }
 
 .itemDetail .componentSettings {
-  right: 3px;
+  right: 4px;
 }
 
 </style>
