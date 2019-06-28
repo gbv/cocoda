@@ -75,19 +75,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-@import "../style/main.less";
-
-.dataModalButton {
-  z-index: @zIndex-3;
-  position: absolute;
-  bottom: 0px;
-  color: @color-text-mediumLightGrey;
-  cursor: pointer;
-}
-.dataModalButton:hover {
-  color: @color-button-hover;
-}
-
-</style>

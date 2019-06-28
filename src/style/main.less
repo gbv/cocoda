@@ -133,6 +133,19 @@ ul {
   background-color: fadeout(@color-button-disabled, 60%);
 }
 
+// These are here and not in the component because the button might be used somewhere else separately (e.g. MappingDetails).
+.dataModalButton {
+  z-index: @zIndex-3;
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  color: @color-text-mediumLightGrey;
+  cursor: pointer;
+}
+.dataModalButton:hover {
+  color: @color-button-hover;
+}
+
 // Favorite stars
 
 .pointer {
