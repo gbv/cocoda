@@ -77,7 +77,6 @@
       <b-nav-item-dropdown
         id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
-        v-b-tooltip.right="favoriteCanBeDropped ? 'drop here to favorite' : ''"
         extra-menu-classes="navbar-dropdown favoriteConceptsDropdown"
         no-caret
         right
@@ -337,17 +336,6 @@ export default {
         item.mapping._registry = this.config.registries.find(registry => this.$jskos.compare(registry, item.registry))
       }
       return trash
-    },
-  },
-  watch: {
-    draggedConcept(concept) {
-      if (concept) {
-        _.delay(() => {
-          this.$root.$emit("bv::show::tooltip", "favoriteConceptsDropdown")
-        }, 100)
-      } else {
-        this.$root.$emit("bv::hide::tooltip", "favoriteConceptsDropdown")
-      }
     },
   },
   created() {
