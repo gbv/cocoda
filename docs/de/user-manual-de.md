@@ -55,15 +55,16 @@ Wenn Sie sich eingeloggt haben, finden sie neben ihrem Anzeigenamen in der Menü
 
 Einzelne Wissensorganisationssysteme werden auch Vokabulare genannt, Beispiele für Vokabulare sind: Ontologien, (kontrollierte) Vokabulare, Taxonomien und Terminologien. Cocoda erlaubt den Zugriff auf verschiedene Vokabulare von verschiedenen Quellen.
 
-Ein vokabular ist eine organisierte Ansammlung von Konzepten und zusätzlichen Informationen über das Vokabular. Cocoda empfehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
+Ein Vokabular ist eine organisierte Ansammlung von [Konzepten](#konzepte) und zusätzlichen Informationen über das Vokabular. Cocoda empfehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
 
 ### Vokabularauswahl
-...
+
+Es gibt einen Suchschlitz, in dem man nach [Vokabularen](#vokabulare) suchen kann, bei den Ergebnissen kann man auf der linken Seite den Stern anklicken, das Vokabular wurde nun als Favorit gespeichert und wird beim Aufruf von Cocoda als erstes angezeigt.
 
 ### Vokabulardetails
 
-Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular oder Konzept. Im Falle eines Vokabulars werden Notation, Bezeichnung, Lizenz, Publisher, und der identifier angezeigt. Wenn die Komponente "Oberkonzepte" minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt. Im Falle eines Konzepts werden die Ober- und Unterkonzepte von diesem, sowie Notation, Bezeichnung, Notizen, Registereinträge, zusätzliche Bezeichnungen, Identifier, und GND-Bezeichnungen angezeigt. Meistens ist für ein Konzept jedoch nicht alles vorhanden.
-
+Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular. Es werden Notation, Bezeichnung, Lizenz, Publisher, und der identifier angezeigt. Wenn die Komponente ["Oberkonzepte"](#hierarchische-ansicht) minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt.
+ 
 ![Vokabulardetails](img/cocoda-classdet-de.png){width=100% .border .border-dark}
 
 ## Konzepte
@@ -80,11 +81,13 @@ Die rechte und linke Komponente ermöglichen die Suche in Vokabularen um Konzept
 
 ### Konzeptdetails
 
+Die Konzeptdetails geben URI und Erstellungsdaten des ausgewählten Konzeptes an, sowie Synonyme und anderssprachliche Ergebnisse. Anders als bei [Vokabulardetails](#vokabulardetails) kann man noch Suchlinks aufrufen, die einen nach Wikipedia oder individuelle Suchseiten weiterleitet. Zusätzlich werden die Ober- und Unterkonzepte angezeigt.
+
 ![Konzeptdetails](img/cocoda-concdet-de.png){width=100% .border .border-dark}
 
 ### Hierarchische Ansicht
 
-Wenn das ausgewählte Vokabular hierarchische Navigation unterstützt, zeigt der Oberkonzepte-Baum die Oberkonzepte. Ein Klick auf ein Konzept im Baum wählt das Konzept aus, die Informationen werden in der Detail-Unterkomponente gezeigt. Man kann Unterkonzepte untersuchen, indem man auf den Pfeil vor der Bezeichnung klickt. Ein Doppelklick auf ein Konzept wählt dieses aus und zeigt die Unterkonzepte, man kann auch die Detail-Unterkomponente benutzen, da dort auch eine Art Baumstruktur vorliegt, der richtige Baum wird jedoch empfohlen.
+Wenn das ausgewählte [Vokabular](#vokabulare) hierarchische Navigation unterstützt, zeigt der Oberkonzepte-Baum die Oberkonzepte. Ein Klick auf ein [Konzept](#konzepte) im Baum wählt das Konzept aus, die Informationen werden in der [Detail-Unterkomponente](#konzeptdetails) gezeigt. Man kann Unterkonzepte untersuchen, indem man auf den Pfeil vor der Bezeichnung klickt. Ein Doppelklick auf ein Konzept wählt dieses aus und zeigt die Unterkonzepte, man kann auch die Detail-Unterkomponente benutzen, da dort auch eine Art Baumstruktur vorliegt, der richtige Baum wird jedoch empfohlen.
 
 ![Hierarchischer Baum](img/cocoda-conctree-de.png){width=100% .border .border-dark}
 
@@ -93,16 +96,16 @@ Wenn das ausgewählte Vokabular hierarchische Navigation unterstützt, zeigt der
 
 ## Mappings
 
-Die Hauptaufgabe von Cocoda besteht in der Erstellung, Bearbeitung, Suche und Evaluation von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und *n* Konzepten von einem anderen Vokabular.
+Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Evaluation von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem [Konzept](#konzepte) und *n* Konzepten von einem anderen [Vokabular.](#vokabulare)
 
 Mapping können verwaltet werden mit:
 
-- dem Mapping Editor (bearbeiten und erstellen)
-- dem Mapping Browser (suchen, auflisten)
+- dem [Mapping-Editor](#mapping-editor) (bearbeiten und erstellen)
+- dem [Mapping-Browser](#mapping-browser) (suchen, auflisten)
 
 ### Mapping-Editor
 
-Um ein Konzept zu einem Mapping hinzuzufügen, muss als erstes das Konzept ausgewählt werden (Klick auf Konzept-Detail oder Konzept-Baum, danach muss man das kleine Plus bei dem ausgewälten Konzept oder im Mapping-Editor klicken, oder das Konzept per Drag&Drop in den Mapping Editor ziehen.
+Um ein [Konzept](#konzepte) zu einem [Mapping](#mappings) hinzuzufügen, muss als erstes das [Konzept](#konzepte) ausgewählt werden (Klick auf Konzept-Detail oder Konzept-Baum, danach muss man das kleine Plus bei dem ausgewälten Konzept oder im Mapping-Editor klicken, oder das Konzept per Drag&Drop in den Mapping Editor ziehen.
 In der Mitte des Mapping Editors, kann die Art des Mappings ausgewählt werden.
 Unten im Editor kann man verschiedene Aktionen durchführen: Quell- und Zielkonzepte tauschcen, Mappping speichern, Mapping löschen, Mapping duplizieren und Mapping Editor leeren.
 Ist das Mapping nicht gespeichert färbt sich der Hintergrund rötlich, außerdem steht oben rechts "nicht gespeichert", bei einem gespeichertem Mapping, verfärbt sich der Hintergrund grün.
@@ -113,33 +116,33 @@ Ist das Mapping nicht gespeichert färbt sich der Hintergrund rötlich, außerde
 
 ### Mapping-Browser
 
-Der Mapping-Browser zeigt ncht nur existierende Mappings, sondern auch Mapping-Vorschläge für ausgewählte Konzepte der Vokabulare. Oben am Mapping Browser sind bunte Felder, auf diese kann man klicken und somit verschiedene Quelle zu- und abwählen. Die Katalogvorschläge (CO) basieren auf Vorkommen im [Gemeinsamen Verbundkatalog](https://gso.gbv.de/). Auf die blau markierte Nummer klicken initiiert eine Weiterleitung zum Katalog.
+Der Mapping-Browser zeigt ncht nur existierende [Mappings](#mappings), sondern auch Mapping-Vorschläge für ausgewählte [Konzepte](#konzepte) der [Vokabulare](#vokabulare). Oben am Mapping Browser sind bunte Felder, auf diese kann man klicken und somit verschiedene Quellen zu- und abwählen. Die Katalogvorschläge (CO) basieren auf Vorkommen im [Gemeinsamen Verbundkatalog](https://gso.gbv.de/). Auf die blau markierte Nummer klicken initiiert eine Weiterleitung zum Katalog.
 Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
 - Mapping-Details anzeigen: zeigt Mapping-Details an
 - Bearbeiten: holt das Mapping in den Mapping-Editor
 - Speichern: speichert das Mapping in die ausgewählte Registry
 - Löschen löscht eigene Mappings
 
-Eine Registry ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Registry](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Registries können über Einstellungen -> Registries konfiguriert werden. Der Technische Zugang zu diesen Registries wird durch Provider sichergestellt.
+Eine Registry ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient das öffentliche [Konkordanz-Register](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Registries können über den Reiter [Mapping-Navigator](#registries) konfiguriert werden. Der Technische Zugang zu diesen Registries wird durch Provider sichergestellt.
 Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 
 #### Konkordanzen
-![Konkordanzen](img/cocoda-mapping-browser-con.de.png){width=100% .border .border-dark}
+![Konkordanzen](img/cocoda-mapping-browser-con-de.png){width=100% .border .border-dark}
 
-Hier finden sich alle Konkordanzen, die schon erstellt wurden und sich im Konkordanz-Register befinden.
+Hier finden sich alle Konkordanzen, die schon erstellt wurden und sich im [Konkordanz-Register](http://coli-conc.gbv.de/concordances/) befinden.
 
 #### Mapping-Suche
-![Mapping-Suche](img/cocoda-mapping-browser-sea.de.png){width=100% .border .border-dark}
+![Mapping-Suche](img/cocoda-mapping-browser-sea-de.png){width=100% .border .border-dark}
 
 Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Zeigt auch Empfehlungen an.
 
 #### Mapping-Navigator
-![Mapping-Navigator](img/cocoda-mapping-browser-nav.de.png){width=100% .border .border-dark}
+![Mapping-Navigator](img/cocoda-mapping-browser-nav-de.png){width=100% .border .border-dark}
 
-Hier kann man Mappings bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen.
+Hier kann man [Mappings](#mappings) bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen.
 
 #### Registries
-![Registries](../img/cocoda-mapping-browser-reg.de.png){width=100% .border .border-dark}
+![Registries](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
 
 Mit einem Klick auf die Buttons können die Registries ausgeblendet werden
 
@@ -153,7 +156,7 @@ Mit einem Klick auf die Buttons können die Registries ausgeblendet werden
 ## Einstellungen
 
 ### Accounts
-... Link nach oben
+[Benutzeraccounts](#benutzeraccounts)
 
 ### Layout
 In den Einstellungen unter dem Reiter "Layout" kann man die Sprache der Seite anpassen.
@@ -171,6 +174,6 @@ Unter dem Reiter "Datenquellen" kann man eine Übersicht aller Quellen bekommen,
 ![Einstellungen - Datenquellen](img/cocoda-settings-datsor-de.png){.border .border-dark}
 
 ### Lokale Mappings
-Unter dem Reiter "Lokale Mappings" kann man lokale Mappings hochladen, runterladen, löschen und den Ersteller des Mappings überschreiben.
+Unter dem Reiter "Lokale Mappings" kann man lokale [Mappings](#mappings) hochladen, runterladen, löschen und den Ersteller des Mappings überschreiben.
 
 ![Einstellungen - Lokale Mappings](img/cocoda-settings-locmap-de.png){.border .border-dark}
