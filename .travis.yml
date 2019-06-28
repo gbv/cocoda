@@ -6,6 +6,8 @@ node_js:
 cache:
   directories:
   - "$HOME/.npm"
+before_install:
+- sudo apt-get install pandoc
 install:
 - npm i -g npm@5.10.0
 - travis_retry npm ci
@@ -14,6 +16,7 @@ script:
 - npm run build
 - mv dist cocoda # prevent styleguide:build overriding dist
 - npm run styleguide:build
+- npm run user-manual
 - cp -R cocoda styleguide/dev
 - zip -r "cocoda-$(git describe --tags).zip" cocoda
 deploy:

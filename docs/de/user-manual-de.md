@@ -21,7 +21,7 @@ Die Benutzeroberfläche ist in mehrere Komponenten aufgeteilt, die frei nach Bel
 
 - In der Mitte sind Komponenten um Mappings und Mapping-Vorschläge zu erstellen, bearbeiten, suchen und zu bewerten.
 
-![Cocoda-Startbildschirm](img/cocoda-homepage-de.png){width=100%}
+![Cocoda-Startbildschirm](img/cocoda-homepage-de.png){width=100% .border}
 
 Oben rechts in der Menüleiste sind: der Mülleimer, der auch gelöschte Mappings wiederherstellen kann. Ein Stern, der auf die Favoriten-Konzepte-Schnellauswahl verweist, die Benutzereinstellungen und die Registry, in der die Mappings gespeichert werden. Alle vier Punkte können mit Maushovern aufgeklappt werden.
 
