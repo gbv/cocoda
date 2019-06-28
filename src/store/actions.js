@@ -91,13 +91,22 @@ export default {
       }
 
       // Load status endpoint for each registry
-      let statusPromises = config.registries.map(registry => registry.status ? axios.get(registry.status).then(response => response.data).catch(() => {}) : Promise.resolve({}))
+      let statusPromises = config.registries.map(registry =>
+        registry.status
+          ? (
+            _.isString(registry.status)
+              // For strings, make a request
+              ? axios.get(registry.status).then(response => response.data).catch(() => {})
+              // Otherwise assume an object
+              : registry.status
+          )
+          : Promise.resolve({}))
       return Promise.all(statusPromises)
     }).then(statusResults => {
       for (let index = 0; index < config.registries.length; index += 1) {
         let registry = config.registries[index]
         let status = statusResults[index]
-        if (!_.isEmpty(status)) {
+        if (_.isObject(status) && !_.isEmpty(status)) {
           // Merge status result and registry
           // (registry always has priority)
           config.registries[index] = _.merge({}, status, registry)
