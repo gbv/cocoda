@@ -7,39 +7,39 @@ echo "..."
 echo
 echo 
 echo "## Introduction"
-cat guide.md
+cat ../guide.md
 
 echo
 echo 
 echo "## User Interface"
-cat guide-interface.md
+cat ../guide-interface.md
 
 echo
 echo
 echo "## Login"
-cat guide-login.md
+cat ../guide-login.md
 
 echo
 echo "## Concept Schemes"
-cat guide-concept-schemes.md
+cat ../guide-concept-schemes.md
 
 echo
 echo
 echo "## Concepts"
-cat guide-concepts.md
+cat ../guide-concepts.md
 
 echo
 echo
 echo "## Mappings"
-cat guide-mappings.md
+cat ../guide-mappings.md
 
 echo
 echo
 echo "## Registries"
-cat registries.md
+cat ../registries.md
 
 echo
 echo
 echo "## Settings"
-cat guide-settings.md
+cat ../guide-settings.md
 
