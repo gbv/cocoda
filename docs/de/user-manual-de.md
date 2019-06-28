@@ -110,9 +110,9 @@ In der Mitte des Mapping Editors, kann die Art des Mappings ausgewählt werden.
 Unten im Editor kann man verschiedene Aktionen durchführen: Quell- und Zielkonzepte tauschcen, Mappping speichern, Mapping löschen, Mapping duplizieren und Mapping Editor leeren.
 Ist das Mapping nicht gespeichert färbt sich der Hintergrund rötlich, außerdem steht oben rechts "nicht gespeichert", bei einem gespeichertem Mapping, verfärbt sich der Hintergrund grün.
 
-![Mapping Editor rot](img/cocoda-mappingeditor1-de.png){.border .border-dark}
+![Mapping Editor: Mapping ungespeichert](img/cocoda-mappingeditor1-de.png){.border .border-dark}
 
-![Mapping Editor grün](img/cocoda-mappingeditor2-de.png){.border .border-dark}
+![Mapping Editor: Mapping gespeichert](img/cocoda-mappingeditor2-de.png){.border .border-dark}
 
 ### Mapping-Browser
 
@@ -127,25 +127,26 @@ Eine Registry ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mapp
 Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 
 #### Konkordanzen
-![Konkordanzen](img/cocoda-mapping-browser-con-de.png){width=100% .border .border-dark}
+![Konkordanzen-Reiter im Mapping-Browser](img/cocoda-mapping-browser-con-de.png){width=100% .border .border-dark}
 
 Hier finden sich alle Konkordanzen, die schon erstellt wurden und sich im [Konkordanz-Register](http://coli-conc.gbv.de/concordances/) befinden.
 
 #### Mapping-Suche
-![Mapping-Suche](img/cocoda-mapping-browser-sea-de.png){width=100% .border .border-dark}
+![Mapping-Suche Reiter im Mapping-Browser](img/cocoda-mapping-browser-sea-de.png){width=100% .border .border-dark}
 
-Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Zeigt auch Empfehlungen an.
+Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Alternativ kann man mit einem Klick auch die [Registries](#registries) auswählen, in welchen nur gesucht werden soll.
 
 #### Mapping-Navigator
-![Mapping-Navigator](img/cocoda-mapping-browser-nav-de.png){width=100% .border .border-dark}
+![Mapping-Navigator Reiter im Mapping-Browser](img/cocoda-mapping-browser-nav-de.png){width=100% .border .border-dark}
 
-Hier kann man [Mappings](#mappings) bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen.
+Hier kann man [Mappings](#mappings) bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen. Man kann [Registries](#registries) ein- oder ausblenden oder auch mithilfe von Empfehlungen arbeiten.
 
 #### Registries
-![Registries](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
+![Registries im Mapping-Navigator Reiter](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
 
-Mit einem Klick auf die Buttons können die Registries ausgeblendet werden
+Mit einem Klick auf die Buttons können die Registries des [Mapping-Browsers](#mapping-browser) ausgeblendet werden.
 
+**Registries:**
 - L: Lokal, Mappings werden im Browser gespeichert
 - C: Konkordanz-Register, öffentliche Datenbank des GBV
 - W: Wikidata-Mappings, Wikidata-Mappings im [JSKOS-Format](https://gbv.github.io/jskos/jskos)
@@ -161,19 +162,19 @@ Mit einem Klick auf die Buttons können die Registries ausgeblendet werden
 ### Layout
 In den Einstellungen unter dem Reiter "Layout" kann man die Sprache der Seite anpassen.
 
-![Einstellungen - Layout](img/cocoda-settings-layout-de.png){.border .border-dark}
+![Einstellungen - Reiter Layout](img/cocoda-settings-layout-de.png){.border .border-dark}
 
 ### Shortcuts
 Unter dem Reiter "Tastatur-Shortcuts" kann man Tastenkürzel einsehen.
 
-![Einstellungen - Tastatrukürzel](img/cocoda-settings-keysho-de.png){.border .border-dark}
+![Einstellungen - Reiter Tastatrukürzel](img/cocoda-settings-keysho-de.png){.border .border-dark}
 
 ### Datenquellen
 Unter dem Reiter "Datenquellen" kann man eine Übersicht aller Quellen bekommen, die in Cocoda benutzt werden.
 
-![Einstellungen - Datenquellen](img/cocoda-settings-datsor-de.png){.border .border-dark}
+![Einstellungen - Reiter Datenquellen](img/cocoda-settings-datsor-de.png){.border .border-dark}
 
 ### Lokale Mappings
 Unter dem Reiter "Lokale Mappings" kann man lokale [Mappings](#mappings) hochladen, runterladen, löschen und den Ersteller des Mappings überschreiben.
 
-![Einstellungen - Lokale Mappings](img/cocoda-settings-locmap-de.png){.border .border-dark}
+![Einstellungen - Reiter Lokale Mappings](img/cocoda-settings-locmap-de.png){.border .border-dark}
