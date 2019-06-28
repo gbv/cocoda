@@ -584,7 +584,7 @@ export default {
         // Can always edit a mapping from a provider without auth
         return true
       }
-      if (data.item.registry.allowCrossUserEditing) {
+      if (data.item.registry.provider.has.allowCrossUserEditing) {
         // Some servers allow cross user editing
         return true
       }

@@ -10,6 +10,7 @@ class OccurrencesApiProvider extends BaseProvider {
   constructor(...params) {
     super(...params)
     this.occurrencesCache = []
+    this.has.occurrences = true
   }
 
   occurrencesIsSupported(scheme) {

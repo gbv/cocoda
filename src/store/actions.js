@@ -12,6 +12,7 @@ export default {
     if (!configFile) {
       configFile = "./cocoda.json"
     }
+    let config
     return axios.get(configFile).then(response => response.data).catch(() => null).then(userConfig => {
       if (!_.isObject(userConfig)) {
         console.error(`Error loading config from ${configFile}: Data is not an object.`)
@@ -23,7 +24,7 @@ export default {
         }, { root: true })
         userConfig = {}
       }
-      let config = Object.assign({}, defaultConfig, userConfig)
+      config = Object.assign({}, defaultConfig, userConfig)
       if (!config.overrideRegistries) {
         config.registries = [].concat(userConfig.registries || [], defaultConfig.registries || [])
         let registries = []
@@ -67,12 +68,6 @@ export default {
             // Add to list
             config.occurrenceProviders.push(registry)
           }
-          // Replace provider with provider object
-          try {
-            registry.provider = new providers[registry.provider](registry)
-          } catch(error) {
-            registry.provider = null
-          }
         }
       }
       // Filter out registries where no provider could be initialized
@@ -93,6 +88,30 @@ export default {
       // Make sure auth URL always ends on a slash
       if (config.auth && !config.auth.endsWith("/")) {
         config.auth += "/"
+      }
+
+      // Load status endpoint for each registry
+      let statusPromises = config.registries.map(registry => registry.status ? axios.get(registry.status).then(response => response.data).catch(() => {}) : Promise.resolve({}))
+      return Promise.all(statusPromises)
+    }).then(statusResults => {
+      for (let index = 0; index < config.registries.length; index += 1) {
+        let registry = config.registries[index]
+        let status = statusResults[index]
+        if (!_.isEmpty(status)) {
+          // Merge status result and registry
+          // (registry always has priority)
+          config.registries[index] = _.merge({}, status, registry)
+        }
+      }
+
+      // Initialize providers for registries
+      for (let registry of config.registries) {
+        // Replace provider with provider object
+        try {
+          registry.provider = new providers[registry.provider](registry)
+        } catch(error) {
+          registry.provider = null
+        }
       }
 
       // Save config

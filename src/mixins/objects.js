@@ -226,7 +226,7 @@ export default {
 
       for (let registry of this.config.registries) {
         let provider = registry.provider
-        if (provider.has.concepts) {
+        if (provider.has.schemes) {
           let promise = provider.getSchemes().then(results => {
             for (let scheme of results) {
               // Add scheme specific custom properties

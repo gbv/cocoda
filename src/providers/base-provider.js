@@ -29,24 +29,7 @@ class BaseProvider {
     this.registry = registry
     this.http = http
     // Create a dictionary with functionality of registry
-    this.has = {
-      registries: registry.baseUrl || registry.registries,
-      schemes: registry.baseUrl || registry.schemes,
-      top: registry.baseUrl || registry.top,
-      concepts: registry.baseUrl || registry.concepts,
-      types: registry.types,
-      narrower: registry.baseUrl || registry.narrower,
-      ancestors: registry.baseUrl || registry.ancestors,
-      suggest: registry.baseUrl || registry.suggest,
-      search: registry.baseUrl || registry.search,
-      concordances: registry.concordances,
-      mappings: registry.mappings,
-      annotations: registry.annotations,
-      occurrences: registry.occurrences,
-      auth: registry.auth,
-      canSaveMappings: registry.canSaveMappings,
-      canRemoveMappings: registry.canRemoveMappings,
-    }
+    this.has = {}
     // Convert all values into booleans
     _.forOwn(this.has, (value, key) => {
       this.has[key] = _.isBoolean(value) ? value : value != null
@@ -85,7 +68,7 @@ class BaseProvider {
           return Promise.reject("No retries left.")
         }
         // Set auth
-        if (this.registry.auth && this.auth) {
+        if (this.has.auth && this.auth) {
           _.set(options, "headers.Authorization", `Bearer ${this.auth}`)
         }
         tries -= 1

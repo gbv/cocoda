@@ -1,7 +1,6 @@
 // import jskos from "jskos-tools"
 import _ from "lodash"
 import BaseProvider from "./base-provider"
-import util from "../util"
 
 /**
  * For APIs that provide concept schemes and concepts in JSKOS format
@@ -11,22 +10,15 @@ class ConceptApiProvider extends BaseProvider {
 
   constructor(...params) {
     super(...params)
-    let endpointList = {
-      schemes: "/voc",
-      top: "/voc/top",
-      concepts: "/data",
-      ancestors: "/ancestors",
-      narrower: "/narrower",
-      suggest: "/suggest",
-      search: "/search",
-    }
-    // Set URLs for each endpoint
-    let baseUrl = this.registry.baseUrl
-    _.forOwn(endpointList, (value, key) => {
-      if (!this.registry[key] && baseUrl) {
-        this.registry[key] = util.addEndpoint(baseUrl, value)
-      }
-    })
+    this.has.schemes = !!this.registry.schemes
+    this.has.top = !!this.registry.top
+    this.has.data = !!this.registry.data
+    this.has.concepts = !!this.registry.concepts
+    this.has.narrower = !!this.registry.narrower
+    this.has.ancestors = !!this.registry.ancestors
+    this.has.types = !!this.registry.types
+    this.has.suggest = !!this.registry.suggest
+    this.has.search = !!this.registry.search
   }
 
   _getSchemes() {
@@ -60,7 +52,7 @@ class ConceptApiProvider extends BaseProvider {
   }
 
   _getConcepts(concepts, { properties } = {}) {
-    if (!this.registry.concepts || !concepts) {
+    if (!this.has.data || !concepts) {
       return Promise.resolve([])
     }
     if (!Array.isArray(concepts)) {
@@ -74,7 +66,7 @@ class ConceptApiProvider extends BaseProvider {
         properties,
       },
     }
-    return this.get(this.registry.concepts, options).then(concepts => concepts || [])
+    return this.get(this.registry.data, options).then(concepts => concepts || [])
   }
 
   _getNarrower(concept) {

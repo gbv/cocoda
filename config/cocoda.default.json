@@ -41,7 +41,6 @@
         }
       ],
       "data": "//coli-conc.gbv.de/services/gnd.php",
-      "concepts": "//coli-conc.gbv.de/services/gnd.php",
       "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
       "types": "//ws.gbv.de/suggest/gnd/types",
       "provider": "ConceptApi"
@@ -86,23 +85,23 @@
         }
       ],
       "data": "//coli-conc.gbv.de/services/wikidata/concept/",
-      "concepts": "//coli-conc.gbv.de/services/wikidata/concept/",
       "suggest": "//coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
       "provider": "ConceptApi"
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
+      "status": "//coli-conc.gbv.de/rvk/api/status",
       "notation": [
         "RVK"
       ],
       "prefLabel": {
         "de": "Regensburger Verbundklassifikation"
       },
-      "baseUrl": "//coli-conc.gbv.de/rvk/api/",
       "provider": "ConceptApi"
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
+      "status": "//coli-conc.gbv.de/api/status",
       "notation": [
         "J"
       ],
@@ -117,7 +116,6 @@
           "zentrale JSKOS-Server Instanz von coli-conc"
         ]
       },
-      "baseUrl": "//coli-conc.gbv.de/api/",
       "provider": "ConceptApi"
     },
     {
@@ -136,7 +134,14 @@
           "DANTE-API der VZG"
         ]
       },
-      "baseUrl": "//api.dante.gbv.de/",
+      "schemes": "//api.dante.gbv.de/voc",
+      "top": "//api.dante.gbv.de/voc/top",
+      "data": "//api.dante.gbv.de/data",
+      "narrower": "//api.dante.gbv.de/narrower",
+      "ancestors": "//api.dante.gbv.de/ancestors",
+      "types": "//api.dante.gbv.de/types",
+      "suggest": "//api.dante.gbv.de/suggest",
+      "search": "//api.dante.gbv.de/search",
       "provider": "ConceptApi"
     },
     {
@@ -148,9 +153,6 @@
         "de": "Lokal",
         "en": "Local"
       },
-      "mappings": "...",
-      "canSaveMappings": true,
-      "canRemoveMappings": true,
       "provider": "LocalMappings",
       "subject": [
         {
@@ -169,6 +171,7 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
+      "status": "https://coli-conc.gbv.de/api/status",
       "notation": [
         "C"
       ],
@@ -184,12 +187,6 @@
           "Zentrale Konkordanz-Datenbank von coli-conc"
         ]
       },
-      "mappings": "https://coli-conc.gbv.de/api/mappings/",
-      "concordances": "https://coli-conc.gbv.de/api/concordances/",
-      "annotations": "https://coli-conc.gbv.de/api/annotations/",
-      "auth": true,
-      "canSaveMappings": true,
-      "canRemoveMappings": true,
       "provider": "MappingsApi",
       "subject": [
         {
@@ -256,6 +253,7 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/ccmapper-mapping-recommendations",
+      "status": "//coli-conc.gbv.de/ccmapper/api/status",
       "notation": [
         "CC"
       ],
@@ -271,7 +269,6 @@
           ""
         ]
       },
-      "mappings": "//coli-conc.gbv.de/ccmapper/api/mappings",
       "provider": "MappingsApi",
       "subject": [
         {

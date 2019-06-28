@@ -8,6 +8,18 @@ import util from "../util"
  * For APIs that provide concordances and mappings in JSKOS format.
  */
 class MappingsApiProvider extends BaseProvider {
+
+  constructor(...params) {
+    super(...params)
+    this.has.mappings = !!this.registry.mappings
+    this.has.concordances = !!this.registry.concordances
+    this.has.annotations = !!this.registry.annotations
+    this.has.canSaveMappings = !!_.get(this.registry, "config.auth.canSaveMappings")
+    this.has.canRemoveMappings = !!_.get(this.registry, "config.auth.canRemoveMappings")
+    this.has.allowCrossUserEditing = !!_.get(this.registry, "config.auth.allowCrossUserEditing")
+    this.has.auth = _.get(this.registry, "config.auth.key") != null
+  }
+
   /**
    * Returns a Promise with a list of mappings from a jskos-server.
    */

@@ -68,7 +68,7 @@ const actions = {
     // Create login-client instance
     client = new LoginClient(url, { ssl })
 
-    let registries = rootState.config.registries.filter(registry => registry.auth)
+    let registries = rootState.config.registries.filter(registry => registry.provider.has.auth)
 
     // Handle events
     client.addEventListener(null, event => {
