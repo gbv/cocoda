@@ -4,14 +4,14 @@ title: Cocoda-Anleitung
 
 ## Einführung
 
-Cococda ist eine Webanwendung, zur Erstellung und Verwaltung Mappings zwischen Wissensorganisationssystemen. Dazu zählen beispielsweise: Klassifikationen, Normdaten, und Thesauri. Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
+Cococda ist eine Webanwendung, zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen. Dazu zählen beispielsweise: Klassifikationen, Normdaten, und Thesauri. Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
 
 Die aktuelle Version von Cocoda ist verfügbar unter <https://coli-conc.gbv.de/cocoda/app/>.
 Die Entwicklungsversion ist unter <https://coli-conc.gbv.de/cocoda/dev/> zu finden.
 
 Für Rückmeldungen zur Software benutzen Sie am besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues). 
 
-Cocoda sollte mit jedem modernen Webbrowser funktionieren Startbildschirm (auf jeden Fall mit Firefox und Chromium). Es wird mindestens eine HD-Auflösung (1366×768) benötigt, Full HD (1920×1080) oder mehr wird empfohlen, genauso wie den Browser im Vollbildmodus zu haben.
+Cocoda sollte mit jedem modernen Webbrowser funktionieren (auf jeden Fall mit Firefox und Chromium). Es wird mindestens eine HD-Auflösung (1366×768) benötigt, Full HD (1920×1080) oder mehr wird empfohlen, genauso wie den Browser im Vollbildmodus zu haben.
 
 ## Benutzeroberfläche
 
@@ -27,13 +27,13 @@ Oben rechts in der Menüleiste sind: der Mülleimer, der auch gelöschte Mapping
 
 ## Benutzeraccounts
 
-Es muss kein klassischer Account erstellt werden, dann werden die Mappings allerdings nur im Browser gespeichert. Wenn sie sich aber mit bereits Bestehenden Accounts einloggen, haben sie den vollen Funktionsumfang von Cocoda zur Verfügung.
+Es muss kein klassischer Account erstellt werden, dann werden die Mappings allerdings nur im Browser gespeichert. Wenn sie sich aber mit bereits bestehenden Accounts einloggen, haben sie den vollen Funktionsumfang von Cocoda zur Verfügung.
 
 Zum einloggen klicken Sie einfach auf das "Einstellungen"-Feld in der Menüleiste.
 
 ![Account-Login](img/cocoda-login1-de.png){width=100% .border .border-dark}
 
-Auf dem Einstellungsfenster unter dem Reiter "Account" genügt nun ein Klick auf eins der verfügbaren Login-Felder (momentan GitHub, ORCID und VZG ELDAP). Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
+Auf dem Einstellungsfenster unter dem Reiter "Account" genügt nun ein Klick auf eins der verfügbaren Login-Felder (momentan GitHub, ORCID, StackExchange, VZG ELDAP und KENOM). Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
 
 ![Account](img/cocoda-settings-account1-de.png){.border .border-dark}
 
@@ -63,13 +63,13 @@ Es gibt einen Suchschlitz, in dem man nach [Vokabularen](#vokabulare) suchen kan
 
 ### Vokabulardetails
 
-Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular. Es werden Notation, Bezeichnung, Lizenz, Publisher, und der identifier angezeigt. Wenn die Komponente ["Oberkonzepte"](#hierarchische-ansicht) minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt.
+Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular. Es werden Notation, Bezeichnung, Lizenz, Publisher, und identifier angezeigt. Wenn die Komponente ["Oberkonzepte"](#hierarchische-ansicht) minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt.
  
 ![Vokabulardetails](img/cocoda-classdet-de.png){width=100% .border .border-dark}
 
 ## Konzepte
 
-Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, einen Ort oder ein Thema, die meisten Konzepte haben eine einzigartige Notation, Bezeichnung und URI, um sie identifizieren zu können.
+Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort oder ein Thema, die meisten Konzepte haben eine einzigartige Notation, Bezeichnung und URI, um sie identifizieren zu können.
 
 Die rechte und linke Komponente ermöglichen die Suche in Vokabularen um Konzepte darin zu untersuchen und auszuwählen. Die Konzept-Browser links und rechts haben beide:
 
@@ -87,12 +87,13 @@ Die Konzeptdetails geben URI und Erstellungsdaten des ausgewählten Konzeptes an
 
 ### Hierarchische Ansicht
 
-Wenn das ausgewählte [Vokabular](#vokabulare) hierarchische Navigation unterstützt, zeigt der Oberkonzepte-Baum die Oberkonzepte. Ein Klick auf ein [Konzept](#konzepte) im Baum wählt das Konzept aus, die Informationen werden in der [Detail-Unterkomponente](#konzeptdetails) gezeigt. Man kann Unterkonzepte untersuchen, indem man auf den Pfeil vor der Bezeichnung klickt. Ein Doppelklick auf ein Konzept wählt dieses aus und zeigt die Unterkonzepte, man kann auch die Detail-Unterkomponente benutzen, da dort auch eine Art Baumstruktur vorliegt, der richtige Baum wird jedoch empfohlen.
+Wenn das ausgewählte [Vokabular](#vokabulare) hierarchische Navigation unterstützt, zeigt der Oberkonzepte-Baum die Oberkonzepte. Ein Klick auf ein [Konzept](#konzepte) im Baum wählt das Konzept aus, die Informationen werden in der [Detail-Unterkomponente](#konzeptdetails) angezeigt. Man kann Unterkonzepte untersuchen, indem man auf den Pfeil vor der Bezeichnung klickt. Ein Doppelklick auf ein Konzept wählt dieses aus und zeigt die Unterkonzepte, man kann auch die Detail-Unterkomponente benutzen, da dort auch eine Art Baumstruktur vorliegt, der richtige Baum wird jedoch empfohlen.
 
 ![Hierarchischer Baum](img/cocoda-conctree-de.png){width=100% .border .border-dark}
 
 ### Listenansicht
-...
+
+Momentan gibt es nur [Oberkonzepte](#hierarchische-ansicht) und die konzept-Schnellauswahl, wo als Favoriten markierte [Konzepte](#konzepte) angezeigt werden.
 
 ## Mappings
 
@@ -116,7 +117,7 @@ Ist das Mapping nicht gespeichert färbt sich der Hintergrund rötlich, außerde
 
 ### Mapping-Browser
 
-Der Mapping-Browser zeigt ncht nur existierende [Mappings](#mappings), sondern auch Mapping-Vorschläge für ausgewählte [Konzepte](#konzepte) der [Vokabulare](#vokabulare). Oben am Mapping Browser sind bunte Felder, auf diese kann man klicken und somit verschiedene Quellen zu- und abwählen. Die Katalogvorschläge (CO) basieren auf Vorkommen im [Gemeinsamen Verbundkatalog](https://gso.gbv.de/). Auf die blau markierte Nummer klicken initiiert eine Weiterleitung zum Katalog.
+Der Mapping-Browser zeigt ncht nur existierende [Mappings](#mappings), sondern auch Mapping-Vorschläge für ausgewählte [Konzepte](#konzepte) der [Vokabulare](#vokabulare).
 Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
 - Mapping-Details anzeigen: zeigt Mapping-Details an
 - Bearbeiten: holt das Mapping in den Mapping-Editor
@@ -139,7 +140,10 @@ Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach all
 #### Mapping-Navigator
 ![Mapping-Navigator Reiter im Mapping-Browser](img/cocoda-mapping-browser-nav-de.png){width=100% .border .border-dark}
 
-Hier kann man [Mappings](#mappings) bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen. Man kann [Registries](#registries) ein- oder ausblenden oder auch mithilfe von Empfehlungen arbeiten.
+Hier kann man [Mappings](#mappings) bearbeiten, evaluieren, speichern und löschen, sowie sich die Mapping-Details anzeigen lassen. 
+Oben am Mapping Browser sind bunte Felder, auf diese kann man klicken und somit verschiedene Quellen zu- und abwählen. Die Katalogvorschläge (CO) basieren auf Vorkommen im [Gemeinsamen Verbundkatalog](https://gso.gbv.de/). Auf die blau markierte Nummer klicken initiiert eine Weiterleitung zum Katalog
+Man kann [Registries](#registries) ein- oder ausblenden oder auch mithilfe von Empfehlungen arbeiten.
+
 
 #### Registries
 ![Registries im Mapping-Navigator Reiter](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
@@ -152,7 +156,7 @@ Mit einem Klick auf die Buttons können die Registries des [Mapping-Browsers](#m
 - W: Wikidata-Mappings, Wikidata-Mappings im [JSKOS-Format](https://gbv.github.io/jskos/jskos)
 - CR: coli-conc-Vorschläge, Vorschläge auf Grundlage der Benennungen
 - CC: ccmapper-Vorschläge, Verknüpfung mit pansofts [CCMapper](https://ccmapper-de.pansoft.de/)
-- CO: Katalogvorschläge, Verknüpfung mit dem GVK, welche sonstigen Notationen zum gesuchten passen
+- CO: Katalogvorschläge, Verknüpfung mit dem GVK welche sonstigen Notationen zum Gesuchten passen
 
 ## Einstellungen
 
