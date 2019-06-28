@@ -539,6 +539,24 @@ export default {
         this.insertPrefLabel(true)
         this.insertPrefLabel(false)
       }, 300)
+      // Swap open status as well by recursively iterating over all concepts in tree
+      let swapOpen = (concept) => {
+        let openLeft = _.get(concept, "__ISOPEN__.true", false)
+        let openRight = _.get(concept, "__ISOPEN__.false", false)
+        this.open(concept, true, openRight)
+        this.open(concept, false, openLeft)
+        if (concept.narrower && !concept.narrower.includes(null)) {
+          for (let child of concept.narrower) {
+            swapOpen(child)
+          }
+        }
+      }
+      for (let uri of _.uniq([query.fromScheme, query.toScheme])) {
+        let topConcepts = this.topConcepts[uri]
+        for (let concept of topConcepts || []) {
+          swapOpen(concept)
+        }
+      }
     },
     loadFromParameters(firstLoad = false) {
       this.loading = true
