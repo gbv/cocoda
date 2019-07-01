@@ -56,6 +56,12 @@ else
   echo "Build has failed!"
 fi
 
+# create and move user manual
+echo "Creating user manual..."
+npm run user-manual
+cp docs/*/user-manual-*.html dist/
+echo
+
 # move empty build-info.json back after build to not cause a git file change
 mv ./build/build-info.backup.json ./build/build-info.json
 
@@ -64,12 +70,6 @@ mv ./build/build-info.backup.json ./build/build-info.json
 
 # delete temp folder if it was created during build
 [ $DELETE_TEMP ] && rm -r temp/
-
-# create and move user manual
-echo "Creating user manual..."
-npm run user-manual
-cp docs/*/user-manual-*.html dist/
-echo
 
 [ $success -eq 0 ] && echo "Build successfully deployed to folder dist/."
 
