@@ -250,6 +250,14 @@
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/ccmapper-mapping-recommendations",
       "status": "//coli-conc.gbv.de/ccmapper/api/status",
+      "schemes": [
+        {
+          "uri": "http://dewey.info/scheme/edition/e23/"
+        },
+        {
+          "uri": "http://uri.gbv.de/terminology/rvk/"
+        }
+      ],
       "subject": [
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
