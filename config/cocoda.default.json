@@ -303,6 +303,11 @@
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
+      "provider": "ReconciliationApi",
+      "reconcile": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
+      "scheme": {
+        "uri": "http://bartoc.org/en/node/1940"
+      },
       "notation": [
         "WR"
       ],
@@ -318,20 +323,20 @@
           "Wikidata-Reconciliation API"
         ]
       },
-      "provider": "ReconciliationApi",
       "subject": [
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
       ],
-      "scheme": {
-        "uri": "http://bartoc.org/en/node/1940"
-      },
-      "url": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
       "namespace": "http://www.wikidata.org/entity/"
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
+      "provider": "ReconciliationApi",
+      "reconcile": "https://lobid.org/gnd/reconcile",
+      "scheme": {
+        "uri": "http://bartoc.org/en/node/430"
+      },
       "notation": [
         "GR"
       ],
@@ -347,20 +352,20 @@
           "GND-Reconciliation API (lobid.org)"
         ]
       },
-      "provider": "ReconciliationApi",
       "subject": [
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
       ],
-      "scheme": {
-        "uri": "http://bartoc.org/en/node/430"
-      },
-      "url": "https://lobid.org/gnd/reconcile",
       "namespace": "http://d-nb.info/gnd/"
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
+      "provider": "ReconciliationApi",
+      "reconcile": "https://coli-conc.gbv.de/nomisma-reconciliation/",
+      "scheme": {
+        "uri": "http://nomisma.org/id/"
+      },
       "notation": [
         "NR"
       ],
@@ -376,16 +381,11 @@
           "Nomisma-Reconciliation API"
         ]
       },
-      "provider": "ReconciliationApi",
       "subject": [
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
       ],
-      "scheme": {
-        "uri": "http://nomisma.org/id/"
-      },
-      "url": "https://coli-conc.gbv.de/nomisma-reconciliation/",
       "namespace": "http://nomisma.org/id/"
     }
   ],
