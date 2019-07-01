@@ -29,6 +29,12 @@
         target="_blank">
         {{ $util.prefLabel(item) }}
       </b-nav-item>
+      <!-- Help menu button -->
+      <b-nav-item
+        :href="`./user-manual-${locale}.html`"
+        target="_blank">
+        {{ $t("general.manual") }}
+      </b-nav-item>
       <!-- Mapping trash -->
       <b-nav-item-dropdown
         v-if="mappingTrash.length > 0"
