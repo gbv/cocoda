@@ -17,7 +17,7 @@ script:
 - mv dist cocoda # prevent styleguide:build overriding dist
 - npm run styleguide:build
 - npm run user-manual
-- cp docs/*/user-manual-*.html styleguide
+- cp docs/*/user-manual-*.html cocoda
 - cp -R cocoda styleguide/dev
 - zip -r "cocoda-$(git describe --tags).zip" cocoda
 deploy:
