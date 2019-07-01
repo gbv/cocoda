@@ -6,7 +6,7 @@ import jskos from "jskos-tools"
 /**
  * Provider for search suggestions.
  *
- * The registry entry requires the `searchUris` property which has to be an object with registry URIs (e.g. DANTE) as keys and search URLs as values. Right now, the /search endpoint in DANTE/jskos-server is supported (taking `query` and `voc` as URL parameters and returning an array of JSKOS concepts).
+ * The constructor requires the `registries` property in `options` (second param) which should be all available ConceptApi registries.
  */
 class SearchSuggestionProvider extends BaseProvider {
 
@@ -14,6 +14,14 @@ class SearchSuggestionProvider extends BaseProvider {
     super(...params)
     this.has.mappings = true
     this.cache = []
+    // Assemble searchUris
+    let registries = (params[1] || {}).registries || []
+    this.searchUris = {}
+    for (let registry of registries) {
+      if (registry.search) {
+        this.searchUris[registry.uri] = registry.search
+      }
+    }
   }
 
   /**
@@ -23,11 +31,11 @@ class SearchSuggestionProvider extends BaseProvider {
    */
   supportsScheme(scheme) {
     let targetRegistry = _.get(scheme, "_provider.registry.uri")
-    return super.supportsScheme(scheme) && targetRegistry != null && this.registry.searchUris && this.registry.searchUris[targetRegistry]
+    return super.supportsScheme(scheme) && targetRegistry != null && this.searchUris && this.searchUris[targetRegistry]
   }
 
   _getMappings({ from, to, mode, selected }) {
-    if (!this.registry.searchUris || mode != "or" || !selected) {
+    if (!this.searchUris || mode != "or" || !selected) {
       return Promise.resolve([])
     }
     let promises = []
@@ -99,7 +107,7 @@ class SearchSuggestionProvider extends BaseProvider {
     }
     // Determine search URI for target scheme's registry
     let targetRegistry = _.get(targetScheme, "_provider.registry.uri")
-    let url = targetRegistry != null && this.registry.searchUris && this.registry.searchUris[targetRegistry]
+    let url = targetRegistry != null && this.searchUris && this.searchUris[targetRegistry]
     if (!url || (url.startsWith("http:") && window.location.protocol == "https:")) {
       return Promise.resolve([])
     }

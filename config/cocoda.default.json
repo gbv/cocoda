@@ -234,11 +234,6 @@
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
       ],
-      "searchUris": {
-        "http://coli-conc.gbv.de/registry/coli-conc-concepts": "//coli-conc.gbv.de/api/search",
-        "http://coli-conc.gbv.de/registry/coli-conc-rvk": "//coli-conc.gbv.de/rvk/api/search",
-        "http://coli-conc.gbv.de/registry/dante-concepts": "//api.dante.gbv.de/search"
-      },
       "excludedSchemes": [
         {
           "uri": "http://bartoc.org/en/node/1940"

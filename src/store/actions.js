@@ -114,10 +114,11 @@ export default {
       }
 
       // Initialize providers for registries
+      let options = { registries: config.registries, http: axios }
       for (let registry of config.registries) {
         // Replace provider with provider object
         try {
-          registry.provider = new providers[registry.provider](registry)
+          registry.provider = new providers[registry.provider](registry, options)
         } catch(error) {
           registry.provider = null
         }

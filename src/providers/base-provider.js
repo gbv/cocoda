@@ -23,11 +23,11 @@ class BaseProvider {
   /**
    *
    * @param {*} registry - a registry object
-   * @param {*} http - a http object (e.g. axios)
+   * @param {*} options - an options object
    */
-  constructor(registry = {}, http = axios) {
+  constructor(registry = {}, options = {}) {
     this.registry = registry
-    this.http = http
+    this.http = options.http || axios
     // Create a dictionary with functionality of registry
     this.has = {}
     // Convert all values into booleans
@@ -74,15 +74,15 @@ class BaseProvider {
         tries -= 1
         let promise
         if (method == "get") {
-          promise = http.get(url, options)
+          promise = this.http.get(url, options)
         } else if (method == "post") {
-          promise = http.post(url, data, options)
+          promise = this.http.post(url, data, options)
         } else if (method == "put") {
-          promise = http.put(url, data, options)
+          promise = this.http.put(url, data, options)
         } else if (method == "patch") {
-          promise = http.patch(url, data, options)
+          promise = this.http.patch(url, data, options)
         } else if (method == "delete") {
-          promise = http.delete(url, options)
+          promise = this.http.delete(url, options)
         } else {
           promise = Promise.reject("No method called " + method)
         }
