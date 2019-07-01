@@ -329,8 +329,7 @@
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
-      ],
-      "namespace": "http://www.wikidata.org/entity/"
+      ]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
@@ -360,8 +359,7 @@
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
-      ],
-      "namespace": "http://d-nb.info/gnd/"
+      ]
     },
     {
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
@@ -391,8 +389,7 @@
         {
           "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
-      ],
-      "namespace": "http://nomisma.org/id/"
+      ]
     }
   ],
   "overrideRegistries": false,

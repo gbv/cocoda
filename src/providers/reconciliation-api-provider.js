@@ -71,6 +71,8 @@ class ReconciliationApiProvider extends BaseProvider {
         }
         return a.id.length - b.id.length
       })
+      // Prepare namespace
+      let namespace = _.get(toScheme, "namespace", "")
       // Map results to actual mappings
       let mappings = results.map(result => ({
         fromScheme,
@@ -78,7 +80,7 @@ class ReconciliationApiProvider extends BaseProvider {
         toScheme,
         to: { memberSet: [
           {
-            uri: this.registry.namespace ? this.registry.namespace + result.id : result.id,
+            uri: namespace + result.id,
           },
         ] },
         type: [

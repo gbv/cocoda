@@ -80,6 +80,12 @@ const getters = {
 const mutations = {
   setSchemes(state, { schemes }) {
     state.schemes = schemes
+    // Adjust registries in config
+    for (let registry of state.config.registries) {
+      if (_.isArray(registry.schemes)) {
+        registry.schemes = registry.schemes.map(scheme => schemes.find(s => jskos.compare(s, scheme)) || scheme)
+      }
+    }
   },
   setSchemesLoaded(state, { value }) {
     state.schemesLoaded = value
