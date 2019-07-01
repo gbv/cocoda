@@ -16,13 +16,22 @@ class ReconciliationApiProvider extends BaseProvider {
   }
 
   _getMappings({ from, to, mode }) {
-    let swap = false
+    let swap
     let concept
-    if (jskos.compare(this.registry.scheme, _.get(from, "inScheme[0]")) || !from) {
-      concept = to
+    let fromConceptScheme = _.get(from, "inScheme[0]")
+    let toConceptScheme = _.get(to, "inScheme[0]")
+    let fromScheme
+    let toScheme
+    if (!from || jskos.isContainedIn(fromConceptScheme, this.registry.schemes || [])) {
       swap = true
+      concept = to
+      fromScheme = toConceptScheme
+      toScheme = (this.registry.schemes || []).find(scheme => jskos.compare(scheme, _.get(to, "inScheme[0]"))) || (this.registry.schemes || [])[0]
     } else {
+      swap = false
       concept = from
+      fromScheme = fromConceptScheme
+      toScheme = (this.registry.schemes || []).find(scheme => jskos.compare(scheme, _.get(from, "inScheme[0]"))) || (this.registry.schemes || [])[0]
     }
     // Temporary to filter out GND mapping requests...
     // FIXME: Remove!
@@ -30,8 +39,7 @@ class ReconciliationApiProvider extends BaseProvider {
       return Promise.resolve([])
     }
     // If concept's scheme is the same as reconciliation scheme, skip
-    let scheme = _.get(concept, "inScheme[0]")
-    if (!scheme || jskos.compare(scheme, this.registry.scheme)) {
+    if (!fromScheme || !toScheme || jskos.compare(fromScheme, toScheme)) {
       return Promise.resolve([])
     }
     // Prepare labels
@@ -65,9 +73,9 @@ class ReconciliationApiProvider extends BaseProvider {
       })
       // Map results to actual mappings
       let mappings = results.map(result => ({
-        fromScheme: scheme,
+        fromScheme,
         from: { memberSet: [concept] },
-        toScheme: this.registry.scheme,
+        toScheme,
         to: { memberSet: [
           {
             uri: this.registry.namespace ? this.registry.namespace + result.id : result.id,

@@ -305,9 +305,11 @@
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
       "provider": "ReconciliationApi",
       "reconcile": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
-      "scheme": {
-        "uri": "http://bartoc.org/en/node/1940"
-      },
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        }
+      ],
       "notation": [
         "WR"
       ],
@@ -334,9 +336,11 @@
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
       "provider": "ReconciliationApi",
       "reconcile": "https://lobid.org/gnd/reconcile",
-      "scheme": {
-        "uri": "http://bartoc.org/en/node/430"
-      },
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        }
+      ],
       "notation": [
         "GR"
       ],
@@ -363,9 +367,11 @@
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
       "provider": "ReconciliationApi",
       "reconcile": "https://coli-conc.gbv.de/nomisma-reconciliation/",
-      "scheme": {
-        "uri": "http://nomisma.org/id/"
-      },
+      "schemes": [
+        {
+          "uri": "http://nomisma.org/id/"
+        }
+      ],
       "notation": [
         "NR"
       ],

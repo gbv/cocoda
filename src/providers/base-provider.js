@@ -599,14 +599,11 @@ class BaseProvider {
     if (!scheme) {
       return false
     }
-    if (this.registry.scheme == null && !jskos.isContainedIn(scheme, this.registry.excludedSchemes || [])) {
+    let schemes = _.isArray(this.registry.schemes) ? this.registry.schemes : null
+    if (schemes == null && !jskos.isContainedIn(scheme, this.registry.excludedSchemes || [])) {
       return true
     }
-    let schemes = _.isArray(this.registry.scheme) ? this.registry.scheme : [this.registry.scheme]
-    if (jskos.isContainedIn(scheme, schemes)) {
-      return true
-    }
-    return false
+    return jskos.isContainedIn(scheme, schemes)
   }
 
 }
