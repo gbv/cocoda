@@ -95,6 +95,7 @@
           id="mappingTool"
           class="mappingTool order3">
           <div
+            v-show="selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0) || !forceMappingBrowser"
             id="mappingEditorComponent"
             class="mappingToolItem mainComponent visualComponent">
             <!-- MappingEditor -->
@@ -148,7 +149,7 @@
           </div>
           <!-- Slider -->
           <resizing-slider
-            v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
+            v-show="(selected.scheme[true] || selected.scheme[false] || forceMappingBrowser) && (selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0) || !forceMappingBrowser)"
             :cocoda-red="true" />
           <div
             v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
