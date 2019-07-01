@@ -205,7 +205,7 @@
     },
     "settingsTabs": [
       "Account",
-      "Layout",
+      "User Interface",
       "Keyboard Shortcuts",
       "Data Sources",
       "Local Mappings"
@@ -398,8 +398,8 @@
     },
     "settingsTabs": [
       "Account",
-      "Layout",
-      "Tastatur-Shortcuts",
+      "Benutzeroberfläche",
+      "Tastaturkürzel",
       "Datenquellen",
       "Lokale Mappings"
     ],
@@ -412,7 +412,7 @@
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
       "creatorPlaceholder": "Bitte Namen eintippen...",
-      "creatorRewriteTitle": "Creator-Feld Überschreiben",
+      "creatorRewriteTitle": "Creator-Feld überschreiben",
       "creatorRewriteText": "Durch den nachfolgenden Button wird der creator aller lokaler Mappings mit folgenden Informationen überschrieben:",
       "creatorRewriteButton": "creator-Feld für alle lokalen Mappings überschreiben",
       "localDownload": "Lokale Mappings herunterladen",
