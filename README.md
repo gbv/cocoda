@@ -30,7 +30,9 @@ npm install
 ## Usage
 To run the dev server, run `npm run dev`. By default, it will be available at http://localhost:8080.
 
-For more information, see the [documentation].
+For more information, see the [documentation] and the user-manual (available in
+[English](https://gbv.github.io/cocoda/dev/user-manual-en.html) and
+[German](https://gbv.github.io/cocoda/dev/user-manual-de.html)).
 
 ## Build
 ```bash
