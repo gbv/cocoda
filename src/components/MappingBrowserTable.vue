@@ -186,7 +186,7 @@
           :target="`mappingBrowserTable-item-${item.uniqueId}-creator`"
           :show.sync="popoverShown[`creator-${item.uniqueId}`]"
           triggers="hover"
-          :delay="$util.delay.long"
+          :delay="$util.delay.medium"
           placement="auto"
           @hide="popoverHide($event, `creator-${item.uniqueId}`)">
           <div class="font-default text-dark color-primary-0-bg fontSize-normal">
