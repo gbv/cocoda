@@ -69,7 +69,7 @@
       <span
         v-for="(type, index) in item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
         :key="`schemeDetail-${isLeft}-type-${index}`">
-        {{ $util.prefLabel(kosTypes.find(t => t.uri == type)) }}
+        {{ $util.prefLabel(kosTypes.find(t => t.uri == type)) || type }}
         <span v-if="index != item.type.length - 2"> / </span>
       </span>
     </div>
