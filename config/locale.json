@@ -306,7 +306,7 @@
       "manual": "Anleitung",
       "documentation": "Dokumentation",
       "github": "GitHub",
-      "feedback": "Feedback ist willkommen!",
+      "feedback": "Rückmeldungen sind willkommen!",
       "feedback2": "Wir freuen uns über Fragen und Ideen!",
       "yes": "Ja",
       "no": "Nein",
@@ -323,7 +323,7 @@
       "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet.",
       "showConcordances": "Zeige Konkordanz-Liste",
       "showMappingSearch": "Zeige die Mapping-Suche",
-      "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokaler Mappings kann die Performance des Tools beeinflussen.",
+      "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokalen Mappings kann die Performance des Tools beeinflussen.",
       "undo": "rückgängig"
     },
     "navbar": {
@@ -363,7 +363,7 @@
       "popoverHide": "Vokabular-Auswahl ausblenden",
       "showAllSchemes": "Alle {count} Vokabulare anzeigen",
       "hideAllSchemes": "{count} ausblenden",
-      "insertPrefLabel": "Benennung des Konzepts der anderen Seite automatisch in das Suchfeld einfügen"
+      "insertPrefLabel": "Bezeichnung des Konzepts der anderen Seite automatisch in das Suchfeld einfügen"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -393,7 +393,7 @@
       "settingClearOnSave": "Leere Editor nach Speichern",
       "settingClearOnSaveTooltip": "Falls eingeschaltet wird der Editor nach dem Speichern eines Mappings geleert.",
       "settingOnly1to1mappings": "Nur 1-zu-1 Mappings erlauben (sonst 1-zu-n)",
-      "settingOnly1to1mappingsTooltip": "Falls eingeschaltet werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet werden 1-zu-n Mappings erlaubt.",
+      "settingOnly1to1mappingsTooltip": "Falls eingeschaltet, werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet, werden 1-zu-n Mappings erlaubt.",
       "notSaved": "nicht gespeichert"
     },
     "settingsTabs": [
@@ -573,7 +573,7 @@
       "newVersionLink": "Seite neu laden",
       "loggedIn": "Du bist jetzt eingeloggt.",
       "loggedOut": "Du bist jetzt ausgeloggt.",
-      "nameError": "Fehler beim Namen ändern."
+      "nameError": "Fehler beim Ändern des Namens."
     },
     "dataModal": {
       "title": "JSKOS-Daten exportieren",
@@ -582,10 +582,6 @@
       "apiLinks": "API-Links",
       "apiUrl": "URL",
       "noApiUrls": "Keine URLs",
-      "jskosSpecification": "JSKOS-Spezifikation",
-      "validation": "Validierung",
-      "validationSuccess": "erfolgreich",
-      "validationFailure": "fehlgeschlagen",
       "concept": "Keine Konzepte | 1 Konzept | {count} Konzepte",
       "scheme": "Keine Vokabulare | 1 Vokabular | {count} Vokabulare",
       "mapping": "Keine Mappings | 1 Mapping | {count} Mappings",
