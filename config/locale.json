@@ -23,7 +23,8 @@
       "showConcordances": "Show Concordances",
       "showMappingSearch": "Show Mapping Search",
       "tooManyMappings": "There are {count} local mappings stored in your browser. A large number of local mappings can impact performance of the tool.",
-      "undo": "undo"
+      "undo": "undo",
+      "type": "Type"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -170,7 +171,7 @@
       "searchSourceNotation": "source notation/URI",
       "searchTargetScheme": "target scheme",
       "searchTargetNotation": "target notation/URI",
-      "searchType": "Type",
+      "searchType": "@:general.type",
       "searchAllTypes": "all mapping types",
       "searchAllConcordances": "all concordances",
       "searchClear": "Clear",
@@ -324,7 +325,8 @@
       "showConcordances": "Zeige Konkordanz-Liste",
       "showMappingSearch": "Zeige die Mapping-Suche",
       "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokalen Mappings kann die Performance des Tools beeinflussen.",
-      "undo": "rückgängig"
+      "undo": "rückgängig",
+      "type": "Typ"
     },
     "navbar": {
       "feedback": "Feedback",
@@ -527,7 +529,7 @@
       "searchSourceNotation": "Quellnotation/-URI",
       "searchTargetScheme": "Zielvokabular",
       "searchTargetNotation": "Zielnotation/-URI",
-      "searchType": "Typ",
+      "searchType": "@:general.type",
       "searchAllTypes": "Alle Mapping-Typen",
       "searchAllConcordances": "Alle Konkordanzen",
       "searchClear": "Leeren",

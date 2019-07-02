@@ -65,7 +65,7 @@
     <div
       v-if="item.type && item.type.length > 1"
       class="schemeDetail-identifier">
-      <b>Type:</b>
+      <b>{{ $t("general.type") }}:</b>
       <span
         v-for="(type, index) in item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
         :key="`schemeDetail-${isLeft}-type-${index}`">
