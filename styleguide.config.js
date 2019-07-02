@@ -112,6 +112,10 @@ module.exports = {
           content: "docs/background.md",
         },
         {
+          name: "Documentation",
+          content: "docs/documentation.md",
+        },
+        {
           name: "Design Guidelines",
           content: "docs/design-guidelines.md",
         },

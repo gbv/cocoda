@@ -4,7 +4,8 @@ Public instances of Cocoda are listed at <https://coli-conc.gbv.de/cocoda/> with
 
 This document consists of three chapters:
 
-* read the **[end user manual](#manual)** how to use an existing instance of Cocoda
+* read the **[end user manual](#manual)** how to use an existing instance of Cocoda.
+  There is also an independent [German user manual](https://gbv.github.io/cocoda/dev/user-manual-de.html).
 
 * read the **[administrator manual](#administration)** how to install and configure Cocoda
 

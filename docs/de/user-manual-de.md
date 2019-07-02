@@ -4,9 +4,9 @@ title: Cocoda-Anleitung
 
 ## Einführung
 
-Cococda ist eine Webanwendung, zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen. Dazu zählen beispielsweise: Klassifikationen, Normdaten, und Thesauri. Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
+Cococda ist eine Webanwendung, zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...). Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
 
-Die aktuelle Version von Cocoda ist verfügbar unter <https://coli-conc.gbv.de/cocoda/app/>.
+Die aktuelle Version von Cocoda ist verfügbar unter **<https://coli-conc.gbv.de/cocoda/app/>**.
 Die Entwicklungsversion ist unter <https://coli-conc.gbv.de/cocoda/dev/> zu finden.
 
 Für Rückmeldungen zur Software benutzen Sie am besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues). 
