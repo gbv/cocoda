@@ -807,27 +807,12 @@ export default {
         }
       } else if (tab == this.tabIndexes.navigator) {
         // Changed tab to Mapping Navigator, refresh if necessary
-        if (this.navigatorNeedsRefresh.length) {
-          // If there's only one item, just run it
-          if (this.navigatorNeedsRefresh.length == 1) {
-            this.navigatorRefresh(this.navigatorNeedsRefresh[0])
-            return
-          }
-          if (this.navigatorNeedsRefresh.find(option => _.isBoolean(option)) != null) {
-            // Refresh all registries
-            let force = false
-            if (this.navigatorNeedsRefresh.find(option => option !== false)) {
-              force = true
-            }
-            this.navigatorRefresh(force)
-          } else {
-            // Refresh some registries
-            let registries = _.uniq(this.navigatorNeedsRefresh)
-            for (let registry of registries) {
-              this.navigatorRefresh(registry)
-            }
-          }
-        }
+        this.navigatorRefresh()
+      }
+    },
+    navigatorNeedsRefresh(value) {
+      if (value.length > 0 && this.tab == this.tabIndexes.navigator) {
+        this.navigatorRefresh()
       }
     },
     selected: {
@@ -841,7 +826,7 @@ export default {
         )) {
           this.navigatorPages = {}
           this.navigatorResults = {}
-          this.navigatorRefresh(true)
+          this.navigatorNeedsRefresh.push(null)
         }
         this.previousSelected = {}
         this.previousSelected.concept = {
@@ -864,10 +849,10 @@ export default {
       if (refresh) {
         let registry = this.$store.state.mapping.mappingsNeedRefreshRegistry
         if (registry) {
-          this.navigatorRefresh(registry)
+          this.navigatorNeedsRefresh.push(registry)
           this.search(registry, this.searchPages[registry])
         } else {
-          this.navigatorRefresh(true)
+          this.navigatorNeedsRefresh.push(null)
           this.search()
         }
         this.$store.commit("mapping/setRefresh", { refresh: false })
@@ -903,7 +888,7 @@ export default {
         console.error("MappingBrowser - Error loading concordances", error)
       })
     }
-    this.navigatorRefresh(true)
+    this.navigatorNeedsRefresh.push(null)
   },
   methods: {
     clickHandlers() {
@@ -1090,21 +1075,17 @@ export default {
         this.searchShareLinkPart = `search=${searchParam}`
       })
     },
-    _navigatorRefresh(option) {
-      let force, registryToReload
-      if (_.isBoolean(option)) {
-        force = option
-        registryToReload = null
-      } else if (option !== undefined) {
-        force = true
-        registryToReload = option
-      } else {
-        force = false
-        registryToReload = null
-      }
-      if (this.tab != this.tabIndexes.navigator) {
-        this.navigatorNeedsRefresh.push(registryToReload || force)
+    _navigatorRefresh() {
+      if (!this.navigatorNeedsRefresh.length) {
         return
+      }
+      let registriesToReload
+      if (this.navigatorNeedsRefresh.includes(null)) {
+        // Refresh all registries
+        registriesToReload = null
+      } else {
+        // Refresh some registries
+        registriesToReload = _.uniq(this.navigatorNeedsRefresh)
       }
       this.navigatorNeedsRefresh = []
 
@@ -1132,13 +1113,13 @@ export default {
       }
 
       // If no specific registry is reloaded, reset page numbers
-      if (!registryToReload) {
+      if (!registriesToReload) {
         this.navigatorPages = {}
       }
 
       for (let registry of this.navigatorRegistries) {
 
-        if (registryToReload && registry.uri != registryToReload) {
+        if (registriesToReload && !registriesToReload.includes(registry.uri)) {
           // Skip
           continue
         }
@@ -1160,7 +1141,7 @@ export default {
         // From here on, check if token is invalid:
         // if (cancelToken != this.navigatorCancelToken[registry.uri]) { ... }
 
-        if (!registryToReload) {
+        if (!registriesToReload) {
           this.$set(this.navigatorResults, registry.uri, [null])
         }
 
