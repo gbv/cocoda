@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# move current current build-info.json to build-info.backup.json
-mv build/build-info.json build/build-info.backup.json
-
 # get github-milestones.json if it doesn't exist yet
 DELETE_TEMP=
 if [ ! -e ./temp/github-milestones.json ]; then
@@ -30,7 +27,6 @@ if [ -e ./config/cocoda.json ]; then
     USERCONFIG=yes
   else
     echo "Error: User config is not valid JSON! Aborting build. Please fix config/cocoda.json."
-    mv ./build/build-info.backup.json ./build/build-info.json
     exit 1
   fi
 fi
@@ -61,9 +57,6 @@ echo "Creating user manual..."
 npm run user-manual
 cp docs/*/user-manual-*.html dist/
 echo
-
-# move empty build-info.json back after build to not cause a git file change
-mv ./build/build-info.backup.json ./build/build-info.json
 
 # # delete config file if it was generated during this script
 [ ! $USERCONFIG ] && echo "Removing config generated during build..." && rm ./config/cocoda.json

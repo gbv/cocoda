@@ -5,7 +5,12 @@ import defaultConfig from "../config"
 import i18n from "../util/i18n"
 // Import registry providers
 import providers from "../providers"
-const buildInfo = require("../../build/build-info.json")
+let buildInfo
+try {
+  buildInfo = require("../../build/build-info.json")
+} catch(error) {
+  buildInfo = {}
+}
 
 export default {
   loadConfig({ commit }, configFile) {

@@ -17,7 +17,7 @@
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
     "styleguide:build": "vue-styleguidist build",
-    "user-manual": "make -C docs",
+    "user-manual": "make -BC docs",
     "release": "./bin/release.sh",
     "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
   },

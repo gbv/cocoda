@@ -1,7 +1,9 @@
 .SUFFIXES: .md .html .pdf
 
 # tested with Pandoc 2.2.1 and Pandoc 1.16 (on travis)
+ROOT_DIR=$(CURDIR)/..
 BUILD_INFO=$(CURDIR)/build-info.yaml
+BUILD_INFO_JSON=$(ROOT_DIR)/build/build-info.json
 OPTIONS=--toc --standalone $(BUILD_INFO)
 
 all: $(BUILD_INFO)
@@ -9,12 +11,15 @@ all: $(BUILD_INFO)
 	make -C de
 
 # dirty hack to get YAML from JSON
-$(BUILD_INFO): $(CURDIR)/../build/build-info.json
+$(BUILD_INFO): $(BUILD_INFO_JSON)
 	echo '---' > $@
 	awk 'NR>2 {print last} {last=$$0}' $< \
 		| sed 's/,$$//;s/"//g;s/^ \+//;' >> $@
 	perl -p -i -e 's/T\d\d[^Z]+Z//;' $@
 	echo '...' >> $@
+
+$(BUILD_INFO_JSON):
+	cd $(ROOT_DIR) && $(ROOT_DIR)/build/build-info.sh > $@
 
 %.html: %.md
 	pandoc $(OPTIONS) -o $@ config.yaml $< --template $(CURDIR)/templates/user-manual.html

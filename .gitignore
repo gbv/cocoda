@@ -6,7 +6,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-build/build-info.backup.json
+build/build-info.json
 docs/user-manual*
 
 # local config file
