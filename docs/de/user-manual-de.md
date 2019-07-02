@@ -6,42 +6,42 @@ title: Cocoda-Anleitung
 
 Cococda ist eine Webanwendung, zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...). Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
 
-Die aktuelle Version von Cocoda ist verfügbar unter **<https://coli-conc.gbv.de/cocoda/app/>**.
-Die Entwicklungsversion ist unter <https://coli-conc.gbv.de/cocoda/dev/> zu finden.
+* Die aktuelle Version von Cocoda ist verfügbar unter **<https://coli-conc.gbv.de/cocoda/app/>**.
+* Die Entwicklungsversion ist unter <https://coli-conc.gbv.de/cocoda/dev/> zu finden.
 
 Für Rückmeldungen zur Software benutzen Sie am besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues). 
 
-Cocoda sollte mit jedem modernen Webbrowser funktionieren (auf jeden Fall mit Firefox und Chromium). Es wird mindestens eine HD-Auflösung (1366×768) benötigt, Full HD (1920×1080) oder mehr wird empfohlen, genauso wie den Browser im Vollbildmodus zu haben.
-
 ## Benutzeroberfläche
+
+Cocoda sollte mit jedem modernen Webbrowser funktionieren (auf jeden Fall mit Firefox und Chromium). Es wird mindestens eine HD-Auflösung (1366×768) benötigt, Full HD (1920×1080) oder mehr wird empfohlen sowie den Browser im Vollbildmodus zu haben.
 
 Die Benutzeroberfläche ist in mehrere Komponenten aufgeteilt, die frei nach Belieben vergrößert, verkleinert oder ausgeblendet werden können. Der Minimieren-Knopf oben rechts in den Komponenten blendet diese aus, die drei Punkte zwischen den Komponenten können mit der Maus gezogen werden, um die Komponenten zu vergrößern oder zu verkleinern.
 
-- Die rechte und linke Komponente ermöglichen die Suche in Vokabularen um Konzepte darin zu untersuchen und auszuwählen.
+- Die rechte und linke Komponente ermöglichen die [Auswahl von](#vokabularauswahl) und Suche in Vokabularen um [Konzepte](#konzepte) darin zu untersuchen und auszuwählen.
 
-- In der Mitte sind Komponenten um Mappings und Mapping-Vorschläge zu erstellen, bearbeiten, suchen und zu bewerten.
+- In der Mitte sind Komponenten um [Mappings](#mappings) und Mapping-Vorschläge zu erstellen, bearbeiten, suchen und zu bewerten.
 
 ![Cocoda-Startbildschirm](img/cocoda-homepage-de.png){width=100% .border .border-dark}
 
-Oben rechts in der Menüleiste sind: der Mülleimer, der auch gelöschte Mappings wiederherstellen kann. Ein Stern, der auf die Favoriten-Konzepte-Schnellauswahl verweist, die Benutzereinstellungen und die Registry, in der die Mappings gespeichert werden. Alle vier Punkte können mit Maushovern aufgeklappt werden.
+Oben rechts in der Menüleiste sind: der Mülleimer, der auch gelöschte Mappings wiederherstellen kann. Ein Stern, der auf die Favoriten-Konzepte-Schnellauswahl verweist, die [Benutzereinstellungen](#einstellungen) und die Registry, in der die Mappings gespeichert werden. Alle vier Punkte können mit Maushovern aufgeklappt werden.
 
 ## Benutzeraccounts
 
-Es muss kein klassischer Account erstellt werden, dann werden die Mappings allerdings nur im Browser gespeichert. Wenn sie sich aber mit bereits bestehenden Accounts einloggen, haben sie den vollen Funktionsumfang von Cocoda zur Verfügung.
+Grundätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Stattdessen kann die Anwendung ohne Login oder mit Accounts bei vorhandenen Diensten (ORCID, GitHub, StackExchange, LDAP...) verwendent werden.
 
-Zum einloggen klicken Sie einfach auf das "Einstellungen"-Feld in der Menüleiste.
+Ohne Login werden Mappings lokal im eigenen Browser gespeichert. Wenn sie sich aber mit bereits bestehenden Accounts einloggen, haben sie den vollen Funktionsumfang von Cocoda zur Verfügung. Zum Einloggen klicken Sie einfach auf das "Einstellungen"-Feld in der Menüleiste.
 
 ![Account-Login](img/cocoda-login1-de.png){width=100% .border .border-dark}
 
-Auf dem Einstellungsfenster unter dem Reiter "Account" genügt nun ein Klick auf eins der verfügbaren Login-Felder (momentan GitHub, ORCID, StackExchange, VZG ELDAP und KENOM). Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
+Auf dem Einstellungsfenster unter dem Reiter "Account" genügt nun ein Klick auf eins der verfügbaren Login-Felder. Danach müssen Sie den ausgewählten Dienst nur noch authentifizieren und bestätigen, dass Sie sich mit ihrem Konto bei Cocoda einloggen wollen.
 
 ![Account](img/cocoda-settings-account1-de.png){.border .border-dark}
 
-Nach dem einloggen sollte Ihre Account-Seite ungefähr so aussehen:
+Nach dem Einloggen sollte Ihre Account-Seite ungefähr so aussehen:
 
 ![Account ausgefüllt](img/cocoda-settings-account2-de.png){.border .border-dark}
 
-Sie können nun die Mapping-Registry umstellen von Lokal(speichert in Browser) zu Konkordanz-Registry(Datenbank der GBV), zudem können Sie ihren Anzeigenamen und ihre Identität ändern, welche in den Mappings, die Sie bearbeiten hinterlegt wird.
+Sie können nun die Mapping-Registry umstellen von Lokal (speichert in Browser) zu Konkordanz-Registry (Datenbank der GBV), zudem können Sie ihren Anzeigenamen und ihre Identität ändern, welche in den Mappings, die Sie bearbeiten hinterlegt wird.
 
 Mit einem Klick auf "Account-Seite", werden Sie zu einer seperaten Login-Seite weitergeleitet, auf dieser können Sie ihre angegebenen Informationen einsehen, verknüpfte Konten hinzufügen oder entfernen, sich ausloggen oder ihr gesamte Nutzerkonto löschen. 
 
@@ -53,17 +53,17 @@ Wenn Sie sich eingeloggt haben, finden sie neben ihrem Anzeigenamen in der Menü
 
 ## Vokabulare
 
-Einzelne Wissensorganisationssysteme werden auch Vokabulare genannt, Beispiele für Vokabulare sind: Ontologien, (kontrollierte) Vokabulare, Taxonomien und Terminologien. Cocoda erlaubt den Zugriff auf verschiedene Vokabulare von verschiedenen Quellen.
+Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von Vokabularen (Klassifikationen, Thesauri, Ontologien...) aus verschiedenen Quellen.
 
 Ein Vokabular ist eine organisierte Ansammlung von [Konzepten](#konzepte) und zusätzlichen Informationen über das Vokabular. Cocoda empfehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
 
 ### Vokabularauswahl
 
-Es gibt einen Suchschlitz, in dem man nach [Vokabularen](#vokabulare) suchen kann, bei den Ergebnissen kann man auf der linken Seite den Stern anklicken, das Vokabular wurde nun als Favorit gespeichert und wird beim Aufruf von Cocoda als erstes angezeigt.
+Es gibt einen Suchschlitz, in dem man nach Vokabularen suchen kann, bei den Ergebnissen kann man auf der linken Seite den Stern anklicken, das Vokabular wurde nun als Favorit gespeichert und wird beim Aufruf von Cocoda als erstes angezeigt.
 
 ### Vokabulardetails
 
-Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular. Es werden Notation, Bezeichnung, Lizenz, Publisher, und identifier angezeigt. Wenn die Komponente ["Oberkonzepte"](#hierarchische-ansicht) minimiert ist, werden die Oberkonzepte in kürzerer Form ebenfalls angezeigt.
+Die Details-Komponente zeigt detaillierte Informationen über ein Vokabular. Es werden unter Anderem Notation, Bezeichnung, Lizenz, Publisher, und Identifier angezeigt. Wenn die Komponente ["Oberkonzepte"](#hierarchische-ansicht) minimiert ist, werden ebenfalls die Oberkonzepte in kürzerer Form angezeigt.
  
 ![Vokabulardetails](img/cocoda-classdet-de.png){width=100% .border .border-dark}
 
@@ -93,11 +93,11 @@ Wenn das ausgewählte [Vokabular](#vokabulare) hierarchische Navigation unterst�
 
 ### Listenansicht
 
-Momentan gibt es nur [Oberkonzepte](#hierarchische-ansicht) und die konzept-Schnellauswahl, wo als Favoriten markierte [Konzepte](#konzepte) angezeigt werden.
+Momentan gibt es nur [Oberkonzepte](#hierarchische-ansicht) und die Konzept-Schnellauswahl, wo als Favoriten markierte [Konzepte](#konzepte) aufgeführt werden.
 
 ## Mappings
 
-Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Evaluation von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem [Konzept](#konzepte) und *n* Konzepten von einem anderen [Vokabular.](#vokabulare)
+Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Evaluation von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem [Konzept](#konzepte) und einer Menge von Konzepten von einem anderen Vokabular.
 
 Mapping können verwaltet werden mit:
 
@@ -119,6 +119,7 @@ Ist das Mapping nicht gespeichert färbt sich der Hintergrund rötlich, außerde
 
 Der Mapping-Browser zeigt ncht nur existierende [Mappings](#mappings), sondern auch Mapping-Vorschläge für ausgewählte [Konzepte](#konzepte) der [Vokabulare](#vokabulare).
 Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
+
 - Mapping-Details anzeigen: zeigt Mapping-Details an
 - Bearbeiten: holt das Mapping in den Mapping-Editor
 - Speichern: speichert das Mapping in die ausgewählte Registry
