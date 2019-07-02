@@ -106,9 +106,8 @@
           v-for="type in types"
           :key="`conceptDetail-${isLeft}-type-${type.uri}`"
           class="conceptDetail-identifier">
-          <b>Type:</b> <auto-link
-            :link="type.uri"
-            :text="$util.prefLabel(type)" />
+          <b>{{ $t("general.type") }}:</b>
+          {{ $util.prefLabel(type) }}
         </div>
         <div
           v-if="item.creator && item.creator.length"
