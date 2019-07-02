@@ -34,8 +34,8 @@
   },
   "gitHooks": {
     "pre-commit": "lint-staged",
-    "post-commit": "build-info",
-    "post-receive": "build-info"
+    "post-commit": "npm run build-info",
+    "post-receive": "npm run build-info"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.16",
