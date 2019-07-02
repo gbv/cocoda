@@ -1,9 +1,8 @@
 .SUFFIXES: .md .html .pdf
 
 # tested with Pandoc 2.2.1 and Pandoc 1.16 (on travis)
-ROOT_DIR=$(CURDIR)/..
 BUILD_INFO=$(CURDIR)/build-info.yaml
-BUILD_INFO_JSON=$(ROOT_DIR)/build/build-info.json
+BUILD_INFO_JSON=$(CURDIR)/../build/build-info.json
 OPTIONS=--toc --standalone $(BUILD_INFO)
 
 all: $(BUILD_INFO)
@@ -19,7 +18,7 @@ $(BUILD_INFO): $(BUILD_INFO_JSON)
 	echo '...' >> $@
 
 $(BUILD_INFO_JSON):
-	cd $(ROOT_DIR) && $(ROOT_DIR)/build/build-info.sh > $@
+	npm run build-info
 
 %.html: %.md
 	pandoc $(OPTIONS) -o $@ config.yaml $< --template $(CURDIR)/templates/user-manual.html

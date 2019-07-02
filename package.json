@@ -17,6 +17,7 @@
     "lint-staged": "lint-staged",
     "styleguide": "vue-styleguidist server",
     "styleguide:build": "vue-styleguidist build",
+    "build-info": "./build/build-info.sh > ./build/build-info.json",
     "user-manual": "make -BC docs",
     "release": "./bin/release.sh",
     "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
@@ -32,7 +33,9 @@
     ]
   },
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "post-commit": "build-info",
+    "post-receive": "build-info"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.16",

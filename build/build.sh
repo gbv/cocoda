@@ -9,7 +9,7 @@ if [ ! -e ./temp/github-milestones.json ]; then
 fi
 
 # write build info to build-info.json
-./build/build-info.sh > ./build/build-info.json
+npm run build-info
 
 GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
