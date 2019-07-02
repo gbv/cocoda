@@ -509,8 +509,7 @@ export default {
     },
     concordancesUrl() {
       // TODO: Fix URLs in config file.
-      let url = this.config.mappingProviders[0].url
-      url = url.substring(0, url.substring(0, url.length - 1).lastIndexOf("/")) + "/concordances"
+      let url = this.config.mappingProviders[0].status.replace("/status", "/concordances")
       return url
     },
     configLoaded() {
@@ -561,7 +560,7 @@ export default {
       // Load all schemes first before loading anything else
       this.loadSchemes().then(() => {
         // Load mapping mappingSchemes from API.
-        axios.get(this.config.mappingProviders[0].url + "voc").then(({ data }) => {
+        axios.get(this.config.mappingProviders[0].status.replace("/status", "/voc")).then(({ data }) => {
           this.mappingSchemes = data
         }).catch(error => {
           console.warn("Error fetching mapping schemes:", error)
@@ -667,10 +666,10 @@ export default {
         partOf = this.concordance || "",
         enc = encodeURIComponent
       // Set download URL
-      let baseUrl = this.config.mappingProviders[0].url
+      let baseUrl = this.config.mappingProviders[0].status.replace("/status", "/")
       this.downloadUrl = `${baseUrl}?from=${enc(from)}&to=${enc(to)}&fromScheme=${enc(fromScheme)}&toScheme=${enc(toScheme)}&creator=${enc(creator)}&partOf=${enc(partOf)}&type=${enc(type)}&download=`
       // Find fromScheme/toScheme in schemes. FIXME: Use local suggest when typing!
-      axios.get(baseUrl, {
+      axios.get(baseUrl + "mappings", {
         params: {
           from, to, fromScheme, toScheme, type, creator, partOf,
           limit: 10,
