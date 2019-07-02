@@ -109,7 +109,7 @@
                 <p>{{ $t("general.welcome") }}</p>
                 <p>
                   <a
-                    href="https://gbv.github.io/cocoda/#manual"
+                    :href="`./user-manual-${locale}.html`"
                     target="_blank">{{ $t("general.manual") }}</a> -
                   <a
                     href="https://gbv.github.io/cocoda/"
