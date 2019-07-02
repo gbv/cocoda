@@ -687,6 +687,8 @@ export default {
               let filter = JSON.parse(query.search)
               this.forceMappingBrowser = true
               this.searchMappings(filter)
+            } else if (query.concordances !== undefined) {
+              this.showConcordances()
             }
           }
         }).catch((error) => {
@@ -709,10 +711,32 @@ export default {
       this.searchMappings({})
     },
     showConcordances() {
-      this.forceMappingBrowser = true
       let mappingBrowser = this.$refs.mappingBrowser
-      if (mappingBrowser && mappingBrowser.tab && mappingBrowser.tabIndexes && mappingBrowser.tabIndexes.concordances != null) {
-        mappingBrowser.tab = mappingBrowser.tabIndexes.concordances
+      if (!mappingBrowser) {
+        console.warn("Could not show concordances because MappingBrowser component was not found.")
+        return
+      }
+      if (mappingBrowser.concordancesLoaded) {
+        if (mappingBrowser.tabIndexes.concordances != null) {
+          this.forceMappingBrowser = true
+          mappingBrowser.tab = mappingBrowser.tabIndexes.concordances
+        }
+      } else {
+        // Add watcher to concordancesLoaded
+        this.loadingGlobal = true
+        let unwatch
+        unwatch = this.$watch(
+          () => mappingBrowser.concordancesLoaded,
+          () => {
+            this.loadingGlobal = false
+            if (mappingBrowser.tabIndexes.concordances != null) {
+              this.forceMappingBrowser = true
+              mappingBrowser.tab = mappingBrowser.tabIndexes.concordances
+            }
+            // Remove watcher
+            unwatch && unwatch()
+          }
+        )
       }
     },
   },

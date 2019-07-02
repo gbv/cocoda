@@ -420,6 +420,7 @@ export default {
   data() {
     return {
       tab: 0,
+      concordancesLoaded: false,
       /** Whether tab was automatically switched to Mapping Navigator once.
        *  Will not switch automatically again afterwards.
        */
@@ -886,6 +887,8 @@ export default {
         this.concordances.length = concordances.length
       }).catch(error => {
         console.error("MappingBrowser - Error loading concordances", error)
+      }).then(() => {
+        this.concordancesLoaded = true
       })
     }
     this.navigatorNeedsRefresh.push(null)
