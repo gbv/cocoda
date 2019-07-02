@@ -714,10 +714,10 @@ export default {
       return object
     },
     searchSections () {
-      return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading)
+      return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
     navigatorSections () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading)
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-")
     },
     // Setting whether to show identity mismatch warning
     showIdentityWarning: {
@@ -1251,7 +1251,7 @@ export default {
       [this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation, this.searchFilterInput.toScheme, this.searchFilterInput.toNotation] = [this.searchFilterInput.toScheme, this.searchFilterInput.toNotation, this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation]
       this.searchClicked()
     },
-    resultsToSections(results, pages, loading) {
+    resultsToSections(results, pages, loading, keyPrefix) {
       let sections = []
       for (let registry of this.mappingRegistriesSorted.filter(registry => results[registry.uri])) {
         let section = {}
@@ -1329,7 +1329,7 @@ export default {
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.occurrence = mapping._occurrence
           // Generate unique ID from mapping JSON and registry URI as helper
-          item.uniqueId = this.$util.hash(registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
+          item.uniqueId = this.$util.hash(keyPrefix + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
           // Add class to all items of hoveredRegistry
           if (this.$jskos.compare(item.registry, this.hoveredRegistry)) {
             item._rowClass += " mappingBrowser-hoveredRegistry"
