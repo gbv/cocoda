@@ -40,12 +40,6 @@ export default {
             registries.push(registry)
           }
         }
-        // Assign priority values to registries (for easier comparison at other points)
-        let priority = registries.length
-        for (let registry of registries) {
-          registry.priority = priority
-          priority -= 1
-        }
         config.registries = registries
       }
       // Make new config file format (#64) compatible with current implementation.
@@ -74,6 +68,12 @@ export default {
             config.occurrenceProviders.push(registry)
           }
         }
+      }
+      // Assign priority values to registries (for easier comparison at other points)
+      let priority = config.registries.length
+      for (let registry of config.registries) {
+        registry.priority = priority
+        priority -= 1
       }
       // Filter out registries where no provider could be initialized
       config.registries = config.registries.filter(registry => registry.provider != null)

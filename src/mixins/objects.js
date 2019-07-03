@@ -267,7 +267,7 @@ export default {
                 let index = schemes.findIndex(s => this.$jskos.compare(s, scheme))
                 if (index != -1) {
                   let provider = schemes[index]._provider
-                  schemes[index] = this.$jskos.merge(schemes[index], scheme, { mergeUris: true, skipPaths: ["_provider"] })
+                  schemes[index] = this.$jskos.merge(schemes[index], _.omit(scheme, ["concepts", "topConcepts"]), { mergeUris: true, skipPaths: ["_provider"] })
                   schemes[index]._provider = provider
                 }
               }
