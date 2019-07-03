@@ -110,7 +110,7 @@ export default {
     saveObject(object, options = {}) {
       if (!object || !object.uri) {
         console.error("Can't save object (null or missing URI).", object)
-        return
+        return object
       }
       let existing = this._getObject(object)
       if (!existing) {
