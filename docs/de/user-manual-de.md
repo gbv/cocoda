@@ -4,18 +4,18 @@ title: Cocoda-Anleitung
 
 ## Einführung
 
-Cococda ist eine Webanwendung, zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...). Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und von der [DFG](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
+Cococda ist eine Webanwendung, zur Erstellung und Verwaltung von **Mappings zwischen Wissensorganisationssystemen** (Klassifikationen, Normdaten, Thesauri...). Cocoda wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) des [GBV](https://www.gbv.de/) entwickelt und [als DFG-Projekt](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert.
 
 * Die aktuelle Version von Cocoda ist verfügbar unter **<https://coli-conc.gbv.de/cocoda/app/>**.
 * Die Entwicklungsversion ist unter <https://coli-conc.gbv.de/cocoda/dev/> zu finden.
 
-Für Rückmeldungen zur Software benutzen Sie am besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues). 
+Für Fragen und Rückmeldungen zur Software benutzen Sie am besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues). 
 
 ## Benutzeroberfläche
 
 Cocoda sollte mit jedem modernen Webbrowser funktionieren (auf jeden Fall mit Firefox und Chromium). Es wird mindestens eine HD-Auflösung (1366×768) benötigt, Full HD (1920×1080) oder mehr wird empfohlen sowie den Browser im Vollbildmodus zu haben.
 
-Die Benutzeroberfläche ist in mehrere Komponenten aufgeteilt, die frei nach Belieben vergrößert, verkleinert oder ausgeblendet werden können. Der Minimieren-Knopf oben rechts in den Komponenten blendet diese aus, die drei Punkte zwischen den Komponenten können mit der Maus gezogen werden, um die Komponenten zu vergrößern oder zu verkleinern.
+Die Benutzeroberfläche ist in mehrere Komponenten aufgeteilt, die vergrößert, verkleinert oder ausgeblendet werden können. Der Minimieren-Knopf oben rechts in den Komponenten (`🗕`) blendet diese aus, die drei Punkte zwischen den Komponenten (`⋮` bzw. `…`) können mit der Maus gezogen werden, um die Komponenten zu vergrößern oder zu verkleinern.
 
 - Die rechte und linke Komponente ermöglichen die [Auswahl von](#vokabularauswahl) und Suche in Vokabularen um [Konzepte](#konzepte) darin zu untersuchen und auszuwählen.
 
@@ -23,7 +23,12 @@ Die Benutzeroberfläche ist in mehrere Komponenten aufgeteilt, die frei nach Bel
 
 ![Cocoda-Startbildschirm](img/cocoda-homepage-de.png){width=100% .border .border-dark}
 
-Oben rechts in der Menüleiste sind: der Mülleimer, der auch gelöschte Mappings wiederherstellen kann. Ein Stern, der auf die Favoriten-Konzepte-Schnellauswahl verweist, die [Benutzereinstellungen](#einstellungen) und die Registry, in der die Mappings gespeichert werden. Alle vier Punkte können mit Maushovern aufgeklappt werden.
+Die Menüleiste enthält oben Rechts, jeweils aufklappbar mit Maushover:
+
+* einen Mülleimer (`🗑`) zur Ansicht und zum Wiederherstellen der zuletzt gelöschten Mappings
+* ein Stern (★) für die Schnellauswahl von Favoriten-Konzepte
+* die [Benutzereinstellungen](#einstellungen) und der jeweils aktuelle Login-Status
+* die aktuelle Registry, in der die Mappings gespeichert werden (u.A. `L` lokale Speicherung im eigenen Browser)
 
 ## Benutzeraccounts
 
@@ -59,7 +64,7 @@ Ein Vokabular ist eine organisierte Ansammlung von [Konzepten](#konzepte) und zu
 
 ### Vokabularauswahl
 
-Es gibt einen Suchschlitz, in dem man nach Vokabularen suchen kann, bei den Ergebnissen kann man auf der linken Seite den Stern anklicken, das Vokabular wurde nun als Favorit gespeichert und wird beim Aufruf von Cocoda als erstes angezeigt.
+Es gibt einen Suchschlitz, in dem man nach Vokabularen suchen kann, bei den Ergebnissen kann man auf der linken Seite den Stern anklicken (★), das Vokabular wurde nun als Favorit gespeichert und wird beim Aufruf von Cocoda als erstes angezeigt.
 
 ### Vokabulardetails
 
@@ -162,24 +167,24 @@ Mit einem Klick auf die Buttons können die Registries des [Mapping-Browsers](#m
 ## Einstellungen
 
 ### Accounts
-[Benutzeraccounts](#benutzeraccounts)
+Siehe [Benutzeraccounts](#benutzeraccounts).
 
 ### Layout
-In den Einstellungen unter dem Reiter "Layout" kann man die Sprache der Seite anpassen.
+In den Einstellungen unter dem Reiter "Layout" kann die Sprache eingestellt werden.
 
 ![Einstellungen - Reiter Layout](img/cocoda-settings-layout-de.png){.border .border-dark}
 
 ### Shortcuts
-Unter dem Reiter "Tastatur-Shortcuts" kann man Tastenkürzel einsehen.
+Unter dem Reiter "Tastatur-Shortcuts" werden Tastenkürzel aufgeführt.
 
 ![Einstellungen - Reiter Tastatrukürzel](img/cocoda-settings-keysho-de.png){.border .border-dark}
 
 ### Datenquellen
-Unter dem Reiter "Datenquellen" kann man eine Übersicht aller Quellen bekommen, die in Cocoda benutzt werden.
+Der Reiter "Datenquellen" enthält eine Übersicht aller Registries und externer Dienste, die in Cocoda benutzt werden.
 
 ![Einstellungen - Reiter Datenquellen](img/cocoda-settings-datsor-de.png){.border .border-dark}
 
 ### Lokale Mappings
-Unter dem Reiter "Lokale Mappings" kann man lokale [Mappings](#mappings) hochladen, runterladen, löschen und den Ersteller des Mappings überschreiben.
+Unter dem Reiter "Lokale Mappings" können lokale [Mappings](#mappings) hochgeladen, heruntergeladen, gelöscht und aktualisiert werden. 
 
 ![Einstellungen - Reiter Lokale Mappings](img/cocoda-settings-locmap-de.png){.border .border-dark}
