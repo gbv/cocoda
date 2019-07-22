@@ -52,7 +52,7 @@
     "jskos-tools": "^0.2.8",
     "json-format-highlight": "^1.0.1",
     "localforage": "^1.7.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "qs": "^6.6.0",
     "simple-sha1": "^2.1.2",
     "uuid": "^3.3.2",
