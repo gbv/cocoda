@@ -475,14 +475,13 @@ nav.navbar {
 }
 .navbar-dropdown-selectable-icon {
   display: inline-block;
-  width: 17px;
 }
 .navbar-dropdown-selectable-icon > img {
-  height: 17px;
+  max-height: 17px;
   margin-top: -3px;
 }
 .navbar-dropdown-selectable-icon > svg {
-  height: 17px;
+  max-height: 17px;
   margin-top: 1px;
   margin-left: 2px;
 }
