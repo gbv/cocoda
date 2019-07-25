@@ -109,7 +109,6 @@ export default {
      */
     saveObject(object, options = {}) {
       if (!object || !object.uri) {
-        console.error("Can't save object (null or missing URI).", object)
         return object
       }
       let existing = this._getObject(object)
@@ -371,7 +370,6 @@ export default {
       for (let concept of concepts.filter(c => c && c.uri && c.__SAVED__ && !c.__DETAILSLOADED__)) {
         let provider = this.getProvider(concept)
         if (!provider) {
-          console.warn("Can't load data concept", concept.uri, "- no provider found.")
           continue
         }
         if ([].concat(this.loadingConcepts, this.erroredConcepts).find(c => this.$jskos.compare(c, concept))) {
