@@ -129,6 +129,9 @@ export default {
         }
       }
 
+      // Remove all registries without provider
+      config.registries = config.registries.filter(registry => registry.provider != null)
+
       // Save config
       commit({
         type: "setConfig",
