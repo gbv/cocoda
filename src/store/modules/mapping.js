@@ -403,7 +403,7 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, sortDirection, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
+  getMappings({ rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
     let config = rootState.config
     let registries = []
     if (onlyFromMain) {
@@ -426,9 +426,9 @@ const actions = {
     let promises = []
     for (let registry of registries) {
       if (all) {
-        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, sortDirection, selected, cancelToken }))
+        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, selected, cancelToken }))
       } else {
-        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, sortDirection, cancelToken }))
+        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, cancelToken }))
       }
     }
     return Promise.all(promises).then(results => {

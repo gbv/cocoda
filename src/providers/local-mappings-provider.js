@@ -99,7 +99,7 @@ class LocalMappingsProvider extends BaseProvider {
   /**
    * Returns a Promise with a list of local mappings.
    *
-   * TODO: Add support for sort (`created` or `modified`) and sortDirection (`asc` or `desc`).
+   * TODO: Add support for sort (`created` or `modified`) and order (`asc` or `desc`).
    */
   _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, uri } = {}) {
     let params = {}
