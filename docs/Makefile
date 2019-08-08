@@ -3,7 +3,8 @@
 # tested with Pandoc 2.2.1 and Pandoc 1.16 (on travis)
 BUILD_INFO=$(CURDIR)/build-info.yaml
 BUILD_INFO_JSON=$(CURDIR)/../build/build-info.json
-OPTIONS=--toc --standalone $(BUILD_INFO)
+OPTIONS=--standalone $(BUILD_INFO)
+TEMPLATES=$(CURDIR)/templates/
 
 all: $(BUILD_INFO)
 	make -C en
@@ -21,9 +22,9 @@ $(BUILD_INFO_JSON):
 	npm run build-info
 
 %.html: %.md
-	pandoc $(OPTIONS) -o $@ config.yaml $< --template $(CURDIR)/templates/user-manual.html
+	pandoc $(OPTIONS) -o $@ config.yaml $(TEMPLATES)config-html.yaml $< --template $(TEMPLATES)user-manual.html
 	perl -p -i -e 's/<figure>/<figure class="figure">/' $@
 	perl -p -i -e 's/<figcaption>/<figcaption class="figure-caption">/' $@
 
 %.pdf: %.md
-	pandoc $(OPTIONS) -o $@ config.yaml $< --template $(CURDIR)/templates/user-manual.tex
+	pandoc $(OPTIONS) --toc -o $@ config.yaml $< --template $(TEMPLATES)user-manual.tex

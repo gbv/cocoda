@@ -1,0 +1,16 @@
+---
+script:
+    - https://code.jquery.com/jquery-3.2.1.slim.min.js
+    - https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js
+    - https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js
+css:
+    - https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css
+    - https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css
+include-after: >
+    <script type="text/javascript">
+      $(function() {
+        Toc.init($("#toc"))
+        $("body").scrollspy({target: "#toc"})
+      })
+    </script>
+...
