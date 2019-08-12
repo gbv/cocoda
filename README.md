@@ -11,33 +11,32 @@ Try out the [latest release](https://coli-conc.gbv.de/cocoda/), the [current dev
 ## Table of Contents
 - [Install](#install)
 - [Usage](#usage)
-- [Build](#build)
+- [Development](#development)
 - [Maintainers](#maintainers)
 - [Publish](#publish)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Install
-It is recommended to use Node.js v10 or above.
-
-```bash
-git clone https://github.com/gbv/cocoda.git
-cd cocoda
-npm install
-# If developing on macOS, it is recommended to install fsevents: npm i --no-save fsevents
-```
+Releases [can be downloaded](https://github.com/gbv/cocoda/releases) in form of static files. Extract into a web server directory and adjust configuration file `cocoda.json`.
 
 ## Usage
-To run the dev server, run `npm run dev`. By default, it will be available at http://localhost:8080.
-
 For more information, see the [documentation] and the user-manual (available in
 [English](https://gbv.github.io/cocoda/dev/user-manual-en.html) and
 [German](https://gbv.github.io/cocoda/dev/user-manual-de.html)).
 
-## Build
+## Development
+Its recommended to use Node.js v10 or above.
+
 ```bash
-npm run build
+git clone https://github.com/gbv/cocoda.git
+cd cocoda
+npm ci
+# If developing on macOS, it is recommended to install fsevents: npm i --no-save fsevents
 ```
+To run the dev server, run `npm run dev`. By default, it will be available at http://localhost:8080.
+
+To build static files, run `npm run build`.
 
 The build files will be in the folder `dist`. Those can be served using an http server or by simply opening `index.html`.
 

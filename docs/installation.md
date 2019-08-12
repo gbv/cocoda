@@ -19,7 +19,7 @@ cd cododa
 Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build:
 
 ```bash
-npm install
+npm ci
 npm run build
 ```
 

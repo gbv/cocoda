@@ -4,7 +4,7 @@ git clone https://github.com/gbv/cocoda.git # or git@github.com:gbv/cocoda.git
 cd cocoda
 
 # install dependencies
-npm install
+npm ci
 
 # create a local config file
 echo '{}' > config/cocoda.json
