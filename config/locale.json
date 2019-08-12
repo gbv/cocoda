@@ -183,7 +183,8 @@
       "searchShareInclude": "Include selected schemes and concepts",
       "searchShareCopy": "Copy link to clipboard",
       "searchInsertSelfIntoCreator": "Insert my own identities",
-      "searchForMappingsByCreator": "Search mappings from this creator"
+      "searchForMappingsByCreator": "Search mappings from this creator",
+      "mappingConfirmedTooltip": "Confirmed"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -541,7 +542,8 @@
       "searchShareInclude": "Einschließlich ausgewählter Vokabulare und Konzepte",
       "searchShareCopy": "Link in die Zwischenablage kopieren",
       "searchInsertSelfIntoCreator": "Meine eigenen Identitäten einfügen",
-      "searchForMappingsByCreator": "Suche Mappings dieses Erstellers"
+      "searchForMappingsByCreator": "Suche Mappings dieses Erstellers",
+      "mappingConfirmedTooltip": "Bestätigt"
     },
     "mappingDetail": {
       "title": "Mapping-Details",

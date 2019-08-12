@@ -217,7 +217,14 @@
           :style="`color: ${annotationButtonColor(data.item.mapping.annotations)};`"
           style="display: inline-block; position: relative; min-width: 18px;"
           class="button fontWeight-heavy">
-          {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
+          <span v-if="data.item.mapping.annotations.find(annotation => annotation.motivation == 'moderating')">
+            <font-awesome-icon
+              style="color: #00DC00;"
+              icon="check-square" />
+          </span>
+          <span v-else>
+            {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
+          </span>
         </div>
         <!-- Mapping transfer button -->
         <div

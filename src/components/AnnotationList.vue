@@ -10,7 +10,16 @@
           'text-danger': annotation.bodyValue === '-1'
         }"
         class="fontSize-normal fontWeight-heavy">
-        {{ annotation.bodyValue }}
+        <span
+          v-if="annotation.motivation == 'moderating'"
+          v-b-tooltip.hover="$t('mappingBrowser.mappingConfirmedTooltip')">
+          <font-awesome-icon
+            style="color: #00DC00;"
+            icon="check-square" />
+        </span>
+        <span v-else>
+          {{ annotation.bodyValue }}
+        </span>
       </div>
       <!-- Date and creator -->
       <div class="fontSize-verySmall">
