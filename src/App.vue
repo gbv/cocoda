@@ -382,7 +382,7 @@ export default {
         this.alert(this.$t("alerts.loggedIn"), null, "success")
       } else if (previous && !current) {
         // Logged out
-        this.alert(this.$t("alerts.loggedOut"), 10, "danger", this.$t("settings.logInAlertButton"), () => {
+        this.alert(this.$t("alerts.loggedOut"), 10, "danger", this.$t("settings.logInButton"), () => {
           // Open Accounts page in settings
           const navbar = this.$refs.navbar
           if (navbar && navbar.openSettingsTab) {

@@ -195,6 +195,28 @@
             </span>
           </p>
         </b-dropdown-header>
+
+        <div
+          v-if="config.auth"
+          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          style="text-align: center; margin-bottom: 20px;">
+          <div
+            v-if="authorized"
+            class="button"
+            @click="$store.commit({
+              type: 'auth/openWindow',
+              url: config.auth + 'logout',
+              eventType: 'logout',
+            })">
+            {{ $t("settings.logOutButton") }}
+          </div>
+          <div
+            v-else
+            class="button"
+            @click="openSettingsTab(0)">
+            {{ $t("settings.logInButton") }}
+          </div>
+        </div>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-normal"
           style="min-width: 200px;">

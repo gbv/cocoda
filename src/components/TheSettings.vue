@@ -89,7 +89,7 @@
               <a
                 href=""
                 @click.prevent="login(null)">
-                Logout
+                {{ $t("settings.logOutButton") }}
               </a>
             </p>
             <p v-if="$store.state.auth.available && !user && providers.length">
@@ -104,7 +104,7 @@
                   :src="provider.image"
                   height="20px"
                   style="margin-right: 5px;">
-                Login via {{ provider.name }}
+                {{ $t("settings.logInButton") }} via {{ provider.name }}
               </b-button>
             </p>
             <div v-if="$store.state.auth.connected">
