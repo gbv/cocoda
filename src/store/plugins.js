@@ -50,7 +50,11 @@ const refreshRouter = (store) => {
     }
     // If an original mapping exists for the current mapping, save its identifier as well
     if (store.state.mapping.original) {
-      query.mappingUri = store.state.mapping.original.uri
+      if (store.state.mapping.original.uri) {
+        query.mappingUri = store.state.mapping.original.uri
+      } else if (store.state.mapping.original.identifier) {
+        query.mappingIdentifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+      }
     }
   }
   // Keep certain properties from original route

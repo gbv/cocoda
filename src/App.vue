@@ -628,7 +628,7 @@ export default {
         }))
       }
       // Prepare application by selecting mapping from URL parameters.
-      if (query.mapping || query.mappingUri) {
+      if (query.mapping || query.mappingUri || query.mappingIdentifier) {
         let decodeMapping = new Promise(resolve => {
           let mappingFromQuery = null
           try {
@@ -697,6 +697,9 @@ export default {
             this.searchMappings(filter)
           } else if (query.concordances !== undefined) {
             this.showConcordances()
+          } else if (query.mappingUri || query.mappingIdentifier) {
+            this.forceMappingBrowser = true
+            this.searchMappings()
           }
         }
       }).catch((error) => {
