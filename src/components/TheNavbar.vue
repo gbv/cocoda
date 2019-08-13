@@ -522,11 +522,12 @@ nav.navbar {
   display: inline-block;
 }
 .navbar-dropdown-selectable-icon > img {
+  height: 17px;
   max-height: 17px;
   margin-top: -3px;
 }
 .navbar-dropdown-selectable-icon > svg {
-  max-height: 17px;
+  height: 17px;
   margin-top: 1px;
   margin-left: 2px;
 }
