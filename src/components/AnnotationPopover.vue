@@ -128,7 +128,7 @@ export default {
       return `${sign}${Math.abs(score)}`
     },
     ownAssessment() {
-      return this.annotations.find(annotation => this.$util.annotations.creatorMatches(annotation, this.userUris))
+      return this.annotations.find(annotation => annotation.motivation == "assessing" && this.$util.annotations.creatorMatches(annotation, this.userUris))
     },
     ownScore() {
       return _.get(this.ownAssessment, "bodyValue")
