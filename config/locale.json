@@ -208,7 +208,7 @@
     "settingsTabs": [
       "Account",
       "User Interface",
-      "Keyboard Shortcuts",
+      "Shortcuts",
       "Data Sources",
       "Local Mappings"
     ],
@@ -403,7 +403,7 @@
     },
     "settingsTabs": [
       "Account",
-      "Benutzeroberfläche",
+      "Oberfläche",
       "Tastaturkürzel",
       "Datenquellen",
       "Lokale Mappings"
