@@ -363,7 +363,8 @@
     <annotation-popover
       :id="hoveredId"
       :mapping="this.$store.state.hoveredMapping"
-      id-prefix="mappingBrowser-hoveredMapping-annotationButton-" />
+      id-prefix="mappingBrowser-hoveredMapping-annotationButton-"
+      @refresh-annotations="refreshAnnotations" />
   </div>
 </template>
 
@@ -810,6 +811,16 @@ export default {
           type: null,
           partOf: null,
         })
+      }
+    },
+    // Event coming from annotation popover. Searches for the mapping in the result set and adjusts it's annotations.
+    refreshAnnotations({ uri, annotations }) {
+      for (let section of this.sections) {
+        for (let item of section.items) {
+          if (item.mapping && item.mapping.uri == uri) {
+            item.mapping.annotations = annotations
+          }
+        }
       }
     },
   },

@@ -231,6 +231,7 @@ export default {
             return
           }
           this.imapping.annotations.push(annotation)
+          this.$emit("refresh-annotations", { uri, annotations: this.annotations })
         })
       } else {
         if (this.ownScore != value) {
@@ -238,13 +239,18 @@ export default {
           promise = provider.editAnnotation(this.ownAssessment, { bodyValue: value }).then(annotation => {
             if (annotation) {
               this.ownAssessment.bodyValue = value
+              this.$emit("refresh-annotations", { uri, annotations: this.annotations })
             } else {
               this.alertInternal("Editing annotation failed.")
             }
           })
         } else {
           // 3. Case: User has assessed and removes his value
-          promise = this.remove(this.annotations.indexOf(this.ownAssessment))
+          promise = this.remove(this.annotations.indexOf(this.ownAssessment)).then(success => {
+            if (success) {
+              this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+            }
+          })
         }
       }
       promise.catch(error => {
@@ -273,6 +279,7 @@ export default {
           return
         }
         this.$delete(this.imapping.annotations, index)
+        return success
       })
     },
   },
