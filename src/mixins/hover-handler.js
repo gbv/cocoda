@@ -46,16 +46,25 @@ export default {
     this.handleMousePositionChange = _.debounce(this.handleMousePositionChange_, 100)
   },
   methods: {
+    isMouseInsideElement(element, { delta, x, y } = {}) {
+      delta = delta || 0
+      x = x || this.mousePosition.x
+      y = y || this.mousePosition.y
+      if (element) {
+        let { top, bottom, left, right } = element.getBoundingClientRect()
+        if (y < bottom + delta && y > top - delta && x < right + delta && x > left - delta) {
+          return true
+        }
+      }
+      return false
+    },
     handleMousePositionChange_(x, y) {
       for (let handler of this.hoverHandlers()) {
         let isInside = false
         let delta = handler.delta || 0
         for (let element of handler.elements) {
-          if (element) {
-            let { top, bottom, left, right } = element.getBoundingClientRect()
-            if (y < bottom + delta && y > top - delta && x < right + delta && x > left - delta) {
-              isInside = true
-            }
+          if (this.isMouseInsideElement(element, { delta, x, y })) {
+            isInside = true
           }
         }
         handler.handler(isInside, handler)
