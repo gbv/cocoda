@@ -228,7 +228,7 @@
         </div>
         <!-- Mapping transfer button -->
         <div
-          v-if="authorized && data.item.mapping && data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings'"
+          v-if="showEditingTools && authorized && data.item.mapping && data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings'"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-b-tooltip.hover="{ title: $t('mappingBrowser.transferMapping'), delay: $util.delay.medium }"
@@ -249,7 +249,9 @@
             icon="comment"
             class="mappingBrowser-noteIcon" />
         </div>
-        <div class="mappingBrowser-toolbar-button">
+        <div
+          v-if="showEditingTools"
+          class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-b-tooltip.hover="{ title: $t('mappingBrowser.edit'), delay: $util.delay.medium }"
             icon="edit"
@@ -257,7 +259,7 @@
             @click="edit(data)" />
         </div>
         <div
-          v-if="!$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
+          v-if="showEditingTools && !$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canSave(data.item.mapping)"
@@ -267,7 +269,7 @@
             @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
         </div>
         <div
-          v-else
+          v-else-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canRemove(data) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
@@ -399,6 +401,10 @@ export default {
     searchLimit: {
       type: Number,
       default: 5,
+    },
+    showEditingTools: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

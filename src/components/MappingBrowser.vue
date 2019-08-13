@@ -300,6 +300,7 @@
           v-if="searchSections.length"
           :sections="searchSections"
           :search-limit="resultLimit"
+          :show-editing-tools="showEditingTools"
           @pageChange="changePage('search', $event)">
           <!-- Share button -->
           <div
@@ -343,6 +344,7 @@
         </div>
       </tab>
       <tab
+        v-if="showNavigator"
         :title="$t('mappingBrowser.mappingNavigator')"
         @click="handleClick">
         <div
@@ -417,6 +419,16 @@ export default {
   name: "MappingBrowser",
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton },
   mixins: [auth, objects, dragandrop, clickHandler, computed],
+  props: {
+    showNavigator: {
+      type: Boolean,
+      default: true,
+    },
+    showEditingTools: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       tab: 0,
@@ -564,11 +576,15 @@ export default {
       return !this.concordances || (this.concordances && this.concordances.length)
     },
     tabIndexes() {
-      return {
+      let indexes = {
         concordances: this.concordancesShown ? 0 : null,
         search: this.concordancesShown ? 1 : 0,
         navigator: this.concordancesShown ? 2 : 1,
       }
+      if (!this.showNavigator) {
+        delete indexes.navigator
+      }
+      return indexes
     },
     typeOptions() {
       let options = [{

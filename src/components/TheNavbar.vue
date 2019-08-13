@@ -17,7 +17,7 @@
     <b-navbar-brand
       href="https://coli-conc.gbv.de/cocoda/"
       target="_blank">
-      {{ config.title }}
+      {{ title || config.title }}
     </b-navbar-brand>
     <!-- Links on right side -->
     <b-navbar-nav class="ml-auto">
@@ -31,13 +31,20 @@
       </b-nav-item>
       <!-- Help menu button -->
       <b-nav-item
+        v-if="!reduced"
         :href="`./user-manual-${locale}.html`"
         target="_blank">
         {{ $t("general.manual") }}
       </b-nav-item>
+      <!-- Full Cocoda button (only if reduced) -->
+      <b-nav-item
+        v-if="reduced"
+        href="./">
+        Open Cocoda
+      </b-nav-item>
       <!-- Mapping trash -->
       <b-nav-item-dropdown
-        v-if="mappingTrash.length > 0"
+        v-if="!reduced && mappingTrash.length > 0"
         id="mappingTrashDropdown"
         ref="mappingTrashDropdown"
         extra-menu-classes="navbar-dropdown"
@@ -81,6 +88,7 @@
       </b-nav-item-dropdown>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown
+        v-if="!reduced"
         id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
         extra-menu-classes="navbar-dropdown favoriteConceptsDropdown"
@@ -142,6 +150,7 @@
       </b-nav-item-dropdown>
       <!-- Settings button -->
       <b-nav-item-dropdown
+        v-if="!reduced"
         id="accountDropdown"
         ref="accountDropdown"
         extra-menu-classes="navbar-dropdown"
@@ -238,7 +247,7 @@
       </b-nav-item-dropdown>
       <!-- Current registry -->
       <b-nav-item-dropdown
-        v-if="$store.getters.getCurrentRegistry"
+        v-if="!reduced && $store.getters.getCurrentRegistry"
         id="currentRegistryDropdown"
         ref="currentRegistryDropdown"
         extra-menu-classes="navbar-dropdown"
@@ -311,6 +320,16 @@ export default {
     TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable,
   },
   mixins: [auth, objects, dragandrop, computed],
+  props: {
+    title: {
+      type: String,
+      default: null,
+    },
+    reduced: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       settingsTab: 0,

@@ -23,6 +23,12 @@ module.exports = {
       filename: "mappings.html",
       chunks: ["chunk-vendors", "chunk-common", "mappingsApp"],
     },
+    concordanceApp: {
+      entry: "src/entry/concordanceApp.js",
+      template: "public/concordances.html",
+      filename: "concordances.html",
+      chunks: ["chunk-vendors", "chunk-common", "concordanceApp"],
+    },
   },
   configureWebpack: {
     plugins: [

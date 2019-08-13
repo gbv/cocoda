@@ -686,28 +686,24 @@ export default {
         }))
       }
 
-      if (promises.length) {
-        Promise.all(promises).then(() => {
-          this.loading = false
-          refreshRouter(this.$store)
-          if (firstLoad) {
-            // Search share link
-            if (query.search) {
-              let filter = JSON.parse(query.search)
-              this.forceMappingBrowser = true
-              this.searchMappings(filter)
-            } else if (query.concordances !== undefined) {
-              this.showConcordances()
-            }
-          }
-        }).catch((error) => {
-          this.loading = false
-          console.warn(error)
-          this.alert("There was an error loading data from URL.", null, "danger")
-        })
-      } else {
+      Promise.all(promises).then(() => {
         this.loading = false
-      }
+        refreshRouter(this.$store)
+        if (firstLoad) {
+          // Search share link
+          if (query.search) {
+            let filter = JSON.parse(query.search)
+            this.forceMappingBrowser = true
+            this.searchMappings(filter)
+          } else if (query.concordances !== undefined) {
+            this.showConcordances()
+          }
+        }
+      }).catch((error) => {
+        this.loading = false
+        console.warn(error)
+        this.alert("There was an error loading data from URL.", null, "danger")
+      })
     },
     searchMappings(filter) {
       let mappingBrowser = this.$refs.mappingBrowser
