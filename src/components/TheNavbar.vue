@@ -218,7 +218,7 @@
             v-for="(tab, index) in $t('settingsTabs')"
             :key="`navbar-settingsTabs-${index}`"
             class="navbar-settingsTabs-row"
-            @click="settingsTab = index; $refs.settings.show()">
+            @click="openSettingsTab(index)">
             {{ tab }}
           </p>
           <hr>
@@ -378,6 +378,10 @@ export default {
     },
     removeFavoriteConcept(concept) {
       this.$store.dispatch("removeConceptFromFavorites", concept)
+    },
+    openSettingsTab(index) {
+      this.settingsTab = index
+      this.$refs.settings.show()
     },
   },
 }

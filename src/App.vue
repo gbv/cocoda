@@ -26,7 +26,9 @@
         </div>
       </b-alert>
     </div>
-    <the-navbar v-if="configLoaded" />
+    <the-navbar
+      v-if="configLoaded"
+      ref="navbar" />
     <!-- Swap sides button -->
     <div
       v-show="selected.scheme[true] || selected.scheme[false]"
@@ -380,7 +382,14 @@ export default {
         this.alert(this.$t("alerts.loggedIn"), null, "success")
       } else if (previous && !current) {
         // Logged out
-        this.alert(this.$t("alerts.loggedOut"), null, "danger")
+        this.alert(this.$t("alerts.loggedOut"), 10, "danger", this.$t("settings.logInAlertButton"), () => {
+          // Open Accounts page in settings
+          const navbar = this.$refs.navbar
+          if (navbar && navbar.openSettingsTab) {
+            // Maybe prevent hardcoded tab index?
+            navbar.openSettingsTab(0)
+          }
+        })
       }
     },
     /**
