@@ -43,21 +43,14 @@ class LocalMappingsProvider extends BaseProvider {
         return localforage.setItem(this.localStorageKey, mappings)
       })
     }
-    // Migration from old local storage key to new one if necessary
-    let promise = Promise.all([localforage.getItem(oldLocalStorageKey), localforage.getItem(this.localStorageKey)]).then(results => {
-      let [oldMappings, newMappings] = results
-      if (oldMappings && !newMappings) {
-        return localforage.setItem(this.localStorageKey, oldMappings).then(() => {
-          console.warn(`Migrated from old local storage key (${oldLocalStorageKey}) to new one (${this.localStorageKey})`)
-        }).catch(error => {
-          console.error("Error attempting to migrate from old storage key to new one:", error)
-        }).then(addUris)
-      } else {
-        return addUris()
+    // Show warning if there are mappings in local storage that use the old local storage key.
+    localforage.getItem(oldLocalStorageKey).then(results => {
+      if (results) {
+        console.warn(`Warning: There is old data in local storage (or IndexedDB, depending on the ) with the key "${oldLocalStorageKey}". This data will not be used anymore. A manual export is necessary to get this data back.`)
       }
     })
-    // Put promise into queue so that getMappings requests are waiting for migration/adjustments to finish
-    this.queue.push(promise)
+    // Put promise into queue so that getMappings requests are waiting for adjustments to finish
+    this.queue.push(addUris())
   }
 
   /**
