@@ -263,7 +263,7 @@ export default {
           if (query.search) {
             let filter = JSON.parse(query.search)
             this.searchMappings(filter)
-          } else if (query.concordances !== undefined) {
+          } else {
             this.showConcordances()
           }
         }
