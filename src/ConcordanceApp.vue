@@ -50,7 +50,8 @@
               ref="mappingBrowser"
               :show-navigator="false"
               :show-editing-tools="false"
-              :show-registry-override="['http://coli-conc.gbv.de/registry/coli-conc-mappings']" />
+              :show-registry-override="['http://coli-conc.gbv.de/registry/coli-conc-mappings']"
+              :show-cocoda-link="true" />
           </div>
         </div>
       </div>

@@ -184,7 +184,8 @@
       "searchShareCopy": "Copy link to clipboard",
       "searchInsertSelfIntoCreator": "Insert my own identities",
       "searchForMappingsByCreator": "Search mappings from this creator",
-      "mappingConfirmedTooltip": "Confirmed"
+      "mappingConfirmedTooltip": "Confirmed",
+      "openInCocoda": "open in Cocoda"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -547,7 +548,8 @@
       "searchShareCopy": "Link in die Zwischenablage kopieren",
       "searchInsertSelfIntoCreator": "Meine eigenen Identitäten einfügen",
       "searchForMappingsByCreator": "Suche Mappings dieses Erstellers",
-      "mappingConfirmedTooltip": "Bestätigt"
+      "mappingConfirmedTooltip": "Bestätigt",
+      "openInCocoda": "in Cocoda öffnen"
     },
     "mappingDetail": {
       "title": "Mapping-Details",

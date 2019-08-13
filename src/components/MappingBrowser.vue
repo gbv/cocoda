@@ -301,6 +301,7 @@
           :sections="searchSections"
           :search-limit="resultLimit"
           :show-editing-tools="showEditingTools"
+          :show-cocoda-link="showCocodaLink"
           @pageChange="changePage('search', $event)">
           <!-- Share button -->
           <div
@@ -433,6 +434,13 @@ export default {
     showEditingTools: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * If true, a link to Cocoda for mappings will be shown (gets relayed to MappingBrowserTable).
+     */
+    showCocodaLink: {
+      type: Boolean,
+      default: false,
     },
     /**
      * Override showRegistry from settings

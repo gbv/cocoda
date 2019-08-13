@@ -278,6 +278,15 @@
             icon="trash-alt"
             @click="removeMapping(data.item.mapping)" />
         </div>
+        <div
+          v-if="showCocodaLink"
+          class="mappingBrowser-toolbar-button">
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.openInCocoda'), delay: $util.delay.medium }"
+            class="button"
+            icon="external-link-square-alt"
+            @click="openInCocoda(data.item.mapping)" />
+        </div>
       </span>
       <span
         slot="HEAD_actions"
@@ -406,6 +415,13 @@ export default {
     showEditingTools: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * If true, a link to Cocoda for mappings will be shown.
+     */
+    showCocodaLink: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -822,6 +838,21 @@ export default {
           }
         }
       }
+    },
+    openInCocoda(mapping) {
+      let url = "./?"
+      if (mapping.uri) {
+        url += `mappingUri=${mapping.uri}`
+      } else {
+        const identifier = mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+        if (identifier) {
+          url += `mappingIdentifier=${identifier}`
+        } else {
+          this.alert("Unknown error trying to open mapping in Cocoda.")
+          return
+        }
+      }
+      window.open(url, "_self")
     },
   },
 }
