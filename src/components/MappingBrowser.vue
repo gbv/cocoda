@@ -420,13 +420,26 @@ export default {
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton },
   mixins: [auth, objects, dragandrop, clickHandler, computed],
   props: {
+    /**
+     * If false, the Mapping Navigator will be hidden.
+     */
     showNavigator: {
       type: Boolean,
       default: true,
     },
+    /**
+     * If false, no editing tools will be shown (gets relayed to MappingBrowserTable).
+     */
     showEditingTools: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * Override showRegistry from settings
+     */
+    showRegistryOverride: {
+      type: Array,
+      default: null,
     },
   },
   data() {
@@ -684,6 +697,9 @@ export default {
       for (let registry of this.mappingRegistries) {
         Object.defineProperty(object, registry.uri, {
           get: () => {
+            if (this.showRegistryOverride) {
+              return this.showRegistryOverride.includes(registry.uri)
+            }
             let result = this.$settings.mappingBrowserShowRegistry[registry.uri]
             if (result == null) {
               return true
