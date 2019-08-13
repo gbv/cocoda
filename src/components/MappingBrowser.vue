@@ -915,7 +915,10 @@ export default {
   mounted() {
     if (!this.concordances || !this.concordances.length) {
       let promises = []
-      for (let registry of this.config.registries.filter(r => r.provider.has.concordances)) {
+      for (let registry of this.config.registries.filter(r =>
+        r.provider.has.concordances // only use registries that offer concordances
+        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)) // if showRegistryOverride is given, only use those registries
+      )) {
         promises.push(registry.provider.getConcordances())
       }
       Promise.all(promises).then(results => {
