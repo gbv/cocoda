@@ -841,18 +841,29 @@ export default {
     },
     openInCocoda(mapping) {
       let url = "./?"
-      if (mapping.uri) {
-        url += `mappingUri=${mapping.uri}`
-      } else {
-        const identifier = mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
-        if (identifier) {
-          url += `mappingIdentifier=${identifier}`
-        } else {
-          this.alert("Unknown error trying to open mapping in Cocoda.")
-          return
+      // Open schemes/concepts from mapping, not the mapping itself
+      for (let side of ["from", "to"]) {
+        const concept = this.$jskos.conceptsOfMapping(mapping, side)[0]
+        if (concept && concept.uri) {
+          url += `${side}=${encodeURIComponent(concept.uri)}&`
+        }
+        const scheme = mapping[`${side}Scheme`]
+        if (scheme && scheme.uri) {
+          url += `${side}Scheme=${encodeURIComponent(scheme.uri)}&`
         }
       }
-      window.open(url, "_self")
+      // if (mapping.uri) {
+      //   url += `mappingUri=${mapping.uri}`
+      // } else {
+      //   const identifier = mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+      //   if (identifier) {
+      //     url += `mappingIdentifier=${identifier}`
+      //   } else {
+      //     this.alert("Unknown error trying to open mapping in Cocoda.")
+      //     return
+      //   }
+      // }
+      window.open(url.substring(0, url.length - 1), "_self")
     },
   },
 }
