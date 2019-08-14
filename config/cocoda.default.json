@@ -170,7 +170,7 @@
     {
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
-      "mappings": "//coli-conc.gbv.de/services/wikidata/mappings/",
+      "status": "https://coli-conc.gbv.de/services/wikidata/status",
       "subject": [
         {
           "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
