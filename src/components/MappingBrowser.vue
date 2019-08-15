@@ -1389,7 +1389,7 @@ export default {
     mbLoadConcepts(concepts) {
       let toLoad = []
       for (let concept of concepts) {
-        if(concept && (_.isEmpty(concept.prefLabel) || _.isEmpty(concept.notation)) && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && this.getProvider(concept)) {
+        if(concept && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && this.getProvider(concept)) {
           toLoad.push(concept)
         }
       }
