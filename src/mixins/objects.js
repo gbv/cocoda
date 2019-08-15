@@ -176,6 +176,17 @@ export default {
         for (let prop of Object.keys(object)) {
           if (((_.isEmpty(existing[prop]) || Array.isArray(existing[prop]) && existing[prop].includes(null)) && object[prop] != null && !_.isEqual(existing[prop], object[prop])) || (_.isArray(existing[prop]) && _.isArray(object[prop]) && object[prop].length > existing[prop].length)) {
             this.$set(existing, prop, object[prop])
+          } else {
+            // Special cases
+            // 1. Integrate object properties
+            if (!_.isArray(existing[prop]) && !_.isArray(object[prop]) && _.isObject(existing[prop]) && _.isObject(object[prop])) {
+              // Just overwrite null or not existing values
+              for (let prop2 of Object.keys(object[prop])) {
+                if (!existing[prop][prop2]) {
+                  existing[prop][prop2] = object[prop][prop2]
+                }
+              }
+            }
           }
         }
       }
@@ -542,10 +553,15 @@ export default {
         return Promise.resolve([])
       }
       params[0].type = "mapping/getMappings"
+      if (params[0].adjust === undefined) {
+        params[0].adjust = true
+      }
       return this.$store.dispatch(...params).then(mappings => {
-        // Replace all objects in mappings with objects in store
-        for (let mapping of mappings) {
-          this.adjustMapping(mapping)
+        if (params[0].adjust) {
+          // Replace all objects in mappings with objects in store
+          for (let mapping of mappings) {
+            this.adjustMapping(mapping)
+          }
         }
         return mappings
       })
