@@ -110,7 +110,7 @@ let notation = (item, type) => {
   return ""
 }
 
-let fallbackLanguage = () => _.get(store, "state.config.languages[0]", "en")
+let fallbackLanguages = () => _.get(store, "state.config.languages", ["en", "de"])
 
 /**
  * Returns a language tag to be used for a language map, null if no language was found in the map.
@@ -122,12 +122,14 @@ let getLanguage = (languageMap, language) => {
   if (!languageMap) {
     return null
   }
-  language = language || i18n.locale || fallbackLanguage()
+  language = language || i18n.locale
   if (languageMap[language]) {
     return language
   }
-  if (languageMap[fallbackLanguage()]) {
-    return fallbackLanguage()
+  for (let language of fallbackLanguages()) {
+    if (languageMap[language]) {
+      return language
+    }
   }
   // Fallback for the fallback: iterate through languages and choose the first one found.
   for (let language of Object.keys(languageMap)) {
@@ -254,4 +256,4 @@ let isValidUri = (uri) => {
   return uri.match(re_js_rfc3986_URI) !== null
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguage, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri }
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguages, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri }

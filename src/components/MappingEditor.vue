@@ -566,7 +566,7 @@ export default {
       // Save comments
       let comments = this.comments.filter(c => c != "").slice()
       if (this.haveNotesChanged) {
-        let language = this.$util.getLanguage(_.get(this, "mapping.note")) || this.$util.fallbackLanguage()
+        let language = this.$util.getLanguage(_.get(this, "mapping.note")) || this.$util.fallbackLanguages()[0]
         this.$store.commit({
           type: "mapping/setNote",
           note: {
