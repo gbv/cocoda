@@ -326,13 +326,25 @@ export default {
     },
     gndTerms() {
       // Assemble gndTerms array for display
-      let concepts = _.get(this.item, "__GNDCONCEPTS__", [])
+      let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
+      let mappings = _.get(this.item, "__GNDMAPPINGS__", [])
+      let concepts = []
+      for (let mapping of mappings) {
+        for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
+          if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]")) && !concepts.find(c => this.$jskos.compare(c.concept, concept))) {
+            concepts.push({
+              concept,
+              type: this.$jskos.mappingTypeByType(mapping.type),
+            })
+          }
+        }
+      }
       let gndTerms = []
-      let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow"]
+      let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow", "conceptDetail.relevanceGeneric"]
       for (let relevance of relevanceOrder) {
         let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
         let terms = []
-        for (let concept of concepts.filter(concept => concept.__GNDTYPE__.RELEVANCE == this.$t(relevance, "en"))) {
+        for (let { concept } of concepts.filter(c => c.type.RELEVANCE == this.$t(relevance, "en"))) {
           if (concept && (this.$util.prefLabel(concept, null, false))) {
             terms.push(_.escape(this.$util.prefLabel(concept)))
           }
@@ -369,7 +381,7 @@ export default {
       // Load GND terms
       this.loadGndTerms()
     },
-    loadGndTerms() {
+    async loadGndTerms() {
       // TODO: Refactoring necessary!
       if (!this.item) return
       let itemBefore = this.item
@@ -378,29 +390,27 @@ export default {
       if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
         return
       }
-      this.getMappings({
+      let mappings = await this.getMappings({
         direction: "both",
         from: itemBefore,
-      }).then(mappings => {
-        let gndConcepts = []
-        for (let mapping of mappings) {
-          let concepts = this.$jskos.conceptsOfMapping(mapping)
-          for (let concept of concepts) {
-            if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]"))) {
-              this.$set(concept, "__GNDTYPE__", this.$jskos.mappingTypeByType(mapping.type))
-              gndConcepts.push(concept)
-            }
+        toScheme: gnd.uri,
+      })
+
+      // Get GND concepts and load their labels
+      let gndConcepts = []
+      for (let mapping of mappings) {
+        let concepts = this.$jskos.conceptsOfMapping(mapping)
+        for (let concept of concepts) {
+          if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]"))) {
+            gndConcepts.push(concept)
           }
         }
-        gndConcepts = _.uniqWith(gndConcepts, this.$jskos.compare)
-        return this.loadConcepts(gndConcepts)
-      }).then(concepts => {
-        // Filter out all null values
-        concepts = concepts.filter(concept => concept != null)
-        this.$set(itemBefore, "__GNDCONCEPTS__", concepts)
-      }).catch(error => {
-        console.error("ConceptDetail: Error when loading GND mappings:", error)
-      })
+      }
+      gndConcepts = _.uniqWith(gndConcepts, this.$jskos.compare)
+      await this.loadConcepts(gndConcepts)
+
+      // Set property "__GNDMAPPINGS__" for item
+      this.$set(itemBefore, "__GNDMAPPINGS__", mappings)
     },
     /**
      * Function to get element for copy to clipboard
