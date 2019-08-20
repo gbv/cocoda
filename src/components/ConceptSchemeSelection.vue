@@ -78,7 +78,11 @@
       <!-- Inner div. Classes are attached because #app's classes don't apply for popovers. -->
       <div
         ref="popover"
-        class="conceptSchemeSelection-expanded font-default text-dark color-primary-0-bg fontSize-normal">
+        class="conceptSchemeSelection-expanded font-default text-dark color-primary-0-bg fontSize-normal"
+        :class="{
+          'conceptSchemeSelection-expanded-div': scheme == null,
+          'conceptSchemeSelection-expanded-popover': scheme != null,
+        }">
         <!-- Title (source/target scheme) -->
         <div class="componentTitle">
           {{ isLeft ? $t("schemeSelection.source") : $t("schemeSelection.target") }}
@@ -572,13 +576,28 @@ export default {
   text-align: center;
 }
 
+.conceptSchemeSelection-popover {
+  height: 100%;
+  position: relative;
+}
+
 .conceptSchemeSelection-expanded {
   display: flex;
   flex-direction: column;
   padding: 5px 10px;
+}
+
+.conceptSchemeSelection-expanded-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.conceptSchemeSelection-expanded-popover {
   // Make the component take up almost all of the visible height.
-  min-height: 94vh;
-  max-height: 94vh;
+  min-height: 90vh;
+  max-height: 90vh;
 }
 
 .conceptSchemeSelection-expanded > * {
