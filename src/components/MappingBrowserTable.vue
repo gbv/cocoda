@@ -339,6 +339,9 @@
             :total-rows="section.totalCount"
             :per-page="searchLimit"
             class="mappingBrowser-pagination justify-content-center"
+            :class="{
+              'pagination-hide-goToLast': (section.totalCount / searchLimit) > 500,
+            }"
             style="flex: none; user-select: none; margin: 0; padding: 0;"
             size="sm"
             @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
@@ -1008,6 +1011,10 @@ export default {
 .mappingBrowser-pagination.pagination .page-item .page-link {
   border: none;
   line-height: 1;
+}
+
+.mappingBrowser-pagination.pagination.pagination-hide-goToLast > li:last-child {
+  display: none;
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
