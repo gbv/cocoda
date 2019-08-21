@@ -340,7 +340,7 @@
             :per-page="searchLimit"
             class="mappingBrowser-pagination justify-content-center"
             :class="{
-              'pagination-hide-goToLast': (section.totalCount / searchLimit) > 500,
+              'pagination-hide-goToLast': section.totalCount > 50000,
             }"
             style="flex: none; user-select: none; margin: 0; padding: 0;"
             size="sm"
