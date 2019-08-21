@@ -37,8 +37,8 @@ class BaseProvider {
     // Set instance path
     this.path = window.location.pathname
     // Set languages
-    this.defaultLanguage = "de,en,es,nl,it,fi,pl,ru,cs,jp"
-    this.language = this.defaultLanguage
+    this.defaultLanguages = "de,en,es,nl,it,fi,pl,ru,cs,jp".split(",")
+    this.languages = this.defaultLanguages
     // Set properties
     this.properties = {
       minimum: "-",
@@ -59,7 +59,7 @@ class BaseProvider {
         _.set(options, "params.properties", this.properties.default)
       }
       options.cancelToken = cancelToken
-      let language = _.get(options, "params.language") || this.language || this.defaultLanguage
+      let language = _.uniq([].concat(_.get(options, "params.language", "").split(","), this.languages, this.defaultLanguages).filter(lang => lang != "")).join(",")
       _.set(options, "params.language", language)
       // Try 5 times with 1.5 second delay
       let retryCount = 3, retryDelay = 1500
