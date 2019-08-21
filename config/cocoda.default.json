@@ -171,6 +171,7 @@
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
       "status": "https://coli-conc.gbv.de/services/wikidata/status",
+      "autoRefresh": 10000,
       "subject": [
         {
           "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
