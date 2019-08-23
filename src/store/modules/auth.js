@@ -123,6 +123,10 @@ const actions = {
             prop: "about",
             value: event,
           })
+          // Set auth public key for all providers that need authentication
+          for (let registry of registries) {
+            registry.provider.setAuthPublicKey(event.publicKey)
+          }
           break
         case LoginClient.events.providers:
           commit({

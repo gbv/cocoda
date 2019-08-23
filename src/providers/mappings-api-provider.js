@@ -11,9 +11,22 @@ class MappingsApiProvider extends BaseProvider {
 
   constructor(...params) {
     super(...params)
-    this.has.mappings = !!this.registry.mappings
+    this.has.mappings = this.registry.mappings ? {} : false
+    if (this.has.mappings) {
+      this.has.mappings.read = !!_.get(this.registry, "config.mappings.read", true)
+      this.has.mappings.create = !!_.get(this.registry, "config.mappings.create")
+      this.has.mappings.update = !!_.get(this.registry, "config.mappings.update")
+      this.has.mappings.delete = !!_.get(this.registry, "config.mappings.delete")
+      this.has.mappings.anonymous = !!_.get(this.registry, "config.mappings.anonymous")
+    }
     this.has.concordances = !!this.registry.concordances
-    this.has.annotations = !!this.registry.annotations
+    this.has.annotations = this.registry.annotations ? {} : false
+    if (this.has.annotations) {
+      this.has.annotations.read = !!_.get(this.registry, "config.annotations.read")
+      this.has.annotations.create = !!_.get(this.registry, "config.annotations.create")
+      this.has.annotations.update = !!_.get(this.registry, "config.annotations.update")
+      this.has.annotations.delete = !!_.get(this.registry, "config.annotations.delete")
+    }
     this.has.canSaveMappings = !!_.get(this.registry, "config.auth.canSaveMappings")
     this.has.canRemoveMappings = !!_.get(this.registry, "config.auth.canRemoveMappings")
     this.has.allowCrossUserEditing = !!_.get(this.registry, "config.auth.allowCrossUserEditing")

@@ -30,10 +30,6 @@ class BaseProvider {
     this.http = options.http || axios
     // Create a dictionary with functionality of registry
     this.has = {}
-    // Convert all values into booleans
-    _.forOwn(this.has, (value, key) => {
-      this.has[key] = _.isBoolean(value) ? value : value != null
-    })
     // Set instance path
     this.path = window.location.pathname
     // Set languages
@@ -47,6 +43,7 @@ class BaseProvider {
       all: "*",
     }
     this.auth = null
+    this.authPublicKey = null
     // Save modified http methods
     this.request = (method, url, data, options, cancelToken) => {
       // Don't perform http requests if site is used via https
@@ -217,6 +214,47 @@ class BaseProvider {
 
   setAuth(auth) {
     this.auth = auth
+  }
+  setAuthPublicKey(key) {
+    this.authPublicKey = key
+  }
+
+  isAuthorizedFor({ type, action, user, crossUser }) {
+    if (action == "read" && this.has[type] === true) {
+      return true
+    }
+    if (!this.has[type]) {
+      return false
+    }
+    const options = _.get(this.registry, `config.${type}.${action}`)
+    if (!options) {
+      return !!this.has[type][action]
+    }
+    if (options.auth && (!user || !this.auth)) {
+      return false
+    }
+    // Public key mismatch
+    if (options.auth && this.authPublicKey != this.registry.config.auth.key) {
+      return false
+    }
+    if (options.auth && options.identities) {
+      // Check if on of the user's identities matches
+      const uris = [user.uri].concat(Object.values(user.identities || {}).map(id => id.uri)).filter(uri => uri != null)
+      if (_.intersection(uris, options.identities).length == 0) {
+        return false
+      }
+    }
+    if (options.auth && options.identityProviders) {
+      // Check if user has the required provider
+      const providers = Object.keys((user && user.identities) || {})
+      if (_.intersection(providers, options.identityProviders).length == 0) {
+        return false
+      }
+    }
+    if (crossUser) {
+      return !!options.crossUser
+    }
+    return !!this.has[type][action]
   }
 
   /**

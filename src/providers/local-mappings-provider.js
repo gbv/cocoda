@@ -15,7 +15,12 @@ class LocalMappingsProvider extends BaseProvider {
 
   constructor(...params) {
     super(...params)
-    this.has.mappings = true
+    this.has.mappings = {
+      read: true,
+      create: true,
+      update: true,
+      delete: true,
+    }
     this.has.canSaveMappings = true
     this.has.canRemoveMappings = true
     this.queue = []
@@ -51,6 +56,14 @@ class LocalMappingsProvider extends BaseProvider {
     })
     // Put promise into queue so that getMappings requests are waiting for adjustments to finish
     this.queue.push(addUris())
+  }
+
+  isAuthorizedFor({ type, action }) {
+    // Allow all for mappings
+    if (type == "mappings" && action != "anonymous") {
+      return true
+    }
+    return false
   }
 
   /**

@@ -13,7 +13,7 @@ class ConceptApiProvider extends BaseProvider {
     this.has.schemes = !!this.registry.schemes
     this.has.top = !!this.registry.top
     this.has.data = !!this.registry.data
-    this.has.concepts = !!this.registry.concepts
+    this.has.concepts = !!this.registry.concepts || this.has.data
     this.has.narrower = !!this.registry.narrower
     this.has.ancestors = !!this.registry.ancestors
     this.has.types = !!this.registry.types
