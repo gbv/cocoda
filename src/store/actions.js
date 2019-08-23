@@ -132,6 +132,13 @@ export default {
       // Remove all registries without provider
       config.registries = config.registries.filter(registry => registry.provider != null)
 
+      // Add isAuthorizedFor method from providers to registries
+      for (let registry of config.registries) {
+        registry.isAuthorizedFor = (...args) => {
+          return registry.provider.isAuthorizedFor(...args)
+        }
+      }
+
       // Save config
       commit({
         type: "setConfig",
