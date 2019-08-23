@@ -19,7 +19,11 @@ const emptyMapping = {
 // initial state
 const state = {
   mapping: jskos.copyDeep(emptyMapping),
-  original: null,
+  original: {
+    uri: null,
+    mapping: null,
+    registry: null,
+  },
   mappingsNeedRefresh: false,
   mappingsNeedRefreshRegistry: null,
   mappingTrash: [],
@@ -114,16 +118,23 @@ const getters = {
     return state.mapping[helpers.fromToScheme(isLeft)]
   },
 
-  hasChangedFromOriginal: (state) => {
+  hasChangedFromOriginal: (state, getters, rootState, rootGetters) => {
     if (!state.mapping) {
       return false
     }
-    if (!state.original) {
+    if (!state.original.uri) {
+      console.log("no original uri")
       return true
     }
+    // If original registry is not the currently chosen registry, return true
+    const registry = rootGetters.getCurrentRegistry
+    if (!jskos.compare(state.original.registry, registry)) {
+      return true
+    }
+    const original = state.original.mapping
     // Check if notes have changed
     // Add more fields like this if needed.
-    if (!_.isEqual(state.mapping.note, state.original.note)) {
+    if (!_.isEqual(state.mapping.note, original.note)) {
       return true
     }
     let isCreatorEqual = (a, b) => {
@@ -148,10 +159,16 @@ const getters = {
       }
       return true
     }
-    if (!isCreatorEqual(state.mapping.creator, state.original.creator)) {
+    // TODO: Take anonymous of registry into account
+    if (!registry.isAuthorizedFor({
+      type: "mappings",
+      action: "anonymous",
+      user: rootState.auth.user,
+    }) && !isCreatorEqual(state.mapping.creator, original.creator)) {
       return true
     }
-    return !jskos.compareMappings(state.original, state.mapping)
+    console.log("not equal (or same?)")
+    return !jskos.compareMappings(original, state.mapping)
   },
 
   mappingTrash: (state, getters, rootState) => {
@@ -162,6 +179,46 @@ const getters = {
       trash.push(Object.assign({}, item, { registry }))
     }
     return trash
+  },
+
+  canCreate: (state, getters, rootState, rootGetters) => {
+    const registry = rootGetters.getCurrentRegistry
+    if (!registry) {
+      return false
+    }
+    return registry.isAuthorizedFor({
+      type: "mappings",
+      action: "create",
+      user: rootState.auth.user,
+    }) && !!state.mapping.fromScheme && !!state.mapping.toScheme
+  },
+
+  canUpdate: (state, getters, rootState, rootGetters) => {
+    const registry = rootGetters.getCurrentRegistry
+    if (!registry || !jskos.compare(registry, state.original.registry) || !state.mapping || !state.original.uri) {
+      return false
+    }
+    let crossUser = !jskos.compare(_.get(state.mapping, "creator[0]"), _.get(state.original.mapping, "creator[0]"))
+    return registry.isAuthorizedFor({
+      type: "mappings",
+      action: "update",
+      user: rootState.auth.user,
+      crossUser,
+    }) && !!state.mapping.fromScheme && !!state.mapping.toScheme
+  },
+
+  canDelete: (state, getters, rootState, rootGetters) => {
+    const registry = rootGetters.getCurrentRegistry
+    if (!registry || !jskos.compare(registry, state.original.registry) || !state.mapping || !state.original.uri) {
+      return false
+    }
+    let crossUser = !jskos.compare(_.get(state.mapping, "creator[0]"), _.get(state.original.mapping, "creator[0]"))
+    return registry.isAuthorizedFor({
+      type: "mappings",
+      action: "delete",
+      user: rootState.auth.user,
+      crossUser,
+    })
   },
 
 }
@@ -187,7 +244,8 @@ const mutations = {
     if ((fromTo == "from" && state.mapping.from.memberSet.length != 0) || !getters.checkScheme(state)(scheme, isLeft)) {
       state.mapping[fromTo].memberSet = [concept]
       // Remove conncetion to original mapping because a whole side changed.
-      state.original = null
+      // TODO: Should this stay?
+      state.original.uri = null
     } else if (fromTo == "to" && cardinality == "1-to-1") {
       state.mapping[fromTo].memberSet = [concept]
     } else {
@@ -236,17 +294,21 @@ const mutations = {
    * Payload object: { mapping, original }
    * - mapping: the object to be saved as the new mapping (default: not set)
    * - original: reference to the original mapping (default: null)
+   * - registry: reference to the registry of the original mapping (default: null)
    */
-  set(state, { mapping = null, original = null }) {
+  set(state, { mapping = null, original = null, registry = null }) {
     // TODO: Run checks on new mapping object.
     if (mapping) {
       state.mapping = mapping
     }
     // Save the original with identifiers and the LOCAL property.
-    if (original) {
-      state.original = jskos.addMappingIdentifiers(original)
+    registry = registry || _.get(original, "_provider.registry")
+    if (original && registry) {
+      state.original.uri = original.uri
+      state.original.mapping = original
+      state.original.registry = registry
     } else if (!mapping) {
-      state.original = null
+      state.original.uri = null
     }
   },
 
@@ -255,7 +317,7 @@ const mutations = {
    */
   empty(state) {
     state.mapping = jskos.copyDeep(emptyMapping)
-    state.original = null
+    state.original.uri = null
   },
 
   /**
@@ -403,7 +465,7 @@ const mutations = {
 // TODO: Refactoring!
 const actions = {
 
-  getMappings({ rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
+  getMappings({ state, commit, rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
     let config = rootState.config
     let registries = []
     if (onlyFromMain) {
@@ -434,9 +496,36 @@ const actions = {
     return Promise.all(promises).then(results => {
       // Use results[0] directly to retain custom properties for single registry results
       let mappings = results.length == 1 ? results[0] : _.union(...results)
-      // TODO: Adjustments, like replacing schemes and concepts with references in store, etc.
+      if (state.original.uri) {
+        for (let mapping of mappings) {
+          if (jskos.compare(state.original.registry, mapping._provider.registry) && state.original.uri == mapping.uri) {
+            commit({
+              type: "set",
+              original: mapping,
+              registry: state.original.registry,
+            })
+          }
+        }
+      }
       return mappings
     })
+  },
+
+  // Saves current mapping if possible
+  async saveMapping({ state, getters, rootGetters }) {
+    const registry = rootGetters.getCurrentRegistry
+    let update = false
+    if (getters.canUpdate) {
+      update = true
+    }
+    if (update) {
+      return registry.provider.saveMapping(state.mapping, state.original.mapping)
+    } else {
+      if (!getters.canCreate) {
+        return null
+      }
+      return registry.provider.saveMapping(state.mapping)
+    }
   },
 
   saveMappings({ rootGetters, rootState }, { mappings, registry }) {
@@ -456,6 +545,14 @@ const actions = {
     return registry.provider.saveMappings(mappings)
   },
 
+  async removeMapping({ state, getters, rootGetters }) {
+    const registry = rootGetters.getCurrentRegistry
+    if (!getters.canDelete) {
+      return null
+    }
+    return registry.provider.removeMapping(state.original.mapping)
+  },
+
   removeMappings({ state, rootGetters, commit, rootState }, { mappings, registry }) {
     let config = rootState.config
     let uri = registry
@@ -473,7 +570,7 @@ const actions = {
         if (deleted) {
           let mapping = mappings[index]
           // Check if current original was amongst the removed mappings
-          if (_.isEqual(jskos.minifyMapping(mapping), jskos.minifyMapping(state.original)) && jskos.compare(_.get(mapping, "_provider.registry"), _.get(state.original, "_provider.registry"))) {
+          if (mapping.uri == state.original.mapping.uri && jskos.compare(_.get(mapping, "_provider.registry"), state.original)) {
             // Set original to null
             commit({ type: "set" })
           }

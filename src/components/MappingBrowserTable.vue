@@ -566,18 +566,6 @@ export default {
       return this.$store.getters.getCurrentRegistry
     },
   },
-  watch: {
-    currentRegistry(registry) {
-      // If registry changes and does not match the registry of the current original mapping, remove original
-      // TODO: Is this the best way to solve this? Maybe use URIs instead?
-      if (!this.$jskos.compare(registry, _.get(this.$store.state.mapping.original, "_provider.registry"))) {
-        this.$store.commit({
-          type: "mapping/set",
-          original: null,
-        })
-      }
-    },
-  },
   created() {
     this.hover = _.debounce(this._hover, 20)
   },
@@ -586,7 +574,6 @@ export default {
   },
   methods: {
     edit(data) {
-      let canEdit = this.canEdit(data)
       let copyWithReferences = mapping => {
         let newMapping = this.$jskos.copyDeep(mapping)
         newMapping.from.memberSet = mapping.from.memberSet.slice()
@@ -606,7 +593,7 @@ export default {
       this.$store.commit({
         type: "mapping/set",
         mapping,
-        original: canEdit && mapping._provider && mapping._provider.has.canSaveMappings && this.$jskos.compare(mapping._provider.registry, this.currentRegistry) ? copyWithReferences(mapping) : null,
+        original: data.item.mapping,
       })
     },
     canEdit(data) {
