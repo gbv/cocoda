@@ -19,9 +19,15 @@
     </component-settings>
     <div
       v-if="canSaveMapping"
-      id="mappingEditor-mappingNotSaved"
-      class="fontSize-small fontWeight-heavy">
+      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
       {{ $t("mappingEditor.notSaved") }}
+    </div>
+    <div
+      v-if="mappingInvalidReason"
+      v-b-tooltip="mappingInvalidReason"
+      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
+      <font-awesome-icon icon="exclamation-circle" />
+      {{ $t("mappingEditor.invalid") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -272,6 +278,9 @@ export default {
       return this.$store.state.mapping.original
     },
     canSaveMapping() {
+      if (this.mappingInvalidReason) {
+        return false
+      }
       if (this.$store.getters["mapping/canUpdate"]) {
         return this.hasChangedFromOriginal
       }
@@ -291,6 +300,28 @@ export default {
     },
     canCloneMapping() {
       return this.original != null
+    },
+    /**
+     * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
+     */
+    mappingInvalidReason() {
+      // Requires fromScheme/toScheme
+      for (let side of ["fromScheme", "toScheme"]) {
+        if (!this.mapping[side]) {
+          return this.$t("mappingEditor.invalidMissing", [side])
+        }
+      }
+      // Take fromSchemeFilter/toSchemeFilter into account if they exist.
+      for (let side of ["fromScheme", "toScheme"]) {
+        const whitelist = _.get(this.$store.getters.getCurrentRegistry, `config.mappings.${side}Whitelist`)
+        if (whitelist) {
+          if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
+            return this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`])
+          }
+        }
+      }
+      // Otherwise it's valid
+      return null
     },
     /**
      * Returns an encoded version of the mapping for export
@@ -755,11 +786,12 @@ export default {
   width: 100%;
 }
 
-#mappingEditor-mappingNotSaved {
+.mappingEditor-mappingAlert {
   position: absolute;
   top: 0;
   right: 20px;
   color: @color-button-delete;
+  z-index: @zIndex-2;
 }
 
 </style>
