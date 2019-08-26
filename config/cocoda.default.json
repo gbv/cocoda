@@ -425,20 +425,20 @@
     },
     {
       "prefLabel": {
-        "en": "K10plus (Normdatensatz)"
+        "en": "K10plus"
       },
-      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd{notation}&REC=2",
+      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd+{notation}",
       "schemeUris": [
         "http://bartoc.org/en/node/430"
       ]
     },
     {
       "prefLabel": {
-        "en": "K10plus (Suche)"
+        "en": "K10plus"
       },
-      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd{notation}",
+      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&TRM=bkl+{notation}",
       "schemeUris": [
-        "http://bartoc.org/en/node/430"
+        "http://bartoc.org/en/node/18785"
       ]
     },
     {
