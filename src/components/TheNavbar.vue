@@ -80,9 +80,9 @@
           style="width: 700px;"
           @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
             if (success) {
-              alert($t('alerts.mappingRestored'), null, 'success2')
+              alert($t('alerts.mappingRestored', [$util.prefLabel($event.item.registry, null, false)]), null, 'success2')
             } else {
-              alert($t('alerts.mappingNotRestored'), null, 'danger')
+              alert($t('alerts.mappingNotRestored', [$util.prefLabel($event.item.registry, null, false)]), null, 'danger')
             }
           })" />
       </b-nav-item-dropdown>

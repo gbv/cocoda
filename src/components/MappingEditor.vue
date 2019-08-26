@@ -453,14 +453,14 @@ export default {
       this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
         if (!mapping) {
           // TODO: Adjust
-          let message = this.$t("alerts.mappingNotSaved")
+          let message = this.$t("alerts.mappingNotSaved", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)])
           if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
           return
         }
-        this.alert(this.$t("alerts.mappingSaved"), null, "success2")
+        this.alert(this.$t("alerts.mappingSaved", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "success2")
         this.$store.commit({
           type: "mapping/set",
           original: mapping,
@@ -498,13 +498,13 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMapping" }).then(success => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
+          this.alert(this.$t("alerts.mappingDeleted", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "success2")
           this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
           if (clear) {
             this.clearMapping()
           }
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "danger")
         }
       }).catch(error => {
         console.error("MappingEditor - error in deleteOriginalMapping:", error)

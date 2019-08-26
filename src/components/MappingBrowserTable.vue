@@ -624,19 +624,19 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted"), null, "success2", this.$t("general.undo"), alert => {
+          this.alert(this.$t("alerts.mappingDeleted", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "success2", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
             this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: mapping.uri }).then(success => {
               if (success) {
-                this.alert(this.$t("alerts.mappingRestored"), null, "success2")
+                this.alert(this.$t("alerts.mappingRestored", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "success2")
               } else {
-                this.alert(this.$t("alerts.mappingNotRestored"), null, "danger")
+                this.alert(this.$t("alerts.mappingNotRestored", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "danger")
               }
             })
           })
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted"), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "danger")
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
@@ -688,11 +688,13 @@ export default {
         return null
       }).then(mapping => {
         if (!mapping) {
-          let message = this.$t("alerts.mappingNotSaved")
+          let message = this.$t("alerts.mappingNotSaved", [this.$util.prefLabel(this.currentRegistry, null, false)])
           if (this.currentRegistry.provider.has.auth && !this.currentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
+        } else {
+          this.alert(this.$t("alerts.mappingSaved", [this.$util.prefLabel(this.currentRegistry, null, false)]), null, "success2")
         }
         return mapping
       }).catch(error => {
@@ -756,6 +758,7 @@ export default {
     transferMapping(mapping) {
       mapping = this.copyMappingAndAdjustCreator(mapping)
       let fromRegistry = "http://coli-conc.gbv.de/registry/local-mappings"
+      // TODO: It just choses the first possible registry, not good!
       let toRegistry = this.config.registries.find(registry => registry.provider.has.canSaveMappings && registry.uri != fromRegistry)
       toRegistry = toRegistry && toRegistry.uri
       let promise
@@ -771,9 +774,9 @@ export default {
       }
       promise.then(mapping => {
         if (mapping) {
-          this.alert(this.$t("alerts.mappingTransferred"), null, "success2")
+          this.alert(this.$t("alerts.mappingTransferred", [this.$util.prefLabel(toRegistry, null, false)]), null, "success2")
         } else {
-          this.alert(this.$t("alerts.mappingNotTransferred"), null, "danger")
+          this.alert(this.$t("alerts.mappingNotTransferred", [this.$util.prefLabel(toRegistry, null, false)]), null, "danger")
         }
         this.$store.commit("mapping/setRefresh")
       })
