@@ -20,7 +20,7 @@
     <div
       v-if="canSaveMapping"
       class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
-      {{ $t("mappingEditor.notSaved") }}
+      {{ $util.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
     </div>
     <div
       v-if="mappingInvalidReason"
@@ -316,7 +316,7 @@ export default {
         const whitelist = _.get(this.$store.getters.getCurrentRegistry, `config.mappings.${side}Whitelist`)
         if (whitelist) {
           if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
-            return this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`])
+            return this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`, this.$util.prefLabel(this.$store.getters.getCurrentRegistry)])
           }
         }
       }

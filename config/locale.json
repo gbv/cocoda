@@ -133,7 +133,7 @@
       "notSaved": "not saved",
       "invalid": "Invalid",
       "invalidMissing": "Missing {0}",
-      "invalidWhitelist": "{0} not allowed in this registry"
+      "invalidWhitelist": "{0} not allowed in {1}"
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -407,7 +407,7 @@
       "notSaved": "nicht gespeichert",
       "invalid": "Ungültig",
       "invalidMissing": "{0} fehlt",
-      "invalidWhitelist": "{0} nicht erlaubt in diesem Register"
+      "invalidWhitelist": "{0} nicht erlaubt in {1}"
     },
     "settingsTabs": [
       "Account",
