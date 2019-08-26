@@ -420,7 +420,6 @@ export default {
       mapping.modified = (new Date()).toISOString()
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
-        console.log(mapping)
         if (!mapping) {
           // TODO: Adjust
           let message = this.$t("alerts.mappingNotSaved")

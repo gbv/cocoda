@@ -123,7 +123,6 @@ const getters = {
       return false
     }
     if (!state.original.uri) {
-      console.log("no original uri")
       return true
     }
     // If original registry is not the currently chosen registry, return true
@@ -167,7 +166,6 @@ const getters = {
     }) && !isCreatorEqual(state.mapping.creator, original.creator)) {
       return true
     }
-    console.log("not equal (or same?)")
     return !jskos.compareMappings(original, state.mapping)
   },
 
