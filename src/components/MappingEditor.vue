@@ -19,9 +19,15 @@
     </component-settings>
     <div
       v-if="canSaveMapping"
-      id="mappingEditor-mappingNotSaved"
-      class="fontSize-small fontWeight-heavy">
-      {{ $t("mappingEditor.notSaved") }}
+      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
+      {{ $util.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
+    </div>
+    <div
+      v-if="mappingInvalidReason"
+      v-b-tooltip="mappingInvalidReason"
+      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
+      <font-awesome-icon icon="exclamation-circle" />
+      {{ $t("mappingEditor.invalid") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -272,10 +278,16 @@ export default {
       return this.$store.state.mapping.original
     },
     canSaveMapping() {
-      return (this.original == null || this.hasChangedFromOriginal) && this.mapping.fromScheme && this.mapping.toScheme
+      if (this.mappingInvalidReason) {
+        return false
+      }
+      if (this.$store.getters["mapping/canUpdate"]) {
+        return this.hasChangedFromOriginal
+      }
+      return this.$store.getters["mapping/canCreate"]
     },
     canDeleteMapping() {
-      return _.get(this.original, "_provider.has.canRemoveMappings", false) && (!this.$store.getters.getCurrentRegistry.provider.has.auth || this.$store.getters.getCurrentRegistry.provider.auth)
+      return this.$store.getters["mapping/canDelete"]
     },
     canClearMapping() {
       return this.mapping.fromScheme || this.mapping.toScheme
@@ -288,6 +300,28 @@ export default {
     },
     canCloneMapping() {
       return this.original != null
+    },
+    /**
+     * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
+     */
+    mappingInvalidReason() {
+      // Requires fromScheme/toScheme
+      for (let side of ["fromScheme", "toScheme"]) {
+        if (!this.mapping[side]) {
+          return this.$t("mappingEditor.invalidMissing", [side])
+        }
+      }
+      // Take fromSchemeFilter/toSchemeFilter into account if they exist.
+      for (let side of ["fromScheme", "toScheme"]) {
+        const whitelist = _.get(this.$store.getters.getCurrentRegistry, `config.mappings.${side}Whitelist`)
+        if (whitelist) {
+          if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
+            return this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`, this.$util.prefLabel(this.$store.getters.getCurrentRegistry)])
+          }
+        }
+      }
+      // Otherwise it's valid
+      return null
     },
     /**
      * Returns an encoded version of the mapping for export
@@ -415,10 +449,10 @@ export default {
       this.$refs.commentModal.hide()
       let mapping = this.prepareMapping()
       mapping.modified = (new Date()).toISOString()
-      let original = this.original
       this.loadingGlobal = true
-      this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping, original }]}).then(mappings => {
-        if (!mappings.length || !mappings[0]) {
+      this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
+        if (!mapping) {
+          // TODO: Adjust
           let message = this.$t("alerts.mappingNotSaved")
           if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
@@ -427,10 +461,9 @@ export default {
           return
         }
         this.alert(this.$t("alerts.mappingSaved"), null, "success2")
-        let newMapping = mappings[0]
         this.$store.commit({
           type: "mapping/set",
-          original: newMapping,
+          original: mapping,
         })
         if (this.clearOnSave) {
           this.clearMapping()
@@ -462,9 +495,8 @@ export default {
       return true
     },
     deleteOriginalMapping(clear = false) {
-      let mapping = this.prepareMapping(this.original)
       this.loadingGlobal = true
-      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
+      this.$store.dispatch({ type: "mapping/removeMapping" }).then(success => {
         if (success) {
           this.alert(this.$t("alerts.mappingDeleted"), null, "success2")
           this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
@@ -754,11 +786,12 @@ export default {
   width: 100%;
 }
 
-#mappingEditor-mappingNotSaved {
+.mappingEditor-mappingAlert {
   position: absolute;
   top: 0;
   right: 20px;
   color: @color-button-delete;
+  z-index: @zIndex-2;
 }
 
 </style>
