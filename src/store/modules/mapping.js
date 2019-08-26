@@ -570,7 +570,7 @@ const actions = {
         if (deleted) {
           let mapping = mappings[index]
           // Check if current original was amongst the removed mappings
-          if (mapping.uri == state.original.mapping.uri && jskos.compare(_.get(mapping, "_provider.registry"), state.original)) {
+          if (mapping.uri == state.original.uri && jskos.compare(_.get(mapping, "_provider.registry"), state.original.registry)) {
             // Set original to null
             commit({ type: "set" })
           }
