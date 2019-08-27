@@ -344,6 +344,14 @@ export default {
           }
         }
       }
+      // Take mapping cardinality into account
+      const cardinality = _.get(registry, "config.mappings.cardinality")
+      if (cardinality == "1-to-1" && this.$jskos.conceptsOfMapping(this.mapping, "to").length > 1) {
+        return {
+          message: this.$t("mappingEditor.invalid1to1", [this.$util.prefLabel(registry)]),
+          invalid: true,
+        }
+      }
       // Show warning if there is an original mapping, but it can't be updated
       // 1. Because the registry changed
       if (this.original.uri && !this.$jskos.compare(registry, this.original.registry)) {

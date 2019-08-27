@@ -133,6 +133,7 @@
       "notSaved": "not saved",
       "invalidMissing": "Missing {0}",
       "invalidWhitelist": "{0} not allowed in {1}",
+      "invalid1to1": "Only 1-to-1 mappings allowed in {0}.",
       "warningUpdateRegistry": "Mapping will not be updated in {0}, but saved as a new mapping in {1}.",
       "warningUpdateNotAllowed": "Mapping can't be updated and will therefore be saved as a new mapping.",
       "warningUpdateScheme": "Updated mapping will be saved with a different {0}, are you sure this is intented? If not, you can clone the mapping (button to the right of the delete button)."
@@ -409,6 +410,7 @@
       "notSaved": "nicht gespeichert",
       "invalidMissing": "{0} fehlt",
       "invalidWhitelist": "{0} nicht erlaubt in {1}",
+      "invalid1to1": "Nur 1-zu-1-Mappings erlaubt in {0}.",
       "warningUpdateRegistry": "Mapping wird nicht in {0} aktualisiert, sondern als neues Mapping in {1} gespeichert.",
       "warningUpdateNotAllowed": "Mapping kann nicht aktualisiert werden und wird deshalb als neues Mapping gespeichert.",
       "warningUpdateScheme": "Das aktualisierte Mapping wird mit anderem {0} gespeichert, ist das so gewollt? Falls nicht, kann das Mapping geklont werden (Button rechts vom Löschen-Button)."
