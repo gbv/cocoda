@@ -241,9 +241,6 @@ const mutations = {
     let fromTo = helpers.fromTo(isLeft)
     if ((fromTo == "from" && state.mapping.from.memberSet.length != 0) || !getters.checkScheme(state)(scheme, isLeft)) {
       state.mapping[fromTo].memberSet = [concept]
-      // Remove conncetion to original mapping because a whole side changed.
-      // TODO: Should this stay?
-      state.original.uri = null
     } else if (fromTo == "to" && cardinality == "1-to-1") {
       state.mapping[fromTo].memberSet = [concept]
     } else {

@@ -19,15 +19,21 @@
     </component-settings>
     <div
       v-if="canSaveMapping"
-      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
+      class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
       {{ $util.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
     </div>
     <div
-      v-if="mappingInvalidReason"
-      v-b-tooltip="mappingInvalidReason"
-      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy">
+      v-if="mappingStatus.message"
+      v-b-tooltip="{
+        title:mappingStatus.message,
+        placement: 'bottom'
+      }"
+      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy"
+      :class="{
+        'text-warning': mappingStatus.warning,
+        'text-danger': mappingStatus.invalid,
+      }">
       <font-awesome-icon icon="exclamation-circle" />
-      {{ $t("mappingEditor.invalid") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -278,7 +284,7 @@ export default {
       return this.$store.state.mapping.original
     },
     canSaveMapping() {
-      if (this.mappingInvalidReason) {
+      if (this.mappingStatus.invalid) {
         return false
       }
       if (this.$store.getters["mapping/canUpdate"]) {
@@ -299,29 +305,75 @@ export default {
       return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
     },
     canCloneMapping() {
-      return this.original != null
+      return this.original.mapping != null
     },
     /**
      * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
      */
-    mappingInvalidReason() {
+    mappingStatus() {
+      const registry = this.$store.getters.getCurrentRegistry
+      // Requires authentication for save
+      if (!registry.isAuthorizedFor({
+        type: "mappings",
+        action: "create",
+        user: this.user,
+      })) {
+        return {
+          message: this.$t("registryInfo.notAuthenticated") + ` (${this.$util.prefLabel(registry)})`,
+          invalid: true,
+        }
+      }
       // Requires fromScheme/toScheme
       for (let side of ["fromScheme", "toScheme"]) {
         if (!this.mapping[side]) {
-          return this.$t("mappingEditor.invalidMissing", [side])
+          return {
+            message: this.$t("mappingEditor.invalidMissing", [side]),
+            invalid: true,
+          }
         }
       }
       // Take fromSchemeFilter/toSchemeFilter into account if they exist.
       for (let side of ["fromScheme", "toScheme"]) {
-        const whitelist = _.get(this.$store.getters.getCurrentRegistry, `config.mappings.${side}Whitelist`)
+        const whitelist = _.get(registry, `config.mappings.${side}Whitelist`)
         if (whitelist) {
           if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
-            return this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`, this.$util.prefLabel(this.$store.getters.getCurrentRegistry)])
+            return {
+              message: this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`, this.$util.prefLabel(registry)]),
+              invalid: true,
+            }
+          }
+        }
+      }
+      // Show warning if there is an original mapping, but it can't be updated
+      // 1. Because the registry changed
+      if (this.original.uri && !this.$jskos.compare(registry, this.original.registry)) {
+        return {
+          message: this.$t("mappingEditor.warningUpdateRegistry", [this.$util.prefLabel(this.original.registry), this.$util.prefLabel(registry)]),
+          warning: true,
+        }
+      }
+      // 2. Because user is not allowed to update the original mapping
+      if (this.original.uri && !this.$store.getters["mapping/canUpdate"]) {
+        return {
+          message: this.$t("mappingEditor.warningUpdateNotAllowed"),
+          warning: true,
+        }
+      }
+      // Show a warning if fromScheme/toScheme in mapping has changed from original
+      for (let side of ["fromScheme", "toScheme"]) {
+        if (this.original.uri && !this.$jskos.compare(this.mapping[side], this.original.mapping[side])) {
+          return {
+            message: this.$t("mappingEditor.warningUpdateScheme", [side]),
+            warning: true,
           }
         }
       }
       // Otherwise it's valid
-      return null
+      return {
+        message: null,
+        invalid: false,
+        warning: false,
+      }
     },
     /**
      * Returns an encoded version of the mapping for export
@@ -786,11 +838,18 @@ export default {
   width: 100%;
 }
 
-.mappingEditor-mappingAlert {
+.mappingEditor-mappingNotSaved {
   position: absolute;
   top: 0;
   right: 20px;
   color: @color-button-delete;
+  z-index: @zIndex-2;
+}
+.mappingEditor-mappingAlert {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 25px;
   z-index: @zIndex-2;
 }
 

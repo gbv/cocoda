@@ -131,9 +131,11 @@
       "settingOnly1to1mappings": "Only allow 1-to-1 mappings (1-to-n otherwise)",
       "settingOnly1to1mappingsTooltip": "When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed.",
       "notSaved": "not saved",
-      "invalid": "Invalid",
       "invalidMissing": "Missing {0}",
-      "invalidWhitelist": "{0} not allowed in {1}"
+      "invalidWhitelist": "{0} not allowed in {1}",
+      "warningUpdateRegistry": "Mapping will not be updated in {0}, but saved as a new mapping in {1}.",
+      "warningUpdateNotAllowed": "Mapping can't be updated and will therefore be saved as a new mapping.",
+      "warningUpdateScheme": "Updated mapping will be saved with a different {0}, are you sure this is intented? If not, you can clone the mapping (button to the right of the delete button)."
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -405,9 +407,11 @@
       "settingOnly1to1mappings": "Nur 1-zu-1 Mappings erlauben (sonst 1-zu-n)",
       "settingOnly1to1mappingsTooltip": "Falls eingeschaltet, werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet, werden 1-zu-n Mappings erlaubt.",
       "notSaved": "nicht gespeichert",
-      "invalid": "Ungültig",
       "invalidMissing": "{0} fehlt",
-      "invalidWhitelist": "{0} nicht erlaubt in {1}"
+      "invalidWhitelist": "{0} nicht erlaubt in {1}",
+      "warningUpdateRegistry": "Mapping wird nicht in {0} aktualisiert, sondern als neues Mapping in {1} gespeichert.",
+      "warningUpdateNotAllowed": "Mapping kann nicht aktualisiert werden und wird deshalb als neues Mapping gespeichert.",
+      "warningUpdateScheme": "Das aktualisierte Mapping wird mit anderem {0} gespeichert, ist das so gewollt? Falls nicht, kann das Mapping geklont werden (Button rechts vom Löschen-Button)."
     },
     "settingsTabs": [
       "Account",
