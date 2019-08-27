@@ -55,7 +55,11 @@ class LocalMappingsProvider extends BaseProvider {
       }
     })
     // Put promise into queue so that getMappings requests are waiting for adjustments to finish
-    this.queue.push(addUris())
+    this.queue.push(
+      addUris().catch(error => {
+        console.warn("Error when adding URIs to local mappings:", error)
+      })
+    )
   }
 
   isAuthorizedFor({ type, action }) {
