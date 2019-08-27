@@ -91,11 +91,15 @@ const refreshRouter = (store) => {
     }
   }
   // Push or replace route
+  let promise
   if (replace) {
-    router.replace({ query })
+    promise = router.replace({ query })
   } else {
-    router.push({ query })
+    promise = router.push({ query })
   }
+  // Catch NavigationDuplicated error
+  // TODO: - Figure out why this error occurs (probably because this method is called twice).
+  return promise.catch(() => null)
 }
 
 /**
