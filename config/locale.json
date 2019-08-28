@@ -91,7 +91,7 @@
       "gnd": "GND",
       "searchLinks": "Search Links",
       "clearConcept": "clear concept",
-      "nextConcept": "Next Concept"
+      "nextConcept": "next"
     },
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
@@ -494,7 +494,7 @@
       "gnd": "GND",
       "searchLinks": "Suchlinks",
       "clearConcept": "Konzept entfernen",
-      "nextConcept": "Nächstes Konzept"
+      "nextConcept": "nächstes"
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",
