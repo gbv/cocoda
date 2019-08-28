@@ -847,6 +847,7 @@ export default {
   top: 0px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: @zIndex-2;
 }
 
 .addButton {
