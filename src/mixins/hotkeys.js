@@ -90,9 +90,14 @@ export default {
         }
       }
       let pass = true
-      for (let sc of this.hotkeys) {
-        if (_.isEqual(shortcut, sc.shortcut)) {
-          pass = sc.handler() && pass
+      // Find out if a modal is currently opened
+      const modals = document.getElementsByClassName("modal show")
+      // Only run shortcuts if there are no modals
+      if (modals.length == 0) {
+        for (let sc of this.hotkeys) {
+          if (_.isEqual(shortcut, sc.shortcut)) {
+            pass = sc.handler() && pass
+          }
         }
       }
       if (!pass) {
