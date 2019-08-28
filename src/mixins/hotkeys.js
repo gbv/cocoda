@@ -77,10 +77,19 @@ export default {
             altKey: false,
             shiftKey: false,
           },
+          {
+            key: "µ",
+            ctrlKey: false,
+            metaKey: false,
+            altKey: true,
+            shiftKey: false,
+          },
         ]
         let skip = false
         for (let sc of toSkip) {
-          if (_.isEqual(sc, shortcut)) {
+          // Omit either key or keyCode
+          const omit = sc.key ? "keyCode" : "key"
+          if (_.isEqual(_.omit(sc, [omit]), _.omit(shortcut, [omit]))) {
             skip = true
             break
           }
