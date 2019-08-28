@@ -22,19 +22,6 @@
       class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
       {{ $util.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
     </div>
-    <div
-      v-if="mappingStatus.message"
-      v-b-tooltip="{
-        title:mappingStatus.message,
-        placement: 'bottom'
-      }"
-      class="mappingEditor-mappingAlert fontSize-small fontWeight-heavy"
-      :class="{
-        'text-warning': mappingStatus.warning,
-        'text-danger': mappingStatus.invalid,
-      }">
-      <font-awesome-icon icon="exclamation-circle" />
-    </div>
     <div class="mappingEditorToolbar">
       <div
         v-b-tooltip.hover="{ title: canSwapMapping ? $t('mappingEditor.swapMapping') : '', delay: $util.delay.medium }"
@@ -85,6 +72,20 @@
         class="mappingEditorToolbarItem"
         @click="clearMapping">
         <font-awesome-icon icon="ban" />
+      </div>
+      <div
+        v-b-tooltip="{
+          title: mappingStatus.message || '',
+          placement: 'bottom'
+        }"
+        class="mappingEditorToolbarItem mappingEditor-mappingAlert fontWeight-heavy"
+        :class="{
+          'text-warning': mappingStatus.warning,
+          'text-danger': mappingStatus.invalid,
+        }">
+        <font-awesome-icon
+          v-if="mappingStatus.message"
+          icon="exclamation-circle" />
       </div>
     </div>
     <!-- Source and target sides for the mapping -->
@@ -868,10 +869,8 @@ export default {
   z-index: @zIndex-2;
 }
 .mappingEditor-mappingAlert {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  top: 25px;
+  // Prevent other icons from moving by using min-width
+  min-width: 16px;
   z-index: @zIndex-2;
 }
 
