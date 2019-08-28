@@ -171,12 +171,20 @@
           v-if="config.shortcuts && config.shortcuts.length"
           :title="$t('settingsTabs')[2]">
           <h4> {{ $t("settingsTabs")[2] }}</h4>
-          <p
-            v-for="shortcut in config.shortcuts"
-            :key="`settingsModal-shortcuts-${shortcut.id}`">
-            <b>{{ $util.prefLabel(shortcut) || shortcut.action }}</b><br>
-            <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
-          </p>
+          <table class="table">
+            <tbody>
+              <tr
+                v-for="shortcut in config.shortcuts"
+                :key="`settingsModal-shortcuts-${shortcut.id}`">
+                <td>
+                  <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
+                </td>
+                <td class="text-left">
+                  {{ $util.prefLabel(shortcut) || shortcut.action }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </tab>
         <tab
           :title="$t('settingsTabs')[3]">
