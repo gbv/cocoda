@@ -50,7 +50,7 @@ export default {
      * API URL for data (if it exists).
      */
     url: {
-      type: String,
+      type: [String, Object],
       default: null,
     },
     /**

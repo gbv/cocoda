@@ -169,6 +169,7 @@
               v-if="concordances && concordances.length > 0"
               :data="concordances"
               :position-right="18"
+              :url="concordanceUrls"
               type="concordance" />
           </div>
         </template>
@@ -823,6 +824,21 @@ export default {
       url += `${url.includes("?") ? "&" : "?"}${this.searchShareLinkPart}`
       return url
     },
+    concordanceRegistries() {
+      return this.config.registries.filter(r =>
+        r.provider.has.concordances // only use registries that offer concordances
+        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)) // if showRegistryOverride is given, only use those registries
+      )
+    },
+    concordanceUrls() {
+      let urls = {}
+      for (let registry of this.concordanceRegistries) {
+        if (registry.provider.has.concordances && registry.concordances) {
+          urls[this.$util.prefLabel(registry)] = registry.concordances
+        }
+      }
+      return urls
+    },
   },
   watch: {
     tab(tab) {
@@ -915,10 +931,7 @@ export default {
   mounted() {
     if (!this.concordances || !this.concordances.length) {
       let promises = []
-      for (let registry of this.config.registries.filter(r =>
-        r.provider.has.concordances // only use registries that offer concordances
-        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)) // if showRegistryOverride is given, only use those registries
-      )) {
+      for (let registry of this.concordanceRegistries) {
         promises.push(registry.provider.getConcordances())
       }
       Promise.all(promises).then(results => {

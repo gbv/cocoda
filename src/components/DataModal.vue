@@ -38,17 +38,20 @@
           </div>
         </div>
       </div>
-      <div />
-      <div class="dataModal-links-withTitle">
+      <div
+        class="dataModal-links-withTitle"
+        :style="Object.keys(urls).length > 1 ? 'flex: 1.6;' : 'flex: 1.3;'">
         <div class="fontWeight-heavy">
           {{ $t("dataModal.apiLinks") }} ({{ (totalCount || count).toLocaleString() }})
         </div>
         <div v-if="url">
-          <div>
+          <div
+            v-for="(title, index) in Object.keys(urls)"
+            :key="`dataModal-links-urls-${index}`">
             <a
-              :href="url"
+              :href="urls[title]"
               target="_blank">
-              <font-awesome-icon icon="link" /><br>{{ $t("dataModal.apiUrl") }}
+              <font-awesome-icon icon="link" /><br>{{ title || $t("dataModal.apiUrl") }}
             </a>
           </div>
           <div
@@ -57,7 +60,7 @@
             <a
               :href="download.url"
               target="_blank">
-              <font-awesome-icon icon="download" /><br>{{ `.${download.type}` }}
+              <font-awesome-icon icon="download" /><br>{{ download.title }}
             </a>
           </div>
         </div>
@@ -105,10 +108,12 @@ export default {
       },
     },
     /**
-     * API URL for data (if it exists).
+     * API URL or URLs for data (if it exists).
+     *
+     * For objects, provide a title as keys and the URLs as values.
      */
     url: {
-      type: String,
+      type: [String, Object],
       default: null,
     },
     /**
@@ -206,6 +211,9 @@ export default {
       }
       return validated
     },
+    urls() {
+      return _.isObject(this.url) ? this.url : { "": this.url }
+    },
     apiDownloadUrls() {
       if (!this.url) {
         return []
@@ -216,15 +224,19 @@ export default {
       }
       let urls = []
       for (let type of ["json", "ndjson"]) {
-        try {
-          let url = new URL(this.url.startsWith("http") ? this.url : location.protocol + this.url)
-          url.searchParams.set("download", type)
-          urls.push({
-            url,
-            type,
-          })
-        } catch(error) {
-          // Do nothing
+        for (let title of Object.keys(this.urls)) {
+          const address = this.urls[title]
+          try {
+            let url = new URL(address.startsWith("http") ? address : location.protocol + address)
+            url.searchParams.set("download", type)
+            urls.push({
+              url,
+              type,
+              title: title ? `${title} (.${type})` : `.${type}`,
+            })
+          } catch(error) {
+            // Do nothing
+          }
         }
       }
       return urls
@@ -260,6 +272,7 @@ export default {
 }
 .dataModal-links-withTitle > *:last-child {
   display: flex;
+  flex-wrap: wrap;
 }
 .dataModal-links-withTitle > *:last-child > * {
   flex: 1;
