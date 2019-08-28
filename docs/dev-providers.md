@@ -107,7 +107,15 @@ Usually, you would access some kind of API to retrieve mappings or mapping recom
 Some notes:
 
 - The constructor of the BaseProvider superclass makes some assumptions about a registry based on the provided files in the registry object. For example, if the `mappings` field is provided, `provider.has.mappings` will be `true`. When a `baseUrl` is given, it will assume that a concept related methods are available. In case this assumptions are wrong, you should override fields in `this.has` in the constructur of your subclass.
-- There are two special fields for a registry which describe write access capabilities for mappings: `canSaveMappings` and `canRemoveMappings`.
+- To describe write access capabilities for mappings, add something like this to the constructor:
+  ```javascript
+  this.has.mappings = {
+    read: true,
+    create: true,
+    update: true,
+    delete: true,
+  }
+  ```
 - BaseProvider also provides a wrapper around axios under `this.get(url, options, cancelToken)` that sets the `language` parameter for each request and returns only the `data` portion of the response. If there is an error, it will return an empty array and print a warning on the console. Alternatively, you can import and use axios yourself.
 - BaseProvider also has adjustment methods that are called for different types of objects returned by the provider, e.g. for concepts or mappings.
 - In the future, BaseProvider should be a separate npm package which other packages can use to offer additional providers for Cocoda.

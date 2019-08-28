@@ -43,7 +43,12 @@ const getters = {
     // Try to find registry that fits state.settings.settings.mappingRegistry
     let registry = state.config.registries.find(registry => jskos.compare(registry, { uri: state.settings.settings.mappingRegistry }))
     if (!registry) {
-      registry = state.config.registries.find(registry => registry.provider.has.canSaveMappings)
+      // Fallback to first registry into which the user can save
+      registry = state.config.registries.find(registry => registry.isAuthorizedFor({
+        type: "mappings",
+        action: "create",
+        user: state.auth.user,
+      }))
     }
     return registry
   },

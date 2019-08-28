@@ -21,8 +21,6 @@ class LocalMappingsProvider extends BaseProvider {
       update: true,
       delete: true,
     }
-    this.has.canSaveMappings = true
-    this.has.canRemoveMappings = true
     this.queue = []
     this.localStorageKey = "cocoda-mappings--" + this.path
     let oldLocalStorageKey = "mappings"

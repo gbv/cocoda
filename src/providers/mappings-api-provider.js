@@ -27,9 +27,6 @@ class MappingsApiProvider extends BaseProvider {
       this.has.annotations.update = !!_.get(this.registry, "config.annotations.update")
       this.has.annotations.delete = !!_.get(this.registry, "config.annotations.delete")
     }
-    this.has.canSaveMappings = !!_.get(this.registry, "config.auth.canSaveMappings")
-    this.has.canRemoveMappings = !!_.get(this.registry, "config.auth.canRemoveMappings")
-    this.has.allowCrossUserEditing = !!_.get(this.registry, "config.auth.allowCrossUserEditing")
     this.has.auth = _.get(this.registry, "config.auth.key") != null
   }
 

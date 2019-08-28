@@ -290,7 +290,11 @@
           class="font-default text-dark color-primary-0-bg fontSize-normal"
           style="min-width: 200px;">
           <p
-            v-for="registry in config.registries.filter(registry => registry.provider.has.canSaveMappings)"
+            v-for="registry in config.registries.filter(registry => registry.isAuthorizedFor({
+              type: 'mappings',
+              action: 'create',
+              user: user,
+            }))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,

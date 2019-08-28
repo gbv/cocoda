@@ -252,17 +252,17 @@
           v-if="showEditingTools && !$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canSave(data.item.mapping)"
-            v-b-tooltip.hover="{ title: canSave(data.item.mapping) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
+            v-if="canSave(data)"
+            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
             class="button"
             icon="save"
-            @click="canSave(data.item.mapping) && saveMapping(data.item.mapping)" />
+            @click="saveMapping(data.item.mapping)" />
         </div>
         <div
           v-else-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canRemove(data) && data.item.registry.provider.has.canRemoveMappings && (data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings' || data.item.mapping.uri != null)"
+            v-if="canRemove(data)"
             v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
             class="button-delete"
             icon="trash-alt"
@@ -586,29 +586,20 @@ export default {
         original: data.item.mapping,
       })
     },
-    canEdit(data) {
-      if (!data.item.mapping) {
-        return false
-      }
-      if (!data.item.registry.provider.has.auth) {
-        // Can always edit a mapping from a provider without auth
-        return true
-      }
-      if (data.item.registry.provider.has.allowCrossUserEditing) {
-        // Some servers allow cross user editing
-        return true
-      }
-      let mapping = data.item.mapping
-      let creatorUris = (mapping.creator || []).map(creator => creator.uri).filter(uri => uri)
-      if (_.intersection(creatorUris, this.userUris).length) {
-        // Can only edit if one of the creator matches the logged in user
-        return true
-      } else {
-        return false
-      }
-    },
     canRemove(data) {
-      return this.canEdit(data) && (!this.currentRegistry.provider.has.auth || this.currentRegistry.provider.auth)
+      const registry = data.item.registry
+      const mapping = data.item.mapping
+      // Can't delete mapping from registry other than current
+      if (!this.$jskos.compare(registry, this.currentRegistry)) {
+        return false
+      }
+      let crossUser = !this.$jskos.compare(this.creator, _.get(mapping, "creator[0]"))
+      return registry.isAuthorizedFor({
+        type: "mappings",
+        action: "delete",
+        user: this.user,
+        crossUser,
+      })
     },
     removeMapping(mapping) {
       this.loadingGlobal = true
@@ -637,20 +628,42 @@ export default {
       })
     },
     /** Saving of mappigns */
-    canSave(mapping) {
-      if (!mapping || !mapping.fromScheme || !mapping.toScheme) {
+    canSave(data) {
+      const registry = data.item.registry
+      const mapping = data.item.mapping
+      if (!mapping) {
         return false
       }
       // Don't allow saving if it's the current registry
-      if (mapping._provider && this.$jskos.compare(mapping._provider.registry, this.currentRegistry)) {
+      if (this.$jskos.compare(registry, this.currentRegistry)) {
         return false
       }
-      // TODO: Do this differently to prevent going through all local mappings on each reload.
-      if (!mapping.identifier) {
-        mapping = this.$jskos.addMappingIdentifiers(mapping)
+      // Check multiple things regarding fromScheme/toScheme
+      // TODO: Fix slight code duplication with MappingEditor's `mappingStatus`?
+      for (let side of ["fromScheme", "toScheme"]) {
+        // Require both sides
+        if (!mapping[side]) {
+          return false
+        }
+        // Check registry whitelist
+        const whitelist = _.get(this.currentRegistry, `config.mappings.${side}Whitelist`)
+        if (whitelist) {
+          if (!whitelist.find(s => this.$jskos.compare(s, mapping[side]))) {
+            return false
+          }
+        }
+        // Check cardinality
+        const cardinality = _.get(this.currentRegistry, "config.mappings.cardinality")
+        if (cardinality == "1-to-1" && this.$jskos.conceptsOfMapping(mapping, "to").length > 1) {
+          return false
+        }
       }
-      let id = (mapping.identifier || []).find(id => id.startsWith("urn:jskos:mapping:content"))
-      if (!id) {
+      // Check if user is authorized in current registry
+      if (!this.currentRegistry.isAuthorizedFor({
+        type: "mappings",
+        action: "create",
+        user: this.user,
+      })) {
         return false
       }
       return true
@@ -733,7 +746,11 @@ export default {
       this.hoveredId = event && event.uniqueId
     },
     canUseRegistryForSaving(registry) {
-      return this.config.registries.filter(registry => registry.provider.has.canSaveMappings).find(r => this.$jskos.compare(r, registry)) != null
+      return this.config.registries.find(r => registry.isAuthorizedFor({
+        type: "mappings",
+        action: "create",
+        user: this.user,
+      }) && this.$jskos.compare(r, registry)) != null
     },
     useRegistryForSaving(registry) {
       if (this.canUseRegistryForSaving(registry)) {

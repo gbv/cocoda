@@ -359,7 +359,11 @@ export default {
       return registry != null
     },
     availableMappingRegistries() {
-      return this.config.registries.filter(registry => registry.provider.has.canSaveMappings)
+      return this.config.registries.filter(registry => registry.isAuthorizedFor({
+        type: "mappings",
+        action: "create",
+        user: this.user,
+      }))
     },
   },
   watch: {

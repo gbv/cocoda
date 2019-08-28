@@ -531,7 +531,7 @@ const actions = {
     } else {
       registry = rootGetters.getCurrentRegistry
     }
-    if (!registry || !registry.provider || !registry.provider.has.canSaveMappings) {
+    if (!registry || !registry.provider || !(registry.provider.has.mappings && registry.provider.has.mappings.create)) {
       console.warn("Tried to save mappings, but could not determine provider.")
       return Promise.resolve([])
     }
@@ -556,7 +556,7 @@ const actions = {
     } else {
       registry = rootGetters.getCurrentRegistry
     }
-    if (!registry || !registry.provider || !registry.provider.has.canRemoveMappings) {
+    if (!registry || !registry.provider || !(registry.provider.has.mappings && registry.provider.has.mappings.delete)) {
       console.warn("Tried to remove mappings, but could not determine provider.")
       return Promise.resolve([])
     }

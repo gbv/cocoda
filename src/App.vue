@@ -646,7 +646,11 @@ export default {
           if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
-            let original = mappings.find(mapping => _.get(mapping, "_provider.has.canSaveMappings")) || mappings[0]
+            let original = mappings.find(mapping => _.get(mapping, "_provider").isAuthorizedFor && _.get(mapping, "_provider").isAuthorizedFor({
+              type: "mappings",
+              action: "create",
+              user: this.user,
+            })) || mappings[0]
             return decodeMapping.then(this.adjustMapping).then(mapping => {
               if (mapping) {
                 return [mapping, original]
