@@ -152,7 +152,10 @@ class LocalMappingsProvider extends BaseProvider {
     if (uri) {
       params.uri = uri
     }
-    return localforage.getItem(this.localStorageKey).then(mappings => mappings || []).catch(() => []).then(mappings => {
+    return localforage.getItem(this.localStorageKey).then(mappings => mappings || []).catch(error => {
+      console.error("Error getting local mapping:", error)
+      return []
+    }).then(mappings => {
       // Check concept with param
       let checkConcept = (concept, param) => concept.uri == param || (param && concept.notation && concept.notation[0].toLowerCase() == param.toLowerCase())
       // Filter mappings according to params (support for from + to)
