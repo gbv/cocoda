@@ -514,6 +514,28 @@
       "isLeft": false
     },
     {
+      "id": "nextConceptLeft",
+      "action": "nextConcept",
+      "component": "ConceptDetail",
+      "keys": "alt+n,alt+keyCode:78",
+      "prefLabel": {
+        "en": "Open next concept (left)",
+        "de": "Nächstes Konzept öffnen (links)"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "nextConceptRight",
+      "action": "nextConcept",
+      "component": "ConceptDetail",
+      "keys": "alt+m,alt+µ",
+      "prefLabel": {
+        "en": "Open next concept (right)",
+        "de": "Nächstes Konzept öffnen (rechts)"
+      },
+      "isLeft": false
+    },
+    {
       "id": "commentMapping",
       "action": "commentMapping",
       "component": "MappingEditor",

@@ -231,6 +231,7 @@ import _ from "lodash"
 // Import mixins
 import objects from "../mixins/objects"
 import computed from "../mixins/computed"
+import hotkeys from "../mixins/hotkeys"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -240,7 +241,7 @@ export default {
   components: {
     AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower,
   },
-  mixins: [objects, computed],
+  mixins: [objects, computed, hotkeys],
   props: {
     /**
      * The concept object whose details should be displayed.
@@ -420,8 +421,21 @@ export default {
   mounted() {
     // Initial refresh
     this.refresh()
+    // Enable shortcuts
+    this.enableShortcuts()
   },
   methods: {
+    shortcutHandler({ action, isLeft }) {
+      if (action == "nextConcept" && isLeft == this.isLeft) {
+        // Open next concept if available
+        if (this.nextConcept) {
+          this.setSelected({
+            concept: this.nextConcept,
+            isLeft,
+          })
+        }
+      }
+    },
     refresh() {
       this.showAncestors = false
       // Load GND terms
