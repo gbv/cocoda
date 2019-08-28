@@ -1,9 +1,14 @@
 <template>
   <div class="registry-info">
     <div>
-      <registry-notation :registry="registry" />
+      <registry-notation
+        :registry="registry"
+        :disabled="$store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] === false" />
       <div
-        class="settings-info-title fontWeight-heavy"
+        class="settings-info-title"
+        :class="{
+          'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
+        }"
         style="display: inline-block">
         {{ $util.prefLabel(registry) }}
       </div>
