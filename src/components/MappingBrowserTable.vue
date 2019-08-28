@@ -257,9 +257,6 @@
             class="button"
             icon="angle-double-right"
             @click="saveMapping(data.item.mapping)" />
-          <font-awesome-icon
-            icon="save"
-            class="mappingBrowser-saveIcon" />
         </div>
         <div
           v-else-if="showEditingTools"
@@ -857,13 +854,6 @@ export default {
   position: absolute;
   right: -4px;
   top: -2px;
-  font-size: 8px;
-}
-.mappingBrowser-saveIcon {
-  color: @color-button;
-  position: absolute;
-  right: 0px;
-  top: 0px;
   font-size: 8px;
 }
 .mappingBrowser-toolbar-button {
