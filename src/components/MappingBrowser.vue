@@ -1309,9 +1309,6 @@ export default {
         section.page = pages[registry.uri] || 1
         let mappings = results[registry.uri] || []
         section.totalCount = mappings.totalCount || mappings.length
-        if (mappings.totalCount === undefined) {
-          mappings = mappings.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
-        }
         // Set section.loading if there is null in the results
         if (mappings.length == 1 && mappings[0] == null) {
           section.loading = true
@@ -1326,7 +1323,20 @@ export default {
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
         // Add items
+        let skipped = 0 // Keep track of number of skipped items
         for (let mapping of mappings) {
+          // For automatic mappings: If mapping with the same member identifier could be found in the results for the current registry, skip item.
+          if (_.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/automatic-mappings") {
+            const currentRegistryResults = results[this.currentRegistry.uri] || []
+            const memberIdentifier = (mapping) => {
+              return mapping && mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:members:"))
+            }
+            if (currentRegistryResults.find(m => memberIdentifier(m) == memberIdentifier(mapping))) {
+              skipped += 1
+              continue
+            }
+          }
+
           let item = { mapping, registry }
           item.sourceScheme = _.get(mapping, "fromScheme") || undefined
           item.targetScheme = _.get(mapping, "toScheme") || undefined
@@ -1346,6 +1356,7 @@ export default {
           }
           // Skip if there are no concepts.
           if (item.sourceConcepts.length + item.targetConcepts.length == 0) {
+            skipped += 1
             continue
           }
           // Highlight if selected concepts or current mapping have same members
@@ -1384,6 +1395,10 @@ export default {
           }
           section.items.push(item)
         }
+        if (mappings.totalCount === undefined) {
+          section.items = section.items.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
+        }
+        section.totalCount -= skipped
         sections.push(section)
       }
       return sections
