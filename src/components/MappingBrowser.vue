@@ -908,6 +908,17 @@ export default {
       // Enable registry
       this.showRegistry[registry.uri] = true
     },
+    locale(newValue, oldValue) {
+      if (newValue != oldValue) {
+        // Refresh all automatic mappings (as they might include labels in a certain language)
+        for (let registry of this.navigatorRegistries.filter(registry =>
+          _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+          && this.showRegistry[registry.uri]
+        )) {
+          this.navigatorNeedsRefresh.push(registry.uri)
+        }
+      }
+    },
   },
   created() {
     // Debounce navigator refresh
