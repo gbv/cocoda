@@ -1346,6 +1346,10 @@ export default {
       for (let registry of this.mappingRegistriesSorted.filter(registry => results[registry.uri])) {
         let section = {}
         section.registry = registry
+        // Add custom class for current registry
+        if (this.$jskos.compare(registry, this.currentRegistry)) {
+          section._class = "mappingBrowser-table-currentRegistrySection"
+        }
         section.items = []
         section.loading = loading[registry.uri]
         section.page = pages[registry.uri] || 1

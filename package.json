@@ -57,7 +57,7 @@
     "simple-sha1": "^2.1.2",
     "uuid": "^3.3.2",
     "vue": "^2.6.6",
-    "vue-flexible-table": "^0.3.1",
+    "vue-flexible-table": "^0.3.2",
     "vue-i18n": "^8.9.0",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.15.0",

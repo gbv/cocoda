@@ -991,4 +991,9 @@ export default {
   background-color: @color-primary-5;
 }
 
+// Custom section class for current registry
+.mappingBrowser-table-currentRegistrySection > .flexibleTable-section-before {
+  background-color: @color-select-2;
+}
+
 </style>
