@@ -632,8 +632,16 @@
       "toScheme": {
         "uri": "http://uri.gbv.de/terminology/bk/"
       },
-      "url": "https://github.com/gbv/cocoda/wiki/WD-BK",
-      "markdown": "https://raw.githubusercontent.com/wiki/gbv/cocoda/WD-BK.md"
+      "url": "https://github.com/gbv/cocoda/wiki/Wikidata-Basisklassifikation"
+    },
+    {
+      "fromScheme": {
+        "uri": "http://bartoc.org/en/node/1940"
+      },
+      "toScheme": {
+        "uri": "http://bartoc.org/en/node/430"
+      },
+      "url": "https://github.com/gbv/cocoda/wiki/Wikidata-GND"
     }
   ]
 }
