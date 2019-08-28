@@ -169,6 +169,11 @@ export default {
     addToMapping(params) {
       params.type = "mapping/add"
       params.cardinality = this.$store.state.settings.settings.mappingCardinality
+      // Override cardinality from registry if necessary
+      const cardinality = _.get(this.$store.getters.getCurrentRegistry, "config.mappings.cardinality")
+      if (cardinality == "1-to-1") {
+        params.cardinality = cardinality
+      }
       this.$store.commit(params)
     },
     /**
