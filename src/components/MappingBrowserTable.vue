@@ -226,16 +226,6 @@
             {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
           </span>
         </div>
-        <!-- Mapping transfer button -->
-        <div
-          v-if="showEditingTools && authorized && data.item.mapping && data.item.registry.uri == 'http://coli-conc.gbv.de/registry/local-mappings'"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.transferMapping'), delay: $util.delay.medium }"
-            icon="angle-double-right"
-            class="button"
-            @click="transferMapping(data.item.mapping)" />
-        </div>
         <div
           v-if="data.item.mapping"
           class="mappingBrowser-toolbar-button">
@@ -753,33 +743,6 @@ export default {
           value: registry.uri,
         })
       }
-    },
-    // transfers a mapping from local mappings to concordance registry
-    transferMapping(mapping) {
-      mapping = this.copyMappingAndAdjustCreator(mapping)
-      let fromRegistry = "http://coli-conc.gbv.de/registry/local-mappings"
-      // TODO: It just choses the first possible registry, not good!
-      let toRegistry = this.config.registries.find(registry => registry.provider.has.canSaveMappings && registry.uri != fromRegistry)
-      toRegistry = toRegistry && toRegistry.uri
-      let promise
-      if (toRegistry) {
-        promise = this.$store.dispatch({
-          type: "mapping/transferMapping",
-          mapping,
-          fromRegistry,
-          toRegistry,
-        })
-      } else {
-        promise = Promise.resolve(null)
-      }
-      promise.then(mapping => {
-        if (mapping) {
-          this.alert(this.$t("alerts.mappingTransferred", [this.$util.prefLabel(toRegistry, null, false)]), null, "success2")
-        } else {
-          this.alert(this.$t("alerts.mappingNotTransferred", [this.$util.prefLabel(toRegistry, null, false)]), null, "danger")
-        }
-        this.$store.commit("mapping/setRefresh")
-      })
     },
     // Gets called by popovers @hide function to add them to currentPopovers
     popoverHide(event, id) {
