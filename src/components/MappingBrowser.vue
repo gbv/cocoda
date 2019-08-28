@@ -44,6 +44,11 @@
           style="user-select: none;">
           {{ $t("mappingBrowser.settingNavigatorShowResultsForRight") }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-model="moveCurrentRegistryToTop"
+          style="user-select: none;">
+          {{ $t("mappingBrowser.settingMoveCurrentRegistryToTop") }}
+        </b-form-checkbox>
       </b-form>
     </component-settings>
     <tabs
@@ -686,6 +691,19 @@ export default {
       }
       groups.push(otherGroup)
       groups = groups.filter(group => group.registries.length > 0)
+      if (this.moveCurrentRegistryToTop) {
+        for (let group of groups) {
+          group.registries = group.registries.sort((a, b) => {
+            if (this.$jskos.compare(a, this.currentRegistry)) {
+              return -1
+            }
+            if (this.$jskos.compare(b, this.currentRegistry)) {
+              return 1
+            }
+            return 0
+          })
+        }
+      }
       return groups
     },
     // show registries
@@ -789,6 +807,19 @@ export default {
         })
         // Refresh
         this.$store.commit("mapping/setRefresh")
+      },
+    },
+    // Setting whether to move current mapping registry to the top of the list
+    moveCurrentRegistryToTop: {
+      get() {
+        return this.$settings.mappingBrowserMoveCurrentRegistryToTop
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingBrowserMoveCurrentRegistryToTop",
+          value,
+        })
       },
     },
     resultLimit: {

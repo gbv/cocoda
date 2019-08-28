@@ -10,6 +10,7 @@ const defaultSettings = {
   mappingBrowserResultLimit: 5,
   mappingBrowserHideEmpty: false,
   mappingBrowserShowIdentityWarning: true,
+  mappingBrowserMoveCurrentRegistryToTop: false,
   conceptDetailShowAllAncestors: false,
   conceptListAddToMappingSelectsConcept: true,
   mappingBrowserShowRegistry: {},
