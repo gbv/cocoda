@@ -601,5 +601,17 @@
         "en": "Feedback"
       }
     }
+  ],
+  "guidelines": [
+    {
+      "fromScheme": {
+        "uri": "http://bartoc.org/en/node/1940"
+      },
+      "toScheme": {
+        "uri": "http://uri.gbv.de/terminology/bk/"
+      },
+      "url": "https://github.com/gbv/cocoda/wiki/WD-BK",
+      "markdown": "https://raw.githubusercontent.com/wiki/gbv/cocoda/WD-BK.md"
+    }
   ]
 }

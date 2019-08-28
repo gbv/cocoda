@@ -108,6 +108,7 @@
     },
     "mappingEditor": {
       "title": "Mapping Editor",
+      "guidelines": "open mapping guidelines",
       "placeholder": "Drag and drop a concept here.",
       "placeholderDragging": "Drop concept here.",
       "saveMapping": "save mapping",
@@ -385,6 +386,7 @@
     },
     "mappingEditor": {
       "title": "Mapping-Editor",
+      "guidelines": "Mapping-Richtlinien öffnen",
       "placeholder": "Konzept ziehen und hier ablegen.",
       "placeholderDragging": "Konzept hier ablegen.",
       "saveMapping": "Mapping speichern",

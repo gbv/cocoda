@@ -195,6 +195,16 @@
     </div>
     <div class="mappingEditor-title">
       {{ $t("mappingEditor.title") }}
+      <!-- Guideline link if available -->
+      <span
+        v-if="currentGuidelines"
+        v-b-tooltip.hover="{ title: $t('mappingEditor.guidelines'), delay: $util.delay.medium }">
+        <a
+          :href="currentGuidelines.url"
+          target="_blank">
+          <font-awesome-icon icon="question-circle" />
+        </a>
+      </span>
     </div>
     <!-- Delete mapping modal -->
     <b-modal
@@ -428,6 +438,9 @@ export default {
           value: value ? "1-to-1" : "1-to-n",
         })
       },
+    },
+    currentGuidelines() {
+      return (this.config.guidelines || []).find(g => this.$jskos.compare(g.fromScheme, this.selected.scheme[true]) && this.$jskos.compare(g.toScheme, this.selected.scheme[false]))
     },
   },
   watch: {
