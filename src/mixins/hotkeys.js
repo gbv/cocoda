@@ -59,7 +59,7 @@ export default {
       }
     },
     hotkeyHandler(event) {
-      let shortcut = _.pick(event, ["key", "metaKey", "ctrlKey", "altKey", "shiftKey"])
+      let shortcut = _.pick(event, ["key", "keyCode", "metaKey", "ctrlKey", "altKey", "shiftKey"])
       if (_.get(event, "srcElement.tagName") == "INPUT") {
         // Skip certain shortcuts for input elements
         let toSkip = [
@@ -95,7 +95,9 @@ export default {
       // Only run shortcuts if there are no modals
       if (modals.length == 0) {
         for (let sc of this.hotkeys) {
-          if (_.isEqual(shortcut, sc.shortcut)) {
+          // Omit either key or keyCode
+          const omit = sc.shortcut.key ? "keyCode" : "key"
+          if (_.isEqual(_.omit(shortcut, [omit]), _.omit(sc.shortcut, [omit]))) {
             pass = sc.handler() && pass
           }
         }
@@ -112,6 +114,7 @@ export default {
       for (let sc of shortcuts) {
         let keys = sc.split("+")
         let key = null
+        let keyCode = null
         let metaKey = false
         let ctrlKey = false
         let altKey = false
@@ -126,13 +129,17 @@ export default {
           } else if (k == "shift") {
             shiftKey = true
           } else {
-            key = k
+            if (k.startsWith("keyCode:")) {
+              keyCode = parseInt(k.replace("keyCode:", ""))
+            } else {
+              key = k
+            }
           }
         }
         this.hotkeys.push({
           handler,
           shortcut: {
-            key, metaKey, ctrlKey, altKey, shiftKey,
+            key, keyCode, metaKey, ctrlKey, altKey, shiftKey,
           },
         })
       }
