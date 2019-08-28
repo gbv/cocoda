@@ -205,6 +205,19 @@
     <item-detail-narrower
       :narrower="item.narrower"
       :is-left="isLeft" />
+
+    <div
+      v-if="nextConcept"
+      style="position: absolute; bottom: 0; right: 35px;">
+      <router-link
+        :to="getRouterUrl(nextConcept, isLeft, true)">
+        <b-button
+          size="sm"
+          variant="light">
+          {{ $t("conceptDetail.nextConcept") }}
+        </b-button>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -355,6 +368,39 @@ export default {
         }
       }
       return gndTerms
+    },
+    // Returns the available concept (see #302)
+    nextConcept() {
+      const next = (concept, root = true) => {
+        if (!concept) {
+          return null
+        }
+        // If this is the root call and there are narrower concepts, return first child
+        if (root && concept.narrower && concept.narrower.length) {
+          return concept.narrower[0]
+        }
+        const parent = _.last(concept.ancestors) || _.first(concept.broader)
+        // Get children of parent
+        let children = _.get(parent, "narrower")
+        // If there is no parent, use top concepts as children
+        if (!parent) {
+          children = _.get(this.topConcepts, concept.inScheme[0] && concept.inScheme[0].uri)
+        }
+        if (!children) {
+          return null
+        }
+        // Try to find next child in list of children
+        const nextChild = children[children.findIndex(c => this.$jskos.compare(c, concept)) + 1]
+        if (nextChild) {
+          return nextChild
+        }
+        // If there is no next child, find next for parent
+        if (parent) {
+          return next(parent, false)
+        }
+        return null
+      }
+      return next(this.item)
     },
   },
   watch: {
