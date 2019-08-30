@@ -484,7 +484,7 @@ export default {
     creator() {
       this.setCreator()
     },
-    original() {
+    "original.uri"() {
       this.setCreator()
     },
   },

@@ -519,7 +519,7 @@ const actions = {
       if (!getters.canCreate) {
         return null
       }
-      return registry.provider.saveMapping(state.mapping)
+      return registry.provider.saveMapping(_.omit(state.mapping, ["uri"]))
     }
   },
 
