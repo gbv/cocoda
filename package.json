@@ -1,7 +1,7 @@
 {
   "name": "cocoda-2018",
   "version": "1.0.1",
-  "jskos-api": "1.0.0",
+  "jskos-api": "^1.0",
   "description": "Cocoda - Concordance App",
   "author": "Stefan Peters <stefandesu@exo.pm>",
   "license": "MIT",

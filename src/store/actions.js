@@ -124,25 +124,27 @@ export default {
        * Only supports specific version numbers and the ^ operator for versionRange.
        *
        * Examples:
-       * console.log(`${versionCompatible("1.0.1", "^1.0.0")} -> true`)
-       * console.log(`${versionCompatible("1.0.2", "1.0.2")} -> true`)
-       * console.log(`${versionCompatible("1.0.2", "^1.1.0")} -> false`)
-       * console.log(`${versionCompatible("1.1.1", "1.0.0")} -> false`)
-       * console.log(`${versionCompatible("1.9.1", "^2.0.0")} -> false`)
-       * console.log(`${versionCompatible("2.0.0", "^1.9.1")} -> false`)
+       * console.log(`${versionCompatible("1.0", "^1.0")} -> true`)
+       * console.log(`${versionCompatible("1.1", "^1.0")} -> true`)
+       * console.log(`${versionCompatible("1.1", "1.1")} -> true`)
+       * console.log(`${versionCompatible("1.1.1", "1.1")} -> true`)
+       * console.log(`${versionCompatible("1.1", "^1.2")} -> false`)
+       * console.log(`${versionCompatible("1.1", "1.0")} -> false`)
+       * console.log(`${versionCompatible("1.9", "^2.0")} -> false`)
+       * console.log(`${versionCompatible("2.0", "^1.9")} -> false`)
        *
-       * @param {*} version a specific version, like 1.0.1 or 1.5.0
-       * @param {*} versionRange a specific version or version range (like ^1.0.0), only ^ is supported
+       * @param {*} version a specific version, like 1.0 or 1.5
+       * @param {*} versionRange a specific version or version range (like ^1.0), only ^ is supported
        */
       const versionCompatible = (version, versionRange) => {
+        const versionParts = version.split(".").map(part => parseInt(part))
+        const versionRangeParts = versionRange.slice(versionRange.startsWith("^") ? 1 : 0).split(".").map(part => parseInt(part))
         if (!versionRange.startsWith("^")) {
-          if (version == versionRange) {
+          if (versionParts[0] == versionRangeParts[0] && versionParts[1] == versionRangeParts[1]) {
             return true
           }
           return false
         }
-        const versionParts = version.split(".").map(part => parseInt(part))
-        const versionRangeParts = versionRange.slice(1).split(".").map(part => parseInt(part))
         // Fail for differing major version
         if (versionParts[0] != versionRangeParts[0]) {
           return false
@@ -151,17 +153,13 @@ export default {
         if (versionParts[1] < versionRangeParts[1]) {
           return false
         }
-        // Fail if minor matches, but patch is higher in versionRange
-        if (versionParts[1] == versionRangeParts[1] && versionParts[2] < versionRangeParts[2]) {
-          return false
-        }
         return true
       }
 
       // Filter out incompatible registries
       let compatibleRegistries = []
       for (let registry of config.registries) {
-        if (!registry.config || !registry.config.version || versionCompatible(registry.config.version, buildInfo.jskosApi)) {
+        if (!buildInfo.jskosApi || !registry.config || !registry.config.version || versionCompatible(registry.config.version, buildInfo.jskosApi)) {
           compatibleRegistries.push(registry)
         } else {
           console.warn(`Registry ${registry.prefLabel.en || registry.prefLabel.de} (${registry.uri}) is not version compatible with this release (registry: ${registry.config.version}, supported: ${buildInfo.jskosApi})`)
