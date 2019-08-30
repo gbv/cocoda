@@ -34,60 +34,69 @@ class MappingsApiProvider extends BaseProvider {
    * Returns a Promise with a list of mappings from a jskos-server.
    */
   _getMappings({ from, fromScheme, to, toScheme, creator, type, partOf, offset, limit, direction, mode, identifier, uri, sort, order, options, cancelToken }) {
-    let params = {}
-    if (from) {
-      params.from = _.isString(from) ? from : from.uri
+    let promise, url
+    if (!uri) {
+      let params = {}
+      if (from) {
+        params.from = _.isString(from) ? from : from.uri
+      }
+      if (fromScheme) {
+        params.fromScheme = _.isString(fromScheme) ? fromScheme : fromScheme.uri
+      }
+      if (to) {
+        params.to = _.isString(to) ? to : to.uri
+      }
+      if (toScheme) {
+        params.toScheme = _.isString(toScheme) ? toScheme : toScheme.uri
+      }
+      if (creator) {
+        params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
+      }
+      if (type) {
+        params.type = _.isString(type) ? type : type.uri
+      }
+      if (partOf) {
+        params.partOf = _.isString(partOf) ? partOf : partOf.uri
+      }
+      if (offset) {
+        params.offset = offset
+      }
+      if (limit) {
+        params.limit = limit
+      }
+      if (direction) {
+        params.direction = direction
+      }
+      if (mode) {
+        params.mode = mode
+      }
+      if (identifier) {
+        params.identifier = identifier
+      }
+      if (sort) {
+        params.sort = sort
+      }
+      if (order) {
+        params.order = order
+      }
+      // Build full API URL to be attached to result array later
+      url = this.registry.mappings + "?"
+      _.forOwn(params, (value, key) => {
+        url += `${key}=${encodeURIComponent(value)}&`
+      })
+      url = url.slice(0, url.length - 1)
+      options = Object.assign({}, { params }, options)
+      promise = this.get(this.registry.mappings, options, cancelToken)
+    } else {
+      // Load single mapping directly from URI if it comes from the current registry
+      if (uri.startsWith(this.registry.mappings)) {
+        promise = this.get(uri, options, cancelToken).then(mapping => mapping && [mapping])
+        url = uri
+      } else {
+        promise = Promise.resolve([])
+      }
     }
-    if (fromScheme) {
-      params.fromScheme = _.isString(fromScheme) ? fromScheme : fromScheme.uri
-    }
-    if (to) {
-      params.to = _.isString(to) ? to : to.uri
-    }
-    if (toScheme) {
-      params.toScheme = _.isString(toScheme) ? toScheme : toScheme.uri
-    }
-    if (creator) {
-      params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
-    }
-    if (type) {
-      params.type = _.isString(type) ? type : type.uri
-    }
-    if (partOf) {
-      params.partOf = _.isString(partOf) ? partOf : partOf.uri
-    }
-    if (offset) {
-      params.offset = offset
-    }
-    if (limit) {
-      params.limit = limit
-    }
-    if (direction) {
-      params.direction = direction
-    }
-    if (mode) {
-      params.mode = mode
-    }
-    if (identifier) {
-      params.identifier = identifier
-    }
-    if (uri) {
-      params.uri = uri
-    }
-    if (sort) {
-      params.sort = sort
-    }
-    if (order) {
-      params.order = order
-    }
-    // Build full API URL to be attached to result array later
-    let url = this.registry.mappings + "?"
-    _.forOwn(params, (value, key) => {
-      url += `${key}=${encodeURIComponent(value)}&`
-    })
-    url = url.slice(0, url.length - 1)
-    options = Object.assign({}, { params }, options)
-    return this.get(this.registry.mappings, options, cancelToken).then(mappings => {
+    return promise.then(mappings => {
       mappings = mappings || []
       for (let mapping of mappings) {
         // Add mapping type if not available
@@ -103,7 +112,9 @@ class MappingsApiProvider extends BaseProvider {
         }
       }
       // Add API URL as property to result array
-      mappings.url = url
+      if (url) {
+        mappings.url = url
+      }
       return mappings
     })
   }

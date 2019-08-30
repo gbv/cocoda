@@ -666,17 +666,19 @@ export default {
         let memberFields = ["memberSet", "memberList", "memberChoice"]
         promises.push(loadMapping.then(( [mappingFromQuery, original = null] ) => {
           let promises = []
-          for (let direction of directions) {
-            // Get scheme
-            let scheme = mappingFromQuery[`${direction}Scheme`]
-            for (let memberField of memberFields) {
-              if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
-              // Load data for each concept in mapping
-              _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                promises.push(this.loadDetails(concept, { scheme }).then(concept => {
-                  mappingFromQuery[direction][memberField][index] = concept
-                }))
-              })
+          if (mappingFromQuery) {
+            for (let direction of directions) {
+              // Get scheme
+              let scheme = mappingFromQuery[`${direction}Scheme`]
+              for (let memberField of memberFields) {
+                if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
+                // Load data for each concept in mapping
+                _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
+                  promises.push(this.loadDetails(concept, { scheme }).then(concept => {
+                    mappingFromQuery[direction][memberField][index] = concept
+                  }))
+                })
+              }
             }
           }
           return Promise.all(promises).then(() => {
