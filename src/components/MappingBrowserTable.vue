@@ -675,11 +675,16 @@ export default {
       let creatorName = this.$util.prefLabel(creator, null, false)
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
-      mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))
+      if (creator && creatorName) {
+        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))
+        mapping.creator = [creator]
+      } else {
+        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
+        this.$delete(mapping, "creator")
+      }
       if (mapping.contributor.length == 0) {
         this.$delete(mapping, "contributor")
       }
-      mapping.creator = [creator]
       return mapping
     },
     saveMapping(mapping) {

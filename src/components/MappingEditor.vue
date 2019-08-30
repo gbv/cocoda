@@ -513,12 +513,12 @@ export default {
     },
     saveMapping() {
       if (!this.canSaveMapping) return false
-      if (!this.creatorName || this.creatorName == "") {
-        this.alert("Please set your name in Settings (top right of the page).")
-        return false
+      if (this.creatorName && this.creatorName != "") {
+        // Set creator
+        this.setCreator()
+      } else {
+        this.removeCreator()
       }
-      // Set creator
-      this.setCreator()
       // Hide comment modal if open
       this.$refs.commentModal.hide()
       let mapping = this.prepareMapping()
@@ -557,6 +557,18 @@ export default {
       this.$store.commit({
         type: "mapping/setCreator",
         creator,
+      })
+      this.$store.commit({
+        type: "mapping/setContributor",
+        contributor,
+      })
+    },
+    removeCreator() {
+      // - All previous creators will be written to contributors.
+      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []))
+      this.$store.commit({
+        type: "mapping/setCreator",
+        creator: null,
       })
       this.$store.commit({
         type: "mapping/setContributor",
