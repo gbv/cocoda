@@ -498,6 +498,7 @@ const actions = {
               type: "set",
               original: mapping,
               registry: state.original.registry,
+              noQueryRefresh: true,
             })
           }
         }
