@@ -118,6 +118,61 @@ export default {
         }
       }
 
+      /**
+       * Function to check for version compatibility
+       *
+       * Only supports specific version numbers and the ^ operator for versionRange.
+       *
+       * Examples:
+       * console.log(`${versionCompatible("1.0", "^1.0")} -> true`)
+       * console.log(`${versionCompatible("1.1", "^1.0")} -> true`)
+       * console.log(`${versionCompatible("1.1", "1.1")} -> true`)
+       * console.log(`${versionCompatible("1.1.1", "1.1")} -> true`)
+       * console.log(`${versionCompatible("1.1", "^1.2")} -> false`)
+       * console.log(`${versionCompatible("1.1", "1.0")} -> false`)
+       * console.log(`${versionCompatible("1.9", "^2.0")} -> false`)
+       * console.log(`${versionCompatible("2.0", "^1.9")} -> false`)
+       *
+       * @param {*} version a specific version, like 1.0 or 1.5
+       * @param {*} versionRange a specific version or version range (like ^1.0), only ^ is supported
+       */
+      const versionCompatible = (version, versionRange) => {
+        const versionParts = version.split(".").map(part => parseInt(part))
+        const versionRangeParts = versionRange.slice(versionRange.startsWith("^") ? 1 : 0).split(".").map(part => parseInt(part))
+        if (!versionRange.startsWith("^")) {
+          if (versionParts[0] == versionRangeParts[0] && versionParts[1] == versionRangeParts[1]) {
+            return true
+          }
+          return false
+        }
+        // Fail for differing major version
+        if (versionParts[0] != versionRangeParts[0]) {
+          return false
+        }
+        // Fail if minor is higher in versionRange
+        if (versionParts[1] < versionRangeParts[1]) {
+          return false
+        }
+        return true
+      }
+
+      // Filter out incompatible registries
+      let compatibleRegistries = []
+      for (let registry of config.registries) {
+        if (!buildInfo.jskosApi || !registry.config || !registry.config.version || versionCompatible(registry.config.version, buildInfo.jskosApi)) {
+          compatibleRegistries.push(registry)
+        } else {
+          // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
+          const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry.config.version, jskosApi: buildInfo.jskosApi })
+          console.warn(text)
+          commit("alerts/add", {
+            variant: "danger",
+            text,
+          }, { root: true })
+        }
+      }
+      config.registries = compatibleRegistries
+
       // Initialize providers for registries
       let options = { registries: config.registries, http: axios }
       for (let registry of config.registries) {
