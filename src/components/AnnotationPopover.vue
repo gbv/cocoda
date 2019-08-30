@@ -35,12 +35,12 @@
             <font-awesome-icon
               :class="{
                 'annotationPopover-voting-button-current': ownScore == '+1',
-                'button': provider && provider.auth,
-                'button-disabled': !provider || !provider.auth,
+                'button': canSaveAnnotation,
+                'button-disabled': !canSaveAnnotation,
                 'annotationPopover-voting-button': true
               }"
               icon="thumbs-up"
-              @click="provider && provider.auth && assessing('+1')" />
+              @click="canSaveAnnotation && assessing('+1')" />
           </div>
           <!-- Score -->
           <div class="annotationPopover-score">
@@ -58,12 +58,12 @@
             <font-awesome-icon
               :class="{
                 'annotationPopover-voting-button-current': ownScore == '-1',
-                'button': provider && provider.auth,
-                'button-disabled': !provider || !provider.auth,
+                'button': canSaveAnnotation,
+                'button-disabled': !canSaveAnnotation,
                 'annotationPopover-voting-button': true
               }"
               icon="thumbs-down"
-              @click="provider && provider.auth && assessing('-1')" />
+              @click="canSaveAnnotation && assessing('-1')" />
           </div>
         </div>
       </div>
@@ -136,6 +136,16 @@ export default {
     provider() {
       return _.get(this.imapping, "_provider")
     },
+    canSaveAnnotation() {
+      if (!this.provider) {
+        return false
+      }
+      return this.provider.isAuthorizedFor({
+        type: "annotations",
+        action: "create",
+        user: this.user,
+      })
+    },
   },
   watch: {
     id() {
@@ -189,21 +199,17 @@ export default {
         }, 50)
       }
     },
-    alertInternal(message) {
-      if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
-        message += " " + this.$t("general.authNecessary")
-      }
-      this.alert(message, null, "danger")
-    },
     assessing(value) {
       let provider = this.provider
       if (!provider || !provider.has.annotations) {
         console.warn("No provider found to add annotation.")
+        this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       let uri = _.get(this.imapping, "uri")
       if (!uri) {
         console.warn("No URI found to add annotation.")
+        this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       this.loading = true
@@ -211,6 +217,11 @@ export default {
       // Three cases:
       // 1. Case: User has not assessed this mapping -> add an annotation
       if (!this.ownAssessment) {
+        if (!this.canSaveAnnotation) {
+          this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
+          this.loading = false
+          return
+        }
         let annotation = {
           target: uri,
           motivation: "assessing",
@@ -227,44 +238,65 @@ export default {
           let newUri = _.get(this.imapping, "uri")
           if (uri != newUri || !annotation) {
             // Don't add annotation to mapping
-            this.alertInternal("Adding annotation failed.")
+            this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             return
+          } else {
+            this.alert(this.$t("alerts.annotationSaved"), null, "success")
           }
           this.imapping.annotations.push(annotation)
           this.$emit("refresh-annotations", { uri, annotations: this.annotations })
         })
       } else {
         if (this.ownScore != value) {
+          if (!this.provider.isAuthorizedFor({
+            type: "annotations",
+            action: "update",
+            user: this.user,
+          })) {
+            this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
+            this.loading = false
+            return
+          }
           // 2. Case: User has assessed and changes the value
           promise = provider.editAnnotation(this.ownAssessment, { bodyValue: value }).then(annotation => {
             if (annotation) {
               this.ownAssessment.bodyValue = value
+              this.alert(this.$t("alerts.annotationSaved"), null, "success")
               this.$emit("refresh-annotations", { uri, annotations: this.annotations })
             } else {
-              this.alertInternal("Editing annotation failed.")
+              this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             }
           })
         } else {
+          if (!this.provider.isAuthorizedFor({
+            type: "annotations",
+            action: "delete",
+            user: this.user,
+          })) {
+            this.alert(this.$t("alerts.annotationNotRemoved"), null, "danger")
+            this.loading = false
+            return
+          }
           // 3. Case: User has assessed and removes his value
           promise = this.remove(this.annotations.indexOf(this.ownAssessment)).then(success => {
             if (success) {
+              this.alert(this.$t("alerts.annotationRemoved"), null, "success")
               this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+            } else {
+              this.alert(this.$t("alerts.annotationNotRemoved"), null, "danger")
             }
           })
         }
       }
       promise.catch(error => {
         console.error("AnnotationPopover - Error adding annotation", error)
+        this.alert(this.$t("alerts.annotationError"), null, "danger")
       }).then(() => {
         this.loading = false
       })
     },
     remove(index) {
       let provider = this.provider
-      if (!provider || !provider.has.annotations) {
-        console.warn("No provider found to add annotation.")
-        return
-      }
       let annotation = this.annotations[index]
       if (!annotation) {
         return
@@ -275,8 +307,7 @@ export default {
         // Check if annotation stayed the same or deletion was not successful
         if (annotation.id != this.annotations[index].id || !success) {
           // Don't remove annotation because it changed
-          this.alertInternal("Removing annotation failed.")
-          return
+          return false
         }
         this.$delete(this.imapping.annotations, index)
         return success
