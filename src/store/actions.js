@@ -162,7 +162,13 @@ export default {
         if (!buildInfo.jskosApi || !registry.config || !registry.config.version || versionCompatible(registry.config.version, buildInfo.jskosApi)) {
           compatibleRegistries.push(registry)
         } else {
-          console.warn(`Registry ${registry.prefLabel.en || registry.prefLabel.de} (${registry.uri}) is not version compatible with this release (registry: ${registry.config.version}, supported: ${buildInfo.jskosApi})`)
+          // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
+          const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry.config.version, jskosApi: buildInfo.jskosApi })
+          console.warn(text)
+          commit("alerts/add", {
+            variant: "danger",
+            text,
+          }, { root: true })
         }
       }
       config.registries = compatibleRegistries
