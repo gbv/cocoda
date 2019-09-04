@@ -6,69 +6,72 @@
     centered
     hide-footer
     size="lg">
-    <div class="dataModal-links">
-      <div>
-        <a
-          href=""
-          @click.prevent="copyToClipboard($refs.jsonCode)">
-          <font-awesome-icon icon="clipboard" />
-          {{ $t("dataModal.exportClipboard") }}
-        </a>
-      </div>
-      <div class="dataModal-links-withTitle">
-        <div class="fontWeight-heavy">
+    <table class="dataModal-links">
+      <tr>
+        <td class="fontWeight-heavy">
           {{ $t("dataModal.localDownload") }} ({{ count.toLocaleString() }})
-        </div>
-        <div>
-          <div>
-            <a
-              :href="'data:application/json;charset=utf-8,' + encodedData"
-              :download="filename + '.json'"
-              target="_blank">
-              <font-awesome-icon icon="download" /><br>.json
-            </a>
-          </div>
-          <div v-if="encodedDataNdjson">
-            <a
-              :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
-              :download="filename + '.ndjson'"
-              target="_blank">
-              <font-awesome-icon icon="download" /><br>.ndjson
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="dataModal-links-withTitle"
-        :style="Object.keys(urls).length > 1 ? 'flex: 1.6;' : 'flex: 1.3;'">
-        <div class="fontWeight-heavy">
+        </td>
+        <td>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item p1">
+              <a
+                :href="'data:application/json;charset=utf-8,' + encodedData"
+                :download="filename + '.json'"
+                target="_blank">
+                <font-awesome-icon icon="download" /> .json
+              </a>
+            </li>
+            <li
+              v-if="encodedDataNdjson"
+              class="list-group-item p1">
+              <a
+                :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
+                :download="filename + '.ndjson'"
+                target="_blank">
+                <font-awesome-icon icon="download" /> .ndjson
+              </a>
+            </li>
+            <li class="list-group-item p1">
+              <a
+                href=""
+                @click.prevent="copyToClipboard($refs.jsonCode)">
+                <font-awesome-icon icon="clipboard" />
+                {{ $t("dataModal.exportClipboard") }}
+              </a>
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <tr v-if="url">
+        <td class="fontWeight-heavy">
           {{ $t("dataModal.apiLinks") }} ({{ (totalCount || count).toLocaleString() }})
-        </div>
-        <div v-if="url">
-          <div
-            v-for="(title, index) in Object.keys(urls)"
-            :key="`dataModal-links-urls-${index}`">
-            <a
-              :href="urls[title]"
-              target="_blank">
-              <font-awesome-icon icon="link" /><br>{{ title || $t("dataModal.apiUrl") }}
-            </a>
-          </div>
-          <div
-            v-for="(download, index) in apiDownloadUrls"
-            :key="`dataModal-links-apiDownload-${index}`">
-            <a
-              :href="download.url"
-              target="_blank">
-              <font-awesome-icon icon="download" /><br>{{ download.title }}
-            </a>
-          </div>
-        </div>
-        <div v-else>
-          <div>{{ $t("dataModal.noApiUrls") }}</div>
-        </div>
-      </div>
-    </div>
+        </td>
+        <td>
+          <ul class="list-group list-group-horizontal">
+            <li
+              v-for="(title, index) in Object.keys(urls)"
+              :key="`dataModal-links-urls-${index}`"
+              class="list-group-item p1">
+              <a
+                :href="urls[title]"
+                target="_blank">
+                <font-awesome-icon icon="link" /> {{ title || $t("dataModal.apiUrl") }}
+              </a>
+            </li>
+            <li
+              v-for="(download, index) in apiDownloadUrls"
+              :key="`dataModal-links-apiDownload-${index}`"
+              class="list-group-item p1">
+              <a
+                :href="download.url"
+                target="_blank">
+                <font-awesome-icon icon="download" /> {{ download.title }}
+              </a>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </table>
     <div class="dataModal-json">
       <pre><code
           ref="jsonCode"
@@ -255,28 +258,6 @@ export default {
 
 <style lang="less" scoped>
 @import "../style/main.less";
-
-.dataModal-links {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  text-align: center;
-}
-.dataModal-links > * {
-  flex: 1;
-}
-
-.dataModal-links-withTitle {
-  display: flex;
-  flex-direction: column;
-}
-.dataModal-links-withTitle > *:last-child {
-  display: flex;
-  flex-wrap: wrap;
-}
-.dataModal-links-withTitle > *:last-child > * {
-  flex: 1;
-}
 
 .dataModal-json {
   height: 600px;
