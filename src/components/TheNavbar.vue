@@ -284,7 +284,7 @@
             style="opacity: 0.7; cursor: default;" />
         </template>
         <b-dropdown-header>
-          {{ $t("navbar.mappingRegistryHeader") }}
+          {{ $t("settings.mappingRegistryExplanation") }}
         </b-dropdown-header>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-normal"

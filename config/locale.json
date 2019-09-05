@@ -40,8 +40,7 @@
       "openRight": "open on right side",
       "removeFromFavorites": "remove from favorites",
       "loggedInAs": "Logged in as",
-      "defaultIdentity": "Default Identity",
-      "mappingRegistryHeader": "Mapping Registry"
+      "defaultIdentity": "Default Identity"
     },
     "schemeSelection": {
       "title": "Select a scheme",
@@ -254,7 +253,6 @@
       "credentialsCorrect": "Credentials successfully validated.",
       "credentialsIncorrect": "Credentials could not be validated.",
       "credentialsPartiallyIncorrect": "Credentials could partially not be validated.",
-      "mappingRegistry": "Mapping Registries",
       "mappingRegistryExplanation": "This registry is used to save mappings.",
       "creatorTitle": "Profile",
       "creatorInfo": "The following information is stored in all your mappings so it may also be shared:",
