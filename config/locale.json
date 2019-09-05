@@ -297,12 +297,12 @@
       "localDownload": "Download",
       "apiLinks": "API",
       "apiUrl": "URL",
-      "concept": "No Concepts | 1 Concept | {count} Concepts",
-      "scheme": "No Concept Scheme | 1 Concept Scheme | {count} Concept Schemes",
-      "mapping": "No Mappings | 1 Mapping | {count} Mappings",
-      "annotation": "No Annotations | 1 Annotation | {count} Annotations",
-      "concordance": "No Concordances | 1 Concordance | {count} Concordances",
-      "resource": "No Resources | 1 Resource | {count} Resources"
+      "concept": "no concepts | 1 concept | {count} concepts",
+      "scheme": "no scheme | 1 scheme | {count} schemes",
+      "mapping": "no mappings | 1 mapping | {count} mappings",
+      "annotation": "no annotations | 1 annotation | {count} annotations",
+      "concordance": "no concordances | 1 concordance | {count} concordances",
+      "resource": "no resources | 1 resource | {count} resources"
     },
     "registryInfo": {
       "schemes": "Schemes",
