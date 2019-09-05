@@ -6,7 +6,6 @@
       v-if="enable"
       ref="annotationPopover"
       :target="element"
-      :container="`annotationPopoverTop-${iid}`"
       :show.sync="show"
       boundary="window"
       placement="lefttop">

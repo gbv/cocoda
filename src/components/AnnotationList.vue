@@ -58,7 +58,7 @@ export default {
 @import "../style/main.less";
 
 .annotationList {
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: scroll;
 }
 .annotationList > div {
