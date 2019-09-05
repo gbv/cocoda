@@ -128,6 +128,23 @@ export default {
       return `${sign}${Math.abs(score)}`
     },
     ownAssessment() {
+      if (!this.userUris && this.creator.uri) {
+        // Special case: If the user is not logged in (i.e. no userUris), and there is a creator URI, AND the registry allows crossUser requests for updating/deleting annotations.
+        if (this.provider.isAuthorizedFor({
+          type: "annotations",
+          action: "update",
+          user: this.user,
+          crossUser: true,
+        }) && this.provider.isAuthorizedFor({
+          type: "annotations",
+          action: "delete",
+          user: this.user,
+          crossUser: true,
+        })) {
+          return this.annotations.find(annotation => annotation.motivation == "assessing" && annotation.creator && annotation.creator.id == this.creator.uri)
+        }
+        return null
+      }
       return this.annotations.find(annotation => annotation.motivation == "assessing" && this.$util.annotations.creatorMatches(annotation, this.userUris))
     },
     ownScore() {
@@ -227,10 +244,12 @@ export default {
           motivation: "assessing",
           bodyValue: value,
         }
-        if (this.creator && this.creator.uri && this.creatorName) {
+        if (this.creator && this.creator.uri) {
           annotation.creator = {
             id: this.creator.uri,
-            name: this.creatorName,
+          }
+          if (this.creatorName) {
+            annotation.creator.name = this.creatorName
           }
         }
         promise = provider.addAnnotation(annotation).then(annotation => {
