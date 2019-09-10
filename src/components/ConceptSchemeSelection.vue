@@ -127,7 +127,7 @@
                 <a
                   ref="removeAllFiltersLink"
                   href=""
-                  @click.prevent="onlyFavorites = false; schemeFilter = ''; languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+                  @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
                   {{ $t("schemeSelection.filtersRemove") }}
                 </a>
               </p>
@@ -136,6 +136,39 @@
                 size="sm">
                 {{ $t("schemeSelection.filterOnlyFavorites") }}
               </b-form-checkbox>
+              <!-- Registry filter -->
+              <div
+                v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-registryFilterCollapse`"
+                class="button">
+                <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
+                <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
+                {{ $t("schemeSelection.registryFilter") }}
+                ({{ registryFilter.length == availableRegistries.length ? "all" : registryFilter.length }})
+              </div>
+              <!-- Registry filter selection -->
+              <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-registryFilterCollapse`">
+                <a
+                  href=""
+                  @click.prevent="registryFilter = availableRegistries.map(r => r.uri)">
+                  {{ $t("schemeSelection.filterSelectAll") }}
+                </a>•
+                <a
+                  href=""
+                  @click.prevent="registryFilter = []">
+                  {{ $t("schemeSelection.filterDeselectAll") }}
+                </a>
+                <b-form-checkbox
+                  v-for="option in registryFilterOptions"
+                  :key="`conceptSchemeSelection-filterPopover-${id}-languageFilter-${option.value}`"
+                  v-model="registryFilter"
+                  :value="option.value"
+                  size="sm"
+                  class="fontSize-normal"
+                  stacked
+                  @change="focusAndSelectInput">
+                  {{ option.text }}
+                </b-form-checkbox>
+              </b-collapse>
               <!-- Language filter -->
               <div
                 v-b-toggle="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`"
@@ -281,6 +314,8 @@ export default {
       filterPopoverShow: false,
       // Filter text for scheme selection.
       schemeFilter: "",
+      // Filter for registry
+      registryFilter: [],
       // Filter for language (access only via computed prop languageFilter)
       languageFilter: [],
       // Filter for scheme types (access only via computed prop typeFilter)
@@ -296,7 +331,7 @@ export default {
     },
     // Indicates whether there is a filter active.
     isFiltered() {
-      return this.schemeFilter != "" || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
+      return this.schemeFilter != "" || this.registryFilter.length < this.availableRegistries.length || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
     },
     // Returns schemes with filters applied.
     filteredSchemes() {
@@ -314,6 +349,10 @@ export default {
       return this.schemes.filter(
         scheme =>
           (
+            this.registryFilter.length == this.availableRegistries.length ||
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._provider.registry))
+          ) &&
+          (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
             _.intersection(scheme.languages || [], this.languageFilter).length
           ) &&
@@ -326,14 +365,26 @@ export default {
           )
       )
     },
+    // Returns an array of all available registries
+    availableRegistries() {
+      return this.config.registries.filter(registry => registry.provider.has.concepts)
+    },
     // Returns an array of all available languages.
     availableLanguages() {
       return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
+    },
+    // Returns an array of available registry filter options.
+    registryFilterOptions() {
+      return this.availableRegistries.map(registry => ({ value: registry.uri, text: this.$util.prefLabel(registry) }))
     },
     // Returns an array of all available languages with other filters applied (faceted browsing).
     shownLanguages() {
       let schemes = this.schemes.filter(
         scheme =>
+          (
+            this.registryFilter.length == this.availableRegistries.length ||
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._provider.registry))
+          ) &&
           (
             (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
             _.intersection(scheme.type || [], this.typeFilter).length
@@ -364,6 +415,10 @@ export default {
     shownTypes() {
       let schemes = this.schemes.filter(
         scheme =>
+          (
+            this.registryFilter.length == this.availableRegistries.length ||
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._provider.registry))
+          ) &&
           (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
             _.intersection(scheme.languages || [], this.languageFilter).length
@@ -430,6 +485,7 @@ export default {
     // Enable shortcuts
     this.enableShortcuts()
     // Set filters to all
+    this.registryFilter = this.availableRegistries.map(r => r.uri)
     this.languageFilter = this.availableLanguages.concat([null])
     this.typeFilter = this.availableTypes.concat([null])
   },
