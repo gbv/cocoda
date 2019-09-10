@@ -208,11 +208,10 @@
 
     <div
       v-if="nextConcept"
-      style="position: absolute; bottom: 0; right: 35px;">
+      class="conceptDetail-nextButton">
       <router-link
         :to="getRouterUrl(nextConcept, isLeft, true)">
         <b-button
-          size="sm"
           variant="light">
           {{ $t("conceptDetail.nextConcept") }}
         </b-button>
@@ -558,6 +557,16 @@ export default {
 .conceptDetail-note {
   padding: 0 5px;
   flex: 1;
+}
+
+.conceptDetail-nextButton {
+  position: absolute;
+  bottom: 15px;
+  right: 0;
+}
+.conceptDetail-nextButton button {
+  .fontSize-small;
+  padding: 1px 4px;
 }
 
 </style>
