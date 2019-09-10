@@ -15,6 +15,14 @@
           <ul class="list-group list-group-horizontal">
             <li class="list-group-item p1">
               <a
+                :href="'data:text/csv;charset=utf-8,' + encodedDataCsv"
+                :download="filename + '.csv'"
+                target="_blank">
+                <font-awesome-icon icon="download" /> .csv
+              </a>
+            </li>
+            <li class="list-group-item p1">
+              <a
                 :href="'data:application/json;charset=utf-8,' + encodedData"
                 :download="filename + '.json'"
                 target="_blank">
@@ -84,12 +92,16 @@
 import _ from "lodash"
 import formatHighlight from "json-format-highlight"
 
+// Import mixins
+import objects from "../mixins/objects"
+
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "DataModal",
   components: { },
+  mixins: [objects],
   props: {
     /**
      * JSKOS data (either object or array)
@@ -201,6 +213,44 @@ export default {
         data = [this.preparedData]
       }
       return encodeURIComponent(data.map(object => JSON.stringify(object)).join("\n"))
+    },
+    encodedDataCsv() {
+      if (!this.computedType.startsWith("mapping")) {
+        return null
+      }
+
+      let mappings = this.preparedData
+      if (!this.isArray) {
+        mappings = [this.mappings]
+      }
+      // Prepare CSV export
+      let mappingCSV = this.$jskos.mappingCSV({
+        lineTerminator: "\r\n",
+        labels: true,
+        creator: true,
+        language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingCSV doesn't support a language override in each call (yet).
+      })
+      // Make a copy of all items so that we can freely modify them
+      mappings = mappings.map(mapping => this.$jskos.copyDeep(mapping))
+      // TODO: Some code duplication with TheSettings.
+      for (let mapping of mappings) {
+        // Prepare labels
+        // ... for concepts
+        for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
+          let conceptInStore = this._getObject(concept)
+          let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+          if (language) {
+            // NOTE: Hardcoded language, see note above.
+            concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
+          }
+        }
+        // ... for creator
+        if (mapping.creator && mapping.creator[0]) {
+          mapping.creator[0].prefLabel = { de: this.$util.prefLabel(mapping.creator[0], null, false) }
+        }
+      }
+
+      return encodeURIComponent(mappingCSV.fromMappings(mappings))
     },
     validated() {
       let type = this.computedType
