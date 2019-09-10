@@ -259,7 +259,7 @@
             <a
               ref="showAllSchemesLink"
               href=""
-              @click.prevent="onlyFavorites = false; schemeFilter = ''; languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+              @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
               {{ $t("schemeSelection.showAllSchemes", { count: schemes.length }) }}
             </a>
           </li>
