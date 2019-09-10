@@ -489,15 +489,17 @@ export default {
           // Download as JSKOS/ndjson
           download.ndjson = download.mappings.map(jskosExport).join("\n")
           // Download as CSV
-          let csv = "\"fromNotation\",\"fromLabel\",\"toNotation\",\"toLabel\",\"type\"\r\n"
-          let mappingToCSV = this.$jskos.mappingToCSV({
+          let mappingCSV = this.$jskos.mappingCSV({
             lineTerminator: "\r\n",
-            language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingToCSV doesn't support a language override in each call (yet).
+            labels: true,
+            creator: true,
+            language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingCSV doesn't support a language override in each call (yet).
           })
           // Minify all mappings first
           download.mappings = download.mappings.map(mapping => this.$jskos.minifyMapping(mapping))
           for (let mapping of download.mappings) {
             // Prepare labels
+            // ... for concepts
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
               let conceptInStore = this._getObject(concept)
               let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
@@ -506,10 +508,12 @@ export default {
                 concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
               }
             }
-            // Append to CSV
-            csv += mappingToCSV(mapping)
+            // ... for creator
+            if (mapping.creator && mapping.creator[0]) {
+              mapping.creator[0].prefLabel = { de: this.$util.prefLabel(mapping.creator[0], null, false) }
+            }
           }
-          download.csv = csv
+          download.csv = mappingCSV.fromMappings(download.mappings)
           // Label
           download.label = (this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?") + " to " + (this.$util.notation(_.get(download, "toScheme"), "scheme") || "?")
           // Filename
