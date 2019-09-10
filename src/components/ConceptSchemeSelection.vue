@@ -373,9 +373,27 @@ export default {
     availableLanguages() {
       return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
     },
+    // Returns an array of all available registries with other filters applied (faceted browsing).
+    shownRegistries() {
+      let schemes = this.schemes.filter(
+        scheme =>
+          (
+            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+            _.intersection(scheme.languages || [], this.languageFilter).length
+          ) &&
+          (
+            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
+            _.intersection(scheme.type || [], this.typeFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          )
+      )
+      return this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._provider.registry)))
+    },
     // Returns an array of available registry filter options.
     registryFilterOptions() {
-      return this.availableRegistries.map(registry => ({ value: registry.uri, text: this.$util.prefLabel(registry) }))
+      return this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$util.prefLabel(registry) }))
     },
     // Returns an array of all available languages with other filters applied (faceted browsing).
     shownLanguages() {
