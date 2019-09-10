@@ -537,7 +537,7 @@ export default {
         this.alert(this.$t("alerts.mappingSaved", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "success2")
         this.$store.commit({
           type: "mapping/set",
-          original: mapping,
+          original: this.adjustMapping(mapping),
         })
         if (this.clearOnSave) {
           this.clearMapping()
