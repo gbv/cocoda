@@ -3,11 +3,12 @@
     v-if="concept != null"
     :style="`padding-left: ${depth * 10}px`"
     :data-uri="concept.uri"
+    class="conceptListItem"
     :class="{
       hovered: isHovered && !isHovered,
-      selected: isSelected
+      selected: isSelected,
+      'conceptListItem-mappingsExist': mappingsExist
     }"
-    class="conceptListItem"
     @mouseover="hovering(concept)"
     @mouseout="hovering(null)">
     <!-- Concept -->
@@ -40,8 +41,7 @@
         :class="{
           labelBoxFull: showChildren && !hasChildren,
           labelBoxSelected: isSelected,
-          labelBoxSingle: !showChildren,
-          'conceptListItem-mappingsExist': mappingsExist,
+          labelBoxSingle: !showChildren
         }"
         class="labelBox"
         @click.native.stop.prevent="onClick">
@@ -324,9 +324,9 @@ export default {
   display: flex;
   position: relative;
   min-height: 20px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  margin: 3px 0 3px 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-left: 3px;
   cursor: pointer;
   user-select: none;
 }
