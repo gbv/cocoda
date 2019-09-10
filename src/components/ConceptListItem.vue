@@ -357,7 +357,8 @@ export default {
   .fontSize-large;
   position: absolute;
   color: @color-background;
-  top: -1px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 8px;
   opacity: 0.7;
 }
