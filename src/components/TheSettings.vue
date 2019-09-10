@@ -225,6 +225,12 @@
               @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)">
               {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
             </a>
+            <br>
+            <a
+              href=""
+              @click.prevent="downloadFile('mappings.csv', dlAllMappingsCsv)">
+              {{ $t("settings.localDownloadCsv", [dlAllMappingsCsv.split("\n").length - 2]) }}
+            </a>
           </div>
           <br>
           <div v-if="localMappingsSupported">
@@ -347,6 +353,7 @@ export default {
       creatorRewritten: false,
       dlMappingsReady: false,
       dlAllMappings: null,
+      dlAllMappingsCsv: null,
       dlMappings: [],
       uploadedFile: null,
       uploadedFileStatus: "",
@@ -484,19 +491,22 @@ export default {
             this.dlMappings.push(download)
           }
         }
+        let mappingCSV = this.$jskos.mappingCSV({
+          lineTerminator: "\r\n",
+          labels: true,
+          creator: true,
+          language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingCSV doesn't support a language override in each call (yet).
+        })
+        let minifiedMappings = []
         // Then, set download property and label of each combination
         for (let download of this.dlMappings) {
           // Download as JSKOS/ndjson
           download.ndjson = download.mappings.map(jskosExport).join("\n")
           // Download as CSV
-          let mappingCSV = this.$jskos.mappingCSV({
-            lineTerminator: "\r\n",
-            labels: true,
-            creator: true,
-            language: "de", // NOTE: Hardcoded language here and when preparing labels for CSV export because mappingCSV doesn't support a language override in each call (yet).
-          })
           // Minify all mappings first
           download.mappings = download.mappings.map(mapping => this.$jskos.minifyMapping(mapping))
+          // Add to minifiedMappings
+          minifiedMappings = minifiedMappings.concat(download.mappings)
           for (let mapping of download.mappings) {
             // Prepare labels
             // ... for concepts
@@ -519,6 +529,8 @@ export default {
           // Filename
           download.filename = `${this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$util.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
         }
+        // Set CSV export for all mappings
+        this.dlAllMappingsCsv = mappingCSV.fromMappings(minifiedMappings)
         this.dlMappingsReady = true
       }).catch(error => {
         console.error("TheSettings - Error refreshing local mappings download", error)
