@@ -41,6 +41,7 @@
           labelBoxFull: showChildren && !hasChildren,
           labelBoxSelected: isSelected,
           labelBoxSingle: !showChildren,
+          'conceptListItem-mappingsExist': mappingsExist,
         }"
         class="labelBox"
         @click.native.stop.prevent="onClick">
@@ -55,11 +56,6 @@
           :item="concept"
           :is-highlighted="isSelected"
           :prevent-external-hover="true" />
-      </div>
-      <div
-        v-if="mappingsExist"
-        class="conceptListItem-mappingsExist">
-        •
       </div>
       <div
         v-show="canAddToMapping"
@@ -330,7 +326,7 @@ export default {
   min-height: 20px;
   padding-top: 1px;
   padding-bottom: 1px;
-  margin: 3px;
+  margin: 3px 0 3px 3px;
   cursor: pointer;
   user-select: none;
 }
@@ -383,12 +379,7 @@ export default {
 }
 
 .conceptListItem-mappingsExist {
-  color: @color-action-2;
-  font-size: 20px;
-  position: absolute;
-  right: -3px;
-  top: 50%;
-  transform: translateY(-47%);
+  border-right: 5px solid green;
 }
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
