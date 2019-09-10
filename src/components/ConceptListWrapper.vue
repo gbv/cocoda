@@ -35,6 +35,12 @@
         style="user-select: none;">
         {{ $t("settings.conceptListAddToMappingSelectsConcept") }}
       </b-form-checkbox>
+      <b-form-checkbox
+        v-model="loadConceptsMappedStatus"
+        v-b-tooltip="$t('settings.loadConceptsMappedStatusExplanation')"
+        style="user-select: none;">
+        {{ $t("settings.loadConceptsMappedStatus") }}
+      </b-form-checkbox>
     </component-settings>
   </div>
 </template>
@@ -129,6 +135,18 @@ export default {
         this.$store.commit({
           type: "settings/set",
           prop: "conceptListAddToMappingSelectsConcept",
+          value,
+        })
+      },
+    },
+    loadConceptsMappedStatus: {
+      get() {
+        return this.$settings.loadConceptsMappedStatus
+      },
+      set(value) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "loadConceptsMappedStatus",
           value,
         })
       },

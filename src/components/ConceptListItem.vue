@@ -57,6 +57,11 @@
           :prevent-external-hover="true" />
       </div>
       <div
+        v-if="mappingsExist"
+        class="conceptListItem-mappingsExist">
+        •
+      </div>
+      <div
         v-show="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         class="addToMapping"
@@ -177,6 +182,9 @@ export default {
     },
     scheme() {
       return _.get(this.concept, "inScheme[0]")
+    },
+    mappingsExist() {
+      return this.$store.state.settings.settings.loadConceptsMappedStatus && !!_.get(this.concept, "__MAPPED__", []).find(item => item.exist && this.$jskos.compare(item.registry, this.$store.getters.getCurrentRegistry) && this.$jskos.compare(item.scheme, this.$store.state.selected.scheme[!this.isLeft]))
     },
   },
   created() {
@@ -371,6 +379,14 @@ export default {
 
 .conceptListItem-buttonBefore {
   padding-top: 2px;
+}
+
+.conceptListItem-mappingsExist {
+  color: @color-action-2;
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */

@@ -13,6 +13,7 @@ const defaultSettings = {
   mappingBrowserMoveCurrentRegistryToTop: false,
   conceptDetailShowAllAncestors: false,
   conceptListAddToMappingSelectsConcept: true,
+  loadConceptsMappedStatus: false,
   mappingBrowserShowRegistry: {},
   minimized: {},
   flex: {},

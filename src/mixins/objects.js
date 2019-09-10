@@ -590,6 +590,32 @@ export default {
       if (mapping.partOf) {
         mapping.partOf = mapping.partOf.map(concordance => this.concordances.find(c => this.$jskos.compare(c, concordance)) || concordance)
       }
+      // Set mapped entry for concepts that have mappings
+      const registry = _.get(mapping, "_provider.registry")
+      if (_.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings") {
+        for (let [from, to] of [["from", "to"], ["to", "from"]]) {
+          const targetScheme = mapping[`${to}Scheme`]
+          const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
+          const targetConcepts = jskos.conceptsOfMapping(mapping, to)
+          if (targetScheme && targetConcepts.length > 0) {
+            for (let concept of sourceConcepts) {
+              if (!concept.__MAPPED__) {
+                this.$set(concept, "__MAPPED__", [])
+              }
+              const existing = concept.__MAPPED__.find(item => jskos.compare(item.registry, registry) && jskos.compare(item.scheme, targetScheme))
+              if (existing && !existing.exist) {
+                existing.exist = true
+              } else if (!existing) {
+                concept.__MAPPED__.push({
+                  registry,
+                  scheme: targetScheme,
+                  exist: true,
+                })
+              }
+            }
+          }
+        }
+      }
       return mapping
     },
   },
