@@ -384,10 +384,11 @@ export default {
 
 .conceptListItem-mappingsExist {
   color: @color-action-2;
+  font-size: 20px;
   position: absolute;
-  right: 0px;
+  right: -3px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-47%);
 }
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
