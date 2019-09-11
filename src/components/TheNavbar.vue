@@ -172,7 +172,7 @@
               <font-awesome-icon icon="user" />
             </span>
             <!-- Name -->
-            {{ creatorName || $t("navbar.settings") }}
+            {{ creatorName || $t("settings.title") }}
           </div>
         </template>
         <b-dropdown-header>

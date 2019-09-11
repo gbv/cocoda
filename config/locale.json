@@ -30,7 +30,6 @@
       "feedback": "Feedback",
       "help": "Help",
       "github": "GitHub",
-      "settings": "Settings",
       "settingsLoading": "@:general.loading",
       "trashTitle": "Recently Deleted Mappings",
       "trashClearButton": "Clear",
@@ -56,13 +55,13 @@
       "typeFilter": "Scheme Type",
       "filterOther": "Other",
       "registryFilter": "Registry",
-      "schemeFilterPlaceholder": "Search for schemes...",
+      "schemeFilterPlaceholder": "search for schemes...",
       "starAdd": "add to favorites",
       "starRemove": "remove from favorites",
       "popoverShow": "show scheme selection",
       "popoverHide": "hide scheme selection",
       "showAllSchemes": "Show all {count} schemes",
-      "insertPrefLabel": "Automatically insert concept label from other side into search field"
+      "insertPrefLabel": "Use selected concept label in opposite search field"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -223,10 +222,10 @@
       "Local Mappings"
     ],
     "settings": {
-      "title": "Cocoda @:navbar.settings",
+      "title": "Settings",
       "language": "Interface Language",
       "languageContribution": "To contribute to the translation of Cocoda, see these <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>instructions in the documentation</a>.",
-      "showAllAncestors": "Always show all ancestors in concept details.",
+      "showAllAncestors": "Always show all ancestors in concept details",
       "resetSizes": "Reset card sizes",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
@@ -271,9 +270,9 @@
       "privacyPolicy": "Privacy Policy",
       "sources": "Sources",
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage.",
-      "conceptListAddToMappingSelectsConcept": "Adding a concept to the mapping will also select that concept.",
-      "loadConceptsMappedStatus": "Check for shown concepts whether mappings to the opposite concept scheme exist.",
-      "loadConceptsMappedStatusExplanation": "A green dot will be shown to the right of those concepts which already have at least one mapping in the currently selected mapping registry to the opposite concept scheme."
+      "conceptListAddToMappingSelectsConcept": "Select concept when added to mapping",
+      "loadConceptsMappedStatus": "Show which concepts have been mapped",
+      "loadConceptsMappedStatusExplanation": "Concepts with at least one mapping in the currently selected mapping registry to the opposite concept scheme will be marked with a green bar."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted from {0}.",
@@ -351,7 +350,6 @@
       "feedback": "Feedback",
       "help": "Hilfe",
       "github": "GitHub",
-      "settings": "Einstellungen",
       "settingsLoading": "@:general.loading",
       "trashTitle": "Kürzlich gelöschte Mappings",
       "trashClearButton": "Leeren",
@@ -384,7 +382,7 @@
       "popoverHide": "Vokabular-Auswahl ausblenden",
       "showAllSchemes": "Alle {count} Vokabulare anzeigen",
       "hideAllSchemes": "{count} ausblenden",
-      "insertPrefLabel": "Bezeichnung des Konzepts der anderen Seite automatisch in das Suchfeld einfügen"
+      "insertPrefLabel": "Ausgewähltes Konzept in gegenüberliegendes Suchfeld eintragen"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -432,10 +430,10 @@
       "Lokale Mappings"
     ],
     "settings": {
-      "title": "Cocoda @:navbar.settings",
+      "title": "Einstellungen",
       "language": "Sprache der Oberfläche",
       "languageContribution": "Um zur Übersetzung von Cocoda beizutragen, siehe diese <a href='https://gbv.github.io/cocoda/#translation' target='_blank'>Anweisungen in der Dokumentation</a> (Englisch).",
-      "showAllAncestors": "Immer alle übergeordneten Konzepte anzeigen.",
+      "showAllAncestors": "Übergeordneten Konzepte immer anzeigen",
       "resetSizes": "Komponenten-Größen zurücksetzen",
       "creator": "Name",
       "creatorUrl": "Homepage (optional)",
@@ -480,17 +478,17 @@
       "privacyPolicy": "Datenschutz",
       "sources": "Quellcode",
       "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert.",
-      "conceptListAddToMappingSelectsConcept": "Durch Hinzufügen eines Konzepts zum Mapping wird dieses auch ausgewählt.",
-      "loadConceptsMappedStatus": "Prüfe für angezeigte Konzepte, ob Mappings auf das gegenüberstehende Vokabular existieren.",
-      "loadConceptsMappedStatusExplanation": "Es wird ein grüner Punkt rechts von denjenigen Konzepten angezeigt, welche mindestens ein Mapping im ausgewählten Mapping-Register auf das gegenüberstehende Vokabular haben."
+      "conceptListAddToMappingSelectsConcept": "Konzept beim Hinzufügen zu Mapping auswählen",
+      "loadConceptsMappedStatus": "Gemappte Konzepte markieren",
+      "loadConceptsMappedStatusExplanation": "Es wird ein grüner Balken rechts von Konzepten angezeigt, die im ausgewählten Mapping-Register mindestens ein Mapping auf das gegenüberstehende Vokabular haben."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",
       "showLessAncestors": "zeige weniger übergeordnete Konzepte",
       "showLess": "zeige weniger",
       "showMore": "zeige mehr",
-      "created": "Wann erstellt",
-      "modified": "Wann geändert",
+      "created": "Erstellung",
+      "modified": "Änderung",
       "altLabels": "Alternative Bezeichnungen",
       "definition": "Definition",
       "relevance": "Relevanz",
@@ -534,18 +532,18 @@
       "to": "Zu",
       "creator": "Erstellt von",
       "source": "Quelle",
-      "settingShowAllSchemes": "Ergebnisse aller Vokabulare anzeigen",
+      "settingShowAllSchemes": "Alle Vokabulare berücksichtigen",
       "settingShowAllSchemesTooltip": "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind.",
       "settingShowAllResults": "Immer alle Mappings und Vorschläge anzeigen",
       "settingShowAllResultsTooltip": "Falls ausgeschaltet werden zunächst nur die ersten fünf Resultate jedes Bereichs angezeigt, alle weiteren sind ausgeblendet.",
       "settingResultLimit": "Ergebnisse pro Seite:",
-      "settingHideEmpty": "Leere Sektionen ausblenden",
-      "settingHideEmptyTooltip": "Falls eingeschaltet werden Sektionen ohne Mappings ausgeblendet.",
-      "settingShowIdentityWarning": "Zeige Warning bei abweichender Mapping-Identität",
+      "settingHideEmpty": "Leere Abschnitte ausblenden",
+      "settingHideEmptyTooltip": "Falls eingeschaltet werden Abschnitte ohne Mappings ausgeblendet.",
+      "settingShowIdentityWarning": "Hinweis bei abweichender Identität",
       "settingShowIdentityWarningTooltip": "Falls eingeschaltet wird eine Warnung angezeigt, falls in einem deiner Mappings eine von der aktuell ausgewählten abweichende Identität gespeichert ist.",
-      "settingNavigatorShowResultsForLeft": "Zeige Ergebnisse in Zusammenhang mit dem ausgewählten Konzept auf der linken Seite",
-      "settingNavigatorShowResultsForRight": "Zeige Ergebnisse in Zusammenhang mit dem ausgewählten Konzept auf der rechten Seite",
-      "settingMoveCurrentRegistryToTop": "Aktuell ausgewähltes Mapping-Register immer als erstes anzeigen",
+      "settingNavigatorShowResultsForLeft": "Mappings mit linkem Konzept anzeigen",
+      "settingNavigatorShowResultsForRight": "Mappings mit rechtem Konzept anzeigen",
+      "settingMoveCurrentRegistryToTop": "Ausgewähltes Mapping-Register oben",
       "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen",
       "settingsButton": "Mapping-Browser Einstellungen",
       "creatorIsDifferent": "Dies ist dein Mapping, aber die darin gespeicherte Identität entspricht nicht der ausgewählten Identität. Editiere und speichere es erneut, um die Identität anzupassen.",
