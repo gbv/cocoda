@@ -22,6 +22,9 @@ providers[ReconciliationApiProvider.providerName] = ReconciliationApiProvider
 import SearchSuggestionProvider from "./search-suggestion-provider"
 providers[SearchSuggestionProvider.providerName] = SearchSuggestionProvider
 
+import SkosmosApiProvider from "./skosmos-api-provider"
+providers[SkosmosApiProvider.providerName] = SkosmosApiProvider
+
 // Add more providers here.
 
 export default providers
