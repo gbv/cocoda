@@ -138,13 +138,13 @@ export default {
         baseUrl = _.get(provider, "registry.schemes") || _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
       } else {
         let provider = _.get(this.item, "inScheme[0]._provider")
-        baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
+        baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data") || (_.get(provider, "getDataUrl") && provider.getDataUrl(this.item))
       }
       // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
       if (!baseUrl || !_.isString(baseUrl)) {
         return null
       }
-      return `${baseUrl}?uri=${encodeURIComponent(this.item.uri)}`
+      return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}uri=${encodeURIComponent(this.item.uri)}`
     },
     conceptDetailShowAllAncestors: {
       get() {

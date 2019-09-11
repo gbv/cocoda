@@ -51,17 +51,24 @@ class SkosmosApiProvider extends BaseProvider {
     return []
   }
 
+  getDataUrl(concept, { addFormatParameter = true } = {}) {
+    const scheme = _.get(concept, "inScheme[0]")
+    if (!concept.uri || !scheme || !scheme.VOCID) {
+      return null
+    }
+    return `${this.registry.api}${scheme.VOCID}/data${addFormatParameter ? "?format=application/json" : ""}`
+  }
+
   async _getConcepts(concepts) {
     if (!_.isArray(concepts)) {
       concepts = [concepts]
     }
     const newConcepts = []
     for (let concept of concepts) {
-      const scheme = _.get(concept, "inScheme[0]")
-      if (!concept.uri || !scheme || !scheme.VOCID) {
+      const url = this.getDataUrl(concept, { addFormatParameter: false })
+      if (!url) {
         continue
       }
-      const url = `${this.registry.api}${scheme.VOCID}/data`
       const result = await this.get(url, {
         params: {
           uri: concept.uri,
