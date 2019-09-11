@@ -117,6 +117,17 @@
       }
     },
     {
+      "provider": "SkosmosApi",
+      "uri": "http://coli-conc.gbv.de/registry/skosmos-zbw",
+      "api": "http://zbw.eu/beta/skosmos/rest/v1/",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/313",
+          "VOCID": "stw"
+        }
+      ]
+    },
+    {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "autoRefresh": 5000,
