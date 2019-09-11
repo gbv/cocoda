@@ -3,7 +3,6 @@
     <!-- Settings -->
     <component-settings :tooltip="$t('mappingBrowser.settingsButton')">
       <b-form
-        inline
         @submit.stop.prevent>
         <div>
           {{ $t("mappingBrowser.settingResultLimit") }}
@@ -13,6 +12,7 @@
             min="1"
             max="20"
             size="sm"
+            style="display: inline-block; width: auto;"
             @click="$event.target.select()" />
         </div>
         <b-form-checkbox
