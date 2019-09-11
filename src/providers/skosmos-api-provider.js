@@ -94,7 +94,6 @@ class SkosmosApiProvider extends BaseProvider {
           }
         }
         // Set broader/narrower
-        // TODO: Fix issue that sets ancestors (because they don't apply here)
         for (let type of ["broader", "narrower"]) {
           concept[type] = resultConcept[type] || concept[type]
           if (concept[type] && !_.isArray(concept[type])) {
@@ -108,8 +107,14 @@ class SkosmosApiProvider extends BaseProvider {
                 _.set(relative, `prefLabel.${prefLabel.lang}`, prefLabel.value)
               }
             }
+            // Set ancestors to empty array
+            relative.ancestors = []
           }
         }
+        // Set ancestors to empty array
+        // See: https://github.com/eslint/eslint/issues/11899
+        // eslint-disable-next-line require-atomic-updates
+        concept.ancestors = []
         newConcepts.push(concept)
       }
     }

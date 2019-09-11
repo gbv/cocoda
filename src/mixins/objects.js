@@ -528,8 +528,12 @@ export default {
           this.adjustConcept(ancestor)
         }
         for (let child of object.narrower || []) {
-          if (child) {
+          // Only set child's ancestors only if it doesn't have any.
+          // Note: This might have unintended side effects. If there are problems with ancestors, look here.
+          if (child && (!child.ancestors || child.ancestors.includes(null))) {
             this.$set(child, "ancestors", ancestors.concat([object]))
+          }
+          if (child) {
             this.adjustConcept(child)
           }
         }
