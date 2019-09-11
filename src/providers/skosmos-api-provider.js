@@ -111,10 +111,29 @@ class SkosmosApiProvider extends BaseProvider {
             relative.ancestors = []
           }
         }
+        // ESLint exceptions see: https://github.com/eslint/eslint/issues/11899
         // Set ancestors to empty array
-        // See: https://github.com/eslint/eslint/issues/11899
         // eslint-disable-next-line require-atomic-updates
         concept.ancestors = []
+        // Set type
+        if (resultConcept.type && !_.isArray(resultConcept.type)) {
+          resultConcept.type = [resultConcept.type]
+        }
+        // eslint-disable-next-line require-atomic-updates
+        concept.type = concept.type || []
+        for (let type of resultConcept.type || []) {
+          if (!util.isValidUri(type)) {
+            continue
+          }
+          const uriScheme = type.slice(0, type.indexOf(":"))
+          // Try to find uriScheme in @context
+          if (result["@context"][uriScheme]) {
+            type = type.replace(uriScheme + ":", result["@context"][uriScheme])
+          }
+          concept.type.push(type)
+        }
+        // eslint-disable-next-line require-atomic-updates
+        concept.type = _.uniq(concept.type)
         newConcepts.push(concept)
       }
     }
