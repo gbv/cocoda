@@ -123,6 +123,9 @@
       "prefLabel": {
         "en": "Skosmos ZBW"
       },
+      "notation": [
+        "S_ZBW"
+      ],
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/313",
@@ -137,6 +140,9 @@
       "prefLabel": {
         "en": "Skosmos BARTOC"
       },
+      "notation": [
+        "S_BRTC"
+      ],
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/15",
