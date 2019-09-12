@@ -51,16 +51,6 @@ class SkosmosApiProvider extends BaseProvider {
     return []
   }
 
-  addNotationToConcept(concept, scheme) {
-    if (!scheme || !scheme.uriPattern || !concept || !concept.uri || concept.notation) {
-      return
-    }
-    const notation = util.notation({ uri: concept.uri, inScheme: [scheme] })
-    if (notation) {
-      concept.notation = [notation]
-    }
-  }
-
   getDataUrl(concept, { addFormatParameter = true } = {}) {
     const scheme = _.get(concept, "inScheme[0]")
     if (!concept.uri || !scheme || !scheme.VOCID) {
@@ -119,8 +109,6 @@ class SkosmosApiProvider extends BaseProvider {
             }
             // Set ancestors to empty array
             relative.ancestors = []
-            // Set notation of relative
-            this.addNotationToConcept(relative, _.get(concept, "inScheme[0]"))
           }
         }
         // ESLint exceptions see: https://github.com/eslint/eslint/issues/11899
@@ -146,8 +134,6 @@ class SkosmosApiProvider extends BaseProvider {
         }
         // eslint-disable-next-line require-atomic-updates
         concept.type = _.uniq(concept.type)
-        // Add notation
-        this.addNotationToConcept(concept, _.get(concept, "inScheme[0]"))
         newConcepts.push(concept)
       }
     }
@@ -197,6 +183,7 @@ class SkosmosApiProvider extends BaseProvider {
     }
     const concepts = []
     for (let concept of response.results || []) {
+      const notation = util.notation({ uri: concept.uri, inScheme: [scheme] })
       const label = concept.matchedPrefLabel || concept.altLabel || concept.prefLabel
       const newConcept = {
         uri: concept.uri,
@@ -205,7 +192,9 @@ class SkosmosApiProvider extends BaseProvider {
         },
         inScheme: [scheme],
       }
-      this.addNotationToConcept(newConcept, scheme)
+      if (notation) {
+        newConcept.notation = [notation]
+      }
       concepts.push(newConcept)
     }
     return concepts
