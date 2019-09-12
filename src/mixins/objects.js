@@ -452,7 +452,7 @@ export default {
       return getDetails.then(results => {
         if (results.length) {
           // Save details
-          return this.saveObject(results[0])
+          object = this.saveObject(results[0])
         }
         this.adjustConcept(object)
         return object
