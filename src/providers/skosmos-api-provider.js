@@ -168,6 +168,7 @@ class SkosmosApiProvider extends BaseProvider {
     if (!scheme || !scheme.VOCID) {
       return []
     }
+    const language = this.languages[0]
     const url = `${this.registry.api}${scheme.VOCID}/search`
     const options = {
       params: {
@@ -175,6 +176,7 @@ class SkosmosApiProvider extends BaseProvider {
         unique: 1,
         maxhits: limit || 100,
         type: types.join(" "),
+        labellang: language,
       },
     }
     const response = await this.get(url, options, cancelToken)
@@ -184,11 +186,11 @@ class SkosmosApiProvider extends BaseProvider {
     const concepts = []
     for (let concept of response.results || []) {
       const notation = util.notation({ uri: concept.uri, inScheme: [scheme] })
-      const label = concept.matchedPrefLabel || concept.altLabel || concept.prefLabel
+      const label = concept.prefLabel
       const newConcept = {
         uri: concept.uri,
         prefLabel: {
-          [concept.lang]: label,
+          [language]: label,
         },
         inScheme: [scheme],
       }
