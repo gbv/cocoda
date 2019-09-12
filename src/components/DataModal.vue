@@ -221,7 +221,7 @@ export default {
 
       let mappings = this.preparedData
       if (!this.isArray) {
-        mappings = [this.mappings]
+        mappings = [mappings]
       }
       // Prepare CSV export
       let mappingCSV = this.$jskos.mappingCSV({
