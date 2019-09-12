@@ -49,13 +49,13 @@ export default {
       concepts = concepts.filter(concept => !_.get(concept, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))
       const conceptUris = concepts.map(i => i.uri)
       if (otherScheme && conceptUris.length) {
-        this.getMappings({
-          from: conceptUris.join("|"),
+        Promise.all(_.chunk(conceptUris, 15).map(uris => this.getMappings({
+          from: uris.join("|"),
           toScheme: otherScheme.uri,
           direction: "both",
           registry: registry.uri,
           limit: 500,
-        }).then(() => {
+        }))).then(() => {
           // Set to false for every concept that still has no entry for current registry + other scheme
           for (let concept of concepts.filter(c => !_.get(c, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))) {
             this.$set(concept, "__MAPPED__", [])
