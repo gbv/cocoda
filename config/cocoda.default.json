@@ -120,6 +120,9 @@
       "provider": "SkosmosApi",
       "uri": "http://coli-conc.gbv.de/registry/skosmos-zbw",
       "api": "https://zbw.eu/beta/skosmos/rest/v1/",
+      "prefLabel": {
+        "en": "Skosmos ZBW"
+      },
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/313",
@@ -131,6 +134,9 @@
       "provider": "SkosmosApi",
       "uri": "http://coli-conc.gbv.de/registry/skosmos-bartoc",
       "api": "https://bartoc-skosmos.unibas.ch/rest/v1/",
+      "prefLabel": {
+        "en": "Skosmos BARTOC"
+      },
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/15",
