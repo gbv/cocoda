@@ -35,6 +35,7 @@ import { scroller } from "vue-scrollto/src/scrollTo"
 // Import mixins
 import objects from "../mixins/objects"
 import computed from "../mixins/computed"
+import mappedStatus from "../mixins/mapped-status"
 
 /**
  * Component that represents a (navigatable) concept list.
@@ -44,7 +45,7 @@ export default {
   components: {
     LoadingIndicatorFull, ConceptListItem,
   },
-  mixins: [objects, computed],
+  mixins: [objects, computed, mappedStatus],
   props: {
     /**
      * Tells the component on which side of the application it is.
@@ -133,8 +134,8 @@ export default {
     otherScheme() {
       return this.selected.scheme[!this.isLeft]
     },
-    loadConceptsMappedStatus() {
-      return this.$settings.loadConceptsMappedStatus
+    loadConceptsMappedStatusConceptsToLoad() {
+      return this.items.filter(i => i.concept).map(i => i.concept)
     },
   },
   watch: {
@@ -198,18 +199,6 @@ export default {
     itemsLength() {
       this.loadMappingsForItems()
     },
-    currentMappingRegistry() {
-      this.loadMappingsForItems()
-    },
-    otherScheme() {
-      this.loadMappingsForItems()
-    },
-    loadConceptsMappedStatus() {
-      this.loadMappingsForItems()
-    },
-  },
-  created() {
-    this.loadMappingsForItems = _.debounce(this._loadMappingsForItems, 100)
   },
   methods: {
     scrollToInternal(el, options) {
@@ -246,37 +235,8 @@ export default {
       }
       return items
     },
-    /**
-     * Loads mappings for current items (in order to indicator whether it is mapped already).
-     */
-    _loadMappingsForItems() {
-      // Don't load if disabled in settings
-      if (!this.loadConceptsMappedStatus) {
-        return
-      }
-      const registry = this.currentMappingRegistry
-      const otherScheme = this.otherScheme
-      const concepts = this.items.filter(i => i.concept && !_.get(i.concept, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme))).map(i => i.concept)
-      const conceptUris = concepts.map(i => i.uri)
-      if (otherScheme && conceptUris.length) {
-        this.getMappings({
-          from: conceptUris.join("|"),
-          toScheme: otherScheme.uri,
-          direction: "both",
-          registry: registry.uri,
-          limit: 500,
-        }).then(() => {
-          // Set to false for every concept that still has no entry for current registry + other scheme
-          for (let concept of concepts.filter(c => !_.get(c, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))) {
-            this.$set(concept, "__MAPPED__", [])
-            concept.__MAPPED__.push({
-              registry,
-              scheme: otherScheme,
-              exist: false,
-            })
-          }
-        })
-      }
+    loadMappingsForItems() {
+      this.loadMappingsForConcepts(this.loadConceptsMappedStatusConceptsToLoad, this.isLeft)
     },
   },
 }

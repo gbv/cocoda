@@ -16,8 +16,8 @@
         v-for="(concept, index) in ancestors.filter(concept => concept != null)"
         :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`"
         :class="{
-          'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(concept, isLeft),
-          'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+          'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+          'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
         }">
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
@@ -44,8 +44,8 @@
         v-for="(concept, index) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
         :key="`conceptDetail-${isLeft}-broader-${concept.uri}-${index}`"
         :class="{
-          'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(concept, isLeft),
-          'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+          'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+          'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
         }">
         <font-awesome-icon
           icon="sort-up" />
@@ -65,8 +65,8 @@
     <div
       class="conceptDetail-name"
       :class="{
-        'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(item, isLeft),
-        'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(item, isLeft)
+        'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(item, isLeft),
+        'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(item, isLeft)
       }">
       <!-- Button to clear scheme -->
       <div
@@ -244,6 +244,7 @@ import _ from "lodash"
 import objects from "../mixins/objects"
 import computed from "../mixins/computed"
 import hotkeys from "../mixins/hotkeys"
+import mappedStatus from "../mixins/mapped-status"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -253,7 +254,7 @@ export default {
   components: {
     AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower,
   },
-  mixins: [objects, computed, hotkeys],
+  mixins: [objects, computed, hotkeys, mappedStatus],
   props: {
     /**
      * The concept object whose details should be displayed.
@@ -415,8 +416,11 @@ export default {
       }
       return next(this.item)
     },
-    showConceptMappedStatus() {
-      return this.$store.state.settings.settings.loadConceptsMappedStatus
+    loadConceptsMappedStatusConceptsToLoad() {
+      if (!this.item) {
+        return []
+      }
+      return [this.item].concat(this.item.ancestors || [], this.item.broader || []).filter(concept => concept != null)
     },
   },
   watch: {

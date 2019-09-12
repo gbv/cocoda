@@ -12,8 +12,8 @@
       :key="concept.uri"
       class="itemDetailNarrower-item"
       :class="{
-        'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(concept, isLeft),
-        'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+        'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+        'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
       }">
       <font-awesome-icon
         class="u-flip-horizontal"
@@ -35,6 +35,8 @@
 import ItemName from "./ItemName"
 import LoadingIndicator from "./LoadingIndicator"
 
+import mappedStatus from "../mixins/mapped-status"
+
 /**
  * Component that displays narrower or top concepts for ItemDetail.
  */
@@ -43,6 +45,7 @@ export default {
   components: {
     ItemName, LoadingIndicator,
   },
+  mixins: [mappedStatus],
   props: {
     /**
      * Array with concepts to display.
@@ -67,8 +70,8 @@ export default {
     },
   },
   computed: {
-    showConceptMappedStatus() {
-      return this.$store.state.settings.settings.loadConceptsMappedStatus
+    loadConceptsMappedStatusConceptsToLoad() {
+      return this.narrower
     },
   },
 }
