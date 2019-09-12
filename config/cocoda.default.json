@@ -128,6 +128,23 @@
       ]
     },
     {
+      "provider": "SkosmosApi",
+      "uri": "http://coli-conc.gbv.de/registry/skosmos-bartoc",
+      "api": "https://bartoc-skosmos.unibas.ch/rest/v1/",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/15",
+          "identifier": [
+            "http://eurovoc.europa.eu/100141"
+          ],
+          "notation": [
+            "EUROVOC"
+          ],
+          "VOCID": "EuroVoc"
+        }
+      ]
+    },
+    {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "autoRefresh": 5000,
