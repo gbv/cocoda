@@ -14,7 +14,11 @@
       </div>
       <div
         v-for="(concept, index) in ancestors.filter(concept => concept != null)"
-        :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`">
+        :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`"
+        :class="{
+          'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+          'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+        }">
         <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
           <font-awesome-icon
             class="u-flip-horizontal"
@@ -38,7 +42,11 @@
       <!-- Broader -->
       <div
         v-for="(concept, index) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
-        :key="`conceptDetail-${isLeft}-broader-${concept.uri}-${index}`">
+        :key="`conceptDetail-${isLeft}-broader-${concept.uri}-${index}`"
+        :class="{
+          'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+          'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+        }">
         <font-awesome-icon
           icon="sort-up" />
         <item-name
@@ -54,7 +62,12 @@
     </div>
 
     <!-- Name of concept -->
-    <div class="conceptDetail-name">
+    <div
+      class="conceptDetail-name"
+      :class="{
+        'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(item, isLeft),
+        'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(item, isLeft)
+      }">
       <!-- Button to clear scheme -->
       <div
         v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: $util.delay.medium }"
@@ -401,6 +414,9 @@ export default {
         return null
       }
       return next(this.item)
+    },
+    showConceptMappedStatus() {
+      return this.$store.state.settings.settings.loadConceptsMappedStatus
     },
   },
   watch: {

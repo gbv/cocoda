@@ -7,8 +7,8 @@
     :class="{
       hovered: isHovered && !isHovered,
       selected: isSelected,
-      'concept-mappingsExist': showConceptMappedStatus && mappingsExist,
-      'concept-mappingsDoNotExist': showConceptMappedStatus && !mappingsExist
+      'concept-mappingsExist': showConceptMappedStatus && mappedStatus,
+      'concept-mappingsDoNotExist': showConceptMappedStatus && !mappedStatus
     }"
     @mouseover="hovering(concept)"
     @mouseout="hovering(null)">
@@ -180,8 +180,8 @@ export default {
     scheme() {
       return _.get(this.concept, "inScheme[0]")
     },
-    mappingsExist() {
-      return !!_.get(this.concept, "__MAPPED__", []).find(item => item.exist && this.$jskos.compare(item.registry, this.$store.getters.getCurrentRegistry) && this.$jskos.compare(item.scheme, this.$store.state.selected.scheme[!this.isLeft]))
+    mappedStatus() {
+      return this.$store.getters.mappedStatus(this.concept, this.isLeft)
     },
     showConceptMappedStatus() {
       return this.$store.state.settings.settings.loadConceptsMappedStatus

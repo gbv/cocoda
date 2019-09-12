@@ -10,7 +10,11 @@
     <div
       v-for="concept in narrower.filter(concept => concept != null)"
       :key="concept.uri"
-      class="itemDetailNarrower-item">
+      class="itemDetailNarrower-item"
+      :class="{
+        'concept-mappingsExist': showConceptMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+        'concept-mappingsDoNotExist': showConceptMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+      }">
       <font-awesome-icon
         class="u-flip-horizontal"
         icon="level-down-alt" />
@@ -60,6 +64,11 @@ export default {
     isLeft: {
       type: Boolean,
       default: true,
+    },
+  },
+  computed: {
+    showConceptMappedStatus() {
+      return this.$store.state.settings.settings.loadConceptsMappedStatus
     },
   },
 }
