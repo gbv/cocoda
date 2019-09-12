@@ -220,7 +220,7 @@
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
-            <template v-if="searchFilterExtended">
+            <template v-if="showExtendedSearchFilter">
               <div style="flex-basis: 100%; height: 0;" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.creator") }}:
@@ -301,11 +301,12 @@
               <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
             </b-button>
             <div
+              v-show="canSearchBeCollapsed"
               class="button fontSize-large"
               style="flex: none; margin: 3px;"
-              @click="searchFilterExtended = !searchFilterExtended">
+              @click="searchFilterExtended = !showExtendedSearchFilter">
               <font-awesome-icon
-                v-if="searchFilterExtended"
+                v-if="showExtendedSearchFilter"
                 style="vertical-align: -0.3em;"
                 icon="chevron-up" />
               <font-awesome-icon
@@ -872,6 +873,19 @@ export default {
         }
       }
       return urls
+    },
+    showExtendedSearchFilter() {
+      // Always return true if there is an active filter in the extended search
+      if (!this.canSearchBeCollapsed) {
+        return true
+      }
+      return this.searchFilterExtended
+    },
+    canSearchBeCollapsed() {
+      if (this.searchFilterInput.creator || this.searchFilterInput.type || this.searchFilterInput.partOf) {
+        return false
+      }
+      return true
     },
   },
   watch: {
