@@ -183,7 +183,7 @@
         :title="$t('mappingBrowser.mappingSearch')"
         @click="handleClick">
         <div style="flex: none;">
-          <div style="display: flex;">
+          <div style="display: flex; flex-wrap: wrap;">
             <b-input
               v-model="searchFilterInput.fromScheme"
               :state="searchFilterInput.fromScheme == '' ? null : searchFromScheme != null"
@@ -220,79 +220,79 @@
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
-          </div>
-          <div style="display: flex;">
-            <div style="text-align: right; flex: none; margin: auto 5px;">
-              {{ $t("mappingBrowser.creator") }}:
-            </div>
-            <div style="flex: 2; margin: 3px; display: flex; align-items: center;">
-              <b-input
-                v-model="searchFilterInput.creator"
+            <template v-if="searchFilterExtended">
+              <div style="flex-basis: 100%; height: 0;" />
+              <div style="text-align: right; flex: none; margin: auto 5px;">
+                {{ $t("mappingBrowser.creator") }}:
+              </div>
+              <div style="flex: 2; margin: 3px; display: flex; align-items: center;">
+                <b-input
+                  v-model="searchFilterInput.creator"
+                  size="sm"
+                  :placeholder="$t('mappingBrowser.creator')"
+                  @keyup.enter.native="searchClicked" />
+                <div
+                  v-if="authorized && searchFilterInput.creator != userUris.join('|')"
+                  v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: $util.delay.medium }"
+                  class="button"
+                  style="margin-left: 2px;"
+                  @click="searchFilterInput.creator = userUris.join('|')">
+                  <font-awesome-icon icon="user" />
+                </div>
+              </div>
+              <div style="text-align: right; flex: none; margin: auto 5px;">
+                {{ $t("mappingBrowser.searchType") }}:
+              </div>
+              <b-select
+                v-model="searchFilterInput.type"
+                style="flex: 3; margin: 3px;"
                 size="sm"
-                :placeholder="$t('mappingBrowser.creator')"
+                :options="typeOptions"
                 @keyup.enter.native="searchClicked" />
               <div
-                v-if="authorized && searchFilterInput.creator != userUris.join('|')"
-                v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: $util.delay.medium }"
-                class="button"
-                style="margin-left: 2px;"
-                @click="searchFilterInput.creator = userUris.join('|')">
-                <font-awesome-icon icon="user" />
+                v-b-tooltip.hover="{ title: $t('mappingBrowser.searchBidirectionalTooltip'), delay: $util.delay.medium }"
+                style="text-align: right; flex: none; margin: auto 5px;">
+                {{ $t("mappingBrowser.searchBidirectional") }}:
+                <b-form-checkbox
+                  v-model="searchFilterInput.direction"
+                  style="display: inline-block;"
+                  size="sm"
+                  value="both"
+                  unchecked-value=""
+                  @keyup.enter.native="searchClicked" />
               </div>
-            </div>
-            <div style="text-align: right; flex: none; margin: auto 5px;">
-              {{ $t("mappingBrowser.searchType") }}:
-            </div>
-            <b-select
-              v-model="searchFilterInput.type"
-              style="flex: 3; margin: 3px;"
-              size="sm"
-              :options="typeOptions"
-              @keyup.enter.native="searchClicked" />
-            <div
-              v-b-tooltip.hover="{ title: $t('mappingBrowser.searchBidirectionalTooltip'), delay: $util.delay.medium }"
-              style="text-align: right; flex: none; margin: auto 5px;">
-              {{ $t("mappingBrowser.searchBidirectional") }}:
-              <b-form-checkbox
-                v-model="searchFilterInput.direction"
-                style="display: inline-block;"
+              <div style="flex-basis: 100%; height: 0;" />
+              <div style="text-align: right; flex: none; margin: auto 5px;">
+                {{ $t("mappingBrowser.concordance") }}:
+              </div>
+              <b-form-select
+                v-model="searchFilterInput.partOf"
+                style="flex: 2; margin: 3px;"
                 size="sm"
-                value="both"
-                unchecked-value=""
+                :options="concordanceOptions"
                 @keyup.enter.native="searchClicked" />
-            </div>
-          </div>
-          <div style="display: flex;">
-            <div style="text-align: right; flex: none; margin: auto 5px;">
-              {{ $t("mappingBrowser.concordance") }}:
-            </div>
-            <b-form-select
-              v-model="searchFilterInput.partOf"
-              style="flex: 2; margin: 3px;"
-              size="sm"
-              :options="concordanceOptions"
-              @keyup.enter.native="searchClicked" />
-            <!-- Registry selection -->
-            <registry-notation
-              v-for="registry in searchRegistries"
-              :key="registry.uri"
-              :registry="registry"
-              :disabled="!showRegistry[registry.uri]"
-              class="mappingBrowser-search-registryNotation"
-              :class="{
-                pointer: !$jskos.compare(registry, currentRegistry)
-              }"
-              @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
-              @mouseover.native="hoveredRegistry = registry"
-              @mouseout.native="hoveredRegistry = null" />
-            <b-button
-              style="flex: none; margin: 3px;"
-              variant="danger"
-              size="sm"
-              @click="clearSearchFilter">
-              <font-awesome-icon icon="ban" />
-              {{ $t("mappingBrowser.searchClear") }}
-            </b-button>
+              <!-- Registry selection -->
+              <registry-notation
+                v-for="registry in searchRegistries"
+                :key="registry.uri"
+                :registry="registry"
+                :disabled="!showRegistry[registry.uri]"
+                class="mappingBrowser-search-registryNotation"
+                :class="{
+                  pointer: !$jskos.compare(registry, currentRegistry)
+                }"
+                @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+                @mouseover.native="hoveredRegistry = registry"
+                @mouseout.native="hoveredRegistry = null" />
+              <b-button
+                style="flex: none; margin: 3px;"
+                variant="danger"
+                size="sm"
+                @click="clearSearchFilter">
+                <font-awesome-icon icon="ban" />
+                {{ $t("mappingBrowser.searchClear") }}
+              </b-button>
+            </template>
             <b-button
               style="flex: none; margin: 3px;"
               variant="primary"
@@ -300,6 +300,19 @@
               @click="searchClicked">
               <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
             </b-button>
+            <div
+              class="button fontSize-large"
+              style="flex: none; margin: 3px;"
+              @click="searchFilterExtended = !searchFilterExtended">
+              <font-awesome-icon
+                v-if="searchFilterExtended"
+                style="vertical-align: -0.3em;"
+                icon="chevron-up" />
+              <font-awesome-icon
+                v-else
+                style="vertical-align: -0.3em;"
+                icon="chevron-down" />
+            </div>
           </div>
         </div>
         <mapping-browser-table
@@ -477,6 +490,7 @@ export default {
       searchFilterInput: null,
       // Search filter to be set when "Search" is clicked
       searchFilter: null,
+      searchFilterExtended: false,
       searchPages: {},
       searchResults: {},
       searchLoading: {},
