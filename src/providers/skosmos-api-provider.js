@@ -164,7 +164,7 @@ class SkosmosApiProvider extends BaseProvider {
   /**
    * Search not yet implemented.
    */
-  async _search(search, { scheme, limit, cancelToken } = {}) {
+  async _search(search, { scheme, limit, types = [], cancelToken } = {}) {
     if (!scheme || !scheme.VOCID) {
       return []
     }
@@ -174,6 +174,7 @@ class SkosmosApiProvider extends BaseProvider {
         query: `${search}*`,
         unique: 1,
         maxhits: limit || 100,
+        type: types.join(" "),
       },
     }
     const response = await this.get(url, options, cancelToken)
@@ -199,8 +200,25 @@ class SkosmosApiProvider extends BaseProvider {
     return concepts
   }
 
-  async _getTypes() {
-    return []
+  async _getTypes(scheme) {
+    if (!scheme || !scheme.VOCID) {
+      return []
+    }
+    const types = []
+    const url = `${this.registry.api}${scheme.VOCID}/types`
+    const response = await this.get(url)
+    for (let type of (response && response.types) || []) {
+      // Set prefLabel if available
+      if (type.label) {
+        type.prefLabel = {
+          [response["@context"]["@language"]]: type.label,
+        }
+        delete type.label
+      }
+      types.push(type)
+    }
+    // Filter SKOS type Concept
+    return types.filter(type => type.uri != "http://www.w3.org/2004/02/skos/core#Concept")
   }
 
 }
