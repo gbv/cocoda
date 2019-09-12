@@ -302,6 +302,7 @@
             </b-button>
             <div
               v-show="canSearchBeCollapsed"
+              v-b-tooltip="$t(`mappingBrowser.${searchFilterExtended ? 'searchCollapse' : 'searchExtend'}`)"
               class="button fontSize-large"
               style="flex: none; margin: 3px;"
               @click="searchFilterExtended = !showExtendedSearchFilter">
