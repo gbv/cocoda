@@ -101,9 +101,20 @@
     </div>
 
     <tabs
-      style="margin-top: 3px;"
+      style="margin-top: 3px; position: relative;"
       borders="bottom"
       size="sm">
+      <div
+        v-if="nextConcept"
+        class="conceptDetail-nextButton">
+        <router-link
+          :to="getRouterUrl(nextConcept, isLeft, true)">
+          <b-button
+            variant="light">
+            {{ $t("conceptDetail.nextConcept") }}
+          </b-button>
+        </router-link>
+      </div>
       <!-- URI and identifier -->
       <tab :title="$t('conceptDetail.info')">
         <div
@@ -218,18 +229,6 @@
     <item-detail-narrower
       :narrower="item.narrower"
       :is-left="isLeft" />
-
-    <div
-      v-if="nextConcept"
-      class="conceptDetail-nextButton">
-      <router-link
-        :to="getRouterUrl(nextConcept, isLeft, true)">
-        <b-button
-          variant="light">
-          {{ $t("conceptDetail.nextConcept") }}
-        </b-button>
-      </router-link>
-    </div>
   </div>
 </template>
 
@@ -581,7 +580,7 @@ export default {
 
 .conceptDetail-nextButton {
   position: absolute;
-  bottom: 15px;
+  top: 30px;
   right: 0;
 }
 .conceptDetail-nextButton button {
