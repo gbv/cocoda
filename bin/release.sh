@@ -54,6 +54,7 @@ npm test 2>&1 >/dev/null
 iferror "Tests failed, not creating a release."
 
 echo "- Running npm version..."
+unset npm_config_prefix
 npm version $semver 2>&1 >/dev/null
 iferror "npm version failed, aborting."
 
