@@ -7,7 +7,7 @@
     hide-footer
     size="lg">
     <table class="dataModal-links">
-      <tr>
+      <tr v-if="count > 0">
         <td class="fontWeight-heavy">
           {{ $t("dataModal.localDownload") }} ({{ count.toLocaleString() }})
         </td>
