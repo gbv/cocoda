@@ -128,7 +128,7 @@
               {{ $t("mappingDetail.note") }}:
             </b-col>
             <b-col
-              style="max-height: 200px; overflow: scroll;"
+              style="max-height: 200px; overflow: auto;"
               v-html="($util.lmContent(mapping, 'note') || []).map(note => `<p>${note.split('\n').join('<br>')}</p>`).join('')" />
           </b-row>
           <!-- PartOf -->

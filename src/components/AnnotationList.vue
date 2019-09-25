@@ -59,7 +59,7 @@ export default {
 
 .annotationList {
   max-height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .annotationList > div {
   display: flex;
