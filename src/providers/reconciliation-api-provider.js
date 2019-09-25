@@ -55,7 +55,7 @@ class ReconciliationApiProvider extends BaseProvider {
     let labels = altLabels.concat([prefLabel])
     labels = [prefLabel]
     // Get results from API or cache
-    return this.__getReconciliationResults(labels, language).then(results => {
+    return this.__getReconciliationResults(labels, language).then(({ url, data: results }) => {
       results = [].concat(...Object.values(results).map(value => value.result))
       // Sort results, first by score descending, then by match, then by length of notation
       results = results.sort((a, b) => {
@@ -102,6 +102,7 @@ class ReconciliationApiProvider extends BaseProvider {
           to: mapping.from,
         }))
       }
+      mappings.url = url
       return mappings
     })
   }
@@ -118,7 +119,7 @@ class ReconciliationApiProvider extends BaseProvider {
       return _.isEqual(item.labels, labels) && item.language == language
     })
     if (resultsFromCache) {
-      return Promise.resolve(resultsFromCache.data)
+      return Promise.resolve(resultsFromCache)
     }
     // Prepare queries
     let queries = {}
@@ -143,12 +144,14 @@ class ReconciliationApiProvider extends BaseProvider {
       },
     }).then(data => {
       data = data || {}
-      this.cache.push({
+      let newCacheEntry = {
         labels,
         language,
         data,
-      })
-      return data
+        url: `${url}${url.includes("?") ? "&" : "?"}${qs.stringify({ queries })}`,
+      }
+      this.cache.push(newCacheEntry)
+      return newCacheEntry
     })
   }
 
