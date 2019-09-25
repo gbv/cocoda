@@ -624,7 +624,10 @@ class BaseProvider {
       return []
     })
     return Promise.all([mappings, occurrences]).then(results => {
-      return _.union(...results)
+      const mappings = _.union(...results)
+      // Usually, only one of the two should have results and possibly a URL attached. Use that.
+      mappings.url = results.map(result => result.url).filter(url => url != null)[0]
+      return mappings
     }).then(this.adjustMappings)
   }
 
