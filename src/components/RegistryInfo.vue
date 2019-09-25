@@ -3,7 +3,8 @@
     <div>
       <registry-notation
         :registry="registry"
-        :disabled="$store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] === false" />
+        :disabled="$store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] === false"
+        :tooltip="false" />
       <div
         class="settings-info-title"
         :class="{
@@ -19,7 +20,9 @@
     <div class="settings-info-uri fontSize-small">
       <auto-link :link="registry.uri" />
     </div>
-    <div class="settings-info-capabilities">
+    <div
+      v-if="showCapabilities"
+      class="settings-info-capabilities">
       <span
         v-for="type in ['schemes', 'concepts', 'mappings', 'occurrences']"
         :key="`settings-info-capabilities-${type}`">
@@ -66,6 +69,10 @@ export default {
     registry: {
       type: Object,
       default: null,
+    },
+    showCapabilities: {
+      type: Boolean,
+      default: true,
     },
   },
 }
