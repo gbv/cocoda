@@ -315,7 +315,7 @@
             style="flex: 1; padding-left: 5px;"
             :class="{
               'fontWeight-heavy': true,
-              'mappingBrowser-registry-selectable': true
+              'mappingBrowser-registry-selectable': section.registry.subject && section.registry.subject[0] && section.registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings'
             }"
             @click="useRegistryForSaving(section.registry)">
             <registry-notation
@@ -323,7 +323,7 @@
               :registry="section.registry" />
             <registry-name :registry="section.registry" />
             <span
-              v-if="!canUseRegistryForSaving(section.registry)"
+              v-if="!canUseRegistryForSaving(section.registry) && section.registry.subject && section.registry.subject[0] && section.registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings'"
               v-b-tooltip="$t('registryInfo.cannotSaveMappings')"
               class="text-danger">
               <font-awesome-icon icon="exclamation-circle" />
@@ -764,11 +764,13 @@ export default {
       }) && this.$jskos.compare(r, registry)) != null
     },
     useRegistryForSaving(registry) {
-      this.$store.commit({
-        type: "settings/set",
-        prop: "mappingRegistry",
-        value: registry.uri,
-      })
+      if (_.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings") {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "mappingRegistry",
+          value: registry.uri,
+        })
+      }
     },
     // Gets called by popovers @hide function to add them to currentPopovers
     popoverHide(event, id) {
