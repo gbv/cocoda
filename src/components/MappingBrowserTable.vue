@@ -344,7 +344,7 @@
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div
             style="flex: 1; text-align: right; padding-top: 3px;"
-            :style="`padding-right: ${section.totalCount > 0 ? 30 : 5}px;`"
+            :style="`padding-right: 30px;`"
             class="fontSize-small">
             <span v-if="section.items.length < section.totalCount">
               {{ section.items.length }} {{ $t("general.of") }}
@@ -352,7 +352,6 @@
             {{ $tc(`dataModal.mapping`, section.totalCount, { count: section.totalCount.toLocaleString() }) }}
           </div>
           <data-modal-button
-            v-if="section.totalCount > 0"
             :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
             :url="section.url"
             :total-count="section.totalCount"
