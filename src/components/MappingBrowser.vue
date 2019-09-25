@@ -220,7 +220,7 @@
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
               @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
-            <template v-if="showExtendedSearchFilter">
+            <template v-if="searchFilterExtended">
               <div style="flex-basis: 100%; height: 0;" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.creator") }}:
@@ -301,19 +301,25 @@
               <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
             </b-button>
             <div
-              v-show="canSearchBeCollapsed"
               v-b-tooltip="$t(`mappingBrowser.${searchFilterExtended ? 'searchCollapse' : 'searchExtend'}`)"
               class="button fontSize-large"
-              style="flex: none; margin: 3px;"
-              @click="searchFilterExtended = !showExtendedSearchFilter">
+              style="flex: none; margin: 3px; position: relative;"
+              @click="searchFilterExtended = !searchFilterExtended">
               <font-awesome-icon
-                v-if="showExtendedSearchFilter"
+                v-if="searchFilterExtended"
                 style="vertical-align: -0.3em;"
                 icon="chevron-up" />
               <font-awesome-icon
                 v-else
                 style="vertical-align: -0.3em;"
-                icon="chevron-down" />
+                icon="filter" />
+              <!-- Small indicator whether a filter is currently applied. -->
+              <span
+                v-if="!searchFilterExtended && (searchFilterInput.creator || searchFilterInput.type || searchFilterInput.partOf)"
+                style="position: absolute; top: -9px; right: -3px;"
+                class="text-success">
+                •
+              </span>
             </div>
           </div>
         </div>
@@ -875,19 +881,6 @@ export default {
       }
       return urls
     },
-    showExtendedSearchFilter() {
-      // Always return true if there is an active filter in the extended search
-      if (!this.canSearchBeCollapsed) {
-        return true
-      }
-      return this.searchFilterExtended
-    },
-    canSearchBeCollapsed() {
-      if (this.searchFilterInput.creator || this.searchFilterInput.type || this.searchFilterInput.partOf) {
-        return false
-      }
-      return true
-    },
   },
   watch: {
     tab(tab) {
@@ -1090,6 +1083,7 @@ export default {
         type: null,
         partOf: null,
       }
+      this.searchFilterExtended = false
       this.searchResults = {}
       this.searchClicked()
     },
