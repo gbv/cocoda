@@ -95,7 +95,8 @@
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
       "languages": "Available languages",
-      "availableMappings": "Available mappings"
+      "availableMappings": "Available mappings",
+      "registry": "Registry used for this vocabulary"
     },
     "conceptList": {
       "title": "Concept List",
@@ -512,7 +513,8 @@
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",
       "languages": "Vorhandene Sprachen",
-      "availableMappings": "Vorhandene Mappings"
+      "availableMappings": "Vorhandene Mappings",
+      "registry": "Register, welches für dieses Vokabular verwendet wird"
     },
     "conceptList": {
       "title": "Hierarchie",

@@ -74,6 +74,15 @@
       </span>
     </div>
 
+    <!-- Data Source -->
+    <div
+      class="schemeDetail-identifier">
+      <b>{{ $t("schemeDetail.registry") }}:</b>
+      <registry-info
+        :registry="item._provider.registry"
+        :show-capabilities="false" />
+    </div>
+
     <!-- Link to mapping search -->
     <div
       v-if="$util.notation(item)"
@@ -107,6 +116,7 @@
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import ItemDetailNarrower from "./ItemDetailNarrower"
+import RegistryInfo from "./RegistryInfo"
 
 // Import mixins
 import objects from "../mixins/objects"
@@ -120,7 +130,7 @@ import kosTypes from "../../config/kos-types.json"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, ItemDetailNarrower,
+    AutoLink, ItemName, ItemDetailNarrower, RegistryInfo,
   },
   mixins: [objects],
   props: {
