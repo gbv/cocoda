@@ -315,13 +315,19 @@
             style="flex: 1; padding-left: 5px;"
             :class="{
               'fontWeight-heavy': true,
-              'mappingBrowser-registry-selectable': canUseRegistryForSaving(section.registry)
+              'mappingBrowser-registry-selectable': true
             }"
             @click="useRegistryForSaving(section.registry)">
             <registry-notation
               :tooltip="false"
               :registry="section.registry" />
             <registry-name :registry="section.registry" />
+            <span
+              v-if="!canUseRegistryForSaving(section.registry)"
+              v-b-tooltip="$t('registryInfo.cannotSaveMappings')"
+              class="text-danger">
+              <font-awesome-icon icon="exclamation-circle" />
+            </span>
           </div>
           <b-pagination
             v-if="section.totalCount > searchLimit"
@@ -758,13 +764,11 @@ export default {
       }) && this.$jskos.compare(r, registry)) != null
     },
     useRegistryForSaving(registry) {
-      if (this.canUseRegistryForSaving(registry)) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingRegistry",
-          value: registry.uri,
-        })
-      }
+      this.$store.commit({
+        type: "settings/set",
+        prop: "mappingRegistry",
+        value: registry.uri,
+      })
     },
     // Gets called by popovers @hide function to add them to currentPopovers
     popoverHide(event, id) {

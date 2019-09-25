@@ -290,11 +290,7 @@
           class="font-default text-dark color-primary-0-bg fontSize-normal"
           style="min-width: 200px;">
           <p
-            v-for="registry in config.registries.filter(registry => registry.isAuthorizedFor({
-              type: 'mappings',
-              action: 'create',
-              user: user,
-            }))"
+            v-for="registry in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,
@@ -311,6 +307,16 @@
             <registry-name
               :registry="registry"
               :tooltip="false" />
+            <span
+              v-if="!registry.isAuthorizedFor({
+                type: 'mappings',
+                action: 'create',
+                user: user,
+              })"
+              v-b-tooltip="$t('registryInfo.cannotSaveMappings')"
+              class="text-danger">
+              <font-awesome-icon icon="exclamation-circle" />
+            </span>
           </p>
         </div>
       </b-nav-item-dropdown>
