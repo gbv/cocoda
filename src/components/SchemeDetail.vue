@@ -78,9 +78,12 @@
     <div
       class="schemeDetail-identifier">
       <b>{{ $t("schemeDetail.registry") }}:</b>
-      <registry-info
+      <registry-notation
         :registry="item._provider.registry"
-        :show-capabilities="false" />
+        :tooltip="false" />
+      <registry-name
+        :registry="item._provider.registry"
+        :tooltip="false" />
     </div>
 
     <!-- Link to mapping search -->
@@ -116,7 +119,8 @@
 import AutoLink from "./AutoLink"
 import ItemName from "./ItemName"
 import ItemDetailNarrower from "./ItemDetailNarrower"
-import RegistryInfo from "./RegistryInfo"
+import RegistryName from "./RegistryName"
+import RegistryNotation from "./RegistryNotation"
 
 // Import mixins
 import objects from "../mixins/objects"
@@ -130,7 +134,7 @@ import kosTypes from "../../config/kos-types.json"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, ItemDetailNarrower, RegistryInfo,
+    AutoLink, ItemName, ItemDetailNarrower, RegistryName, RegistryNotation,
   },
   mixins: [objects],
   props: {
