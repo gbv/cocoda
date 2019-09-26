@@ -228,7 +228,10 @@
               <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
             </b-button>
             <div
-              v-b-tooltip="$t(`mappingBrowser.${searchFilterExtended ? 'searchCollapse' : 'searchExtend'}`)"
+              v-b-tooltip="{
+                title: $t(`mappingBrowser.${searchFilterExtended ? 'searchCollapse' : 'searchExtend'}`),
+                placement: searchFilterExtended ? 'left' : 'bottom',
+              }"
               class="button fontSize-large"
               style="flex: none; margin: 3px; position: relative; width: 20px;"
               @click="searchFilterExtended = !searchFilterExtended">
