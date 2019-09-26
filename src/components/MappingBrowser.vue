@@ -187,7 +187,7 @@
             <b-input
               v-model="searchFilterInput.fromScheme"
               :state="searchFilterInput.fromScheme == '' ? null : searchFromScheme != null"
-              style="flex: 1; margin: 3px;"
+              style="flex: 1; margin: 3px; min-width: 40px;"
               size="sm"
               :disabled="lockScheme[true]"
               :placeholder="$t('mappingBrowser.searchSourceScheme')"
@@ -202,7 +202,7 @@
             </div>
             <b-input
               v-model="searchFilterInput.fromNotation"
-              style="flex: 2; margin: 3px;"
+              style="flex: 2; margin: 3px; min-width: 60px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceNotation')"
               @keyup.enter.native="searchClicked"
@@ -216,7 +216,7 @@
             <b-input
               v-model="searchFilterInput.toScheme"
               :state="searchFilterInput.toScheme == '' ? null : searchToScheme != null"
-              style="flex: 1; margin: 3px;"
+              style="flex: 1; margin: 3px; min-width: 40px;"
               size="sm"
               :disabled="lockScheme[false]"
               :placeholder="$t('mappingBrowser.searchTargetScheme')"
@@ -231,7 +231,7 @@
             </div>
             <b-input
               v-model="searchFilterInput.toNotation"
-              style="flex: 2; margin: 3px;"
+              style="flex: 2; margin: 3px; min-width: 60px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
