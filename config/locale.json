@@ -197,7 +197,9 @@
       "searchExtend": "show extended search",
       "searchCollapse": "hide extended search",
       "mappingConfirmedTooltip": "Confirmed",
-      "openInCocoda": "open in Cocoda"
+      "openInCocoda": "open in Cocoda",
+      "lockScheme": "lock search scheme to selected scheme",
+      "unlockScheme": "unlock search scheme from selected scheme"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -583,7 +585,9 @@
       "searchExtend": "erweiterte Suche anzeigen",
       "searchCollapse": "erweiterte Suche ausblenden",
       "mappingConfirmedTooltip": "Bestätigt",
-      "openInCocoda": "in Cocoda öffnen"
+      "openInCocoda": "in Cocoda öffnen",
+      "lockScheme": "binde Suchvokabular an das ausgewählte Vokabular",
+      "unlockScheme": "entbinde Suchvokabular von dem ausgewählten Vokabular"
     },
     "mappingDetail": {
       "title": "Mapping-Details",

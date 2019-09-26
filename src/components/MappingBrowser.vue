@@ -189,16 +189,24 @@
               :state="searchFilterInput.fromScheme == '' ? null : searchFromScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
+              :disabled="lockScheme[true]"
               :placeholder="$t('mappingBrowser.searchSourceScheme')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
+              @drop="!lockScheme[true] && drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
+            <div
+              v-b-tooltip="lockScheme[true] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
+              class="button"
+              style="flex: none; font-size: 12px; margin: auto 2px;"
+              @click="lockScheme[true] = !lockScheme[true]">
+              <font-awesome-icon :icon="lockScheme[true] ? 'lock' : 'lock-open'" />
+            </div>
             <b-input
               v-model="searchFilterInput.fromNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceNotation')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
+              @drop="drop($event, { scheme: lockScheme[true] ? null : 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <div
               class="button"
               style="flex: none; font-size: 16px; margin: auto 5px;"
@@ -210,16 +218,24 @@
               :state="searchFilterInput.toScheme == '' ? null : searchToScheme != null"
               style="flex: 1; margin: 3px;"
               size="sm"
+              :disabled="lockScheme[false]"
               :placeholder="$t('mappingBrowser.searchTargetScheme')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
+              @drop="!lockScheme[false] && drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
+            <div
+              v-b-tooltip="lockScheme[false] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
+              class="button"
+              style="flex: none; font-size: 12px; margin: auto 2px;"
+              @click="lockScheme[false] = !lockScheme[false]">
+              <font-awesome-icon :icon="lockScheme[false] ? 'lock' : 'lock-open'" />
+            </div>
             <b-input
               v-model="searchFilterInput.toNotation"
               style="flex: 2; margin: 3px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
               @keyup.enter.native="searchClicked"
-              @drop="drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
+              @drop="drop($event, { scheme: lockScheme[false] ? null : 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <b-button
               style="flex: none; margin: 3px;"
               variant="primary"
@@ -508,6 +524,11 @@ export default {
       searchCancelToken: {},
       // Array of objects with registryUri and page (as parameters for search)
       searchNeedsRefresh: [],
+      // Whether fromScheme/toScheme are locked to the selected scheme
+      lockScheme: {
+        [true]: true,
+        [false]: true,
+      },
       previousSelected: {
         concept: {
           [true]: null,
@@ -929,6 +950,18 @@ export default {
           this.navigatorPages = {}
           this.navigatorResults = {}
           this.navigatorNeedsRefresh.push(null)
+          // Also adjust fromScheme/toScheme if locked
+          let changed = false
+          for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
+            if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
+              const scheme = this.selected.scheme[isLeft]
+              this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$util.notation(scheme) : ""
+              changed = true
+            }
+          }
+          if (changed) {
+            this.searchClicked()
+          }
         }
         this.previousSelected = {}
         this.previousSelected.concept = {
@@ -974,6 +1007,22 @@ export default {
           this.navigatorNeedsRefresh.push(registry.uri)
         }
       }
+    },
+    lockScheme: {
+      handler() {
+        let changed = false
+        for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
+          if (this.lockScheme[isLeft]) {
+            const scheme = this.selected.scheme[isLeft]
+            this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$util.notation(scheme) : ""
+            changed = true
+          }
+        }
+        if (changed) {
+          this.searchClicked()
+        }
+      },
+      deep: true,
     },
   },
   created() {
