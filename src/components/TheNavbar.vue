@@ -301,22 +301,10 @@
               prop: 'mappingRegistry',
               value: registry.uri
             })">
-            <registry-notation
+            <registry-info
               :registry="registry"
-              :tooltip="false" />
-            <registry-name
-              :registry="registry"
-              :tooltip="false" />
-            <span
-              v-if="!registry.isAuthorizedFor({
-                type: 'mappings',
-                action: 'create',
-                user: user,
-              })"
-              v-b-tooltip="$t('registryInfo.cannotSaveMappings')"
-              class="text-danger">
-              <font-awesome-icon icon="exclamation-circle" />
-            </span>
+              :show-details="false"
+              :show-capabilities="false" />
           </p>
         </div>
       </b-nav-item-dropdown>
@@ -333,7 +321,7 @@
 import TheSettings from "./TheSettings"
 import ItemName from "./ItemName"
 import RegistryNotation from "./RegistryNotation"
-import RegistryName from "./RegistryName"
+import RegistryInfo from "./RegistryInfo"
 import MappingTable from "./MappingTable"
 import _ from "lodash"
 
@@ -349,7 +337,7 @@ import computed from "../mixins/computed"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName, RegistryNotation, RegistryName, MappingTable,
+    TheSettings, ItemName, RegistryNotation, RegistryInfo, MappingTable,
   },
   mixins: [auth, objects, dragandrop, computed],
   props: {

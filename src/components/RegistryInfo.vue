@@ -5,19 +5,33 @@
         :registry="registry"
         :disabled="$store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] === false"
         :tooltip="false" />
-      <div
+      <span
         class="settings-info-title"
         :class="{
           'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
-        }"
-        style="display: inline-block">
+        }">
         {{ $util.prefLabel(registry) }}
-      </div>
+      </span>
+      <span
+        v-if="registry.isAuthorizedFor({
+          type: 'mappings',
+          action: 'create',
+          user: user,
+        })"
+        v-b-tooltip="$t('registryInfo.canSaveMappings')"
+        style="font-size: 12px;"
+        class="text-success">
+        <font-awesome-icon icon="user-edit" />
+      </span>
     </div>
-    <div class="settings-info-definition">
+    <div
+      v-if="showDetails"
+      class="settings-info-definition">
       {{ $util.definition(registry).join(" ") }}
     </div>
-    <div class="settings-info-uri fontSize-small">
+    <div
+      v-if="showDetails"
+      class="settings-info-uri fontSize-small">
       <auto-link :link="registry.uri" />
     </div>
     <div
@@ -69,6 +83,10 @@ export default {
     registry: {
       type: Object,
       default: null,
+    },
+    showDetails: {
+      type: Boolean,
+      default: true,
     },
     showCapabilities: {
       type: Boolean,

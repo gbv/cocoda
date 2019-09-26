@@ -318,16 +318,10 @@
               'mappingBrowser-registry-selectable': section.registry.subject && section.registry.subject[0] && section.registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings'
             }"
             @click="useRegistryForSaving(section.registry)">
-            <registry-notation
-              :tooltip="false"
-              :registry="section.registry" />
-            <registry-name :registry="section.registry" />
-            <span
-              v-if="!canUseRegistryForSaving(section.registry) && section.registry.subject && section.registry.subject[0] && section.registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings'"
-              v-b-tooltip="$t('registryInfo.cannotSaveMappings')"
-              class="text-danger">
-              <font-awesome-icon icon="exclamation-circle" />
-            </span>
+            <registry-info
+              :registry="section.registry"
+              :show-details="false"
+              :show-capabilities="false" />
           </div>
           <b-pagination
             v-if="section.totalCount > searchLimit"
@@ -380,8 +374,7 @@ import ItemName from "./ItemName"
 import AutoLink from "./AutoLink"
 import LoadingIndicator from "./LoadingIndicator"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import RegistryNotation from "./RegistryNotation"
-import RegistryName from "./RegistryName"
+import RegistryInfo from "./RegistryInfo"
 import FlexibleTable from "vue-flexible-table"
 import MappingDetail from "./MappingDetail"
 import AnnotationPopover from "./AnnotationPopover"
@@ -399,7 +392,7 @@ import hoverHandler from "../mixins/hover-handler"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryNotation, RegistryName, MappingDetail, AnnotationPopover, DataModalButton },
+  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton },
   mixins: [auth, objects, computed, hoverHandler],
   props: {
     sections: {

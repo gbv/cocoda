@@ -316,7 +316,7 @@
       "occurrences": "Co-/Occurrences",
       "authenticated": "Authenticated",
       "notAuthenticated": "Authentication required",
-      "cannotSaveMappings": "This registry can't be used to save mappings (possibly missing authentication)."
+      "canSaveMappings": "This registry can be used to save mappings."
     },
     "languages": {
       "en": "English",
@@ -641,7 +641,7 @@
       "occurrences": "Katalogvorkommen",
       "authenticated": "Authentifiziert",
       "notAuthenticated": "Authentifizierung notwendig",
-      "cannotSaveMappings": "Dieses Register kann nicht zum Speichern von Mappings verwendet werden (womöglich fehlende Authentifizierung)."
+      "canSaveMappings": "Dieses Register kann zum Speichern von Mappings verwendet werden."
     },
     "languages": {
       "en": "Englisch",
