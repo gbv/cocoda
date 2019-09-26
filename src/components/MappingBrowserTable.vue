@@ -243,7 +243,7 @@
           v-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit') : $t('mappingBrowser.clone'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$util.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$util.prefLabel(currentRegistry)]), delay: $util.delay.medium }"
             :icon="canEdit(data, user) ? 'edit' : 'clone'"
             class="button"
             @click="edit(data)" />
