@@ -243,8 +243,8 @@
           v-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.edit'), delay: $util.delay.medium }"
-            icon="edit"
+            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit') : $t('mappingBrowser.clone'), delay: $util.delay.medium }"
+            :icon="canEdit(data, user) ? 'edit' : 'clone'"
             class="button"
             @click="edit(data)" />
         </div>
@@ -562,6 +562,11 @@ export default {
   },
   methods: {
     edit(data) {
+      const canEdit = this.canEdit(data, this.user)
+      if (canEdit) {
+        // Select registry for editing
+        this.useRegistryForSaving(data.item.registry)
+      }
       let copyWithReferences = mapping => {
         let newMapping = this.$jskos.copyDeep(mapping)
         newMapping.from.memberSet = mapping.from.memberSet.slice()
@@ -581,7 +586,7 @@ export default {
       this.$store.commit({
         type: "mapping/set",
         mapping,
-        original: data.item.mapping,
+        original: canEdit ? data.item.mapping : null,
       })
     },
     canRemove(data) {
@@ -623,6 +628,14 @@ export default {
         console.error("MappingBrowserTable - Error removing mapping", error)
       }).then(() => {
         this.loadingGlobal = false
+      })
+    },
+    canEdit(data, user) {
+      return data.item.registry.isAuthorizedFor({
+        type: "mappings",
+        action: "update",
+        user: user,
+        crossUser: !this.$jskos.compare(user, _.get(data, "item.mapping.creator[0]")),
       })
     },
     /** Saving of mappigns */
