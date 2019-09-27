@@ -16,7 +16,7 @@
       v-b-popover="showPopover ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${$util.notation(item)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small'><pre>${item.uri}</pre>${($util.lmContent(item, 'scopeNote') || []).join('<br>')}</div>`,
+        content: `<div class='fontSize-normal'><b>${$util.notation(item)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small itemName-details'><pre>${item.uri}</pre>${($util.lmContent(item, 'scopeNote') || []).join('<br>')}</div>`,
         html: true,
       } : null"
       :to="url"
@@ -271,5 +271,33 @@ Vue.component("notation-text", {
 }
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
+}
+</style>
+
+<style>
+/* Multiline text truncation: http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/ */
+.itemName-details {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: 7.2em;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1.5em;
+}
+.itemName-details:before {
+  content: '...';
+  position: absolute;
+  right: 0.5em;
+  bottom: 0;
+}
+.itemName-details:after {
+  content: '';
+  position: absolute;
+  right: 0.5em;
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: white;
 }
 </style>
