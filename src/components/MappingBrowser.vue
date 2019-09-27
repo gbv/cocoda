@@ -196,6 +196,10 @@
             <div
               v-b-tooltip="lockScheme[true] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
               class="button"
+              :class="{
+                'text-success': !lockScheme[true],
+                'text-danger': lockScheme[true],
+              }"
               style="flex: none; font-size: 12px; margin: auto 2px;"
               @click="lockScheme[true] = !lockScheme[true]">
               <font-awesome-icon :icon="lockScheme[true] ? 'lock' : 'lock-open'" />
@@ -225,6 +229,10 @@
             <div
               v-b-tooltip="lockScheme[false] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
               class="button"
+              :class="{
+                'text-success': !lockScheme[true],
+                'text-danger': lockScheme[true],
+              }"
               style="flex: none; font-size: 12px; margin: auto 2px;"
               @click="lockScheme[false] = !lockScheme[false]">
               <font-awesome-icon :icon="lockScheme[false] ? 'lock' : 'lock-open'" />
