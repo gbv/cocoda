@@ -101,7 +101,7 @@ export default {
      */
     showPopover: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     /**
      * Determines whether the item is highlighted

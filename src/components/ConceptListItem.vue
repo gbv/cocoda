@@ -51,13 +51,11 @@
           :item="scheme"
           :show-text="false"
           :is-link="false"
-          :show-popover="false"
           :prevent-external-hover="true"
           :draggable="false" />
         <item-name
           :item="concept"
           :is-highlighted="isSelected"
-          :show-popover="false"
           :prevent-external-hover="true" />
       </div>
       <div

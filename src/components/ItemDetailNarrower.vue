@@ -22,7 +22,6 @@
         :item="concept"
         :is-link="true"
         :is-left="isLeft"
-        :show-popover="false"
         font-size="small" />
     </div>
     <!-- Show LoadingIndicator when narrower exist, but are not loaded yet -->

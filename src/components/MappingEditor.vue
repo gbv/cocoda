@@ -121,6 +121,7 @@
                 :is-link="true"
                 :is-left="isLeft"
                 :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
+                :show-popover="true"
                 font-size="large" />
               <!-- Delete button for concept -->
               <span

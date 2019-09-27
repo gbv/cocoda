@@ -27,7 +27,6 @@
             :item="concept"
             :is-link="true"
             :is-left="isLeft"
-            :show-popover="false"
             font-size="small" />
         </span>
         <span
@@ -54,7 +53,6 @@
           :item="concept"
           :is-link="true"
           :is-left="isLeft"
-          :show-popover="false"
           font-size="small" />
       </div>
       <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
@@ -81,7 +79,6 @@
       <item-name
         :item="item"
         :is-highlighted="true"
-        :show-popover="false"
         font-size="normal" />
       <font-awesome-icon
         v-b-tooltip.hover="{ title: $jskos.isContainedIn(item, favoriteConcepts) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
