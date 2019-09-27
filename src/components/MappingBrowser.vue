@@ -1421,7 +1421,9 @@ export default {
       }
     },
     swapClicked() {
-      [this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation, this.searchFilterInput.toScheme, this.searchFilterInput.toNotation] = [this.searchFilterInput.toScheme, this.searchFilterInput.toNotation, this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation]
+      this.lockScheme[true] = false
+      this.lockScheme[false] = false
+      ;[this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation, this.searchFilterInput.toScheme, this.searchFilterInput.toNotation] = [this.searchFilterInput.toScheme, this.searchFilterInput.toNotation, this.searchFilterInput.fromScheme, this.searchFilterInput.fromNotation]
       this.searchClicked()
     },
     resultsToSections(results, pages, loading, keyPrefix) {
