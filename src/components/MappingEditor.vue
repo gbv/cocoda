@@ -108,8 +108,7 @@
             :item="$store.getters['mapping/getScheme'](isLeft)"
             :is-link="true"
             :is-left="isLeft"
-            :show-text="false"
-            :show-tooltip="true" />
+            :show-text="false" />
         </div>
         <!-- All concepts in mapping -->
         <div class="mappingConceptList">

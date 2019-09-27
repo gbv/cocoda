@@ -40,6 +40,7 @@
           :item="scheme"
           :is-link="true"
           :is-left="isLeft"
+          :show-popover="false"
           font-size="large" />
         <!-- License badge -->
         <span v-if="scheme.license && scheme.license.length">
@@ -253,7 +254,8 @@
               :ref="index == 0 ? 'firstScheme' : null"
               :item="_scheme"
               :is-link="true"
-              :is-left="isLeft" />
+              :is-left="isLeft"
+              :show-popover="false" />
           </li>
           <li v-show="isFiltered">
             <a

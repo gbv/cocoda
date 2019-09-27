@@ -143,7 +143,7 @@
                 <item-name
                   :item="value"
                   :show-text="false"
-                  :show-tooltip="true"
+                  :show-popover="false"
                   :is-link="value.__SAVED__ === true"
                   :is-left="true"
                   font-size="sm" />
@@ -154,7 +154,7 @@
                 <item-name
                   :item="value"
                   :show-text="false"
-                  :show-tooltip="true"
+                  :show-popover="false"
                   :is-link="value.__SAVED__"
                   :is-left="false"
                   font-size="sm" />

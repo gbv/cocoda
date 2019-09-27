@@ -74,7 +74,7 @@
             icon: 'recycle'
           }]"
           :show-labels="true"
-          :show-tooltip="false"
+          :show-popover="false"
           :show-registry="true"
           :hide-duplicates="false"
           style="width: 700px;"

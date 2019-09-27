@@ -13,6 +13,13 @@
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
+      v-b-popover="showPopover ? {
+        placement: 'top',
+        trigger: 'hover',
+        title: `${$util.notation(item)} ${$util.prefLabel(item, null, false)}`,
+        content: `<pre>${item.uri}</pre>${($util.lmContent(item, 'scopeNote') || []).join('<br>')}`,
+        html: true,
+      } : null"
       :to="url"
       :class="[
         {
@@ -41,13 +48,6 @@
         {{ $util.prefLabel(item, null, notation == null) }}
       </span>
     </div>
-    <!-- Tooltip for prefLabel if only notation is shown -->
-    <b-tooltip
-      v-if="showTooltip && $util.prefLabel(item)"
-      ref="tooltip"
-      :target="tooltipDOMID">
-      {{ trimTooltip($util.prefLabel(item)) }}
-    </b-tooltip>
   </div>
 </template>
 
@@ -98,11 +98,11 @@ export default {
       default: true,
     },
     /**
-     * Determines whether to show the concepts label as a tooltip.
+     * Determines whether to show some concept details as a popover.
      */
-    showTooltip: {
+    showPopover: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     /**
      * Determines whether the item is highlighted

@@ -239,7 +239,6 @@
                     :mappings="mappings"
                     :actions="actions"
                     :show-labels="showLabels != 0"
-                    :show-tooltip="false"
                     :hide-duplicates="false"
                     @click="tableClicked" />
                 </b-col>
