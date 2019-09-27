@@ -16,8 +16,7 @@
       v-b-popover="showPopover ? {
         placement: 'top',
         trigger: 'hover',
-        title: `${$util.notation(item)} ${$util.prefLabel(item, null, false)}`,
-        content: `<pre>${item.uri}</pre>${($util.lmContent(item, 'scopeNote') || []).join('<br>')}`,
+        content: `<div class='fontSize-normal'><b>${$util.notation(item)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small'><pre>${item.uri}</pre>${($util.lmContent(item, 'scopeNote') || []).join('<br>')}</div>`,
         html: true,
       } : null"
       :to="url"
