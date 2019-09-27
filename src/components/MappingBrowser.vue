@@ -1134,14 +1134,20 @@ export default {
     },
     clearSearchFilter() {
       this.searchFilterInput = {
-        fromScheme: "",
+        fromScheme: (this.searchFilterInput && this.searchFilterInput.fromScheme) || "",
         fromNotation: "",
-        toScheme: "",
+        toScheme: (this.searchFilterInput && this.searchFilterInput.toScheme) || "",
         toNotation: "",
         creator: "",
         direction: "",
         type: null,
         partOf: null,
+      }
+      if (!this.lockScheme[true]) {
+        this.searchFilterInput.fromScheme = ""
+      }
+      if (!this.lockScheme[false]) {
+        this.searchFilterInput.toScheme = ""
       }
       this.searchFilterExtended = false
       this.searchResults = {}
