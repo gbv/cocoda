@@ -84,7 +84,7 @@
           'text-danger': mappingStatus.invalid,
         }">
         <font-awesome-icon
-          v-if="mappingStatus.message"
+          v-if="$jskos.conceptsOfMapping(mapping).length > 0 && mappingStatus.message"
           icon="exclamation-circle" />
       </div>
     </div>
