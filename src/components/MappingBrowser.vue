@@ -189,8 +189,8 @@
               :state="searchFilterInput.fromScheme == '' ? null : searchFromScheme != null"
               style="flex: 1; margin: 3px; min-width: 40px;"
               size="sm"
-              :disabled="lockScheme[true]"
               :placeholder="$t('mappingBrowser.searchSourceScheme')"
+              @keyup.native="lockScheme[true] = false"
               @keyup.enter.native="searchClicked"
               @drop="!lockScheme[true] && drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <div
@@ -222,16 +222,16 @@
               :state="searchFilterInput.toScheme == '' ? null : searchToScheme != null"
               style="flex: 1; margin: 3px; min-width: 40px;"
               size="sm"
-              :disabled="lockScheme[false]"
               :placeholder="$t('mappingBrowser.searchTargetScheme')"
+              @keyup.native="lockScheme[false] = false"
               @keyup.enter.native="searchClicked"
               @drop="!lockScheme[false] && drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <div
               v-b-tooltip="lockScheme[false] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
               class="button"
               :class="{
-                'text-success': !lockScheme[true],
-                'text-danger': lockScheme[true],
+                'text-success': !lockScheme[false],
+                'text-danger': lockScheme[false],
               }"
               style="flex: none; font-size: 12px; margin: auto 2px;"
               @click="lockScheme[false] = !lockScheme[false]">
