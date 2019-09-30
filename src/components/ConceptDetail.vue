@@ -71,8 +71,7 @@
       <!-- Button to clear scheme -->
       <div
         v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: $util.delay.medium }"
-        class="button"
-        style="display: inline-block; margin: 0px 2px 0px 2px;"
+        class="button conceptDetail-name-clearButton"
         @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })">
         <font-awesome-icon icon="times-circle" />
       </div>
@@ -544,6 +543,12 @@ export default {
 .conceptDetail-name {
   background-color: @color-select-2;
   position: relative;
+  padding: 0 20px;
+}
+.conceptDetail-name-clearButton {
+  position: absolute;
+  left: 2px;
+  top: 2px;
 }
 .conceptDetail-name-addButton {
   .fontSize-large;
