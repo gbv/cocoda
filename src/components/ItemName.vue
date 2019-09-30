@@ -13,10 +13,10 @@
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
-      v-b-popover="showPopover ? {
+      v-b-popover="showPopover && (itemDetails.length || !showText) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${$util.notation(item)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small itemName-details'><pre>${item.uri}</pre>${itemDetails}</div>`,
+        content: `<div class='fontSize-normal'><b>${$util.notation(item)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
       } : null"
       :to="url"
@@ -156,8 +156,8 @@ export default {
       if (!result || !result.length) {
         return ""
       }
-      // Line breaks between URI and this content
-      return ["", ""].concat(result).join("<br>")
+      // Line breaks between title and this content
+      return [""].concat(result).join("<br>")
     },
   },
   watch: {
@@ -307,8 +307,5 @@ Vue.component("notation-text", {
   height: 1em;
   margin-top: 0.2em;
   background: white;
-}
-.itemName-details > pre {
-  display: inline;
 }
 </style>
