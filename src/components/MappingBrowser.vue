@@ -163,7 +163,7 @@
             <p style="font-weight: bold; flex: 1;">
               {{ concordanceTableItems.length }} {{ $t("mappingBrowser.concordances") }}
             </p>
-            <p style="text-align: right; font-weight: bold; padding-right: 20px;">
+            <p style="text-align: right; font-weight: bold; padding-right: 45px;">
               {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
                 return total + parseInt(current.mappings) || 0
               }, 0).toLocaleString() }}
