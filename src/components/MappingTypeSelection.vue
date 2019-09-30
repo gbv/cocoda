@@ -93,7 +93,7 @@ export default {
   background-color: @color-select-2;
 }
 .mappingType:hover {
-  background-color: @color-select-1;
+  background-color: @color-select;
   color: @color-text-grey;
 }
 </style>

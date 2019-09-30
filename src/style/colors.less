@@ -1,21 +1,19 @@
-// Base colors // --------------------------------------------------
+// Base colors // ------------------------------------------------------
 
 @color-primary-0: rgb(88, 128, 187);
 @color-select: rgb(255, 200, 107);
 
-// Adjusted base colors // --------------------------------------------------
+// Adjusted base colors // ---------------------------------------------
 
 @color-primary-1: lighten(@color-primary-0, 24%);
 @color-primary-2: lighten(@color-primary-0, 12%);
 @color-primary-3: darken(@color-primary-0, 12%);
-@color-primary-4: darken(@color-primary-0, 14%);
 @color-primary-5: lighten(@color-primary-0, 40%);
 
-@color-select-1: @color-select;
-@color-select-2: lighten(@color-select-1, 12%);
+@color-select-2: lighten(@color-select, 12%);
 @color-select-darker: darken(@color-select, 24%);
 
-// Text colors // --------------------------------------------------
+// Text colors (monochrome) // -----------------------------------------
 
 @color-text-dark: rgb(33, 33, 33);
 @color-text-grey: rgb(74, 74, 74);
@@ -24,20 +22,11 @@
 @color-text-veryLightGrey: rgb(210, 210, 210);
 @color-primary-text: rgba(255, 255, 255, 0.8);
 
-// Button colors // --------------------------------------------------
-
-@color-button: #555555;
-@color-button-slightlyFaded: fadeout(@color-button, 40%);
-@color-button-faded: fadeout(@color-button, 80%);
-@color-button-hover: @color-select-darker;
-@color-button-disabled: rgb(228, 228, 228);
-@color-button-delete: rgb(194, 0, 0);
-@color-button-delete-hover: @color-button-hover;
-
-// General colors // --------------------------------------------------
+// General colors // ---------------------------------------------------
 
 @color-action-1: darkgreen;
 @color-action-2: green;
+@color-action-3: rgb(194, 0, 0);
 
 @color-background: rgb(255, 255, 255);
 @color-background-card: rgba(0, 0, 0, 0.02);
@@ -60,9 +49,19 @@
 
 @color-transparent: rgba(1, 1, 1, 0);
 
-// Component specific colors // --------------------------------------------------
+// Button colors (monochrome) // ---------------------------------------
 
-@color--conceptSearch-result-selected: @color-primary-4;
+@color-button: #555555;
+@color-button-slightlyFaded: fadeout(@color-button, 40%);
+@color-button-faded: fadeout(@color-button, 80%);
+@color-button-hover: @color-select-darker;
+@color-button-disabled: rgb(228, 228, 228);
+@color-button-delete: @color-action-3;
+@color-button-delete-hover: @color-button-hover;
+
+// Component specific colors // ----------------------------------------
+
+@color--conceptSearch-result-selected: @color-primary-3;
 @color--conceptSearch-result-selected-background: @color-primary-5;
 @color--conceptSearch-searchHighlight: @color-select-darker;
 @color--conceptSearch-searchHighlight-selected: @color-select-darker;
@@ -75,7 +74,7 @@
 
 @color--resizingSlider: #B34D28;
 
-// Alert colors // --------------------------------------------------
+// Alert colors // -----------------------------------------------------
 
 @color-alert-success: @color-text-dark;
 @color-alert-success-background: rgb(193, 221, 198);

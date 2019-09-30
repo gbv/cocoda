@@ -374,7 +374,7 @@ export default {
 .selected.hovered,
 .arrowBox:hover,
 .conceptListItem:hover {
-  background-color: @color-select-1;
+  background-color: @color-select;
   color: @color-action-2;
 }
 

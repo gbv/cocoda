@@ -905,7 +905,7 @@ export default {
   background-color: @color-select-2;
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-edited {
-  background-color: @color-select-1;
+  background-color: @color-select;
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
