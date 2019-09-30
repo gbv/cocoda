@@ -787,7 +787,6 @@ export default {
   flex: 1;
   height: 0;
   overflow: auto;
-  position: relative;
 }
 .mappingConceptList > ul {
   list-style: none;
@@ -795,9 +794,6 @@ export default {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  height: 88%;
-  width: 100%;
-  overflow-y: auto;
 }
 .mappingConceptList > ul > li {
   position: relative;
