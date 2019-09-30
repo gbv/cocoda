@@ -8,12 +8,12 @@
     size="lg">
     <table class="dataModal-links">
       <tr v-if="count > 0">
-        <td class="fontWeight-heavy">
+        <td class="fontWeight-heavy text-right">
           {{ $t("dataModal.localDownload") }} ({{ count.toLocaleString() }})
         </td>
         <td>
           <ul class="list-group list-group-horizontal">
-            <li class="list-group-item p1">
+            <li class="list-group-item py-2 border-0">
               <a
                 :href="'data:text/csv;charset=utf-8,' + encodedDataCsv"
                 :download="filename + '.csv'"
@@ -21,7 +21,7 @@
                 <font-awesome-icon icon="download" /> .csv
               </a>
             </li>
-            <li class="list-group-item p1">
+            <li class="list-group-item py-2 border-0">
               <a
                 :href="'data:application/json;charset=utf-8,' + encodedData"
                 :download="filename + '.json'"
@@ -31,7 +31,7 @@
             </li>
             <li
               v-if="encodedDataNdjson"
-              class="list-group-item p1">
+              class="list-group-item py-2 border-0">
               <a
                 :href="'data:application/json;charset=utf-8,' + encodedDataNdjson"
                 :download="filename + '.ndjson'"
@@ -39,7 +39,7 @@
                 <font-awesome-icon icon="download" /> .ndjson
               </a>
             </li>
-            <li class="list-group-item p1">
+            <li class="list-group-item py-2 border-0">
               <a
                 href=""
                 @click.prevent="copyToClipboard($refs.jsonCode)">
@@ -51,15 +51,15 @@
         </td>
       </tr>
       <tr v-if="url">
-        <td class="fontWeight-heavy">
+        <td class="fontWeight-heavy text-right">
           {{ $t("dataModal.apiLinks") }} ({{ (totalCount || count).toLocaleString() }})
         </td>
         <td>
-          <ul class="list-group list-group-horizontal">
+          <ul class="list-group list-group-horizontal list-group-flush">
             <li
               v-for="(title, index) in Object.keys(urls)"
               :key="`dataModal-links-urls-${index}`"
-              class="list-group-item p1">
+              class="list-group-item py-2 border-0">
               <a
                 :href="urls[title]"
                 target="_blank">
@@ -69,7 +69,7 @@
             <li
               v-for="(download, index) in apiDownloadUrls"
               :key="`dataModal-links-apiDownload-${index}`"
-              class="list-group-item p1">
+              class="list-group-item py-2 border-0">
               <a
                 :href="download.url"
                 target="_blank">
