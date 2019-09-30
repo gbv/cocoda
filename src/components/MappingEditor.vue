@@ -112,30 +112,34 @@
         </div>
         <!-- All concepts in mapping -->
         <div class="mappingConceptList">
-          <ul>
-            <li
-              v-for="(concept, index) in $store.getters['mapping/getConcepts'](isLeft)"
-              :key="index">
-              <item-name
-                :item="concept"
-                :is-link="true"
-                :is-left="isLeft"
-                :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
-                :show-popover="true"
-                font-size="large" />
-              <!-- Delete button for concept -->
-              <span
-                v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: $util.delay.medium }"
-                class="button fontSize-large"
-                @click="$store.commit({
-                  type: 'mapping/remove',
-                  concept,
-                  isLeft
-                })">
-                <font-awesome-icon icon="times-circle" />
-              </span>
-            </li>
-          </ul>
+          <div>
+            <div style="flex: 1" />
+            <ul>
+              <li
+                v-for="(concept, index) in $store.getters['mapping/getConcepts'](isLeft)"
+                :key="index">
+                <item-name
+                  :item="concept"
+                  :is-link="true"
+                  :is-left="isLeft"
+                  :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])"
+                  :show-popover="true"
+                  font-size="large" />
+                <!-- Delete button for concept -->
+                <span
+                  v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: $util.delay.medium }"
+                  class="button fontSize-large"
+                  @click="$store.commit({
+                    type: 'mapping/remove',
+                    concept,
+                    isLeft
+                  })">
+                  <font-awesome-icon icon="times-circle" />
+                </span>
+              </li>
+            </ul>
+            <div style="flex: 1" />
+          </div>
         </div>
       </div>
       <div v-else>
@@ -786,16 +790,24 @@ export default {
 .mappingConceptList {
   flex: 1;
   height: 0;
-  overflow: auto;
+  position: relative;
+  align-items: center;
 }
-.mappingConceptList > ul {
-  list-style: none;
-  padding: 0 0 0 5px;
+.mappingConceptList > div {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
 }
-.mappingConceptList > ul > li {
+.mappingConceptList > div > ul {
+  list-style: none;
+  padding: 0;
+}
+.mappingConceptList > div > ul > li {
   position: relative;
   margin: 5px 12px 5px 0;
 }
