@@ -19,8 +19,7 @@
           user: user,
         })"
         v-b-tooltip="$t('registryInfo.canSaveMappings')"
-        style="font-size: 12px;"
-        class="text-success">
+        style="font-size: 12px; padding-left: 5px;">
         <font-awesome-icon icon="user-edit" />
       </span>
     </div>
