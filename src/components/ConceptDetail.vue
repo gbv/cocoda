@@ -530,8 +530,8 @@ export default {
 }
 
 .conceptDetail-ancestors {
-  margin: 5px;
-  padding-left: 5px;
+  margin: 0;
+  padding-left: 10px;
 }
 .conceptDetail-ancestors-expand {
   position: absolute;
