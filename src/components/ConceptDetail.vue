@@ -105,6 +105,7 @@
       size="sm">
       <div
         v-if="nextConcept"
+        v-b-tooltip.hover="{ title: $t('conceptDetail.nextConceptTooltip'), delay: $util.delay.medium }"
         class="conceptDetail-nextButton">
         <router-link
           :to="getRouterUrl(nextConcept, isLeft, true)">
