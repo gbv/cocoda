@@ -55,7 +55,7 @@
       "popoverShow": "show scheme selection",
       "popoverHide": "hide scheme selection",
       "showAllSchemes": "Show all {count} schemes",
-      "insertPrefLabel": "Use selected concept label in opposite search field"
+      "insertPrefLabel": "Copy selected concept label into opposite search field"
     },
     "search": {
       "placeholder": "Type to search...",
@@ -150,9 +150,9 @@
       "settingHideEmptyTooltip": "When enabled, sections with no mappings will be hidden.",
       "settingShowIdentityWarning": "Show warning for mismatch in mapping identity",
       "settingShowIdentityWarningTooltip": "When enabled, a warning sign will be shown if one of your own mappings contains an identity different from the one currently selected.",
-      "settingNavigatorShowResultsForLeft": "Show results related to selected concept on the left side",
-      "settingNavigatorShowResultsForRight": "Show results related to selected concept on the right side",
-      "settingMoveCurrentRegistryToTop": "Always show currently selected mapping registry at the top",
+      "settingNavigatorShowResultsForLeft": "Results related to selected concept on the left side",
+      "settingNavigatorShowResultsForRight": "Results related to selected concept on the right side",
+      "settingMoveCurrentRegistryToTop": "Currently selected mapping registry at the top",
       "chooseConcept": "Select a concept to see mappings and mapping recommendations",
       "settingsButton": "Mapping Browser Settings",
       "creatorIsDifferent": "This is your mapping, but the contained identity does not match your selected identity. Edit and save it again to update the identity.",
@@ -257,7 +257,7 @@
       "privacyPolicy": "Privacy Policy",
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage.",
       "conceptListAddToMappingSelectsConcept": "Select concept when added to mapping",
-      "loadConceptsMappedStatus": "Show which concepts have been mapped",
+      "loadConceptsMappedStatus": "Mark mapped concepts",
       "loadConceptsMappedStatusExplanation": "Concepts with at least one mapping in the currently selected mapping registry to the opposite concept scheme will be marked with a green bar."
     },
     "alerts": {
