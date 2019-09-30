@@ -995,6 +995,11 @@ export default {
 .mappingBrowser-pagination.pagination .page-item .page-link {
   border: none;
   line-height: 1;
+  background: none;
+}
+
+.mappingBrowser-pagination.pagination .page-item.active .page-link {
+  background-color: @color-primary-0;
 }
 
 .mappingBrowser-pagination.pagination.pagination-hide-goToLast > li:last-child {
