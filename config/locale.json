@@ -82,7 +82,6 @@
       "gnd": "GND",
       "searchLinks": "Search Links",
       "clearConcept": "clear concept",
-      "nextConcept": "→",
       "nextConceptTooltip": "next concept"
     },
     "schemeDetail": {
@@ -474,7 +473,6 @@
       "gnd": "GND",
       "searchLinks": "Suchlinks",
       "clearConcept": "Konzept entfernen",
-      "nextConcept": "→",
       "nextConceptTooltip": "nächstes Konzept"
     },
     "schemeDetail": {

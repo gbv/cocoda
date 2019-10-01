@@ -111,7 +111,7 @@
           :to="getRouterUrl(nextConcept, isLeft, true)">
           <b-button
             variant="light">
-            {{ $t("conceptDetail.nextConcept") }}
+            <font-awesome-icon icon="arrow-right" />
           </b-button>
         </router-link>
       </div>
@@ -588,10 +588,12 @@ export default {
   position: absolute;
   top: 30px;
   right: 0;
+  height: 23px;
+  line-height: 23px;
 }
 .conceptDetail-nextButton button {
   .fontSize-small;
-  padding: 1px 4px;
+  padding: 0px 4px;
 }
 
 </style>
