@@ -253,7 +253,7 @@
             v-if="canSave(data)"
             v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$util.prefLabel(currentRegistry)]) : '', delay: $util.delay.medium }"
             class="button"
-            icon="angle-double-right"
+            icon="save"
             @click="saveMapping(data.item.mapping)" />
         </div>
         <div
