@@ -194,15 +194,19 @@
       </tab>
       <!-- GND terms, scopeNotes, editorialNotes -->
       <template
-        v-for="([notes, title], index) in [[{ de: gndTerms }, $t('conceptDetail.gnd')], [item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')]].map(([notes, title]) => ([$util.lmContent(notes), title])).map(([notes, title]) => ([notes || '', title]))">
+        v-for="([notes, title], index) in [[{ de: gndTerms }, $t('conceptDetail.gnd')], [item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')]].filter(item => Object.values(item[0] || {}).reduce((prev, cur) => prev + cur.length, 0) > 0)">
         <!-- TODO: Adjust this as soon as cocoda-vue-tabs has the option to hide tabs -->
         <tab
           :key="`conceptDetail-${isLeft}-notes-${index}`"
           :title="title"
           :hidden="notes == ''"
           class="conceptDetail-notes">
-          <div class="conceptDetail-note">
-            <span v-html="Array.isArray(notes) ? notes.join('<br>') : notes" />
+          <div
+            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(notes) ? -1 : (b.language == $util.getLanguage(notes) ? 1 : 0))"
+            :key="`conceptDetail-${isLeft}-notes-${language}-${index2}`"
+            class="conceptDetail-note">
+            <span v-html="note" />
+            <span class="text-lightGrey">({{ language }})</span>
           </div>
         </tab>
       </template>
@@ -578,9 +582,10 @@ export default {
 .conceptDetail-notes {
   margin-top: 0px;
   display: flex;
+  flex-direction: column;
 }
 .conceptDetail-note {
-  padding: 0 5px;
+  padding: 3px 5px;
   flex: 1;
 }
 
