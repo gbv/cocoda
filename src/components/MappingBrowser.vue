@@ -16,10 +16,10 @@
             @click="$event.target.select()" />
         </div>
         <b-form-checkbox
-          v-model="hideEmpty"
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingHideEmptyTooltip'), delay: $util.delay.medium }"
+          v-model="showEmpty"
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowEmptyTooltip'), delay: $util.delay.medium }"
           style="user-select: none;">
-          {{ $t("mappingBrowser.settingHideEmpty") }}
+          {{ $t("mappingBrowser.settingShowEmpty") }}
         </b-form-checkbox>
         <b-form-checkbox
           v-model="showIdentityWarning"
@@ -826,14 +826,14 @@ export default {
       },
     },
     // Setting whether to hide empty sections
-    hideEmpty: {
+    showEmpty: {
       get() {
-        return this.$settings.mappingBrowserHideEmpty
+        return this.$settings.mappingBrowserShowEmpty
       },
       set(value) {
         this.$store.commit({
           type: "settings/set",
-          prop: "mappingBrowserHideEmpty",
+          prop: "mappingBrowserShowEmpty",
           value,
         })
       },
@@ -1441,7 +1441,7 @@ export default {
           section.loading = true
         }
         // Hide empty section if necessary
-        if (section.totalCount == 0 && this.hideEmpty) {
+        if (section.totalCount == 0 && !this.showEmpty) {
           continue
         }
         if (mappings.url) {

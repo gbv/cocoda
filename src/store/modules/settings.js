@@ -8,7 +8,7 @@ const defaultSettings = {
   creatorUri: "",
   mappingBrowserAllSchemes: true,
   mappingBrowserResultLimit: 5,
-  mappingBrowserHideEmpty: false,
+  mappingBrowserShowEmpty: true,
   mappingBrowserShowIdentityWarning: true,
   mappingBrowserMoveCurrentRegistryToTop: false,
   conceptDetailShowAllAncestors: false,
