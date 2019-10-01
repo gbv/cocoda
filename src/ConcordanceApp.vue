@@ -446,6 +446,7 @@ html, body {
 // Override border color for all cocoda-vue-tabs
 .cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
   border-bottom-color: @color-primary-0 !important;
+  background-color: @color-background-heading !important;
 }
 // Override font-size for all cocoda-vue-tabs
 .cocoda-vue-tabs-sm {

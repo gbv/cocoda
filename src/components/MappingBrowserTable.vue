@@ -1007,7 +1007,7 @@ export default {
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
-  background-color: @color-primary-5;
+  background-color: @color-background-heading;
 }
 
 // Custom section class for current registry
