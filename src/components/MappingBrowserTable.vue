@@ -251,7 +251,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canSave(data)"
-            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping') : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$util.prefLabel(currentRegistry)]) : '', delay: $util.delay.medium }"
             class="button"
             icon="angle-double-right"
             @click="saveMapping(data.item.mapping)" />

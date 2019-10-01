@@ -133,8 +133,8 @@
     "mappingBrowser": {
       "title": "Mapping Browser",
       "edit": "edit in {0}",
-      "clone": "clone into {0}",
-      "saveAsMapping": "save as mapping",
+      "clone": "copy into Mapping Editor",
+      "saveAsMapping": "save as mapping in {0}",
       "delete": "delete",
       "showDetail": "show mapping details",
       "showMore": "@:conceptDetail.showMore",
@@ -492,8 +492,8 @@
     "mappingBrowser": {
       "title": "Mapping-Browser",
       "edit": "bearbeiten in {0}",
-      "clone": "duplizieren in {0}",
-      "saveAsMapping": "als Mapping speichern",
+      "clone": "in den Mapping-Editor kopieren",
+      "saveAsMapping": "als Mapping in {0} speichern",
       "delete": "löschen",
       "showDetail": "Mapping-Details anzeigen",
       "showMore": "@:conceptDetail.showMore",
