@@ -256,4 +256,11 @@ let isValidUri = (uri) => {
   return uri.match(re_js_rfc3986_URI) !== null
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguages, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri }
+const mappingCreatorMatches = (user, mapping) => {
+  if (!user) {
+    return false
+  }
+  return [user.uri].concat(Object.values(user.identities).map(identity => identity.uri)).filter(uri => uri != null).includes(_.get(mapping, "creator[0].uri"))
+}
+
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguages, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri, mappingCreatorMatches }

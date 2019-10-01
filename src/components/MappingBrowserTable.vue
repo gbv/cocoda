@@ -260,7 +260,7 @@
           v-else-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canRemove(data)"
+            v-if="canRemove(data, user)"
             v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
             class="button-delete"
             icon="trash-alt"
@@ -587,14 +587,14 @@ export default {
         original: canEdit ? data.item.mapping : null,
       })
     },
-    canRemove(data) {
+    canRemove(data, user) {
       const registry = data.item.registry
       const mapping = data.item.mapping
       // Can't delete mapping from registry other than current
       if (!this.$jskos.compare(registry, this.currentRegistry)) {
         return false
       }
-      let crossUser = !this.$jskos.compare(this.creator, _.get(mapping, "creator[0]"))
+      let crossUser = !this.$util.mappingCreatorMatches(user, mapping)
       return registry.isAuthorizedFor({
         type: "mappings",
         action: "delete",
@@ -633,7 +633,7 @@ export default {
         type: "mappings",
         action: "update",
         user: user,
-        crossUser: !this.$jskos.compare(user, _.get(data, "item.mapping.creator[0]")),
+        crossUser: !this.$util.mappingCreatorMatches(user, _.get(data, "item.mapping")),
       })
     },
     /** Saving of mappigns */
