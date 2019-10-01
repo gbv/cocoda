@@ -56,7 +56,9 @@
         @keydown.tab.native="closeResults"
         @keyup.enter.native="onEnter"
         @keyup.esc.native="$refs.searchInput.$el.blur(); closeResults()"
-        @focus.native="isOpen = searchQuery != ''" />
+        @focus.native="isOpen = searchQuery != ''"
+        @dragover="dragOver"
+        @drop="drop($event, isLeft)" />
       <!-- Results -->
       <div
         v-show="isOpen"
@@ -433,6 +435,9 @@ export default {
       let uri = _.last(result)
       let concept = this.getObject({ uri }, { scheme: this.scheme, type: "concept" })
       this.dragStart(concept, event)
+    },
+    droppedConcept(concept) {
+      this.setSearchQuery(this.$util.prefLabel(concept), true)
     },
   },
 }
