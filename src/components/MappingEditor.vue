@@ -320,7 +320,7 @@ export default {
       return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
     },
     canCloneMapping() {
-      return this.original.mapping != null
+      return this.original.uri != null
     },
     /**
      * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
