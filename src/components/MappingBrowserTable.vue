@@ -330,12 +330,11 @@
             :class="{
               'pagination-hide-goToLast': section.totalCount > 50000,
             }"
-            style="flex: none; user-select: none; margin: 0; padding: 0;"
             size="sm"
             @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div
-            style="flex: 1; text-align: right; padding-top: 3px;"
+            style="flex: none; text-align: right; padding-top: 3px;"
             :style="`padding-right: 30px;`"
             class="fontSize-small">
             <span v-if="section.items.length < section.totalCount">
@@ -990,6 +989,15 @@ export default {
 }
 .mappingBrowser-table[min-width~="700px"] .mappingBrowser-table-concepts {
   display: none;
+}
+
+.mappingBrowser-pagination {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  user-select: none;
+  margin: 0;
+  padding: 0 10px;
 }
 
 .mappingBrowser-pagination.pagination .page-item .page-link {
