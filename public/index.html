@@ -14,7 +14,7 @@
           This application does not work in your browser.
         </p>
         <p>
-          To use this application, JavaScript is required to be enabled. You'll also need a modern web browser, like <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a>, <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>, or <a href="https://www.microsoft.com/en-us/windows/microsoft-edge" target="_blank">Microsoft Edge</a>.
+          To use this application, JavaScript and Cookies are required to be enabled. You'll also need a modern web browser, like <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>.
         </p>
         <br><br>
         <p>Thank you for understanding.</p>
@@ -36,11 +36,23 @@
         var myNav = navigator.userAgent.toLowerCase()
         return (myNav.indexOf("msie") != -1 || myNav.indexOf("trident") != -1) ? true : false
       }
+      // from https://github.com/Modernizr/Modernizr/blob/master/feature-detects/cookies.js
+      function checkCookie(){
+        try {
+          document.cookie = 'cookietest=1';
+          var ret = document.cookie.indexOf('cookietest=') !== -1;
+          document.cookie = 'cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+          return ret;
+        } catch (e) {
+          return false;
+        }
+      }
       // Show noscript content for IE as well
-      if (isIE()) {
+      if (isIE() || !checkCookie()) {
         var noscript = document.getElementsByTagName("noscript")[0]
         var app = document.getElementById("app")
         app.innerHTML = decodeHTML(noscript.innerHTML)
+        app.removeAttribute("id")
       }
     </script>
   </body>
