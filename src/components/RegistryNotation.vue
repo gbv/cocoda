@@ -5,7 +5,7 @@
       [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
       'registry-notation-current': isCurrentRegistry,
     }"
-    :style="`width: ${18 + 12 * ($util.notation(registry).length - 1)}px;`"
+    :style="`width: ${18 + 9 * ($util.notation(registry).length - 1)}px;`"
     class="registry-notation">
     {{ $util.notation(registry) }}
   </div>
