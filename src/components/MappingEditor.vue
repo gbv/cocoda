@@ -184,13 +184,7 @@
         :mapping="$store.state.mapping.mapping" />
     </div>
     <div class="mappingEditor-comment">
-      <span
-        v-b-tooltip.hover="{ title: canExportMapping ? $t('mappingEditor.commentMapping') : '', delay: $util.delay.medium }"
-        :class="{
-          button: canExportMapping,
-          'button-disabled': !canExportMapping
-        }"
-        @click="canExportMapping && $refs.commentModal.show()">
+      <span class="button-disabled">
         <font-awesome-icon icon="comment" />
       </span>
       {{ mappingComments.join(", ") }}
@@ -239,25 +233,6 @@
         {{ $t("mappingEditor.cancel") }}
       </b-button>
     </b-modal>
-    <!-- Comment mapping modal -->
-    <b-modal
-      ref="commentModal"
-      :title="$t('mappingEditor.commentMappingTitle')"
-      hide-header-close
-      ok-only
-      @shown="focusNote"
-      @hide="comments = mappingComments"
-      @ok="saveComment">
-      <b-form-textarea
-        v-for="(comment, index) in comments"
-        :id="`mappingEditor-comment-${index}`"
-        :key="`mappingEditor-comment-${index}`"
-        v-model="comments[index]"
-        :rows="2"
-        :max-rows="6"
-        @keydown.native="textareaKeydown"
-        @input="saveComment" />
-    </b-modal>
     <data-modal-button
       :data="mapping"
       :position-right="18"
@@ -286,11 +261,6 @@ export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, DataModalButton, ComponentSettings },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
-  data() {
-    return {
-      comments: [""],
-    }
-  },
   computed: {
     mapping() {
       return this.$store.state.mapping.mapping
@@ -409,10 +379,6 @@ export default {
     },
     mappingComments() {
       return this.$util.lmContent(this.mapping, "note") || []
-    },
-    haveNotesChanged() {
-      let comments = this.comments.filter(c => c != "")
-      return !_.isEqual(comments, this.mappingComments)
     },
     // Is used for watcher that sets the target scheme
     schemeRight() {
@@ -682,19 +648,6 @@ export default {
         })
         // Load details if necessary
         this.loadDetails(concept)
-      }
-    },
-    saveComment() {
-      // Save comments
-      let comments = this.comments.filter(c => c != "").slice()
-      if (this.haveNotesChanged) {
-        let language = this.$util.getLanguage(_.get(this, "mapping.note")) || this.$util.fallbackLanguages()[0]
-        this.$store.commit({
-          type: "mapping/setNote",
-          note: {
-            [language]: comments,
-          },
-        })
       }
     },
     focusNote() {
