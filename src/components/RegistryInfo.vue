@@ -37,13 +37,13 @@
       v-if="showCapabilities"
       class="settings-info-capabilities">
       <span
-        v-for="type in ['schemes', 'concepts', 'mappings', 'occurrences']"
+        v-for="type in ['schemes', 'concepts', 'mappings', 'annotations', 'occurrences']"
         :key="`settings-info-capabilities-${type}`">
         <span v-if="registry.provider.has[type]">
           <font-awesome-icon
             v-if="registry.provider.has[type]"
             style="color: green; margin-left: 5px;"
-            icon="check" />
+            icon="code" />
           {{ $t(`registryInfo.${type}`) }}
         </span>
       </span>
