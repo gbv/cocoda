@@ -255,7 +255,7 @@
               :is-link="true"
               :is-left="isLeft" />
           </li>
-          <li v-show="isFiltered">
+          <li v-show="isFiltered && filteredSchemes.length < schemes.length">
             <a
               ref="showAllSchemesLink"
               href=""
