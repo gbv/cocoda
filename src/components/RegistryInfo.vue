@@ -20,7 +20,7 @@
         })"
         v-b-tooltip="$t('registryInfo.canSaveMappings')"
         style="font-size: 12px; padding-left: 5px;">
-        <font-awesome-icon icon="pencil-alt" />
+        <font-awesome-icon icon="user-edit" />
       </span>
     </div>
     <div
