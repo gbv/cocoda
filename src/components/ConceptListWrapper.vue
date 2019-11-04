@@ -15,8 +15,10 @@
         v-for="(choice, index) in dataChoices"
         :key="`conceptListWrapper-dataChoice-${index}`"
         :title="choice.label"
+        style="position: relative;"
         @dragover.native="dragOver"
-        @drop.native="drop($event, choice.droppedConcept)">
+        @drop.native="drop($event, choice.droppedConcept)"
+        @scroll.native="loadConceptsInView">
         <!-- List of concepts -->
         <concept-list
           ref="conceptList"
@@ -74,7 +76,7 @@ export default {
   },
   computed: {
     dataChoices() {
-      return [
+      let choices = [
         {
           id: "topConcepts",
           label: this.$t("conceptList.topConcepts"),
@@ -104,6 +106,20 @@ export default {
           },
         },
       ]
+      let index = 0
+      for (let list of this.config.conceptLists || []) {
+        let choice = {
+          id: `custom-${index}`,
+          label: this.$util.prefLabel(list),
+          concepts: list.concepts.map(concept => this.getObject(concept, { type: "concept" })),
+          showChildren: false,
+          showScheme: true,
+        }
+        choices.push(choice)
+        index += 1
+      }
+      // TODO: This must be solved differently, e.g. with a mouseover list to choose from.
+      return choices
     },
     _topConcepts() {
       let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
@@ -152,6 +168,9 @@ export default {
       },
     },
   },
+  created() {
+    this.loadConceptsInView = _.debounce(this._loadConceptsInView, 100)
+  },
   methods: {
     /**
      * When the tab changed, instruct conceptList to scroll.
@@ -159,11 +178,49 @@ export default {
     tabChanged({ index }) {
       let conceptList = _.get(this, `$refs.conceptList[${index}]`)
       conceptList && conceptList.scroll && conceptList.scroll()
+      // Load concepts in view
+      this.loadConceptsInView()
     },
     droppedConcept(concept, droppedConcept) {
       if (droppedConcept) {
         droppedConcept(concept)
       }
+    },
+    _loadConceptsInView() {
+      let concepts = []
+      let conceptList = _.get(this, `$refs.conceptList[${this.dataChoice}]`)
+      let container = _.get(conceptList, "$parent.$el")
+      if (conceptList && conceptList.$children && container) {
+        for (let child of conceptList.$children) {
+          if (!child || !child.$el) {
+            continue
+          }
+          const element = child.$el
+          if (this.checkInView(container, element)) {
+            concepts.push(child.concept)
+          }
+        }
+      }
+      // Load concepts
+      this.loadConcepts(concepts)
+    },
+    /**
+     * from: https://stackoverflow.com/a/37285344
+     *
+     * Checks if element is in view relative to container element.
+     * Note: container must have "position: relative"!
+     */
+    checkInView(container, element, partial = true) {
+      let cTop = container.scrollTop
+      let cBottom = cTop + container.clientHeight
+      let eTop = element.offsetTop
+      let eBottom = eTop + element.clientHeight
+      let isTotal = (eTop >= cTop && eBottom <= cBottom)
+      let isPartial = partial && (
+        (eTop < cTop && eBottom > cTop) ||
+        (eBottom > cBottom && eTop < cBottom)
+      )
+      return (isTotal || isPartial)
     },
   },
 }
