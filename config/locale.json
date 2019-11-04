@@ -92,7 +92,7 @@
     },
     "conceptList": {
       "noItems": "No Concepts",
-      "topConcepts": "Top Concepts"
+      "topConcepts": "Tree view"
     },
     "itemDetail": {
       "pleaseSelect": "Please select a scheme or concept.",
@@ -488,7 +488,7 @@
     },
     "conceptList": {
       "noItems": "keine Konzepte",
-      "topConcepts": "Oberkonzepte"
+      "topConcepts": "Baumansicht"
     },
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
