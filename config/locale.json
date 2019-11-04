@@ -300,6 +300,10 @@
       "notAuthenticated": "Authentication required",
       "canSaveMappings": "This registry can be used to save mappings."
     },
+    "annotationPopover": {
+      "addConfirmation": "Confirm",
+      "removeConfirmation": "Remove Confirmation"
+    },
     "languages": {
       "en": "English",
       "de": "German"
@@ -606,6 +610,10 @@
       "authenticated": "Authentifiziert",
       "notAuthenticated": "Authentifizierung notwendig",
       "canSaveMappings": "Dieses Register kann zum Speichern von Mappings verwendet werden."
+    },
+    "annotationPopover": {
+      "addConfirmation": "Bestätigen",
+      "removeConfirmation": "Bestätigung entfernen"
     },
     "languages": {
       "en": "Englisch",

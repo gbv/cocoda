@@ -16,54 +16,74 @@
       <div
         ref="annotationPopoverDiv"
         class="annotationPopover">
-        <!-- Left side -->
-        <div
-          v-if="annotations.length"
-          class="annotationPopover-left">
-          <!-- Annotation history -->
-          <annotation-list
-            :annotations="annotations"
-            class="annotationPopover-history" />
+        <div class="annotationPopover-upper">
+          <!-- Left side -->
+          <div
+            v-if="annotations.length"
+            class="annotationPopover-left">
+            <!-- Annotation history -->
+            <annotation-list
+              :annotations="annotations"
+              class="annotationPopover-history" />
+          </div>
+          <!-- Right side: voting and score -->
+          <div class="annotationPopover-voting">
+            <!-- Dummy div with flex: 1 so that buttons are always at the bottom -->
+            <div />
+            <!-- Upvote button -->
+            <div>
+              <font-awesome-icon
+                :class="{
+                  'annotationPopover-voting-button-current': ownScore == '+1',
+                  'button': canSaveAnnotation,
+                  'button-disabled': !canSaveAnnotation,
+                  'annotationPopover-voting-button': true
+                }"
+                icon="thumbs-up"
+                @click="canSaveAnnotation && assessing('+1')" />
+            </div>
+            <!-- Score -->
+            <div class="annotationPopover-score">
+              <span
+                :class="{
+                  'text-success': score.startsWith('+'),
+                  'text-danger': score.startsWith('-')
+                }"
+                class="fontWeight-heavy">
+                {{ score }}
+              </span>
+            </div>
+            <!-- Downvote button -->
+            <div>
+              <font-awesome-icon
+                :class="{
+                  'annotationPopover-voting-button-current': ownScore == '-1',
+                  'button': canSaveAnnotation,
+                  'button-disabled': !canSaveAnnotation,
+                  'annotationPopover-voting-button': true
+                }"
+                icon="thumbs-down"
+                @click="canSaveAnnotation && assessing('-1')" />
+            </div>
+          </div>
         </div>
-        <!-- Right side: voting and score -->
-        <div class="annotationPopover-voting">
-          <!-- Dummy div with flex: 1 so that buttons are always at the bottom -->
-          <div />
-          <!-- Upvote button -->
-          <div>
-            <font-awesome-icon
-              :class="{
-                'annotationPopover-voting-button-current': ownScore == '+1',
-                'button': canSaveAnnotation,
-                'button-disabled': !canSaveAnnotation,
-                'annotationPopover-voting-button': true
-              }"
-              icon="thumbs-up"
-              @click="canSaveAnnotation && assessing('+1')" />
-          </div>
-          <!-- Score -->
-          <div class="annotationPopover-score">
-            <span
-              :class="{
-                'text-success': score.startsWith('+'),
-                'text-danger': score.startsWith('-')
-              }"
-              class="fontWeight-heavy">
-              {{ score }}
-            </span>
-          </div>
-          <!-- Downvote button -->
-          <div>
-            <font-awesome-icon
-              :class="{
-                'annotationPopover-voting-button-current': ownScore == '-1',
-                'button': canSaveAnnotation,
-                'button-disabled': !canSaveAnnotation,
-                'annotationPopover-voting-button': true
-              }"
-              icon="thumbs-down"
-              @click="canSaveAnnotation && assessing('-1')" />
-          </div>
+        <div
+          v-if="canConfirm"
+          class="annotationPopover-lower">
+          <b-button
+            v-if="canRemoveConfirmation"
+            class="bbutton-small"
+            variant="danger"
+            @click="confirm">
+            {{ $t("annotationPopover.removeConfirmation") }}
+          </b-button>
+          <b-button
+            v-else
+            class="bbutton-small"
+            variant="success"
+            @click="confirm">
+            {{ $t("annotationPopover.addConfirmation") }}
+          </b-button>
         </div>
       </div>
     </b-popover>
@@ -161,6 +181,36 @@ export default {
         action: "create",
         user: this.user,
       })
+    },
+    canConfirm() {
+      if (!this.provider) {
+        return false
+      }
+      if (this.provider.isAuthorizedFor({
+        type: "annotations",
+        action: "create",
+        user: this.user,
+      })) {
+        // Check if user is in "moderatingIdentities" in jskos-server config
+        const moderatingIdentities = _.get(this.provider, "registry.config.annotations.moderatingIdentities") || []
+        if (_.intersection(moderatingIdentities, this.userUris).length > 0) {
+          return true
+        }
+      }
+      return false
+    },
+    canRemoveConfirmation() {
+      if (!this.provider) {
+        return false
+      }
+      if (this.provider.isAuthorizedFor({
+        type: "annotations",
+        action: "delete",
+        user: this.user,
+      })) {
+        return this.annotations.find(annotation => annotation.motivation == "moderating" && this.$util.annotations.creatorMatches(annotation, this.userUris))
+      }
+      return false
     },
   },
   watch: {
@@ -331,6 +381,62 @@ export default {
         return success
       })
     },
+    async confirm() {
+      const provider = this.provider
+      if (!provider || !provider.has.annotations) {
+        console.warn("No provider found to add annotation.")
+        this.alert(this.$t("alerts.annotationError"), null, "danger")
+        return
+      }
+      const uri = _.get(this.imapping, "uri")
+      if (!uri) {
+        console.warn("No URI found to add annotation.")
+        this.alert(this.$t("alerts.annotationError"), null, "danger")
+        return
+      }
+      const index = this.annotations.findIndex(annotation => annotation.motivation == "moderating" && this.$util.annotations.creatorMatches(annotation, this.userUris))
+      const annotation = this.annotations[index]
+      if (annotation) {
+        // Remove confirmation
+        this.loading = true
+        const success = await provider.removeAnnotation(annotation)
+        this.loading = false
+        // Check if annotation stayed the same or deletion was not successful
+        if (annotation.id != this.annotations[index].id || !success) {
+          // Don't remove annotation because it changed
+          return false
+        }
+        this.$delete(this.imapping.annotations, index)
+        // Remove annotation from list
+        return success
+      } else {
+        // Add confirmation
+        let annotation = {
+          target: uri,
+          motivation: "moderating",
+        }
+        if (this.creator && this.creator.uri) {
+          annotation.creator = {
+            id: this.creator.uri,
+          }
+          if (this.creatorName) {
+            annotation.creator.name = this.creatorName
+          }
+        }
+        annotation = await provider.addAnnotation(annotation)
+        // Check if URI stayed the same
+        const newUri = _.get(this.imapping, "uri")
+        if (uri != newUri || !annotation) {
+          // Don't add annotation to mapping
+          this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
+          return
+        } else {
+          this.alert(this.$t("alerts.annotationSaved"), null, "success")
+        }
+        this.imapping.annotations.push(annotation)
+        this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+      }
+    },
   },
 }
 </script>
@@ -340,6 +446,16 @@ export default {
 
 .annotationPopover {
   display: flex;
+  flex-direction: column;
+}
+.annotationPopover-upper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.annotationPopover-lower > button {
+  width: 100%;
+  margin-top: 5px;
 }
 .annotationPopover-left {
   flex: 1;
@@ -372,6 +488,13 @@ export default {
 }
 .annotationPopover-voting-button-current {
   color: @color-primary-3;
+}
+.annotationPopover-confirm {
+
+}
+.bbutton-small {
+  .fontSize-small;
+  padding: 2px 4px;
 }
 
 </style>
