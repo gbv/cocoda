@@ -474,11 +474,6 @@ export default {
         case "addConcept":
           this.addToMappingInternal(isLeft)
           break
-        case "commentMapping":
-          if (this.canExportMapping) {
-            this.$refs.commentModal.show()
-          }
-          break
       }
     },
     saveMapping() {
@@ -489,8 +484,6 @@ export default {
       } else {
         this.removeCreator()
       }
-      // Hide comment modal if open
-      this.$refs.commentModal.hide()
       let mapping = this.prepareMapping()
       mapping.modified = (new Date()).toISOString()
       this.loadingGlobal = true
@@ -574,8 +567,6 @@ export default {
       this.$store.commit({
         type: "mapping/empty",
       })
-      // Hide comment modal if open
-      this.$refs.commentModal.hide()
       return true
     },
     prepareMapping(mapping = null) {
@@ -648,15 +639,6 @@ export default {
         })
         // Load details if necessary
         this.loadDetails(concept)
-      }
-    },
-    focusNote() {
-      document.getElementById("mappingEditor-comment-0").focus()
-    },
-    textareaKeydown(event) {
-      // Hide modal on ctrl + enter or cmd + enter
-      if (event.keyCode == 13 && (event.metaKey || event.ctrlKey)) {
-        this.$refs.commentModal.hide()
       }
     },
     swapMapping() {
