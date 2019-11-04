@@ -218,7 +218,7 @@
           <span v-if="data.item.mapping.annotations.find(annotation => annotation.motivation == 'moderating')">
             <font-awesome-icon
               style="color: #00DC00;"
-              icon="check-square" />
+              icon="check" />
           </span>
           <span v-else>
             {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}

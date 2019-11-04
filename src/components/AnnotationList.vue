@@ -15,7 +15,7 @@
           v-b-tooltip.hover="$t('mappingBrowser.mappingConfirmedTooltip')">
           <font-awesome-icon
             style="color: #00DC00;"
-            icon="check-square" />
+            icon="check" />
         </span>
         <span v-else>
           {{ annotation.bodyValue }}
