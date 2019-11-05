@@ -14,7 +14,7 @@
           v-if="annotation.motivation == 'moderating'"
           v-b-tooltip.hover="$t('mappingBrowser.mappingConfirmedTooltip')">
           <font-awesome-icon
-            style="color: #00DC00;"
+            class="text-success"
             icon="check" />
         </span>
         <span v-else>

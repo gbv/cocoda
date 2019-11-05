@@ -217,7 +217,7 @@
           class="button fontWeight-heavy">
           <span v-if="data.item.mapping.annotations.find(annotation => annotation.motivation == 'moderating')">
             <font-awesome-icon
-              style="color: #00DC00;"
+              class="text-success"
               icon="check" />
           </span>
           <span v-else>
