@@ -99,7 +99,7 @@
           toNotation: !isLeft ? '' : null,
           direction: 'both'
         })">
-        <font-awesome-icon icon="arrow-right" />{{ $t("schemeDetail.availableMappings") }}
+        <font-awesome-icon icon="external-link-square-alt" />{{ $t("schemeDetail.availableMappings") }}
       </a>
     </div>
 
