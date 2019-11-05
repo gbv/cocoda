@@ -25,7 +25,8 @@
             <annotation-list
               :annotations="annotations"
               :provider="provider"
-              class="annotationPopover-history" />
+              class="annotationPopover-history"
+              @loading="loading = $event" />
           </div>
           <!-- Right side: voting and score -->
           <div class="annotationPopover-voting">

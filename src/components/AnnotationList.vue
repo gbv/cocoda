@@ -72,9 +72,14 @@ export default {
       }
       const annotation = this.annotations[index]
       // Remove confirmation
-      this.loading = true
-      const success = await this.provider.removeAnnotation(annotation)
-      this.loading = false
+      this.$emit("loading", true)
+      let success
+      try {
+        success = await this.provider.removeAnnotation(annotation)
+      } catch(error) {
+        success = false
+      }
+      this.$emit("loading", false)
       // Check if annotation stayed the same or deletion was not successful
       if (annotation.id != this.annotations[index].id || !success) {
         // Don't remove annotation because it changed
