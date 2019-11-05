@@ -79,7 +79,6 @@ export default {
 
 <style lang="less" scoped>
 .itemDetailNarrower {
-  margin: 5px;
-  padding-left: 5px;
+  margin: 5px 0px;
 }
 </style>

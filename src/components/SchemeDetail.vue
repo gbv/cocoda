@@ -188,7 +188,7 @@ export default {
 }
 
 .schemeDetail-identifier {
-  margin: 5px;
+  margin: 5px 0px;
 }
 .schemeDetail-identifier svg {
   margin-right: 3px;

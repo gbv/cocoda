@@ -528,7 +528,6 @@ export default {
 
 .conceptDetail-ancestors {
   margin: 0;
-  padding-left: 10px;
 }
 .conceptDetail-ancestors-expand {
   position: absolute;
@@ -541,7 +540,7 @@ export default {
 .conceptDetail-name {
   background-color: @color-select-2;
   position: relative;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 .conceptDetail-name-clearButton {
   position: absolute;
