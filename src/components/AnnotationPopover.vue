@@ -392,7 +392,13 @@ export default {
           annotation.creator.name = this.creatorName
         }
       }
-      annotation = await provider.addAnnotation(annotation)
+      this.loading = true
+      try {
+        annotation = await provider.addAnnotation(annotation)
+      } catch (error) {
+        annotation = null
+      }
+      this.loading = false
       // Check if URI stayed the same
       const newUri = _.get(this.imapping, "uri")
       if (uri != newUri || !annotation) {
