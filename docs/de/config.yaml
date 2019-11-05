@@ -1,2 +1,13 @@
 ---
+title: Cocoda-Anleitung
+lang: de
+papersize: a4
+geometry:
+- inner=2cm
+- outer=1.5cm
+- top=1.5cm
+- bottom=1.5cm 
+colorlinks: true
+urlcolor: blue
+linkcolor: brown
 ...

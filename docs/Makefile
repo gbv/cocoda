@@ -3,7 +3,7 @@
 # tested with Pandoc 2.2.1 and Pandoc 1.16 (on travis)
 BUILD_INFO=$(CURDIR)/build-info.yaml
 BUILD_INFO_JSON=$(CURDIR)/../build/build-info.json
-OPTIONS=--standalone $(BUILD_INFO)
+OPTIONS=--standalone $(BUILD_INFO) --pdf-engine=xelatex
 TEMPLATES=$(CURDIR)/templates/
 
 all: $(BUILD_INFO)
