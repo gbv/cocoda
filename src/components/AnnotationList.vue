@@ -1,7 +1,7 @@
 <template>
   <div class="annotationList">
     <div
-      v-for="annotation in annotations"
+      v-for="(annotation, index) in annotations"
       :key="annotation.uri">
       <!-- Value (currently: score) -->
       <div
@@ -31,6 +31,13 @@
           :link="$util.annotations.creatorUri(annotation)"
           :text="$util.annotations.creatorName(annotation)" />
       </div>
+      <div>
+        <font-awesome-icon
+          v-if="canRemove(annotation)"
+          class="button button-delete"
+          icon="trash-alt"
+          @click="remove(index)" />
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +56,33 @@ export default {
     annotations: {
       type: Array,
       default: () => [],
+    },
+    provider: {
+      type: Object,
+      default: null,
+    },
+  },
+  methods: {
+    canRemove(annotation) {
+      return this.$util.annotations.creatorMatches(annotation, this.userUris)
+    },
+    async remove(index) {
+      if (!this.provider) {
+        return false
+      }
+      const annotation = this.annotations[index]
+      // Remove confirmation
+      this.loading = true
+      const success = await this.provider.removeAnnotation(annotation)
+      this.loading = false
+      // Check if annotation stayed the same or deletion was not successful
+      if (annotation.id != this.annotations[index].id || !success) {
+        // Don't remove annotation because it changed
+        return false
+      }
+      // Remove annotation from list
+      this.$delete(this.annotations, index)
+      return success
     },
   },
 }
@@ -70,6 +104,10 @@ export default {
 .annotationList > div > div:first-child {
   flex: none;
   padding-right: 10px;
+}
+.annotationList > div > div:last-child {
+  flex: none;
+  padding-left: 10px;
 }
 .annotationList > div:nth-child(odd) {
   background-color: white;

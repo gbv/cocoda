@@ -24,6 +24,7 @@
             <!-- Annotation history -->
             <annotation-list
               :annotations="annotations"
+              :provider="provider"
               class="annotationPopover-history" />
           </div>
           <!-- Right side: voting and score -->
@@ -71,14 +72,6 @@
           v-if="canConfirm"
           class="annotationPopover-lower">
           <b-button
-            v-if="canRemoveConfirmation"
-            class="bbutton-small"
-            variant="danger"
-            @click="confirm">
-            {{ $t("annotationPopover.removeConfirmation") }}
-          </b-button>
-          <b-button
-            v-else
             class="bbutton-small"
             variant="success"
             @click="confirm">
@@ -186,6 +179,10 @@ export default {
       if (!this.provider) {
         return false
       }
+      if (this.annotations.find(annotation => annotation.motivation == "moderating" && this.$util.annotations.creatorMatches(annotation, this.userUris))) {
+        // Already exists
+        return false
+      }
       if (this.provider.isAuthorizedFor({
         type: "annotations",
         action: "create",
@@ -196,19 +193,6 @@ export default {
         if (_.intersection(moderatingIdentities, this.userUris).length > 0) {
           return true
         }
-      }
-      return false
-    },
-    canRemoveConfirmation() {
-      if (!this.provider) {
-        return false
-      }
-      if (this.provider.isAuthorizedFor({
-        type: "annotations",
-        action: "delete",
-        user: this.user,
-      })) {
-        return this.annotations.find(annotation => annotation.motivation == "moderating" && this.$util.annotations.creatorMatches(annotation, this.userUris))
       }
       return false
     },
@@ -394,48 +378,31 @@ export default {
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
-      const index = this.annotations.findIndex(annotation => annotation.motivation == "moderating" && this.$util.annotations.creatorMatches(annotation, this.userUris))
-      const annotation = this.annotations[index]
-      if (annotation) {
-        // Remove confirmation
-        this.loading = true
-        const success = await provider.removeAnnotation(annotation)
-        this.loading = false
-        // Check if annotation stayed the same or deletion was not successful
-        if (annotation.id != this.annotations[index].id || !success) {
-          // Don't remove annotation because it changed
-          return false
-        }
-        this.$delete(this.imapping.annotations, index)
-        // Remove annotation from list
-        return success
-      } else {
-        // Add confirmation
-        let annotation = {
-          target: uri,
-          motivation: "moderating",
-        }
-        if (this.creator && this.creator.uri) {
-          annotation.creator = {
-            id: this.creator.uri,
-          }
-          if (this.creatorName) {
-            annotation.creator.name = this.creatorName
-          }
-        }
-        annotation = await provider.addAnnotation(annotation)
-        // Check if URI stayed the same
-        const newUri = _.get(this.imapping, "uri")
-        if (uri != newUri || !annotation) {
-          // Don't add annotation to mapping
-          this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
-          return
-        } else {
-          this.alert(this.$t("alerts.annotationSaved"), null, "success")
-        }
-        this.imapping.annotations.push(annotation)
-        this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+      // Add confirmation
+      let annotation = {
+        target: uri,
+        motivation: "moderating",
       }
+      if (this.creator && this.creator.uri) {
+        annotation.creator = {
+          id: this.creator.uri,
+        }
+        if (this.creatorName) {
+          annotation.creator.name = this.creatorName
+        }
+      }
+      annotation = await provider.addAnnotation(annotation)
+      // Check if URI stayed the same
+      const newUri = _.get(this.imapping, "uri")
+      if (uri != newUri || !annotation) {
+        // Don't add annotation to mapping
+        this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
+        return
+      } else {
+        this.alert(this.$t("alerts.annotationSaved"), null, "success")
+      }
+      this.imapping.annotations.push(annotation)
+      this.$emit("refresh-annotations", { uri, annotations: this.annotations })
     },
   },
 }
