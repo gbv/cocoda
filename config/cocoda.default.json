@@ -576,16 +576,6 @@
       "isLeft": false
     },
     {
-      "id": "commentMapping",
-      "action": "commentMapping",
-      "component": "MappingEditor",
-      "keys": "ctrl+k,command+k",
-      "prefLabel": {
-        "en": "Comment current mapping",
-        "de": "Aktuelles Mapping kommentieren"
-      }
-    },
-    {
       "id": "openSchemeSelectionLeft",
       "action": "openSchemeSelection",
       "component": "ConceptSchemeSelection",
