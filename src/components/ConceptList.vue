@@ -147,8 +147,17 @@ export default {
       return this.items.filter(i => i.concept).map(i => i.concept)
     },
     nextConcept() {
-      // Mention this here so that nextConcept gets refreshed
-      this.shown
+      // Index of current concept in the list of concepts
+      const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
+      if (index == -1) {
+        return null
+      }
+      // If the list is not a hierarchy, return the next item in the list
+      if (!this.showChildren) {
+        const item = this.items[index + 1]
+        return item && item.concept
+      }
+      // Otherwise go through hierarchy
       const next = (concept, root = true) => {
         if (!concept) {
           return null
@@ -160,9 +169,9 @@ export default {
         const parent = _.last(concept.ancestors) || _.first(concept.broader)
         // Get children of parent
         let children = _.get(parent, "narrower")
-        // If there is no parent, use top concepts as children
+        // If there is no parent, use top concepts as children (everything with depth 0 from items)
         if (!parent) {
-          children = _.get(this.topConcepts, concept.inScheme[0] && concept.inScheme[0].uri)
+          children = this.items.filter(item => item.depth == 0).map(item => item.concept)
         }
         if (!children) {
           return null
@@ -242,7 +251,15 @@ export default {
     itemsLength() {
       this.loadMappingsForItems()
     },
+    shown() {
+      this.commitNextConcept()
+    },
     nextConcept() {
+      this.commitNextConcept()
+    },
+  },
+  methods: {
+    commitNextConcept() {
       if (this.shown) {
         this.$store.commit({
           type: "selected/setNextConcept",
@@ -251,8 +268,6 @@ export default {
         })
       }
     },
-  },
-  methods: {
     scrollToInternal(el, options) {
       let container = options.container
       if (container.style.display == "none") {
