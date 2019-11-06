@@ -700,7 +700,7 @@ export default {
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
         registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences)
+        (registry.provider.has.mappings || registry.provider.has.occurrences),
       )
       return registries
     },
@@ -710,7 +710,7 @@ export default {
     navigatorRegistries() {
       return this.mappingRegistriesSorted.filter(registry =>
         (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
-        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false]))
+        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false])),
       )
     },
     currentRegistry() {
@@ -891,7 +891,7 @@ export default {
     concordanceRegistries() {
       return this.config.registries.filter(r =>
         r.provider.has.concordances // only use registries that offer concordances
-        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)) // if showRegistryOverride is given, only use those registries
+        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)), // if showRegistryOverride is given, only use those registries
       )
     },
     concordanceUrls() {
@@ -1000,7 +1000,7 @@ export default {
         // Refresh all automatic mappings (as they might include labels in a certain language)
         for (let registry of this.navigatorRegistries.filter(registry =>
           _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-          && this.showRegistry[registry.uri]
+          && this.showRegistry[registry.uri],
         )) {
           this.navigatorNeedsRefresh.push(registry.uri)
         }
@@ -1647,7 +1647,7 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 5px 0px 0px 3px;
+  padding: 5px 0px 0px 0px;
 }
 
 </style>

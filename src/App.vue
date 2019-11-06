@@ -749,7 +749,7 @@ export default {
             }
             // Remove watcher
             unwatch && unwatch()
-          }
+          },
         )
       }
     },
@@ -833,6 +833,7 @@ html, body {
 #mappingBrowserComponent {
   flex: 2;
   min-height: 220px;
+  padding: 0;
 }
 
 .placeholderComponent {
