@@ -125,7 +125,7 @@ Neben der Baumansicht gibt es je nach Konfiguration verschiedene Listen von Konz
 
 ## Mappings
 
-Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Evaluation von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und einer Menge von Konzepten aus einem gemeinsamen Vokabular. Zur Auswahl, Erstellung und Bearbeitung von Mappings werden in der Mitte der Benutzeroberfläche zwei Komponenten angeboten:
+Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewertung von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und einer Menge von Konzepten aus einem gemeinsamen Vokabular. Zur Auswahl, Erstellung und Bearbeitung von Mappings werden in der Mitte der Benutzeroberfläche zwei Komponenten angeboten:
 
 * [Mapping-Editor](#mapping-editor) zum Erstellen und Bearbeiten von Mappings
 * Mapping-Browser bestehend aus Bereichen für [Konkordanzen], [Suche](#mapping-suche) und [Navigator] für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen
@@ -188,7 +188,7 @@ Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene [Datenquelle
 * Ziel-Vokabular
 * Zielnotation oder -URI
 
-Mit Dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icons/lock-open-solid.svg){height=1em} kann festgelegt werden dass immer automatisch das per [Vokabularauswahl] gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} werden erweiterte Suchmöglichkeiten angeboten:
+Mit Dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icons/lock-open-solid.svg){height=1em} kann festgelegt werden dass immer automatisch das per [Vokabularauswahl] gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} werden weitere Suchmöglichkeiten angeboten:
 
 * Autor/Autorin
 * Mapping-Typ
@@ -196,9 +196,9 @@ Mit Dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icon
 * Bidirektionale Suche (Quell- und Ziel- auch vertauscht suchen)
 * [Mapping-Registries] in denen gesucht werden soll
 
-Achtung: sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu viele Filter gesetzt sind. Der Leeren-Button ![](img/icons/ban.svg){height=1em} setzt alle Filter zurück.
+*Achtung:* sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu viele Filter gesetzt sind. Der Leeren-Button ![](img/icons/ban.svg){height=1em} setzt alle Filter zurück. Das Share-Icon ![](img/icons/share-alt-square-solid.svg){height=1em} beinhaltet die URL auf die aktuelle Suche um diese als Bookmark zu speichern oder weiterzugeben.
 
-Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt. Datenquellen in die geschrieben werden kann sind durch einen Stift gekennzeichnet. Innerhalb einer Ergebnisliste werden je nach Konfiguration folgende Aktionen angeboten:
+Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt. Datenquellen in die geschrieben werden kann sind durch einen Stift ![](img/icons/pencil-alt-solid.svg){height=1em} gekennzeichnet. Innerhalb einer Ergebnisliste werden je nach Konfiguration folgende Aktionen angeboten:
 
 <!--
 ![Mapping-Suche Reiter im Mapping-Browser](img/cocoda-mapping-browser-sea-de.png){width=100% .border .border-dark}

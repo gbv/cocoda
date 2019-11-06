@@ -1,6 +1,7 @@
 .SUFFIXES: .md .html .pdf
 
-# tested with Pandoc 2.2.1 and Pandoc 1.16 (on travis)
+# tested with Pandoc 2.2.1 (on travis)
+# also requires rsvg-convert (apt-get install librsvg2-bin)
 BUILD_INFO=$(CURDIR)/build-info.yaml
 BUILD_INFO_JSON=$(CURDIR)/../build/build-info.json
 OPTIONS=--standalone $(BUILD_INFO) --pdf-engine=xelatex
