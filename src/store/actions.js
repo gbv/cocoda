@@ -205,7 +205,9 @@ export default {
       if (_.isString(list)) {
         // Load list from URL
         try {
-          list = (await axios.get(list)).data
+          let url = list
+          list = (await axios.get(url)).data
+          list.url = url
         } catch (error) {
           console.warn("Could not load list from URL:", list)
           list = null
