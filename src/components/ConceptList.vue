@@ -91,6 +91,13 @@ export default {
       type: Array,
       default: () => [],
     },
+    /**
+     * Whether the list is currently on screen.
+     */
+    shown: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -138,6 +145,40 @@ export default {
     },
     loadConceptsMappedStatusConceptsToLoad() {
       return this.items.filter(i => i.concept).map(i => i.concept)
+    },
+    nextConcept() {
+      // Mention this here so that nextConcept gets refreshed
+      this.shown
+      const next = (concept, root = true) => {
+        if (!concept) {
+          return null
+        }
+        // If this is the root call and there are narrower concepts, return first child
+        if (root && concept.narrower && concept.narrower.length) {
+          return concept.narrower[0]
+        }
+        const parent = _.last(concept.ancestors) || _.first(concept.broader)
+        // Get children of parent
+        let children = _.get(parent, "narrower")
+        // If there is no parent, use top concepts as children
+        if (!parent) {
+          children = _.get(this.topConcepts, concept.inScheme[0] && concept.inScheme[0].uri)
+        }
+        if (!children) {
+          return null
+        }
+        // Try to find next child in list of children
+        const nextChild = children[children.findIndex(c => this.$jskos.compare(c, concept)) + 1]
+        if (nextChild) {
+          return nextChild
+        }
+        // If there is no next child, find next for parent
+        if (parent) {
+          return next(parent, false)
+        }
+        return null
+      }
+      return next(this.selected.concept[this.isLeft])
     },
   },
   watch: {
@@ -200,6 +241,15 @@ export default {
     // If any of these change, mappings have to be loaded again (if necessary).
     itemsLength() {
       this.loadMappingsForItems()
+    },
+    nextConcept() {
+      if (this.shown) {
+        this.$store.commit({
+          type: "selected/setNextConcept",
+          isLeft: this.isLeft,
+          concept: this.nextConcept,
+        })
+      }
     },
   },
   methods: {

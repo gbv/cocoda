@@ -27,7 +27,8 @@
           :show-children="choice.showChildren"
           :show-scheme="choice.showScheme"
           :no-items-label="choice.noItemsLabel"
-          :buttons="choice.buttons" />
+          :buttons="choice.buttons"
+          :shown="index == dataChoice" />
       </tab>
       <template v-slot:title="slotProps">
         <span
