@@ -53,8 +53,8 @@
     <!-- Data Modal Button -->
     <data-modal-button
       :data="minimizeConcepts(dataChoices[dataChoice].concepts)"
-      position-right="20"
-      position-bottom="5"
+      :position-right="20"
+      :position-bottom="5"
       type="concept"
       :url="dataChoices[dataChoice].url" />
   </div>
