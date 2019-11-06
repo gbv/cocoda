@@ -105,7 +105,7 @@
             icon="star" />
         </template>
         <b-dropdown-header>
-          {{ $t('schemeSelection.conceptQuick') }}
+          {{ $t('conceptList.favoriteConcepts') }}
         </b-dropdown-header>
         <div
           v-for="concept in favoriteConcepts"

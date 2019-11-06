@@ -37,7 +37,6 @@
       "defaultIdentity": "Default Identity"
     },
     "schemeSelection": {
-      "conceptQuick": "Favorite Concepts",
       "source": "Source Scheme",
       "target": "Target Scheme",
       "filter": "Filter",
@@ -92,7 +91,10 @@
     },
     "conceptList": {
       "noItems": "No Concepts",
-      "topConcepts": "Tree view"
+      "favoriteConcepts": "Favorite Concepts",
+      "favoriteConceptsShort": "Favorites",
+      "topConcepts": "Top concepts of current concept scheme in a tree view",
+      "topConceptsShort": "Tree View"
     },
     "itemDetail": {
       "pleaseSelect": "Please select a scheme or concept.",
@@ -348,7 +350,6 @@
       "defaultIdentity": "Standard-Identität"
     },
     "schemeSelection": {
-      "conceptQuick": "Konzept-Schnellauswahl",
       "source": "Quell-Vokabular",
       "target": "Ziel-Vokabular",
       "filter": "Filter",
@@ -488,7 +489,10 @@
     },
     "conceptList": {
       "noItems": "keine Konzepte",
-      "topConcepts": "Baumansicht"
+      "favoriteConcepts": "Konzept-Schnellauswahl",
+      "favoriteConceptsShort": "Schnellauswahl",
+      "topConcepts": "Oberkonzepte des Vokabulars in Baumansicht",
+      "topConceptsShort": "Baumansicht"
     },
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",

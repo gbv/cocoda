@@ -29,6 +29,12 @@
           :no-items-label="choice.noItemsLabel"
           :buttons="choice.buttons" />
       </tab>
+      <template v-slot:title="slotProps">
+        <span
+          v-b-tooltip.hover="{ title: dataChoices[slotProps.index].tooltip, delay: $util.delay.medium, html: true }">
+          {{ slotProps.tab.title }}
+        </span>
+      </template>
     </tabs>
     <!-- Settings -->
     <component-settings>
@@ -79,7 +85,8 @@ export default {
       let choices = [
         {
           id: "topConcepts",
-          label: this.$t("conceptList.topConcepts"),
+          label: this.$t("conceptList.topConceptsShort"),
+          tooltip: this.$t("conceptList.topConcepts"),
           noItemsLabel: this.$t("schemeDetail.noTopConcepts"),
           concepts: this._topConcepts,
           showChildren: true,
@@ -87,7 +94,8 @@ export default {
         },
         {
           id: "favoriteConcepts",
-          label: this.$t("schemeSelection.conceptQuick"),
+          label: this.$t("conceptList.favoriteConceptsShort"),
+          tooltip: this.$t("conceptList.favoriteConcepts"),
           concepts: this.favoriteConcepts,
           showChildren: false,
           showScheme: true,
@@ -108,9 +116,16 @@ export default {
       ]
       let index = 0
       for (let list of this.config.conceptLists || []) {
+        let notation = this.$util.notation(list), label = this.$util.prefLabel(list), tooltip = ""
+        if (notation) {
+          tooltip = `<b>${label}</b><br>`
+          label = notation
+        }
+        tooltip += this.$util.lmContent(list, "scopeNote")
         let choice = {
           id: `custom-${index}`,
-          label: this.$util.prefLabel(list),
+          label,
+          tooltip,
           concepts: list.concepts.map(concept => this.getObject(concept, { type: "concept" })),
           showChildren: false,
           showScheme: true,
