@@ -202,7 +202,7 @@ export default {
     },
   },
   created() {
-    this.loadConceptsInView = _.debounce(this._loadConceptsInView, 100)
+    this.loadConceptsInView = _.debounce(this._loadConceptsInView, 300)
   },
   methods: {
     /**
