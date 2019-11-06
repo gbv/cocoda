@@ -12,7 +12,7 @@
       fill
       @change="tabChanged">
       <tab
-        v-for="(choice, index) in dataChoices"
+        v-for="(choice, index) in dataChoices.filter(c => c.concepts.length || c.showWhenEmpty)"
         :key="`conceptListWrapper-dataChoice-${index}`"
         :title="choice.label"
         style="position: relative;"
@@ -115,6 +115,7 @@ export default {
           concepts: this.favoriteConcepts,
           showChildren: false,
           showScheme: true,
+          showWhenEmpty: true,
           buttons: [
             {
               position: "before",
