@@ -257,6 +257,9 @@ export default {
     minimizeConcepts(concepts) {
       let newList = []
       for (let concept of concepts) {
+        if (!concept) {
+          continue
+        }
         let newConcept = {
           uri: concept.uri,
           notation: concept.notation,
