@@ -60,7 +60,7 @@
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
         <template v-if="concordances && concordances.length">
-          <div style="display: flex;">
+          <div style="display: flex; padding: 0px 4px;">
             <div
               v-for="field in concordanceTableFields"
               :key="field.key"
@@ -180,7 +180,7 @@
       <tab
         :title="$t('mappingBrowser.mappingSearch')"
         @click="handleClick">
-        <div style="flex: none;">
+        <div style="flex: none; padding: 0px 4px;">
           <div style="display: flex; flex-wrap: wrap;">
             <b-input
               v-model="searchFilterInput.fromScheme"
