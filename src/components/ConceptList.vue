@@ -1,5 +1,7 @@
 <template>
-  <div class="conceptList">
+  <div
+    class="conceptList"
+    :style="`margin-bottom: ${noItems ? 0 : 30}px;`">
     <!-- Show concepts -->
     <div
       ref="conceptListItems"
