@@ -3,7 +3,7 @@
     <!-- Button -->
     <div
       class="dataModalButton"
-      :style="`right: ${positionRight}px;`"
+      :style="`right: ${positionRight}px; bottom: ${positionBottom}px;`"
       @click="openDataModal">
       <font-awesome-icon icon="code" />
     </div>
@@ -61,11 +61,18 @@ export default {
       default: null,
     },
     /**
-     * Absolut position right (override if there are other buttons in the bottom left).
+     * Absolut position right (override if there are other buttons in the bottom right).
      */
     positionRight: {
       type: Number,
       default: 5,
+    },
+    /**
+     * Absolut position bottom (override if necessary).
+     */
+    positionBottom: {
+      type: Number,
+      default: 0,
     },
   },
   methods: {
