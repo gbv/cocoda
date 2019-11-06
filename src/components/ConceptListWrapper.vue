@@ -50,6 +50,13 @@
         {{ $t("settings.loadConceptsMappedStatus") }}
       </b-form-checkbox>
     </component-settings>
+    <!-- Data Modal Button -->
+    <data-modal-button
+      :data="minimizeConcepts(dataChoices[dataChoice].concepts)"
+      position-right="20"
+      position-bottom="5"
+      type="concept"
+      :url="dataChoices[dataChoice].url" />
   </div>
 </template>
 
@@ -58,6 +65,7 @@ import Minimizer from "./Minimizer"
 import ConceptList from "./ConceptList"
 import _ from "lodash"
 import ComponentSettings from "./ComponentSettings"
+import DataModalButton from "./DataModalButton"
 
 import computed from "../mixins/computed"
 import objects from "../mixins/objects"
@@ -65,7 +73,7 @@ import dragandrop from "../mixins/dragandrop"
 
 export default {
   name: "ConceptListWrapper",
-  components: { Minimizer, ConceptList, ComponentSettings },
+  components: { Minimizer, ConceptList, ComponentSettings,  DataModalButton },
   mixins: [computed, objects, dragandrop],
   props: {
     /**
@@ -82,6 +90,12 @@ export default {
   },
   computed: {
     dataChoices() {
+      // Determine top concepts URL
+      let topConceptsUrl = _.get(this.selected.scheme[this.isLeft], "_provider.registry.top")
+      if (topConceptsUrl) {
+        // Add selected schemes URI
+        topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`
+      }
       let choices = [
         {
           id: "topConcepts",
@@ -91,6 +105,7 @@ export default {
           concepts: this._topConcepts,
           showChildren: true,
           showScheme: false,
+          url: topConceptsUrl,
         },
         {
           id: "favoriteConcepts",
@@ -129,6 +144,7 @@ export default {
           concepts: list.concepts.map(concept => this.getObject(concept, { type: "concept" })),
           showChildren: false,
           showScheme: true,
+          url: list.url,
         }
         choices.push(choice)
         index += 1
@@ -236,6 +252,21 @@ export default {
         (eBottom > cBottom && eTop < cBottom)
       )
       return (isTotal || isPartial)
+    },
+    // Minimizes the concept list to only URIs and inScheme
+    minimizeConcepts(concepts) {
+      let newList = []
+      for (let concept of concepts) {
+        let newConcept = {
+          uri: concept.uri,
+          notation: concept.notation,
+        }
+        if (concept.inScheme && concept.inScheme[0] && concept.inScheme[0].uri) {
+          newConcept.inScheme = [{ uri: concept.inScheme[0].uri }]
+        }
+        newList.push(newConcept)
+      }
+      return newList
     },
   },
 }
