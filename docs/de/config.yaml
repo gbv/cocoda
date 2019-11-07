@@ -1,12 +1,14 @@
 ---
-title: Cocoda-Anleitung
+title: Cocoda-Benutzerhandbuch
 lang: de
+titlepage: true
 papersize: a4
 geometry:
-- inner=2cm
+- inner=2.5cm
 - outer=1.5cm
 - top=1.5cm
 - bottom=1.5cm 
+fontsize: 13pt
 colorlinks: true
 urlcolor: blue
 linkcolor: brown

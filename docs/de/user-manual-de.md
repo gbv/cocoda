@@ -1,47 +1,36 @@
 ## Einleitung
 
-Cococda ist eine freie Webanwendung, zur Erstellung und Verwaltung von **Mappings zwischen Wissensorganisationssystemen** (Klassifikationen, Normdaten, Thesauri...). Sie wird als ein Teil des [coli-conc-Projekts](https://coli-conc.gbv.de/) an der [Verbundzentrale des GBV (VZG)](https://www.gbv.de/) entwickelt und [als DFG-Projekt](http://Startbildschirmgepris.dfg.de/gepris/projekt/276843344) gefördert. Unter <https://coli-conc.gbv.de/cocoda/> sind mehrere Anleitungen, Screencasts sowie verschiedene Instanzen von Cocoda verlinkt, darunter:
+Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Die Webanwendung zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...) wird als Teil des [Projekt coli-conc](https://coli-conc.gbv.de/) an der [Verbundzentrale des GBV (VZG)](https://www.gbv.de/) gepflegt. Die Anwendungsfälle von Cocoda reichen vom Mapping eigener Systematiken auf etabliertere Vokabulare über die Erstellung von Mappings zur Verbesserung des Retrieval in Katalogen und Discovery-Systemen bis hin zur Sammlung von Mappings in Wikidata als zentralem Normdaten-Hub.
 
-* Die aktuelle Release-Version: <https://coli-conc.gbv.de/cocoda/app/>
-* Die aktuelle Entwicklungsversion: <https://coli-conc.gbv.de/cocoda/dev/>
-* Eine auf RVK-Mapping reduzierte Version: <https://coli-conc.gbv.de/cocoda/rvk/>
-* Eine auf Wikidata-Mapping reduzierte Version: <https://coli-conc.gbv.de/cocoda/wikidata/>
+Unter <https://coli-conc.gbv.de/cocoda/> sind mehrere Anleitungen, Screencasts sowie unterschiedlich konfigurierte Instanzen von Cocoda verlinkt, darunter:
 
-Diese Anleitung gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Für Fragen und Rückmeldungen zur Software benutzen Sie am Besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues).
+* aktuelle Release-Version: <https://coli-conc.gbv.de/cocoda/app/>
+* aktuelle Entwicklungsversion: <https://coli-conc.gbv.de/cocoda/dev/>
+* Version für RVK-Mapping: <https://coli-conc.gbv.de/cocoda/rvk/>
+* Version für Wikidata-Mapping: <https://coli-conc.gbv.de/cocoda/wikidata/>
 
 ## Benutzeroberfläche
 
-Cocoda sollte mit jedem modernen Webbrowser funktionieren (zumindest Firefox und Chromium). Der Bildschirm sollte mindestens HD-Auflösung (1366×768), besser Full HD (1920×1080) oder mehr haben. Die Benutzeroberfläche besteht aus einer [Menüleiste] und mehreren [Komponenten]. In den [Einstellungen] kann die Benutzeroberfläche angepasst werden; unter Anderem lässt sich die Sprache ändern.
+Cocoda sollte zumindest mit Firefox und Chromium funktionieren. Empfohlen wird ein Bildschirm mit Full HD-Auflösung (1920×1080) oder mehr. Die Benutzeroberfläche lässt sich über die [Einstellungen] anpassen; unter Anderem kann die Sprache geändert werden.
 
-### Menüleiste
-
-Die Menüleiste enthält (von links nach rechts):
+Die **Menüleiste** enthält (je nach Konfiguration):
 
 * Logo und Name der jeweiligen Cocoda-Instanz
-* Links auf Impressum, Datenschutzerklärung, Anleitung und Feedback-Möglichkeit
-* ![](img/icons/star.svg){height=1em} Schnellauswahl von gemerkten Konzepten
-* Login-Status und Benutzername (siehe [Benutzeraccounts]) mit Zugriff auf [Einstellungen]:
-    * Login/Logout
-    * Auswahl der Identität zur Speicherung von [Mappings] und [Bewertungen](#mapping-bewertungen)
-    * Schnellauswahl weiterer Einstellungen
-    * Cocoda-Version und Link auf Code-Repository bei GitHub
-* Icon der ausgewählten Datenbank, in die Mappings gespeichert werden (mit Auswahllliste)
- 
-Außerdem tauchen bei Bedarf folgende Icons auf: 
-
-* ![](img/icons/trash.svg){height=1em} Mülleimer zur Ansicht und zum Wiederherstellen der zuletzt gelöschten Mappings
 * ![](img/icons/exchange.svg){height=1em} Links-Rechts-Pfeile zum Wechseln der Mapping-Richtung
+* Links auf Impressum, Datenschutzerklärung, Anleitung und Feedback-Möglichkeit
+* ![](img/icons/trash.svg){height=1em} Mülleimer zur Ansicht und zum Wiederherstellen der zuletzt gelöschten Mappings
+* ![](img/icons/star.svg){height=1em} Schnellauswahl von gemerkten Konzepten
+* ![](img/icons/user.svg){height=1em} [Benutzeraccount](#benutzeraccounts) und -name. Nach erfolgreichem Login wird der Benutzername fett markiert und per Schnellauswahl lässt sich die Identität zur Speicherung von [Mappings] und [Bewertungen] wechseln
+* ![](img/icons/cog.svg){height=1em} [Einstellungen] mit Schnellauswahl der [Datenbank] in die Mappings und Bewertungen gespeichert werden
 
-### Komponenten
+[Datenbank]: #mapping-datenbanken
 
-Der gesamte Bildschirm ist in drei Bereiche aufgeteilt:
+Der restliche Bildschirm ist in drei Bereiche mit mehreren **Komponenten** aufgeteilt:
 
-* auf der linken und rechte Seite sind Komponenten zur Auswahl von [Vokabularen und Konzepten](#vokabulare-und-konzepte)
-* in der Mitte sind Komponenten zur Auswahl, Erstellung und Bearbeitung von [Mappings]
+* Komponenten zur Auswahl von [Vokabularen und Konzepten](#vokabulare-und-konzepte) Links und Rechts
+* Komponenten zur Auswahl, Erstellung und Bearbeitung von [Mappings] in der Mitte
 
-Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] links und rechts geöffnet während in der Mitte allgemeine Hinweise angezeigt werden können.
-
-Die Komponenten können je nach Bedarf angepasst werden: ihre Größe lässt sich mit den drei Punkten ![](img/icons/ellipsis-v.svg){height=1em} bzw. ![](img/icons/ellipsis-h.svg){height=1em} zwischen den Komponenten verändern, das Minimieren-Icon ![](img/icons/window-minimize.svg){height=1em} blendet eine Komponente aus. Das Verhalten einiger Komponenten ist über das Icon ![](img/icons/cog.svg){height=1em} in der unteren Rechten Ecke anpassbar. Das an verschiedenen Stellen auftauchende Quelltext-Icon ![](img/icons/code.svg){height=1em} öffnet jeweils eine Detailansicht der in der betreffenden Komponente dargestellten Daten und ihre [Quellen](#datenquellen).
+Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] geöffnet während in der Mitte allgemeine Hinweise angezeigt werden. Die Größe einzelner Komponenten lässt sich mit den Punkten ![](img/icons/ellipsis-v.svg){height=1em} bzw. ![](img/icons/ellipsis-h.svg){height=1em} ändern, das Minimieren-Icon ![](img/icons/window-minimize.svg){height=1em} blendet eine Komponente aus. Das Verhalten einiger Komponenten ist über das Einstellungs-Icon ![](img/icons/cog.svg){height=1em} rechts unten anpassbar. Das an verschiedenen Stellen auftauchende Quelltext-Icon ![](img/icons/code.svg){height=1em} öffnet jeweils eine Detailansicht in einer Komponente angezeigten Daten und [Quellen](#datenquellen).
 
 ## Benutzeraccounts
 
@@ -130,7 +119,7 @@ Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewe
 * [Mapping-Editor](#mapping-editor) zum Erstellen und Bearbeiten von Mappings
 * Mapping-Browser bestehend aus Bereichen für [Konkordanzen], [Suche](#mapping-suche) und [Navigator] für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen
 
-Die Mappings können außerdem je nach konfiguration mit [Bewertungen](#mapping-bewertungen) versehen werden. Mappings und Bewertungen können in verschiedenen Datenbanken ([Mapping-Datenbanken](#mapping-datenbanken)) gespeichert werden.
+Die Mappings können außerdem je nach konfiguration mit [Bewertungen] versehen werden. Mappings und Bewertungen können in verschiedenen Datenbanken ([Mapping-Datenbanken](#mapping-datenbanken)) gespeichert werden.
 
 ### Mapping-Editor
 
@@ -177,6 +166,7 @@ Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paa
 - Löschen löscht eigene Mappings
 
 Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
+
 Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 -->
 
@@ -210,7 +200,6 @@ Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt. Datenquell
 Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Alternativ kann man mit einem Klick auch die [Datenbanken](#datenbanken) auswählen, in welchen nur gesucht werden soll.
 -->
 
-* [Bewertung](#mapping-bewertung)
 * ![](img/icons/info-circle.svg){height=1em} Detailinformationen zum Mapping
 * ![](img/icons/edit.svg){height=1em} Mapping bearbeiten
 * ![](img/icons/clone.svg){height=1em} Mapping kopieren
@@ -224,7 +213,7 @@ Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-
 ![Mapping-Navigator Reiter im Mapping-Browser](img/cocoda-mapping-browser-nav-de.png){width=100% .border .border-dark}
 -->
 
-### Mapping-Bewertungen
+### Bewertungen
 
 Je nach Konfiguration ist es möglich über Mappings abzustimmen und/oder zu bestätigen. Diese Bewertungen erfolgen Benutzerbezogen, eigene Bewertungen können also wieder entfernt werden.
 
@@ -259,30 +248,26 @@ Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. 
 
 * Account: Zur Auswahl der Identität unter der [Mappings] und [Bewertungen] gespeichert werden sollen
 
+* Datenquellen: enthält eine Übersicht aller verfügbaren [Datenquellen] und [Mapping-Datenbanken]
+
 * Oberfläche: Einstellungen zur [Benutzeroberfläche] wie die Sprache
 
 * Tastaturkürzel: zeigt vorhandene Tastaturkürzel an
 
-* Datenquellen: enthält eine Übersicht aller verfügbaren [Datenquellen] und [Mapping-Datenbanken]
-
 * Lokale Mappings: ermöglicht den Import und Export von im Browser gespeicherten Mappings
   (falls in der Cocoda-Instanz vorhanden)
 
-[Bewertungen]: #mapping-bewertungen
+[Datenquellen]: #datenquellen-import-und-export
+[Menüleiste]: #benutzeroberfläche
 
-### Datenquellen
+## Datenquellen, Import- und Export
 
 Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Eine Übersicht aller pro Cocoda-Instanz konfigurierten Datenquellen ist in den Einstellungen einsehbar, darunter auch die [Mapping-Datenbanken] zur Speicherung von [Mappings] und/oder [Bewertungen]. Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Interesse und Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
 
-<!--
-### Import/Export
-
-*TODO: Import und Export erklären!*
-
--->
+<!-- TODO: Import und Export von Vokabularen und Mappings genauer erklären-->
 
 ## Weitere Informationen
 
-Weitere Informationen, Anleitungen, Screencasts u.v.m. finden sich über die Projekthomepage <https://coli-conc.gbv.de/>.
+Weitere Informationen, Anleitungen, Screencasts u.v.m. finden sich über die Projekthomepage <https://coli-conc.gbv.de/>. Für Fragen und Rückmeldungen zur Software benutzen Sie am Besten den [GitHub IssueTracker](https://github.com/gbv/cocoda/issues).
 
 Die in Cocoda verwendeten Icons stammen von [fontawesome](https://fontawesome.com/) und sind unter [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) lizensiert.
