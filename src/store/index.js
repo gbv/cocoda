@@ -50,6 +50,10 @@ const getters = {
         user: state.auth.user,
       }))
     }
+    if (!registry) {
+      // Fallback to first registry which can save mappings (even if the user is not authorized for it)
+      registry = state.config.registries.find(registry => _.get(registry, "provider.has.mappings.create"))
+    }
     return registry
   },
   /**
