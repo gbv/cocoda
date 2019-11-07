@@ -17,7 +17,27 @@
           :title="$t('settingsTabs')[0]"
           active>
           <div v-if="localSettings">
-            <h4>{{ $t("settings.creatorTitle") }}</h4>
+            <p v-if="user && authorized">
+              <span
+                class="text-success">
+                {{ $t("settings.loggedIn") }}
+              </span>
+              <a
+                :href="$store.state.auth.about.baseUrl + '/account'"
+                target="_blank">
+                {{ $t("settings.accountPage") }}
+              </a> •
+              <a
+                href=""
+                @click.prevent="login(null)">
+                {{ $t("settings.logOutButton") }}
+              </a>
+            </p>
+            <p v-else>
+              <span class="text-danger">
+                {{ $t("settings.loggedOut") }}
+              </span>
+            </p>
             <p>
               {{ $t("settings.creatorInfo") }}
             </p>
@@ -75,22 +95,6 @@
                   </option>
                 </b-form-select>
               </span>
-            </p>
-            <p v-if="user && authorized">
-              <span
-                class="text-success">
-                {{ $t("settings.loggedIn") }}
-              </span>
-              <a
-                :href="$store.state.auth.about.baseUrl + '/account'"
-                target="_blank">
-                {{ $t("settings.accountPage") }}
-              </a> •
-              <a
-                href=""
-                @click.prevent="login(null)">
-                {{ $t("settings.logOutButton") }}
-              </a>
             </p>
             <p v-if="$store.state.auth.available && !user && providers.length">
               <b-button
