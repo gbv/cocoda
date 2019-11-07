@@ -182,7 +182,7 @@
         </template>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-normal"
-          style="min-width: 240px;">
+          style="min-width: 200px;">
           <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
             <p
               v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
@@ -258,7 +258,7 @@
         <div
           v-if="$store.getters.getCurrentRegistry"
           class="font-default text-dark color-primary-0-bg fontSize-normal"
-          style="min-width: 200px;">
+          style="min-width: 240px;">
           <p
             v-for="registry in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
             :key="`navbar-mappingRegistry-${registry.uri}`"
