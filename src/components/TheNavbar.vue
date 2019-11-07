@@ -175,76 +175,55 @@
             {{ creatorName || $t("settings.title") }}
           </div>
         </template>
-        <b-dropdown-header>
-          <p
-            class="fontWeight-heavy"
-            style="padding: 0 10px;">
-            <span
-              v-if="authorized"
-              class="text-success">
-              {{ $t("navbar.loggedInAs") }}
-            </span>
-            <span
-              v-else
-              class="text-danger">
-              {{ $t("settings.loggedOut") }}
-            </span>
-            <span
-              v-if="$util.prefLabel(creator)">
-              {{ $util.prefLabel(creator) }}.
-            </span>
-          </p>
-        </b-dropdown-header>
-
-        <div
-          v-if="config.auth"
-          class="font-default text-dark color-primary-0-bg fontSize-normal"
-          style="text-align: center; margin-bottom: 20px;">
-          <div
-            v-if="authorized"
-            class="button"
-            @click="$store.commit({
-              type: 'auth/openWindow',
-              url: config.auth + 'logout',
-              eventType: 'logout',
-            })">
-            {{ $t("settings.logOutButton") }}
-          </div>
-          <div
-            v-else
-            class="button"
-            @click="openSettingsTab(0)">
-            {{ $t("settings.logInButton") }}
-          </div>
-        </div>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-normal"
           style="min-width: 200px;">
-          <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
+          <div v-if="config.auth">
+            <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
+              <p
+                v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
+                :key="`navbar-switchToIdentity-${index}`"
+                :class="{
+                  'navbar-dropdown-selectable': true,
+                  'navbar-dropdown-selectable-selected': uri == creator.uri
+                }"
+                @click="$store.commit({
+                  type: 'settings/set',
+                  prop: 'creatorUri',
+                  value: uri
+                })">
+                <span class="navbar-dropdown-selectable-icon">
+                  <img
+                    v-if="imageForIdentityUri(uri)"
+                    :src="imageForIdentityUri(uri)">
+                  <font-awesome-icon
+                    v-else
+                    icon="user" />
+                </span>
+                {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
+              </p>
+            </template>
             <p
-              v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
-              :key="`navbar-switchToIdentity-${index}`"
-              :class="{
-                'navbar-dropdown-selectable': true,
-                'navbar-dropdown-selectable-selected': uri == creator.uri
-              }"
-              @click="$store.commit({
-                type: 'settings/set',
-                prop: 'creatorUri',
-                value: uri
-              })">
-              <span class="navbar-dropdown-selectable-icon">
-                <img
-                  v-if="imageForIdentityUri(uri)"
-                  :src="imageForIdentityUri(uri)">
-                <font-awesome-icon
-                  v-else
-                  icon="user" />
+              class="navbar-dropdown-selectable">
+              <span
+                v-if="authorized"
+                class="navbar-dropdown-selectable-icon"
+                @click="$store.commit({
+                  type: 'auth/openWindow',
+                  url: config.auth + 'logout',
+                  eventType: 'logout',
+                })">
+                {{ $t("settings.logOutButton") }}
               </span>
-              {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
+              <span
+                v-else
+                class="navbar-dropdown-selectable-icon"
+                @click="openSettingsTab(0)">
+                {{ $t("settings.logInButton") }}
+              </span>
             </p>
-          </template>
-          <hr>
+            <hr>
+          </div>
           <p
             v-for="(tab, index) in $t('settingsTabs')"
             :key="`navbar-settingsTabs-${index}`"
