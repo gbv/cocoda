@@ -124,24 +124,6 @@
                 </a>
               </p>
             </div>
-            <div
-              v-if="availableMappingRegistries.length">
-              <h4>{{ $t("settings.mappingRegistry") }}</h4>
-              <p>
-                {{ $t("settings.mappingRegistryExplanation") }}
-                <b-form-select
-                  v-model="localSettings.mappingRegistry"
-                  style="margin-bottom: 10px;">
-                  <option
-                    v-for="registry in availableMappingRegistries"
-                    :key="`settings-registry-${registry.uri}`"
-                    :value="registry.uri">
-                    {{ $util.prefLabel(registry) }}
-                  </option>
-                </b-form-select>
-                <registry-info :registry="$store.getters.getCurrentRegistry" />
-              </p>
-            </div>
           </div>
         </tab>
         <tab
@@ -188,11 +170,33 @@
         </tab>
         <tab
           :title="$t('settingsTabs')[3]">
-          <registry-info
-            v-for="(registry, index) in config.registries"
-            :key="`settingsModal-registries-${index}`"
-            :registry="registry"
-            class="settings-sources" />
+          <h4>{{ $t("settings.mappingRegistries") }}</h4>
+          <div
+            v-for="(registry, index) in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
+            :key="`settingsModal-mapping-registries-${index}`"
+            class="settingsModal-mapping-registry"
+            @click="$store.commit({
+              type: 'settings/set',
+              prop: 'mappingRegistry',
+              value: registry.uri
+            })">
+            <div>
+              <registry-info
+                :registry="registry"
+                class="settings-sources" />
+            </div>
+            <div v-if="$jskos.compare(registry, $store.getters.getCurrentRegistry)">
+              <b>{{ $t("settings.selectedForWriting") }}</b>
+            </div>
+          </div>
+          <h4>{{ $t("settings.otherRegistries") }}</h4>
+          <div
+            v-for="(registry, index) in config.registries.filter(registry => !registry.subject || !registry.subject[0] || registry.subject[0].uri != 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
+            :key="`settingsModal-other-registries-${index}`">
+            <registry-info
+              :registry="registry"
+              class="settings-sources" />
+          </div>
         </tab>
         <tab
           v-if="localMappingsSupported"
@@ -627,7 +631,22 @@ p {
 }
 
 .settings-sources {
-  margin-bottom: 15px;
+  padding: 6px 5px;
+}
+.settingsModal-mapping-registry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.settingsModal-mapping-registry:hover {
+  background-color: @color-primary-5;
+  cursor: pointer;
+}
+.settingsModal-mapping-registry > div:first-child {
+  flex: 2;
+}
+.settingsModal-mapping-registry > div:last-child {
+  flex: 1;
 }
 
 </style>
