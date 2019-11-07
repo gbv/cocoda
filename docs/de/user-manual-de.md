@@ -25,7 +25,7 @@ Die Menüleiste enthält (von links nach rechts):
     * Auswahl der Identität zur Speicherung von [Mappings] und [Bewertungen](#mapping-bewertungen)
     * Schnellauswahl weiterer Einstellungen
     * Cocoda-Version und Link auf Code-Repository bei GitHub
-* Icon der ausgewählten Registry, in die Mappings gespeichert werden (mit Auswahllliste)
+* Icon der ausgewählten Datenbank, in die Mappings gespeichert werden (mit Auswahllliste)
  
 Außerdem tauchen bei Bedarf folgende Icons auf: 
 
@@ -100,8 +100,8 @@ Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) I
 * Suchlinks: konfigurierbare Links vom Konzept in andere Datenbanken (Wikipedia, K0plus...)
 
 Der Stern ![](img/icons/star.svg){height=1em} fügt das Konzept zur eigenen Favoriten hinzu bzw. entfernt es aus der Favoriten-Liste.
-Das Plus-Zeichen ![](img/icons/plus-circle.svg){height=1em} dient dazu das Konzept in den [Mapping-Editor](#mapping-editor) zu übernehmen.
-Der Pfeil ![](img/icons/arrow-right.svg){height=1em} wählt das nächste Konzept in der [Baumansicht](#baumansicht) oder aus der aktuell ausgewählten [Liste](#listenansicht) aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel Alt+n (links) und Alt+m (rechts).
+Das Plus-Zeichen ![](img/icons/plus-circle.svg){height=1em} dient dazu das Konzept in den [Mapping-Editor] zu übernehmen.
+Der Pfeil ![](img/icons/arrow-right.svg){height=1em} wählt das nächste Konzept in der [Baumansicht] oder aus der aktuell ausgewählten [Liste](#listenansicht) aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel Alt+n (links) und Alt+m (rechts).
 
 ![](img/cocoda-concdet-de.png){width=55% .border .border-dark .center}
 
@@ -130,25 +130,27 @@ Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewe
 * [Mapping-Editor](#mapping-editor) zum Erstellen und Bearbeiten von Mappings
 * Mapping-Browser bestehend aus Bereichen für [Konkordanzen], [Suche](#mapping-suche) und [Navigator] für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen
 
-Die Mappings können außerdem je nach konfiguration mit [Bewertungen](#mapping-bewertungen) versehen werden. Mappings und Bewertungen können in verschiedenen Datenbanken ([Mapping-Registries](#mapping-registries)) gespeichert werden.
+Die Mappings können außerdem je nach konfiguration mit [Bewertungen](#mapping-bewertungen) versehen werden. Mappings und Bewertungen können in verschiedenen Datenbanken ([Mapping-Datenbanken](#mapping-datenbanken)) gespeichert werden.
 
 ### Mapping-Editor
 
 Der Mapping-Editor dient der detaillierten Bearbeitung eines Mappings. Dazu können Konzepte per Drag und Drop in den Mapping-Editor gezogen oder mit dem Plus-Icon ![](img/icons/plus-circle.svg){height=1em} von der linken oder rechten Seite übernommen werden. Zum Übernahme des jeweils ausgewählten Konzepts gibt es außerdem Tastaturkürzel (`Ctrl+a` bzw. `Ctrl+d`). Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} kann ein Konzept wieder entfernt werden.
 
+In den Einstellungen des Editors kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich um zu zeigen dass ein Konzept keine Entsprechung im Ziel-Vokabular hat.
+
 ![](img/cocoda-mappingeditor1-de.png){.border .border-dark}
 
-Der Editor zeigt an, ob und in welcher [Registry](#mapping-registries) ein Mapping bereits gespeichert wurde bzw. gespeichert wird. Die Leiste am Unteren Rand des Editors stellt folgende Aktionen bereit:
+Der Editor zeigt an, ob und in welcher [Datenbank](#mapping-datenbanken) ein Mapping bereits gespeichert wurde bzw. gespeichert wird. Die Leiste am unteren Rand des Editors stellt folgende Aktionen bereit:
 
 * ![](img/icons/exchange.svg){height=1em} Quell- und Zielkonzept des Mappings vertauschen
 * ![](img/icons/save.svg){height=1em} Mapping speichern (Tastaturkürzel `Ctrl+s`)
 * ![](img/icons/trash.svg){height=1em} Mapping löschen
 * ![](img/icons/clone.svg){height=1em} Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen
-* ![](img/icons/ban.svg){height=1em} Mapping leeren (Tastaturkürzel `Ctr+Shift+c`)
+* ![](img/icons/ban.svg){height=1em} Mapping leeren um ein neues Mapping zu erstellen (Tastaturkürzel `Ctr+Shift+c`)
 
-<!-- TODO: wofür Mapping leeren? -->
+Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen geändert werden.
 
-Außerdem wird angezeigt wer das Mapping erstellt hat bzw. bei neuen Mappings mit welchem Benutzernamen das Mapping gespeichert wird. In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende Mapping-Typen stehen zur Auswahl:
+Links unten im Editor steht wer das Mapping erstellt hat bzw. bei neuen Mappings mit welchem Benutzernamen das Mapping gespeichert wird. In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende Mapping-Typen stehen zur Auswahl:
 
 * **=** exakte Übereinstimmung: gleiche Bedeutung
 * **≈** hohe Übereinstimmung: in etwa gleiche Bedeutung
@@ -171,11 +173,11 @@ Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paa
 
 - Mapping-Details anzeigen: zeigt Mapping-Details an
 - Bearbeiten: holt das Mapping in den Mapping-Editor
-- Speichern: speichert das Mapping in die ausgewählte Registry
+- Speichern: speichert das Mapping in die ausgewählte Datenbank
 - Löschen löscht eigene Mappings
 
-Eine Registry ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient das öffentliche [Konkordanz-Register](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Registries können über den Reiter [Mapping-Navigator](#registries) konfiguriert werden. Der Technische Zugang zu diesen Registries wird durch Provider sichergestellt.
-Einige Registries können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
+Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
+Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 -->
 
 
@@ -188,13 +190,15 @@ Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene [Datenquelle
 * Ziel-Vokabular
 * Zielnotation oder -URI
 
-Mit Dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icons/lock-open-solid.svg){height=1em} kann festgelegt werden dass immer automatisch das per [Vokabularauswahl] gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} werden weitere Suchmöglichkeiten angeboten:
+Vorhandene Vokabulare bzw. Konzepte können Drag & Drop in die Suchfelder eingetragen werden.
+
+Mit dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icons/lock-open-solid.svg){height=1em} kann festgelegt werden dass immer automatisch das per [Vokabularauswahl] gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} werden weitere Suchmöglichkeiten angeboten:
 
 * Autor/Autorin
 * Mapping-Typ
 * Konkordanz
 * Bidirektionale Suche (Quell- und Ziel- auch vertauscht suchen)
-* [Mapping-Registries] in denen gesucht werden soll
+* [Mapping-Datenbanken] in denen gesucht werden soll
 
 *Achtung:* sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu viele Filter gesetzt sind. Der Leeren-Button ![](img/icons/ban.svg){height=1em} setzt alle Filter zurück. Das Share-Icon ![](img/icons/share-alt-square-solid.svg){height=1em} beinhaltet die URL auf die aktuelle Suche um diese als Bookmark zu speichern oder weiterzugeben.
 
@@ -203,7 +207,7 @@ Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt. Datenquell
 <!--
 ![Mapping-Suche Reiter im Mapping-Browser](img/cocoda-mapping-browser-sea-de.png){width=100% .border .border-dark}
 
-Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Alternativ kann man mit einem Klick auch die [Registries](#registries) auswählen, in welchen nur gesucht werden soll.
+Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Alternativ kann man mit einem Klick auch die [Datenbanken](#datenbanken) auswählen, in welchen nur gesucht werden soll.
 -->
 
 * [Bewertung](#mapping-bewertung)
@@ -222,22 +226,24 @@ Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-
 
 ### Mapping-Bewertungen
 
-Diese Funktion befindet sich noch in Entwicklung. Je nach konfiguration ist es möglich Mappings durch Voting und/oder Markierung als bestätigt zu bewerten: 
+Je nach Konfiguration ist es möglich über Mappings abzustimmen und/oder zu bestätigen. Diese Bewertungen erfolgen Benutzerbezogen, eigene Bewertungen können also wieder entfernt werden.
 
 * ![](img/icons/check.svg){height=1em} bestätigtes Mapping
 * ![](img/icons/thumbs-up.svg){height=1em} positive Bewertung
 * ![](img/icons/thumbs-down.svg){height=1em} negative Bewertung
 
-### Mapping-Registries
+*Diese Funktion befindet sich noch in Entwicklung.*
 
-Eine Mapping-Registry ist eine Datenbank in der Mappings und/oder Bewertungen gespeichert werden können. Die jeweils ausgewählte Registry ist gelb hinterlegt und kann über die [Menüleiste] oder durch Klick auf den Namen der Registry im Mapping-Browser ausgewählt werden.
+### Mapping-Datenbanken
+
+Eine Mapping-Datenbank ist eine Datenbank in der Mappings und/oder Bewertungen gespeichert werden können. Die jeweils ausgewählte Datenbank ist gelb hinterlegt und kann über die [Menüleiste] oder durch Klick auf den Namen der Datenbank im Mapping-Browser ausgewählt werden.
 
 <!--
-![Registries im Mapping-Navigator Reiter](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
+![Datenbanken im Mapping-Navigator Reiter](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
 
-Mit einem Klick auf die Buttons können die Registries des [Mapping-Browsers](#mapping-browser) ausgeblendet werden.
+Mit einem Klick auf die Buttons können die Datenbanken des [Mapping-Browsers](#mapping-browser) ausgeblendet werden.
 
-**Registries:**
+**Datenbanken:**
 - L: Lokal, Mappings werden im Browser gespeichert
 - C: Konkordanz-Register, öffentliche Datenbank des GBV
 - W: Wikidata-Mappings, Wikidata-Mappings im [JSKOS-Format](https://gbv.github.io/jskos/jskos)
@@ -257,7 +263,7 @@ Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. 
 
 * Tastaturkürzel: zeigt vorhandene Tastaturkürzel an
 
-* Datenquellen: enthält eine Übersicht aller verfügbaren [Datenquellen] und [Mapping-Registries]
+* Datenquellen: enthält eine Übersicht aller verfügbaren [Datenquellen] und [Mapping-Datenbanken]
 
 * Lokale Mappings: ermöglicht den Import und Export von im Browser gespeicherten Mappings
   (falls in der Cocoda-Instanz vorhanden)
@@ -266,7 +272,14 @@ Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. 
 
 ### Datenquellen
 
-Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Eine Übersicht aller pro Cocoda-Instanz konfigurierten Datenquellen ist in den Einstellungen einsehbar, darunter auch die [Mapping-Registries] zur Speicherung von [Mappings] und/oder [Bewertungen]. Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Interesse und Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
+Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Eine Übersicht aller pro Cocoda-Instanz konfigurierten Datenquellen ist in den Einstellungen einsehbar, darunter auch die [Mapping-Datenbanken] zur Speicherung von [Mappings] und/oder [Bewertungen]. Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Interesse und Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
+
+<!--
+### Import/Export
+
+*TODO: Import und Export erklären!*
+
+-->
 
 ## Weitere Informationen
 
