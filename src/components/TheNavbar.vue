@@ -148,7 +148,8 @@
           </div>
         </div>
       </b-nav-item-dropdown>
-      <!-- Settings button -->
+
+      <!-- Account menu -->
       <b-nav-item-dropdown
         v-if="!reduced"
         id="accountDropdown"
@@ -172,100 +173,86 @@
               <font-awesome-icon icon="user" />
             </span>
             <!-- Name -->
-            {{ creatorName || $t("settings.title") }}
+            {{ creatorName || $t("settingsTabs")[0] }}
           </div>
         </template>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-normal"
           style="min-width: 200px;">
-          <div v-if="config.auth">
-            <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
-              <p
-                v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
-                :key="`navbar-switchToIdentity-${index}`"
-                :class="{
-                  'navbar-dropdown-selectable': true,
-                  'navbar-dropdown-selectable-selected': uri == creator.uri
-                }"
-                @click="$store.commit({
-                  type: 'settings/set',
-                  prop: 'creatorUri',
-                  value: uri
-                })">
-                <span class="navbar-dropdown-selectable-icon">
-                  <img
-                    v-if="imageForIdentityUri(uri)"
-                    :src="imageForIdentityUri(uri)">
-                  <font-awesome-icon
-                    v-else
-                    icon="user" />
-                </span>
-                {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
-              </p>
-            </template>
+          <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
             <p
-              class="navbar-dropdown-selectable">
-              <span
-                v-if="authorized"
-                class="navbar-dropdown-selectable-icon"
-                @click="$store.commit({
-                  type: 'auth/openWindow',
-                  url: config.auth + 'logout',
-                  eventType: 'logout',
-                })">
-                {{ $t("settings.logOutButton") }}
+              v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
+              :key="`navbar-switchToIdentity-${index}`"
+              :class="{
+                'navbar-dropdown-selectable': true,
+                'navbar-dropdown-selectable-selected': uri == creator.uri
+              }"
+              @click="$store.commit({
+                type: 'settings/set',
+                prop: 'creatorUri',
+                value: uri
+              })">
+              <span class="navbar-dropdown-selectable-icon">
+                <img
+                  v-if="imageForIdentityUri(uri)"
+                  :src="imageForIdentityUri(uri)">
+                <font-awesome-icon
+                  v-else
+                  icon="user" />
               </span>
-              <span
-                v-else
-                class="navbar-dropdown-selectable-icon"
-                @click="openSettingsTab(0)">
-                {{ $t("settings.logInButton") }}
-              </span>
+              {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
             </p>
-            <hr>
-          </div>
+          </template>
           <p
-            v-for="(tab, index) in $t('settingsTabs')"
-            :key="`navbar-settingsTabs-${index}`"
-            class="navbar-settingsTabs-row"
-            @click="openSettingsTab(index)">
-            {{ tab }}
+            v-if="authorized"
+            class="navbar-dropdown-selectable"
+            @click="$store.commit({
+              type: 'auth/openWindow',
+              url: config.auth + 'logout',
+              eventType: 'logout',
+            })">
+            <span
+              class="navbar-dropdown-selectable-icon">
+              {{ $t("settings.logOutButton") }}
+            </span>
           </p>
-          <hr>
-          <p style="padding: 0 10px;">
-            <a
-              href="https://github.com/gbv/cocoda"
-              target="_blank">
-              <font-awesome-icon :icon="['fab', 'github']" />
-              GitHub
-            </a>
-            <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
-              •
-              {{ $t("settings.version") }} {{ config.buildInfo.version }}
+          <p
+            v-else
+            class="navbar-dropdown-selectable"
+            @click="openSettingsTab(0)">
+            <span
+              class="navbar-dropdown-selectable-icon">
+              {{ $t("settings.logInButton") }}
             </span>
           </p>
         </div>
       </b-nav-item-dropdown>
-      <!-- Current registry -->
+
+      <!-- Settings menu -->
       <b-nav-item-dropdown
-        v-if="!reduced && $store.getters.getCurrentRegistry"
-        id="currentRegistryDropdown"
-        ref="currentRegistryDropdown"
+        v-if="!reduced"
+        id="settingsDropdown"
+        ref="settingsDropdown"
         extra-menu-classes="navbar-dropdown"
         no-caret
         right
-        @mouseover.native="dropdownSetStatus($refs.currentRegistryDropdown, true); _dropdownSetStatus($refs.currentRegistryDropdown, true)"
-        @mouseout.native="dropdownSetStatus($refs.currentRegistryDropdown, false)">
+        @mouseover.native="dropdownSetStatus($refs.settingsDropdown, true); _dropdownSetStatus($refs.settingsDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.settingsDropdown, false)">
         <template slot="button-content">
-          <registry-notation
-            :registry="$store.getters.getCurrentRegistry"
-            :tooltip="false"
-            style="opacity: 0.7; cursor: default;" />
+          <font-awesome-icon
+            icon="cog"
+            @click="$refs.settings.show()" />
         </template>
-        <b-dropdown-header>
-          {{ $t("settings.mappingRegistryExplanation") }}
-        </b-dropdown-header>
+        <p
+          v-for="(tab, index) in $t('settingsTabs').slice(1)"
+          :key="`navbar-settingsTabs-${index}`"
+          class="navbar-settingsTabs-row"
+          @click="openSettingsTab(index)">
+          {{ tab }}
+        </p>
+        <hr>
         <div
+          v-if="$store.getters.getCurrentRegistry"
           class="font-default text-dark color-primary-0-bg fontSize-normal"
           style="min-width: 200px;">
           <p
@@ -285,7 +272,20 @@
               :show-details="false"
               :show-capabilities="false" />
           </p>
+          <hr>
         </div>
+        <p style="padding: 0 10px;">
+          <a
+            href="https://github.com/gbv/cocoda"
+            target="_blank">
+            <font-awesome-icon :icon="['fab', 'github']" />
+            GitHub
+          </a>
+          <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
+            •
+            {{ $t("settings.version") }} {{ config.buildInfo.version }}
+          </span>
+        </p>
       </b-nav-item-dropdown>
 
       <!-- Settings modal -->
@@ -298,8 +298,6 @@
 
 <script>
 import TheSettings from "./TheSettings"
-import ItemName from "./ItemName"
-import RegistryNotation from "./RegistryNotation"
 import RegistryInfo from "./RegistryInfo"
 import MappingTable from "./MappingTable"
 import _ from "lodash"
@@ -316,7 +314,7 @@ import computed from "../mixins/computed"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, ItemName, RegistryNotation, RegistryInfo, MappingTable,
+    TheSettings, RegistryInfo, MappingTable,
   },
   mixins: [auth, objects, dragandrop, computed],
   props: {
@@ -433,6 +431,9 @@ nav.navbar {
 }
 .navbar-settingsButton:hover > span > img, .navbar-settingsButton:hover > span > svg {
   opacity: .5;
+}
+hr {
+  margin: 0.75rem 0;
 }
 </style>
 

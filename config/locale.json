@@ -246,7 +246,6 @@
       "creatorUri": "Identity (must be an URI, is automatically filled after login)",
       "creatorUriInvalid": "Please input a valid URI.",
       "mappingRegistry": "Mapping Database",
-      "mappingRegistryExplanation": "Save mappings and annotations in:",
       "mappingRegistries": "Mapping databases",
       "otherRegistries": "Other data sources",
       "selectedForWriting": "selected for writing mappings",
