@@ -154,7 +154,7 @@
       "settingShowIdentityWarningTooltip": "When enabled, a warning sign will be shown if one of your own mappings contains an identity different from the one currently selected.",
       "settingNavigatorShowResultsForLeft": "Results related to selected concept on the left side",
       "settingNavigatorShowResultsForRight": "Results related to selected concept on the right side",
-      "settingMoveCurrentRegistryToTop": "Currently selected mapping registry at the top",
+      "settingMoveCurrentRegistryToTop": "Currently selected mapping database at the top",
       "chooseConcept": "Select a concept to see mappings and mapping recommendations",
       "settingsButton": "Mapping Browser Settings",
       "creatorIsDifferent": "This is your mapping, but the contained identity does not match your selected identity. Edit and save it again to update the identity.",
@@ -246,9 +246,10 @@
       "impressum": "Imprint",
       "creatorUri": "Identity (must be an URI, is automatically filled after login)",
       "creatorUriInvalid": "Please input a valid URI.",
+      "mappingRegistry": "Mapping Database",
       "mappingRegistryExplanation": "Save mappings and annotations in:",
-      "mappingRegistries": "Mapping Registries",
-      "otherRegistries": "Other Registries",
+      "mappingRegistries": "Mapping databases",
+      "otherRegistries": "Other data sources",
       "selectedForWriting": "selected for writing mappings",
       "creatorTitle": "Profile",
       "creatorInfo": "The following information is stored in all your mappings so it may also be shared:",
@@ -262,7 +263,7 @@
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage.",
       "conceptListAddToMappingSelectsConcept": "Select concept when added to mapping",
       "loadConceptsMappedStatus": "Mark mapped concepts",
-      "loadConceptsMappedStatusExplanation": "Concepts with at least one mapping in the currently selected mapping registry to the opposite concept scheme will be marked with a green bar."
+      "loadConceptsMappedStatusExplanation": "Concepts with at least one mapping in the currently selected mapping database to the opposite concept scheme will be marked with a green bar."
     },
     "alerts": {
       "mappingDeleted": "Mapping was deleted from {0}.",
@@ -281,7 +282,7 @@
       "loggedIn": "You are now logged in.",
       "loggedOut": "You are now logged out.",
       "nameError": "There was an error setting the name.",
-      "versionMismatch": "Registry {registryLabel} ({registryUri}) is not version compatible with this release (registry: {registryVersion}, supported: {jskosApi}). Please contact an administrator."
+      "versionMismatch": "Database {registryLabel} ({registryUri}) is not version compatible with this release (database: {registryVersion}, supported: {jskosApi}). Please contact an administrator."
     },
     "dataModal": {
       "title": "Export JSKOS Data",
@@ -304,7 +305,7 @@
       "occurrences": "Co-/Occurrences",
       "authenticated": "Authenticated",
       "notAuthenticated": "Authentication required",
-      "canSaveMappings": "This registry can be used to save mappings."
+      "canSaveMappings": "This database can be used to save mappings."
     },
     "annotationPopover": {
       "addConfirmation": "Confirm",
@@ -446,9 +447,10 @@
       "impressum": "Impressum",
       "creatorUri": "Identität (als URI, wird beim Login automatisch gesetzt)",
       "creatorUriInvalid": "Bitte eine valide URI eingeben.",
+      "mappingRegistry": "Mapping-Datenbank",
       "mappingRegistryExplanation": "Mappings und Annotationen speichern in:",
-      "mappingRegistries": "Mapping-Register",
-      "otherRegistries": "Andere Register",
+      "mappingRegistries": "Mapping-Datenbanken",
+      "otherRegistries": "Andere Datenquellen",
       "selectedForWriting": "ausgewählt zum Schreiben von Mappings",
       "creatorTitle": "Profil",
       "creatorInfo": "Die folgenden Angaben werden in allen bearbeiteten Mappings hinterlegt und können beim Austausch von Mappings weitergegeben werden:",
@@ -462,7 +464,7 @@
       "localMappingsInfo": "Lokale Mappings werden in dem aktuellen Browser gespeichert. Sie sind nicht für andere Nutzer sichtbar, gehen jedoch verloren, wenn man den lokalen Speicher des Browsers leert.",
       "conceptListAddToMappingSelectsConcept": "Konzept beim Hinzufügen zu Mapping auswählen",
       "loadConceptsMappedStatus": "Gemappte Konzepte markieren",
-      "loadConceptsMappedStatusExplanation": "Es wird ein grüner Balken rechts von Konzepten angezeigt, die im ausgewählten Mapping-Register mindestens ein Mapping auf das gegenüberstehende Vokabular haben."
+      "loadConceptsMappedStatusExplanation": "Es wird ein grüner Balken rechts von Konzepten angezeigt, die in der ausgewählten Mapping-Datenbank mindestens ein Mapping auf das gegenüberstehende Vokabular haben."
     },
     "conceptDetail": {
       "showAllAncestors": "zeige alle übergeordneten Konzepte",
@@ -525,7 +527,7 @@
       "settingShowIdentityWarningTooltip": "Falls eingeschaltet wird eine Warnung angezeigt, falls in einem deiner Mappings eine von der aktuell ausgewählten abweichende Identität gespeichert ist.",
       "settingNavigatorShowResultsForLeft": "Mappings mit linkem Konzept anzeigen",
       "settingNavigatorShowResultsForRight": "Mappings mit rechtem Konzept anzeigen",
-      "settingMoveCurrentRegistryToTop": "Ausgewähltes Mapping-Register oben",
+      "settingMoveCurrentRegistryToTop": "Ausgewählte Mapping-Datenbank oben",
       "chooseConcept": "Ein Konzept auswählen, um Mappings und Mapping-Vorschläge zu sehen",
       "settingsButton": "Mapping-Browser Einstellungen",
       "creatorIsDifferent": "Dies ist dein Mapping, aber die darin gespeicherte Identität entspricht nicht der ausgewählten Identität. Editiere und speichere es erneut, um die Identität anzupassen.",
@@ -598,7 +600,7 @@
       "loggedIn": "Du bist jetzt eingeloggt.",
       "loggedOut": "Du bist jetzt ausgeloggt.",
       "nameError": "Fehler beim Ändern des Namens.",
-      "versionMismatch": "Register {registryLabel} ({registryUri}) ist nicht versionskompatibel mit diesem Release (Register: {registryVersion}, unterstützt: {jskosApi}). Bitte einen Administrator kontaktieren."
+      "versionMismatch": "Datenbank {registryLabel} ({registryUri}) ist nicht versionskompatibel mit diesem Release (Datenbank: {registryVersion}, unterstützt: {jskosApi}). Bitte einen Administrator kontaktieren."
     },
     "dataModal": {
       "title": "JSKOS-Daten exportieren",
@@ -621,7 +623,7 @@
       "occurrences": "Katalogvorkommen",
       "authenticated": "Authentifiziert",
       "notAuthenticated": "Authentifizierung notwendig",
-      "canSaveMappings": "Dieses Register kann zum Speichern von Mappings verwendet werden."
+      "canSaveMappings": "Diese Datenbank kann zum Speichern von Mappings verwendet werden."
     },
     "annotationPopover": {
       "addConfirmation": "Bestätigen",
