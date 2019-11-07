@@ -164,21 +164,25 @@
             class="navbar-settingsButton"
             @click="$refs.settings.show()">
             <!-- Identity icon -->
-            <span v-if="userIdentityImage && creator.uri">
-              <img :src="userIdentityImage">
-            </span>
             <span
-              v-else
-              :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`">
-              <font-awesome-icon icon="user" />
+              v-if="userIdentityImage && creator.uri"
+              class="fontWeight-heavy">
+              <img :src="userIdentityImage">
+              {{ creatorName || $t("settingsTabs")[0] }}
             </span>
-            <!-- Name -->
-            {{ creatorName || $t("settingsTabs")[0] }}
+            <span v-else>
+              <font-awesome-icon
+                icon="user"
+                :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`" />
+              <span :class="{ 'fontWeight-heavy': authorized }">
+                {{ creatorName || $t("settingsTabs")[0] }}
+              </span>
+            </span>
           </div>
         </template>
         <div
           class="font-default text-dark color-primary-0-bg fontSize-normal"
-          style="min-width: 200px;">
+          style="min-width: 240px;">
           <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
             <p
               v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
