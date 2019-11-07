@@ -13,6 +13,10 @@ const state = {
     true: "",
     false: "",
   },
+  previousConcept: {
+    true: null,
+    false: null,
+  },
   nextConcept: {
     true: null,
     false: null,
@@ -37,6 +41,9 @@ const mutations = {
   },
   setLoadingId (state, { isLeft, loadingId } = {}) {
     state.loadingId[isLeft] = loadingId
+  },
+  setPreviousConcept (state, { isLeft, concept }) {
+    state.previousConcept[isLeft] = concept
   },
   setNextConcept (state, { isLeft, concept }) {
     state.nextConcept[isLeft] = concept

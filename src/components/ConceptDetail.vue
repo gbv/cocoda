@@ -97,6 +97,18 @@
       borders="bottom"
       size="sm">
       <div
+        v-if="previousConcept"
+        v-b-tooltip.hover="{ title: $t('conceptDetail.previousConceptTooltip'), delay: $util.delay.medium }"
+        class="conceptDetail-previousButton">
+        <router-link
+          :to="getRouterUrl(previousConcept, isLeft, true)">
+          <b-button
+            variant="light">
+            <font-awesome-icon icon="arrow-left" />
+          </b-button>
+        </router-link>
+      </div>
+      <div
         v-if="nextConcept"
         v-b-tooltip.hover="{ title: $t('conceptDetail.nextConceptTooltip'), delay: $util.delay.medium }"
         class="conceptDetail-nextButton">
@@ -380,6 +392,9 @@ export default {
       return gndTerms
     },
     // Returns the available concept
+    previousConcept() {
+      return this.selected.previousConcept[this.isLeft]
+    },
     nextConcept() {
       return this.selected.nextConcept[this.isLeft]
     },
@@ -552,6 +567,13 @@ export default {
   flex: 1;
 }
 
+.conceptDetail-previousButton {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  height: 23px;
+  line-height: 23px;
+}
 .conceptDetail-nextButton {
   position: absolute;
   top: 30px;
@@ -559,7 +581,7 @@ export default {
   height: 23px;
   line-height: 23px;
 }
-.conceptDetail-nextButton button {
+.conceptDetail-nextButton button, .conceptDetail-previousButton button {
   .fontSize-small;
   padding: 0px 4px;
 }

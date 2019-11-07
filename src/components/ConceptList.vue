@@ -146,6 +146,20 @@ export default {
     loadConceptsMappedStatusConceptsToLoad() {
       return this.items.filter(i => i.concept).map(i => i.concept)
     },
+    previousConcept() {
+      // Index of current concept in the list of concepts
+      const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
+      if (index == -1) {
+        return null
+      }
+      // If the list is not a hierarchy, return the next item in the list
+      if (!this.showChildren) {
+        const item = this.items[index - 1]
+        return item && item.concept
+      }
+      // Otherwise return null (hierarchy not supported yet)
+      return null
+    },
     nextConcept() {
       // Index of current concept in the list of concepts
       const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
@@ -252,13 +266,26 @@ export default {
       this.loadMappingsForItems()
     },
     shown() {
+      this.commitPreviousConcept()
       this.commitNextConcept()
+    },
+    previousConcept() {
+      this.commitPreviousConcept()
     },
     nextConcept() {
       this.commitNextConcept()
     },
   },
   methods: {
+    commitPreviousConcept() {
+      if (this.shown) {
+        this.$store.commit({
+          type: "selected/setPreviousConcept",
+          isLeft: this.isLeft,
+          concept: this.previousConcept,
+        })
+      }
+    },
     commitNextConcept() {
       if (this.shown) {
         this.$store.commit({
