@@ -1,17 +1,21 @@
 <template>
-  <div class="registry-info">
+  <div>
     <div>
       <registry-notation
         :registry="registry"
         :disabled="$store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] === false"
         :tooltip="false" />
       <span
-        class="settings-info-title"
         :class="{
           'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
         }">
         {{ $util.prefLabel(registry) }}
       </span>
+      <a
+        v-if="showDetails"
+        :href="registry.uri">
+        <font-awesome-icon icon="link" />
+      </a>
       <span
         v-if="registry.isAuthorizedFor({
           type: 'mappings',
@@ -23,19 +27,10 @@
         <font-awesome-icon icon="pencil-alt" />
       </span>
     </div>
-    <div
-      v-if="showDetails"
-      class="settings-info-definition">
+    <div v-if="showDetails">
       {{ $util.definition(registry).join(" ") }}
     </div>
-    <div
-      v-if="showDetails"
-      class="settings-info-uri fontSize-small">
-      <auto-link :link="registry.uri" />
-    </div>
-    <div
-      v-if="showCapabilities"
-      class="settings-info-capabilities">
+    <div v-if="showCapabilities">
       <span
         v-for="type in ['schemes', 'concepts', 'mappings', 'annotations', 'occurrences']"
         :key="`settings-info-capabilities-${type}`">
@@ -68,7 +63,6 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink"
 import RegistryNotation from "./RegistryNotation"
 
 // Import mixins
@@ -76,7 +70,7 @@ import auth from "../mixins/auth"
 
 export default {
   name: "RegistryInfo",
-  components: { AutoLink, RegistryNotation },
+  components: { RegistryNotation },
   mixins: [auth],
   props: {
     registry: {

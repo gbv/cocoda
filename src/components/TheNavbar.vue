@@ -251,7 +251,7 @@
           v-for="(tab, index) in $t('settingsTabs').slice(1)"
           :key="`navbar-settingsTabs-${index}`"
           class="navbar-settingsTabs-row"
-          @click="openSettingsTab(index)">
+          @click="openSettingsTab(index+1)">
           {{ tab }}
         </p>
         <hr>

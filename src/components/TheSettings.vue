@@ -142,14 +142,10 @@
               prop: 'mappingRegistry',
               value: registry.uri
             })">
-            <div>
-              <registry-info
-                :registry="registry"
-                class="settings-sources" />
-            </div>
-            <div v-if="$jskos.compare(registry, $store.getters.getCurrentRegistry)">
-              <b>{{ $t("settings.selectedForWriting") }}</b>
-            </div>
+            <registry-info
+              :registry="registry"
+              :class="{'selected-registry': $jskos.compare(registry, $store.getters.getCurrentRegistry)}"
+              class="settings-sources" />
           </div>
           <h4>{{ $t("settings.otherRegistries") }}</h4>
           <div
@@ -635,6 +631,9 @@ p {
 .settings-sources {
   padding: 6px 5px;
 }
+.selected-registry {
+  background: @color-select-2;
+}
 .settingsModal-mapping-registry {
   display: flex;
   justify-content: center;
@@ -650,7 +649,6 @@ p {
 .settingsModal-mapping-registry > div:last-child {
   flex: 1;
 }
-
 </style>
 
 <style>
