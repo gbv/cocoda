@@ -212,9 +212,9 @@
     },
     "settingsTabs": [
       "Account",
+      "Data Sources",
       "User Interface",
       "Shortcuts",
-      "Data Sources",
       "Local Mappings"
     ],
     "settings": {
@@ -412,9 +412,9 @@
     },
     "settingsTabs": [
       "Account",
+      "Datenquellen",
       "Oberfläche",
       "Tastaturkürzel",
-      "Datenquellen",
       "Lokale Mappings"
     ],
     "settings": {

@@ -38,6 +38,38 @@
                 {{ $t("settings.loggedOut") }}
               </span>
             </p>
+            <p v-if="$store.state.auth.available && !user && providers.length">
+              <b-button
+                v-for="provider in providers"
+                :key="`login-provider-${provider.id}`"
+                block
+                variant="light"
+                @click="login(provider)">
+                <img
+                  v-if="provider.image"
+                  :src="provider.image"
+                  height="20px"
+                  style="margin-right: 5px;">
+                {{ $t("settings.logInButton") }} via {{ provider.name }}
+              </b-button>
+            </p>
+            <div v-if="$store.state.auth.connected">
+              <p>
+                <span v-html="$t('settings.accountInfo', { url: config.auth })" />
+                <a
+                  v-if="$store.state.auth.about.urls.imprint"
+                  :href="$store.state.auth.about.urls.imprint"
+                  target="_blank">
+                  {{ $t("settings.impressum") }}
+                </a> •
+                <a
+                  v-if="$store.state.auth.about.urls.privacy"
+                  :href="$store.state.auth.about.urls.privacy"
+                  target="_blank">
+                  {{ $t("settings.privacyPolicy") }}
+                </a>
+              </p>
+            </div>
             <p>
               {{ $t("settings.creatorInfo") }}
             </p>
@@ -96,84 +128,10 @@
                 </b-form-select>
               </span>
             </p>
-            <p v-if="$store.state.auth.available && !user && providers.length">
-              <b-button
-                v-for="provider in providers"
-                :key="`login-provider-${provider.id}`"
-                block
-                variant="light"
-                @click="login(provider)">
-                <img
-                  v-if="provider.image"
-                  :src="provider.image"
-                  height="20px"
-                  style="margin-right: 5px;">
-                {{ $t("settings.logInButton") }} via {{ provider.name }}
-              </b-button>
-            </p>
-            <div v-if="$store.state.auth.connected">
-              <p>
-                <span v-html="$t('settings.accountInfo', { url: config.auth })" />
-                <a
-                  v-if="$store.state.auth.about.urls.imprint"
-                  :href="$store.state.auth.about.urls.imprint"
-                  target="_blank">
-                  {{ $t("settings.impressum") }}
-                </a> •
-                <a
-                  v-if="$store.state.auth.about.urls.privacy"
-                  :href="$store.state.auth.about.urls.privacy"
-                  target="_blank">
-                  {{ $t("settings.privacyPolicy") }}
-                </a>
-              </p>
-            </div>
           </div>
         </tab>
         <tab
           :title="$t('settingsTabs')[1]">
-          <p v-if="localSettings">
-            <b>{{ $t("settings.language") }}</b>
-            <b-form-select v-model="$i18n.locale">
-              <option
-                v-for="language in config.languages"
-                :key="language"
-                :value="language">
-                {{ $t(`languages.${language}`) }}
-              </option>
-            </b-form-select>
-            <br><br><span v-html="$t('settings.languageContribution')" />
-          </p>
-          <p>
-            <b-button
-              variant="primary"
-              @click="resetFlex">
-              {{ $t("settings.resetSizes") }}
-            </b-button>
-          </p>
-          <br>
-        </tab>
-        <tab
-          v-if="config.shortcuts && config.shortcuts.length"
-          :title="$t('settingsTabs')[2]">
-          <h4> {{ $t("settingsTabs")[2] }}</h4>
-          <table class="table">
-            <tbody>
-              <tr
-                v-for="shortcut in config.shortcuts"
-                :key="`settingsModal-shortcuts-${shortcut.id}`">
-                <td>
-                  <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
-                </td>
-                <td class="text-left">
-                  {{ $util.prefLabel(shortcut) || shortcut.action }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </tab>
-        <tab
-          :title="$t('settingsTabs')[3]">
           <h4>{{ $t("settings.mappingRegistries") }}</h4>
           <div
             v-for="(registry, index) in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
@@ -203,10 +161,50 @@
           </div>
         </tab>
         <tab
+          :title="$t('settingsTabs')[2]">
+          <p v-if="localSettings">
+            <b>{{ $t("settings.language") }}</b>
+            <b-form-select v-model="$i18n.locale">
+              <option
+                v-for="language in config.languages"
+                :key="language"
+                :value="language">
+                {{ $t(`languages.${language}`) }}
+              </option>
+            </b-form-select>
+            <br><br><span v-html="$t('settings.languageContribution')" />
+          </p>
+          <p>
+            <b-button
+              variant="primary"
+              @click="resetFlex">
+              {{ $t("settings.resetSizes") }}
+            </b-button>
+          </p>
+          <br>
+        </tab>
+        <tab
+          v-if="config.shortcuts && config.shortcuts.length"
+          :title="$t('settingsTabs')[3]">
+          <table class="table table-borderless">
+            <tbody>
+              <tr
+                v-for="shortcut in config.shortcuts"
+                :key="`settingsModal-shortcuts-${shortcut.id}`">
+                <td>
+                  <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
+                </td>
+                <td class="text-left">
+                  {{ $util.prefLabel(shortcut) || shortcut.action }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </tab>
+        <tab
           v-if="localMappingsSupported"
           :title="$t('settingsTabs')[4]">
           <div>
-            <h4>{{ $t('settingsTabs')[4] }}</h4>
             <p>{{ $t("settings.localMappingsInfo") }}</p>
           </div>
           <div v-if="localMappingsSupported && dlAllMappings && dlMappingsReady">
