@@ -122,15 +122,6 @@
               <font-awesome-icon icon="code" />
             </div>
           </b-row>
-          <!-- Note -->
-          <b-row v-if="mapping.note">
-            <b-col cols="3">
-              {{ $t("mappingDetail.note") }}:
-            </b-col>
-            <b-col
-              style="max-height: 200px; overflow: auto;"
-              v-html="($util.lmContent(mapping, 'note') || []).map(note => `<p>${note.split('\n').join('<br>')}</p>`).join('')" />
-          </b-row>
           <!-- PartOf -->
           <b-row v-if="mapping.partOf">
             <b-col cols="3">

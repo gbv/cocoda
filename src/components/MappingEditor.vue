@@ -183,12 +183,6 @@
       <mapping-type-selection
         :mapping="$store.state.mapping.mapping" />
     </div>
-    <div class="mappingEditor-comment">
-      <span class="button-disabled">
-        <font-awesome-icon icon="comment" />
-      </span>
-      {{ mappingComments.join(", ") }}
-    </div>
     <div class="mappingEditor-creator">
       {{ creatorName }}
     </div>
@@ -377,9 +371,6 @@ export default {
     hasChangedFromOriginal() {
       return this.$store.getters["mapping/hasChangedFromOriginal"]
     },
-    mappingComments() {
-      return this.$util.lmContent(this.mapping, "note") || []
-    },
     // Is used for watcher that sets the target scheme
     schemeRight() {
       return this.selected.scheme[false]
@@ -427,21 +418,6 @@ export default {
         isLeft: false,
         scheme: this.selected.scheme[false],
       })
-    },
-    comments() {
-      // Add one empty string if comments are empty
-      let comments = this.comments.filter(c => c != "")
-      if (!comments.length) {
-        comments.push("")
-      }
-      if (!_.isEqual(comments, this.comments)) {
-        this.comments = comments
-      }
-    },
-    mappingComments(newValue, oldValue) {
-      if (!_.isEqual(oldValue, newValue)) {
-        this.comments = _.clone(newValue)
-      }
     },
     schemeRight() {
       // Set toScheme on scheme change (mutation will do nothing if there are concepts in the mapping).
@@ -790,15 +766,6 @@ export default {
   position: absolute;
   bottom: 2px;
   right: 43px;
-}
-.mappingEditor-comment {
-  position: absolute;
-  bottom: 2px;
-  left: 5px;
-  width: calc(50% - 60px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .mappingEditor-title {

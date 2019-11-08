@@ -232,10 +232,6 @@
             icon="info-circle"
             class="button"
             @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
-          <font-awesome-icon
-            v-if="data.item.mapping.note"
-            icon="comment"
-            class="mappingBrowser-noteIcon" />
         </div>
         <div
           v-if="showEditingTools"
@@ -861,13 +857,6 @@ export default {
 .noItems {
   margin: 30px auto 5px auto;
   flex: 5 0 auto;
-}
-.mappingBrowser-noteIcon {
-  color: @color-button;
-  position: absolute;
-  right: -4px;
-  top: -2px;
-  font-size: 8px;
 }
 .mappingBrowser-toolbar-button {
   display: inline-block;

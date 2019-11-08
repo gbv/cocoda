@@ -131,11 +131,6 @@ const getters = {
       return true
     }
     const original = state.original.mapping
-    // Check if notes have changed
-    // Add more fields like this if needed.
-    if (!_.isEqual(state.mapping.note, original.note)) {
-      return true
-    }
     let isCreatorEqual = (a, b) => {
       if (!a && !b) {
         return true
@@ -358,29 +353,6 @@ const mutations = {
       Vue.delete(state.mapping, "contributor")
     } else {
       state.mapping.contributor = contributor
-    }
-  },
-
-  /**
-   * Sets the note for the mapping.
-   *
-   * Payload object: { note }
-   * - note: a language map of list of notes
-   */
-  setNote(state, { note }) {
-    if (_.isObject(note)) {
-      let noteCount = 0
-      _.forOwn(note, value => {
-        noteCount += value.length
-      })
-      if (!noteCount) {
-        note = null
-      }
-    }
-    if (!note) {
-      delete state.mapping.note
-    } else {
-      state.mapping.note = note
     }
   },
 
