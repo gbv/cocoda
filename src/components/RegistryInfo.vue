@@ -47,7 +47,11 @@
         v-if="registry.provider.has.auth"
         style="margin-left: 5px;">
         <span
-          v-if="authorized"
+          v-if="registry.isAuthorizedFor({
+            type: 'mappings',
+            action: 'create',
+            user: user,
+          })"
           style="color: green;">
           <font-awesome-icon icon="lock-open" />
           {{ $t("registryInfo.authenticated") }}
