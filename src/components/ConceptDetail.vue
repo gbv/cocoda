@@ -514,6 +514,7 @@ export default {
 
 .conceptDetail-ancestors {
   margin: 0;
+  padding-left: 6px;
 }
 .conceptDetail-ancestors-expand {
   position: absolute;
