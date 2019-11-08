@@ -46,20 +46,28 @@
         }"
         class="labelBox"
         @click.native.stop.prevent="onClick">
-        <item-name
-          v-if="scheme && showScheme"
-          :item="scheme"
-          :show-text="false"
-          :is-link="false"
-          :prevent-external-hover="true"
-          :draggable="false" />
-        <item-name
-          :item="concept"
-          :is-highlighted="isSelected"
-          :prevent-external-hover="true" />
+        <span v-if="scheme && showScheme">
+          {{ $util.notation(scheme) }}
+        </span>
+        <!-- Show icon for combined concepts -->
+        <span
+          v-if="concept && concept.type && concept.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
+          v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: $util.delay.medium }"
+          :class="'fontSize-'+(fontSize || 'normal')">
+          <font-awesome-icon icon="puzzle-piece" />
+        </span>
+        <span
+          class="fontWeight-heavy"
+          v-html="$util.notation(concept, 'concept', true)" />
+        <span
+          :class="{
+            'fontWeight-medium': isSelected
+          }">
+          {{ $util.prefLabel(concept, null, $util.notation(concept).length == 0) }}
+        </span>
       </div>
       <div
-        v-show="canAddToMapping"
+        v-if="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
         class="addToMapping"
         @click="addConcept()">
@@ -68,7 +76,7 @@
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-show="showChildren && hasChildren && isOpen && concept.narrower.includes(null)"
+      v-if="showChildren && hasChildren && isOpen && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
@@ -352,6 +360,9 @@ export default {
 }
 .labelBoxSingle {
   padding-left: 5px;
+}
+.labelBox, .labelBox:link, .labelBox:hover, .labelBox:active, .labelBox:visited {
+  .text-dark;
 }
 .addToMapping {
   .fontSize-large;
