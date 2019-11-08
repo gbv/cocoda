@@ -5,17 +5,18 @@
     <!-- Minimizer allows the component to get minimized -->
     <minimizer
       :name="`conceptList_${isLeft}`"
-      :text="dataChoices[dataChoice].label" />
+      :text="currentChoice.label" />
     <tabs
-      v-model="dataChoice"
+      v-model="currentChoiceIndex"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
       fill
       @change="tabChanged">
       <tab
-        v-for="(choice, index) in dataChoices.filter(c => c.concepts.length || c.showWhenEmpty)"
+        v-for="(choice, index) in dataChoices"
         :key="`conceptListWrapper-dataChoice-${index}`"
         :title="choice.label"
         style="position: relative;"
+        :hidden="choice !== currentChoice"
         @dragover.native="dragOver"
         @drop.native="drop($event, choice.droppedConcept)"
         @scroll.native="loadConceptsInView">
@@ -27,16 +28,21 @@
           :show-children="choice.showChildren"
           :show-scheme="choice.showScheme"
           :no-items-label="choice.noItemsLabel"
-          :buttons="choice.buttons"
-          :shown="index == dataChoice" />
+          :buttons="choice.buttons" />
       </tab>
       <template v-slot:title="slotProps">
-        <span
-          v-b-tooltip.hover="{ title: dataChoices[slotProps.index].tooltip, delay: $util.delay.medium, html: true }">
+        <span>
           {{ slotProps.tab.title }}
         </span>
       </template>
     </tabs>
+    <!-- Concept List Selection Button -->
+    <div
+      v-if="dataChoices.filter(choice => choice.available).length > 1"
+      :id="`conceptListWrapper-listSelectionButton-${isLeft}`"
+      class="button conceptListWrapper-listSelectionButton">
+      <font-awesome-icon icon="chevron-up" />
+    </div>
     <!-- Settings -->
     <component-settings>
       <b-form-checkbox
@@ -53,11 +59,32 @@
     </component-settings>
     <!-- Data Modal Button -->
     <data-modal-button
-      :data="minimizeConcepts(dataChoices[dataChoice].concepts)"
+      :data="minimizeConcepts(currentChoice.concepts)"
       :position-right="20"
       :position-bottom="5"
       type="concept"
-      :url="dataChoices[dataChoice].url" />
+      :url="currentChoice.url" />
+    <!-- Concept List Selection Popover -->
+    <b-popover
+      ref="listSelectionPopover"
+      placement="top"
+      :show.sync="listSelectionPopoverShow"
+      :target="`conceptListWrapper-listSelectionButton-${isLeft}`">
+      <div :id="`conceptListWrapper-listSelectionPopover-${isLeft}`">
+        <div
+          v-for="(choice, index) in dataChoices"
+          v-show="choice.available"
+          :key="`conceptListWrapper-listSelectionPopover-${isLeft}-${index}`"
+          v-b-tooltip.hover="{ title: choice.tooltip, delay: $util.delay.medium, html: true }"
+          :class="{
+            'fontWeight-heavy': choice === currentChoice,
+            'conceptListWrapper-listSelectionPopover-choice': true,
+          }"
+          @click="chooseIndex(index)">
+          {{ choice.label }}
+        </div>
+      </div>
+    </b-popover>
   </div>
 </template>
 
@@ -71,11 +98,12 @@ import DataModalButton from "./DataModalButton"
 import computed from "../mixins/computed"
 import objects from "../mixins/objects"
 import dragandrop from "../mixins/dragandrop"
+import hoverHandler from "../mixins/hover-handler"
 
 export default {
   name: "ConceptListWrapper",
   components: { Minimizer, ConceptList, ComponentSettings,  DataModalButton },
-  mixins: [computed, objects, dragandrop],
+  mixins: [computed, objects, dragandrop, hoverHandler],
   props: {
     /**
      * Tells the component on which side of the application it is.
@@ -87,6 +115,7 @@ export default {
   },
   data() {
     return {
+      listSelectionPopoverShow: false,
     }
   },
   computed: {
@@ -107,6 +136,7 @@ export default {
           showChildren: true,
           showScheme: false,
           url: topConceptsUrl,
+          available: this._topConcepts.length > 0,
         },
         {
           id: "favoriteConcepts",
@@ -115,7 +145,7 @@ export default {
           concepts: this.favoriteConcepts,
           showChildren: false,
           showScheme: true,
-          showWhenEmpty: true,
+          available: true,
           buttons: [
             {
               position: "before",
@@ -147,11 +177,11 @@ export default {
           showChildren: false,
           showScheme: true,
           url: list.url,
+          available: list.concepts.length > 0,
         }
         choices.push(choice)
         index += 1
       }
-      // TODO: This must be solved differently, e.g. with a mouseover list to choose from.
       return choices
     },
     _topConcepts() {
@@ -159,21 +189,27 @@ export default {
       return _.get(this.topConcepts, uri)
     },
     concepts() {
-      return this.dataChoices[this.dataChoice].concepts
+      return this.currentChoice.concepts
     },
-    dataChoice: {
+    currentChoice: {
       get() {
         let id = this.$settings.conceptListChoice[this.isLeft]
-        let index = this.dataChoices.findIndex(choice => choice.id === id)
-        return index != -1 ? index : 0
+        return this.dataChoices.find(choice => choice.id === id && choice.available) || this.dataChoices.find(choice => choice.available)
       },
       set(value) {
-        let id = _.get(this.dataChoices, `[${value}].id`)
         this.$store.commit({
           type: "settings/set",
           prop: `conceptListChoice[${this.isLeft}]`,
-          value: id,
+          value: value.id,
         })
+      },
+    },
+    currentChoiceIndex: {
+      get() {
+        return this.dataChoices.findIndex(choice => choice === this.currentChoice)
+      },
+      set(value) {
+        this.currentChoice = this.dataChoices[value]
       },
     },
     conceptListAddToMappingSelectsConcept: {
@@ -205,6 +241,10 @@ export default {
     this.loadConceptsInView = _.debounce(this._loadConceptsInView, 300)
   },
   methods: {
+    chooseIndex(index) {
+      this.currentChoiceIndex = index
+      this.listSelectionPopoverShow = false
+    },
     /**
      * When the tab changed, instruct conceptList to scroll.
      */
@@ -221,7 +261,7 @@ export default {
     },
     _loadConceptsInView() {
       let concepts = []
-      let conceptList = _.get(this, `$refs.conceptList[${this.dataChoice}]`)
+      let conceptList = _.get(this, `$refs.conceptList[${this.currentChoiceIndex}]`)
       let container = _.get(conceptList, "$parent.$el")
       if (conceptList && conceptList.$children && container) {
         for (let child of conceptList.$children) {
@@ -273,6 +313,20 @@ export default {
       }
       return newList
     },
+    hoverHandlers() {
+      return [
+        {
+          elements: [
+            document.getElementById(`conceptListWrapper-listSelectionButton-${this.isLeft}`),
+            document.getElementById(`conceptListWrapper-listSelectionPopover-${this.isLeft}`),
+          ],
+          delta: 5,
+          handler: (isInside) => {
+            this.listSelectionPopoverShow = isInside
+          },
+        },
+      ]
+    },
   },
 }
 </script>
@@ -286,6 +340,19 @@ export default {
 .conceptListWrapper .componentSettings {
   right: 3px;
   bottom: 7px;
+}
+
+.conceptListWrapper-listSelectionButton {
+  position: absolute;
+  left: 10px;
+  top: 7px;
+}
+.conceptListWrapper-listSelectionPopover-choice {
+  padding: 4px 5px;
+}
+.conceptListWrapper-listSelectionPopover-choice:hover {
+  background-color: @color-primary-5;
+  cursor: pointer;
 }
 
 </style>
