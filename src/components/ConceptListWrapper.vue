@@ -177,7 +177,7 @@ export default {
           droppedConcept: concept => {
             this.$store.dispatch("addConceptToFavorites", concept)
           },
-          icon: "list",
+          icon: "star",
         },
       ]
       let index = 0

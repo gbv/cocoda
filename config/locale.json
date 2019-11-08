@@ -90,7 +90,7 @@
       "registry": "Sources"
     },
     "conceptList": {
-      "noItems": "No Concepts",
+      "noItems": "No Concepts available",
       "favoriteConcepts": "Favorite Concepts",
       "favoriteConceptsShort": "Favorites",
       "topConcepts": "Top concepts of current concept scheme in a tree view",
@@ -489,7 +489,7 @@
       "registry": "Quellen"
     },
     "conceptList": {
-      "noItems": "keine Konzepte",
+      "noItems": "keine Konzepte vorhanden",
       "favoriteConcepts": "Konzept-Schnellauswahl",
       "favoriteConceptsShort": "Schnellauswahl",
       "topConcepts": "Oberkonzepte des Vokabulars in Baumansicht",

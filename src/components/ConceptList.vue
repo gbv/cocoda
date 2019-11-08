@@ -20,7 +20,7 @@
     </div>
     <div
       v-if="noItems"
-      class="conceptListItems-noItems fontWeight-heavy">
+      class="conceptListItems-noItems">
       {{ noItemsLabel || $t("conceptList.noItems") }}
     </div>
     <!-- Full screen loading indicator -->
