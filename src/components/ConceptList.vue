@@ -105,6 +105,8 @@ export default {
       currentSelectedConcept: null,
       shouldScroll: true,
       scrollTo: scroller(),
+      oldPreviousConcept: null,
+      oldNextConcept: null,
     }
   },
   computed: {
@@ -270,10 +272,16 @@ export default {
       this.commitNextConcept()
     },
     previousConcept() {
-      this.commitPreviousConcept()
+      if (!this.$jskos.compare(this.previousConcept, this.oldPreviousConcept)) {
+        this.commitPreviousConcept()
+        this.oldPreviousConcept = this.previousConcept
+      }
     },
     nextConcept() {
-      this.commitNextConcept()
+      if (!this.$jskos.compare(this.nextConcept, this.oldNextConcept)) {
+        this.commitNextConcept()
+        this.oldNextConcept = this.nextConcept
+      }
     },
   },
   methods: {
