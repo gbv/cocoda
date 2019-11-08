@@ -82,6 +82,11 @@
             'conceptListWrapper-listSelectionPopover-choice': true,
           }"
           @click="chooseIndex(index)">
+          <div
+            class="fontSize-small"
+            style="display: inline-block; width: 18px;">
+            <font-awesome-icon :icon="choice.icon" />
+          </div>
           {{ choice.label }}
         </div>
       </div>
@@ -149,6 +154,7 @@ export default {
           showScheme: false,
           url: topConceptsUrl,
           available: this._topConcepts.length > 0,
+          icon: "sitemap",
         },
         {
           id: "favoriteConcepts",
@@ -171,6 +177,7 @@ export default {
           droppedConcept: concept => {
             this.$store.dispatch("addConceptToFavorites", concept)
           },
+          icon: "list",
         },
       ]
       let index = 0
@@ -190,6 +197,7 @@ export default {
           showScheme: true,
           url: list.url || list.conceptsUrl,
           available: list.concepts.length > 0,
+          icon: "list",
         }
         choice.reloadButton = choice.url != null
         choices.push(choice)
