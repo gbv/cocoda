@@ -20,7 +20,7 @@ Die **Menüleiste** enthält (je nach Konfiguration):
 * Links auf Impressum, Datenschutzerklärung, Anleitung und Feedback-Möglichkeit
 * ![](img/icons/trash.svg){height=1em} Mülleimer zur Ansicht und zum Wiederherstellen der zuletzt gelöschten Mappings
 * ![](img/icons/star.svg){height=1em} Schnellauswahl von gemerkten Konzepten
-* ![](img/icons/user.svg){height=1em} [Benutzeraccount](#benutzeraccounts) und -name. Nach erfolgreichem Login wird der Benutzername fett markiert und per Schnellauswahl lässt sich die Identität zur Speicherung von [Mappings] und [Bewertungen] wechseln
+* ![](img/icons/user-solid.svg){height=1em} [Benutzeraccount](#benutzeraccounts) und -name. Nach erfolgreichem Login wird der Benutzername fett markiert und per Schnellauswahl lässt sich die Identität zur Speicherung von [Mappings] und [Bewertungen] wechseln
 * ![](img/icons/cog.svg){height=1em} [Einstellungen] mit Schnellauswahl der [Datenbank] in die Mappings und Bewertungen gespeichert werden
 
 [Datenbank]: #mapping-datenbanken
@@ -30,7 +30,10 @@ Der restliche Bildschirm ist in drei Bereiche mit mehreren **Komponenten** aufge
 * Komponenten zur Auswahl von [Vokabularen und Konzepten](#vokabulare-und-konzepte) Links und Rechts
 * Komponenten zur Auswahl, Erstellung und Bearbeitung von [Mappings] in der Mitte
 
-Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] geöffnet während in der Mitte allgemeine Hinweise angezeigt werden. Die Größe einzelner Komponenten lässt sich mit den Punkten ![](img/icons/ellipsis-v.svg){height=1em} bzw. ![](img/icons/ellipsis-h.svg){height=1em} ändern, das Minimieren-Icon ![](img/icons/window-minimize.svg){height=1em} blendet eine Komponente aus. Das Verhalten einiger Komponenten ist über das Einstellungs-Icon ![](img/icons/cog.svg){height=1em} rechts unten anpassbar. Das an verschiedenen Stellen auftauchende Quelltext-Icon ![](img/icons/code.svg){height=1em} öffnet jeweils eine Detailansicht in einer Komponente angezeigten Daten und [Quellen](#datenquellen).
+Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] geöffnet während in der Mitte allgemeine Hinweise angezeigt werden. Die Größe einzelner Komponenten lässt sich mit den Punkten ![](img/icons/ellipsis-v.svg){height=1em} bzw. ![](img/icons/ellipsis-h.svg){height=1em} ändern, das Minimieren-Icon ![](img/icons/window-minimize.svg){height=1em} blendet eine Komponente aus. Darüber hinaus haben einige Komponenten rechts unten Icons zur:
+
+* ![](img/icons/cog.svg){height=1em} Einstellung des Verhaltens der Komponente
+* ![](img/icons/code.svg){height=1em} Detailansicht der in einer Komponente angezeigten [Daten und Quellen](#datenquellen-import-und-export)
 
 ## Benutzeraccounts
 
@@ -52,7 +55,7 @@ Ohne Login lassen sich Mappings nur lokal im eigenen Browser speichern. Diese Fu
 
 ## Vokabulare und Konzepte
 
-Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von Vokabularen von unterschiedliche [Datenquellen](#datenquellen). Ein Vokabular besteht aus Konzepten und Informationen über das jeweilige Vokabular. Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:
+Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von **Vokabularen** von unterschiedliche [Datenquellen](#datenquellen). Ein Vokabular besteht aus **Konzepten** und Informationen über das jeweilige Vokabular. Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:
 
 * [Auswahl von Quell- bzw. Zielvokabular](#vokabularauswahl)
 * [Ansicht von Informationen über ein ausgewähltes Vokabular](#vokabulardetails)
@@ -67,7 +70,7 @@ Cocoda empfehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies
 
 ### Vokabularauswahl
 
-Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} kann die Liste nach Quelle, Sprache, Vokabular-Typ und Favoriten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert so ist ein Filter aktiv. Mit dem Stern ![](img/icons/star.svg){height=1em} vor dem Namen lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt.  Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} hinter dem Vokabularnamen lässt sich das Vokabular abwählen.  Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel `Ctrl+Shift+f` (links) und `Ctrl+Shift+g` (rechts).
+Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} kann die Liste nach Quelle, Sprache, Vokabular-Typ und Favoriten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert so ist ein Filter aktiv. Mit dem Stern ![](img/icons/star.svg){height=1em} lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt.  Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} hinter dem Vokabularnamen lässt sich das Vokabular abwählen.  Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel `Ctrl+Shift+f` (links) und `Ctrl+Shift+g` (rechts).
 
 ### Vokabulardetails
 
@@ -81,16 +84,16 @@ Im Suchfeld können Konzepte per Notationen oder Bezeichnung gesucht werden. Die
 
 ### Konzeptdetails
 
-Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden) sind dies:
+Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):
 
 * Info: Metadaten wie Identifier und Änderungsdatum
 * Bezeichnungen: Vorzungs- und Alternativbenennungen
 * Scope/Editorial: Verwendungshinweise und Kommentare
-* Suchlinks: konfigurierbare Links vom Konzept in andere Datenbanken (Wikipedia, K0plus...)
+* Suchlinks: konfigurierbare Links in andere Datenbanken (Wikipedia, K0plus...)
 
-Der Stern ![](img/icons/star.svg){height=1em} fügt das Konzept zur eigenen Favoriten hinzu bzw. entfernt es aus der Favoriten-Liste.
+Der Stern ![](img/icons/star.svg){height=1em} fügt das Konzept zur Schnellauswahl-Liste hinzu bzw. entfernt es daraus.
 Das Plus-Zeichen ![](img/icons/plus-circle.svg){height=1em} dient dazu das Konzept in den [Mapping-Editor] zu übernehmen.
-Der Pfeil ![](img/icons/arrow-right.svg){height=1em} wählt das nächste Konzept in der [Baumansicht] oder aus der aktuell ausgewählten [Liste](#listenansicht) aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel Alt+n (links) und Alt+m (rechts).
+Der Pfeil ![](img/icons/arrow-right.svg){height=1em} wählt das nächste Konzept in der [Baumansicht] oder aus der aktuell ausgewählten [Liste](#listenansicht) aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel `Alt+n` (links) und `Alt+m` (rechts).
 
 ![](img/cocoda-concdet-de.png){width=55% .border .border-dark .center}
 
@@ -104,13 +107,13 @@ Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort od
 
 ### Baumansicht
 
-Neben der Browsing-Möglichkeit über [Vokabulardetails](#vokabulardetails) und [Konzeptdetails](#konzeptdetails) wird für monohierarchischen Vokabularen eine Baumdarstellung angeboten.
+Neben der Browsing-Möglichkeit über [Vokabulardetails](#vokabulardetails) und [Konzeptdetails](#konzeptdetails) wird für monohierarchischen Vokabularen eine ![](img/icons/sitemap-solid.svg){height=1em} Baumdarstellung angeboten.
 
 ![](img/cocoda-conctree-de.png){width=50% .border .border-dark .center}
 
 ### Listenansicht
 
-Neben der Baumansicht gibt es je nach Konfiguration verschiedene Listen von Konzepten. Dazu gehört die Liste von Konzepten die dem Stern ![](img/icons/star.svg){height=1em} als Favorit markiert wurden (siehe in der [Menüleiste](#menüleiste) oben rechts).
+An Stelle der Baumansicht kann die Liste von ![](img/icons/star.svg){height=1em} Schnellauswahl-Konzepten sowie je nach Konfiguration weitere ![](img/icons/list-solid.svg){height=1em} Konzept-Listen angzeigt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon ![](img/icons/sync-alt-solid.svg){height=1em}. Der Wechsel zwischen den Ansichten erfolgt über das Popup in der Komponente links oben ![](img/icons/chevron-up-solid.svg){height=1em}.
 
 ## Mappings
 
@@ -129,13 +132,13 @@ In den Einstellungen des Editors kann festgelegt werden nur 1-zu-1 Mappings zu e
 
 ![](img/cocoda-mappingeditor1-de.png){.border .border-dark}
 
-Der Editor zeigt an, ob und in welcher [Datenbank](#mapping-datenbanken) ein Mapping bereits gespeichert wurde bzw. gespeichert wird. Die Leiste am unteren Rand des Editors stellt folgende Aktionen bereit:
+Der Editor zeigt an, ob und in welcher [Datenbank](#mapping-datenbanken) ein Mapping gespeichert wurde bzw. gespeichert werden soll. Am unteren Rand des Editors stehen folgende Aktionen bereit:
 
 * ![](img/icons/exchange.svg){height=1em} Quell- und Zielkonzept des Mappings vertauschen
 * ![](img/icons/save.svg){height=1em} Mapping speichern (Tastaturkürzel `Ctrl+s`)
 * ![](img/icons/trash.svg){height=1em} Mapping löschen
 * ![](img/icons/clone.svg){height=1em} Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen
-* ![](img/icons/ban.svg){height=1em} Mapping leeren um ein neues Mapping zu erstellen (Tastaturkürzel `Ctr+Shift+c`)
+* ![](img/icons/ban.svg){height=1em} Mapping leeren um ein neues Mapping zu erstellen (`Ctrl+Shift+c`)
 
 Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen geändert werden.
 
@@ -153,7 +156,7 @@ aufrufbar.
 
 ### Konkordanzen
 
-Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.^[Eine Übersicht aller im Projekt coli-conc erfassten Konkordanzen gibt es unter <http://coli-conc.gbv.de/concordances/>] Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon ![](img/icons/external-link-square.svg){height=1em} öffnet die [Mapping-Suche] mit Filter auf der jeweiligen Konkordanz.
+Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.^[Siehe auch <http://coli-conc.gbv.de/concordances/> für eine Übersicht] Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon ![](img/icons/external-link-square.svg){height=1em} öffnet die [Mapping-Suche] mit Filter auf der jeweiligen Konkordanz.
 
 ![](img/cocoda-mapping-browser-con-de.png){width=100% .border .border-dark}
 
@@ -260,9 +263,11 @@ Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. 
 [Datenquellen]: #datenquellen-import-und-export
 [Menüleiste]: #benutzeroberfläche
 
-## Datenquellen, Import- und Export
+## Datenquellen, Import und Export
 
-Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Eine Übersicht aller pro Cocoda-Instanz konfigurierten Datenquellen ist in den Einstellungen einsehbar, darunter auch die [Mapping-Datenbanken] zur Speicherung von [Mappings] und/oder [Bewertungen]. Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Interesse und Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
+Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Daten und API-Aufrufe können zum Export über das Quelltext-Icon ![](img/icons/code.svg){height=1em} erreicht werden.
+
+Eine Übersicht aller pro Cocoda-Instanz konfigurierten Datenquellen ist in den Einstellungen einsehbar, darunter auch die [Mapping-Datenbanken] zur Speicherung von [Mappings] und/oder [Bewertungen]. Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Interesse und Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
 
 <!-- TODO: Import und Export von Vokabularen und Mappings genauer erklären-->
 
