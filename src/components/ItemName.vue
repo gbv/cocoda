@@ -16,7 +16,7 @@
       v-b-popover="showPopover && (itemDetails.length || !showText) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${$util.notation(item)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `<div class='fontSize-normal'><b>${$util.notation(item, null, true)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
       } : null"
       :to="url"
@@ -35,9 +35,9 @@
         <font-awesome-icon icon="puzzle-piece" />
       </span>
       <!-- Text for notation -->
-      <notation-text
-        :item="item"
-        :class="{ 'fontWeight-heavy': showText }" />
+      <span
+        :class="{ 'fontWeight-heavy': showText }"
+        v-html="$util.notation(item, null, true)" />
       <!-- Text for prefLabel -->
       <span
         v-if="showText || !notation"
@@ -219,46 +219,6 @@ export default {
     },
   },
 }
-
-import Vue from "vue"
-
-/**
- * Component that displays an item's notation.
- */
-Vue.component("notation-text", {
-  props: {
-    item: {
-      type: Object,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      ddc: {
-        uri : "http://dewey.info/scheme/edition/e23/",
-        identifier : [
-          "http://bartoc.org/en/node/241",
-        ],
-      },
-    }
-  },
-  computed: {
-    notation() {
-      return this.$util.notation(this.item)
-    },
-    fill() {
-      let fill = ""
-      // For DDC only: fill notation with trailing zeros
-      if (this.$jskos.compare(this.ddc, _.get(this, "item.inScheme[0]"))) {
-        while (this.notation.length + fill.length < 3) {
-          fill += "0"
-        }
-      }
-      return fill
-    },
-  },
-  template: "<span v-if='notation'>{{ notation }}<span class='notation-fill text-mediumLightGrey'>{{ fill }}</span></span>",
-})
 
 </script>
 

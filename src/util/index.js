@@ -91,23 +91,46 @@ let compareMappingsByConcepts = (mapping1, mapping2, fromTo) => {
  * Scheme notations will be uppercased.
  *
  * @param {*} item - a JSKOS Item
+ * @param {string} type - type of item (optional)
+ * @param {boolean} adjust - whether to adjust the notation according to certain rules (returns a HTML string!) (default: false)
  */
-let notation = (item, type) => {
+let notation = (item, type, adjust = false) => {
+  let notation
   if (item && item.notation && item.notation.length) {
-    let notation = item.notation[0]
+    notation = item.notation[0]
     if (jskos.isScheme(item) || type == "scheme") {
-      return notation.toUpperCase()
+      notation = notation.toUpperCase()
     }
-    return notation
   } else if (item && item.inScheme && item.inScheme[0] && item.inScheme[0].uriPattern && item.uri) {
     // Match URI against the scheme's uriPattern to find the notation
     let regex = new RegExp(item.inScheme[0].uriPattern)
     let match = item.uri.match(regex)
     if (match && match.length == 2) {
-      return match[1]
+      notation = match[1]
     }
   }
-  return ""
+  if (!notation) {
+    return ""
+  }
+  // Adjust notation for certain concept schemes -> return HTML as well
+  if (adjust) {
+    let fill = ""
+    // For DDC only: fill notation with trailing zeros
+    if (jskos.compare({
+      uri : "http://dewey.info/scheme/edition/e23/",
+      identifier : [
+        "http://bartoc.org/en/node/241",
+      ],
+    }, _.get(item, "inScheme[0]"))) {
+      while (notation.length + fill.length < 3) {
+        fill += "0"
+      }
+    }
+    if (fill.length) {
+      notation += `<span class='notation-fill text-mediumLightGrey'>${fill}</span>`
+    }
+  }
+  return notation
 }
 
 let fallbackLanguages = () => _.get(store, "state.config.languages", ["en", "de"])
