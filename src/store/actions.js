@@ -221,6 +221,21 @@ export default {
     }
     config.conceptLists = conceptLists
 
+    // Load concepts for concept lists if necessary
+    for (let list of config.conceptLists) {
+      if (_.isString(list.concepts)) {
+        let url = list.concepts
+        try {
+          let concepts = (await axios.get(url)).data
+          list.concepts = concepts
+        } catch (error) {
+          console.warn("Could not load concepts for list with URL:", url)
+          list.concepts = []
+        }
+        list.conceptsUrl = url
+      }
+    }
+
     // Save config
     commit({
       type: "setConfig",
