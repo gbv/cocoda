@@ -13,7 +13,8 @@
       </span>
       <a
         v-if="showDetails"
-        :href="registry.uri">
+        :href="registry.uri"
+        target="_blank">
         <font-awesome-icon icon="link" />
       </a>
       <span
