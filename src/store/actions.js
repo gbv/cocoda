@@ -13,7 +13,7 @@ try {
 }
 
 export default {
-  async loadConfig({ commit }, configFile) {
+  async loadConfig({ commit, dispatch }, configFile) {
     if (!configFile) {
       configFile = "./cocoda.json"
     }
@@ -199,42 +199,7 @@ export default {
       }
     }
 
-    // Load lists for "conceptLists"
-    let conceptLists = []
-    for (let list of config.conceptLists || []) {
-      if (_.isString(list)) {
-        // Load list from URL
-        try {
-          let url = list
-          list = (await axios.get(url)).data
-          list.url = url
-        } catch (error) {
-          console.warn("Could not load list from URL:", list)
-          list = null
-        }
-        if (list) {
-          conceptLists.push(list)
-        }
-      } else {
-        conceptLists.push(list)
-      }
-    }
-    config.conceptLists = conceptLists
-
-    // Load concepts for concept lists if necessary
-    for (let list of config.conceptLists) {
-      if (_.isString(list.concepts)) {
-        let url = list.concepts
-        try {
-          let concepts = (await axios.get(url)).data
-          list.concepts = concepts
-        } catch (error) {
-          console.warn("Could not load concepts for list with URL:", url)
-          list.concepts = []
-        }
-        list.conceptsUrl = url
-      }
-    }
+    config.conceptLists = await dispatch("loadConceptLists", config.conceptLists)
 
     // Save config
     commit({
@@ -285,6 +250,50 @@ export default {
       prop: "favoriteConcepts",
       value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other)),
     })
+  },
+
+  async loadConceptLists({ state }, _conceptLists) {
+    // Load lists for "conceptLists"
+    let conceptLists = []
+    for (let list of _conceptLists || (state.config && state.config.conceptLists) || []) {
+      if (_.isString(list)) {
+        list = { url: list }
+      }
+      if (list.url) {
+        // Load list from URL
+        try {
+          let url = list.url
+          list = (await axios.get(url)).data
+          list.url = url
+        } catch (error) {
+          console.warn("Could not load list from URL:", list)
+        }
+        if (list) {
+          conceptLists.push(list)
+        }
+      } else {
+        conceptLists.push(list)
+      }
+    }
+
+    // Load concepts for concept lists if necessary
+    for (let list of conceptLists) {
+      if (_.isString(list.concepts)) {
+        list.conceptsUrl = list.concepts
+      }
+      if (list.conceptsUrl) {
+        let url = list.conceptsUrl
+        try {
+          let concepts = (await axios.get(url)).data
+          list.concepts = concepts
+        } catch (error) {
+          console.warn("Could not load concepts for list with URL:", url)
+          list.concepts = []
+        }
+        list.conceptsUrl = url
+      }
+    }
+    return conceptLists
   },
 
 }

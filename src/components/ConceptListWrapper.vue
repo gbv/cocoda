@@ -85,6 +85,15 @@
         </div>
       </div>
     </b-popover>
+    <!-- Reload button for lists -->
+    <div
+      v-if="currentChoice.reloadButton"
+      class="dataModalButton fontSize-small conceptListWrapper-reloadButton"
+      @click="reloadList">
+      <font-awesome-icon icon="sync-alt" />
+    </div>
+    <!-- Full screen loading indicator -->
+    <loading-indicator-full v-if="loading" />
   </div>
 </template>
 
@@ -94,6 +103,7 @@ import ConceptList from "./ConceptList"
 import _ from "lodash"
 import ComponentSettings from "./ComponentSettings"
 import DataModalButton from "./DataModalButton"
+import LoadingIndicatorFull from "./LoadingIndicatorFull"
 
 import computed from "../mixins/computed"
 import objects from "../mixins/objects"
@@ -102,7 +112,7 @@ import hoverHandler from "../mixins/hover-handler"
 
 export default {
   name: "ConceptListWrapper",
-  components: { Minimizer, ConceptList, ComponentSettings,  DataModalButton },
+  components: { Minimizer, ConceptList, ComponentSettings,  DataModalButton, LoadingIndicatorFull },
   mixins: [computed, objects, dragandrop, hoverHandler],
   props: {
     /**
@@ -116,6 +126,7 @@ export default {
   data() {
     return {
       listSelectionPopoverShow: false,
+      loading: 0,
     }
   },
   computed: {
@@ -176,9 +187,10 @@ export default {
           concepts: list.concepts.map(concept => this.getObject(concept, { type: "concept" })),
           showChildren: false,
           showScheme: true,
-          url: list.url,
+          url: list.url || list.conceptsUrl,
           available: list.concepts.length > 0,
         }
+        choice.reloadButton = choice.url != null
         choices.push(choice)
         index += 1
       }
@@ -327,6 +339,16 @@ export default {
         },
       ]
     },
+    async reloadList() {
+      this.loading += 1
+      let conceptLists = await this.$store.dispatch("loadConceptLists")
+      this.$store.commit({
+        type: "setConfig",
+        option: "conceptLists",
+        value: conceptLists,
+      })
+      this.loading -= 1
+    },
   },
 }
 </script>
@@ -340,6 +362,10 @@ export default {
 .conceptListWrapper .componentSettings {
   right: 3px;
   bottom: 7px;
+}
+.conceptListWrapper-reloadButton {
+  right: 42px !important;
+  bottom: 6px !important;
 }
 
 .conceptListWrapper-listSelectionButton {
