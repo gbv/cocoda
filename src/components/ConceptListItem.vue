@@ -53,7 +53,7 @@
         <span
           v-if="concept && concept.type && concept.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
           v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: $util.delay.medium }"
-          :class="'fontSize-'+(fontSize || 'normal')">
+          class="fontSize-normal">
           <font-awesome-icon icon="puzzle-piece" />
         </span>
         <span
