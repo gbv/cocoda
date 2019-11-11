@@ -10,6 +10,10 @@ all: $(BUILD_INFO)
 	make -C en
 	make -C de
 
+pdfs: $(BUILD_INFO)
+	make -C en pdf
+	make -C de pdf
+
 $(BUILD_INFO):
 	npm run build-info
 
