@@ -1,16 +1,27 @@
-dist: bionic
+dist: bionic # Ubuntu 18.04
+
 language: node_js
 node_js:
 - '11'
 - '8'
+
 cache:
   directories:
   - "$HOME/.npm"
-before_install:
-- sudo apt-get install pandoc
+  - "$HOME/.local"
+
+before_install: >- # install Pandoc into ~/.local for document generation
+  mkdir -p "$HOME/.local/bin";
+  if [[ ! -f "$HOME/.local/bin/pandoc" ]]; then       
+    curl -L https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-1-amd64.deb > pandoc.deb &&
+    dpkg -x pandoc.deb pandoc && cp pandoc/usr/bin/* $HOME/.local/bin
+  fi;
+  export PATH="$HOME/.local/bin:$PATH"
+
 install:
 - npm i -g npm@5.10.0
 - travis_retry npm ci
+
 script:
 - npm run lint
 - npm run build
@@ -18,6 +29,9 @@ script:
 - npm run styleguide:build
 - cp -R cocoda styleguide/dev
 - zip -r "cocoda-$(git describe --tags).zip" cocoda
+
+# also requires rsvg-convert (apt-get install librsvg2-bin)
+
 deploy:
 - provider: pages
   local_dir: styleguide
