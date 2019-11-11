@@ -184,10 +184,12 @@ export default {
       for (let list of this.config.conceptLists || []) {
         let notation = this.$util.notation(list), label = this.$util.prefLabel(list), tooltip = ""
         if (notation) {
-          tooltip = `<b>${label}</b><br>`
+          if (label) {
+            tooltip = `<b>${label}</b><br>`
+          }
           label = notation
         }
-        tooltip += this.$util.lmContent(list, "scopeNote")
+        tooltip += this.$util.lmContent(list, "scopeNote") || ""
         let choice = {
           id: `custom-${index}`,
           label,
