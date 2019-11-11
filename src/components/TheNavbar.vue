@@ -180,9 +180,7 @@
             </span>
           </div>
         </template>
-        <div
-          class="font-default text-dark color-primary-0-bg fontSize-normal"
-          style="min-width: 200px;">
+        <div class="font-default text-dark color-primary-0-bg fontSize-normal">
           <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
             <p
               v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
@@ -257,8 +255,7 @@
         <hr>
         <div
           v-if="$store.getters.getCurrentRegistry"
-          class="font-default text-dark color-primary-0-bg fontSize-normal"
-          style="min-width: 240px;">
+          class="font-default text-dark color-primary-0-bg fontSize-normal">
           <p
             v-for="registry in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
             :key="`navbar-mappingRegistry-${registry.uri}`"
@@ -496,7 +493,8 @@ hr {
   color: @color-select;
 }
 .navbar-dropdown-selectable {
-  word-break: break-all;
+  word-break: default;
+  white-space: nowrap;
   user-select: none;
   padding: 3px 10px;
   padding-right: 12px;
