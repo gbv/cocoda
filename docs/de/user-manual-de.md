@@ -23,8 +23,6 @@ Die **Menüleiste** enthält (je nach Konfiguration):
 * ![](img/icons/user-solid.svg){height=1em} [Benutzeraccount](#benutzeraccounts) und -name. Nach erfolgreichem Login wird der Benutzername fett markiert und per Schnellauswahl lässt sich die Identität zur Speicherung von [Mappings] und [Bewertungen] wechseln
 * ![](img/icons/cog.svg){height=1em} [Einstellungen] mit Schnellauswahl der [Datenbank] in die Mappings und Bewertungen gespeichert werden
 
-[Datenbank]: #mapping-datenbanken
-
 Der restliche Bildschirm ist in drei Bereiche mit mehreren **Komponenten** aufgeteilt:
 
 * Komponenten zur Auswahl von [Vokabularen und Konzepten](#vokabulare-und-konzepte) Links und Rechts
@@ -113,7 +111,7 @@ Neben der Browsing-Möglichkeit über [Vokabulardetails](#vokabulardetails) und 
 
 ### Listenansicht
 
-An Stelle der Baumansicht kann die Liste von ![](img/icons/star.svg){height=1em} Schnellauswahl-Konzepten sowie je nach Konfiguration weitere ![](img/icons/list-solid.svg){height=1em} Konzept-Listen angzeigt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon ![](img/icons/sync-alt-solid.svg){height=1em}. Der Wechsel zwischen den Ansichten erfolgt über das Popup in der Komponente links oben ![](img/icons/chevron-up-solid.svg){height=1em}.
+Statt der Baumansicht können über ein Popup ![](img/icons/angle-up-solid.svg){height=1em} die Liste von Schnellauswahl-Konzepten ![](img/icons/star.svg){height=1em} sowie je nach Konfiguration weitere ![](img/icons/list-solid.svg){height=1em} Konzept-Listen ausgewählt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon ![](img/icons/sync-alt-solid.svg){height=1em}.
 
 ## Mappings
 
@@ -122,7 +120,7 @@ Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewe
 * [Mapping-Editor](#mapping-editor) zum Erstellen und Bearbeiten von Mappings
 * Mapping-Browser bestehend aus Bereichen für [Konkordanzen], [Suche](#mapping-suche) und [Navigator] für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen
 
-Die Mappings können außerdem je nach konfiguration mit [Bewertungen] versehen werden. Mappings und Bewertungen können in verschiedenen Datenbanken ([Mapping-Datenbanken](#mapping-datenbanken)) gespeichert werden.
+Die Mappings können außerdem je nach konfiguration mit [Bewertungen] versehen werden. Mappings und Bewertungen können in verschiedenen [Mapping-Datenbanken] gespeichert werden.
 
 ### Mapping-Editor
 
@@ -137,12 +135,12 @@ Der Editor zeigt an, ob und in welcher [Datenbank](#mapping-datenbanken) ein Map
 * ![](img/icons/exchange.svg){height=1em} Quell- und Zielkonzept des Mappings vertauschen
 * ![](img/icons/save.svg){height=1em} Mapping speichern (Tastaturkürzel `Ctrl+s`)
 * ![](img/icons/trash.svg){height=1em} Mapping löschen
-* ![](img/icons/clone.svg){height=1em} Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen
+* ![](img/icons/clone-solid.svg){height=1em} Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen
 * ![](img/icons/ban.svg){height=1em} Mapping leeren um ein neues Mapping zu erstellen (`Ctrl+Shift+c`)
 
 Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen geändert werden.
 
-Links unten im Editor steht wer das Mapping erstellt hat bzw. bei neuen Mappings mit welchem Benutzernamen das Mapping gespeichert wird. In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende Mapping-Typen stehen zur Auswahl:
+Links unten im Editor steht wer das Mapping erstellt hat bzw. bei neuen Mappings mit welchem Benutzernamen das Mapping gespeichert wird. In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende **Mapping-Typen** stehen zur Auswahl:
 
 * **=** exakte Übereinstimmung: gleiche Bedeutung
 * **≈** hohe Übereinstimmung: in etwa gleiche Bedeutung
@@ -193,83 +191,76 @@ Mit dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icon
 * Bidirektionale Suche (Quell- und Ziel- auch vertauscht suchen)
 * [Mapping-Datenbanken] in denen gesucht werden soll
 
-*Achtung:* sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu viele Filter gesetzt sind. Der Leeren-Button ![](img/icons/ban.svg){height=1em} setzt alle Filter zurück. Das Share-Icon ![](img/icons/share-alt-square-solid.svg){height=1em} beinhaltet die URL auf die aktuelle Suche um diese als Bookmark zu speichern oder weiterzugeben.
+Sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu viele Filter gesetzt sind. Der Leeren-Button ![](img/icons/ban.svg){height=1em} setzt alle Filter zurück. Das Share-Icon ![](img/icons/share-alt-square-solid.svg){height=1em} beinhaltet die URL auf die aktuelle Suche um diese als Bookmark zu speichern oder weiterzugeben.
 
-Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt. Datenquellen in die geschrieben werden kann sind durch einen Stift ![](img/icons/pencil-alt-solid.svg){height=1em} gekennzeichnet. Innerhalb einer Ergebnisliste werden je nach Konfiguration folgende Aktionen angeboten:
-
-<!--
-![Mapping-Suche Reiter im Mapping-Browser](img/cocoda-mapping-browser-sea-de.png){width=100% .border .border-dark}
-
-Hier gibt es eine umfangreiche Auswahl von Suchschlitzen, mit denen man nach allem Suchen kann. Alternativ kann man mit einem Klick auch die [Datenbanken](#datenbanken) auswählen, in welchen nur gesucht werden soll.
--->
-
-* ![](img/icons/info-circle.svg){height=1em} Detailinformationen zum Mapping
-* ![](img/icons/edit.svg){height=1em} Mapping bearbeiten
-* ![](img/icons/clone.svg){height=1em} Mapping kopieren
-* ![](img/icons/trash.svg){height=1em} Mapping löschen
+Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt und entspricht der Ansicht im Mapping-Navigator. Die einzelnen Quellen können durch Klick auf ihren Namen ein- und ausgeblendet werden.
 
 ### Navigator
 
-Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Die Anzeige der einzelnen Mappings entspricht der [Mapping-Suche]. Die einzelnen Quellen können durch Klick ein- und ausgeblendet werden.
+Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen können durch Klick auf ihre Kürzel ein- und ausgeblendet werden. Datenquellen in die geschrieben werden kann sind durch einen Stift ![](img/icons/pencil-alt-solid.svg){height=1em} gekennzeichnet. Zu jedem Mapping bzw. Mapping-Vorschlag werden je angezeigt:
 
-<!--
-![Mapping-Navigator Reiter im Mapping-Browser](img/cocoda-mapping-browser-nav-de.png){width=100% .border .border-dark}
--->
+* Quellvokabular und -Konzept
+* Mapping-Typ
+* Zielvokabular und -Konzept
+* Erstellt von wem und wann
+
+Sowie je nach Einstellungen:
+
+* [Bewertungen]
+* ![](img/icons/info-circle.svg){height=1em} Detailinformationen zum Mapping
+* ![](img/icons/edit.svg){height=1em} Mapping bearbeiten
+* ![](img/icons/clone-solid.svg){height=1em} Mapping oder Vorschlag in den Mapping-Editor kopieren
+* ![](img/icons/save.svg){height=1em} Mapping-Vorschlag speichern
+* ![](img/icons/trash.svg){height=1em} Mapping löschen
 
 ### Bewertungen
 
-Je nach Konfiguration ist es möglich über Mappings abzustimmen und/oder zu bestätigen. Diese Bewertungen erfolgen Benutzerbezogen, eigene Bewertungen können also wieder entfernt werden.
+Grundsätzlich sind zwei Arten von Bewertungen möglich, wobei es von der Konfiguration abhängt wer welche Bewertungen abgeben kann:
 
-* ![](img/icons/check.svg){height=1em} bestätigtes Mapping
-* ![](img/icons/thumbs-up.svg){height=1em} positive Bewertung
-* ![](img/icons/thumbs-down.svg){height=1em} negative Bewertung
+* Bewertung durch Zustimmung ![](img/icons/thumbs-up.svg){height=1em} bzw. Widerspruch ![](img/icons/thumbs-down.svg){height=1em}
+* Bewertung durch Bestätigung ![](img/icons/check.svg){height=1em} (in der Regel nur für ausgewählte Accounts)
 
-*Diese Funktion befindet sich noch in Entwicklung.*
-
-### Mapping-Datenbanken
-
-Eine Mapping-Datenbank ist eine Datenbank in der Mappings und/oder Bewertungen gespeichert werden können. Die jeweils ausgewählte Datenbank ist gelb hinterlegt und kann über die [Menüleiste] oder durch Klick auf den Namen der Datenbank im Mapping-Browser ausgewählt werden.
-
-<!--
-![Datenbanken im Mapping-Navigator Reiter](img/cocoda-mapping-browser-reg-de.png){width=100% .border .border-dark}
-
-Mit einem Klick auf die Buttons können die Datenbanken des [Mapping-Browsers](#mapping-browser) ausgeblendet werden.
-
-**Datenbanken:**
-- L: Lokal, Mappings werden im Browser gespeichert
-- C: Konkordanz-Register, öffentliche Datenbank des GBV
-- W: Wikidata-Mappings, Wikidata-Mappings im [JSKOS-Format](https://gbv.github.io/jskos/jskos)
-- CR: coli-conc-Vorschläge, Vorschläge auf Grundlage der Benennungen
-- CC: ccmapper-Vorschläge, Verknüpfung mit pansofts [CCMapper](https://ccmapper-de.pansoft.de/)
-- CO: Katalogvorschläge, Verknüpfung mit dem GVK welche sonstigen Notationen zum Gesuchten passen
-
--->
+Zustimmungen und Ablehnungen werden als `+1` bzw. `-1` gewertet und in ihrer Summe angezeigt. Bei Bestätigungen reicht *eine* Bewertung damit statt der Summe ein Haken ![](img/icons/check.svg){height=1em} angezeigt wird. Alle Bewertungen erfolgen Benutzerbezogen, es ist also einsehbar wer wann welche Bewertung abgegeben hat. Eigene Bewertungen können wieder entfernt werden.
 
 ## Einstellungen
 
 Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. Darüber hinaus können einige Komponenten mit dem Icon ![](img/icons/cog.svg){height=1em} konfiguriert werden. Da Cocoda keine [Benutzeraccounts] verwaltet werden die Einstellungen nur lokal im Browser gespeichert. Die Einstellungen sind in Bereiche unterteilt:
 
-* Account: Zur Auswahl der Identität unter der [Mappings] und [Bewertungen] gespeichert werden sollen
-
-* Datenquellen: enthält eine Übersicht aller verfügbaren [Datenquellen] und [Mapping-Datenbanken]
-
+* Account: Identität zur Speicherung von [Mappings] und [Bewertungen]
+* Datenquellen: Übersicht aller verfügbaren [Datenquellen]
 * Oberfläche: Einstellungen zur [Benutzeroberfläche] wie die Sprache
+* Tastaturkürzel: vorhandene Tastaturkürzel
+* Lokale Mappings: Import und Export von im Browser gespeicherten Mappings
 
-* Tastaturkürzel: zeigt vorhandene Tastaturkürzel an
-
-* Lokale Mappings: ermöglicht den Import und Export von im Browser gespeicherten Mappings
-  (falls in der Cocoda-Instanz vorhanden)
-
-[Datenquellen]: #datenquellen-import-und-export
 [Menüleiste]: #benutzeroberfläche
 
-## Datenquellen, Import und Export
+## Datenquellen
 
-Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Daten und API-Aufrufe können zum Export über das Quelltext-Icon ![](img/icons/code.svg){height=1em} erreicht werden.
+Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Die Daten und API-Aufrufe sind jeweils über das Quelltext-Icon ![](img/icons/code.svg){height=1em} erreichbar. Die je nach Instanz konfigurieren Datenquellen sind in den Einstellungen einsehbar.
 
-Eine Übersicht aller pro Cocoda-Instanz konfigurierten Datenquellen ist in den Einstellungen einsehbar, darunter auch die [Mapping-Datenbanken] zur Speicherung von [Mappings] und/oder [Bewertungen]. Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Interesse und Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
+### Mapping-Datenbanken
 
-<!-- TODO: Import und Export von Vokabularen und Mappings genauer erklären-->
+[Datenbank]: #mapping-datenbanken
+
+Mapping-Datenbanken dienen der Speicherung von [Mappings] und [Bewertungen]. Die jeweils ausgewählte Datenbank ist gelb hinterlegt und kann über die [Menüleiste] oder durch Klick auf den Namen der Datenbank im Mapping-Browser ausgewählt werden. Die meisten Instanzen enthalten diese Datenbanken:
+
+* **L** Lokal: Mappings werden im Browser gespeichert
+* **C** Konkordanz-Register: öffentliche Datenbank aller im Projekt coli-conc gesammelten Mappings und Bewertungen
+* **W** Wikidata-Mappings: Lese- und Schreibzugriff auf Mappings in Wikidata
+
+### Weitere Datenquellen
+
+Vokabulare und Mapping-Vorschläge können per JSKOS-API, per Skosmos-API und per OpenRefine Reconciliation API in eine Cocoda-Instanz eingebunden werden. Das Hinzufügen weiterer Datenquellen über die Benutzeroberfläche ist bislang nicht möglich.
+
+### Export und Import
+
+[JSKOS]: https://gbv.github.io/jskos/jskos.html
+
+Zum Export verwenden sie das das Quelltext-Icon ![](img/icons/code.svg){height=1em} um Daten in [JSKOS] und CSV-Format herunterzuladen bzw. API-Aufrufe zum Abruf der Daten zu ermitteln.
+
+Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
+
+Der Massenimport von Mappings ist über die Weboberfläche bislang nur in der Datenbank **L** Lokal möglich.
 
 ## Weitere Informationen
 
