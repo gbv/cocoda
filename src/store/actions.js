@@ -291,6 +291,8 @@ export default {
           list.concepts = []
         }
         list.conceptsUrl = url
+      } else {
+        list.concepts = []
       }
     }
     return conceptLists
