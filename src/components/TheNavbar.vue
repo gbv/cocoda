@@ -304,6 +304,7 @@
 import TheSettings from "./TheSettings"
 import RegistryInfo from "./RegistryInfo"
 import MappingTable from "./MappingTable"
+import ItemName from "./ItemName"
 import _ from "lodash"
 
 // Import mixins
@@ -318,7 +319,7 @@ import computed from "../mixins/computed"
 export default {
   name: "TheNavbar",
   components: {
-    TheSettings, RegistryInfo, MappingTable,
+    TheSettings, RegistryInfo, MappingTable, ItemName,
   },
   mixins: [auth, objects, dragandrop, computed],
   props: {
