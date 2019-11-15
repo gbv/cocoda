@@ -53,14 +53,20 @@ else
 fi
 
 # create and move user manual
-echo "Creating user manual (HTML)..."
-npm run manual
-echo
-if [ $(git show --pretty="" --name-only HEAD docs/) ]; then
-  echo "Creating user manual (PDF)..."
-  npm run manual-pdf
+PANDOC=$(pandoc --version 2>/dev/null |  awk 'NR==1 && $2>=2.3 {print}'")
+if [ -z "$PANDOC" ]; then
+  echo "Pandoc 2 required to build user manual! Skipping documentation!"
+  echo
+else
+  echo "Creating user manual (HTML)..."
+  npm run manual
+  echo
+  if [ $(git show --pretty="" --name-only HEAD docs/) ]; then
+    echo "Creating user manual (PDF)..."
+    npm run manual-pdf
+  fi
+  cp docs/*/user-manual-*.{html,pdf} dist/
 fi
-cp docs/*/user-manual-*.{html,pdf} dist/
 
 # # delete config file if it was generated during this script
 [ ! $USERCONFIG ] && echo "Removing config generated during build..." && rm ./config/cocoda.json
