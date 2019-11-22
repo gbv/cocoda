@@ -2,6 +2,9 @@
 title: Cocoda-Benutzerhandbuch
 lang: de
 titlepage: true
+classoption:
+- openleft
+- twoside
 papersize: a4
 geometry:
 - inner=2.5cm
