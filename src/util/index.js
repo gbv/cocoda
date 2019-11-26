@@ -105,7 +105,7 @@ let notation = (item, type, adjust = false) => {
     // Match URI against the scheme's uriPattern to find the notation
     let regex = new RegExp(item.inScheme[0].uriPattern)
     let match = item.uri.match(regex)
-    if (match && match.length == 2) {
+    if (match && match.length >= 2) {
       notation = match[1]
     }
   }
