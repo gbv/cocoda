@@ -316,6 +316,19 @@ export default {
             this.isValid = false
             this.searchResult = [["Error! Could not reach the API. " + error]]
           }
+        }).then(() => {
+          if (searchQuery == this.searchQuery) {
+            // If possible, add searchQuery as notation only the the result
+            const scheme = new this.$jskos.ConceptScheme(this.scheme)
+            const concept = scheme.conceptFromNotation(searchQuery)
+            if (concept && !this.searchResult.find(result => _.last(result) == concept.uri)) {
+              this.searchResult.push([
+                searchQuery,
+                null,
+                concept.uri,
+              ])
+            }
+          }
         })
     },
     /**
