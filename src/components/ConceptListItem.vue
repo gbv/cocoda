@@ -52,7 +52,7 @@
         <!-- Show icon for concepts where no data could be loaded -->
         <span
           v-if="concept && concept.__DETAILSLOADED__ == -1"
-          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept', [this.$util.prefLabel(scheme, null, false)]), delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: $util.delay.medium }"
           class="fontSize-small">
           <font-awesome-icon icon="bolt" />
         </span>
