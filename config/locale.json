@@ -99,7 +99,7 @@
     "itemDetail": {
       "pleaseSelect": "Please select a scheme or concept.",
       "combinedConcept": "combined concept",
-      "noData": "No data available! It is possible that this concept is not a valid member of {0}."
+      "unknownConcept": "unknown concept"
     },
     "mappingEditor": {
       "title": "Mapping Editor",
@@ -495,7 +495,7 @@
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
       "combinedConcept": "zusammengesetztes Konzept",
-      "noData": "Keine Daten verfügbar! Möglicherweise ist dieses Konzept kein valides Konzept in {0}."
+      "unknownConcept": "unbekanntes Konzept"
     },
     "mappingBrowser": {
       "title": "Mapping-Browser",
