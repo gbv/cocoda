@@ -292,7 +292,7 @@ export default {
         }
         list.conceptsUrl = url
       } else {
-        list.concepts = []
+        list.concepts = list.concepts || []
       }
     }
     return conceptLists
