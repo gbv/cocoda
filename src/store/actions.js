@@ -294,6 +294,15 @@ export default {
       } else {
         list.concepts = list.concepts || []
       }
+      // Imply scheme from list if possible
+      let scheme = (list.schemes || [])[0]
+      if (scheme) {
+        for (let concept of list.concepts) {
+          if (!concept.inScheme || concept.inScheme.length == 0) {
+            concept.inScheme = [scheme]
+          }
+        }
+      }
     }
     return conceptLists
   },

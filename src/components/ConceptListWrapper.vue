@@ -183,6 +183,11 @@ export default {
       ]
       let index = 0
       for (let list of this.config.conceptLists || []) {
+        // Skip list if selected scheme is not part of list
+        if (list.schemes && !list.schemes.find(scheme => this.$jskos.compare(scheme, this.selected.scheme[this.isLeft]))) {
+          index += 1
+          continue
+        }
         let notation = this.$util.notation(list), label = this.$util.prefLabel(list), tooltip = ""
         if (notation) {
           if (label) {
