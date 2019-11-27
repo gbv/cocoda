@@ -82,6 +82,11 @@
             @dragend="dragEnd"
             @click="chooseResult(i)"
             @mouseover="mouseover(i)">
+            <span
+              v-if="result[1] == '###conceptWithoutData###'"
+              class="fontSize-verySmall">
+              <font-awesome-icon icon="bolt" />
+            </span>
             <span v-html="highlightQueryInResult(result[0])" />
           </li>
           <li
@@ -324,7 +329,8 @@ export default {
             if (concept && !this.searchResult.find(result => _.last(result) == concept.uri)) {
               this.searchResult.push([
                 searchQuery,
-                null,
+                // TODO: Maybe solve this more elegantly, but as far as I know, this field is not used anywhere else at the moment.
+                "###conceptWithoutData###",
                 concept.uri,
               ])
             }

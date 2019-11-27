@@ -441,6 +441,8 @@ export default {
       this.showAncestors = false
       // Load GND terms
       this.loadGndTerms()
+      // Load details if not loaded
+      this.loadConcepts([this.item])
     },
     async loadGndTerms() {
       // TODO: Refactoring necessary!

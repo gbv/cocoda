@@ -119,7 +119,7 @@ export default {
 
         let type = options.type || (jskos.isScheme(object) ? "scheme" : "concept")
         // Set __DETAILSLOADED__ property
-        object.__DETAILSLOADED__ = object.__DETAILSLOADED__ != null ? object.__DETAILSLOADED__ : false
+        object.__DETAILSLOADED__ = object.__DETAILSLOADED__ != null ? object.__DETAILSLOADED__ : 0
         // __SAVED__ means it was saved in objects
         object.__SAVED__ = true
 
@@ -240,7 +240,7 @@ export default {
           let promise = provider.getSchemes().then(results => {
             for (let scheme of results) {
               // Add scheme specific custom properties
-              scheme.__DETAILSLOADED__ = true
+              scheme.__DETAILSLOADED__ = 1
               scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
               // Check if scheme is already in store
               // TODO: This is currently not possible from here!
@@ -405,7 +405,7 @@ export default {
         let uris = []
         for (let concept of concepts) {
           concept = this.saveObject(concept)
-          this.$set(concept, "__DETAILSLOADED__", true)
+          this.$set(concept, "__DETAILSLOADED__", 1)
           this.adjustConcept(concept)
           uris = uris.concat(this.$jskos.getAllUris(concept))
         }
@@ -423,6 +423,7 @@ export default {
           let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
           if (index >= 0) {
             let concept =  this.loadingConcepts[index]
+            this.$set(concept, "__DETAILSLOADED__", -1)
             this.$delete(this.loadingConcepts, index)
             this.erroredConcepts.push(concept)
           }
