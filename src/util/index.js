@@ -101,13 +101,10 @@ let notation = (item, type, adjust = false) => {
     if (jskos.isScheme(item) || type == "scheme") {
       notation = notation.toUpperCase()
     }
-  } else if (item && item.inScheme && item.inScheme[0] && item.inScheme[0].uriPattern && item.uri) {
-    // Match URI against the scheme's uriPattern to find the notation
-    let regex = new RegExp(item.inScheme[0].uriPattern)
-    let match = item.uri.match(regex)
-    if (match && match.length >= 2) {
-      notation = match[1]
-    }
+  } else if (item && item.inScheme && item.inScheme[0] && item.uri) {
+    // Try to imply notation from scheme and concept URI
+    const scheme = new jskos.ConceptScheme(item && item.inScheme && item.inScheme[0])
+    notation = scheme.notationFromUri(item.uri)
   }
   if (!notation) {
     return ""
