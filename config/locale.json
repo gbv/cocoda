@@ -23,7 +23,8 @@
       "showMappingSearch": "Show Mapping Search",
       "tooManyMappings": "There are {count} local mappings stored in your browser. A large number of local mappings can impact performance of the tool.",
       "undo": "undo",
-      "type": "Type"
+      "type": "Type",
+      "noRegistries": "There are no providers configured. Please consult the <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>documentation</a> to find out how to configure a provider."
     },
     "navbar": {
       "trashTitle": "Recently Deleted Mappings",
@@ -335,7 +336,8 @@
       "showMappingSearch": "Zeige die Mapping-Suche",
       "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokalen Mappings kann die Performance des Tools beeinflussen.",
       "undo": "rückgängig",
-      "type": "Typ"
+      "type": "Typ",
+      "noRegistries": "Es sind keine Datenquellen konfiguriert. In der <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>Dokumentation</a> ist beschrieben, wie man diese konfiguriert."
     },
     "navbar": {
       "trashTitle": "Kürzlich gelöschte Mappings",

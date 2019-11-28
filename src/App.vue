@@ -41,9 +41,16 @@
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loadingGlobal || loading" />
     <div
-      v-if="configLoaded && schemes.length"
+      v-if="configLoaded"
       class="main">
-      <div class="flexbox-row">
+      <div
+        v-if="(config.registries || []).length == 0"
+        class="flexbox-row noRegistries fontSize-large">
+        <div v-html="$t('general.noRegistries')" />
+      </div>
+      <div
+        v-else-if="schemes.length"
+        class="flexbox-row">
         <!-- Concept components left side -->
         <div
           v-for="(isLeft, index) in [true, false]"
@@ -840,11 +847,20 @@ html, body {
   text-align: left;
   padding: 40px 20px 40px 30px;
 }
-.placeholderComponentCenter > div {
+.noRegistries > div, .placeholderComponentCenter > div {
   text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+.noRegistries > div {
+  position: absolute;
+  width: 100%;
+}
+.noRegistries {
+  background-color: @color-background;
+  width: 100%;
+  height: 100%;
 }
 
 .alertsContainer {
