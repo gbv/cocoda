@@ -75,7 +75,10 @@
             v-for="(result, i) in searchResult"
             :id="uniqueID + '-searchResult-' + i"
             :key="i"
-            :class="{ 'conceptSearch-selected': i === searchSelected }"
+            :class="{
+              'conceptSearch-selected': i === searchSelected,
+              'font-italic': result[1] == '###conceptWithoutData###',
+            }"
             class="conceptSearch-results-item"
             draggable="true"
             @dragstart="dragStartResult(result, $event)"
@@ -328,7 +331,7 @@ export default {
             const concept = scheme.conceptFromNotation(searchQuery)
             if (concept && !this.searchResult.find(result => _.last(result) == concept.uri)) {
               this.searchResult.push([
-                searchQuery,
+                `${searchQuery} ${this.$t("itemDetail.unknownConcept")}`,
                 // TODO: Maybe solve this more elegantly, but as far as I know, this field is not used anywhere else at the moment.
                 "###conceptWithoutData###",
                 concept.uri,
