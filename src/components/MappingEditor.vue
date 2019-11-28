@@ -454,7 +454,7 @@ export default {
     },
     saveMapping() {
       if (!this.canSaveMapping) return false
-      if (this.creatorName && this.creatorName != "") {
+      if (this.creator) {
         // Set creator
         this.setCreator()
       } else {
