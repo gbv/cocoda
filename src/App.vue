@@ -96,11 +96,13 @@
 
         <!-- Slider -->
         <resizing-slider
+          v-if="mappingRegistries.length > 0"
           :is-column="true"
           class="order2" />
 
         <!-- Mapping tools and occurrences browser -->
         <div
+          v-if="mappingRegistries.length > 0"
           id="mappingTool"
           class="mappingTool order3">
           <div
@@ -176,6 +178,7 @@
 
         <!-- Slider -->
         <resizing-slider
+          v-if="mappingRegistries.length > 0"
           :is-column="true"
           class="order4" />
       </div>
@@ -261,6 +264,13 @@ export default {
     },
     configLoaded() {
       return this.$store.state.configLoaded
+    },
+    mappingRegistries() {
+      let registries = this.config.registries.filter(registry =>
+        registry.provider &&
+        (registry.provider.has.mappings || registry.provider.has.occurrences),
+      )
+      return registries
     },
   },
   watch: {
