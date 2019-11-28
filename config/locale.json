@@ -18,13 +18,13 @@
       "or": "or",
       "of": "of",
       "resizingSlider": "drag to resize cards",
-      "malformedConfig": "The configuration file {file} could not be loaded. The default config will be used instead.",
+      "malformedConfig": "The configuration file {configFile} could not be loaded!",
       "showConcordances": "Show Concordances",
       "showMappingSearch": "Show Mapping Search",
       "tooManyMappings": "There are {count} local mappings stored in your browser. A large number of local mappings can impact performance of the tool.",
       "undo": "undo",
       "type": "Type",
-      "noRegistries": "There are no providers configured. Please consult the <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>documentation</a> to find out how to configure a provider."
+      "noRegistries": "The configuration contains no providers. Please consult the <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>documentation</a> how to configure providers!"
     },
     "navbar": {
       "trashTitle": "Recently Deleted Mappings",
@@ -331,13 +331,13 @@
       "or": "oder",
       "of": "von",
       "resizingSlider": "ziehen, um Komponenten-Größen anzupassen",
-      "malformedConfig": "Die Konfigurationsdatei {file} konnte nicht geladen werden. Es wird die Standardkonfiguration verwendet.",
+      "malformedConfig": "Die Konfigurationsdatei {configFile} konnte nicht geladen werden!",
       "showConcordances": "Zeige Konkordanz-Liste",
       "showMappingSearch": "Zeige die Mapping-Suche",
       "tooManyMappings": "Es sind {count} lokale Mappings im Browser gespeichert. Eine große Anzahl an lokalen Mappings kann die Performance des Tools beeinflussen.",
       "undo": "rückgängig",
       "type": "Typ",
-      "noRegistries": "Es sind keine Datenquellen konfiguriert. In der <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>Dokumentation</a> ist beschrieben, wie man diese konfiguriert."
+      "noRegistries": "Es sind keine Datenquellen konfiguriert! Bitte entnehmen sie der <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>Dokumentation</a> wie Datenquellen konfiguriert werden können!"
     },
     "navbar": {
       "trashTitle": "Kürzlich gelöschte Mappings",

@@ -44,9 +44,9 @@
       v-if="configLoaded"
       class="main">
       <div
-        v-if="(config.registries || []).length == 0"
-        class="flexbox-row noRegistries fontSize-large">
-        <div v-html="$t('general.noRegistries')" />
+        v-if="config.error"
+        class="flexbox-row configError fontSize-large">
+        <div v-html="$t(`general.${config.error}`, config)" />
       </div>
       <div
         v-else-if="schemes.length"
@@ -857,17 +857,17 @@ html, body {
   text-align: left;
   padding: 40px 20px 40px 30px;
 }
-.noRegistries > div, .placeholderComponentCenter > div {
+.configError > div, .placeholderComponentCenter > div {
   text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
 }
-.noRegistries > div {
+.configError > div {
   position: absolute;
   width: 100%;
 }
-.noRegistries {
+.configError {
   background-color: @color-background;
   width: 100%;
   height: 100%;

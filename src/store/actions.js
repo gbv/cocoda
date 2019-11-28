@@ -26,15 +26,9 @@ export default {
     }
     if (!_.isObject(userConfig)) {
       console.error(`Error loading config from ${configFile}: Data is not an object.`)
-      // Show UI alert
-      commit("alerts/add", {
-        variant: "danger",
-        countdown: 0,
-        text: i18n.t("general.malformedConfig", { file: configFile }),
-      }, { root: true })
-      userConfig = {}
+      userConfig = { error: "malformedConfig" }
     }
-    config = Object.assign({}, defaultConfig, userConfig)
+    config = Object.assign({ configFile }, defaultConfig, userConfig)
     if (!config.overrideRegistries) {
       config.registries = [].concat(userConfig.registries || [], defaultConfig.registries || [])
       let registries = []
@@ -82,6 +76,10 @@ export default {
     }
     // Filter out registries where no provider could be initialized
     config.registries = config.registries.filter(registry => registry.provider != null)
+
+    if (!config.registries.length && !config.error) {
+      config.error = "noRegistries"
+    }
 
     // Override keyboard shortcuts
     let shortcuts = []
