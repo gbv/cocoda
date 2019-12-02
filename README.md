@@ -7,9 +7,7 @@
 
 > A web-based tool for creating mappings between knowledge organization systems.
 
-Try out the [latest release](https://coli-conc.gbv.de/cocoda/), the [current development version](https://coli-conc.gbv.de/cocoda/dev/), and consult the [documentation] (also includes a user manual)!
-
-[documentation]: https://gbv.github.io/cocoda/
+Try out the [latest release version](https://coli-conc.gbv.de/cocoda/), the [current development version](https://coli-conc.gbv.de/cocoda/dev/), and consult the [usage documentation](#usage)!
 
 ## Table of Contents
 
@@ -24,9 +22,7 @@ Try out the [latest release](https://coli-conc.gbv.de/cocoda/), the [current dev
 
 ### Release versions
 
-Releases [can be downloaded](https://github.com/gbv/cocoda/releases) in form of static files. Extract into a web server directory and adjust [configuration](#configuration) file `cocoda.json`.
-
-You can automate download and extraction of the latest release ([jq](https://stedolan.github.io/jq/) required):
+Releases [can be downloaded](https://github.com/gbv/cocoda/releases) in form of static files. Extract into a web server directory and adjust [configuration](#configuration) file `cocoda.json`. You could automate download and extraction of the latest release with [jq](https://stedolan.github.io/jq/) like this:
 
 ```bash
 # You can also manually download the latest release here: https://github.com/gbv/cocoda/releases/latest
@@ -53,26 +49,21 @@ npm ci
 npm run build
 ```
 
-Files are created in directory `dist`.
+Files are created in directory `dist`, including the configuration file.
 
 ### Serving the Files
 
-Any file server can be used to serve the files. No special configuration is necessary. Some examples:
+Any web server can be used to serve Cocoda files. No special configuration is necessary. For instance using the `http-server` npm package to server Cocoda at <http://localhost:8000>:
 
-**Using the `http-server` npm package:**
 ```bash
 npm install -g http-server
-# using the pre-built release:
-http-server -p 8000 cocoda/
-# or using the manual build:
-http-server -p 8000 dist/
+http-server -p 8000 cocoda/     # serve the pre-built release
+http-server -p 8000 dist/       # or serve the build version
 ```
-
-The Cocoda instance will be available at http://localhost:8000. Other alternatives can be found [here](https://gist.github.com/willurd/5720255).
 
 ## Usage
 
-There is a detailled end-user manual available [in German](https://gbv.github.io/cocoda/dev/user-manual-de.html) and [in English](https://gbv.github.io/cocoda/dev/user-manual-en.html). The German version will likely be more up-to-date.
+There is a detailled end-user manual available [in German](https://gbv.github.io/cocoda/dev/user-manual-de.html) and [in English](https://gbv.github.io/cocoda/dev/user-manual-en.html). The German version will likely be more up-to-date. Documentation sources are located in directory `docs`.
 
 ## Configuration
 
@@ -109,6 +100,7 @@ For the pre-built version, configuration options can be overridden by using `coc
 * **conceptLists**: a list of concept lists. Each list can be either an object or a URL that returns a JSON object. Objects are basically [JSKOS registries](http://gbv.github.io/jskos/jskos.html#registries) with required properties `prefLabel` and `concepts`. If `concepts` is a string, it will be considered a URL which returns a JSON array of concepts. Optional properties are `notation` and `scopeNote`.
 
 Using the pre-built version, the application only has to be reloaded after editing the configuration file.
+
 ## Maintainers
 
 - [@stefandesu](https://github.com/stefandesu)
@@ -117,6 +109,8 @@ Using the pre-built version, the application only has to be reloaded after editi
 ## Contribute
 
 Your contributions to improve Cocoda are very welcome: please [open a GitHub issue](https://github.com/gbv/cocoda/issues/new) for feature suggestions and bug reports! See the file [CONTRIBUTING.md] for more information about how and where to best contribute and for development details.
+
+See <https://gbv.github.io/cocoda/> for API documentation automatically build from Node sources.
 
 ## License
 

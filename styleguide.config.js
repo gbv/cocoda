@@ -54,7 +54,6 @@ module.exports = {
     },
     {
       name: "Providers",
-      content: "docs/providers.md",
       sections: providerSections,
     },
     {

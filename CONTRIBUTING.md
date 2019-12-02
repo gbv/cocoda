@@ -140,11 +140,9 @@ As of now, all icons (solid, brands) are available without importing them separa
 
 Access to [concepts schemes](#concept-schemes), [concepts](#concepts), [mappings](#mappings), and mapping recommendations is provided by **registries** which can be configured in the [config file](#configuration).
 
-There are some preconfigured registries in the config file, but it's possible to set up a new registry, for example with [jskos-server](https://github.com/gbv/jskos-server). Each registry has to be assigned a provider. A provider is like a category for registries, a way of accessing an API for example.
+There are some preconfigured registries in the config file, but it's possible to set up a new registry, for example with [jskos-server](https://github.com/gbv/jskos-server). Each registry has to be assigned a **provider**. A provider is a way of accessing data, for instance via a specific API. Each provider is implemented in its own JavaScript class.
 
-See [providers](#providers) for a list of providers currently implemented as part of cocoda.
-
-The registries accessed via providers can be grouped into:
+Registries accessed via providers can be grouped into:
 
 * **Terminology Registries** such as <https://api.dante.gbv.de/> provide
   information about concept schemes and concepts.
@@ -152,8 +150,6 @@ The registries accessed via providers can be grouped into:
 * **Mapping Registries** can be queried for existing mappings and mapping recommendations, and might allow creation, modification, and annotation of new mappings.
 
 * **Occurrence Registries** can be queried for usage statistics of concepts in collections.
-
-* **Identity Registries** manage user accounts and provide access tokens via OAuth2 (not implemented yet).
 
 ### Creating a new provider
 
