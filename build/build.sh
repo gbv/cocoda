@@ -61,16 +61,17 @@ if [ -z "$PANDOC" ]; then
 else
   echo "Creating user manual (HTML)..."
   npm run manual
+  cp docs/*/user-manual-*.html dist/
   echo
   if [ $(git show --pretty="" --name-only HEAD docs/ | wc -c) -ne 0 ]; then
     if [ hash xetex 2>/dev/null ]; then
       echo "Creating user manual (PDF)..."
       npm run manual-pdf
+      cp docs/*/user-manual-*.pdf dist/
     else
       echo "Missing tools to create PDF user manual! Skipping this."
     fi
   fi
-  cp docs/*/user-manual-*.{html,pdf} dist/
 fi
 
 # # delete config file if it was generated during this script
