@@ -64,11 +64,13 @@ Software documentation and user manuals in multiple languages are located in dir
 * [English user manual](https://gbv.github.io/cocoda/dev/user-manual-en.html)
 * [German user manual](https://gbv.github.io/cocoda/dev/user-manual-de.html)
 
-To build the software documentation:
+To build the API documentation:
 
 ~~~sh
 npm run styleguide
 ~~~
+
+Generation of the user manual requires [Pandoc](https://pandoc.org/) 2.7 or newer.
 
 To build the user manuals:
 
@@ -76,6 +78,12 @@ To build the user manuals:
 npm run build-info
 npm run manual      # HTML version
 npm run manual-pdf  # PDF version
+~~~
+
+Generation of the PDF manual requires XeTeX and several related packages. On Ubuntu install via:
+
+~~~sh
+sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-fonts-extra lmodern librsvg2-bin
 ~~~
 
 ## Design Guidelines
