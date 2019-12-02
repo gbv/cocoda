@@ -48,10 +48,14 @@
         }
       }
       // Show noscript content for IE as well
-      if (isIE() || !checkCookie()) {
+      if (isIE() || !checkCookie() || window.location.protocol == "file:") {
         var noscript = document.getElementsByTagName("noscript")[0]
         var app = document.getElementById("app")
-        app.innerHTML = decodeHTML(noscript.innerHTML)
+        var message = noscript.innerHTML
+        if (window.location.protocol == "file:") {
+          message = message.replace("in your browser", "via the <code>file://</code> protocol. Please use a web server")
+        }
+        app.innerHTML = decodeHTML(message)
         app.removeAttribute("id")
       }
     </script>
