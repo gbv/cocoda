@@ -53,19 +53,6 @@ module.exports = {
       content: "docs/introduction.md",
     },
     {
-      name: "Administration",
-      sections: [
-        {
-          name: "Installation",
-          content: "docs/installation.md",
-        },
-        {
-          name: "Configuration",
-          content: "docs/configuration.md",
-        },
-      ],
-    },
-    {
       name: "Providers",
       content: "docs/providers.md",
       sections: providerSections,
