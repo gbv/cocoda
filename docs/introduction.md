@@ -2,13 +2,14 @@ Cocoda is a web application to manage and create **mappings between knowledge or
 
 Public instances of Cocoda are listed at <https://coli-conc.gbv.de/cocoda/> with the most recent development version at <https://coli-conc.gbv.de/cocoda/dev/>.
 
-This document consists of three chapters:
-
-* read the **[end user manual](#manual)** how to use an existing instance of Cocoda.
-  There is also an independent [German user manual](https://gbv.github.io/cocoda/dev/user-manual-de.html).
-
 * read the **[administrator manual](#administration)** how to install and configure Cocoda
 
 * read the **[developer manual](#development)** to understand and extend functionality of Cocoda
+
+There is also a user manual:
+
+* [English user manual](https://gbv.github.io/cocoda/dev/user-manual-en.html)
+* [German user manual](https://gbv.github.io/cocoda/dev/user-manual-de.html)
+
 
 Feedback and contributions are very welcome: please use the [issue tracker](https://github.com/gbv/cocoda/issues) for bug reports and feature request!

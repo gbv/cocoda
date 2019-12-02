@@ -53,40 +53,6 @@ module.exports = {
       content: "docs/introduction.md",
     },
     {
-      name: "Manual",
-      content: "docs/guide.md",
-      sections: [
-        {
-          name: "User Interface",
-          content: "docs/guide-interface.md",
-        },
-        {
-          name: "Login",
-          content: "docs/guide-login.md",
-        },
-        {
-          name: "Concept Schemes",
-          content: "docs/guide-concept-schemes.md",
-        },
-        {
-          name: "Concepts",
-          content: "docs/guide-concepts.md",
-        },
-        {
-          name: "Mappings",
-          content: "docs/guide-mappings.md",
-        },
-        {
-          name: "Registries",
-          content: "docs/registries.md",
-        },
-        {
-          name: "Settings",
-          content: "docs/guide-settings.md",
-        },
-      ],
-    },
-    {
       name: "Administration",
       sections: [
         {
