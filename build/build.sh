@@ -53,8 +53,9 @@ else
 fi
 
 # create and move user manual
-PANDOC=$(pandoc --version 2>/dev/null |  awk 'NR==1 && $2>=2.3 {print}')
-XETEX=$(which xetex)
+PANDOC=$(pandoc --version 2>/dev/null | awk 'NR==1 && $2>=2.3 {print}')
+MODIFIED_DOCS=$(git show --pretty="" --name-only HEAD docs/)
+BUILD_PDF="${BUILD_PDF:-$MODIFIED_DOCS}"
 if [ -z "$PANDOC" ]; then
   echo "Pandoc 2 required to build user manual! Skipping documentation."
   echo
@@ -63,10 +64,13 @@ else
   npm run manual
   cp docs/*/user-manual-*.html dist/
   echo
-  if [ $(git show --pretty="" --name-only HEAD docs/ | wc -c) -ne 0 ]; then
+  if [ -z "$BUILD_PDF" ]; then
+    echo "Skipping creation of PDF manual"
+  else
     if [ hash xetex 2>/dev/null ]; then
       echo "Creating user manual (PDF)..."
       npm run manual-pdf
+      make -C docs/de book
       cp docs/*/user-manual-*.pdf dist/
     else
       echo "Missing tools to create PDF user manual! Skipping this."

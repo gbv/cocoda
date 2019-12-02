@@ -4,6 +4,7 @@ BUILD_INFO=$(CURDIR)/../build/build-info.json
 BUILD_DATE=$(shell grep date $(BUILD_INFO) | grep -o 20..-..-..)
 VERSION=$(shell grep version $(BUILD_INFO) | sed 's/[",]//g')
 
+# requires Pandoc >= 2.7
 PANDOC=pandoc --standalone --metadata-file $(BUILD_INFO) -M date=$(BUILD_DATE) -M "subtitle=$(VERSION)" config.yaml
 TEMPLATES=$(CURDIR)/templates/
 
