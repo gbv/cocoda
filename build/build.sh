@@ -62,7 +62,7 @@ else
   echo "Creating user manual (HTML)..."
   npm run manual
   echo
-  if [ $(git show --pretty="" --name-only HEAD docs/) ]; then
+  if [ $(git show --pretty="" --name-only HEAD docs/ | wc -c) -ne 0 ]; then
     if [ hash xetex 2>/dev/null ]; then
       echo "Creating user manual (PDF)..."
       npm run manual-pdf
