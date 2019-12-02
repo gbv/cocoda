@@ -67,7 +67,7 @@ else
   if [ -z "$BUILD_PDF" ]; then
     echo "Skipping creation of PDF manual"
   else
-    if [ hash xetex 2>/dev/null ]; then
+    if command -v xetex >/dev/null 2>&1; then
       echo "Creating user manual (PDF)..."
       npm run manual-pdf
       make -C docs/de book
