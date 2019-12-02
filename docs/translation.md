@@ -1,6 +1,0 @@
-The user interface is currently available in English and German. To facilitate contributions to the translations, we developed a small tool: opening [the translation tool via this link](https://gbv.github.io/cocoda-locale-editor/?fromUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fgbv%2Fcocoda%2Fdev%2Fconfig%2Flocale.json) will load the current interface translation into the too so, you can contribute by editing existing texts or adding new languages:
-
-- Use the text fields in the table to edit the texts. Each row represents a single piece of text in the interface.
-- After editing, you can download the file `locale.json` with "Download" at the top. You can either send this file to [coli-conc@gbv.de](mailto:coli-conc@gbv.de), upload the file to a server and post the link as a [GitHub issue](https://github.com/gbv/cocoda/issues/new), or create a [pull request](https://github.com/gbv/cocoda/pull/new/dev) and commit the file there.
-- Note that the edits in the tool will be lost if you reload the site! To make sure that your edits won't be lost, use the "Download" button regularly and reupload the file if necessary.
-- The "New path" function below the table is only necessary if new text pieces need to be added (i.e. when you're directly involved in the development or if you want to suggest a feature and provide the necessary text in advance).

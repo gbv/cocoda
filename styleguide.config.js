@@ -66,40 +66,6 @@ module.exports = {
       ],
     },
     {
-      name: "Development",
-      content: "CONTRIBUTING.md",
-      sections: [
-        {
-          name: "Getting Started",
-          content: "docs/setup.md",
-        },
-        {
-          name: "Background",
-          content: "docs/background.md",
-        },
-        {
-          name: "Documentation",
-          content: "docs/documentation.md",
-        },
-        {
-          name: "Design Guidelines",
-          content: "docs/design-guidelines.md",
-        },
-        {
-          name: "Creating Providers",
-          content: "docs/dev-providers.md",
-        },
-        {
-          name: "Releasing a New Version",
-          content: "docs/releasing.md",
-        },
-        {
-          name: "Translation",
-          content: "docs/translation.md",
-        },
-      ],
-    },
-    {
       name: "Providers",
       content: "docs/providers.md",
       sections: providerSections,

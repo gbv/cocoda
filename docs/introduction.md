@@ -4,7 +4,7 @@ Public instances of Cocoda are listed at <https://coli-conc.gbv.de/cocoda/> with
 
 * read the **[administrator manual](#administration)** how to install and configure Cocoda
 
-* read the **[developer manual](#development)** to understand and extend functionality of Cocoda
+* read CONTRIBUTING.md for technical details to understand and extend functionality of Cocoda
 
 There is also a user manual:
 
