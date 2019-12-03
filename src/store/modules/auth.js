@@ -5,6 +5,12 @@
 import LoginClient from "gbv-login-client"
 let client
 
+import _ from "lodash"
+// Create a debounced setName function
+const setName = _.debounce((name) => {
+  return client.setName(name).then(() => true).catch(() => false)
+}, 500)
+
 // initial state
 const state = {
   available: false,
@@ -183,7 +189,7 @@ const actions = {
   },
 
   setName(context, name) {
-    return client.setName(name).then(() => true).catch(() => false)
+    return setName(name)
   },
 }
 
