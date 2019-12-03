@@ -430,17 +430,8 @@ export default {
     userName() {
       if (this.authorized && this.user) {
         if (this.userName != this.user.name) {
-          this.setName(this.userName).then(success => {
-            if (!success) {
-              // Reset name and show error
-              this.$store.commit({
-                type: "settings/set",
-                prop: "creator",
-                value: this.user.name,
-              })
-              this.alert(this.$t("alerts.nameError"), null, "danger")
-            }
-          })
+          // Call debounced setName method
+          this.setName_()
         }
       }
     },
@@ -496,6 +487,21 @@ export default {
         }
       }).catch(() => null)
     }, 60000)
+    // Create a debounced internal setName method
+    // TODO: Move to mixin?
+    this.setName_ = _.debounce(() => {
+      this.setName(this.userName).then(success => {
+        if (!success) {
+          // Reset name and show error
+          this.$store.commit({
+            type: "settings/set",
+            prop: "creator",
+            value: this.user.name,
+          })
+          this.alert(this.$t("alerts.nameError"), null, "danger")
+        }
+      })
+    }, 500)
   },
   methods: {
     load() {
