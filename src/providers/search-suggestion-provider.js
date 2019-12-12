@@ -132,5 +132,6 @@ class SearchSuggestionProvider extends BaseProvider {
 }
 
 SearchSuggestionProvider.providerName = "SearchSuggestion"
+SearchSuggestionProvider.stored = false
 
 export default SearchSuggestionProvider

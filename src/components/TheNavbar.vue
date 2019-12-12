@@ -257,7 +257,7 @@
           v-if="$store.getters.getCurrentRegistry"
           class="font-default text-dark color-primary-0-bg fontSize-normal">
           <p
-            v-for="registry in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
+            v-for="registry in config.registries.filter(registry => $util.registryStored(registry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,

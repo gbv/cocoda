@@ -597,7 +597,7 @@ export default {
       }
       // Set mapped entry for concepts that have mappings
       const registry = _.get(mapping, "_provider.registry")
-      if (_.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings") {
+      if (util.registryStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
           const targetScheme = mapping[`${to}Scheme`]
           const sourceConcepts = jskos.conceptsOfMapping(mapping, from)

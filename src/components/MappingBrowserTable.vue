@@ -309,7 +309,7 @@
             style="flex: 1; padding-left: 5px;"
             :class="{
               'fontWeight-heavy': true,
-              'mappingBrowser-registry-selectable': section.registry.subject && section.registry.subject[0] && section.registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings'
+              'mappingBrowser-registry-selectable': $util.registryStored(section.registry)
             }"
             @click="useRegistryForSaving(section.registry)">
             <registry-info
@@ -762,7 +762,7 @@ export default {
       }) && this.$jskos.compare(r, registry)) != null
     },
     useRegistryForSaving(registry) {
-      if (_.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/existing-mappings") {
+      if (this.$util.registryStored(registry)) {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingRegistry",

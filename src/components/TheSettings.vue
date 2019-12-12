@@ -134,7 +134,7 @@
           :title="$t('settingsTabs')[1]">
           <h4>{{ $t("settings.mappingRegistries") }}</h4>
           <div
-            v-for="(registry, index) in config.registries.filter(registry => registry.subject && registry.subject[0] && registry.subject[0].uri == 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
+            v-for="(registry, index) in config.registries.filter(registry => $util.registryStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
             class="settingsModal-mapping-registry"
             @click="$store.commit({
@@ -149,7 +149,7 @@
           </div>
           <h4>{{ $t("settings.otherRegistries") }}</h4>
           <div
-            v-for="(registry, index) in config.registries.filter(registry => !registry.subject || !registry.subject[0] || registry.subject[0].uri != 'http://coli-conc.gbv.de/registry-group/existing-mappings')"
+            v-for="(registry, index) in config.registries.filter(registry => !$util.registryStored(registry))"
             :key="`settingsModal-other-registries-${index}`">
             <registry-info
               :registry="registry"

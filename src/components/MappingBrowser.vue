@@ -402,12 +402,12 @@
           id="mappingBrowser-registryGroup-list">
           <div
             v-for="group of registryGroups"
-            :key="group.uri"
+            :key="`mappingBrowser-registryGroup-${group.stored}`"
             class="mappingBrowser-registryGroup">
             <span
-              :id="`registryGroup-${group.uri}`"
+              :id="`registryGroup-${group.stored}`"
               class="mappingBrowser-registryGroup-title">
-              {{ $util.prefLabel(group) }}:
+              {{ group.label }}:
             </span>
             <span
               style="white-space: nowrap">
@@ -695,7 +695,7 @@ export default {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
     searchRegistries() {
-      return _.get(this.registryGroups.find(group => group.uri == "http://coli-conc.gbv.de/registry-group/existing-mappings"), "registries", [])
+      return _.get(this.registryGroups.find(group => group.stored), "registries", [])
     },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
@@ -717,23 +717,22 @@ export default {
       return this.$store.getters.getCurrentRegistry
     },
     registryGroups() {
-      let groups = _.cloneDeep(this.config.registryGroups)
-      for (let group of groups) {
-        group.registries = []
-      }
-      let otherGroup = {
-        uri: "http://coli-conc.gbv.de/registry-group/other-mappings",
-        prefLabel: {
-          de: "Andere",
-          en: "Other",
+      let groups = [
+        {
+          stored: true,
+          label: this.$t("general.storedMappings"),
+          registries: [],
         },
-        registries: [],
-      }
+        {
+          stored: false,
+          label: this.$t("general.recommendedMappings"),
+          registries: [],
+        },
+      ]
       for (let registry of this.mappingRegistries) {
-        let group = groups.find(group => group.uri == _.get(registry, "subject[0].uri")) || otherGroup
+        let group = groups.find(group => group.stored === this.$util.registryStored(registry))
         group.registries.push(registry)
       }
-      groups.push(otherGroup)
       groups = groups.filter(group => group.registries.length > 0)
       if (this.moveCurrentRegistryToTop) {
         for (let group of groups) {
@@ -997,9 +996,9 @@ export default {
     },
     locale(newValue, oldValue) {
       if (newValue != oldValue) {
-        // Refresh all automatic mappings (as they might include labels in a certain language)
+        // Refresh all mapping recommendations (as they might include labels in a certain language)
         for (let registry of this.navigatorRegistries.filter(registry =>
-          _.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/automatic-mappings"
+          !this.$util.registryStored(registry)
           && this.showRegistry[registry.uri],
         )) {
           this.navigatorNeedsRefresh.push(registry.uri)
@@ -1059,11 +1058,11 @@ export default {
       for (let group of this.registryGroups) {
         popovers.push({
           elements: [
-            _.get(this.$refs[`registryGroup-${group.uri}-popover`], "[0]"),
-            document.getElementById(`registryGroup-${group.uri}`),
+            _.get(this.$refs[`registryGroup-${group.stored}-popover`], "[0]"),
+            document.getElementById(`registryGroup-${group.stored}`),
           ],
           handler: () => {
-            this.$set(this.registryGroupShow, group.uri, false)
+            this.$set(this.registryGroupShow, group.stored, false)
           },
         })
       }
@@ -1452,8 +1451,8 @@ export default {
         // Add items
         let skipped = 0 // Keep track of number of skipped items
         for (let mapping of mappings) {
-          // For automatic mappings: If mapping with the same member identifier could be found in the results for the current registry, skip item.
-          if (_.get(registry, "subject[0].uri") == "http://coli-conc.gbv.de/registry-group/automatic-mappings") {
+          // For mappings recommendations: If mapping with the same member identifier could be found in the results for the current registry, skip item.
+          if (!this.$util.registryStored(registry)) {
             const currentRegistryResults = results[this.currentRegistry.uri] || []
             const memberIdentifier = (mapping) => {
               return mapping && mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:members:"))

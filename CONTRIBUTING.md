@@ -177,6 +177,7 @@ The following process describes how to create a very simple mapping provider tha
   }
 
   TestProvider.providerName = "Test"
+  TestProvider.stored = false // Only needed for mappings. If "false", the mappings from this provider are considered mapping recommendations. This can be overridden in the entry in `config.registries`.
 
   export default TestProvider
   ```

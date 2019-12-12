@@ -199,5 +199,6 @@ class MappingsApiProvider extends BaseProvider {
 }
 
 MappingsApiProvider.providerName = "MappingsApi"
+MappingsApiProvider.stored = true
 
 export default MappingsApiProvider

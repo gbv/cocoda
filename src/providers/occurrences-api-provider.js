@@ -138,5 +138,6 @@ class OccurrencesApiProvider extends BaseProvider {
 }
 
 OccurrencesApiProvider.providerName = "OccurrencesApi"
+OccurrencesApiProvider.stored = false
 
 export default OccurrencesApiProvider

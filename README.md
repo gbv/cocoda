@@ -93,8 +93,6 @@ For the pre-built version, configuration options can be overridden by using `coc
 * **overrideRegistries**: `false` (default) or `true`
   controls whether to override registries listed in `config/cocoda.default.json`
 
-* **registryGroups**
-
 * **auth**: URL to a [login-server](https://github.com/gbv/login-server) instance to be used for authentication
 
 * **conceptLists**: a list of concept lists. Each list can be either an object or a URL that returns a JSON object. Objects are basically [JSKOS registries](http://gbv.github.io/jskos/jskos.html#registries) with required properties `prefLabel` and `concepts`. If `concepts` is a string, it will be considered a URL which returns a JSON array of concepts. Optional properties are `notation` and `scopeNote`.

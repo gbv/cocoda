@@ -344,5 +344,6 @@ class LocalMappingsProvider extends BaseProvider {
 }
 
 LocalMappingsProvider.providerName = "LocalMappings"
+LocalMappingsProvider.stored = true
 
 export default LocalMappingsProvider

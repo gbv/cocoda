@@ -160,11 +160,6 @@
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "autoRefresh": 5000,
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-        }
-      ],
       "notation": [
         "L"
       ],
@@ -186,11 +181,6 @@
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
       "status": "https://coli-conc.gbv.de/api/status",
       "autoRefresh": 10000,
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-        }
-      ],
       "notation": [
         "C"
       ],
@@ -212,11 +202,6 @@
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
       "status": "https://coli-conc.gbv.de/services/wikidata/status",
       "autoRefresh": 10000,
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings"
-        }
-      ],
       "notation": [
         "W"
       ],
@@ -235,11 +220,6 @@
     {
       "provider": "SearchSuggestion",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-        }
-      ],
       "excludedSchemes": [
         {
           "uri": "http://bartoc.org/en/node/1940"
@@ -271,11 +251,7 @@
           "uri": "http://uri.gbv.de/terminology/rvk/"
         }
       ],
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-        }
-      ],
+      "stored": false,
       "notation": [
         "CC"
       ],
@@ -288,11 +264,6 @@
       "provider": "OccurrencesApi",
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "occurrences": "//coli-conc.gbv.de/occurrences/api/",
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-        }
-      ],
       "notation": [
         "CO"
       ],
@@ -316,11 +287,6 @@
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/1940"
-        }
-      ],
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
         }
       ],
       "notation": [
@@ -348,11 +314,6 @@
           "uri": "http://bartoc.org/en/node/430"
         }
       ],
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-        }
-      ],
       "notation": [
         "GR"
       ],
@@ -378,11 +339,6 @@
           "uri": "http://nomisma.org/id/"
         }
       ],
-      "subject": [
-        {
-          "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings"
-        }
-      ],
       "notation": [
         "NR"
       ],
@@ -401,22 +357,6 @@
     }
   ],
   "overrideRegistries": false,
-  "registryGroups": [
-    {
-      "uri": "http://coli-conc.gbv.de/registry-group/existing-mappings",
-      "prefLabel": {
-        "de": "Mappings",
-        "en": "Mappings"
-      }
-    },
-    {
-      "uri": "http://coli-conc.gbv.de/registry-group/automatic-mappings",
-      "prefLabel": {
-        "de": "Vorschläge",
-        "en": "Recommendations"
-      }
-    }
-  ],
   "searchLinks": [
     {
       "prefLabel": {

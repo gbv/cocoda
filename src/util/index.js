@@ -283,4 +283,21 @@ const mappingCreatorMatches = (user, mapping) => {
   return [user.uri].concat(Object.values(user.identities).map(identity => identity.uri)).filter(uri => uri != null).includes(_.get(mapping, "creator[0].uri"))
 }
 
-export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguages, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri, mappingCreatorMatches }
+// Returns whether a registry has stored mappings (database) or not (recommendations).
+const registryStored = (registry) => {
+  if (!registry) {
+    return false
+  }
+  if (registry.stored != null) {
+    return registry.stored
+  }
+  let provider = registry.provider
+  // If available, use default stored value of provider
+  if (provider && provider.constructor && provider.constructor.stored != null) {
+    return provider.constructor.stored
+  }
+  // Default: false
+  return false
+}
+
+export default { selectText, canConceptBeSelected, setupTableScrollSync, generateID, hash, delay, compareMappingsByConcepts, notation, fallbackLanguages, getLanguage, lmContent, prefLabel, definition, addEndpoint, dateToString, licenseBadges, annotations, isValidUri, mappingCreatorMatches, registryStored }
