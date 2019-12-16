@@ -407,6 +407,17 @@ export default {
             navbar.openSettingsTab(0)
           }
         })
+        // Reset user name and URI
+        this.$store.commit({
+          type: "settings/set",
+          prop: "creator",
+          value: "",
+        })
+        this.$store.commit({
+          type: "settings/set",
+          prop: "creatorUri",
+          value: "",
+        })
       }
     },
     /**
