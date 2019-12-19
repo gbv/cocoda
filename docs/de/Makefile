@@ -7,7 +7,7 @@ pdf: $(NAME).pdf
 
 # combine PDF into printeable booklet
 book: pdf
-	pdfbook --twoside $(NAME).pdf
+	pdfbook2 --paper=a4 $(NAME).pdf
 
 CURDIR=..
 include ../Makefile
