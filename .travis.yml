@@ -9,19 +9,13 @@ cache:
   directories:
   - "$HOME/.npm"
   - "$HOME/.local"
+  - "$HOME/.texlive"
+  - "/tmp/texlive"
 
-before_install: 
-  - >- # install Pandoc into ~/.local for document generation
-    mkdir -p "$HOME/.local/bin";
-    if [[ ! -f "$HOME/.local/bin/pandoc" ]]; then       
-      curl -L https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-1-amd64.deb > pandoc.deb &&
-      dpkg -x pandoc.deb pandoc && cp pandoc/usr/bin/* $HOME/.local/bin
-    fi;
-    export PATH="$HOME/.local/bin:$PATH"
-  - >- # install LaTeX only if last commit modified something in docs/
-    if [[ $(git show --pretty="" --name-only HEAD docs/) ]]; then
-      sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-fonts-extra lmodern librsvg2-bin
-    fi
+before_install: # install Pandoc and TeX (hopefully from cache) 
+  - sudo apt-get install librsvg2-bin ghostscript
+  - ./.travis/install.sh
+  - export PATH="$HOME/.local/bin:/tmp/texlive/bin/x86_64-linux:$PATH"
 
 install:
 - npm i -g npm@5.10.0
@@ -34,8 +28,6 @@ script:
 - npm run styleguide:build
 - cp -R cocoda styleguide/dev
 - zip -r "cocoda-$(git describe --tags).zip" cocoda
-
-# also requires rsvg-convert (apt-get install librsvg2-bin)
 
 deploy:
 - provider: pages

@@ -53,27 +53,31 @@ else
 fi
 
 # create and move user manual
-PANDOC=$(pandoc --version 2>/dev/null | awk 'NR==1 && $2>=2.3 {print}')
-MODIFIED_DOCS=$(git show --pretty="" --name-only HEAD docs/)
-BUILD_PDF="${BUILD_PDF:-$MODIFIED_DOCS}"
-if [ -z "$PANDOC" ]; then
-  echo "Pandoc 2 required to build user manual! Skipping documentation."
-  echo
-else
-  echo "Creating user manual (HTML)..."
-  npm run manual
-  cp docs/*/user-manual-*.html dist/
-  echo
-  if [ -z "$BUILD_PDF" ]; then
-    echo "Skipping creation of PDF manual"
+if [ $success -eq 0 ]; then
+  PANDOC=$(pandoc --version 2>/dev/null | awk 'NR==1 && $2>=2.3 {print}')
+  MODIFIED_DOCS=$(git show --pretty="" --name-only HEAD docs/)
+  TAGGED_COMMIT=$(git describe --exact-match --tags 2>/dev/null)
+  BUILD_PDF="$MODIFIED_DOCS$TAGGED_COMMIT"
+  if [ -z "$PANDOC" ]; then
+    echo "Pandoc 2 required to build user manual! Skipping documentation."
+    echo
   else
-    if command -v xetex >/dev/null 2>&1; then
-      echo "Creating user manual (PDF)..."
-      npm run manual-pdf
-      make -C docs/de book
-      cp docs/*/user-manual-*.pdf dist/
+    echo "Creating user manual (HTML)..."
+    npm run manual
+    cp docs/*/user-manual-*.html dist/
+    echo
+    if [ -z "$BUILD_PDF" ]; then
+      echo "Skipping creation of PDF manual"
     else
-      echo "Missing tools to create PDF user manual! Skipping this."
+      if command -v xetex >/dev/null 2>&1; then
+        echo "Creating user manual (PDF)..."
+        npm run manual-pdf && \
+        make -C docs/de book && \
+        cp docs/*/user-manual-*.pdf dist/
+        success=$?
+      else
+        echo "Missing tools to create PDF user manual! Skipping this."
+      fi
     fi
   fi
 fi
