@@ -4,14 +4,14 @@ Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von 
 
 Unter <https://coli-conc.gbv.de/cocoda/> sind mehrere Anleitungen, Screencasts sowie unterschiedlich konfigurierte Instanzen von Cocoda verlinkt, darunter:
 
-* aktuelle Release-Version: <https://coli-conc.gbv.de/cocoda/app/>
-* aktuelle Entwicklungsversion: <https://coli-conc.gbv.de/cocoda/dev/>
-* Version für RVK-Mapping: <https://coli-conc.gbv.de/cocoda/rvk/>
-* Version für Wikidata-Mapping: <https://coli-conc.gbv.de/cocoda/wikidata/>
+* die aktuelle Release-Version: <https://coli-conc.gbv.de/cocoda/app/>
+* die aktuelle Entwicklungsversion: <https://coli-conc.gbv.de/cocoda/dev/>
+
+Je nach Konfiguration der Cocoda-Instanz können einige der hier beschriebenen Features nicht verfügbar sein.
 
 ## Benutzeroberfläche
 
-Cocoda sollte zumindest mit Firefox und Chromium funktionieren. Empfohlen wird ein Bildschirm mit Full HD-Auflösung (1920×1080) oder mehr. Die Benutzeroberfläche lässt sich über die [Einstellungen] anpassen; unter Anderem kann die Sprache geändert werden.
+Empfohlen wird als Browser Firefox oder Chromium und ein Bildschirm mit mindestens Full HD-Auflösung (1920×1080). Die Benutzeroberfläche lässt sich über die [Einstellungen] anpassen; unter Anderem kann die Sprache geändert werden.
 
 Die **Menüleiste** enthält (je nach Konfiguration):
 
@@ -35,15 +35,13 @@ Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] 
 
 ## Benutzeraccounts
 
-Grundätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die [Einstellungen](#einstellungen) werden daher auch nur im Browser gespeichert. Zum Login können vorhandene Accounts bei folgenden Diensten verwendet werden:
+Grundätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die [Einstellungen](#einstellungen) werden daher auch nur im Browser gespeichert. Zum Login können vorhandene Accounts bei externen Diensten verwendet werden:
 
 * ORCID
-* GitHub
-* Wikimedia (Wikipedia, Wikidata...)
-* StackExchange
+* Wikimedia (Wikipedia, Wikidata...), GitHub und StackExchange
 * LDAP (nur VZG-intern)
 
-Diese externen Benutzeraccounts heißen in Cocoda **Identitäten**. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der [Menüleiste](#menüleiste) angezeigt und können dort gewechselt werden. Weitere Details sind in den [Einstellungen](#einstellungen) unter "Accounts" einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:
+Diese externen Accounts heißen in Cocoda **Identitäten**. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der [Menüleiste](#menüleiste) angezeigt und können dort gewechselt werden. Weitere Details sind in den [Einstellungen](#einstellungen) unter "Accounts" einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:
 
 * Ist die personenbezogene Zuordnung von Beiträgen gewünscht, empfehlen wir ORCID- oder Wikimedia-Identitäten auszuwählen
 * Andernfalls wird ein Account-Identifier verwendet dessen Zuordnung zu Identitäten nur den Adminstratoren der Mapping-Datenbank bei der VZG einsehbar ist
@@ -78,7 +76,9 @@ Diese Komponente zeigt Vokabular-Informationen wie Identifier, Erstellungsdatum,
 
 ### Suche nach Konzepten
 
-Im Suchfeld können Konzepte per Notationen oder Bezeichnung gesucht werden. Die Komponente lässt sich so einstellen, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite autmatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: in diesem Fall steht neben dem Suchschlitz ein Filter-Icon ![](img/icons/filter.svg){height=1em}. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel `Ctrl+f` (links) und `Ctrl+g` (rechts).
+Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite autmatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon ![](img/icons/filter.svg){height=1em}. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel `Ctrl+f` (links) und `Ctrl+g` (rechts).
+
+Durch Suche nach einer syntaktisch korrekten Notation lässt sich ein Konzept auswählen auch wenn zu dieser Notation kein Konzept gefunden wurde. Solche unbekannten Konzepte werden mit einem Blitz ![](img/icons/bolt.svg){height=1em} gekennzeichnet. 
 
 ### Konzeptdetails
 
@@ -86,7 +86,7 @@ Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) I
 
 * Info: Metadaten wie Identifier und Änderungsdatum
 * Bezeichnungen: Vorzungs- und Alternativbenennungen
-* Scope/Editorial: Verwendungshinweise und Kommentare
+* Scope/Editorial: Verwendungshinweise und Beschreibungen
 * Suchlinks: konfigurierbare Links in andere Datenbanken (Wikipedia, K0plus...)
 
 Der Stern ![](img/icons/star.svg){height=1em} fügt das Konzept zur Schnellauswahl-Liste hinzu bzw. entfernt es daraus.
@@ -111,7 +111,7 @@ Neben der Browsing-Möglichkeit über [Vokabulardetails](#vokabulardetails) und 
 
 ### Listenansicht
 
-Statt der Baumansicht können über ein Popup ![](img/icons/angle-up-solid.svg){height=1em} die Liste von Schnellauswahl-Konzepten ![](img/icons/star.svg){height=1em} sowie je nach Konfiguration weitere ![](img/icons/list-solid.svg){height=1em} Konzept-Listen ausgewählt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon ![](img/icons/sync-alt-solid.svg){height=1em}.
+Statt der Baumansicht können über ein Popup ![](img/icons/angle-up-solid.svg){height=1em} die Liste von Schnellauswahl-Konzepten ![](img/icons/star.svg){height=1em} sowie je nach Konfiguration weitere Konzept-Listen ![](img/icons/list-solid.svg){height=1em} ausgewählt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon ![](img/icons/sync-alt-solid.svg){height=1em}.
 
 ## Mappings
 
@@ -120,13 +120,13 @@ Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewe
 * [Mapping-Editor](#mapping-editor) zum Erstellen und Bearbeiten von Mappings
 * Mapping-Browser bestehend aus Bereichen für [Konkordanzen], [Suche](#mapping-suche) und [Navigator] für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen
 
-Die Mappings können außerdem je nach konfiguration mit [Bewertungen] versehen werden. Mappings und Bewertungen können in verschiedenen [Mapping-Datenbanken] gespeichert werden.
+Mappings können außerdem je nach Konfiguration mit [Bewertungen] versehen werden. Mappings und Bewertungen können in verschiedenen [Mapping-Datenbanken] gespeichert werden.
 
 ### Mapping-Editor
 
 Der Mapping-Editor dient der detaillierten Bearbeitung eines Mappings. Dazu können Konzepte per Drag und Drop in den Mapping-Editor gezogen oder mit dem Plus-Icon ![](img/icons/plus-circle.svg){height=1em} von der linken oder rechten Seite übernommen werden. Zum Übernahme des jeweils ausgewählten Konzepts gibt es außerdem Tastaturkürzel (`Ctrl+a` bzw. `Ctrl+d`). Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} kann ein Konzept wieder entfernt werden.
 
-In den Einstellungen des Editors kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich um zu zeigen dass ein Konzept keine Entsprechung im Ziel-Vokabular hat.
+In den Einstellungen des Editors kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich wenn ein Konzept keine Entsprechung im Ziel-Vokabular hat.
 
 ![](img/cocoda-mappingeditor1-de.png){.border .border-dark}
 
@@ -181,7 +181,7 @@ Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene [Datenquelle
 * Ziel-Vokabular
 * Zielnotation oder -URI
 
-Vorhandene Vokabulare bzw. Konzepte können Drag & Drop in die Suchfelder eingetragen werden.
+Vokabulare und Konzepte lassen sich auch per Drag & Drop in die Suchfelder eintragen.
 
 Mit dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icons/lock-open-solid.svg){height=1em} kann festgelegt werden dass immer automatisch das per [Vokabularauswahl] gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} werden weitere Suchmöglichkeiten angeboten:
 
@@ -195,9 +195,9 @@ Sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu vi
 
 Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt und entspricht der Ansicht im Mapping-Navigator. Die einzelnen Quellen können durch Klick auf ihren Namen ein- und ausgeblendet werden.
 
-### Navigator
+### Mapping-Navigator
 
-Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen können durch Klick auf ihre Kürzel ein- und ausgeblendet werden. Datenquellen in die geschrieben werden kann sind durch einen Stift ![](img/icons/pencil-alt-solid.svg){height=1em} gekennzeichnet. Zu jedem Mapping bzw. Mapping-Vorschlag werden je angezeigt:
+Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen lassen sich durch Klick auf ihre Kürzel ein- und ausblenden. Datenquellen in die geschrieben werden kann sind mit einem Stift ![](img/icons/pencil-alt-solid.svg){height=1em} markiert. Zu jedem Mapping bzw. Mapping-Vorschlag werden angezeigt:
 
 * Quellvokabular und -Konzept
 * Mapping-Typ
