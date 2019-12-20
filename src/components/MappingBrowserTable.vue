@@ -6,6 +6,7 @@
     <flexible-table
       :sections="sections"
       :fields="fields"
+      :hide-header="true"
       class="mappingBrowser-table"
       @hover="hover">
       <span
@@ -869,19 +870,6 @@ export default {
 
 <style lang="less">
 @import "../style/main.less";
-
-.mappingBrowser-table-container {
-  height: 0;
-  flex: 1;
-  position: relative;
-}
-.mappingBrowser-table {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
 
 .mappingBrowser-table-row-match {
   background-color: @color-table-highlight-background-1;

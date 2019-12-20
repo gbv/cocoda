@@ -342,13 +342,15 @@
         </div>
         <mapping-browser-table
           v-if="searchSections.length"
+          class="mappingBrowser-search-table"
           :sections="searchSections"
           :search-limit="resultLimit"
           :show-editing-tools="showEditingTools"
           :show-cocoda-link="showCocodaLink"
           @pageChange="changePage('search', $event)">
           <!-- Share button -->
-          <div
+          <!-- TODO: Figure out new place for this. -->
+          <!-- <div
             id="mappingBrowser-search-shareButton"
             class="button">
             <font-awesome-icon icon="share-alt-square" /> {{ $t("mappingBrowser.searchShareLabel") }}
@@ -379,7 +381,7 @@
                 </b-button>
               </p>
             </div>
-          </b-popover>
+          </b-popover> -->
         </mapping-browser-table>
         <div
           v-else
@@ -399,43 +401,45 @@
         </div>
         <div
           v-if="selected.concept[true] || selected.concept[false]"
-          id="mappingBrowser-registryGroup-list">
+          class="mappingBrowser-navigator-results">
           <div
             v-for="group of registryGroups"
             :key="`mappingBrowser-registryGroup-${group.stored}`"
             class="mappingBrowser-registryGroup">
-            <span
-              :id="`registryGroup-${group.stored}`"
-              class="mappingBrowser-registryGroup-title">
-              {{ group.label }}:
-            </span>
-            <span
-              style="white-space: nowrap">
-              <registry-notation
-                v-for="registry in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
-                :key="registry.uri"
-                :registry="registry"
-                :disabled="!showRegistry[registry.uri]"
-                class="mappingBrowser-registryGroup-notation"
-                :class="{
-                  pointer: !$jskos.compare(registry, currentRegistry)
-                }"
-                @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
-                @mouseover.native="hoveredRegistry = registry"
-                @mouseout.native="hoveredRegistry = null" />
-            </span>
+            <div class="mappingBrowser-registryGroup-header">
+              <span
+                :id="`registryGroup-${group.stored}`"
+                class="mappingBrowser-registryGroup-title fontWeight-heavy">
+                {{ group.label }}:
+              </span>
+              <span
+                style="white-space: nowrap">
+                <registry-notation
+                  v-for="registry in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
+                  :key="registry.uri"
+                  :registry="registry"
+                  :disabled="!showRegistry[registry.uri]"
+                  class="mappingBrowser-registryGroup-notation"
+                  :class="{
+                    pointer: !$jskos.compare(registry, currentRegistry)
+                  }"
+                  @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+                  @mouseover.native="hoveredRegistry = registry"
+                  @mouseout.native="hoveredRegistry = null" />
+              </span>
+            </div>
+            <mapping-browser-table
+              v-if="(group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations).length"
+              :sections="group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations"
+              :search-limit="resultLimit"
+              @pageChange="changePage('navigator', $event)" />
+            <div
+              v-else-if="selected.concept[true] || selected.concept[false]"
+              class="fontWeight-heavy"
+              style="text-align: center; margin-top: 20px;">
+              {{ $t("search.noResults") }}
+            </div>
           </div>
-        </div>
-        <mapping-browser-table
-          v-if="navigatorSections.length"
-          :sections="navigatorSections"
-          :search-limit="resultLimit"
-          @pageChange="changePage('navigator', $event)" />
-        <div
-          v-else-if="selected.concept[true] || selected.concept[false]"
-          class="fontWeight-heavy"
-          style="text-align: center; margin-top: 20px;">
-          {{ $t("search.noResults") }}
         </div>
       </tab>
     </tabs>
@@ -808,8 +812,11 @@ export default {
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
-    navigatorSections () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-")
+    navigatorSectionsDatabases () {
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => this.$util.registryStored(section.registry))
+    },
+    navigatorSectionsRecommendations () {
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$util.registryStored(section.registry))
     },
     // Setting whether to show identity mismatch warning
     showIdentityWarning: {
@@ -1582,15 +1589,15 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
-#mappingBrowser-registryGroup-list {
-  flex: none;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 5px;
+.mappingBrowser-navigator-results {
+  flex: 1;
 }
 .mappingBrowser-registryGroup {
-  flex: 1;
+  margin-bottom: 10px;
+}
+.mappingBrowser-registryGroup-header {
   text-align: center;
+  margin: 3px 0;
 }
 .mappingBrowser-registryGroup-title {
   display:inline-block;
@@ -1647,6 +1654,20 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 5px 0px 0px 0px;
+}
+
+// Correctly position search table
+.mappingBrowser-search-table.mappingBrowser-table-container {
+  height: 0;
+  flex: 1;
+  position: relative;
+}
+.mappingBrowser-search-table > .mappingBrowser-table {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 </style>
