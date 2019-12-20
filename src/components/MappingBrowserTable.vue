@@ -903,15 +903,6 @@ export default {
 .mappingBrowser-table-row-hidden {
   display: none;
 }
-.mappingBrowser-separatorPaddingBottom {
-  padding-bottom: 10px !important;
-}
-.mappingBrowser-separatorPaddingTop {
-  padding-top: 10px !important;
-}
-.mappingBrowser-separatorBorder {
-  border-top: 1px solid @color-text-lightGrey;
-}
 
 .mappingBrowser-table-light {
   color: @color-text-lightGrey;
@@ -953,6 +944,9 @@ export default {
 
 .mappingBrowser-table .flexibleTable-section {
   position: relative;
+}
+.flexibleTable-section {
+  border: none;
 }
 
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-creator {

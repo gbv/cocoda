@@ -410,10 +410,10 @@
               <span
                 :id="`registryGroup-${group.stored}`"
                 class="mappingBrowser-registryGroup-title fontWeight-heavy">
-                {{ group.label }}:
+                {{ group.label }}
               </span>
               <span
-                style="white-space: nowrap">
+                style="white-space: nowrap; float: right">
                 <registry-notation
                   v-for="registry in group.registries.filter(registry => $jskos.isContainedIn(registry, navigatorRegistries))"
                   :key="registry.uri"
@@ -1596,8 +1596,10 @@ export default {
   margin-bottom: 10px;
 }
 .mappingBrowser-registryGroup-header {
-  text-align: center;
-  margin: 3px 0;
+  text-align: left;
+  padding: 0.5em 3px 3px 2em;
+  letter-spacing: 0.2em;
+  border-bottom: 2px solid @color-primary-1;
 }
 .mappingBrowser-registryGroup-title {
   display:inline-block;
