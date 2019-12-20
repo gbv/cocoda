@@ -331,13 +331,9 @@
             @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div
-            style="flex: none; text-align: right; padding-top: 3px;"
-            :style="`padding-right: 30px;`"
-            class="fontSize-small">
-            <span v-if="section.items.length < section.totalCount">
-              {{ section.items.length }} {{ $t("general.of") }}
-            </span>
-            {{ $tc(`dataModal.mapping`, section.totalCount, { count: section.totalCount.toLocaleString() }) }}
+            v-if="section.items.length < section.totalCount"
+            class="mappingBrowser-pagination-number fontSize-small">
+            {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
           </div>
           <data-modal-button
             :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
@@ -978,11 +974,20 @@ export default {
 }
 
 .mappingBrowser-pagination.pagination .page-item.active .page-link {
-  background-color: @color-primary-0;
+  font-weight: bold;
+  color: @color-text-dark;
+  border-bottom: 3px solid @color-primary-0;
 }
 
 .mappingBrowser-pagination.pagination.pagination-hide-goToLast > li:last-child {
   display: none;
+}
+.mappingBrowser-pagination-number {
+  flex: none;
+  text-align: right;
+  padding-top: 3px;
+  padding-right: 30px;
+  color: @color-text-grey;
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
