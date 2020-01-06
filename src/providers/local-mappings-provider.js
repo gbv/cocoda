@@ -56,7 +56,7 @@ class LocalMappingsProvider extends BaseProvider {
     this.queue.push(
       addUris().catch(error => {
         console.warn("Error when adding URIs to local mappings:", error)
-      })
+      }),
     )
   }
 

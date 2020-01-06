@@ -337,7 +337,7 @@ export default {
       searchLinks = searchLinks.filter((link, index, self) =>
         index === self.findIndex(l => (
           l.url == link.url
-        ))
+        )),
       )
       return searchLinks
     },

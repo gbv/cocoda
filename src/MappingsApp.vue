@@ -384,14 +384,14 @@ export default {
       return this.mappingSchemes.find(
         scheme =>
           (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          (this.$util.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase()
+          (this.$util.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase(),
       )
     },
     toScheme() {
       return this.mappingSchemes.find(
         scheme =>
           (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          (this.$util.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase()
+          (this.$util.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase(),
       )
     },
     page: {

@@ -45,7 +45,7 @@
           labelBoxSingle: !showChildren
         }"
         class="labelBox"
-        @click.native.stop.prevent="onClick">
+        @click.stop.prevent="onClick">
         <span v-if="scheme && showScheme">
           {{ $util.notation(scheme) }}
         </span>

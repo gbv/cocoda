@@ -343,7 +343,7 @@ export default {
             (
               Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
               (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
-            )
+            ),
         )
       }
       return this.schemes.filter(
@@ -362,7 +362,7 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          )
+          ),
       )
     },
     // Returns an array of all available registries
@@ -387,7 +387,7 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          )
+          ),
       )
       return this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._provider.registry)))
     },
@@ -409,7 +409,7 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          )
+          ),
       )
       return _.uniq([].concat(...schemes.map(scheme => scheme.languages || [])))
     },
@@ -443,7 +443,7 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          )
+          ),
       )
       return _.uniq(_.flatten(schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
     },
