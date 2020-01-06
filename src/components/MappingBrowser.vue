@@ -1598,11 +1598,11 @@ export default {
 .mappingBrowser-registryGroup-header {
   text-align: left;
   padding: 0.5em 3px 3px 2em;
-  letter-spacing: 0.2em;
   border-bottom: 2px solid @color-primary-1;
 }
 .mappingBrowser-registryGroup-title {
   display:inline-block;
+  letter-spacing: 0.1em;
 }
 .mappingBrowser-registryGroup-notation {
   margin: 0 4px;
