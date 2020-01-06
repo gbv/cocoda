@@ -24,5 +24,6 @@ if ! command -v pdflatex > /dev/null; then
 fi
 
 # additional texlive package
+tlmgr update --self
 tlmgr install letltxmacro footnotebackref csquotes pagecolor mdframed fancyhdr \
    zref needspace booktabs titling sourcesanspro sourcecodepro pdfjam
