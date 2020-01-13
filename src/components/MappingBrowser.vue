@@ -1,56 +1,7 @@
 <template>
   <div id="mappingBrowser">
     <!-- Settings -->
-    <component-settings :tooltip="$t('mappingBrowser.settingsButton')">
-      <b-form
-        @submit.stop.prevent>
-        <div>
-          {{ $t("mappingBrowser.settingResultLimit") }}
-          <b-input
-            v-model="resultLimit"
-            type="number"
-            min="1"
-            max="20"
-            size="sm"
-            style="display: inline-block; width: auto;"
-            @click="$event.target.select()" />
-        </div>
-        <b-form-checkbox
-          v-model="showEmpty"
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowEmptyTooltip'), delay: $util.delay.medium }"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingShowEmpty") }}
-        </b-form-checkbox>
-        <b-form-checkbox
-          v-model="showIdentityWarning"
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowIdentityWarningTooltip'), delay: $util.delay.medium }"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingShowIdentityWarning") }}
-        </b-form-checkbox>
-        <p><b>{{ $t("mappingBrowser.mappingNavigator") }}</b></p>
-        <b-form-checkbox
-          v-model="showAllSchemes"
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.settingShowAllSchemesTooltip'), delay: $util.delay.medium }"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingShowAllSchemes") }}
-        </b-form-checkbox>
-        <b-form-checkbox
-          v-model="mappingNavigatorShowResultsFor[true]"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingNavigatorShowResultsForLeft") }}
-        </b-form-checkbox>
-        <b-form-checkbox
-          v-model="mappingNavigatorShowResultsFor[false]"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingNavigatorShowResultsForRight") }}
-        </b-form-checkbox>
-        <b-form-checkbox
-          v-model="moveCurrentRegistryToTop"
-          style="user-select: none;">
-          {{ $t("mappingBrowser.settingMoveCurrentRegistryToTop") }}
-        </b-form-checkbox>
-      </b-form>
-    </component-settings>
+    <component-settings :tooltip="$t('mappingBrowser.settingsButton')" />
     <tabs
       v-model="tab"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
@@ -344,7 +295,7 @@
           v-if="searchSections.length"
           class="mappingBrowser-search-table"
           :sections="searchSections"
-          :search-limit="resultLimit"
+          :search-limit="componentSettings.resultLimit"
           :show-editing-tools="showEditingTools"
           :show-cocoda-link="showCocodaLink"
           @pageChange="changePage('search', $event)">
@@ -431,7 +382,7 @@
             <mapping-browser-table
               v-if="(group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations).length"
               :sections="group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations"
-              :search-limit="resultLimit"
+              :search-limit="componentSettings.resultLimit"
               @pageChange="changePage('navigator', $event)" />
             <div
               v-else-if="selected.concept[true] || selected.concept[false]"
@@ -738,7 +689,7 @@ export default {
         group.registries.push(registry)
       }
       groups = groups.filter(group => group.registries.length > 0)
-      if (this.moveCurrentRegistryToTop) {
+      if (this.componentSettings.moveCurrentRegistryToTop) {
         for (let group of groups) {
           group.registries = group.registries.sort((a, b) => {
             if (this.$jskos.compare(a, this.currentRegistry)) {
@@ -784,31 +735,6 @@ export default {
       }
       return object
     },
-    mappingNavigatorShowResultsFor() {
-      let object = {}
-      // Define setter and getter for each side separately.
-      for (let isLeft of [true, false]) {
-        Object.defineProperty(object, isLeft, {
-          get: () => {
-            return this.$settings.mappingNavigatorShowResultsFor[isLeft]
-          },
-          set: (value) => {
-            let newValue = Object.assign({}, this.$settings.mappingNavigatorShowResultsFor, { [isLeft]: value })
-            // Force at least one side to be true
-            if (!value && !newValue[!isLeft]) {
-              newValue[!isLeft] = true
-            }
-            this.$store.commit({
-              type: "settings/set",
-              prop: "mappingNavigatorShowResultsFor",
-              value: newValue,
-            })
-            this.$store.commit("mapping/setRefresh")
-          },
-        })
-      }
-      return object
-    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
@@ -817,77 +743,6 @@ export default {
     },
     navigatorSectionsRecommendations () {
       return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$util.registryStored(section.registry))
-    },
-    // Setting whether to show identity mismatch warning
-    showIdentityWarning: {
-      get() {
-        return this.$settings.mappingBrowserShowIdentityWarning
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserShowIdentityWarning",
-          value,
-        })
-      },
-    },
-    // Setting whether to hide empty sections
-    showEmpty: {
-      get() {
-        return this.$settings.mappingBrowserShowEmpty
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserShowEmpty",
-          value,
-        })
-      },
-    },
-    // Setting whether to show mappings from all schemes or only chosen schemes
-    showAllSchemes: {
-      get() {
-        return this.$settings.mappingBrowserAllSchemes
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserAllSchemes",
-          value,
-        })
-        // Refresh
-        this.$store.commit("mapping/setRefresh")
-      },
-    },
-    // Setting whether to move current mapping registry to the top of the list
-    moveCurrentRegistryToTop: {
-      get() {
-        return this.$settings.mappingBrowserMoveCurrentRegistryToTop
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserMoveCurrentRegistryToTop",
-          value,
-        })
-      },
-    },
-    resultLimit: {
-      get() {
-        return this.$settings.mappingBrowserResultLimit
-      },
-      set(value) {
-        value = parseInt(value) || 5
-        value = Math.max(1, value)
-        value = Math.min(20, value)
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingBrowserResultLimit",
-          value,
-        })
-        // Refresh
-        this.$store.commit("mapping/setRefresh")
-      },
     },
     searchShareLink () {
       let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
@@ -1027,6 +882,22 @@ export default {
         }
       },
       deep: true,
+    },
+    "componentSettings.resultLimit"() {
+      // Refresh when resultLimit changes
+      this.$store.commit("mapping/setRefresh")
+    },
+    "componentSettings.showAllSchemes"() {
+      // Refresh when showAllSchemes changes
+      this.$store.commit("mapping/setRefresh")
+    },
+    "componentSettings.navigatorShowResultsForLeft"() {
+      // Refresh when navigatorShowResultsForLeft changes
+      this.$store.commit("mapping/setRefresh")
+    },
+    "componentSettings.navigatorShowResultsForRight"() {
+      // Refresh when navigatorShowResultsForRight changes
+      this.$store.commit("mapping/setRefresh")
     },
   },
   created() {
@@ -1215,8 +1086,8 @@ export default {
           direction: this.searchFilter.direction,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
-          offset: ((this.searchPages[registry.uri] || 1) - 1) * this.resultLimit,
-          limit: this.resultLimit,
+          offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
+          limit: this.componentSettings.resultLimit,
           cancelToken: cancelToken.token,
         }).catch(error => {
           console.warn("Mapping Browser: Error during search:", error)
@@ -1273,8 +1144,8 @@ export default {
         mode: "or",
         selected: this.selected,
       }
-      let from = this.mappingNavigatorShowResultsFor[true] ? _.get(this, "selected.concept[true]") : null
-      let to = this.mappingNavigatorShowResultsFor[false] ? _.get(this, "selected.concept[false]") : null
+      let from = this.componentSettings.navigatorShowResultsForLeft ? _.get(this, "selected.concept[true]") : null
+      let to = this.componentSettings.navigatorShowResultsForRight ? _.get(this, "selected.concept[false]") : null
       if (from) {
         params["from"] = from
       }
@@ -1386,7 +1257,7 @@ export default {
           // Filter mappings if showAllSchemes is off and schemes don't match
           // Note: This has to be adjusted or removed when proper pagination for navigator results is implemented!
           mappings.totalCount = undefined
-          if (!this.showAllSchemes) {
+          if (!this.componentSettings.showAllSchemes) {
             mappings = mappings.filter(mapping => {
               if (this.selected.scheme[true] && this.selected.scheme[false]) {
                 let schemesCorrect = true
@@ -1407,7 +1278,7 @@ export default {
           }
           this.$set(this.navigatorResults, registry.uri, mappings)
           // Check if refresh leads to an empty page and decrement page if necessary
-          if (this.navigatorPages[registry.uri] > 1 && mappings.length < (this.navigatorPages[registry.uri] - 1) * this.resultLimit + 1) {
+          if (this.navigatorPages[registry.uri] > 1 && mappings.length < (this.navigatorPages[registry.uri] - 1) * this.componentSettings.resultLimit + 1) {
             this.$set(this.navigatorPages, registry.uri, this.navigatorPages[registry.uri] - 1)
           }
           // Reset cancel token
@@ -1447,7 +1318,7 @@ export default {
           section.loading = true
         }
         // Hide empty section if necessary
-        if (section.totalCount == 0 && !this.showEmpty) {
+        if (section.totalCount == 0 && !this.componentSettings.showEmpty) {
           continue
         }
         if (mappings.url) {
@@ -1529,7 +1400,7 @@ export default {
           section.items.push(item)
         }
         if (mappings.totalCount === undefined) {
-          section.items = section.items.slice((section.page - 1) * this.resultLimit, section.page * this.resultLimit)
+          section.items = section.items.slice((section.page - 1) * this.componentSettings.resultLimit, section.page * this.componentSettings.resultLimit)
         }
         section.totalCount -= skipped
         sections.push(section)

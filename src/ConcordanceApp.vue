@@ -98,12 +98,6 @@ export default {
       // Hardcode English for now because there are no settings in which to change the language
       return "en"
     },
-    settingsLoaded() {
-      return this.$store.state.settings.loaded
-    },
-    configLoaded() {
-      return this.$store.state.configLoaded
-    },
   },
   watch: {
     settingsLoaded() {

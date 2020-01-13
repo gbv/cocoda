@@ -1,46 +1,45 @@
 import localforage from "localforage"
 import _ from "lodash"
 
+import componentSettings from "../../../config/settings.json"
+
 const localStorageKey = "cocoda-settings--" + window.location.pathname
 
-const defaultSettings = {
+let defaultSettings = {
   creator: "",
   creatorUri: "",
-  mappingBrowserAllSchemes: true,
-  mappingBrowserResultLimit: 5,
-  mappingBrowserShowEmpty: true,
-  mappingBrowserShowIdentityWarning: true,
-  mappingBrowserMoveCurrentRegistryToTop: false,
-  conceptDetailShowAllAncestors: false,
-  conceptListAddToMappingSelectsConcept: true,
-  loadConceptsMappedStatus: true,
   mappingBrowserShowRegistry: {},
   minimized: {},
   flex: {},
   typesForSchemes: {},
   locale: window.navigator.language || "en",
-  mappingEditorClearOnSave: true,
   favoriteConcepts: [],
   favoriteSchemes: null,
-  mappingCardinality: "1-to-n",
   mappingRegistry: null,
-  schemeSelectionInsertPrefLabel: {
-    [true]: true,
-    [false]: true,
-  },
   conceptListChoice: {
     [true]: 0,
     [false]: 0,
   },
-  mappingNavigatorShowResultsFor: {
-    [true]: true,
-    [false]: true,
-  },
+  components: {},
+}
+
+for (let component of Object.keys(componentSettings)) {
+  defaultSettings.components[component] = {}
+  for (let setting of Object.keys(componentSettings[component])) {
+    if (componentSettings[component][setting].sideDependent) {
+      defaultSettings.components[component][setting] = {}
+      defaultSettings.components[component][setting][true] = componentSettings[component][setting].default
+      defaultSettings.components[component][setting][false] = componentSettings[component][setting].default
+    } else {
+      defaultSettings.components[component][setting] = componentSettings[component][setting].default
+    }
+  }
 }
 
 // initial state
 const state = {
   settings: defaultSettings,
+  componentSettings,
   loaded: false,
 }
 
@@ -65,6 +64,19 @@ const mutations = {
     }
   },
 
+  setComponentSetting(state, { component, setting, isLeft, value }) {
+    if (state.loaded) {
+      if (isLeft !== undefined) {
+        _.set(state.settings.components[component][setting], isLeft, value)
+      } else {
+        _.set(state.settings.components[component], setting, value)
+      }
+      localforage.setItem(localStorageKey, state.settings)
+    } else {
+      console.warn("Tried to save settings before they were loaded.")
+    }
+  },
+
   loaded(state, { loaded = true }) {
     state.loaded = loaded
   },
@@ -79,6 +91,17 @@ const actions = {
       commit({
         type: "loaded",
       })
+      // Readd component settings that didn't exist in loaded settings
+      for (let component of Object.keys(defaultSettings.components)) {
+        if (!newSettings.components[component]) {
+          newSettings.components[component] = {}
+        }
+        for (let setting of Object.keys(defaultSettings.components[component])) {
+          if (newSettings.components[component][setting] === undefined) {
+            newSettings.components[component][setting] = defaultSettings.components[component][setting]
+          }
+        }
+      }
       commit({
         type: "save",
         settings: newSettings,

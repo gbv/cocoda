@@ -3,20 +3,7 @@
     id="mappingEditor"
     :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
     <!-- Settings -->
-    <component-settings :tooltip="$t('mappingEditor.settingsButton')">
-      <b-form-checkbox
-        v-model="clearOnSave"
-        v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
-        style="user-select: none;">
-        {{ $t("mappingEditor.settingClearOnSave") }}
-      </b-form-checkbox>
-      <b-form-checkbox
-        v-model="only1to1mappings"
-        v-b-tooltip.hover="{ title: $t('mappingEditor.settingOnly1to1mappingsTooltip'), delay: $util.delay.medium }"
-        style="user-select: none;">
-        {{ $t("mappingEditor.settingOnly1to1mappings") }}
-      </b-form-checkbox>
-    </component-settings>
+    <component-settings :tooltip="$t('mappingEditor.settingsButton')" />
     <div
       v-if="canSaveMapping"
       class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
@@ -375,32 +362,6 @@ export default {
     schemeRight() {
       return this.selected.scheme[false]
     },
-    // Setting whether to clear editor after saving a mapping
-    clearOnSave: {
-      get() {
-        return this.$settings.mappingEditorClearOnSave
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingEditorClearOnSave",
-          value,
-        })
-      },
-    },
-    // Setting whether to only allow 1-to-1 mappings
-    only1to1mappings: {
-      get() {
-        return this.$settings.mappingCardinality == "1-to-1" ? true : false
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "mappingCardinality",
-          value: value ? "1-to-1" : "1-to-n",
-        })
-      },
-    },
     currentGuidelines() {
       return (this.config.guidelines || []).find(g => this.$jskos.compare(g.fromScheme, this.selected.scheme[true]) && this.$jskos.compare(g.toScheme, this.selected.scheme[false]))
     },
@@ -478,7 +439,7 @@ export default {
           type: "mapping/set",
           original: this.adjustMapping(mapping),
         })
-        if (this.clearOnSave) {
+        if (this.componentSettings.clearOnSave) {
           this.clearMapping()
         }
       }).catch(error => {

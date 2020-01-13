@@ -9,7 +9,7 @@ export default {
   mixins: [objects],
   computed: {
     loadConceptsMappedStatus() {
-      return this.$store.state.settings.settings.loadConceptsMappedStatus
+      return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
     },
     loadConceptsMappedStatusCurrentMappingRegistry() {
       return this.$store.getters.getCurrentRegistry

@@ -5,14 +5,7 @@
     style="overflow: visible;">
     <!-- ^^^ overflow: visible is necessary to properly shown concept search results which go over the edge of the component. -->
     <!-- Settings -->
-    <component-settings>
-      <b-form-checkbox
-        v-model="insertPrefLabel"
-        v-b-tooltip.hover="{ title: $t('mappingEditor.settingClearOnSaveTooltip'), delay: $util.delay.medium }"
-        style="user-select: none;">
-        {{ $t("schemeSelection.insertPrefLabel") }}
-      </b-form-checkbox>
-    </component-settings>
+    <component-settings />
     <!-- This is shown when a scheme is selected. -->
     <div
       v-if="scheme"
@@ -465,19 +458,6 @@ export default {
         }
       }
       return options
-    },
-    // insertPrefLabel option.
-    insertPrefLabel: {
-      get() {
-        return this.$settings.schemeSelectionInsertPrefLabel[this.isLeft]
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: `schemeSelectionInsertPrefLabel[${this.isLeft}]`,
-          value,
-        })
-      },
     },
   },
   watch: {

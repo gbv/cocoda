@@ -13,6 +13,21 @@ export default {
     $settings() {
       return this.$store.state.settings.settings
     },
+    settingsLoaded() {
+      return this.$store.state.settings.loaded
+    },
+    configLoaded() {
+      return this.$store.state.configLoaded
+    },
+    componentName() {
+      return this.$options.name
+    },
+    componentSettings() {
+      if (!this.settingsLoaded) {
+        return {}
+      }
+      return (this.$settings.components && this.$settings.components[this.componentName]) || {}
+    },
     loadingGlobal: {
       get() {
         return this.$store.state.loading

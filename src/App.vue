@@ -259,12 +259,6 @@ export default {
       }
       return locale
     },
-    settingsLoaded() {
-      return this.$store.state.settings.loaded
-    },
-    configLoaded() {
-      return this.$store.state.configLoaded
-    },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
         registry.provider &&
@@ -544,7 +538,7 @@ export default {
       })
     },
     insertPrefLabel(isLeft) {
-      if (!this.$settings.schemeSelectionInsertPrefLabel[!isLeft]) {
+      if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {
         return
       }
       let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)

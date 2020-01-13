@@ -199,7 +199,7 @@ export default {
       return this.$store.getters.mappedStatus(this.concept, this.isLeft)
     },
     showConceptMappedStatus() {
-      return this.$store.state.settings.settings.loadConceptsMappedStatus
+      return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
     },
   },
   created() {
@@ -284,7 +284,7 @@ export default {
      * Clicked the plus icon to add a concept.
      */
     addConcept() {
-      if (!this.isSelected && this.$store.state.settings.settings.conceptListAddToMappingSelectsConcept) {
+      if (!this.isSelected && this.$store.state.settings.settings.components.ConceptListWrapper.addToMappingSelectsConcept) {
         this.select(this.concept)
       }
       this.addToMapping({

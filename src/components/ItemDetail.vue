@@ -26,13 +26,7 @@
     </div>
 
     <!-- Settings -->
-    <component-settings>
-      <b-form-checkbox
-        v-model="conceptDetailShowAllAncestors"
-        style="user-select: none;">
-        {{ $t("settings.showAllAncestors") }}
-      </b-form-checkbox>
-    </component-settings>
+    <component-settings />
 
     <data-modal-button
       :data="item"
@@ -125,7 +119,7 @@ export default {
     internalSettings() {
       // Merge prop settings and default settings
       return Object.assign({}, this.defaultSettings, {
-        showAllAncestors: this.$settings.conceptDetailShowAllAncestors,
+        showAllAncestors: this.componentSettings.showAllAncestors,
       },this.settings)
     },
     apiUrl() {
@@ -145,18 +139,6 @@ export default {
         return null
       }
       return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}uri=${encodeURIComponent(this.item.uri)}`
-    },
-    conceptDetailShowAllAncestors: {
-      get() {
-        return this.$settings.conceptDetailShowAllAncestors
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "conceptDetailShowAllAncestors",
-          value,
-        })
-      },
     },
   },
   watch: {

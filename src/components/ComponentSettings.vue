@@ -11,18 +11,52 @@
       triggers="click"
       placement="bottomright">
       <div ref="popover">
-        <slot />
+        <slot>
+          <template v-for="setting in settings">
+            <b-form-checkbox
+              v-if="setting.type == 'Boolean'"
+              :key="`componentSettings-${setting.key}-${isLeft}`"
+              v-model="settingsValues[setting.key]"
+              v-b-tooltip.hover="{ title: $util.lmContent(setting, 'definition'), delay: $util.delay.medium }"
+              style="user-select: none;">
+              {{ $util.prefLabel(setting) }}
+            </b-form-checkbox>
+            <div
+              v-else-if="setting.type == 'Number'"
+              :key="`componentSettings-${setting.key}-${isLeft}`"
+              v-b-tooltip.hover="{ title: $util.lmContent(setting, 'definition'), delay: $util.delay.medium }">
+              {{ $util.prefLabel(setting) }}
+              <b-input
+                v-model="settingsValues[setting.key]"
+                type="number"
+                :min="setting.min"
+                :max="setting.max"
+                size="sm"
+                style="display: inline-block; width: auto;"
+                @click="$event.target.select()" />
+            </div>
+            <p
+              v-else
+              :key="`componentSettings-${setting.key}-${isLeft}`"
+              :class="setting.class">
+              {{ $util.prefLabel(setting) }}
+            </p>
+          </template>
+        </slot>
       </div>
     </b-popover>
   </div>
 </template>
 
 <script>
+import _ from "lodash"
+
 import clickHandler from "../mixins/click-handler"
+import computed from "../mixins/computed"
 
 export default {
   name: "ComponentSettings",
-  mixins: [clickHandler],
+  mixins: [clickHandler, computed],
   props: {
     /**
      * The tooltip for the settings button.
@@ -36,7 +70,62 @@ export default {
     return {
       id: "",
       isShown: false,
+      parentName: this.$parent.$options.name,
+      isLeft: this.$parent.isLeft,
     }
+  },
+  computed: {
+    settings() {
+      let result = []
+      let settings = this.$store.state.settings.componentSettings[this.parentName] || {}
+      for (let setting of Object.keys(settings)) {
+        result.push(Object.assign({
+          key: setting,
+        }, settings[setting]))
+      }
+      return result
+    },
+    settingsValues() {
+      let values = {}
+      // Define setter and getter for each setting separately
+      for (let setting of Object.keys(this.$store.state.settings.componentSettings[this.parentName])) {
+        const sideDependent = this.$store.state.settings.componentSettings[this.parentName][setting].sideDependent
+        const isLeft = sideDependent ? this.isLeft : undefined
+        const type = this.$store.state.settings.componentSettings[this.parentName][setting].type
+        const defaultValue = this.$store.state.settings.componentSettings[this.parentName][setting].default
+        const minValue = this.$store.state.settings.componentSettings[this.parentName][setting].min
+        const maxValue = this.$store.state.settings.componentSettings[this.parentName][setting].max
+        Object.defineProperty(values, setting, {
+          get: () => {
+            if (sideDependent) {
+              return this.$settings.components[this.parentName][setting][isLeft]
+            }
+            return this.$settings.components[this.parentName][setting]
+          },
+          set: (value) => {
+            // Convert value to correct type
+            if (type == "Boolean" && !_.isBoolean(value)) {
+              value = !!value
+            }
+            if (type == "Number" && !_.isNumber(value)) {
+              value = parseInt(value)
+              if (isNaN(value) || value < minValue || value > maxValue) {
+                console.warn(`Tried to save invalid value for setting ${this.parentName} -> ${setting}, fallback to default value (${defaultValue}).`)
+                value = defaultValue
+              }
+            }
+            this.$store.commit({
+              type: "settings/setComponentSetting",
+              component: this.parentName,
+              setting,
+              isLeft,
+              value,
+            })
+          },
+        })
+      }
+      return values
+    },
   },
   created() {
     this.id = this.$util.generateID()

@@ -168,7 +168,7 @@ export default {
     },
     addToMapping(params) {
       params.type = "mapping/add"
-      params.cardinality = this.$store.state.settings.settings.mappingCardinality
+      params.cardinality = this.$store.state.settings.settings.components.MappingEditor.only1to1mappings ? "1-to-1" : "1-to-n"
       // Override cardinality from registry if necessary
       const cardinality = _.get(this.$store.getters.getCurrentRegistry, "config.mappings.cardinality")
       if (cardinality == "1-to-1") {

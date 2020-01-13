@@ -46,19 +46,7 @@
       <font-awesome-icon icon="chevron-up" />
     </div>
     <!-- Settings -->
-    <component-settings>
-      <b-form-checkbox
-        v-model="conceptListAddToMappingSelectsConcept"
-        style="user-select: none;">
-        {{ $t("settings.conceptListAddToMappingSelectsConcept") }}
-      </b-form-checkbox>
-      <b-form-checkbox
-        v-model="loadConceptsMappedStatus"
-        v-b-tooltip="$t('settings.loadConceptsMappedStatusExplanation')"
-        style="user-select: none;">
-        {{ $t("settings.loadConceptsMappedStatus") }}
-      </b-form-checkbox>
-    </component-settings>
+    <component-settings />
     <!-- Data Modal Button -->
     <data-modal-button
       :data="minimizeConcepts(currentChoice.concepts)"
@@ -239,30 +227,6 @@ export default {
       },
       set(value) {
         this.currentChoice = this.dataChoices[value]
-      },
-    },
-    conceptListAddToMappingSelectsConcept: {
-      get() {
-        return this.$settings.conceptListAddToMappingSelectsConcept
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "conceptListAddToMappingSelectsConcept",
-          value,
-        })
-      },
-    },
-    loadConceptsMappedStatus: {
-      get() {
-        return this.$settings.loadConceptsMappedStatus
-      },
-      set(value) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "loadConceptsMappedStatus",
-          value,
-        })
       },
     },
   },
