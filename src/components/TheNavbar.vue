@@ -130,6 +130,7 @@
               :is-link="false"
               :prevent-external-hover="true"
               :draggable="false" />
+            &nbsp;
             <item-name :item="concept" />
           </div>
           <div>
@@ -139,6 +140,7 @@
               @click="setSelected({ concept, isLeft: true })">
               <font-awesome-icon icon="caret-square-left" />
             </span>
+            &nbsp;
             <span
               v-b-tooltip.hover="{ title: $t('navbar.openRight'), delay: $util.delay.medium }"
               class="button"
