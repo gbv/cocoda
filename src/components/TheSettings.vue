@@ -158,26 +158,31 @@
         </tab>
         <tab
           :title="$t('settingsTabs')[2]">
-          <p v-if="localSettings">
-            <b>{{ $t("settings.language") }}</b>
-            <b-form-select v-model="$i18n.locale">
-              <option
-                v-for="language in config.languages"
-                :key="language"
-                :value="language">
-                {{ $t(`languages.${language}`) }}
-              </option>
-            </b-form-select>
-            <br><br><span v-html="$t('settings.languageContribution')" />
-          </p>
-          <p>
+          <div class="settingsModal-componentSettings-component">
+            <p
+              v-if="localSettings"
+              class="form-inline">
+              <label style="padding-right: 0.5em">{{ $t("settings.language") }}:</label>
+              <b-form-select v-model="$i18n.locale">
+                <option
+                  v-for="language in config.languages"
+                  :key="language"
+                  :value="language">
+                  {{ $t(`languages.${language}`) }}
+                </option>
+              </b-form-select>
+              <span
+                class="form-text text-muted"
+                v-html="$t('settings.languageContribution')" />
+            </p>
+          </div>
+          <div class="settingsModal-componentSettings-component">
             <b-button
-              variant="primary"
+              variant="secondary"
               @click="resetFlex">
               {{ $t("settings.resetSizes") }}
             </b-button>
-          </p>
-          <br>
+          </div>
           <!-- Component Settings -->
           <div
             v-for="component in components"
