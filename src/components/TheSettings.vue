@@ -178,6 +178,49 @@
             </b-button>
           </p>
           <br>
+          <!-- Component Settings -->
+          <div
+            v-for="component in components"
+            :key="`settings-componentSettings-${component.name}`"
+            class="settingsModal-componentSettings-component">
+            <h5>{{ component.name }}</h5>
+            <div
+              v-for="setting in component.settings"
+              :key="`settings-componentSettings-${component.name}-${setting.key}-${setting.isLeft}`">
+              <div v-if="setting.type == 'Boolean'">
+                <b-form-checkbox
+                  v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
+                  style="user-select: none;">
+                  {{ $util.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                </b-form-checkbox>
+                <span class="fontSize-small text-lightGrey">
+                  {{ ($util.lmContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
+                </span>
+              </div>
+              <div
+                v-else-if="setting.type == 'Number'"
+                v-b-tooltip.hover="{ title: $util.lmContent(setting, 'definition'), delay: $util.delay.medium }">
+                {{ $util.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                <b-input
+                  v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
+                  type="number"
+                  :min="setting.min"
+                  :max="setting.max"
+                  size="sm"
+                  style="display: inline-block; width: auto;"
+                  @click="$event.target.select()" />
+                <br>
+                <span class="fontSize-small text-lightGrey">
+                  {{ ($util.lmContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
+                </span>
+              </div>
+              <div
+                v-else
+                :class="setting.class">
+                {{ $util.prefLabel(setting) }}
+              </div>
+            </div>
+          </div>
         </tab>
         <tab
           v-if="config.shortcuts && config.shortcuts.length"
@@ -373,6 +416,54 @@ export default {
         action: "create",
         user: this.user,
       }))
+    },
+    // List of components with name, settings, and settingsValues
+    components() {
+      let components = []
+      for (let componentName of Object.keys(this.$store.state.settings.componentSettings)) {
+        let component = {
+          name: componentName,
+          settings: [],
+          settingsValues: {},
+        }
+        for (let settingKey of Object.keys(this.$store.state.settings.componentSettings[componentName])) {
+          let setting = this.$store.state.settings.componentSettings[componentName][settingKey]
+          for (let isLeft of setting.sideDependent ? [true, false] : [undefined]) {
+            component.settings.push(Object.assign({ key: settingKey, isLeft }, setting))
+            // Define getter and setter on settingsValues
+            Object.defineProperty(component.settingsValues, settingKey + (setting.sideDependent ? `-${isLeft}` : ""), {
+              get: () => {
+                if (setting.sideDependent) {
+                  return this.$settings.components[componentName][settingKey][isLeft]
+                }
+                return this.$settings.components[componentName][settingKey]
+              },
+              set: (value) => {
+                // Convert value to correct type
+                if (setting.type == "Boolean" && !_.isBoolean(value)) {
+                  value = !!value
+                }
+                if (setting.type == "Number" && !_.isNumber(value)) {
+                  value = parseInt(value)
+                  if (isNaN(value) || value < setting.min || value > setting.max) {
+                    console.warn(`Tried to save invalid value for setting ${componentName} -> ${settingKey}, fallback to default value (${setting.default}).`)
+                    value = setting.default
+                  }
+                }
+                this.$store.commit({
+                  type: "settings/setComponentSetting",
+                  component: componentName,
+                  setting: settingKey,
+                  isLeft,
+                  value,
+                })
+              },
+            })
+          }
+        }
+        components.push(component)
+      }
+      return components
     },
   },
   watch: {
@@ -648,6 +739,12 @@ p {
 }
 .settingsModal-mapping-registry > div:last-child {
   flex: 1;
+}
+.settingsModal-componentSettings-component {
+  margin-bottom: 20px;
+}
+.settingsModal-componentSettings-component > div {
+  margin-bottom: 5px;
 }
 </style>
 
