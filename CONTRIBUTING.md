@@ -13,6 +13,7 @@ To start contributing please make sure you have a [GitHub account](https://githu
 - [Documentation](#documentation)
 - [Design Guidelines](#design-guidelines)
 - [Creating Providers](#creating-providers)
+- [Component Settings](#component-settings)
 - [Translate](#translate)
 - [Publish](#publish)
 
@@ -262,6 +263,80 @@ Some notes:
 - BaseProvider also provides a wrapper around axios under `this.get(url, options, cancelToken)` that sets the `language` parameter for each request and returns only the `data` portion of the response. If there is an error, it will return an empty array and print a warning on the console. Alternatively, you can import and use axios yourself.
 - BaseProvider also has adjustment methods that are called for different types of objects returned by the provider, e.g. for concepts or mappings.
 - In the future, BaseProvider should be a separate npm package which other packages can use to offer additional providers for Cocoda.
+
+## Component Settings
+
+All components have component specific user settings. These are options where the user can decide about how a certain functionality in a component looks or behaves. They can be accessed per component with the small gear in the bottom right corner of a component, or centrally under Settings - User Interface. These settings are defined in a JSON file under `config/settings.json`.
+
+If you would like to add a component setting, find the component key in `settings.json` and add a new subkey with the name of your setting. Under that subkey, you can define the following properties:
+
+- `prefLabel` (**required**, JSKOS [language map](https://gbv.github.io/jskos/jskos.html#language-map) of strings) - the preferred label for the setting (please provide it in English (`en`) and German (`de`))
+- `type` (**required**, string) - the type of the value, currently supports `"Boolean"` and `"Number"` (exception for dividers, see below)
+- `default` (**required**, boolean or number) - the default value for the setting (e.g. `true`, `false`, `5`, ...) (exception for dividers, see below)
+- `definition` (optional, JSKOS [language map](https://gbv.github.io/jskos/jskos.html#language-map) of [list](https://gbv.github.io/jskos/jskos.html#list)) - a definition/explanation for the settings (shown as a tooltip or below the setting)
+- `sideDependent` (optional, boolean) - whether the setting has separate values for the left and right side of a component (example see `ConceptSchemeSelection.insertPrefLabel`)
+- `min` (**required**, number, only for type `"Number"`) - minimum value
+- `max` (**required**, number, only for type `"Number"`) - maximum value
+
+The following are two examples which cover all possible properties:
+
+```json
+{
+  "MappingBrowser": {
+    "resultLimit": {
+      "prefLabel": {
+        "en": "Results per page:",
+        "de": "Ergebnisse pro Seite:"
+      },
+      "type": "Number",
+      "default": 5,
+      "min": 1,
+      "max": 20
+    }
+  }
+}
+```
+
+```json
+{
+  "ConceptSchemeSelection": {
+    "insertPrefLabel": {
+      "prefLabel": {
+        "en": "Copy selected concept label from opposite side into search field",
+        "de": "Ausgewähltes Konzept der gegenüberliegenden Seite in Suchfeld eintragen"
+      },
+      "definition": {
+        "en": ["When turned on, the label of the selected concept on the opposite side will be inserted in the concept search whenever the selected concept changes."],
+        "de": ["Falls eingeschaltet wird das Label vom ausgewählten Konzept der gegenüberliegenden Seite in das Suchfeld einfügt, sobald das Konzept sich ändert."]
+      },
+      "type": "Boolean",
+      "default": true,
+      "sideDependent": true
+    }
+  }
+}
+```
+
+See also existing settings in `config/settings.json` as a guideline.
+
+After a setting was defined, it can be accessed in any component via `this.$store.state.settings.settings.components.NameOfComponent.nameOfSetting` (+ `[true]`/`[false]` if `sideDependent` is enabled). If the `computed` mixin is included in the component, this can be shortened to `this.$settings.components.NameOfComponent.nameOfSetting` or `this.componentSettings.nameOfSetting` if it is accessed from inside the component for which the setting is defined. The settings will automatically be shown under the component specific settings (gear in the bottom right) and under Settings - User Interface.
+
+There is one exception for the rule. It is possible to add text-only dividers to separate a group of settings within a component. These only have to have a `prefLabel`, and they can optionally have a `class` added to them (e.g. `"fontWeight-heavy"`). The following example is also straight from the current `settings.json` file:
+
+```json
+{
+  "MappingBrowser": {
+    "navigatorDivider": {
+      "prefLabel": {
+        "en": "Navigator"
+      },
+      "class": "fontWeight-heavy"
+    }
+  }
+}
+```
+
+The setting key does not matter in this case, but make sure it is unique inside that component.
 
 ## Translate
 
