@@ -6,8 +6,12 @@
         "de": "Ausgewähltes Konzept der gegenüberliegenden Seite in Suchfeld eintragen"
       },
       "definition": {
-        "en": ["When turned on, the label of the selected concept on the opposite side will be inserted in the concept search whenever the selected concept changes."],
-        "de": []
+        "en": [
+          "When turned on, the label of the selected concept on the opposite side will be inserted in the concept search whenever the selected concept changes."
+        ],
+        "de": [
+          "Falls eingeschaltet wird das Label vom ausgewählten Konzept der gegenüberliegenden Seite in das Suchfeld einfügt, sobald das Konzept sich ändert."
+        ]
       },
       "type": "Boolean",
       "default": true,
@@ -39,8 +43,12 @@
         "de": "Gemappte Konzepte markieren"
       },
       "definition": {
-        "en": ["Concepts with at least one mapping in the currently selected mapping database to the opposite concept scheme will be marked with a green bar."],
-        "de": ["Es wird ein grüner Balken rechts von Konzepten angezeigt, die in der ausgewählten Mapping-Datenbank mindestens ein Mapping auf das gegenüberstehende Vokabular haben."]
+        "en": [
+          "Concepts with at least one mapping in the currently selected mapping database to the opposite concept scheme will be marked with a green bar."
+        ],
+        "de": [
+          "Es wird ein grüner Balken rechts von Konzepten angezeigt, die in der ausgewählten Mapping-Datenbank mindestens ein Mapping auf das gegenüberstehende Vokabular haben."
+        ]
       },
       "type": "Boolean",
       "default": true
@@ -53,8 +61,12 @@
         "de": "Leere Editor nach Speichern"
       },
       "definition": {
-        "en": ["When turned on, the editor will be cleared after a mapping was saved."],
-        "de": ["Falls eingeschaltet wird der Editor nach dem Speichern eines Mappings geleert."]
+        "en": [
+          "When turned on, the editor will be cleared after a mapping was saved."
+        ],
+        "de": [
+          "Falls eingeschaltet wird der Editor nach dem Speichern eines Mappings geleert."
+        ]
       },
       "type": "Boolean",
       "default": true
@@ -65,8 +77,12 @@
         "de": "Nur 1-zu-1 Mappings erlauben (sonst 1-zu-n)"
       },
       "definition": {
-        "en": ["When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed."],
-        "de": ["Falls eingeschaltet, werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet, werden 1-zu-n Mappings erlaubt."]
+        "en": [
+          "When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed."
+        ],
+        "de": [
+          "Falls eingeschaltet, werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet, werden 1-zu-n Mappings erlaubt."
+        ]
       },
       "type": "Boolean",
       "default": false
@@ -89,8 +105,12 @@
         "de": "Leere Abschnitte anzeigen"
       },
       "definition": {
-        "en": ["When turned off, sections with no mappings will be completely hidden."],
-        "de": ["Falls ausgeschaltet werden Abschnitte ohne Mappings komplett ausgeblendet."]
+        "en": [
+          "When turned off, sections with no mappings will be completely hidden."
+        ],
+        "de": [
+          "Falls ausgeschaltet werden Abschnitte ohne Mappings komplett ausgeblendet."
+        ]
       },
       "type": "Boolean",
       "default": true
@@ -101,14 +121,17 @@
         "de": "Hinweis bei abweichender Identität"
       },
       "definition": {
-        "en": ["When enabled, a warning sign will be shown if one of your own mappings contains an identity different from the one currently selected."],
-        "de": ["Falls eingeschaltet wird eine Warnung angezeigt, falls in einem deiner Mappings eine von der aktuell ausgewählten abweichende Identität gespeichert ist."]
+        "en": [
+          "When enabled, a warning sign will be shown if one of your own mappings contains an identity different from the one currently selected."
+        ],
+        "de": [
+          "Falls eingeschaltet wird eine Warnung angezeigt, falls in einem deiner Mappings eine von der aktuell ausgewählten abweichende Identität gespeichert ist."
+        ]
       },
       "type": "Boolean",
       "default": true
     },
     "navigatorDivider": {
-      "skipOnSave": true,
       "prefLabel": {
         "en": "Navigator"
       },
@@ -120,8 +143,12 @@
         "de": "Alle Vokabulare berücksichtigen"
       },
       "definition": {
-        "en": ["When turned off, only the results of the currently selected concept schemes will be shown."],
-        "de": ["Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind."]
+        "en": [
+          "When turned off, only the results of the currently selected concept schemes will be shown."
+        ],
+        "de": [
+          "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind."
+        ]
       },
       "type": "Boolean",
       "default": true
