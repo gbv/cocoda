@@ -77,10 +77,11 @@
     <!-- Data Source -->
     <div
       class="schemeDetail-identifier">
-      <b>{{ $t("schemeDetail.registry") }}:</b>
+      <b>{{ $t("schemeDetail.registry") }}: </b>
       <registry-notation
         :registry="item._provider.registry"
         :tooltip="false" />
+      &nbsp;
       <registry-name
         :registry="item._provider.registry"
         :tooltip="false" />

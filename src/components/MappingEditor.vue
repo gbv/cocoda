@@ -216,7 +216,8 @@
     </b-modal>
     <data-modal-button
       :data="mapping"
-      :position-right="18"
+      :position-right="15"
+      :position-bottom="-6"
       type="mapping" />
   </div>
 </template>
@@ -700,7 +701,7 @@ export default {
   position: absolute;
   font-size: 16px;
   text-align: center;
-  margin: 5px auto;
+  margin: 5px auto 0px auto;
   left: 30px;
   right: 30px;
   bottom: 0;
@@ -759,6 +760,15 @@ export default {
   // Prevent other icons from moving by using min-width
   min-width: 16px;
   z-index: @zIndex-2;
+}
+
+</style>
+
+<style>
+
+#mappingEditor .componentSettings {
+  right: -2px;
+  bottom: -4px;
 }
 
 </style>

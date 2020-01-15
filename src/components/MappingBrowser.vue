@@ -111,7 +111,7 @@
             </flexible-table>
           </div>
           <div style="display: flex;">
-            <p style="font-weight: bold; flex: 1;">
+            <p style="font-weight: bold; flex: 1; padding-left: 5px;">
               {{ concordanceTableItems.length }} {{ $t("mappingBrowser.concordances") }}
             </p>
             <p style="text-align: right; font-weight: bold; padding-right: 45px;">
@@ -122,7 +122,7 @@
             <data-modal-button
               v-if="concordances && concordances.length > 0"
               :data="concordances"
-              :position-right="18"
+              :position-right="20"
               :url="concordanceUrls"
               type="concordance" />
           </div>
@@ -1541,6 +1541,10 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+#mappingBrowser .componentSettings {
+  right: 3px;
 }
 
 </style>

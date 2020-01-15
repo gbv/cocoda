@@ -28,6 +28,7 @@
           class="pointer"
           icon="star"
           @click="toggleFavoriteScheme(scheme)" />
+        &nbsp;
         <!-- Name of scheme -->
         <item-name
           :item="scheme"
@@ -35,17 +36,19 @@
           :is-left="isLeft"
           font-size="large" />
         <!-- License badge -->
-        <span v-if="scheme.license && scheme.license.length">
+        <span
+          v-if="scheme.license && scheme.license.length"
+          style="display: inline-block; margin: 0px 2px 0px 1px; height: 15px;">
           <img
             v-if="$util.licenseBadges[scheme.license[0].uri]"
             :src="$util.licenseBadges[scheme.license[0].uri]"
-            class="schemeDetail-licenseBadge">
+            style="vertical-align: text-top;">
         </span>
         <!-- Button to clear scheme -->
         <div
           v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
           class="button"
-          style="display: inline-block; margin-right: 2px; margin-top: -3px;"
+          style="display: inline-block; margin: -3px 2px 0px 2px;"
           @click="clearScheme">
           <font-awesome-icon icon="times-circle" />
         </div>
@@ -693,6 +696,6 @@ export default {
 }
 .conceptSchemeSelection .componentSettings {
   right: 3px;
-  bottom: 7px;
+  bottom: 2px;
 }
 </style>

@@ -51,7 +51,7 @@
     <data-modal-button
       :data="minimizeConcepts(currentChoice.concepts)"
       :position-right="20"
-      :position-bottom="5"
+      :position-bottom="0"
       type="concept"
       :url="currentChoice.url" />
     <!-- Concept List Selection Popover -->
@@ -342,7 +342,7 @@ export default {
 }
 .conceptListWrapper .componentSettings {
   right: 3px;
-  bottom: 7px;
+  bottom: 2px;
 }
 .conceptListWrapper-reloadButton {
   right: 42px !important;
