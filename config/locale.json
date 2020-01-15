@@ -361,8 +361,7 @@
       "starRemove": "aus Favoriten entfernen",
       "popoverShow": "Vokabular-Auswahl öffnen",
       "popoverHide": "Vokabular-Auswahl ausblenden",
-      "showAllSchemes": "Alle {count} Vokabulare anzeigen",
-      "hideAllSchemes": "{count} ausblenden"
+      "showAllSchemes": "Alle {count} Vokabulare anzeigen"
     },
     "search": {
       "placeholder": "Tippen zum Suchen...",
@@ -431,7 +430,6 @@
       "creatorUri": "Identität (als URI, wird beim Login automatisch gesetzt)",
       "creatorUriInvalid": "Bitte eine valide URI eingeben.",
       "mappingRegistry": "Mapping-Datenbank",
-      "mappingRegistryExplanation": "Mappings und Annotationen speichern in:",
       "mappingRegistries": "Mapping-Datenbanken",
       "otherRegistries": "Andere Datenquellen",
       "creatorInfo": "Die folgenden Angaben werden in allen bearbeiteten Mappings hinterlegt und können beim Austausch von Mappings weitergegeben werden:",
