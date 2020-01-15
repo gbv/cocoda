@@ -23,6 +23,8 @@ let defaultSettings = {
   components: {},
 }
 
+// prepare component settings
+// (basically transforms config/settings.json into a value only structure that is saved in Local Storage)
 for (let component of Object.keys(componentSettings)) {
   defaultSettings.components[component] = {}
   for (let setting of Object.keys(componentSettings[component])) {

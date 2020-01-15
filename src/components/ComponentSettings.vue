@@ -75,6 +75,7 @@ export default {
     }
   },
   computed: {
+    // Returns all settings of the current parent component in an array
     settings() {
       let result = []
       let settings = this.$store.state.settings.componentSettings[this.parentName] || {}
@@ -85,6 +86,7 @@ export default {
       }
       return result
     },
+    // Returns an object with setting values which includes setters to set those values via Vuex
     settingsValues() {
       let values = {}
       // Define setter and getter for each setting separately
@@ -109,6 +111,7 @@ export default {
             }
             if (type == "Number" && !_.isNumber(value)) {
               value = parseInt(value)
+              // Also check against min/max values
               if (isNaN(value) || value < minValue || value > maxValue) {
                 console.warn(`Tried to save invalid value for setting ${this.parentName} -> ${setting}, fallback to default value (${defaultValue}).`)
                 value = defaultValue
