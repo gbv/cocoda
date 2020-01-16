@@ -98,7 +98,6 @@
       "data": "//api.dante.gbv.de/data",
       "narrower": "//api.dante.gbv.de/narrower",
       "ancestors": "//api.dante.gbv.de/ancestors",
-      "types": "//api.dante.gbv.de/types",
       "suggest": "//api.dante.gbv.de/suggest",
       "search": "//api.dante.gbv.de/search",
       "notation": [
