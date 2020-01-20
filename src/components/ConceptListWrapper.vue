@@ -345,8 +345,8 @@ export default {
   bottom: 2px;
 }
 .conceptListWrapper-reloadButton {
-  right: 42px !important;
-  bottom: 6px !important;
+  right: 41px !important;
+  bottom: 1px !important;
 }
 
 .conceptListWrapper-listSelectionButton {
