@@ -2,11 +2,6 @@
   <div
     class="conceptListWrapper"
     :style="`${concepts.length == 0 ? 'min-height: 80px; max-height: 80px;' : ''}`">
-    <!-- Minimizer allows the component to get minimized -->
-    <minimizer
-      v-if="concepts.length > 0"
-      :name="`conceptList_${isLeft}`"
-      :text="currentChoice.label" />
     <tabs
       v-model="currentChoiceIndex"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
@@ -89,6 +84,11 @@
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
+    <!-- Minimizer allows the component to get minimized -->
+    <minimizer
+      v-if="concepts.length > 0"
+      :name="`conceptList_${isLeft}`"
+      :text="currentChoice.label" />
   </div>
 </template>
 
