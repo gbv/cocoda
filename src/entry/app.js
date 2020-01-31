@@ -2,7 +2,7 @@ import Vue from "vue"
 import App from "../App"
 import store from "../store"
 import router from "../router"
-import i18n from "../util/i18n"
+import i18n from "../utils/i18n"
 
 require("../main")
 import "bootstrap/dist/css/bootstrap.css"

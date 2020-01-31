@@ -9,7 +9,7 @@
 
 import jskos from "jskos-tools"
 import _ from "lodash"
-import util from "../util"
+import utils from "../utils"
 
 let objects = {}
 let topConcepts = {}
@@ -286,7 +286,7 @@ export default {
             console.warn("Couldn't load schemes for registry", registry.uri, error)
             this.$store.commit({
               type: "alerts/add",
-              text: `Could not load concept schemes for provider ${util.prefLabel(registry)}. Please open an issue on GitHub.`,
+              text: `Could not load concept schemes for provider ${utils.prefLabel(registry)}. Please open an issue on GitHub.`,
               variant: "danger",
             })
           })
@@ -597,7 +597,7 @@ export default {
       }
       // Set mapped entry for concepts that have mappings
       const registry = _.get(mapping, "_provider.registry")
-      if (util.registryStored(registry)) {
+      if (utils.registryStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
           const targetScheme = mapping[`${to}Scheme`]
           const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
