@@ -12,9 +12,15 @@ Vue.use(BootstrapVue)
 var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
 
-// Add util, use with this.$util in components
-import util from "./util"
-Vue.prototype.$util = util
+// Add util, use with this.$utils in components
+import utils from "./utils"
+Vue.prototype.$utils = utils
+
+// Set Vuex store and path on utils
+import store from "./store"
+const storePath = "getters.languages"
+utils.setOption("store", store)
+utils.setOption("storePath", storePath)
 
 // Add jskos-tools, use with this.$jskos in components
 import jskos from "jskos-tools"

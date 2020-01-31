@@ -2,7 +2,7 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import axios from "axios"
 import defaultConfig from "../config"
-import i18n from "../util/i18n"
+import i18n from "../utils/i18n"
 // Import registry providers
 import providers from "../providers"
 let buildInfo

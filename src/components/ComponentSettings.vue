@@ -2,7 +2,7 @@
   <div class="componentSettings">
     <font-awesome-icon
       :id="`componentSettings-icon-${id}`"
-      v-b-tooltip.hover="{ title: tooltip, delay: $util.delay.medium }"
+      v-b-tooltip.hover="{ title: tooltip, delay: defaults.delay.medium }"
       icon="cog"
       class="button" />
     <b-popover
@@ -17,15 +17,15 @@
               v-if="setting.type == 'Boolean'"
               :key="`componentSettings-${setting.key}-${isLeft}`"
               v-model="settingsValues[setting.key]"
-              v-b-tooltip.hover="{ title: $util.lmContent(setting, 'definition'), delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $utils.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }"
               style="user-select: none;">
-              {{ $util.prefLabel(setting) }}
+              {{ $utils.prefLabel(setting) }}
             </b-form-checkbox>
             <div
               v-else-if="setting.type == 'Number'"
               :key="`componentSettings-${setting.key}-${isLeft}`"
-              v-b-tooltip.hover="{ title: $util.lmContent(setting, 'definition'), delay: $util.delay.medium }">
-              {{ $util.prefLabel(setting) }}
+              v-b-tooltip.hover="{ title: $utils.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }">
+              {{ $utils.prefLabel(setting) }}
               <b-input
                 v-model="settingsValues[setting.key]"
                 type="number"
@@ -39,7 +39,7 @@
               v-else
               :key="`componentSettings-${setting.key}-${isLeft}`"
               :class="setting.class">
-              {{ $util.prefLabel(setting) }}
+              {{ $utils.prefLabel(setting) }}
             </p>
           </template>
         </slot>
@@ -131,7 +131,7 @@ export default {
     },
   },
   created() {
-    this.id = this.$util.generateID()
+    this.id = this.$utils.generateID()
   },
   methods: {
     clickHandlers() {

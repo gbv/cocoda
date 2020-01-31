@@ -8,7 +8,6 @@ import settings from "./modules/settings"
 import { plugins } from "./plugins"
 import jskos from "jskos-tools"
 import _ from "lodash"
-import util from "../util"
 // Root store
 import actions from "./actions"
 
@@ -67,7 +66,7 @@ const getters = {
     }
     let name = state.settings.settings.creator
     let uri = state.settings.settings.creatorUri
-    if (!util.isValidUri(uri)) {
+    if (!jskos.isValidUri(uri)) {
       uri = null
     }
     if (uri) {
@@ -89,6 +88,13 @@ const getters = {
    */
   mappedStatus: (state) => (concept, isLeft) => {
     return !!_.get(concept, "__MAPPED__", []).find(item => item.exist && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
+  },
+  languages: (state) => {
+    const defaultLanguages = ["en", "de"]
+    if (state.configLoaded) {
+      return [state.settings.settings.locale].concat(state.config.languages || defaultLanguages)
+    }
+    return defaultLanguages
   },
 }
 

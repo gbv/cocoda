@@ -31,7 +31,7 @@
       <span
         v-for="(button, index2) in buttons.filter(b => b.position == 'before')"
         :key="`conceptListItem-buttons-${index2}`"
-        v-b-tooltip.hover="{ title: button.tooltip, delay: $util.delay.medium}"
+        v-b-tooltip.hover="{ title: button.tooltip, delay: defaults.delay.medium}"
         class="button fontSize-verySmall conceptListItem-buttonBefore"
         @click="button.onClick($event, concept)">
         <font-awesome-icon :icon="button.icon" />
@@ -47,35 +47,35 @@
         class="labelBox"
         @click.stop.prevent="onClick">
         <span v-if="scheme && showScheme">
-          {{ $util.notation(scheme) }}
+          {{ $utils.notation(scheme) }}
         </span>
         <!-- Show icon for concepts where no data could be loaded -->
         <span
           v-if="concept && concept.__DETAILSLOADED__ == -1"
-          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
           class="fontSize-small">
           <font-awesome-icon icon="bolt" />
         </span>
         <!-- Show icon for combined concepts -->
         <span
           v-if="concept && concept.type && concept.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
-          v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: defaults.delay.medium }"
           class="fontSize-normal">
           <font-awesome-icon icon="puzzle-piece" />
         </span>
         <span
           class="fontWeight-heavy"
-          v-html="$util.notation(concept, 'concept', true)" />
+          v-html="$utils.notation(concept, 'concept', true)" />
         <span
           :class="{
             'fontWeight-medium': isSelected
           }">
-          {{ $util.prefLabel(concept, null, $util.notation(concept).length == 0) }}
+          {{ $utils.prefLabel(concept, { fallbackToUri: $utils.notation(concept).length == 0 }) }}
         </span>
       </div>
       <div
         v-if="canAddToMapping"
-        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium}"
+        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: defaults.delay.medium}"
         class="addToMapping"
         @click="addConcept()">
         <font-awesome-icon icon="plus-circle" />

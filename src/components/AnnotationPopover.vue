@@ -158,7 +158,7 @@ export default {
         }
         return null
       }
-      return this.annotations.find(annotation => annotation.motivation == "assessing" && this.$util.annotations.creatorMatches(annotation, this.userUris))
+      return this.annotations.find(annotation => annotation.motivation == "assessing" && this.$utils.annotationsHelper.creatorMatches(annotation, this.userUris))
     },
     ownScore() {
       return _.get(this.ownAssessment, "bodyValue")
@@ -180,7 +180,7 @@ export default {
       if (!this.provider) {
         return false
       }
-      if (this.annotations.find(annotation => annotation.motivation == "moderating" && this.$util.annotations.creatorMatches(annotation, this.userUris))) {
+      if (this.annotations.find(annotation => annotation.motivation == "moderating" && this.$utils.annotationsHelper.creatorMatches(annotation, this.userUris))) {
         // Already exists
         return false
       }

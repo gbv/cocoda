@@ -108,11 +108,11 @@
               <span v-if="!user || !userUris || !userUris.length">
                 <b-form-input
                   v-model="localSettings.creatorUri"
-                  :state="!localSettings.creatorUri || $util.isValidUri(localSettings.creatorUri)"
+                  :state="!localSettings.creatorUri || $jskos.isValidUri(localSettings.creatorUri)"
                   placeholder="https://"
                   type="text" />
                 <span
-                  v-if="localSettings.creatorUri && !$util.isValidUri(localSettings.creatorUri)"
+                  v-if="localSettings.creatorUri && !$jskos.isValidUri(localSettings.creatorUri)"
                   class="text-danger">
                   {{ $t("settings.creatorUriInvalid") }}
                 </span>
@@ -134,7 +134,7 @@
           :title="$t('settingsTabs')[1]">
           <h4>{{ $t("settings.mappingRegistries") }}</h4>
           <div
-            v-for="(registry, index) in config.registries.filter(registry => $util.registryStored(registry))"
+            v-for="(registry, index) in config.registries.filter(registry => $utils.registryStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
             class="settingsModal-mapping-registry"
             @click="$store.commit({
@@ -149,7 +149,7 @@
           </div>
           <h4>{{ $t("settings.otherRegistries") }}</h4>
           <div
-            v-for="(registry, index) in config.registries.filter(registry => !$util.registryStored(registry))"
+            v-for="(registry, index) in config.registries.filter(registry => !$utils.registryStored(registry))"
             :key="`settingsModal-other-registries-${index}`">
             <registry-info
               :registry="registry"
@@ -196,16 +196,16 @@
                 <b-form-checkbox
                   v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
                   style="user-select: none;">
-                  {{ $util.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                  {{ $utils.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
                 </b-form-checkbox>
                 <span class="fontSize-small text-lightGrey">
-                  {{ ($util.lmContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
+                  {{ ($utils.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
                 </span>
               </div>
               <div
                 v-else-if="setting.type == 'Number'"
-                v-b-tooltip.hover="{ title: $util.lmContent(setting, 'definition'), delay: $util.delay.medium }">
-                {{ $util.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                v-b-tooltip.hover="{ title: $utils.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }">
+                {{ $utils.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
                 <b-input
                   v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
                   type="number"
@@ -216,13 +216,13 @@
                   @click="$event.target.select()" />
                 <br>
                 <span class="fontSize-small text-lightGrey">
-                  {{ ($util.lmContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
+                  {{ ($utils.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
                 </span>
               </div>
               <div
                 v-else
                 :class="setting.class">
-                {{ $util.prefLabel(setting) }}
+                {{ $utils.prefLabel(setting) }}
               </div>
             </div>
           </div>
@@ -239,7 +239,7 @@
                   <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
                 </td>
                 <td class="text-left">
-                  {{ $util.prefLabel(shortcut) || shortcut.action }}
+                  {{ $utils.prefLabel(shortcut) || shortcut.action }}
                 </td>
               </tr>
             </tbody>
@@ -326,7 +326,7 @@
             <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
             <p v-html="$t('settings.creatorRewriteText')" />
             <p class="fontSize-small">
-              <b>Name:</b> {{ $util.prefLabel(creator) }}<br>
+              <b>Name:</b> {{ $utils.prefLabel(creator) }}<br>
               <b>URI:</b> {{ creator.uri }}
             </p>
             <p>
@@ -361,7 +361,7 @@
         </span>
         <span v-if="config.buildInfo.buildDate">
           •
-          {{ $t("settings.buildDate") }}: {{ $util.dateToString(config.buildInfo.buildDate) }}
+          {{ $t("settings.buildDate") }}: {{ $utils.dateToString(config.buildInfo.buildDate) }}
         </span>
         <br>
         <span>
@@ -563,7 +563,7 @@ export default {
           // Add labels to concepts in mapping
           for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
             let conceptInStore = this._getObject(concept)
-            let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+            let language = this.$utils.getLanguage(_.get(conceptInStore, "prefLabel"))
             if (language) {
               concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
             }
@@ -610,7 +610,7 @@ export default {
             // ... for concepts
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
               let conceptInStore = this._getObject(concept)
-              let language = this.$util.getLanguage(_.get(conceptInStore, "prefLabel"))
+              let language = this.$utils.getLanguage(_.get(conceptInStore, "prefLabel"))
               if (language) {
                 // NOTE: Hardcoded language, see note above.
                 concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
@@ -618,14 +618,14 @@ export default {
             }
             // ... for creator
             if (mapping.creator && mapping.creator[0]) {
-              mapping.creator[0].prefLabel = { de: this.$util.prefLabel(mapping.creator[0], null, false) }
+              mapping.creator[0].prefLabel = { de: this.$utils.prefLabel(mapping.creator[0], { fallbackToUri: false }) }
             }
           }
           download.csv = mappingCSV.fromMappings(download.mappings)
           // Label
-          download.label = (this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?") + " to " + (this.$util.notation(_.get(download, "toScheme"), "scheme") || "?")
+          download.label = (this.$utils.notation(_.get(download, "fromScheme"), "scheme") || "?") + " to " + (this.$utils.notation(_.get(download, "toScheme"), "scheme") || "?")
           // Filename
-          download.filename = `${this.$util.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$util.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
+          download.filename = `${this.$utils.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$utils.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
         }
         // Set CSV export for all mappings
         this.dlAllMappingsCsv = mappingCSV.fromMappings(minifiedMappings)

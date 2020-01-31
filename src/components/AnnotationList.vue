@@ -23,13 +23,13 @@
       </div>
       <!-- Date and creator -->
       <div class="fontSize-verySmall">
-        {{ $util.dateToString(annotation.created, true) }}<br>
+        {{ $utils.dateToString(annotation.created, true) }}<br>
         <auto-link
           :class="{
-            'fontWeight-heavy': $util.annotations.creatorMatches(annotation, userUris)
+            'fontWeight-heavy': $utils.annotationsHelper.creatorMatches(annotation, userUris)
           }"
-          :link="$util.annotations.creatorUri(annotation)"
-          :text="$util.annotations.creatorName(annotation)" />
+          :link="$utils.annotationsHelper.creatorUri(annotation)"
+          :text="$utils.annotationsHelper.creatorName(annotation)" />
       </div>
       <div>
         <font-awesome-icon
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     canRemove(annotation) {
-      return this.$util.annotations.creatorMatches(annotation, this.userUris)
+      return this.$utils.annotationsHelper.creatorMatches(annotation, this.userUris)
     },
     async remove(index) {
       if (!this.provider) {

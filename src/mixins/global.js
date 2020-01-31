@@ -7,6 +7,28 @@ import FileSaver from "file-saver"
 import jskos from "jskos-tools"
 
 export default {
+  data() {
+    return {
+      // TODO: Solve differently!
+      defaults: {
+        "delay": {
+          "short": { "show": 250, "hide": 0 },
+          "medium": { "show": 500, "hide": 0 },
+          "long": { "show": 1000, "hide": 0 },
+        },
+        "licenseBadges": {
+          "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
+          "http://creativecommons.org/licenses/by/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by.svg",
+          "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+          "http://creativecommons.org/licenses/by-nc-nd/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+          "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
+          "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
+          "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
+          "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg",
+        },
+      },
+    }
+  },
   methods: {
     /**
      * Returns the provider object for a scheme or concept.
@@ -60,7 +82,7 @@ export default {
           this.loadTypes(scheme)
         }
       }
-      let loadingId = this.$util.generateID()
+      let loadingId = this.$utils.generateID()
       this.$store.commit({
         type: "selected/setLoadingId",
         isLeft,
@@ -207,7 +229,27 @@ export default {
       }
       try {
         window.getSelection().removeAllRanges()
-        this.$util.selectText(element)
+        // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
+        const selectText = (el) => {
+          var sel, range
+          if (window.getSelection && document.createRange) {
+            sel = window.getSelection()
+            if(sel.toString() == "") {
+              range = document.createRange()
+              range.selectNodeContents(el)
+              sel.removeAllRanges()
+              sel.addRange(range)
+            }
+          } else if (document.selection) {
+            sel = document.selection.createRange()
+            if(sel.text == "") {
+              range = document.body.createTextRange()
+              range.moveToElementText(el)
+              range.select()
+            }
+          }
+        }
+        selectText(element)
         let successful = document.execCommand("copy")
         if (!successful) {
           console.warn("Copy to clipboard failed.")

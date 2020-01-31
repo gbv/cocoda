@@ -9,7 +9,7 @@
         :class="{
           'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
         }">
-        {{ $util.prefLabel(registry) }}
+        {{ $utils.prefLabel(registry) }}
       </span>
       <a
         v-if="showDetails"
@@ -29,7 +29,7 @@
       </span>
     </div>
     <div v-if="showDetails">
-      {{ $util.definition(registry).join(" ") }}
+      {{ $utils.definition(registry).join(" ") }}
     </div>
     <div v-if="showCapabilities">
       <span

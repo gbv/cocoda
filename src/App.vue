@@ -33,7 +33,7 @@
     <div
       v-show="selected.scheme[true] || selected.scheme[false]"
       id="swapSides"
-      v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: $util.delay.medium }"
+      v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: defaults.delay.medium }"
       @click="swapSides">
       <font-awesome-icon icon="exchange-alt" />
     </div>
@@ -541,7 +541,7 @@ export default {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {
         return
       }
-      let prefLabel = this.$util.prefLabel(this.selected.concept[isLeft], null, false)
+      let prefLabel = this.$utils.prefLabel(this.selected.concept[isLeft], { fallbackToUri: false })
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : "")

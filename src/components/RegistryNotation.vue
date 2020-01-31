@@ -1,13 +1,13 @@
 <template>
   <div
-    v-b-tooltip.html.left="tooltip ? $util.prefLabel(registry) : ''"
+    v-b-tooltip.html.left="tooltip ? $utils.prefLabel(registry) : ''"
     :class="{
       [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
       'registry-notation-current': isCurrentRegistry,
     }"
-    :style="`width: ${18 + 9 * ($util.notation(registry).length - 1)}px;`"
+    :style="`width: ${18 + 9 * ($utils.notation(registry).length - 1)}px;`"
     class="registry-notation">
-    {{ $util.notation(registry) }}
+    {{ $utils.notation(registry) }}
   </div>
 </template>
 

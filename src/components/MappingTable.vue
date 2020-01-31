@@ -43,8 +43,8 @@
       slot-scope="{ value }">
       <span
         v-if="value != null"
-        v-b-tooltip.hover="{ title: $util.prefLabel(value), delay: $util.delay.medium }">
-        {{ $util.notation(value) }}
+        v-b-tooltip.hover="{ title: $utils.prefLabel(value), delay: defaults.delay.medium }">
+        {{ $utils.notation(value) }}
       </span>
     </span>
     <span
@@ -53,7 +53,7 @@
       <font-awesome-icon
         v-for="(action, index) in actions"
         :key="index"
-        v-b-tooltip.hover="{ title: action.title, delay: $util.delay.medium, placement: 'left' }"
+        v-b-tooltip.hover="{ title: action.title, delay: defaults.delay.medium, placement: 'left' }"
         :icon="action.icon"
         class="button"
         @click="$emit('click', { name: action.name, item: data.item })" />
@@ -135,7 +135,7 @@ export default {
           width: "19%",
           minWidth: "",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
+          compare: (a, b) => this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "from"),
         },
         {
           key: "type",
@@ -144,8 +144,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = this.$util.prefLabel(_.get(a, "type"), null, false)
-            let labelB = this.$util.prefLabel(_.get(b, "type"), null, false)
+            let labelA = this.$utils.prefLabel(_.get(a, "type"), { fallbackToUri: false })
+            let labelB = this.$utils.prefLabel(_.get(b, "type"), { fallbackToUri: false })
             if (labelA < labelB) {
               return -1
             }
@@ -168,7 +168,7 @@ export default {
           width: "19%",
           minWidth: "",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
+          compare: (a, b) => this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "to"),
         },
         {
           key: "creator",
@@ -219,13 +219,13 @@ export default {
           if (this.showRegistry) {
             item.registry = mapping._registry
           }
-          item.sourceScheme = this.$util.notation(mapping.fromScheme)
-          item.targetScheme = this.$util.notation(mapping.toScheme)
+          item.sourceScheme = this.$utils.notation(mapping.fromScheme)
+          item.targetScheme = this.$utils.notation(mapping.toScheme)
           item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
           item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
           item.creator = mapping.creator && mapping.creator[0] || "?"
           if (typeof item.creator === "object") {
-            item.creator = this.$util.prefLabel(item.creator)
+            item.creator = this.$utils.prefLabel(item.creator)
           }
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.date = mapping.modified || mapping.created

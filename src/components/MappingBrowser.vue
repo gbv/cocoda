@@ -39,7 +39,7 @@
                 :placeholder="$t('mappingBrowser.creator')" />
               <span
                 v-if="concordanceFilter[field.key] != null"
-                v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
+                v-b-tooltip.hover="{ title: 'clear filter', delay: defaults.delay.medium }"
                 icon="times"
                 class="button mappingBrowser-from650"
                 @click="concordanceFilter[field.key] = ''">
@@ -83,7 +83,7 @@
                 slot="actions"
                 slot-scope="{ item }">
                 <font-awesome-icon
-                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: $util.delay.medium }"
+                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: defaults.delay.medium }"
                   icon="external-link-square-alt"
                   class="button"
                   @click="showMappingsForConcordance(item.concordance)" />
@@ -229,7 +229,7 @@
                   @keyup.enter.native="searchClicked" />
                 <div
                   v-if="authorized && searchFilterInput.creator != userUris.join('|')"
-                  v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: $util.delay.medium }"
+                  v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: defaults.delay.medium }"
                   class="button"
                   style="margin-left: 2px;"
                   @click="searchFilterInput.creator = userUris.join('|')">
@@ -246,7 +246,7 @@
                 :options="typeOptions"
                 @keyup.enter.native="searchClicked" />
               <div
-                v-b-tooltip.hover="{ title: $t('mappingBrowser.searchBidirectionalTooltip'), delay: $util.delay.medium }"
+                v-b-tooltip.hover="{ title: $t('mappingBrowser.searchBidirectionalTooltip'), delay: defaults.delay.medium }"
                 style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.searchBidirectional") }}:
                 <b-form-checkbox
@@ -583,12 +583,12 @@ export default {
         let item = { concordance }
         item.from = _.get(concordance, "fromScheme")
         item.from = this._getObject(item.from) || item.from
-        item.fromNotation = this.$util.notation(item.from) || "-"
+        item.fromNotation = this.$utils.notation(item.from) || "-"
         item.to = _.get(concordance, "toScheme")
         item.to = this._getObject(item.to) || item.to
-        item.toNotation = this.$util.notation(item.to) || "-"
-        item.description = (this.$util.lmContent(concordance, "scopeNote") || [])[0] || "-"
-        item.creator = this.$util.prefLabel(_.get(concordance, "creator[0]"), null, false) || "-"
+        item.toNotation = this.$utils.notation(item.to) || "-"
+        item.description = (this.$utils.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
+        item.creator = this.$utils.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
@@ -619,7 +619,7 @@ export default {
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
-          text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
+          text: `${this.$utils.notation(type)} ${this.$utils.prefLabel(type)}`,
           value: type.uri,
         })
       }
@@ -685,7 +685,7 @@ export default {
         },
       ]
       for (let registry of this.mappingRegistries) {
-        let group = groups.find(group => group.stored === this.$util.registryStored(registry))
+        let group = groups.find(group => group.stored === this.$utils.registryStored(registry))
         group.registries.push(registry)
       }
       groups = groups.filter(group => group.registries.length > 0)
@@ -739,10 +739,10 @@ export default {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
     navigatorSectionsDatabases () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => this.$util.registryStored(section.registry))
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => this.$utils.registryStored(section.registry))
     },
     navigatorSectionsRecommendations () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$util.registryStored(section.registry))
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$utils.registryStored(section.registry))
     },
     searchShareLink () {
       let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
@@ -759,7 +759,7 @@ export default {
       let urls = {}
       for (let registry of this.concordanceRegistries) {
         if (registry.provider.has.concordances && registry.concordances) {
-          urls[this.$util.prefLabel(registry)] = registry.concordances
+          urls[this.$utils.prefLabel(registry)] = registry.concordances
         }
       }
       return urls
@@ -814,7 +814,7 @@ export default {
           for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
             if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
               const scheme = this.selected.scheme[isLeft]
-              this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$util.notation(scheme) : ""
+              this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$utils.notation(scheme) : ""
               changed = true
             }
           }
@@ -860,7 +860,7 @@ export default {
       if (newValue != oldValue) {
         // Refresh all mapping recommendations (as they might include labels in a certain language)
         for (let registry of this.navigatorRegistries.filter(registry =>
-          !this.$util.registryStored(registry)
+          !this.$utils.registryStored(registry)
           && this.showRegistry[registry.uri],
         )) {
           this.navigatorNeedsRefresh.push(registry.uri)
@@ -873,7 +873,7 @@ export default {
         for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
           if (this.lockScheme[isLeft]) {
             const scheme = this.selected.scheme[isLeft]
-            this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$util.notation(scheme) : ""
+            this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$utils.notation(scheme) : ""
             changed = true
           }
         }
@@ -996,7 +996,7 @@ export default {
     },
     getSchemeForFilter(filter) {
       return this.schemes.find(scheme => {
-        return this.$jskos.compare(scheme, { uri: filter }) || this.$util.notation(scheme).toLowerCase() == filter.toLowerCase()
+        return this.$jskos.compare(scheme, { uri: filter }) || this.$utils.notation(scheme).toLowerCase() == filter.toLowerCase()
       })
     },
     clearSearchFilter() {
@@ -1248,11 +1248,11 @@ export default {
               return points.b - points.a
             }
             // If the points are equal, sort by concepts (first from, then to).
-            let value = this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from")
+            let value = this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "from")
             if (value != 0) {
               return value
             }
-            return this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to")
+            return this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "to")
           })
           // Filter mappings if showAllSchemes is off and schemes don't match
           // Note: This has to be adjusted or removed when proper pagination for navigator results is implemented!
@@ -1330,7 +1330,7 @@ export default {
         let skipped = 0 // Keep track of number of skipped items
         for (let mapping of mappings) {
           // For mappings recommendations: If mapping with the same member identifier could be found in the results for the current registry, skip item.
-          if (!this.$util.registryStored(registry)) {
+          if (!this.$utils.registryStored(registry)) {
             const currentRegistryResults = results[this.currentRegistry.uri] || []
             const memberIdentifier = (mapping) => {
               return mapping && mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:members:"))
@@ -1379,7 +1379,7 @@ export default {
 
           item.creator = mapping.creator && mapping.creator[0] || ""
           if (typeof item.creator === "object") {
-            item.creator = this.$util.prefLabel(item.creator)
+            item.creator = this.$utils.prefLabel(item.creator)
           }
           // Add modified or created date in extra
           item.extra = { date: mapping.modified || mapping.created }
@@ -1387,12 +1387,12 @@ export default {
             item.extra.tooltip = item.extra.date
             item.extra.date = item.extra.date.slice(0, 10)
           }
-          item.source = this.$util.prefLabel(registry)
-          item.sourceShort = this.$util.notation(registry)
+          item.source = this.$utils.prefLabel(registry)
+          item.sourceShort = this.$utils.notation(registry)
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.occurrence = mapping._occurrence
           // Generate unique ID from mapping JSON and registry URI as helper
-          item.uniqueId = this.$util.hash(keyPrefix + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
+          item.uniqueId = this.$utils.hash(keyPrefix + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
           // Add class to all items of hoveredRegistry
           if (this.$jskos.compare(item.registry, this.hoveredRegistry)) {
             item._rowClass += " mappingBrowser-hoveredRegistry"

@@ -13,7 +13,7 @@
       <!-- Expand button -->
       <div
         :id="`${id}-expandButton`"
-        v-b-tooltip.hover="{ title: popoverShown ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: popoverShown ? $t('schemeSelection.popoverHide') : $t('schemeSelection.popoverShow'), delay: defaults.delay.medium }"
         class="conceptSchemeSelection-expandButton button"
         @click="togglePopover">
         <font-awesome-icon
@@ -23,7 +23,7 @@
       <div class="conceptSchemeSelection-schemeName">
         <!-- Favorite star -->
         <font-awesome-icon
-          v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
           :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
           class="pointer"
           icon="star"
@@ -40,13 +40,13 @@
           v-if="scheme.license && scheme.license.length"
           style="display: inline-block; margin: 0px 2px 0px 1px; height: 15px;">
           <img
-            v-if="$util.licenseBadges[scheme.license[0].uri]"
-            :src="$util.licenseBadges[scheme.license[0].uri]"
+            v-if="defaults.licenseBadges[scheme.license[0].uri]"
+            :src="defaults.licenseBadges[scheme.license[0].uri]"
             style="vertical-align: text-top;">
         </span>
         <!-- Button to clear scheme -->
         <div
-          v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: defaults.delay.medium }"
           class="button"
           style="display: inline-block; margin: -3px 2px 0px 2px;"
           @click="clearScheme">
@@ -240,7 +240,7 @@
             v-for="(_scheme, index) in filteredSchemes"
             :key="_scheme.uri + '-scheme-list-' + id + index">
             <font-awesome-icon
-              v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
               :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
               class="pointer"
               icon="star"
@@ -303,7 +303,7 @@ export default {
   data() {
     return {
       // Unique ID for this instance of the component.
-      id: this.$util.generateID(),
+      id: this.$utils.generateID(),
       // Boolean whether popover is shown.
       popoverShown: false,
       // Whether filter popover is shown.
@@ -389,7 +389,7 @@ export default {
     },
     // Returns an array of available registry filter options.
     registryFilterOptions() {
-      return this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$util.prefLabel(registry) }))
+      return this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$utils.prefLabel(registry) }))
     },
     // Returns an array of all available languages with other filters applied (faceted browsing).
     shownLanguages() {
@@ -457,7 +457,7 @@ export default {
       for (let option of options) {
         let type = kosTypes.find(t => t.uri == option.value)
         if (type) {
-          option.text = this.$util.prefLabel(type)
+          option.text = this.$utils.prefLabel(type)
         }
       }
       return options
