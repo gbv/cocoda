@@ -4,7 +4,7 @@ import BaseProvider from "./base-provider"
 import localforage from "localforage"
 import uuid from "uuid/v4"
 // TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
-import utils from "../utils"
+import utils from "cocoda-utils"
 
 const uriPrefix = "urn:uuid:"
 

@@ -1,6 +1,6 @@
 import _ from "lodash"
 import BaseProvider from "./base-provider"
-import utils from "../utils"
+import utils from "cocoda-utils"
 import jskos from "jskos-tools"
 import qs from "qs"
 

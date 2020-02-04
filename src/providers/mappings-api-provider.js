@@ -2,7 +2,7 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import BaseProvider from "./base-provider"
 // TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
-import utils from "../utils"
+import utils from "cocoda-utils"
 
 /**
  * For APIs that provide concordances and mappings in JSKOS format.

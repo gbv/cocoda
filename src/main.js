@@ -13,7 +13,7 @@ var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
 
 // Add util, use with this.$utils in components
-import utils from "./utils"
+import utils from "cocoda-utils"
 Vue.prototype.$utils = utils
 
 // Set Vuex store and path on utils

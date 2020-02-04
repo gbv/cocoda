@@ -1,7 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
-import utils from "../../utils"
+import utils from "cocoda-utils"
 
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname

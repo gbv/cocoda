@@ -9,7 +9,7 @@
 
 import jskos from "jskos-tools"
 import _ from "lodash"
-import utils from "../utils"
+import utils from "cocoda-utils"
 
 let objects = {}
 let topConcepts = {}

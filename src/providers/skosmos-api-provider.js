@@ -3,7 +3,7 @@ import _ from "lodash"
 import BaseProvider from "./base-provider"
 
 // TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
-import utils from "../utils"
+import utils from "cocoda-utils"
 
 /**
  * Skosmos API Wrapper.
