@@ -45,7 +45,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.19.1",
     "bootstrap-vue": "2.0.0-rc.19",
-    "cocoda-utils": "github:gbv/cocoda-utils#3296ba6",
+    "cocoda-utils": "github:gbv/cocoda-utils#ce2355a",
     "cocoda-vue-tabs": "^0.1.10",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.1",

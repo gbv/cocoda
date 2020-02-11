@@ -134,7 +134,7 @@
           :title="$t('settingsTabs')[1]">
           <h4>{{ $t("settings.mappingRegistries") }}</h4>
           <div
-            v-for="(registry, index) in config.registries.filter(registry => $utils.registryStored(registry))"
+            v-for="(registry, index) in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
             class="settingsModal-mapping-registry"
             @click="$store.commit({
@@ -149,7 +149,7 @@
           </div>
           <h4>{{ $t("settings.otherRegistries") }}</h4>
           <div
-            v-for="(registry, index) in config.registries.filter(registry => !$utils.registryStored(registry))"
+            v-for="(registry, index) in config.registries.filter(registry => !$jskos.mappingRegistryIsStored(registry))"
             :key="`settingsModal-other-registries-${index}`">
             <registry-info
               :registry="registry"

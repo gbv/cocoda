@@ -259,7 +259,7 @@
           v-if="$store.getters.getCurrentRegistry"
           class="font-default text-dark color-primary-0-bg fontSize-normal">
           <p
-            v-for="registry in config.registries.filter(registry => $utils.registryStored(registry))"
+            v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,

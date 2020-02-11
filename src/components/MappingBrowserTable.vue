@@ -310,7 +310,7 @@
             style="flex: 1; padding-left: 5px;"
             :class="{
               'fontWeight-heavy': true,
-              'mappingBrowser-registry-selectable': $utils.registryStored(section.registry)
+              'mappingBrowser-registry-selectable': $jskos.mappingRegistryIsStored(section.registry)
             }"
             @click="useRegistryForSaving(section.registry)">
             <registry-info
@@ -767,7 +767,7 @@ export default {
       }) && this.$jskos.compare(r, registry)) != null
     },
     useRegistryForSaving(registry) {
-      if (this.$utils.registryStored(registry)) {
+      if (this.$jskos.mappingRegistryIsStored(registry)) {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingRegistry",

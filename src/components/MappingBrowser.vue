@@ -685,7 +685,7 @@ export default {
         },
       ]
       for (let registry of this.mappingRegistries) {
-        let group = groups.find(group => group.stored === this.$utils.registryStored(registry))
+        let group = groups.find(group => group.stored === this.$jskos.mappingRegistryIsStored(registry))
         group.registries.push(registry)
       }
       groups = groups.filter(group => group.registries.length > 0)
@@ -739,10 +739,10 @@ export default {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
     navigatorSectionsDatabases () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => this.$utils.registryStored(section.registry))
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => this.$jskos.mappingRegistryIsStored(section.registry))
     },
     navigatorSectionsRecommendations () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$utils.registryStored(section.registry))
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$jskos.mappingRegistryIsStored(section.registry))
     },
     searchShareLink () {
       let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
@@ -860,7 +860,7 @@ export default {
       if (newValue != oldValue) {
         // Refresh all mapping recommendations (as they might include labels in a certain language)
         for (let registry of this.navigatorRegistries.filter(registry =>
-          !this.$utils.registryStored(registry)
+          !this.$jskos.mappingRegistryIsStored(registry)
           && this.showRegistry[registry.uri],
         )) {
           this.navigatorNeedsRefresh.push(registry.uri)
@@ -1330,7 +1330,7 @@ export default {
         let skipped = 0 // Keep track of number of skipped items
         for (let mapping of mappings) {
           // For mappings recommendations: If mapping with the same member identifier could be found in the results for the current registry, skip item.
-          if (!this.$utils.registryStored(registry)) {
+          if (!this.$jskos.mappingRegistryIsStored(registry)) {
             const currentRegistryResults = results[this.currentRegistry.uri] || []
             const memberIdentifier = (mapping) => {
               return mapping && mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:members:"))

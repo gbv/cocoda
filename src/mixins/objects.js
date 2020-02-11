@@ -9,7 +9,6 @@
 
 import jskos from "jskos-tools"
 import _ from "lodash"
-import utils from "cocoda-utils"
 
 let objects = {}
 let topConcepts = {}
@@ -597,7 +596,7 @@ export default {
       }
       // Set mapped entry for concepts that have mappings
       const registry = _.get(mapping, "_provider.registry")
-      if (utils.registryStored(registry)) {
+      if (jskos.mappingRegistryIsStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
           const targetScheme = mapping[`${to}Scheme`]
           const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
