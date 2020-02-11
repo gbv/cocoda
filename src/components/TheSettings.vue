@@ -196,16 +196,16 @@
                 <b-form-checkbox
                   v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
                   style="user-select: none;">
-                  {{ $utils.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                  {{ $jskos.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
                 </b-form-checkbox>
                 <span class="fontSize-small text-lightGrey">
-                  {{ ($utils.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
+                  {{ ($jskos.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
                 </span>
               </div>
               <div
                 v-else-if="setting.type == 'Number'"
-                v-b-tooltip.hover="{ title: $utils.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }">
-                {{ $utils.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }">
+                {{ $jskos.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
                 <b-input
                   v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
                   type="number"
@@ -216,13 +216,13 @@
                   @click="$event.target.select()" />
                 <br>
                 <span class="fontSize-small text-lightGrey">
-                  {{ ($utils.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
+                  {{ ($jskos.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
                 </span>
               </div>
               <div
                 v-else
                 :class="setting.class">
-                {{ $utils.prefLabel(setting) }}
+                {{ $jskos.prefLabel(setting) }}
               </div>
             </div>
           </div>
@@ -239,7 +239,7 @@
                   <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
                 </td>
                 <td class="text-left">
-                  {{ $utils.prefLabel(shortcut) || shortcut.action }}
+                  {{ $jskos.prefLabel(shortcut) || shortcut.action }}
                 </td>
               </tr>
             </tbody>
@@ -326,7 +326,7 @@
             <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
             <p v-html="$t('settings.creatorRewriteText')" />
             <p class="fontSize-small">
-              <b>Name:</b> {{ $utils.prefLabel(creator) }}<br>
+              <b>Name:</b> {{ $jskos.prefLabel(creator) }}<br>
               <b>URI:</b> {{ creator.uri }}
             </p>
             <p>
@@ -563,7 +563,7 @@ export default {
           // Add labels to concepts in mapping
           for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
             let conceptInStore = this._getObject(concept)
-            let language = this.$utils.getLanguage(_.get(conceptInStore, "prefLabel"))
+            let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
             if (language) {
               concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
             }
@@ -610,7 +610,7 @@ export default {
             // ... for concepts
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
               let conceptInStore = this._getObject(concept)
-              let language = this.$utils.getLanguage(_.get(conceptInStore, "prefLabel"))
+              let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
               if (language) {
                 // NOTE: Hardcoded language, see note above.
                 concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
@@ -618,14 +618,14 @@ export default {
             }
             // ... for creator
             if (mapping.creator && mapping.creator[0]) {
-              mapping.creator[0].prefLabel = { de: this.$utils.prefLabel(mapping.creator[0], { fallbackToUri: false }) }
+              mapping.creator[0].prefLabel = { de: this.$jskos.prefLabel(mapping.creator[0], { fallbackToUri: false }) }
             }
           }
           download.csv = mappingCSV.fromMappings(download.mappings)
           // Label
-          download.label = (this.$utils.notation(_.get(download, "fromScheme"), "scheme") || "?") + " to " + (this.$utils.notation(_.get(download, "toScheme"), "scheme") || "?")
+          download.label = (this.$jskos.notation(_.get(download, "fromScheme"), "scheme") || "?") + " to " + (this.$jskos.notation(_.get(download, "toScheme"), "scheme") || "?")
           // Filename
-          download.filename = `${this.$utils.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$utils.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
+          download.filename = `${this.$jskos.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$jskos.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
         }
         // Set CSV export for all mappings
         this.dlAllMappingsCsv = mappingCSV.fromMappings(minifiedMappings)

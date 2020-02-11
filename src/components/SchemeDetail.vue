@@ -69,7 +69,7 @@
       <span
         v-for="(type, index) in item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
         :key="`schemeDetail-${isLeft}-type-${index}`">
-        {{ $utils.prefLabel(kosTypes.find(t => t.uri == type)) || type }}
+        {{ $jskos.prefLabel(kosTypes.find(t => t.uri == type)) || type }}
         <span v-if="index != item.type.length - 2"> / </span>
       </span>
     </div>
@@ -89,14 +89,14 @@
 
     <!-- Link to mapping search -->
     <div
-      v-if="$utils.notation(item)"
+      v-if="$jskos.notation(item)"
       class="schemeDetail-identifier">
       <a
         href=""
         @click.prevent="$emit('searchMappings', {
-          fromScheme: isLeft ? $utils.notation(item) : null,
+          fromScheme: isLeft ? $jskos.notation(item) : null,
           fromNotation: isLeft ? '' : null,
-          toScheme: !isLeft ? $utils.notation(item) : null,
+          toScheme: !isLeft ? $jskos.notation(item) : null,
           toNotation: !isLeft ? '' : null,
           direction: 'both'
         })">
@@ -174,7 +174,7 @@ export default {
       }
       return {
         url: organisation[0].url || organisation[0].uri,
-        label: this.$utils.prefLabel(organisation[0]),
+        label: this.$jskos.prefLabel(organisation[0]),
       }
     },
   },

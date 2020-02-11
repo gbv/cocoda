@@ -541,7 +541,7 @@ export default {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {
         return
       }
-      let prefLabel = this.$utils.prefLabel(this.selected.concept[isLeft], { fallbackToUri: false })
+      let prefLabel = this.$jskos.prefLabel(this.selected.concept[isLeft], { fallbackToUri: false })
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : "")

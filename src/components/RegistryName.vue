@@ -19,8 +19,8 @@ export default {
   },
   computed: {
     registryName: function () {
-      let label = this.$utils.prefLabel(this.registry)
-      let notation = this.$utils.notation(this.registry)
+      let label = this.$jskos.prefLabel(this.registry)
+      let notation = this.$jskos.notation(this.registry)
       if (label) {
         return label.replace(notation, function () { return "<b>"+notation+"</b>" })
       } else {
@@ -29,7 +29,7 @@ export default {
       }
     },
     tooltipHtml() {
-      return this.$utils.definition(this.registry).join("<br>")
+      return this.$jskos.definition(this.registry).join("<br>")
     },
   },
 }

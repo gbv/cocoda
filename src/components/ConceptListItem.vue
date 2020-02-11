@@ -47,7 +47,7 @@
         class="labelBox"
         @click.stop.prevent="onClick">
         <span v-if="scheme && showScheme">
-          {{ $utils.notation(scheme) }}
+          {{ $jskos.notation(scheme) }}
         </span>
         <!-- Show icon for concepts where no data could be loaded -->
         <span
@@ -63,14 +63,15 @@
           class="fontSize-normal">
           <font-awesome-icon icon="puzzle-piece" />
         </span>
+        <!-- TODO: Special adjustment for DDC notation -->
         <span
           class="fontWeight-heavy"
-          v-html="$utils.notation(concept, 'concept', true)" />
+          v-html="$jskos.notation(concept, 'concept', true)" />
         <span
           :class="{
             'fontWeight-medium': isSelected
           }">
-          {{ $utils.prefLabel(concept, { fallbackToUri: $utils.notation(concept).length == 0 }) }}
+          {{ $jskos.prefLabel(concept, { fallbackToUri: $jskos.notation(concept).length == 0 }) }}
         </span>
       </div>
       <div

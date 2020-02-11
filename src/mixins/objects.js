@@ -286,7 +286,7 @@ export default {
             console.warn("Couldn't load schemes for registry", registry.uri, error)
             this.$store.commit({
               type: "alerts/add",
-              text: `Could not load concept schemes for provider ${utils.prefLabel(registry)}. Please open an issue on GitHub.`,
+              text: `Could not load concept schemes for provider ${jskos.prefLabel(registry)}. Please open an issue on GitHub.`,
               variant: "danger",
             })
           })

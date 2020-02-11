@@ -43,8 +43,8 @@
       slot-scope="{ value }">
       <span
         v-if="value != null"
-        v-b-tooltip.hover="{ title: $utils.prefLabel(value), delay: defaults.delay.medium }">
-        {{ $utils.notation(value) }}
+        v-b-tooltip.hover="{ title: $jskos.prefLabel(value), delay: defaults.delay.medium }">
+        {{ $jskos.notation(value) }}
       </span>
     </span>
     <span
@@ -144,8 +144,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = this.$utils.prefLabel(_.get(a, "type"), { fallbackToUri: false })
-            let labelB = this.$utils.prefLabel(_.get(b, "type"), { fallbackToUri: false })
+            let labelA = this.$jskos.prefLabel(_.get(a, "type"), { fallbackToUri: false })
+            let labelB = this.$jskos.prefLabel(_.get(b, "type"), { fallbackToUri: false })
             if (labelA < labelB) {
               return -1
             }
@@ -219,13 +219,13 @@ export default {
           if (this.showRegistry) {
             item.registry = mapping._registry
           }
-          item.sourceScheme = this.$utils.notation(mapping.fromScheme)
-          item.targetScheme = this.$utils.notation(mapping.toScheme)
+          item.sourceScheme = this.$jskos.notation(mapping.fromScheme)
+          item.targetScheme = this.$jskos.notation(mapping.toScheme)
           item.sourceConcepts = mapping.from.memberSet || mapping.from.memberChoice
           item.targetConcepts = mapping.to.memberSet || mapping.to.memberChoice
           item.creator = mapping.creator && mapping.creator[0] || "?"
           if (typeof item.creator === "object") {
-            item.creator = this.$utils.prefLabel(item.creator)
+            item.creator = this.$jskos.prefLabel(item.creator)
           }
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.date = mapping.modified || mapping.created

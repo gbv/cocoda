@@ -7,7 +7,7 @@
     <div
       v-if="canSaveMapping"
       class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
-      {{ $utils.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
+      {{ $jskos.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -286,7 +286,7 @@ export default {
         user: this.user,
       })) {
         return {
-          message: this.$t("registryInfo.notAuthenticated") + ` (${this.$utils.prefLabel(registry)})`,
+          message: this.$t("registryInfo.notAuthenticated") + ` (${this.$jskos.prefLabel(registry)})`,
           invalid: true,
         }
       }
@@ -305,7 +305,7 @@ export default {
         if (whitelist) {
           if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
             return {
-              message: this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$utils.prefLabel(this.mapping[side], { fallbackToUri: false }) || ""}`, this.$utils.prefLabel(registry)]),
+              message: this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$jskos.prefLabel(this.mapping[side], { fallbackToUri: false }) || ""}`, this.$jskos.prefLabel(registry)]),
               invalid: true,
             }
           }
@@ -315,7 +315,7 @@ export default {
       const cardinality = _.get(registry, "config.mappings.cardinality")
       if (cardinality == "1-to-1" && this.$jskos.conceptsOfMapping(this.mapping, "to").length > 1) {
         return {
-          message: this.$t("mappingEditor.invalid1to1", [this.$utils.prefLabel(registry)]),
+          message: this.$t("mappingEditor.invalid1to1", [this.$jskos.prefLabel(registry)]),
           invalid: true,
         }
       }
@@ -323,7 +323,7 @@ export default {
       // 1. Because the registry changed
       if (this.original.uri && !this.$jskos.compare(registry, this.original.registry)) {
         return {
-          message: this.$t("mappingEditor.warningUpdateRegistry", [this.$utils.prefLabel(this.original.registry), this.$utils.prefLabel(registry)]),
+          message: this.$t("mappingEditor.warningUpdateRegistry", [this.$jskos.prefLabel(this.original.registry), this.$jskos.prefLabel(registry)]),
           warning: true,
         }
       }
@@ -428,14 +428,14 @@ export default {
       this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
         if (!mapping) {
           // TODO: Adjust
-          let message = this.$t("alerts.mappingNotSaved", [this.$utils.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })])
+          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })])
           if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
           return
         }
-        this.alert(this.$t("alerts.mappingSaved", [this.$utils.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
+        this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
         this.$store.commit({
           type: "mapping/set",
           original: this.adjustMapping(mapping),
@@ -453,7 +453,7 @@ export default {
     setCreator() {
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
-      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$utils.prefLabel(c, { fallbackToUri: false }) && this.creatorName == this.$utils.prefLabel(c, { fallbackToUri: false }))))
+      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && this.creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
       let creator = [this.creator]
       this.$store.commit({
         type: "mapping/setCreator",
@@ -485,13 +485,13 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMapping" }).then(success => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$utils.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
+          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
           this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
           if (clear) {
             this.clearMapping()
           }
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$utils.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "danger")
         }
       }).catch(error => {
         console.error("MappingEditor - error in deleteOriginalMapping:", error)
@@ -513,7 +513,7 @@ export default {
       return mapping
     },
     labelForScheme(scheme) {
-      return this.$utils.notation(scheme, "scheme")
+      return this.$jskos.notation(scheme, "scheme")
     },
     /**
      * Returns whether the add button should be enabled for a specific side

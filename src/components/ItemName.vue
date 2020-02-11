@@ -10,13 +10,14 @@
     @dragend="dragEnd"
     @mouseover="hovering(true)"
     @mouseout="hovering(false)">
+    <!-- TODO: Adjustment for DDC Notations -->
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
       v-b-popover="showPopover && (itemDetails.length || !showText) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${$utils.notation(item, null, true)} ${$utils.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `<div class='fontSize-normal'><b>${$jskos.notation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
       } : null"
       :to="url"
@@ -42,16 +43,17 @@
         <font-awesome-icon icon="puzzle-piece" />
       </span>
       <!-- Text for notation -->
+      <!-- TODO: Adjustment for DDC Notations -->
       <span
         :class="{ 'fontWeight-heavy': showText }"
-        v-html="$utils.notation(item, null, true)" />
+        v-html="$jskos.notation(item, null, true)" />
       <!-- Text for prefLabel -->
       <span
         v-if="showText || !notation"
         :class="{
           'fontWeight-medium': isHighlighted
         }">
-        {{ $utils.prefLabel(item, { fallbackToUri: notation == null }) }}
+        {{ $jskos.prefLabel(item, { fallbackToUri: notation == null }) }}
       </span>
     </div>
   </div>
@@ -156,10 +158,10 @@ export default {
       return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this.item))
     },
     notation() {
-      return this.$utils.notation(this.item)
+      return this.$jskos.notation(this.item)
     },
     itemDetails() {
-      let result = this.$utils.languageMapContent(this.item, "scopeNote")
+      let result = this.$jskos.languageMapContent(this.item, "scopeNote")
       if (!result || !result.length) {
         return ""
       }

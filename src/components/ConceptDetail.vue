@@ -136,12 +136,12 @@
           :key="`conceptDetail-${isLeft}-type-${type.uri}`"
           class="conceptDetail-identifier">
           <b>{{ $t("general.type") }}:</b>
-          {{ $utils.prefLabel(type) }}
+          {{ $jskos.prefLabel(type) }}
         </div>
         <div
           v-if="item.creator && item.creator.length"
           class="conceptDetail-identifier">
-          <font-awesome-icon icon="user" /> {{ $utils.prefLabel(item.creator[0]) }}
+          <font-awesome-icon icon="user" /> {{ $jskos.prefLabel(item.creator[0]) }}
         </div>
         <div
           v-if="item.created"
@@ -155,22 +155,22 @@
         </div>
         <template v-if="item.definition">
           <div
-            v-for="language in [$utils.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $utils.getLanguage(item.definition) && language != '-'))"
+            v-for="language in [$jskos.languagePreference.selectLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $jskos.languagePreference.selectLanguage(item.definition) && language != '-'))"
             :key="`conceptDetail-${isLeft}-defintion-${language}`"
             class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $utils.definition(item, { language }).join(", ") }}
+            <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $jskos.definition(item, { language }).join(", ") }}
           </div>
         </template>
       </tab>
       <tab :title="$t('conceptDetail.labels')">
         <div
-          v-for="language in [$utils.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $utils.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
+          v-for="language in [$jskos.languagePreference.selectLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $jskos.languagePreference.selectLanguage(item.prefLabel))).filter(language => language && language != '-')"
           :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
           class="conceptDetail-identifier">
           <span
             class="fontWeight-medium"
-            @click="copyAndSearch($utils.prefLabel(item, { language }))">
-            {{ $utils.prefLabel(item, { language }) }}
+            @click="copyAndSearch($jskos.prefLabel(item, { language }))">
+            {{ $jskos.prefLabel(item, { language }) }}
           </span>
           <span class="text-lightGrey">({{ language }})</span>
         </div>
@@ -182,13 +182,13 @@
             5. Sort current language higher (sort)
            -->
         <div
-          v-if="$utils.languageMapContent(item, 'altLabel')"
+          v-if="$jskos.languageMapContent(item, 'altLabel')"
           class="fontWeight-heavy"
           style="margin-top: 10px;">
           {{ $t("conceptDetail.altLabels") }}:
         </div>
         <div
-          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $utils.getLanguage(item.altLabel) ? -1 : (b.language == $utils.getLanguage(item.altLabel) ? 1 : 0))"
+          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $jskos.languagePreference.selectLanguage(item.altLabel) ? -1 : (b.language == $jskos.languagePreference.selectLanguage(item.altLabel) ? 1 : 0))"
           :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
           class="conceptDetail-identifier">
           <span @click="copyAndSearch(label)">
@@ -207,11 +207,11 @@
           :hidden="notes == ''"
           class="conceptDetail-notes">
           <div
-            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $utils.getLanguage(notes) ? -1 : (b.language == $utils.getLanguage(notes) ? 1 : 0))"
+            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $jskos.languagePreference.selectLanguage(notes) ? -1 : (b.language == $jskos.languagePreference.selectLanguage(notes) ? 1 : 0))"
             :key="`conceptDetail-${isLeft}-notes-${language}-${index2}`"
             class="conceptDetail-note">
             <span v-html="note" />
-            <span class="text-lightGrey">({{ language }})</span>
+            <span class="text-lightGrey"> ({{ language }})</span>
           </div>
         </tab>
       </template>
@@ -305,8 +305,8 @@ export default {
     // Search Links (see https://github.com/gbv/cocoda/issues/220)
     searchLinks() {
       let language = this.$i18n.locale
-      let notation = this.$utils.notation(this.item)
-      let prefLabel = this.$utils.prefLabel(this.item)
+      let notation = this.$jskos.notation(this.item)
+      let prefLabel = this.$jskos.prefLabel(this.item)
       let info = { language, notation, prefLabel }
       let searchLinks = []
       for (let searchLink of this.config.searchLinks) {
@@ -330,7 +330,7 @@ export default {
         })
         searchLinks.push({
           url,
-          label: this.$utils.prefLabel(searchLink),
+          label: this.$jskos.prefLabel(searchLink),
         })
       }
       // Filter out duplicate URLs (e.g. Wikipedia)
@@ -380,8 +380,8 @@ export default {
         let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
         let terms = []
         for (let { concept } of concepts.filter(c => c.type.RELEVANCE == this.$t(relevance, "en"))) {
-          if (concept && (this.$utils.prefLabel(concept, { fallbackToUri: false }))) {
-            terms.push(_.escape(this.$utils.prefLabel(concept)))
+          if (concept && (this.$jskos.prefLabel(concept, { fallbackToUri: false }))) {
+            terms.push(_.escape(this.$jskos.prefLabel(concept)))
           }
         }
         if (terms.length > 0) {
@@ -493,7 +493,7 @@ export default {
       let parts = ["scopeNote", "editorialNote", "altLabel"]
       let hasNotes = false
       for (let part of parts) {
-        hasNotes = hasNotes || (this.$utils.languageMapContent(concept, part) && this.$utils.languageMapContent(concept, part).length)
+        hasNotes = hasNotes || (this.$jskos.languageMapContent(concept, part) && this.$jskos.languageMapContent(concept, part).length)
       }
       return hasNotes
     },

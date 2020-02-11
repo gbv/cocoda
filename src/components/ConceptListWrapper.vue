@@ -176,14 +176,14 @@ export default {
           index += 1
           continue
         }
-        let notation = this.$utils.notation(list), label = this.$utils.prefLabel(list), tooltip = ""
+        let notation = this.$jskos.notation(list), label = this.$jskos.prefLabel(list), tooltip = ""
         if (notation) {
           if (label) {
             tooltip = `<b>${label}</b><br>`
           }
           label = notation
         }
-        tooltip += this.$utils.languageMapContent(list, "scopeNote") || ""
+        tooltip += this.$jskos.languageMapContent(list, "scopeNote") || ""
         let choice = {
           id: `custom-${index}`,
           label,

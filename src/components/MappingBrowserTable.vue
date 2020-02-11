@@ -159,16 +159,16 @@
         slot="type"
         slot-scope="{ value }">
         <span
-          v-if="value != null && $utils.notation(value) != '→'"
-          v-b-tooltip.hover="{ title: $utils.prefLabel(value, { fallbackToUri: false }), delay: defaults.delay.medium }">
-          {{ $utils.notation(value) }}
+          v-if="value != null && $jskos.notation(value) != '→'"
+          v-b-tooltip.hover="{ title: $jskos.prefLabel(value, { fallbackToUri: false }), delay: defaults.delay.medium }">
+          {{ $jskos.notation(value) }}
         </span>
       </span>
       <span
         slot="creator"
         slot-scope="{ item }">
         <span
-          v-if="$settings.components.MappingBrowser.showIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($utils.prefLabel(item.mapping.creator[0]) != $utils.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
+          v-if="$settings.components.MappingBrowser.showIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($jskos.prefLabel(item.mapping.creator[0]) != $jskos.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
           <font-awesome-icon
             v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
             icon="exclamation"
@@ -238,7 +238,7 @@
           v-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$utils.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$utils.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
+            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
             :icon="canEdit(data, user) ? 'edit' : 'clone'"
             class="button"
             @click="edit(data)" />
@@ -248,7 +248,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canSave(data)"
-            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$utils.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
             class="button"
             icon="save"
             @click="saveMapping(data.item.mapping)" />
@@ -457,8 +457,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = this.$utils.prefLabel(_.get(a, "type"), { fallbackToUri: false })
-            let labelB = this.$utils.prefLabel(_.get(b, "type"), { fallbackToUri: false })
+            let labelA = this.$jskos.prefLabel(_.get(a, "type"), { fallbackToUri: false })
+            let labelB = this.$jskos.prefLabel(_.get(b, "type"), { fallbackToUri: false })
             if (labelA < labelB) {
               return -1
             }
@@ -606,19 +606,19 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$utils.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
+          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
             this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: mapping.uri }).then(success => {
               if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [this.$utils.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2")
+                this.alert(this.$t("alerts.mappingRestored", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2")
               } else {
-                this.alert(this.$t("alerts.mappingNotRestored", [this.$utils.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
+                this.alert(this.$t("alerts.mappingNotRestored", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
               }
             })
           })
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$utils.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
@@ -681,11 +681,11 @@ export default {
       mapping = this.$jskos.copyDeep(mapping)
       // Adjust creator
       let creator = this.creator
-      let creatorName = this.$utils.prefLabel(creator, { fallbackToUri: false })
+      let creatorName = this.$jskos.prefLabel(creator, { fallbackToUri: false })
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
       if (creator) {
-        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$utils.prefLabel(c, { fallbackToUri: false }) && creatorName == this.$utils.prefLabel(c, { fallbackToUri: false }))))
+        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
         mapping.creator = [creator]
       } else {
         mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
@@ -705,13 +705,13 @@ export default {
         return null
       }).then(mapping => {
         if (!mapping) {
-          let message = this.$t("alerts.mappingNotSaved", [this.$utils.prefLabel(this.currentRegistry, { fallbackToUri: false })])
+          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })])
           if (this.currentRegistry.provider.has.auth && !this.currentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
         } else {
-          this.alert(this.$t("alerts.mappingSaved", [this.$utils.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
+          this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
         }
         return mapping
       }).catch(error => {

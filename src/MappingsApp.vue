@@ -374,7 +374,7 @@ export default {
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
-          text: `${this.$utils.notation(type)} ${this.$utils.prefLabel(type)}`,
+          text: `${this.$jskos.notation(type)} ${this.$jskos.prefLabel(type)}`,
           value: type.uri,
         })
       }
@@ -383,15 +383,15 @@ export default {
     fromScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          (this.$utils.prefLabel(scheme, { fallbackToUri: false }) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          (this.$utils.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase(),
+          (this.$jskos.prefLabel(scheme, { fallbackToUri: false }) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
+          (this.$jskos.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase(),
       )
     },
     toScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          (this.$utils.prefLabel(scheme, { fallbackToUri: false }) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          (this.$utils.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase(),
+          (this.$jskos.prefLabel(scheme, { fallbackToUri: false }) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
+          (this.$jskos.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase(),
       )
     },
     page: {
@@ -493,10 +493,10 @@ export default {
       let items = []
       for (let concordance of this.concordances) {
         let item = { concordance }
-        item.from = this.$utils.notation(_.get(concordance, "fromScheme")) || "-"
-        item.to = this.$utils.notation(_.get(concordance, "toScheme")) || "-"
-        item.description = (this.$utils.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
-        item.creator = this.$utils.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
+        item.from = this.$jskos.notation(_.get(concordance, "fromScheme")) || "-"
+        item.to = this.$jskos.notation(_.get(concordance, "toScheme")) || "-"
+        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
+        item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")

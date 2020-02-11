@@ -6,7 +6,7 @@
     <div
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
-      v-b-tooltip.hover.right="{ title: $utils.prefLabel(mappingType) + definition(mappingType), delay: defaults.delay.medium }"
+      v-b-tooltip.hover.right="{ title: $jskos.prefLabel(mappingType) + definition(mappingType), delay: defaults.delay.medium }"
       :class="{
         mappingTypeSelected: hovered && (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
@@ -15,7 +15,7 @@
       :style="`display: ${((mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri) || hovered ? 'inline-block' : 'none'};`"
       class="mappingType"
       @click="choose(mappingType)">
-      {{ $utils.notation(mappingType) }}
+      {{ $jskos.notation(mappingType) }}
     </div>
   </div>
 </template>
@@ -59,7 +59,7 @@ export default {
       })
     },
     definition(mappingType) {
-      let definition = this.$utils.definition(mappingType)
+      let definition = this.$jskos.definition(mappingType)
       if (definition.length) {
         return ": " + definition.join(", ")
       }

@@ -389,7 +389,7 @@ export default {
     },
     // Returns an array of available registry filter options.
     registryFilterOptions() {
-      return this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$utils.prefLabel(registry) }))
+      return this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$jskos.prefLabel(registry) }))
     },
     // Returns an array of all available languages with other filters applied (faceted browsing).
     shownLanguages() {
@@ -457,7 +457,7 @@ export default {
       for (let option of options) {
         let type = kosTypes.find(t => t.uri == option.value)
         if (type) {
-          option.text = this.$utils.prefLabel(type)
+          option.text = this.$jskos.prefLabel(type)
         }
       }
       return options

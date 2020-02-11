@@ -16,15 +16,15 @@ Vue.use(VueScrollTo)
 import utils from "cocoda-utils"
 Vue.prototype.$utils = utils
 
-// Set Vuex store and path on utils
-import store from "./store"
-const storePath = "getters.languages"
-utils.setOption("store", store)
-utils.setOption("storePath", storePath)
-
 // Add jskos-tools, use with this.$jskos in components
 import jskos from "jskos-tools"
 Vue.prototype.$jskos = jskos
+
+// Set Vuex store and path on jskos-tools' languagePreference
+import store from "./store"
+const storePath = "getters.languages"
+jskos.languagePreference.store = store
+jskos.languagePreference.path = storePath
 
 // Add cocoda-vue-tabs
 import { Tabs, Tab } from "cocoda-vue-tabs"

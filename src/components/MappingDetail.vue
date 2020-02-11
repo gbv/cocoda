@@ -73,7 +73,7 @@
               <a
                 :href="$jskos.mappingTypeByType(mapping.type).uri"
                 target="_blank">
-                {{ $utils.prefLabel($jskos.mappingTypeByType(mapping.type)) }} ({{ $utils.notation($jskos.mappingTypeByType(mapping.type)) }})
+                {{ $jskos.prefLabel($jskos.mappingTypeByType(mapping.type)) }} ({{ $jskos.notation($jskos.mappingTypeByType(mapping.type)) }})
               </a>
             </b-col>
           </b-row>
@@ -88,7 +88,7 @@
                 :key="`mappingDetail-creator-${index}`">
                 <auto-link
                   :link="creator.url || creator.uri"
-                  :text="$utils.prefLabel(creator)" />
+                  :text="$jskos.prefLabel(creator)" />
               </p>
             </b-col>
           </b-row>
@@ -206,9 +206,9 @@ export default {
       if (!concordance) {
         return ""
       }
-      let name = this.$utils.prefLabel(concordance, { fallbackToUri: false }) || this.$utils.languageMapContent(concordance, "scopeNote") || concordance.uri || ""
+      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false }) || this.$jskos.languageMapContent(concordance, "scopeNote") || concordance.uri || ""
       if (concordance.creator && concordance.creator.length) {
-        let creator = this.$utils.prefLabel(concordance.creator[0], { fallbackToUri: false })
+        let creator = this.$jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
         if (creator) {
           name += ` (${creator})`
         }

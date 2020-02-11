@@ -1,7 +1,6 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
-import utils from "cocoda-utils"
 
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
@@ -148,7 +147,7 @@ const getters = {
       if (aCreator.uri != bCreator.uri) {
         return false
       }
-      if (utils.prefLabel(aCreator) != utils.prefLabel(bCreator)) {
+      if (jskos.prefLabel(aCreator) != jskos.prefLabel(bCreator)) {
         return false
       }
       return true

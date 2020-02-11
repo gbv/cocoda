@@ -583,12 +583,12 @@ export default {
         let item = { concordance }
         item.from = _.get(concordance, "fromScheme")
         item.from = this._getObject(item.from) || item.from
-        item.fromNotation = this.$utils.notation(item.from) || "-"
+        item.fromNotation = this.$jskos.notation(item.from) || "-"
         item.to = _.get(concordance, "toScheme")
         item.to = this._getObject(item.to) || item.to
-        item.toNotation = this.$utils.notation(item.to) || "-"
-        item.description = (this.$utils.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
-        item.creator = this.$utils.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
+        item.toNotation = this.$jskos.notation(item.to) || "-"
+        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
+        item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
@@ -619,7 +619,7 @@ export default {
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
-          text: `${this.$utils.notation(type)} ${this.$utils.prefLabel(type)}`,
+          text: `${this.$jskos.notation(type)} ${this.$jskos.prefLabel(type)}`,
           value: type.uri,
         })
       }
@@ -759,7 +759,7 @@ export default {
       let urls = {}
       for (let registry of this.concordanceRegistries) {
         if (registry.provider.has.concordances && registry.concordances) {
-          urls[this.$utils.prefLabel(registry)] = registry.concordances
+          urls[this.$jskos.prefLabel(registry)] = registry.concordances
         }
       }
       return urls
@@ -814,7 +814,7 @@ export default {
           for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
             if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
               const scheme = this.selected.scheme[isLeft]
-              this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$utils.notation(scheme) : ""
+              this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
               changed = true
             }
           }
@@ -873,7 +873,7 @@ export default {
         for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
           if (this.lockScheme[isLeft]) {
             const scheme = this.selected.scheme[isLeft]
-            this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$utils.notation(scheme) : ""
+            this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
             changed = true
           }
         }
@@ -996,7 +996,7 @@ export default {
     },
     getSchemeForFilter(filter) {
       return this.schemes.find(scheme => {
-        return this.$jskos.compare(scheme, { uri: filter }) || this.$utils.notation(scheme).toLowerCase() == filter.toLowerCase()
+        return this.$jskos.compare(scheme, { uri: filter }) || this.$jskos.notation(scheme).toLowerCase() == filter.toLowerCase()
       })
     },
     clearSearchFilter() {
@@ -1379,7 +1379,7 @@ export default {
 
           item.creator = mapping.creator && mapping.creator[0] || ""
           if (typeof item.creator === "object") {
-            item.creator = this.$utils.prefLabel(item.creator)
+            item.creator = this.$jskos.prefLabel(item.creator)
           }
           // Add modified or created date in extra
           item.extra = { date: mapping.modified || mapping.created }
@@ -1387,8 +1387,8 @@ export default {
             item.extra.tooltip = item.extra.date
             item.extra.date = item.extra.date.slice(0, 10)
           }
-          item.source = this.$utils.prefLabel(registry)
-          item.sourceShort = this.$utils.notation(registry)
+          item.source = this.$jskos.prefLabel(registry)
+          item.sourceShort = this.$jskos.notation(registry)
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.occurrence = mapping._occurrence
           // Generate unique ID from mapping JSON and registry URI as helper

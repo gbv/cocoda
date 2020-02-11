@@ -38,7 +38,7 @@
               :key="type.uri"
               :value="type.uri"
               class="conceptSearch-filterCheckbox">
-              {{ $utils.prefLabel(type) }}
+              {{ $jskos.prefLabel(type) }}
             </b-form-checkbox>
           </b-form-checkbox-group>
         </div>
@@ -459,7 +459,7 @@ export default {
       this.dragStart(concept, event)
     },
     droppedConcept(concept) {
-      this.setSearchQuery(this.$utils.prefLabel(concept), { fallbackToUri: true })
+      this.setSearchQuery(this.$jskos.prefLabel(concept, { fallbackToUri: true }))
     },
   },
 }

@@ -238,7 +238,7 @@ export default {
         // ... for concepts
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
           let conceptInStore = this._getObject(concept)
-          let language = this.$utils.getLanguage(_.get(conceptInStore, "prefLabel"))
+          let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
           if (language) {
             // NOTE: Hardcoded language, see note above.
             concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
@@ -246,7 +246,7 @@ export default {
         }
         // ... for creator
         if (mapping.creator && mapping.creator[0]) {
-          mapping.creator[0].prefLabel = { de: this.$utils.prefLabel(mapping.creator[0], { fallbackToUri: false }) }
+          mapping.creator[0].prefLabel = { de: this.$jskos.prefLabel(mapping.creator[0], { fallbackToUri: false }) }
         }
       }
 
