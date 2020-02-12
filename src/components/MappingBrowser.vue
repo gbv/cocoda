@@ -996,7 +996,7 @@ export default {
     },
     getSchemeForFilter(filter) {
       return this.schemes.find(scheme => {
-        return this.$jskos.compare(scheme, { uri: filter }) || this.$jskos.notation(scheme).toLowerCase() == filter.toLowerCase()
+        return filter && (this.$jskos.compare(scheme, { uri: filter }) || this.$jskos.notation(scheme).toLowerCase() == filter.toLowerCase())
       })
     },
     clearSearchFilter() {
