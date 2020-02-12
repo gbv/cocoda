@@ -97,14 +97,14 @@
             <b-col cols="3">
               {{ $t("mappingDetail.created") }}:
             </b-col>
-            <b-col>{{ $utils.dateToString(mapping.created) }}</b-col>
+            <b-col>{{ dateToString(mapping.created) }}</b-col>
           </b-row>
           <!-- Modified -->
           <b-row>
             <b-col cols="3">
               {{ $t("mappingDetail.modified") }}:
             </b-col>
-            <b-col>{{ $utils.dateToString(mapping.modified) }}</b-col>
+            <b-col>{{ dateToString(mapping.modified) }}</b-col>
           </b-row>
           <!-- Annotations -->
           <b-row

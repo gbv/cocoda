@@ -303,7 +303,7 @@ export default {
   data() {
     return {
       // Unique ID for this instance of the component.
-      id: this.$utils.generateID(),
+      id: this.generateID(),
       // Boolean whether popover is shown.
       popoverShown: false,
       // Whether filter popover is shown.

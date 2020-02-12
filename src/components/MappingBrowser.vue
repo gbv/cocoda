@@ -1392,7 +1392,7 @@ export default {
           item.type = this.$jskos.mappingTypeByType(mapping.type)
           item.occurrence = mapping._occurrence
           // Generate unique ID from mapping JSON and registry URI as helper
-          item.uniqueId = this.$utils.hash(keyPrefix + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
+          item.uniqueId = this.hash(keyPrefix + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
           // Add class to all items of hoveredRegistry
           if (this.$jskos.compare(item.registry, this.hoveredRegistry)) {
             item._rowClass += " mappingBrowser-hoveredRegistry"

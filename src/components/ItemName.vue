@@ -145,7 +145,7 @@ export default {
   data () {
     return {
       /** Unique DOM ID for tooltip */
-      tooltipDOMID: this.$utils.generateID(),
+      tooltipDOMID: this.generateID(),
       /** Determines whether the item is hovered from inside (to show tooltip after prefLabel loaded) */
       isHoveredFromHere: false,
       url: "",

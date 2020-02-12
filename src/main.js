@@ -12,10 +12,6 @@ Vue.use(BootstrapVue)
 var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
 
-// Add util, use with this.$utils in components
-import utils from "cocoda-utils"
-Vue.prototype.$utils = utils
-
 // Add jskos-tools, use with this.$jskos in components
 import jskos from "jskos-tools"
 Vue.prototype.$jskos = jskos

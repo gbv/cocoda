@@ -23,7 +23,7 @@
       </div>
       <!-- Date and creator -->
       <div class="fontSize-verySmall">
-        {{ $utils.dateToString(annotation.created, true) }}<br>
+        {{ dateToString(annotation.created, true) }}<br>
         <auto-link
           :class="{
             'fontWeight-heavy': $jskos.annotationCreatorMatches(annotation, userUris)

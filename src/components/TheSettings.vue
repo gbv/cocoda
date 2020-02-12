@@ -361,7 +361,7 @@
         </span>
         <span v-if="config.buildInfo.buildDate">
           •
-          {{ $t("settings.buildDate") }}: {{ $utils.dateToString(config.buildInfo.buildDate) }}
+          {{ $t("settings.buildDate") }}: {{ dateToString(config.buildInfo.buildDate) }}
         </span>
         <br>
         <span>

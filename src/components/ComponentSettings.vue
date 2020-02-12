@@ -131,7 +131,7 @@ export default {
     },
   },
   created() {
-    this.id = this.$utils.generateID()
+    this.id = this.generateID()
   },
   methods: {
     clickHandlers() {

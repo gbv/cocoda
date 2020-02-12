@@ -50,12 +50,12 @@
     <div
       v-if="item.created"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.created") }}:</b> {{ $utils.dateToString(item.created, true) }}
+      <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(item.created, true) }}
     </div>
     <div
       v-if="item.modified"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.modified") }}:</b> {{ $utils.dateToString(item.modified, true) }}
+      <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(item.modified, true) }}
     </div>
     <div
       v-if="item.languages"

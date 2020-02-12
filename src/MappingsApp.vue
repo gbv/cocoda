@@ -647,7 +647,7 @@ export default {
         this.saveToParameters()
       }
       // Set unique ID for this request
-      let loadingId = this.$utils.generateID()
+      let loadingId = this.generateID()
       this.loadingId = loadingId
       _.delay(() => {
         if (this.loadingId == loadingId) {

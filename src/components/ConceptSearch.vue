@@ -244,7 +244,7 @@ export default {
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)
     // Create a unique ID for the DOM IDs
-    this.uniqueID = this.$utils.generateID()
+    this.uniqueID = this.generateID()
   },
   methods: {
     clickHandlers() {
