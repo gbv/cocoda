@@ -236,6 +236,7 @@
         </div>
         <div
           v-if="showEditingTools"
+          :style="`margin-left: 1px;`"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"

@@ -593,6 +593,6 @@ export default {
 
 <style>
 .conceptDetail .cocoda-vue-tabs .cocoda-vue-tabs-content {
-  padding: 10px 5px 0px 5px;
+  padding: 8px 6px 6px 6px !important;
 }
 </style>

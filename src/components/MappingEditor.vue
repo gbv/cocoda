@@ -170,7 +170,7 @@
       <mapping-type-selection
         :mapping="$store.state.mapping.mapping" />
     </div>
-    <div class="mappingEditor-creator">
+    <div class="mappingEditor-creator fontSize-small">
       {{ creatorName }}
     </div>
     <div class="mappingEditor-title">
@@ -726,8 +726,8 @@ export default {
 
 .mappingEditor-creator {
   position: absolute;
-  bottom: 2px;
-  right: 43px;
+  bottom: -4px;
+  right: 40px;
 }
 
 .mappingEditor-title {
@@ -751,8 +751,8 @@ export default {
 
 .mappingEditor-mappingNotSaved {
   position: absolute;
-  top: 0;
-  right: 20px;
+  bottom: -4px;
+  left: 1px;
   color: @color-button-delete;
   z-index: @zIndex-2;
 }
