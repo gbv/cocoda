@@ -1,13 +1,13 @@
 <template>
   <div
-    v-b-tooltip.html.left="tooltip ? $util.prefLabel(registry) : ''"
+    v-b-tooltip.html.left="tooltip ? $jskos.prefLabel(registry) : ''"
     :class="{
       [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
       'registry-notation-current': isCurrentRegistry,
     }"
-    :style="`width: ${18 + 9 * ($util.notation(registry).length - 1)}px;`"
+    :style="`width: ${18 + 9 * ($jskos.notation(registry).length - 1)}px;`"
     class="registry-notation">
-    {{ $util.notation(registry) }}
+    {{ $jskos.notation(registry) }}
   </div>
 </template>
 

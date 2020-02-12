@@ -10,13 +10,14 @@
     @dragend="dragEnd"
     @mouseover="hovering(true)"
     @mouseout="hovering(false)">
+    <!-- TODO: Adjustment for DDC Notations -->
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
       v-b-popover="showPopover && (itemDetails.length || !showText) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${$util.notation(item, null, true)} ${$util.prefLabel(item, null, false)}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `<div class='fontSize-normal'><b>${$jskos.notation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
       } : null"
       :to="url"
@@ -30,28 +31,29 @@
       <!-- Show icon for concepts where no data could be loaded -->
       <span
         v-if="item && item.__DETAILSLOADED__ == -1"
-        v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
         class="fontSize-small">
         <font-awesome-icon icon="bolt" />
       </span>
       <!-- Show icon for combined concepts -->
       <span
         v-if="item && item.type && item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
-        v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: defaults.delay.medium }"
         :class="'fontSize-'+(fontSize || 'normal')">
         <font-awesome-icon icon="puzzle-piece" />
       </span>
       <!-- Text for notation -->
+      <!-- TODO: Adjustment for DDC Notations -->
       <span
         :class="{ 'fontWeight-heavy': showText }"
-        v-html="$util.notation(item, null, true)" />
+        v-html="$jskos.notation(item, null, true)" />
       <!-- Text for prefLabel -->
       <span
         v-if="showText || !notation"
         :class="{
           'fontWeight-medium': isHighlighted
         }">
-        {{ $util.prefLabel(item, null, notation == null) }}
+        {{ $jskos.prefLabel(item, { fallbackToUri: notation == null }) }}
       </span>
     </div>
   </div>
@@ -143,7 +145,7 @@ export default {
   data () {
     return {
       /** Unique DOM ID for tooltip */
-      tooltipDOMID: this.$util.generateID(),
+      tooltipDOMID: this.generateID(),
       /** Determines whether the item is hovered from inside (to show tooltip after prefLabel loaded) */
       isHoveredFromHere: false,
       url: "",
@@ -156,10 +158,10 @@ export default {
       return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this.item))
     },
     notation() {
-      return this.$util.notation(this.item)
+      return this.$jskos.notation(this.item)
     },
     itemDetails() {
-      let result = this.$util.lmContent(this.item, "scopeNote")
+      let result = this.$jskos.languageMapContent(this.item, "scopeNote")
       if (!result || !result.length) {
         return ""
       }

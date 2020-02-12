@@ -6,7 +6,7 @@
     <div class="conceptDetail-ancestors">
       <div
         v-if="ancestors.length > 3 && !settings.showAllAncestors"
-        v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium }"
         class="button conceptDetail-ancestors-expand"
         @click="showAncestors = !showAncestors">
         <font-awesome-icon
@@ -31,7 +31,7 @@
         </span>
         <span
           v-else-if="index == 1"
-          v-b-tooltip.hover="{ title: $t('conceptDetail.showAllAncestors'), delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium }"
           class="conceptDetail-ancestors-more button"
           @click="showAncestors = true">
           <font-awesome-icon
@@ -73,14 +73,14 @@
         :is-highlighted="true"
         font-size="normal" />
       <font-awesome-icon
-        v-b-tooltip.hover="{ title: $jskos.isContainedIn(item, favoriteConcepts) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $jskos.isContainedIn(item, favoriteConcepts) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
         :class="$jskos.isContainedIn(item, favoriteConcepts) ? 'starFavorite' : 'starNormal'"
         class="pointer fontSize-verySmall"
         icon="star"
         @click="$jskos.isContainedIn(item, favoriteConcepts) ? $store.dispatch('removeConceptFromFavorites', item) : $store.dispatch('addConceptToFavorites', item)" />
       <div
         v-if="showAddToMappingButton"
-        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: defaults.delay.medium }"
         :class="{ button: showAddToMappingButton }"
         class="conceptDetail-name-addButton"
         @click="addToMapping({
@@ -98,7 +98,7 @@
       size="sm">
       <div
         v-if="previousConcept"
-        v-b-tooltip.hover="{ title: $t('conceptDetail.previousConceptTooltip'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $t('conceptDetail.previousConceptTooltip'), delay: defaults.delay.medium }"
         class="conceptDetail-previousButton">
         <router-link
           :to="getRouterUrl(previousConcept, isLeft, true)">
@@ -110,7 +110,7 @@
       </div>
       <div
         v-if="nextConcept"
-        v-b-tooltip.hover="{ title: $t('conceptDetail.nextConceptTooltip'), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: $t('conceptDetail.nextConceptTooltip'), delay: defaults.delay.medium }"
         class="conceptDetail-nextButton">
         <router-link
           :to="getRouterUrl(nextConcept, isLeft, true)">
@@ -136,41 +136,41 @@
           :key="`conceptDetail-${isLeft}-type-${type.uri}`"
           class="conceptDetail-identifier">
           <b>{{ $t("general.type") }}:</b>
-          {{ $util.prefLabel(type) }}
+          {{ $jskos.prefLabel(type) }}
         </div>
         <div
           v-if="item.creator && item.creator.length"
           class="conceptDetail-identifier">
-          <font-awesome-icon icon="user" /> {{ $util.prefLabel(item.creator[0]) }}
+          <font-awesome-icon icon="user" /> {{ $jskos.prefLabel(item.creator[0]) }}
         </div>
         <div
           v-if="item.created"
           class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.created") }}:</b> {{ $util.dateToString(item.created, true) }}
+          <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(item.created, true) }}
         </div>
         <div
           v-if="item.modified"
           class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.modified") }}:</b> {{ $util.dateToString(item.modified, true) }}
+          <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(item.modified, true) }}
         </div>
         <template v-if="item.definition">
           <div
-            v-for="language in [$util.getLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $util.getLanguage(item.definition) && language != '-'))"
+            v-for="language in [$jskos.languagePreference.selectLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $jskos.languagePreference.selectLanguage(item.definition) && language != '-'))"
             :key="`conceptDetail-${isLeft}-defintion-${language}`"
             class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $util.definition(item, language).join(", ") }}
+            <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $jskos.definition(item, { language }).join(", ") }}
           </div>
         </template>
       </tab>
       <tab :title="$t('conceptDetail.labels')">
         <div
-          v-for="language in [$util.getLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $util.getLanguage(item.prefLabel))).filter(language => language && language != '-')"
+          v-for="language in [$jskos.languagePreference.selectLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $jskos.languagePreference.selectLanguage(item.prefLabel))).filter(language => language && language != '-')"
           :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
           class="conceptDetail-identifier">
           <span
             class="fontWeight-medium"
-            @click="copyAndSearch($util.prefLabel(item, language))">
-            {{ $util.prefLabel(item, language) }}
+            @click="copyAndSearch($jskos.prefLabel(item, { language }))">
+            {{ $jskos.prefLabel(item, { language }) }}
           </span>
           <span class="text-lightGrey">({{ language }})</span>
         </div>
@@ -182,13 +182,13 @@
             5. Sort current language higher (sort)
            -->
         <div
-          v-if="$util.lmContent(item, 'altLabel')"
+          v-if="$jskos.languageMapContent(item, 'altLabel')"
           class="fontWeight-heavy"
           style="margin-top: 10px;">
           {{ $t("conceptDetail.altLabels") }}:
         </div>
         <div
-          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(item.altLabel) ? -1 : (b.language == $util.getLanguage(item.altLabel) ? 1 : 0))"
+          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $jskos.languagePreference.selectLanguage(item.altLabel) ? -1 : (b.language == $jskos.languagePreference.selectLanguage(item.altLabel) ? 1 : 0))"
           :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
           class="conceptDetail-identifier">
           <span @click="copyAndSearch(label)">
@@ -207,11 +207,11 @@
           :hidden="notes == ''"
           class="conceptDetail-notes">
           <div
-            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $util.getLanguage(notes) ? -1 : (b.language == $util.getLanguage(notes) ? 1 : 0))"
+            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $jskos.languagePreference.selectLanguage(notes) ? -1 : (b.language == $jskos.languagePreference.selectLanguage(notes) ? 1 : 0))"
             :key="`conceptDetail-${isLeft}-notes-${language}-${index2}`"
             class="conceptDetail-note">
             <span v-html="note" />
-            <span class="text-lightGrey">({{ language }})</span>
+            <span class="text-lightGrey"> ({{ language }})</span>
           </div>
         </tab>
       </template>
@@ -305,8 +305,8 @@ export default {
     // Search Links (see https://github.com/gbv/cocoda/issues/220)
     searchLinks() {
       let language = this.$i18n.locale
-      let notation = this.$util.notation(this.item)
-      let prefLabel = this.$util.prefLabel(this.item)
+      let notation = this.$jskos.notation(this.item)
+      let prefLabel = this.$jskos.prefLabel(this.item)
       let info = { language, notation, prefLabel }
       let searchLinks = []
       for (let searchLink of this.config.searchLinks) {
@@ -330,7 +330,7 @@ export default {
         })
         searchLinks.push({
           url,
-          label: this.$util.prefLabel(searchLink),
+          label: this.$jskos.prefLabel(searchLink),
         })
       }
       // Filter out duplicate URLs (e.g. Wikipedia)
@@ -380,8 +380,8 @@ export default {
         let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
         let terms = []
         for (let { concept } of concepts.filter(c => c.type.RELEVANCE == this.$t(relevance, "en"))) {
-          if (concept && (this.$util.prefLabel(concept, null, false))) {
-            terms.push(_.escape(this.$util.prefLabel(concept)))
+          if (concept && (this.$jskos.prefLabel(concept, { fallbackToUri: false }))) {
+            terms.push(_.escape(this.$jskos.prefLabel(concept)))
           }
         }
         if (terms.length > 0) {
@@ -493,7 +493,7 @@ export default {
       let parts = ["scopeNote", "editorialNote", "altLabel"]
       let hasNotes = false
       for (let part of parts) {
-        hasNotes = hasNotes || (this.$util.lmContent(concept, part) && this.$util.lmContent(concept, part).length)
+        hasNotes = hasNotes || (this.$jskos.languageMapContent(concept, part) && this.$jskos.languageMapContent(concept, part).length)
       }
       return hasNotes
     },

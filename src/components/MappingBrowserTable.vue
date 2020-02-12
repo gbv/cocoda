@@ -159,16 +159,16 @@
         slot="type"
         slot-scope="{ value }">
         <span
-          v-if="value != null && $util.notation(value) != '→'"
-          v-b-tooltip.hover="{ title: $util.prefLabel(value, null, false), delay: $util.delay.medium }">
-          {{ $util.notation(value) }}
+          v-if="value != null && $jskos.notation(value) != '→'"
+          v-b-tooltip.hover="{ title: $jskos.prefLabel(value, { fallbackToUri: false }), delay: defaults.delay.medium }">
+          {{ $jskos.notation(value) }}
         </span>
       </span>
       <span
         slot="creator"
         slot-scope="{ item }">
         <span
-          v-if="$settings.components.MappingBrowser.showIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($util.prefLabel(item.mapping.creator[0]) != $util.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
+          v-if="$settings.components.MappingBrowser.showIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($jskos.prefLabel(item.mapping.creator[0]) != $jskos.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
           <font-awesome-icon
             v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
             icon="exclamation"
@@ -185,7 +185,7 @@
           :target="`mappingBrowserTable-item-${item.uniqueId}-creator`"
           :show.sync="popoverShown[`creator-${item.uniqueId}`]"
           triggers="hover"
-          :delay="$util.delay.medium"
+          :delay="defaults.delay.medium"
           placement="auto"
           @hide="popoverHide($event, `creator-${item.uniqueId}`)">
           <div class="font-default text-dark color-primary-0-bg fontSize-normal">
@@ -229,7 +229,7 @@
           v-if="data.item.mapping"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
             icon="info-circle"
             class="button"
             @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
@@ -238,7 +238,7 @@
           v-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$util.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$util.prefLabel(currentRegistry)]), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
             :icon="canEdit(data, user) ? 'edit' : 'clone'"
             class="button"
             @click="edit(data)" />
@@ -248,7 +248,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canSave(data)"
-            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$util.prefLabel(currentRegistry)]) : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
             class="button"
             icon="save"
             @click="saveMapping(data.item.mapping)" />
@@ -258,7 +258,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canRemove(data, user)"
-            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
             class="button-delete"
             icon="trash-alt"
             @click="removeMapping(data.item.mapping)" />
@@ -267,7 +267,7 @@
           v-if="showCocodaLink"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.openInCocoda'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.openInCocoda'), delay: defaults.delay.medium }"
             class="button"
             icon="external-link-square-alt"
             @click="openInCocoda(data.item.mapping)" />
@@ -292,7 +292,7 @@
         slot-scope="data">
         <span
           v-if="data.item.occurrence == null"
-          v-b-tooltip.hover="{ title: data.value.tooltip, delay: $util.delay.medium }">
+          v-b-tooltip.hover="{ title: data.value.tooltip, delay: defaults.delay.medium }">
           {{ data.value.date }}
         </span>
         <span v-else-if="data.item.occurrence.count == -1">-</span>
@@ -310,7 +310,7 @@
             style="flex: 1; padding-left: 5px;"
             :class="{
               'fontWeight-heavy': true,
-              'mappingBrowser-registry-selectable': $util.registryStored(section.registry)
+              'mappingBrowser-registry-selectable': $jskos.mappingRegistryIsStored(section.registry)
             }"
             @click="useRegistryForSaving(section.registry)">
             <registry-info
@@ -437,7 +437,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
+          compare: (a, b) => this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "from"),
           class: "mappingBrowser-table-concepts",
         },
         {
@@ -447,7 +447,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "from"),
+          compare: (a, b) => this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "from"),
           class: "mappingBrowser-table-conceptsLong",
         },
         {
@@ -457,8 +457,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = this.$util.prefLabel(_.get(a, "type"), null, false)
-            let labelB = this.$util.prefLabel(_.get(b, "type"), null, false)
+            let labelA = this.$jskos.prefLabel(_.get(a, "type"), { fallbackToUri: false })
+            let labelB = this.$jskos.prefLabel(_.get(b, "type"), { fallbackToUri: false })
             if (labelA < labelB) {
               return -1
             }
@@ -484,7 +484,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
+          compare: (a, b) => this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "to"),
           class: "mappingBrowser-table-concepts",
         },
         {
@@ -494,7 +494,7 @@ export default {
           minWidth: "",
           align: "left",
           sortable: false,
-          compare: (a, b) => this.$util.compareMappingsByConcepts(a.mapping, b.mapping, "to"),
+          compare: (a, b) => this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "to"),
           class: "mappingBrowser-table-conceptsLong",
         },
         {
@@ -548,7 +548,15 @@ export default {
     this.hover = _.debounce(this._hover, 20)
   },
   mounted() {
-    this.$util.setupTableScrollSync()
+    // Synchronizes scrolling of header and body in all default tables.
+    let tables = document.getElementsByClassName("table")
+    for (let table of tables) {
+      let thead = table.getElementsByTagName("thead")[0]
+      let tbody = table.getElementsByTagName("tbody")[0]
+      tbody.onscroll = () => {
+        thead.scrollLeft = tbody.scrollLeft
+      }
+    }
   },
   methods: {
     edit(data) {
@@ -586,7 +594,7 @@ export default {
       if (!this.$jskos.compare(registry, this.currentRegistry)) {
         return false
       }
-      let crossUser = !this.$util.mappingCreatorMatches(user, mapping)
+      let crossUser = !this.$jskos.userOwnsMapping(user, mapping)
       return registry.isAuthorizedFor({
         type: "mappings",
         action: "delete",
@@ -598,19 +606,19 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "success2", this.$t("general.undo"), alert => {
+          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
             this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: mapping.uri }).then(success => {
               if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "success2")
+                this.alert(this.$t("alerts.mappingRestored", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2")
               } else {
-                this.alert(this.$t("alerts.mappingNotRestored", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "danger")
+                this.alert(this.$t("alerts.mappingNotRestored", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
               }
             })
           })
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$util.prefLabel(mapping._provider.registry, null, false)]), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
@@ -625,7 +633,7 @@ export default {
         type: "mappings",
         action: "update",
         user: user,
-        crossUser: !this.$util.mappingCreatorMatches(user, _.get(data, "item.mapping")),
+        crossUser: !this.$jskos.userOwnsMapping(user, _.get(data, "item.mapping")),
       })
     },
     /** Saving of mappigns */
@@ -673,11 +681,11 @@ export default {
       mapping = this.$jskos.copyDeep(mapping)
       // Adjust creator
       let creator = this.creator
-      let creatorName = this.$util.prefLabel(creator, null, false)
+      let creatorName = this.$jskos.prefLabel(creator, { fallbackToUri: false })
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
       if (creator) {
-        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$util.prefLabel(c, null, false) && creatorName == this.$util.prefLabel(c, null, false))))
+        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
         mapping.creator = [creator]
       } else {
         mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
@@ -697,13 +705,13 @@ export default {
         return null
       }).then(mapping => {
         if (!mapping) {
-          let message = this.$t("alerts.mappingNotSaved", [this.$util.prefLabel(this.currentRegistry, null, false)])
+          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })])
           if (this.currentRegistry.provider.has.auth && !this.currentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
         } else {
-          this.alert(this.$t("alerts.mappingSaved", [this.$util.prefLabel(this.currentRegistry, null, false)]), null, "success2")
+          this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
         }
         return mapping
       }).catch(error => {
@@ -759,7 +767,7 @@ export default {
       }) && this.$jskos.compare(r, registry)) != null
     },
     useRegistryForSaving(registry) {
-      if (this.$util.registryStored(registry)) {
+      if (this.$jskos.mappingRegistryIsStored(registry)) {
         this.$store.commit({
           type: "settings/set",
           prop: "mappingRegistry",

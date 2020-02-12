@@ -60,7 +60,7 @@
           v-for="(choice, index) in dataChoices"
           v-show="choice.available"
           :key="`conceptListWrapper-listSelectionPopover-${isLeft}-${index}`"
-          v-b-tooltip.hover="{ title: choice.tooltip, delay: $util.delay.medium, html: true }"
+          v-b-tooltip.hover="{ title: choice.tooltip, delay: defaults.delay.medium, html: true }"
           :class="{
             'fontWeight-heavy': choice === currentChoice,
             'conceptListWrapper-listSelectionPopover-choice': true,
@@ -176,14 +176,14 @@ export default {
           index += 1
           continue
         }
-        let notation = this.$util.notation(list), label = this.$util.prefLabel(list), tooltip = ""
+        let notation = this.$jskos.notation(list), label = this.$jskos.prefLabel(list), tooltip = ""
         if (notation) {
           if (label) {
             tooltip = `<b>${label}</b><br>`
           }
           label = notation
         }
-        tooltip += this.$util.lmContent(list, "scopeNote") || ""
+        tooltip += this.$jskos.languageMapContent(list, "scopeNote") || ""
         let choice = {
           id: `custom-${index}`,
           label,

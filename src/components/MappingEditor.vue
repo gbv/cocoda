@@ -7,11 +7,11 @@
     <div
       v-if="canSaveMapping"
       class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
-      {{ $util.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
+      {{ $jskos.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: canSwapMapping ? $t('mappingEditor.swapMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSwapMapping ? $t('mappingEditor.swapMapping') : '', delay: defaults.delay.medium }"
         :class="{
           button: canSwapMapping,
           'button-disabled': !canSwapMapping
@@ -21,7 +21,7 @@
         <font-awesome-icon icon="exchange-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: defaults.delay.medium }"
         :class="{
           button: canSaveMapping,
           'button-disabled': !canSaveMapping
@@ -31,7 +31,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
         :class="{
           'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
@@ -41,7 +41,7 @@
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canCloneMapping ? $t('mappingEditor.cloneMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canCloneMapping ? $t('mappingEditor.cloneMapping') : '', delay: defaults.delay.medium }"
         :class="{
           'button': canCloneMapping,
           'button-disabled': !canCloneMapping
@@ -51,7 +51,7 @@
         <font-awesome-icon icon="clone" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: $util.delay.medium }"
+        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: defaults.delay.medium }"
         :class="{
           button: canClearMapping,
           'button-disabled': !canClearMapping
@@ -114,7 +114,7 @@
                   font-size="large" />
                 <!-- Delete button for concept -->
                 <span
-                  v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: $util.delay.medium }"
+                  v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: defaults.delay.medium }"
                   class="button fontSize-large"
                   @click="$store.commit({
                     type: 'mapping/remove',
@@ -143,7 +143,7 @@
           </div>
           <div
             v-if="$store.state.draggedConcept == null"
-            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: defaults.delay.medium }"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
             @click="addToMappingInternal(isLeft)">
@@ -155,7 +155,7 @@
       <!-- <div class="mappingButtons">
         <div class="mappingButtonsFiller" />
         <div
-          v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add selected concept' : '', delay: $util.delay.medium }"
+          v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? 'add selected concept' : '', delay: defaults.delay.medium }"
           :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
           :id="'addButton'+index0"
           class="addButton"
@@ -178,7 +178,7 @@
       <!-- Guideline link if available -->
       <span
         v-if="currentGuidelines"
-        v-b-tooltip.hover="{ title: $t('mappingEditor.guidelines'), delay: $util.delay.medium }">
+        v-b-tooltip.hover="{ title: $t('mappingEditor.guidelines'), delay: defaults.delay.medium }">
         <a
           :href="currentGuidelines.url"
           target="_blank">
@@ -286,7 +286,7 @@ export default {
         user: this.user,
       })) {
         return {
-          message: this.$t("registryInfo.notAuthenticated") + ` (${this.$util.prefLabel(registry)})`,
+          message: this.$t("registryInfo.notAuthenticated") + ` (${this.$jskos.prefLabel(registry)})`,
           invalid: true,
         }
       }
@@ -305,7 +305,7 @@ export default {
         if (whitelist) {
           if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
             return {
-              message: this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$util.prefLabel(this.mapping[side], null, false) || ""}`, this.$util.prefLabel(registry)]),
+              message: this.$t("mappingEditor.invalidWhitelist", [`${side} ${this.$jskos.prefLabel(this.mapping[side], { fallbackToUri: false }) || ""}`, this.$jskos.prefLabel(registry)]),
               invalid: true,
             }
           }
@@ -315,7 +315,7 @@ export default {
       const cardinality = _.get(registry, "config.mappings.cardinality")
       if (cardinality == "1-to-1" && this.$jskos.conceptsOfMapping(this.mapping, "to").length > 1) {
         return {
-          message: this.$t("mappingEditor.invalid1to1", [this.$util.prefLabel(registry)]),
+          message: this.$t("mappingEditor.invalid1to1", [this.$jskos.prefLabel(registry)]),
           invalid: true,
         }
       }
@@ -323,7 +323,7 @@ export default {
       // 1. Because the registry changed
       if (this.original.uri && !this.$jskos.compare(registry, this.original.registry)) {
         return {
-          message: this.$t("mappingEditor.warningUpdateRegistry", [this.$util.prefLabel(this.original.registry), this.$util.prefLabel(registry)]),
+          message: this.$t("mappingEditor.warningUpdateRegistry", [this.$jskos.prefLabel(this.original.registry), this.$jskos.prefLabel(registry)]),
           warning: true,
         }
       }
@@ -428,14 +428,14 @@ export default {
       this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
         if (!mapping) {
           // TODO: Adjust
-          let message = this.$t("alerts.mappingNotSaved", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)])
+          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })])
           if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
           return
         }
-        this.alert(this.$t("alerts.mappingSaved", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "success2")
+        this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
         this.$store.commit({
           type: "mapping/set",
           original: this.adjustMapping(mapping),
@@ -453,7 +453,7 @@ export default {
     setCreator() {
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
-      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$util.prefLabel(c, null, false) && this.creatorName == this.$util.prefLabel(c, null, false))))
+      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && this.creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
       let creator = [this.creator]
       this.$store.commit({
         type: "mapping/setCreator",
@@ -485,13 +485,13 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMapping" }).then(success => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "success2")
+          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
           this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
           if (clear) {
             this.clearMapping()
           }
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$util.prefLabel(this.$store.getters.getCurrentRegistry, null, false)]), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "danger")
         }
       }).catch(error => {
         console.error("MappingEditor - error in deleteOriginalMapping:", error)
@@ -513,7 +513,7 @@ export default {
       return mapping
     },
     labelForScheme(scheme) {
-      return this.$util.notation(scheme, "scheme")
+      return this.$jskos.notation(scheme, "scheme")
     },
     /**
      * Returns whether the add button should be enabled for a specific side

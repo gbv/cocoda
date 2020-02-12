@@ -73,7 +73,7 @@
               <a
                 :href="$jskos.mappingTypeByType(mapping.type).uri"
                 target="_blank">
-                {{ $util.prefLabel($jskos.mappingTypeByType(mapping.type)) }} ({{ $util.notation($jskos.mappingTypeByType(mapping.type)) }})
+                {{ $jskos.prefLabel($jskos.mappingTypeByType(mapping.type)) }} ({{ $jskos.notation($jskos.mappingTypeByType(mapping.type)) }})
               </a>
             </b-col>
           </b-row>
@@ -88,7 +88,7 @@
                 :key="`mappingDetail-creator-${index}`">
                 <auto-link
                   :link="creator.url || creator.uri"
-                  :text="$util.prefLabel(creator)" />
+                  :text="$jskos.prefLabel(creator)" />
               </p>
             </b-col>
           </b-row>
@@ -97,14 +97,14 @@
             <b-col cols="3">
               {{ $t("mappingDetail.created") }}:
             </b-col>
-            <b-col>{{ $util.dateToString(mapping.created) }}</b-col>
+            <b-col>{{ dateToString(mapping.created) }}</b-col>
           </b-row>
           <!-- Modified -->
           <b-row>
             <b-col cols="3">
               {{ $t("mappingDetail.modified") }}:
             </b-col>
-            <b-col>{{ $util.dateToString(mapping.modified) }}</b-col>
+            <b-col>{{ dateToString(mapping.modified) }}</b-col>
           </b-row>
           <!-- Annotations -->
           <b-row
@@ -206,9 +206,9 @@ export default {
       if (!concordance) {
         return ""
       }
-      let name = this.$util.prefLabel(concordance, null, false) || this.$util.lmContent(concordance, "scopeNote") || concordance.uri || ""
+      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false }) || this.$jskos.languageMapContent(concordance, "scopeNote") || concordance.uri || ""
       if (concordance.creator && concordance.creator.length) {
-        let creator = this.$util.prefLabel(concordance.creator[0], null, false)
+        let creator = this.$jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
         if (creator) {
           name += ` (${creator})`
         }

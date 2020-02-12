@@ -38,7 +38,7 @@
               :key="type.uri"
               :value="type.uri"
               class="conceptSearch-filterCheckbox">
-              {{ $util.prefLabel(type) }}
+              {{ $jskos.prefLabel(type) }}
             </b-form-checkbox>
           </b-form-checkbox-group>
         </div>
@@ -244,7 +244,7 @@ export default {
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)
     // Create a unique ID for the DOM IDs
-    this.uniqueID = this.$util.generateID()
+    this.uniqueID = this.generateID()
   },
   methods: {
     clickHandlers() {
@@ -459,7 +459,7 @@ export default {
       this.dragStart(concept, event)
     },
     droppedConcept(concept) {
-      this.setSearchQuery(this.$util.prefLabel(concept), true)
+      this.setSearchQuery(this.$jskos.prefLabel(concept, { fallbackToUri: true }))
     },
   },
 }

@@ -1,6 +1,5 @@
 import _ from "lodash"
 import BaseProvider from "./base-provider"
-import util from "../util"
 import jskos from "jskos-tools"
 import qs from "qs"
 
@@ -43,7 +42,7 @@ class ReconciliationApiProvider extends BaseProvider {
       return Promise.resolve([])
     }
     // Prepare labels
-    let language = util.getLanguage(concept.prefLabel)
+    let language = jskos.languagePreference.selectLanguage(concept.prefLabel)
     if (!language) {
       return Promise.resolve([])
     }

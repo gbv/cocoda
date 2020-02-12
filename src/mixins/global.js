@@ -7,6 +7,28 @@ import FileSaver from "file-saver"
 import jskos from "jskos-tools"
 
 export default {
+  data() {
+    return {
+      // TODO: Solve differently!
+      defaults: {
+        "delay": {
+          "short": { "show": 250, "hide": 0 },
+          "medium": { "show": 500, "hide": 0 },
+          "long": { "show": 1000, "hide": 0 },
+        },
+        "licenseBadges": {
+          "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
+          "http://creativecommons.org/licenses/by/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by.svg",
+          "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+          "http://creativecommons.org/licenses/by-nc-nd/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",
+          "http://creativecommons.org/licenses/by-nc-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg",
+          "http://creativecommons.org/licenses/by-sa/4.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg",
+          "http://opendatacommons.org/licenses/odbl/1.0/": "https://img.shields.io/badge/License-ODbL-lightgrey.svg",
+          "http://www.wtfpl.net/": "https://img.shields.io/badge/License-WTFPL-lightgrey.svg",
+        },
+      },
+    }
+  },
   methods: {
     /**
      * Returns the provider object for a scheme or concept.
@@ -60,7 +82,7 @@ export default {
           this.loadTypes(scheme)
         }
       }
-      let loadingId = this.$util.generateID()
+      let loadingId = this.generateID()
       this.$store.commit({
         type: "selected/setLoadingId",
         isLeft,
@@ -207,7 +229,27 @@ export default {
       }
       try {
         window.getSelection().removeAllRanges()
-        this.$util.selectText(element)
+        // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
+        const selectText = (el) => {
+          var sel, range
+          if (window.getSelection && document.createRange) {
+            sel = window.getSelection()
+            if(sel.toString() == "") {
+              range = document.createRange()
+              range.selectNodeContents(el)
+              sel.removeAllRanges()
+              sel.addRange(range)
+            }
+          } else if (document.selection) {
+            sel = document.selection.createRange()
+            if(sel.text == "") {
+              range = document.body.createTextRange()
+              range.moveToElementText(el)
+              range.select()
+            }
+          }
+        }
+        selectText(element)
         let successful = document.execCommand("copy")
         if (!successful) {
           console.warn("Copy to clipboard failed.")
@@ -244,6 +286,39 @@ export default {
     downloadFile(filename, contents) {
       var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
       FileSaver.saveAs(blob, filename)
+    },
+    /**
+     * Generates a random ID.
+     */
+    generateID() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    },
+    // adapted from: https://stackoverflow.com/a/22429679/11050851
+    hash(str) {
+      var FNV1_32A_INIT = 0x811c9dc5
+      var hval = FNV1_32A_INIT
+      for ( var i = 0; i < str.length; ++i )
+      {
+        hval ^= str.charCodeAt(i)
+        hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24)
+      }
+      return ("0000000" + (hval >>> 0).toString(16)).substr(-8)
+    },
+    /**
+     * Converts a date string to a localized date string.
+     *
+     * @param {string} dateString a date string (compatible with new Date())
+     * @param {boolean} onlyDate if true, the time will be omitted
+     */
+    dateToString(dateString, onlyDate = false) {
+      let date = new Date(dateString)
+      let optionsDate = { year: "numeric", month: "short", day: "numeric" }
+      let options = Object.assign({ hour: "2-digit", minute: "2-digit", second: "2-digit" }, optionsDate)
+      if (date instanceof Date && !isNaN(date)) {
+        return onlyDate ? date.toLocaleDateString(undefined, optionsDate) : date.toLocaleString(undefined, options)
+      } else {
+        return "?"
+      }
     },
   },
 }

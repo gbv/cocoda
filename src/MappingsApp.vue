@@ -54,7 +54,7 @@
                   placeholder="creator" />
                 <span
                   v-if="filter[field.key] != null"
-                  v-b-tooltip.hover="{ title: 'clear filter', delay: $util.delay.medium }"
+                  v-b-tooltip.hover="{ title: 'clear filter', delay: defaults.delay.medium }"
                   icon="times"
                   class="button d-none d-md-inline-block"
                   @click="filter[field.key] = ''">
@@ -94,7 +94,7 @@
                 slot="actions"
                 slot-scope="{ item }">
                 <font-awesome-icon
-                  v-b-tooltip.hover="{ title: 'Show Mappings', delay: $util.delay.medium }"
+                  v-b-tooltip.hover="{ title: 'Show Mappings', delay: defaults.delay.medium }"
                   icon="external-link-square-alt"
                   class="button"
                   @click="showMappingsForConcordance(item.concordance)" />
@@ -374,7 +374,7 @@ export default {
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
-          text: `${this.$util.notation(type)} ${this.$util.prefLabel(type)}`,
+          text: `${this.$jskos.notation(type)} ${this.$jskos.prefLabel(type)}`,
           value: type.uri,
         })
       }
@@ -383,15 +383,15 @@ export default {
     fromScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
-          (this.$util.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase(),
+          (this.$jskos.prefLabel(scheme, { fallbackToUri: false }) || "___NO_SCHEME___").toLowerCase() == this.sourceScheme.toLowerCase() ||
+          (this.$jskos.notation(scheme) || "").toLowerCase() == this.sourceScheme.toLowerCase(),
       )
     },
     toScheme() {
       return this.mappingSchemes.find(
         scheme =>
-          (this.$util.prefLabel(scheme, null, false) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
-          (this.$util.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase(),
+          (this.$jskos.prefLabel(scheme, { fallbackToUri: false }) || "___NO_SCHEME___").toLowerCase() == this.targetScheme.toLowerCase() ||
+          (this.$jskos.notation(scheme) || "").toLowerCase() == this.targetScheme.toLowerCase(),
       )
     },
     page: {
@@ -493,10 +493,10 @@ export default {
       let items = []
       for (let concordance of this.concordances) {
         let item = { concordance }
-        item.from = this.$util.notation(_.get(concordance, "fromScheme")) || "-"
-        item.to = this.$util.notation(_.get(concordance, "toScheme")) || "-"
-        item.description = (this.$util.lmContent(concordance, "scopeNote") || [])[0] || "-"
-        item.creator = this.$util.prefLabel(_.get(concordance, "creator[0]"), null, false) || "-"
+        item.from = this.$jskos.notation(_.get(concordance, "fromScheme")) || "-"
+        item.to = this.$jskos.notation(_.get(concordance, "toScheme")) || "-"
+        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
+        item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = _.get(concordance, "extent")
@@ -647,7 +647,7 @@ export default {
         this.saveToParameters()
       }
       // Set unique ID for this request
-      let loadingId = this.$util.generateID()
+      let loadingId = this.generateID()
       this.loadingId = loadingId
       _.delay(() => {
         if (this.loadingId == loadingId) {

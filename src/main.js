@@ -12,13 +12,15 @@ Vue.use(BootstrapVue)
 var VueScrollTo = require("vue-scrollto")
 Vue.use(VueScrollTo)
 
-// Add util, use with this.$util in components
-import util from "./util"
-Vue.prototype.$util = util
-
 // Add jskos-tools, use with this.$jskos in components
 import jskos from "jskos-tools"
 Vue.prototype.$jskos = jskos
+
+// Set Vuex store and path on jskos-tools' languagePreference
+import store from "./store"
+const storePath = "getters.languages"
+jskos.languagePreference.store = store
+jskos.languagePreference.path = storePath
 
 // Add cocoda-vue-tabs
 import { Tabs, Tab } from "cocoda-vue-tabs"

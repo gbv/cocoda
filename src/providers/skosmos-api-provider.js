@@ -2,9 +2,6 @@ import jskos from "jskos-tools"
 import _ from "lodash"
 import BaseProvider from "./base-provider"
 
-// TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
-import util from "../util"
-
 /**
  * Skosmos API Wrapper.
  */
@@ -122,7 +119,7 @@ class SkosmosApiProvider extends BaseProvider {
         // eslint-disable-next-line require-atomic-updates
         concept.type = concept.type || []
         for (let type of resultConcept.type || []) {
-          if (!util.isValidUri(type)) {
+          if (!jskos.isValidUri(type)) {
             continue
           }
           const uriScheme = type.slice(0, type.indexOf(":"))
@@ -152,8 +149,8 @@ class SkosmosApiProvider extends BaseProvider {
     const concepts = await this._search(search, options)
     const result = [search, [], [], []]
     for (let concept of concepts) {
-      const notation = util.notation(concept)
-      const label = util.prefLabel(concept)
+      const notation = jskos.notation(concept)
+      const label = jskos.prefLabel(concept)
       result[1].push((notation ? notation + " " : "") + label)
       result[2].push("")
       result[3].push(concept.uri)
@@ -183,7 +180,7 @@ class SkosmosApiProvider extends BaseProvider {
     }
     const concepts = []
     for (let concept of response.results || []) {
-      const notation = util.notation({ uri: concept.uri, inScheme: [scheme] })
+      const notation = jskos.notation({ uri: concept.uri, inScheme: [scheme] })
       const label = concept.matchedPrefLabel || concept.altLabel || concept.prefLabel
       const newConcept = {
         uri: concept.uri,

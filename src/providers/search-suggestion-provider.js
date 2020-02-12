@@ -1,6 +1,5 @@
 import _ from "lodash"
 import BaseProvider from "./base-provider"
-import util from "../util"
 import jskos from "jskos-tools"
 
 /**
@@ -67,7 +66,7 @@ class SearchSuggestionProvider extends BaseProvider {
       return Promise.resolve([])
     }
     // Prepare label
-    let label = util.prefLabel(concept)
+    let label = jskos.prefLabel(concept)
     if (!label) {
       return Promise.resolve([])
     }

@@ -3,8 +3,6 @@ import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
 import uuid from "uuid/v4"
-// TODO: This should be removed in the future. Necessary methods should be moved to jskos-tools.
-import util from "../util"
 
 const uriPrefix = "urn:uuid:"
 
@@ -124,7 +122,7 @@ class LocalMappingsProvider extends BaseProvider {
       params.toScheme = _.isString(toScheme) ? { uri: toScheme } : toScheme
     }
     if (creator) {
-      params.creator = _.isString(creator) ? creator : util.prefLabel(creator)
+      params.creator = _.isString(creator) ? creator : jskos.prefLabel(creator)
     }
     if (type) {
       params.type = _.isString(type) ? type : type.uri
@@ -218,7 +216,7 @@ class LocalMappingsProvider extends BaseProvider {
       if (params.creator) {
         let creators = params.creator.split("|")
         mappings = mappings.filter(mapping => {
-          return (mapping.creator && mapping.creator.find(creator => creators.includes(util.prefLabel(creator)) || creators.includes(creator.uri))) != null
+          return (mapping.creator && mapping.creator.find(creator => creators.includes(jskos.prefLabel(creator)) || creators.includes(creator.uri))) != null
         })
       }
       // type

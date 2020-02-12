@@ -27,7 +27,7 @@
         :key="item.url"
         :href="item.url"
         target="_blank">
-        {{ $util.prefLabel(item) }}
+        {{ $jskos.prefLabel(item) }}
       </b-nav-item>
       <!-- Help menu button -->
       <b-nav-item
@@ -58,7 +58,7 @@
         <b-dropdown-header>
           {{ $t("navbar.trashTitle") }}
           <div
-            v-b-tooltip.hover="{ title: $t('navbar.trashClearButtonTooltip'), delay: $util.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('navbar.trashClearButtonTooltip'), delay: defaults.delay.medium }"
             class="button"
             style="position: absolute; right: 15px; top: 15px;"
             @click="$store.commit('mapping/clearTrash')">
@@ -80,9 +80,9 @@
           style="width: 700px;"
           @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
             if (success) {
-              alert($t('alerts.mappingRestored', [$util.prefLabel($event.item.registry, null, false)]), null, 'success2')
+              alert($t('alerts.mappingRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'success2')
             } else {
-              alert($t('alerts.mappingNotRestored', [$util.prefLabel($event.item.registry, null, false)]), null, 'danger')
+              alert($t('alerts.mappingNotRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'danger')
             }
           })" />
       </b-nav-item-dropdown>
@@ -116,7 +116,7 @@
           @dragend="favoriteConceptDragEnd">
           <div style="padding-right: 8px;">
             <span
-              v-b-tooltip.hover="{ title: $t('navbar.removeFromFavorites'), delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $t('navbar.removeFromFavorites'), delay: defaults.delay.medium }"
               class="button fontSize-verySmall"
               @click="removeFavoriteConcept(concept)">
               <font-awesome-icon icon="times-circle" />
@@ -135,14 +135,14 @@
           </div>
           <div>
             <span
-              v-b-tooltip.hover="{ title: $t('navbar.openLeft'), delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $t('navbar.openLeft'), delay: defaults.delay.medium }"
               class="button"
               @click="setSelected({ concept, isLeft: true })">
               <font-awesome-icon icon="caret-square-left" />
             </span>
             &nbsp;
             <span
-              v-b-tooltip.hover="{ title: $t('navbar.openRight'), delay: $util.delay.medium }"
+              v-b-tooltip.hover="{ title: $t('navbar.openRight'), delay: defaults.delay.medium }"
               class="button"
               @click="setSelected({ concept, isLeft: false })">
               <font-awesome-icon icon="caret-square-right" />
@@ -259,7 +259,7 @@
           v-if="$store.getters.getCurrentRegistry"
           class="font-default text-dark color-primary-0-bg fontSize-normal">
           <p
-            v-for="registry in config.registries.filter(registry => $util.registryStored(registry))"
+            v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,

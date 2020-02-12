@@ -18,8 +18,8 @@
           :href="license.uri"
           target="_blank">
           <img
-            v-if="$util.licenseBadges[license.uri]"
-            :src="$util.licenseBadges[license.uri]"
+            v-if="defaults.licenseBadges[license.uri]"
+            :src="defaults.licenseBadges[license.uri]"
             class="schemeDetail-licenseBadge">
           <span v-else>
             {{ license.uri }}
@@ -50,12 +50,12 @@
     <div
       v-if="item.created"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.created") }}:</b> {{ $util.dateToString(item.created, true) }}
+      <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(item.created, true) }}
     </div>
     <div
       v-if="item.modified"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.modified") }}:</b> {{ $util.dateToString(item.modified, true) }}
+      <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(item.modified, true) }}
     </div>
     <div
       v-if="item.languages"
@@ -69,7 +69,7 @@
       <span
         v-for="(type, index) in item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
         :key="`schemeDetail-${isLeft}-type-${index}`">
-        {{ $util.prefLabel(kosTypes.find(t => t.uri == type)) || type }}
+        {{ $jskos.prefLabel(kosTypes.find(t => t.uri == type)) || type }}
         <span v-if="index != item.type.length - 2"> / </span>
       </span>
     </div>
@@ -89,14 +89,14 @@
 
     <!-- Link to mapping search -->
     <div
-      v-if="$util.notation(item)"
+      v-if="$jskos.notation(item)"
       class="schemeDetail-identifier">
       <a
         href=""
         @click.prevent="$emit('searchMappings', {
-          fromScheme: isLeft ? $util.notation(item) : null,
+          fromScheme: isLeft ? $jskos.notation(item) : null,
           fromNotation: isLeft ? '' : null,
-          toScheme: !isLeft ? $util.notation(item) : null,
+          toScheme: !isLeft ? $jskos.notation(item) : null,
           toNotation: !isLeft ? '' : null,
           direction: 'both'
         })">
@@ -174,7 +174,7 @@ export default {
       }
       return {
         url: organisation[0].url || organisation[0].uri,
-        label: this.$util.prefLabel(organisation[0]),
+        label: this.$jskos.prefLabel(organisation[0]),
       }
     },
   },

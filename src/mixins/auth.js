@@ -10,7 +10,7 @@ export default {
       return this.$store.getters["creator"]
     },
     creatorName() {
-      return this.$util.prefLabel(this.creator, null, false)
+      return this.$jskos.prefLabel(this.creator, { fallbackToUri: false })
     },
     userName() {
       return this.$settings.creator
