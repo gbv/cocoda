@@ -6,6 +6,11 @@ import _ from "lodash"
 import FileSaver from "file-saver"
 import jskos from "jskos-tools"
 
+let components = {}
+let printComponents = _.debounce(() => {
+  console.log(components)
+}, 1000)
+
 export default {
   data() {
     return {
@@ -28,6 +33,22 @@ export default {
         },
       },
     }
+  },
+  created() {
+    let name = this.$options.name
+    if (!components[name]) {
+      components[name] = 0
+    }
+    components[name] += 1
+    printComponents()
+  },
+  destroyed() {
+    let name = this.$options.name
+    if (!components[name]) {
+      components[name] = 1
+    }
+    components[name] -= 1
+    printComponents()
   },
   methods: {
     /**

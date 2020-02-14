@@ -43,6 +43,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/vue-fontawesome": "^0.1.9",
+    "animated-scroll-to": "^2.0.5",
     "axios": "^0.19.1",
     "bootstrap-vue": "2.0.0-rc.19",
     "cocoda-vue-tabs": "^0.1.10",
@@ -62,6 +63,7 @@
     "vue-i18n": "^8.15.3",
     "vue-router": "^3.1.4",
     "vue-scrollto": "^2.17.1",
+    "vue-virtual-scroller": "^1.0.0-rc.2",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

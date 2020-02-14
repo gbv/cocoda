@@ -253,22 +253,29 @@ export default {
       }
     },
     _loadConceptsInView() {
+      console.log("load concepts in view")
       let concepts = []
       let conceptList = _.get(this, `$refs.conceptList[${this.currentChoiceIndex}]`)
       let container = _.get(conceptList, "$parent.$el")
+      // find vue-recycle-scroller__item-wrapper element
+      // while (conceptList && !conceptList.classList.contains("vue-recycle-scroller__item-wrapper")) {
+      //   conceptList = conceptList.children[0]
+      // }
+      conceptList = conceptList.$children[0].$children[0]
+      console.log(container, conceptList.$el)
       if (conceptList && conceptList.$children && container) {
         for (let child of conceptList.$children) {
-          if (!child || !child.$el) {
+          if (!child || !child.$el || !child.item) {
             continue
           }
-          const element = child.$el
-          if (this.checkInView(container, element)) {
-            concepts.push(child.concept)
+          if (child.active) {
+            concepts.push(child.item.concept)
           }
         }
       }
+      console.log(concepts)
       // Load concepts
-      this.loadConcepts(concepts)
+      this.loadConcepts(concepts.filter(concept => concept != null))
     },
     /**
      * from: https://stackoverflow.com/a/37285344

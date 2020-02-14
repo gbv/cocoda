@@ -27,6 +27,10 @@ import { Tabs, Tab } from "cocoda-vue-tabs"
 Vue.component("tabs", Tabs)
 Vue.component("tab", Tab)
 
+import VueVirtualScroller from "vue-virtual-scroller"
+Vue.use(VueVirtualScroller)
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css"
+
 // Add fontawesome
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faCheckSquare, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt, faPuzzlePiece, faExclamation, faShareAltSquare, faRecycle, faCaretSquareLeft, faCaretSquareRight, faClipboard, faAngleDoubleRight, faClone, faExclamationCircle, faQuestionCircle, faChevronUp, faChevronDown, faPencilAlt, faArrowRight, faArrowLeft, faSyncAlt, faList, faSitemap, faBolt } from "@fortawesome/free-solid-svg-icons"

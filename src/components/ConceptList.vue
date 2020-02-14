@@ -3,21 +3,36 @@
     class="conceptList"
     :style="`margin-bottom: ${noItems ? 0 : 30}px;`">
     <!-- Show concepts -->
-    <div
+    <DynamicScroller
       ref="conceptListItems"
-      class="conceptListItems">
-      <concept-list-item
-        v-for="({ concept, depth, isSelected }, index) in items"
-        :key="`conceptListItems-${isLeft}-${index}`"
-        :concept="concept"
-        :depth="depth"
-        :is-selected="isSelected"
-        :index="index"
-        :is-left="isLeft"
-        :show-children="showChildren"
-        :show-scheme="showScheme"
-        :buttons="buttons" />
-    </div>
+      class="conceptListItems"
+      :items="items"
+      key-field="uri"
+      :buffer="300"
+      :min-item-size="20"
+      page-mode>
+      <template v-slot="{ item, index, active }">
+        <DynamicScrollerItem
+          :item="item"
+          :active="active"
+          :size-dependencies="[
+            $jskos.prefLabel(item.concept),
+            $jskos.notation(item.concept),
+            item.depth,
+          ]"
+          :data-index="index">
+          <concept-list-item
+            :concept="item.concept"
+            :depth="item.depth"
+            :is-selected="item.isSelected"
+            :index="index"
+            :is-left="isLeft"
+            :show-children="showChildren"
+            :show-scheme="showScheme"
+            :buttons="buttons" />
+        </DynamicScrollerItem>
+      </template>
+    </DynamicScroller>
     <div
       v-if="noItems"
       class="conceptListItems-noItems">
@@ -32,7 +47,6 @@
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 import ConceptListItem from "./ConceptListItem"
 import _ from "lodash"
-import { scroller } from "vue-scrollto/src/scrollTo"
 
 // Import mixins
 import objects from "../mixins/objects"
@@ -104,7 +118,7 @@ export default {
       loading: false,
       currentSelectedConcept: null,
       shouldScroll: true,
-      scrollTo: scroller(),
+      scrollLater: null,
       oldPreviousConcept: null,
       oldNextConcept: null,
     }
@@ -118,11 +132,12 @@ export default {
     },
     items() {
       let items = []
-      for (let concept of this.concepts) {
+      for (let concept of this.concepts.filter(c => c)) {
         let item = {
           concept,
           depth: 0,
           isSelected: this.$jskos.compare(this.conceptSelected, concept),
+          uri: concept.uri,
         }
         items.push(item)
         if (this.showChildren) {
@@ -235,22 +250,9 @@ export default {
               _.delay(() => {
                 // Don't scroll if concept changed in the meantime
                 if (this.shouldScroll) return
-                let el = this.$refs.conceptListItems.querySelectorAll(`[data-uri='${concept.uri}']`)[0]
-                // Find container element
-                let container = this.$refs.conceptListItems
-                while (container != null && !container.classList.contains("cocoda-vue-tabs-content")) {
-                  container = container.parentElement
+                if (concept && concept.uri) {
+                  this.scrollToUri(concept.uri)
                 }
-                // Scroll element
-                var options = {
-                  container,
-                  easing: "ease-in",
-                  offset: -50,
-                  cancelable: true,
-                  x: false,
-                  y: true,
-                }
-                if (el) this.scrollToInternal(el, options)
                 this.loading = false
               }, 100)
             } else if (!fullyLoaded) {
@@ -285,6 +287,30 @@ export default {
     },
   },
   methods: {
+    async scrollToUri(uri) {
+      let scroll = async () => {
+        // Find container element
+        let container = this.$refs.conceptListItems.$el
+        while (container != null && !container.classList.contains("cocoda-vue-tabs-content")) {
+          container = container.parentElement
+        }
+        let top = -30
+        let found = false
+        for (let item of this.$refs.conceptListItems.itemsWithSize) {
+          if (item.id == uri) {
+            found = true
+            break
+          }
+          top += item.size || this.$refs.conceptListItems.minItemSize
+        }
+        if (found) {
+          container.scrollTop = top
+        }
+      }
+      scroll()
+      // Scroll again after timeout to compensate for element height changes
+      setTimeout(scroll, 20)
+    },
     commitPreviousConcept() {
       if (this.shown) {
         this.$store.commit({
@@ -303,23 +329,6 @@ export default {
         })
       }
     },
-    scrollToInternal(el, options) {
-      let container = options.container
-      if (container.style.display == "none") {
-        // Wait for later to scroll
-        this.scrollLater = { el, options }
-      } else {
-        this.scrollTo(el, 200, options)
-        this.scrollLater = null
-      }
-    },
-    scroll() {
-      if (this.scrollLater) {
-        this.$nextTick(() => {
-          this.scrollToInternal(this.scrollLater.el, this.scrollLater.options)
-        })
-      }
-    },
     children(item) {
       let items = []
       let concept = item.concept
@@ -330,6 +339,7 @@ export default {
             concept: child,
             depth,
             isSelected: this.$jskos.compare(this.conceptSelected, child),
+            uri: (child && child.uri) || `loading-for-${concept.uri}`,
           }
           items.push(item)
           items = items.concat(this.children(item))

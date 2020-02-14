@@ -148,6 +148,30 @@
                     href=""
                     @click.prevent="showMappingSearch">{{ $t("general.showMappingSearch") }}</a>
                 </p>
+                <!-- <div style="height: 200px; overflow: scroll;">
+                  <div
+                    v-for="item in testItems"
+                    :key="`testItem-${item.uri}`">
+                    <item-name :item="item" />
+                  </div>
+                </div> -->
+                <DynamicScroller
+                  :items="testItems"
+                  key-field="uri"
+                  :min-item-size="22"
+                  style="height: 200px; width: 150px;">
+                  <template v-slot="{ item, index, active }">
+                    <DynamicScrollerItem
+                      :item="item"
+                      :active="active"
+                      :size-dependencies="[
+                        $jskos.prefLabel(item),
+                      ]"
+                      :data-index="index">
+                      <item-name :item="item" />
+                    </DynamicScrollerItem>
+                  </template>
+                </DynamicScroller>
               </div>
             </div>
             <!-- Minimizer allows component to get minimized -->
@@ -199,6 +223,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
+import ItemName from "./components/ItemName"
 
 // Import mixins
 import auth from "./mixins/auth"
@@ -215,7 +240,7 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
+    TheNavbar, ConceptListWrapper, ItemDetail, ItemName, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
   },
   mixins: [auth, objects, computed],
   data () {
@@ -232,6 +257,7 @@ export default {
       loadFromParametersOnce: _.once(this.loadFromParameters),
       forceMappingBrowser: false,
       forceMappingEditor: false,
+      testItems: [],
     }
   },
   computed: {
@@ -464,6 +490,18 @@ export default {
     },
   },
   created() {
+    function randomString(length) {
+      return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1)
+    }
+    // Create 10000 test items
+    for (let i = 0; i < 10000; i += 1) {
+      let object = {}
+      let random = randomString(Math.floor(Math.random() * 15) + 10)
+      random = `${random.slice(0,6)} ${random.slice(6,12)} ${random.slice(12,18)}`
+      object.uri = `test:${encodeURIComponent(random)}`
+      object.prefLabel = { en: random }
+      this.testItems.push(object)
+    }
     // Set loading to true if schemes are not loaded yet.
     if (!this.schemes.length) {
       this.loading = true
