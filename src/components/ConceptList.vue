@@ -8,9 +8,10 @@
       class="conceptListItems"
       :items="items"
       key-field="uri"
-      :buffer="300"
+      :buffer="0"
       :min-item-size="20"
-      page-mode>
+      style="height: 200px;"
+      @scroll="alert('scroll')">
       <template v-slot="{ item, index, active }">
         <DynamicScrollerItem
           :item="item"

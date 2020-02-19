@@ -231,7 +231,7 @@ export default {
     },
   },
   created() {
-    this.loadConceptsInView = _.debounce(this._loadConceptsInView, 300)
+    this.loadConceptsInView = _.debounce(this._loadConceptsInView, 3000)
   },
   methods: {
     chooseIndex(index) {
@@ -268,14 +268,16 @@ export default {
           if (!child || !child.$el || !child.item) {
             continue
           }
+          console.log(child, child.$el, child.active)
           if (child.active) {
             concepts.push(child.item.concept)
           }
         }
       }
+      console.log(concepts.length, "concepts to be loaded")
       console.log(concepts)
       // Load concepts
-      this.loadConcepts(concepts.filter(concept => concept != null))
+      // this.loadConcepts(concepts.filter(concept => concept != null))
     },
     /**
      * from: https://stackoverflow.com/a/37285344
@@ -288,6 +290,7 @@ export default {
       let cBottom = cTop + container.clientHeight
       let eTop = element.offsetTop
       let eBottom = eTop + element.clientHeight
+      console.log(`checkInView cTop: ${cTop}, cBottom: ${cBottom}, eTop: ${eTop}, eBottom: ${eBottom}`)
       let isTotal = (eTop >= cTop && eBottom <= cBottom)
       let isPartial = partial && (
         (eTop < cTop && eBottom > cTop) ||
