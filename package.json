@@ -74,7 +74,7 @@
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^5.1.1",
     "eslint": "^6.8.0",
-    "eslint-config-gbv": "git+https://github.com/gbv/eslint-config-gbv.git",
+    "eslint-config-gbv": "github:gbv/eslint-config-gbv#ecaf810",
     "eslint-plugin-vue": "^5.0.0",
     "glob": "^7.1.6",
     "jsdoc-to-markdown": "^5.0.3",
