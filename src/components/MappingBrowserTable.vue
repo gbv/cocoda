@@ -188,7 +188,7 @@
           :delay="defaults.delay.medium"
           placement="auto"
           @hide="popoverHide($event, `creator-${item.uniqueId}`)">
-          <div class="font-default text-dark color-primary-0-bg fontSize-normal">
+          <div class="font-default">
             <p class="fontWeight-heavy">{{ item.creator }}</p>
             <template v-if="item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri">
               <p class="fontSize-small">

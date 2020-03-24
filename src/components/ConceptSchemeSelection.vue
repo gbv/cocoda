@@ -74,7 +74,7 @@
       <!-- Inner div. Classes are attached because #app's classes don't apply for popovers. -->
       <div
         ref="popover"
-        class="conceptSchemeSelection-expanded font-default text-dark color-primary-0-bg fontSize-normal"
+        class="conceptSchemeSelection-expanded"
         :class="{
           'conceptSchemeSelection-expanded-div': scheme == null,
           'conceptSchemeSelection-expanded-popover': scheme != null,

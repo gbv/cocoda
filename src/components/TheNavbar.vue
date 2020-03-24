@@ -47,7 +47,7 @@
         v-if="!reduced && mappingTrash.length > 0"
         id="mappingTrashDropdown"
         ref="mappingTrashDropdown"
-        extra-menu-classes="navbar-dropdown"
+        menu-class="navbar-dropdown"
         no-caret
         right
         @mouseover.native="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
@@ -66,7 +66,7 @@
           </div>
         </b-dropdown-header>
         <mapping-table
-          class="font-default text-dark color-primary-0-bg fontSize-normal"
+          class="font-default"
           :mappings="mappingTrash.map(item => item.mapping)"
           :actions="[{
             title: $t('navbar.trashRestoreTooltip'),
@@ -91,7 +91,7 @@
         v-if="!reduced"
         id="favoriteConceptsDropdown"
         ref="favoriteConceptsDropdown"
-        extra-menu-classes="navbar-dropdown favoriteConceptsDropdown"
+        menu-class="navbar-dropdown favoriteConceptsDropdown"
         no-caret
         right
         @dragover.native="dragOver"
@@ -156,7 +156,7 @@
         v-if="!reduced"
         id="accountDropdown"
         ref="accountDropdown"
-        extra-menu-classes="navbar-dropdown"
+        menu-class="navbar-dropdown"
         no-caret
         right
         @mouseover.native="dropdownSetStatus($refs.accountDropdown, true); _dropdownSetStatus($refs.accountDropdown, true)"
@@ -182,7 +182,7 @@
             </span>
           </div>
         </template>
-        <div class="font-default text-dark color-primary-0-bg fontSize-normal">
+        <div class="font-default">
           <template v-if="(userUris || [creator.uri]).filter(uri => uri != null).length">
             <p
               v-for="(uri, index) in (userUris || [creator.uri]).filter(uri => uri != null)"
@@ -237,7 +237,7 @@
         v-if="!reduced"
         id="settingsDropdown"
         ref="settingsDropdown"
-        extra-menu-classes="navbar-dropdown"
+        menu-class="navbar-dropdown"
         no-caret
         right
         @mouseover.native="dropdownSetStatus($refs.settingsDropdown, true); _dropdownSetStatus($refs.settingsDropdown, true)"
@@ -257,7 +257,7 @@
         <hr>
         <div
           v-if="$store.getters.getCurrentRegistry"
-          class="font-default text-dark color-primary-0-bg fontSize-normal">
+          class="font-default">
           <p
             v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"

@@ -2,7 +2,7 @@ import _ from "lodash"
 import jskos from "jskos-tools"
 import BaseProvider from "./base-provider"
 import localforage from "localforage"
-import uuid from "uuid/v4"
+import { v4 as uuid } from "uuid"
 
 const uriPrefix = "urn:uuid:"
 

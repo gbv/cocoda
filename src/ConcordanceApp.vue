@@ -1,7 +1,7 @@
 <template>
   <div
     id="concordanceApp"
-    class="font-default text-dark color-primary-0-bg fontSize-normal">
+    class="font-default">
     <div class="alertsContainer">
       <b-alert
         v-for="(alert, index) in $store.state.alerts.alerts"
