@@ -25,12 +25,10 @@
   },
   "lint-staged": {
     "**/*.{js,vue}": [
-      "vue-cli-service lint",
-      "git add"
+      "vue-cli-service lint"
     ],
     "**/*.json": [
-      "./bin/format-json.js",
-      "git add"
+      "./bin/format-json.js"
     ]
   },
   "gitHooks": {
