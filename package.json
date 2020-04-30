@@ -47,7 +47,6 @@
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.2",
     "gbv-login-client": "^0.2.7",
-    "jquery": "^3.5.0",
     "jskos-tools": "^1.0.7",
     "json-format-highlight": "^1.0.4",
     "localforage": "^1.7.3",
