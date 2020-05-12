@@ -960,7 +960,7 @@ export default {
 .mappingBrowser-table[max-width~="800px"] .mappingBrowser-table-extra {
   display: none;
 }
-.mappingBrowser-table[max-width~="700px"] .mappingBrowser-table-conceptsLong {
+.mappingBrowser-table[max-width~="699px"] .mappingBrowser-table-conceptsLong {
   display: none;
 }
 .mappingBrowser-table[min-width~="700px"] .mappingBrowser-table-concepts {
