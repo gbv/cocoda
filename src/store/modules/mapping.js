@@ -190,7 +190,7 @@ const getters = {
     if (!registry || !jskos.compare(registry, state.original.registry) || !state.mapping || !state.original.uri) {
       return false
     }
-    let crossUser = !jskos.compare(_.get(state.mapping, "creator[0]"), _.get(state.original.mapping, "creator[0]"))
+    const crossUser = !jskos.userOwnsMapping(rootState.auth.user, state.original.mapping)
     return registry.isAuthorizedFor({
       type: "mappings",
       action: "update",
@@ -204,7 +204,7 @@ const getters = {
     if (!registry || !jskos.compare(registry, state.original.registry) || !state.mapping || !state.original.uri) {
       return false
     }
-    let crossUser = !jskos.compare(_.get(state.mapping, "creator[0]"), _.get(state.original.mapping, "creator[0]"))
+    const crossUser = !jskos.userOwnsMapping(rootState.auth.user, state.original.mapping)
     return registry.isAuthorizedFor({
       type: "mappings",
       action: "delete",
