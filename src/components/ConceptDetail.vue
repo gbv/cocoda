@@ -149,6 +149,11 @@
           <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(item.created, true) }}
         </div>
         <div
+          v-if="item.issued"
+          class="conceptDetail-identifier">
+          <b>{{ $t("conceptDetail.issued") }}:</b> {{ dateToString(item.issued, true) }}
+        </div>
+        <div
           v-if="item.modified"
           class="conceptDetail-identifier">
           <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(item.modified, true) }}
