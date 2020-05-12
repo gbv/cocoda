@@ -509,33 +509,28 @@ export default {
     }, 500)
   },
   methods: {
-    load() {
+    async load() {
       // Load config and settings on first launch.
-      this.$store.dispatch("loadConfig", _.get(this.$route, "query.config")).then(() => this.$store.dispatch("settings/load")).then(() => {
-        if (this.config.auth) {
-          this.$store.dispatch("auth/init", this.config.auth)
-        }
-        // Look up local mappings count and show warning if there are too many.
-        // Note: Do not use this.getMappings here because it leads to issues when schemes are not loaded yet.
-        this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 }).then(mappings => {
-          if (mappings.totalCount && mappings.totalCount >= 500) {
-            this.alert(this.$t("general.tooManyMappings", { count: mappings.totalCount }), 0)
-          }
-        })
-      })
+      await this.$store.dispatch("loadConfig", _.get(this.$route, "query.config"))
+      if (this.config.auth) {
+        await this.$store.dispatch("auth/init", this.config.auth)
+      }
+      await this.$store.dispatch("settings/load")
+      // Look up local mappings count and show warning if there are too many.
+      // Note: Do not use this.getMappings here because it leads to issues when schemes are not loaded yet.
+      const mappings = await this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
+      if (mappings.totalCount && mappings.totalCount >= 500) {
+        this.alert(this.$t("general.tooManyMappings", { count: mappings.totalCount }), 0)
+      }
     },
     /**
      * Properly start the application (called by settingsLoaded watcher).
      */
-    start() {
+    async start() {
       // Load schemes and mapping trash
-      let promises = [
-        this.loadSchemes(),
-        this.$store.dispatch("mapping/loadMappingTrash"),
-      ]
-      Promise.all(promises).then(() => {
-        this.loadFromParametersOnce(true)
-      })
+      await this.loadSchemes()
+      await this.$store.dispatch("mapping/loadMappingTrash")
+      this.loadFromParametersOnce(true)
     },
     insertPrefLabel(isLeft) {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {

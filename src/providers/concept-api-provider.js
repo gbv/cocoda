@@ -19,6 +19,7 @@ class ConceptApiProvider extends BaseProvider {
     this.has.types = !!this.registry.types
     this.has.suggest = !!this.registry.suggest
     this.has.search = !!this.registry.search
+    this.has.auth = _.get(this.registry, "config.auth.key") != null
   }
 
   _getSchemes() {
