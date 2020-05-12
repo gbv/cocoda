@@ -306,6 +306,7 @@ export default {
     },
     /**
      * Converts a date string to a localized date string.
+     * Incomplete dates (YYYY or YYYY-MM) will be returned non-localized.
      *
      * @param {string} dateString a date string (compatible with new Date())
      * @param {boolean} onlyDate if true, the time will be omitted
@@ -315,6 +316,9 @@ export default {
       let optionsDate = { year: "numeric", month: "short", day: "numeric" }
       let options = Object.assign({ hour: "2-digit", minute: "2-digit", second: "2-digit" }, optionsDate)
       if (date instanceof Date && !isNaN(date)) {
+        if (dateString.length < 8) {
+          return dateString
+        }
         return onlyDate ? date.toLocaleDateString(undefined, optionsDate) : date.toLocaleString(undefined, options)
       } else {
         return "?"
