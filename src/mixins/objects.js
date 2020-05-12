@@ -600,8 +600,7 @@ export default {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
           const targetScheme = mapping[`${to}Scheme`]
           const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
-          const targetConcepts = jskos.conceptsOfMapping(mapping, to)
-          if (targetScheme && targetConcepts.length > 0) {
+          if (targetScheme) {
             for (let concept of sourceConcepts) {
               if (!concept.__MAPPED__) {
                 this.$set(concept, "__MAPPED__", [])
