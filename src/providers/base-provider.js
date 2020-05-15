@@ -96,7 +96,7 @@ class BaseProvider {
           }
           return data
         }).catch(error => {
-          if (_.get(error, "response.status") === 401 && tries > 0) {
+          if ([401, 403].includes(_.get(error, "response.status")) && tries > 0) {
             console.warn(`API authorization error => trying again! (${tries})`)
             return new Promise(resolve => { setTimeout(() => { resolve() }, retryDelay) }).then(() => {
               return tryRequest(tries)
