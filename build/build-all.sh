@@ -20,15 +20,13 @@ do
   git checkout $TAG
   # 2. Install dependencies
   npm i
-  # 3. Move config into right place
-  cp config/cocoda.master.json config/cocoda.json
-  # 4. Create build
+  # 3. Create build
   npm run build
-  # 5 Create build-info.json from scratch (due to new properties)
+  # 4 Create build-info.json from scratch (due to new properties)
   VERSION=$TAG GIT_BRANCH=$GIT_BRANCH temp/build-info.sh > dist/build-info.json
-  # 6. Move build to separate folder
+  # 5. Move build to separate folder
   mv dist releases/$TAG
-  # 7. Reset repo for next checkout
+  # 6. Reset repo for next checkout
   git reset --hard
 done
 

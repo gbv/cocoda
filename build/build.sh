@@ -33,9 +33,6 @@ fi
 
 [ $USERCONFIG ] && echo "Using user config for build..."
 
-# if no user config exists and there is a config for the current branch, use that config
-[ ! $USERCONFIG ] && [ -e ./config/cocoda.$GIT_BRANCH.json ] && echo "Using config file of branch $GIT_BRANCH for build..." && cp ./config/cocoda.$GIT_BRANCH.json ./config/cocoda.json
-
 # make sure a cocoda.json file exists in all cases
 [ ! -e ./config/cocoda.json ] && echo "Using empty user config for build..." && echo -n "{}" > ./config/cocoda.json
 
