@@ -2,7 +2,7 @@ dist: bionic # Ubuntu 18.04
 
 language: node_js
 node_js:
-- '11'
+- '12'
 - '8'
 
 cache:
@@ -12,7 +12,7 @@ cache:
   - "$HOME/.texlive"
   - "/tmp/texlive"
 
-before_install: # install Pandoc and TeX (hopefully from cache) 
+before_install: # install Pandoc and TeX (hopefully from cache)
   - sudo apt-get install librsvg2-bin ghostscript
   - ./.travis/install.sh
   - export PATH="$HOME/.local/bin:/tmp/texlive/bin/x86_64-linux:$PATH"
@@ -23,6 +23,7 @@ install:
 
 script:
 - npm run lint
+- cp ./.travis/cocoda.json ./config/cocoda.json # copy Travis-specific config file
 - npm run build
 - mv dist cocoda # prevent styleguide:build overriding dist
 - npm run styleguide:build
@@ -47,6 +48,6 @@ deploy:
   draft: true
   skip_cleanup: true
   on:
-    node: '11'
+    node: '12'
     repo: gbv/cocoda
     tags: true
