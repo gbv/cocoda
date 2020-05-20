@@ -70,7 +70,7 @@
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^6.0.1",
-    "eslint": "^7.0.0",
+    "eslint": "6.8.0",
     "eslint-config-gbv": "github:gbv/eslint-config-gbv#ecaf810",
     "eslint-plugin-vue": "^6.2.2",
     "glob": "^7.1.6",
