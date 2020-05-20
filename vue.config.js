@@ -32,24 +32,26 @@ module.exports = {
   },
   configureWebpack: {
     plugins: [
-      new CopyWebpackPlugin([
-        {
-          from: "build/build-info.json",
-          to: "",
-        },
-        {
-          from: "config/cocoda.json",
-          to: "cocoda.json",
-        },
-        {
-          from: "node_modules/bootstrap/dist/css/bootstrap.css",
-          to: "css/",
-        },
-        {
-          from: "node_modules/bootstrap-vue/dist/bootstrap-vue.css",
-          to: "css/",
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "build/build-info.json",
+            to: "",
+          },
+          {
+            from: "config/cocoda.json",
+            to: "cocoda.json",
+          },
+          {
+            from: "node_modules/bootstrap/dist/css/bootstrap.css",
+            to: "css/",
+          },
+          {
+            from: "node_modules/bootstrap-vue/dist/bootstrap-vue.css",
+            to: "css/",
+          },
+        ],
+      }),
     ],
   },
   chainWebpack: config => {
