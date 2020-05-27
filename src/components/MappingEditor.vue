@@ -31,7 +31,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.provider.has.auth || $store.getters.getCurrentRegistry.provider.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.has.auth || $store.getters.getCurrentRegistry.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
         :class="{
           'button-delete': canDeleteMapping,
           'button-disabled': !canDeleteMapping
@@ -429,7 +429,7 @@ export default {
         if (!mapping) {
           // TODO: Adjust
           let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })])
-          if (this.$store.getters.getCurrentRegistry.provider.has.auth && !this.$store.getters.getCurrentRegistry.provider.auth) {
+          if (this.$store.getters.getCurrentRegistry.has.auth && !this.$store.getters.getCurrentRegistry.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")

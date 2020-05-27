@@ -259,7 +259,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canRemove(data, user)"
-            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.provider.has.auth && !$store.getters.getCurrentRegistry.provider.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
+            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.has.auth && !$store.getters.getCurrentRegistry.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
             class="button-delete"
             icon="trash-alt"
             @click="removeMapping(data.item.mapping)" />
@@ -576,7 +576,7 @@ export default {
         } else if (newMapping.to.memberChoice) {
           newMapping.to.memberChoice = mapping.to.memberChoice.slice()
         }
-        newMapping._provider = mapping._provider
+        newMapping._registry = mapping._registry
         newMapping.fromScheme = mapping.fromScheme
         newMapping.toScheme = mapping.toScheme
         return newMapping
@@ -607,19 +607,19 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
+          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
             this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: mapping.uri }).then(success => {
               if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "success2")
+                this.alert(this.$t("alerts.mappingRestored", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "success2")
               } else {
-                this.alert(this.$t("alerts.mappingNotRestored", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
+                this.alert(this.$t("alerts.mappingNotRestored", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "danger")
               }
             })
           })
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(mapping._provider.registry, { fallbackToUri: false })]), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "danger")
         }
         // Refresh list of mappings/suggestions.
         this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
@@ -707,7 +707,7 @@ export default {
       }).then(mapping => {
         if (!mapping) {
           let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })])
-          if (this.currentRegistry.provider.has.auth && !this.currentRegistry.provider.auth) {
+          if (this.currentRegistry.has.auth && !this.currentRegistry.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")

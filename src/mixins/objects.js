@@ -8,6 +8,7 @@
  */
 
 import jskos from "jskos-tools"
+import cdk from "cocoda-sdk"
 import _ from "lodash"
 
 let objects = {}
@@ -160,7 +161,7 @@ export default {
         this.adjustConcept(object)
 
         // Provider adjustments
-        let provider = _.get(object, "_provider") || _.get(this._getObject(_.get(object, "inScheme[0]")), "_provider") || options.provider
+        let provider = _.get(object, "_registry") || _.get(this._getObject(_.get(object, "inScheme[0]")), "_registry") || options.provider
         if (provider) {
           if (type == "scheme") {
             provider.adjustSchemes([object])
@@ -230,91 +231,17 @@ export default {
     /**
      * Loads schemes from API. This should be called once upon application start.
      */
-    loadSchemes() {
-      let schemes = [], promises = []
-
-      for (let registry of this.config.registries) {
-        let provider = registry.provider
-        if (provider.has.schemes) {
-          let promise = provider.getSchemes().then(results => {
-            for (let scheme of results) {
-              // Add scheme specific custom properties
-              scheme.__DETAILSLOADED__ = 1
-              scheme.type = scheme.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
-              // Check if scheme is already in store
-              // TODO: This is currently not possible from here!
-              let otherScheme = schemes.find(s => this.$jskos.compare(s, scheme)), prio, otherPrio, override = false
-              if (otherScheme) {
-                prio = registry.priority || 0
-                otherPrio = _.get(otherScheme, "_provider.registry.priority", -1)
-                let currentHasConcepts = !scheme.concepts ? 0 : (scheme.concepts.length == 0 ? -1 : 1)
-                let otherHasConcepts = !otherScheme.concepts ? 0 : (otherScheme.concepts.length == 0 ? -1 : 1)
-                // Use existence of concepts first, priority second
-                if (currentHasConcepts > otherHasConcepts) {
-                  override = true
-                } else if (currentHasConcepts < otherHasConcepts) {
-                  override = false
-                } else {
-                  override = otherPrio < prio
-                }
-              }
-              if (!otherScheme || override) {
-                if (override) {
-                  // Find and remove scheme from schemes array
-                  let otherSchemeIndex = schemes.findIndex(s => this.$jskos.compare(s, otherScheme))
-                  if (otherSchemeIndex != -1) {
-                    schemes.splice(otherSchemeIndex, 1)
-                  }
-                  // Integrate details from existing scheme
-                  scheme = this.$jskos.merge(scheme, otherScheme, { mergeUris: true, skipPaths: ["_provider"] })
-                }
-                scheme._provider = provider
-                // Save scheme in objects and push into schemes array
-                schemes.push(scheme)
-              } else {
-                // Integrate details into existing scheme
-                let index = schemes.findIndex(s => this.$jskos.compare(s, scheme))
-                if (index != -1) {
-                  let provider = schemes[index]._provider
-                  schemes[index] = this.$jskos.merge(schemes[index], _.omit(scheme, ["concepts", "topConcepts"]), { mergeUris: true, skipPaths: ["_provider"] })
-                  schemes[index]._provider = provider
-                }
-              }
-            }
-          }).catch(error => {
-            console.warn("Couldn't load schemes for registry", registry.uri, error)
-            this.$store.commit({
-              type: "alerts/add",
-              text: `Could not load concept schemes for provider ${jskos.prefLabel(registry)}. Please open an issue on GitHub.`,
-              variant: "danger",
-            })
-          })
-          promises.push(promise)
-        }
-      }
-
-      return Promise.all(promises).then(() => {
-        // Remove certain properties from objects
-        for (let scheme of schemes) {
-          if (scheme.concepts && scheme.concepts.length == 0) {
-            delete scheme.concepts
-          }
-          if (scheme.topConcepts && scheme.topConcepts.length == 0) {
-            delete scheme.topConcepts
-          }
-        }
-        schemes = schemes.filter(scheme => scheme != null)
-        schemes = schemes.map(scheme => this.saveObject(scheme, { provider: scheme._provider, type: "scheme" }))
-        schemes = this.$jskos.sortSchemes(schemes)
-        // Commit schemes to store
-        this.$store.commit({
-          type: "setSchemes",
-          schemes,
-        })
-        this.$store.commit({
-          type: "setSchemesLoaded",
-          value: true,
-        })
+    async loadSchemes() {
+      let schemes = await cdk.getSchemes()
+      schemes = schemes.map(scheme => this.saveObject(scheme, { provider: scheme._registry, type: "scheme" }))
+      // Commit schemes to store
+      this.$store.commit({
+        type: "setSchemes",
+        schemes,
+      })
+      this.$store.commit({
+        type: "setSchemesLoaded",
+        value: true,
       })
     },
     /**
@@ -333,7 +260,7 @@ export default {
       } else {
         promise = scheme._getTypes()
       }
-      return promise.then(types => {
+      return promise.catch(() => []).then(types => {
         this.$set(scheme, "types", types)
         return scheme
       })
@@ -399,7 +326,7 @@ export default {
         }
       }
       // Load concepts by provider
-      let promises = list.map(({ provider, concepts }) => provider.getConcepts(concepts, options).then(concepts => {
+      let promises = list.map(({ provider, concepts }) => provider.getConcepts({ ...options, concepts }).then(concepts => {
         // Save and adjust results
         let uris = []
         for (let concept of concepts) {
@@ -447,13 +374,10 @@ export default {
       }
       let scheme = _.get(object, "inScheme[0]") || options.scheme
       let getDetails = (object._getDetails && object._getDetails())
-        || (_.get(scheme, "_provider.getDetails") && _.get(scheme, "_provider").getDetails(object))
+        || (_.get(scheme, "_registry.getConcept") && _.get(scheme, "_registry").getConcept({ concept: object }))
         || Promise.reject("no provider found")
-      return getDetails.then(results => {
-        if (results.length) {
-          // Save details
-          object = this.saveObject(results[0])
-        }
+      return getDetails.then(result => {
+        object = this.saveObject(result)
         this.adjustConcept(object)
         return object
       }).catch(error => {
@@ -477,7 +401,7 @@ export default {
       }
       let scheme = _.get(object, "inScheme[0]") || options.scheme
       let getNarrower = (object._getNarrower && object._getNarrower())
-        || (_.get(scheme, "_provider.getNarrower") && _.get(scheme, "_provider").getNarrower(object))
+        || (_.get(scheme, "_registry.getNarrower") && _.get(scheme, "_registry").getNarrower({ concept: object }))
         || Promise.reject("no provider found")
       return getNarrower.then(this.saveObjectsWithOptions({ scheme, type: "concept" })).then(narrower => {
         for (let child of narrower) {
@@ -515,7 +439,7 @@ export default {
       }
       let scheme = _.get(object, "inScheme[0]") || options.scheme
       let getAncestors = (object._getAncestors && object._getAncestors())
-        || (_.get(scheme, "_provider.getAncestors") && _.get(scheme, "_provider").getAncestors(object))
+        || (_.get(scheme, "_registry.getAncestors") && _.get(scheme, "_registry").getAncestors({ concept: object }))
         || Promise.reject("no provider found")
       return getAncestors.then(this.saveObjectsWithOptions({ scheme, type: "concept" })).then(ancestors => {
         let currentAncestors = []
@@ -595,7 +519,7 @@ export default {
         mapping.partOf = mapping.partOf.map(concordance => this.concordances.find(c => this.$jskos.compare(c, concordance)) || concordance)
       }
       // Set mapped entry for concepts that have mappings
-      const registry = _.get(mapping, "_provider.registry")
+      const registry = _.get(mapping, "_registry")
       if (jskos.mappingRegistryIsStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
           const targetScheme = mapping[`${to}Scheme`]

@@ -346,7 +346,7 @@ export default {
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._provider.registry))
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
           ) &&
           (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
@@ -363,7 +363,7 @@ export default {
     },
     // Returns an array of all available registries
     availableRegistries() {
-      return this.config.registries.filter(registry => registry.provider.has.concepts)
+      return this.config.registries.filter(registry => registry.has.concepts)
     },
     // Returns an array of all available languages.
     availableLanguages() {
@@ -385,7 +385,7 @@ export default {
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
           ),
       )
-      return this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._provider.registry)))
+      return this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._registry)))
     },
     // Returns an array of available registry filter options.
     registryFilterOptions() {
@@ -397,7 +397,7 @@ export default {
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._provider.registry))
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
           ) &&
           (
             (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
@@ -431,7 +431,7 @@ export default {
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._provider.registry))
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
           ) &&
           (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||

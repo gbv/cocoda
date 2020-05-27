@@ -36,7 +36,7 @@ export default {
      * @param {*} object
      */
     getProvider(object) {
-      return _.get(object, "_provider") || _.get(object, "inScheme[0]._provider")
+      return _.get(object, "_registry") || _.get(object, "inScheme[0]._registry")
     },
     toggleMinimize() {
       for (let child of this.$children) {

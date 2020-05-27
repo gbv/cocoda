@@ -75,7 +75,7 @@ export default {
       this.$emit("loading", true)
       let success
       try {
-        success = await this.provider.removeAnnotation(annotation)
+        success = await this.provider.deleteAnnotation({ annotation })
       } catch(error) {
         success = false
       }
@@ -83,10 +83,13 @@ export default {
       // Check if annotation stayed the same or deletion was not successful
       if (annotation.id != this.annotations[index].id || !success) {
         // Don't remove annotation because it changed
+        this.alert(this.$t("alerts.annotationNotRemoved"), null, "danger")
         return false
       }
       // Remove annotation from list
       this.$delete(this.annotations, index)
+      // Show alert
+      this.alert(this.$t("alerts.annotationRemoved"), null, "success")
       return success
     },
   },

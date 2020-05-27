@@ -261,8 +261,7 @@ export default {
     },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
-        registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences),
+        registry.has.mappings || registry.has.occurrences,
       )
       return registries
     },
@@ -669,7 +668,7 @@ export default {
           if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
-            let original = mappings.find(mapping => _.get(mapping, "_provider").isAuthorizedFor && _.get(mapping, "_provider").isAuthorizedFor({
+            let original = mappings.find(mapping => _.get(mapping, "_registry").isAuthorizedFor && _.get(mapping, "_registry").isAuthorizedFor({
               type: "mappings",
               action: "create",
               user: this.user,

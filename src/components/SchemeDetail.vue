@@ -84,11 +84,11 @@
       class="schemeDetail-identifier">
       <b>{{ $t("schemeDetail.registry") }}: </b>
       <registry-notation
-        :registry="item._provider.registry"
+        :registry="item._registry"
         :tooltip="false" />
       &nbsp;
       <registry-name
-        :registry="item._provider.registry"
+        :registry="item._registry"
         :tooltip="false" />
     </div>
 

@@ -68,7 +68,7 @@ const actions = {
     // Create login-client instance
     client = new LoginClient(url, { ssl })
 
-    let registries = rootState.config.registries.filter(registry => registry.provider.has.auth)
+    let registries = rootState.config.registries.filter(registry => registry.has.auth)
 
     // Handle events
     client.addEventListener(null, event => {
@@ -125,7 +125,7 @@ const actions = {
           })
           // Set auth public key for all providers that need authentication
           for (let registry of registries) {
-            registry.provider.setAuthPublicKey(event.publicKey)
+            registry.setAuth({ key: event.publicKey })
           }
           break
         case LoginClient.events.providers:
@@ -141,7 +141,7 @@ const actions = {
           }
           // Set auth for all providers that need authentication
           for (let registry of registries) {
-            registry.provider.setAuth(event.token)
+            registry.setAuth({ bearerToken: event.token })
           }
           // Set authorized
           commit({
@@ -161,7 +161,7 @@ const actions = {
               })
               // Set auth to null for all providers
               for (let registry of registries) {
-                registry.provider.setAuth(null)
+                registry.setAuth({ key: null, bearerToken: null })
               }
             }, event.expiresIn * 1000),
           })

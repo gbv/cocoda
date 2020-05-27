@@ -123,16 +123,17 @@ export default {
       },this.settings)
     },
     apiUrl() {
+      // TODO CDK: cocoda-sdk returns URL with results.
       if (!this.item || !this.item.uri) {
         return null
       }
       let baseUrl
       if (this.$jskos.isScheme(this.item)) {
-        let provider = _.get(this.item, "inScheme[0]._provider") || _.get(this.item, "_provider")
-        baseUrl = _.get(provider, "registry.schemes") || _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
+        let provider = _.get(this.item, "inScheme[0]._registry") || _.get(this.item, "_registry")
+        baseUrl = _.get(provider, "_api.schemes") || _.get(provider, "_api.concepts") || _.get(provider, "_api.data")
       } else {
-        let provider = _.get(this.item, "inScheme[0]._provider")
-        baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data") || (_.get(provider, "getDataUrl") && provider.getDataUrl(this.item))
+        let provider = _.get(this.item, "inScheme[0]._registry")
+        baseUrl = _.get(provider, "_api.concepts") || _.get(provider, "_api.data") || (_.get(provider, "getDataUrl") && provider.getDataUrl(this.item))
       }
       // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
       if (!baseUrl || !_.isString(baseUrl)) {

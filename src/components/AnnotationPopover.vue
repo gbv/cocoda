@@ -164,7 +164,7 @@ export default {
       return _.get(this.ownAssessment, "bodyValue")
     },
     provider() {
-      return _.get(this.imapping, "_provider")
+      return _.get(this.imapping, "_registry")
     },
     canSaveAnnotation() {
       if (!this.provider) {
@@ -190,7 +190,7 @@ export default {
         user: this.user,
       })) {
         // Check if user is in "moderatingIdentities" in jskos-server config
-        const moderatingIdentities = _.get(this.provider, "registry.config.annotations.moderatingIdentities") || []
+        const moderatingIdentities = _.get(this.provider, "_config.annotations.moderatingIdentities") || []
         if (_.intersection(moderatingIdentities, this.userUris).length > 0) {
           return true
         }
@@ -286,7 +286,7 @@ export default {
             annotation.creator.name = this.creatorName
           }
         }
-        promise = provider.addAnnotation(annotation).then(annotation => {
+        promise = provider.postAnnotation({ annotation }).then(annotation => {
           // Check if URI stayed the same
           let newUri = _.get(this.imapping, "uri")
           if (uri != newUri || !annotation) {
@@ -311,7 +311,7 @@ export default {
             return
           }
           // 2. Case: User has assessed and changes the value
-          promise = provider.editAnnotation(this.ownAssessment, { bodyValue: value }).then(annotation => {
+          promise = provider.patchAnnotation({ annotation: { id: this.ownAssessment.id, bodyValue: value } }).then(annotation => {
             if (annotation) {
               this.ownAssessment.bodyValue = value
               this.alert(this.$t("alerts.annotationSaved"), null, "success")
@@ -355,7 +355,7 @@ export default {
         return
       }
       this.loading = true
-      return provider.removeAnnotation(annotation).then(success => {
+      return provider.deleteAnnotation({ annotation }).then(success => {
         this.loading = false
         // Check if annotation stayed the same or deletion was not successful
         if (annotation.id != this.annotations[index].id || !success) {
@@ -394,7 +394,7 @@ export default {
       }
       this.loading = true
       try {
-        annotation = await provider.addAnnotation(annotation)
+        annotation = await provider.postAnnotation({ annotation })
       } catch (error) {
         annotation = null
       }

@@ -127,7 +127,7 @@ export default {
   computed: {
     dataChoices() {
       // Determine top concepts URL
-      let topConceptsUrl = _.get(this.selected.scheme[this.isLeft], "_provider.registry.top")
+      let topConceptsUrl = _.get(this.selected.scheme[this.isLeft], "_registry.top")
       if (topConceptsUrl) {
         // Add selected schemes URI
         topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`

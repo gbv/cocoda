@@ -114,7 +114,9 @@
               {{ $t("mappingDetail.annotations") }}:
             </b-col>
             <b-col>
-              <annotation-list :annotations="mapping.annotations" />
+              <annotation-list
+                :annotations="mapping.annotations"
+                :provider="mapping._registry" />
             </b-col>
             <div
               class="dataModalButton"

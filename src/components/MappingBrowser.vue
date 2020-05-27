@@ -654,8 +654,7 @@ export default {
     },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
-        registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences),
+        registry.has.mappings || registry.has.occurrences,
       )
       return registries
     },
@@ -664,8 +663,8 @@ export default {
     },
     navigatorRegistries() {
       return this.mappingRegistriesSorted.filter(registry =>
-        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
-        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false])),
+        (registry.supportsScheme && registry.supportsScheme(this.selected.scheme[true])) ||
+        (registry.supportsScheme && registry.supportsScheme(this.selected.scheme[false])),
       )
     },
     currentRegistry() {
@@ -751,15 +750,15 @@ export default {
     },
     concordanceRegistries() {
       return this.config.registries.filter(r =>
-        r.provider.has.concordances // only use registries that offer concordances
+        r.has.concordances // only use registries that offer concordances
         && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)), // if showRegistryOverride is given, only use those registries
       )
     },
     concordanceUrls() {
       let urls = {}
       for (let registry of this.concordanceRegistries) {
-        if (registry.provider.has.concordances && registry.concordances) {
-          urls[this.$jskos.prefLabel(registry)] = registry.concordances
+        if (registry.has.concordances && registry._api.concordances) {
+          urls[this.$jskos.prefLabel(registry)] = registry._api.concordances
         }
       }
       return urls
@@ -912,7 +911,7 @@ export default {
     if (!this.concordances || !this.concordances.length) {
       let promises = []
       for (let registry of this.concordanceRegistries) {
-        promises.push(registry.provider.getConcordances())
+        promises.push(registry.getConcordances())
       }
       Promise.all(promises).then(results => {
         let concordances = _.flatten(results)
@@ -966,6 +965,7 @@ export default {
       }
     },
     scheduleAutoRefresh(registry) {
+      // TODO CDK
       if (registry.autoRefresh) {
         this.clearAutoRefresh(registry)
         this.refreshTimers[registry.uri] = setInterval(() => {
@@ -1045,7 +1045,7 @@ export default {
       if (this.searchFilter.partOf) {
         let toEnable = []
         for (let concordance of this.concordances.filter(c => this.$jskos.compare(c, { uri: this.searchFilter.partOf }))) {
-          let registryUri = _.get(concordance, "_provider.registry.uri")
+          let registryUri = _.get(concordance, "_registry.uri")
           if (registryUri && !toEnable.includes(registryUri)) {
             toEnable.push(registryUri)
           }
@@ -1062,6 +1062,7 @@ export default {
       for (let registry of registries) {
         this.clearAutoRefresh(registry)
         // Cancel previous refreshs
+        // TODO CDK
         if (this.searchCancelToken[registry.uri]) {
           this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
         }

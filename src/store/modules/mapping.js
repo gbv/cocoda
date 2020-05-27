@@ -291,7 +291,7 @@ const mutations = {
       state.mapping = mapping
     }
     // Save the original with identifiers and the LOCAL property.
-    registry = registry || _.get(original, "_provider.registry")
+    registry = registry || _.get(original, "_registry")
     if (original && registry) {
       state.original.uri = original.uri
       state.original.mapping = original
@@ -448,15 +448,16 @@ const actions = {
           registries = [registry]
         }
       } else {
-        registries = config.registries.filter(registry => registry.provider.has.mappings || (all && registry.provider.has.occurrences))
+        registries = config.registries.filter(registry => registry.has.mappings || (all && registry.has.occurrences))
       }
     }
     let promises = []
     for (let registry of registries) {
       if (all) {
-        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, selected, cancelToken }))
+        // TODO: Is there a difference anymore?
+        promises.push(registry.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, selected, cancelToken }))
       } else {
-        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, cancelToken }))
+        promises.push(registry.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, cancelToken }))
       }
     }
     return Promise.all(promises).then(results => {
@@ -464,7 +465,7 @@ const actions = {
       let mappings = results.length == 1 ? results[0] : _.union(...results)
       if (state.original.uri) {
         for (let mapping of mappings) {
-          if (jskos.compare(state.original.registry, mapping._provider.registry) && state.original.uri == mapping.uri) {
+          if (jskos.compare(state.original.registry, mapping._registry) && state.original.uri == mapping.uri) {
             commit({
               type: "set",
               original: mapping,
@@ -486,12 +487,12 @@ const actions = {
       update = true
     }
     if (update) {
-      return registry.provider.saveMapping(state.mapping, state.original.mapping)
+      return registry.putMapping({ mapping: state.mapping })
     } else {
       if (!getters.canCreate) {
         return null
       }
-      return registry.provider.saveMapping(_.omit(state.mapping, ["uri"]))
+      return registry.postMapping({ mapping: _.omit(state.mapping, ["uri"]) })
     }
   },
 
@@ -503,13 +504,14 @@ const actions = {
     } else {
       registry = rootGetters.getCurrentRegistry
     }
-    if (!registry || !registry.provider || !(registry.provider.has.mappings && registry.provider.has.mappings.create)) {
+    if (!registry || !(registry.has.mappings && registry.has.mappings.create)) {
       console.warn("Tried to save mappings, but could not determine provider.")
       return Promise.resolve([])
     }
+    // TODO: Necessary?
     // Minify mappings before saving
-    mappings = mappings.map(({ mapping, original }) => ({ mapping: jskos.minifyMapping(mapping), original }))
-    return registry.provider.saveMappings(mappings)
+    // mappings = mappings.map(({ mapping, original }) => ({ mapping: jskos.minifyMapping(mapping), original }))
+    return registry.saveMappings({ mappings })
   },
 
   async removeMapping({ state, getters, rootGetters }) {
@@ -517,7 +519,7 @@ const actions = {
     if (!getters.canDelete) {
       return null
     }
-    return registry.provider.removeMapping(state.original.mapping)
+    return registry.deleteMapping({ mapping: state.original.mapping })
   },
 
   removeMappings({ state, rootGetters, commit, rootState }, { mappings, registry }) {
@@ -528,16 +530,16 @@ const actions = {
     } else {
       registry = rootGetters.getCurrentRegistry
     }
-    if (!registry || !registry.provider || !(registry.provider.has.mappings && registry.provider.has.mappings.delete)) {
+    if (!registry || !(registry.has.mappings && registry.has.mappings.delete)) {
       console.warn("Tried to remove mappings, but could not determine provider.")
       return Promise.resolve([])
     }
-    return registry.provider.removeMappings(mappings).then(removedMappings => {
+    return registry.deleteMappings({ mappings }).then(removedMappings => {
       removedMappings.forEach((deleted, index) => {
         if (deleted) {
           let mapping = mappings[index]
           // Check if current original was amongst the removed mappings
-          if (mapping.uri == state.original.uri && jskos.compare(_.get(mapping, "_provider.registry"), state.original.registry)) {
+          if (mapping.uri == state.original.uri && jskos.compare(_.get(mapping, "_registry"), state.original.registry)) {
             // Set original to null
             commit({ type: "set" })
           }
@@ -596,11 +598,11 @@ const actions = {
     let config = rootState.config
     let item = state.mappingTrash.find(item => item.mapping.uri == uri)
     let registry = config.registries.find(registry => jskos.compare(registry, item && item.registry))
-    if (!item || !registry || !registry.provider) {
+    if (!item || !registry) {
       console.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)
     }
-    return registry.provider.saveMapping(item.mapping).then(mapping => {
+    return registry.saveMapping(item.mapping).then(mapping => {
       if (mapping) {
         // Remove item from trash
         commit({

@@ -51,7 +51,7 @@ const getters = {
     }
     if (!registry) {
       // Fallback to first registry which can save mappings (even if the user is not authorized for it)
-      registry = state.config.registries.find(registry => _.get(registry, "provider.has.mappings.create"))
+      registry = state.config.registries.find(registry => _.get(registry, "has.mappings.create"))
     }
     return registry
   },
@@ -101,12 +101,13 @@ const getters = {
 const mutations = {
   setSchemes(state, { schemes }) {
     state.schemes = schemes
-    // Adjust registries in config
-    for (let registry of state.config.registries) {
-      if (_.isArray(registry.schemes)) {
-        registry.schemes = registry.schemes.map(scheme => schemes.find(s => jskos.compare(s, scheme)) || scheme)
-      }
-    }
+    // TODO: What was this necessary for?
+    // // Adjust registries in config
+    // for (let registry of state.config.registries) {
+    //   if (_.isArray(registry.schemes)) {
+    //     registry.schemes = registry.schemes.map(scheme => schemes.find(s => jskos.compare(s, scheme)) || scheme)
+    //   }
+    // }
   },
   setSchemesLoaded(state, { value }) {
     state.schemesLoaded = value
