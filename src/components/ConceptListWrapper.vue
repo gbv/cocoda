@@ -3,7 +3,7 @@
     class="conceptListWrapper"
     :style="`${concepts.length == 0 ? 'min-height: 80px; max-height: 80px;' : ''}`">
     <tabs
-      v-model="currentChoiceIndex"
+      :value="currentChoiceIndex"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
       fill
       @change="tabChanged">
