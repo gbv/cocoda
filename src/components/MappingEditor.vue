@@ -399,6 +399,8 @@ export default {
   mounted() {
     // Enable shortcuts
     this.enableShortcuts()
+    // Set creator (fixes #560)
+    this.setCreator()
   },
   methods: {
     shortcutHandler({ action, isLeft }) {
