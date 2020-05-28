@@ -14,8 +14,7 @@
         :value="tab"
         @change="$emit('update:tab', $event.index)">
         <tab
-          :title="$t('settingsTabs')[0]"
-          active>
+          :title="$t('settingsTabs')[0]">
           <div v-if="localSettings">
             <p v-if="user && authorized">
               <span
@@ -411,10 +410,6 @@ export default {
     }
   },
   computed: {
-    localMappingsSupported() {
-      let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
-      return registry != null
-    },
     availableMappingRegistries() {
       return this.config.registries.filter(registry => registry.isAuthorizedFor({
         type: "mappings",

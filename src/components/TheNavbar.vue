@@ -164,7 +164,7 @@
         <template slot="button-content">
           <div
             class="navbar-settingsButton"
-            @click="$refs.settings.show()">
+            @click="openSettingsTab(0)">
             <!-- Identity icon -->
             <span
               v-if="userIdentityImage && creator.uri"
@@ -248,7 +248,7 @@
             @click="$refs.settings.show()" />
         </template>
         <p
-          v-for="(tab, index) in $t('settingsTabs').slice(1)"
+          v-for="(tab, index) in $t('settingsTabs').slice(1, $t('settingsTabs').length - (localMappingsSupported ? 0 : 1))"
           :key="`navbar-settingsTabs-${index}`"
           class="navbar-settingsTabs-row"
           @click="openSettingsTab(index+1)">

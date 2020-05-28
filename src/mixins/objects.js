@@ -67,6 +67,13 @@ export default {
       this.loadConcepts(concepts.filter(concept => !concept.__DETAILSLOADED__))
       return concepts
     },
+    /**
+     * Bool whether local mappings are supported.
+     */
+    localMappingsSupported() {
+      let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
+      return registry != null
+    },
   },
   methods: {
     /**
