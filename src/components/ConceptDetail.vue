@@ -68,6 +68,13 @@
         'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(item, isLeft),
         'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(item, isLeft)
       }">
+      <!-- Button to clear scheme -->
+      <div
+        v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: defaults.delay.medium }"
+        class="button conceptDetail-name-clearButton"
+        @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })">
+        <font-awesome-icon icon="times-circle" />
+      </div>
       <item-name
         :item="item"
         :is-highlighted="true"
@@ -534,7 +541,7 @@ export default {
 .conceptDetail-name {
   background-color: @color-select-2;
   position: relative;
-  padding: 0 10px;
+  padding: 0 20px;
 }
 .conceptDetail-name-clearButton {
   position: absolute;
