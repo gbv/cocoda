@@ -917,11 +917,13 @@ export default {
       }
     },
     scheduleAutoRefresh(registry) {
-      if (registry.autoRefresh) {
+      // Auto refresh stored registries
+      // TODO: Configure via config or settings?
+      if (this.$jskos.mappingRegistryIsStored(registry)) {
         this.clearAutoRefresh(registry)
         this.refreshTimers[registry.uri] = setInterval(() => {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-        }, Math.max(_.isInteger(registry.autoRefresh) ? registry.autoRefresh : 5000, 3000))
+        }, 10000)
       }
     },
     showMappingsForConcordance(concordance) {
