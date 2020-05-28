@@ -136,20 +136,27 @@
             v-for="(registry, index) in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
             class="settingsModal-mapping-registry"
-            @click="$store.commit({
-              type: 'settings/set',
-              prop: 'mappingRegistry',
-              value: registry.uri
-            })">
+            :class="{'selected-registry': $jskos.compare(registry, currentRegistry)}">
+            <b-form-checkbox
+              v-model="showRegistry[registry.uri]"
+              :disabled="$jskos.compare(registry, currentRegistry)" />
             <registry-info
               :registry="registry"
-              :class="{'selected-registry': $jskos.compare(registry, $store.getters.getCurrentRegistry)}"
-              class="settings-sources" />
+              class="settings-sources"
+              @click.native="$store.commit({
+                type: 'settings/set',
+                prop: 'mappingRegistry',
+                value: registry.uri
+              })" />
           </div>
           <h4>{{ $t("settings.otherRegistries") }}</h4>
           <div
             v-for="(registry, index) in config.registries.filter(registry => !$jskos.mappingRegistryIsStored(registry))"
-            :key="`settingsModal-other-registries-${index}`">
+            :key="`settingsModal-other-registries-${index}`"
+            class="settingsModal-mapping-registry">
+            <b-form-checkbox
+              v-if="registry.provider.has.mappings"
+              v-model="showRegistry[registry.uri]" />
             <registry-info
               :registry="registry"
               class="settings-sources" />
@@ -723,7 +730,7 @@ p {
   padding: 6px 5px;
 }
 .selected-registry {
-  background: @color-select-2;
+  background-color: @color-select-2;
 }
 .settingsModal-mapping-registry {
   display: flex;
@@ -734,9 +741,13 @@ p {
   background-color: @color-primary-5;
   cursor: pointer;
 }
+// First Child: Checkbox
 .settingsModal-mapping-registry > div:first-child {
-  flex: 2;
+  flex: none;
+  margin-left: 5px;
+  margin-right: -5px;
 }
+// Last Child: Registry Info
 .settingsModal-mapping-registry > div:last-child {
   flex: 1;
 }

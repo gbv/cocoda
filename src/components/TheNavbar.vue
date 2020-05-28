@@ -256,14 +256,14 @@
         </p>
         <hr>
         <div
-          v-if="$store.getters.getCurrentRegistry"
+          v-if="currentRegistry"
           class="font-default">
           <p
             v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,
-              'navbar-dropdown-selectable-selected': $jskos.compare(registry, $store.getters.getCurrentRegistry)
+              'navbar-dropdown-selectable-selected': $jskos.compare(registry, currentRegistry)
             }"
             @click="$store.commit({
               type: 'settings/set',

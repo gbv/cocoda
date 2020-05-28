@@ -441,13 +441,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    /**
-     * Override showRegistry from settings
-     */
-    showRegistryOverride: {
-      type: Array,
-      default: null,
-    },
   },
   data() {
     return {
@@ -652,13 +645,6 @@ export default {
     searchRegistries() {
       return _.get(this.registryGroups.find(group => group.stored), "registries", [])
     },
-    mappingRegistries() {
-      let registries = this.config.registries.filter(registry =>
-        registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences),
-      )
-      return registries
-    },
     mappingRegistriesSorted() {
       return _.flatten(this.registryGroups.map(group => group.registries))
     },
@@ -667,9 +653,6 @@ export default {
         (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
         (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false])),
       )
-    },
-    currentRegistry() {
-      return this.$store.getters.getCurrentRegistry
     },
     registryGroups() {
       let groups = [
@@ -704,37 +687,6 @@ export default {
       }
       return groups
     },
-    // show registries
-    showRegistry() {
-      let object = {}
-      // Define setter and getter for each registry separately.
-      for (let registry of this.mappingRegistries) {
-        Object.defineProperty(object, registry.uri, {
-          get: () => {
-            if (this.showRegistryOverride) {
-              return this.showRegistryOverride.includes(registry.uri)
-            }
-            let result = this.$settings.mappingBrowserShowRegistry[registry.uri]
-            if (result == null) {
-              return true
-            }
-            return result
-          },
-          set: (value) => {
-            // Only allow if it's not the current registry
-            if (value || !this.$jskos.compare(registry, this.currentRegistry)) {
-              this.$store.commit({
-                type: "settings/set",
-                prop: "mappingBrowserShowRegistry",
-                value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value }),
-              })
-              this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-            }
-          },
-        })
-      }
-      return object
-    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
@@ -751,8 +703,7 @@ export default {
     },
     concordanceRegistries() {
       return this.config.registries.filter(r =>
-        r.provider.has.concordances // only use registries that offer concordances
-        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)), // if showRegistryOverride is given, only use those registries
+        r.provider.has.concordances, // only use registries that offer concordances
       )
     },
     concordanceUrls() {

@@ -11,9 +11,6 @@ export default {
     loadConceptsMappedStatus() {
       return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
     },
-    loadConceptsMappedStatusCurrentMappingRegistry() {
-      return this.$store.getters.getCurrentRegistry
-    },
     loadConceptsMappedStatusOtherScheme() {
       return _.isBoolean(this.isLeft) ? this.$store.state.selected.scheme[!this.isLeft] : null
     },
@@ -25,7 +22,7 @@ export default {
     loadConceptsMappedStatusConceptsToLoad() {
       this.loadMappingsForConcepts(this.loadConceptsMappedStatusConceptsToLoad || [])
     },
-    loadConceptsMappedStatusCurrentMappingRegistry() {
+    currentRegistry() {
       this.loadMappingsForConcepts(this.loadConceptsMappedStatusConceptsToLoad || [])
     },
     loadConceptsMappedStatusOtherScheme() {
@@ -44,7 +41,7 @@ export default {
       if (!this.loadConceptsMappedStatus) {
         return
       }
-      const registry = this.loadConceptsMappedStatusCurrentMappingRegistry
+      const registry = this.currentRegistry
       const otherScheme = this.loadConceptsMappedStatusOtherScheme
       concepts = concepts.filter(concept => !_.get(concept, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))
       const conceptUris = concepts.map(i => i.uri)

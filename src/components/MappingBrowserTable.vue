@@ -541,9 +541,6 @@ export default {
         },
       ]
     },
-    currentRegistry() {
-      return this.$store.getters.getCurrentRegistry
-    },
   },
   created() {
     this.hover = _.debounce(this._hover, 20)
