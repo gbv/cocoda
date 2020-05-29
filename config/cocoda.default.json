@@ -437,7 +437,26 @@
       "schemeUris": [
         "https://bartoc.org/de/node/730"
       ]
+    },
+    {
+      "prefLabel": {
+        "de": "GEPRIS"
+      },
+      "url": "https://gepris.dfg.de/gepris/OCTOPUS?task=doSearchExtended&context=projekt&fachlicheZuordnung={notation}",
+      "schemeUris": [
+        "http://uri.gbv.de/terminology/dfg/"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "DFG-Fachkollegien"
+      },
+      "url": "https://www.dfg.de/dfg_profil/gremien/fachkollegien/liste/index.jsp?id={notation}",
+      "schemeUris": [
+        "http://uri.gbv.de/terminology/dfg/"
+      ]
     }
+
   ],
   "favoriteSchemes": [
     "http://uri.gbv.de/terminology/bk/",
