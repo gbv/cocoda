@@ -922,7 +922,6 @@ export default {
     },
     scheduleAutoRefresh(registry) {
       // Auto refresh stored registries
-      // TODO: Configure via settings?
       const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
       console.log(autoRefresh)
       if (this.$jskos.mappingRegistryIsStored(registry)) {
