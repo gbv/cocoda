@@ -917,18 +917,17 @@ export default {
     },
     clearAutoRefresh(registry) {
       if (this.refreshTimers[registry.uri]) {
-        window.clearInterval(this.refreshTimers[registry.uri])
+        window.clearTimeout(this.refreshTimers[registry.uri])
       }
     },
     scheduleAutoRefresh(registry) {
       // Auto refresh stored registries
       const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
-      console.log(autoRefresh)
       if (this.$jskos.mappingRegistryIsStored(registry)) {
         this.clearAutoRefresh(registry)
         // Auto refresh is disabled for a value of 0
         if (autoRefresh) {
-          this.refreshTimers[registry.uri] = setInterval(() => {
+          this.refreshTimers[registry.uri] = setTimeout(() => {
             this.$store.commit("mapping/setRefresh", { registry: registry.uri })
           }, autoRefresh)
         }
