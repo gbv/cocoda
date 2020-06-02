@@ -850,6 +850,10 @@ export default {
       // Refresh when navigatorShowResultsForRight changes
       this.$store.commit("mapping/setRefresh")
     },
+    "componentSettings.autoRefresh"() {
+      // Refresh when autoRefresh changes
+      this.$store.commit("mapping/setRefresh")
+    },
   },
   created() {
     // Debounce navigator refresh
@@ -919,11 +923,16 @@ export default {
     scheduleAutoRefresh(registry) {
       // Auto refresh stored registries
       // TODO: Configure via settings?
+      const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
+      console.log(autoRefresh)
       if (this.$jskos.mappingRegistryIsStored(registry)) {
         this.clearAutoRefresh(registry)
-        this.refreshTimers[registry.uri] = setInterval(() => {
-          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-        }, this.config.autoRefresh.mappings)
+        // Auto refresh is disabled for a value of 0
+        if (autoRefresh) {
+          this.refreshTimers[registry.uri] = setInterval(() => {
+            this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+          }, autoRefresh)
+        }
       }
     },
     showMappingsForConcordance(concordance) {

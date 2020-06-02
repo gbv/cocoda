@@ -99,6 +99,23 @@
       "min": 1,
       "max": 20
     },
+    "autoRefresh": {
+      "prefLabel": {
+        "en": "Automatically refresh (seconds):",
+        "de": "Automatisch aktualiseren (Sekunden):"
+      },
+      "definition": {
+        "en": [
+          "Determines how often mappings are refreshed from the API. A value below 10 is not recommended. 0 disables automatic refresh."
+        ],
+        "de": [
+          "Bestimmt, wie häufig Mappings von der API aktualisiert werden. Ein Wert unter 10 ist nicht empfohlen. 0 deaktiviert die automatische Aktualisierung."
+        ]
+      },
+      "type": "Number",
+      "min": 0,
+      "max": 10000
+    },
     "showEmpty": {
       "prefLabel": {
         "en": "Show empty sections",
