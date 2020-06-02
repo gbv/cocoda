@@ -158,7 +158,6 @@
     {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
-      "autoRefresh": 5000,
       "notation": [
         "L"
       ],
@@ -179,7 +178,6 @@
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
       "status": "https://coli-conc.gbv.de/api/status",
-      "autoRefresh": 10000,
       "notation": [
         "C"
       ],
@@ -200,7 +198,6 @@
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
       "status": "https://coli-conc.gbv.de/services/wikidata/status",
-      "autoRefresh": 10000,
       "notation": [
         "W"
       ],
@@ -456,7 +453,6 @@
         "http://uri.gbv.de/terminology/dfg/"
       ]
     }
-
   ],
   "favoriteSchemes": [
     "http://uri.gbv.de/terminology/bk/",
@@ -632,5 +628,9 @@
       "url": "https://github.com/gbv/cocoda/wiki/Wikidata-GND"
     }
   ],
-  "conceptLists": []
+  "conceptLists": [],
+  "autoRefresh": {
+    "mappings": 15000,
+    "update": 60000
+  }
 }

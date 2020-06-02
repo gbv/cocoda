@@ -272,6 +272,22 @@ export default {
       if (loaded) {
         // Set page title
         document.title = this.config.title
+        // Check for update every 60 seconds
+        let updateMessageShown = false
+        setInterval(() => {
+          axios.get("./build-info.json", {
+            headers: {
+              "Cache-Control": "no-cache",
+            },
+          }).then(response => response.data).then(buildInfo => {
+            if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
+              this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+                location.reload(true)
+              })
+              updateMessageShown = true
+            }
+          }).catch(() => null)
+        }, this.config.autoRefresh.update)
       }
     },
     settingsLoaded() {
@@ -476,22 +492,6 @@ export default {
         y: event.pageY,
       })
     }
-    // Check for update every 60 seconds
-    let updateMessageShown = false
-    setInterval(() => {
-      axios.get("./build-info.json", {
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-      }).then(response => response.data).then(buildInfo => {
-        if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
-          this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
-            location.reload(true)
-          })
-          updateMessageShown = true
-        }
-      }).catch(() => null)
-    }, 60000)
     // Create a debounced internal setName method
     // TODO: Move to mixin?
     this.setName_ = _.debounce(() => {
