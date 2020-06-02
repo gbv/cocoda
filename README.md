@@ -97,6 +97,8 @@ For the pre-built version, configuration options can be overridden by using `coc
 
 * **conceptLists**: a list of concept lists. Each list can be either an object or a URL that returns a JSON object. Objects are basically [JSKOS registries](http://gbv.github.io/jskos/jskos.html#registries) with required properties `prefLabel` and `concepts`. If `concepts` is a string, it will be considered a URL which returns a JSON array of concepts. Optional properties are `notation` and `scopeNote`.
 
+* **autoRefresh**: an object with auto refresh values in milliseconds. `autoRefresh.mappings` determines how often mappings in MappingBrowser will be reloaded (default: 10000), `autoRefresh.update` determines how often Cocoda will look for an update (default: 60000).
+
 Using the pre-built version, the application only has to be reloaded after editing the configuration file.
 
 ## Maintainers
