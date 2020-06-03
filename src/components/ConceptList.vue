@@ -139,9 +139,6 @@ export default {
     itemsLength() {
       return this.items.length
     },
-    currentMappingRegistry() {
-      return this.$store.getters.getCurrentRegistry
-    },
     otherScheme() {
       return this.selected.scheme[!this.isLeft]
     },

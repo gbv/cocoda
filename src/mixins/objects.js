@@ -68,6 +68,50 @@ export default {
       this.loadConcepts(concepts.filter(concept => !concept.__DETAILSLOADED__))
       return concepts
     },
+    /**
+     * Bool whether local mappings are supported.
+     */
+    localMappingsSupported() {
+      let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
+      return registry != null
+    },
+    currentRegistry() {
+      return this.$store.getters.getCurrentRegistry
+    },
+    mappingRegistries() {
+      let registries = this.config.registries.filter(registry =>
+        registry.has.mappings || registry.has.occurrences,
+      )
+      return registries
+    },
+    // show registries
+    showRegistry() {
+      let object = {}
+      // Define setter and getter for each registry separately.
+      for (let registry of this.mappingRegistries) {
+        Object.defineProperty(object, registry.uri, {
+          get: () => {
+            let result = this.$settings.mappingBrowserShowRegistry[registry.uri]
+            if (result == null) {
+              return true
+            }
+            return result
+          },
+          set: (value) => {
+            // Only allow if it's not the current registry
+            if (value || !this.$jskos.compare(registry, this.currentRegistry)) {
+              this.$store.commit({
+                type: "settings/set",
+                prop: "mappingBrowserShowRegistry",
+                value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value }),
+              })
+              this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+            }
+          },
+        })
+      }
+      return object
+    },
   },
   methods: {
     /**

@@ -158,7 +158,6 @@
     {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
-      "autoRefresh": 5000,
       "notation": [
         "L"
       ],
@@ -179,7 +178,6 @@
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
       "status": "https://coli-conc.gbv.de/api/status",
-      "autoRefresh": 10000,
       "notation": [
         "C"
       ],
@@ -200,7 +198,6 @@
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
       "status": "https://coli-conc.gbv.de/services/wikidata/status",
-      "autoRefresh": 10000,
       "notation": [
         "W"
       ],
@@ -437,6 +434,24 @@
       "schemeUris": [
         "https://bartoc.org/de/node/730"
       ]
+    },
+    {
+      "prefLabel": {
+        "de": "GEPRIS"
+      },
+      "url": "https://gepris.dfg.de/gepris/OCTOPUS?task=doSearchExtended&context=projekt&fachlicheZuordnung={notation}",
+      "schemeUris": [
+        "http://uri.gbv.de/terminology/dfg/"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "DFG-Fachkollegien"
+      },
+      "url": "https://www.dfg.de/dfg_profil/gremien/fachkollegien/liste/index.jsp?id={notation}",
+      "schemeUris": [
+        "http://uri.gbv.de/terminology/dfg/"
+      ]
     }
   ],
   "favoriteSchemes": [
@@ -613,5 +628,9 @@
       "url": "https://github.com/gbv/cocoda/wiki/Wikidata-GND"
     }
   ],
-  "conceptLists": []
+  "conceptLists": [],
+  "autoRefresh": {
+    "mappings": 15000,
+    "update": 60000
+  }
 }

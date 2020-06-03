@@ -278,7 +278,7 @@ export default {
      * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
      */
     mappingStatus() {
-      const registry = this.$store.getters.getCurrentRegistry
+      const registry = this.currentRegistry
       // Requires authentication for save
       if (!registry.isAuthorizedFor({
         type: "mappings",
@@ -399,6 +399,8 @@ export default {
   mounted() {
     // Enable shortcuts
     this.enableShortcuts()
+    // Set creator (fixes #560)
+    this.setCreator()
   },
   methods: {
     shortcutHandler({ action, isLeft }) {
@@ -428,14 +430,14 @@ export default {
       this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
         if (!mapping) {
           // TODO: Adjust
-          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })])
-          if (this.$store.getters.getCurrentRegistry.has.auth && !this.$store.getters.getCurrentRegistry.auth) {
+          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })])
+          if (this.currentRegistry.has.auth && !this.currentRegistry.auth) {
             message += " " + this.$t("general.authNecessary")
           }
           this.alert(message, null, "danger")
           return
         }
-        this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
+        this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
         this.$store.commit({
           type: "mapping/set",
           original: this.adjustMapping(mapping),
@@ -447,7 +449,7 @@ export default {
         console.error("MappingEditor - error in saveMapping:", error)
       }).then(() => {
         this.loadingGlobal = false
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
+        this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
       })
     },
     setCreator() {
@@ -485,13 +487,13 @@ export default {
       this.loadingGlobal = true
       this.$store.dispatch({ type: "mapping/removeMapping" }).then(success => {
         if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "success2")
-          this.$store.commit("mapping/setRefresh", { registry: _.get(this.$store.getters.getCurrentRegistry, "uri") })
+          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
+          this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
           if (clear) {
             this.clearMapping()
           }
         } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(this.$store.getters.getCurrentRegistry, { fallbackToUri: false })]), null, "danger")
+          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "danger")
         }
       }).catch(error => {
         console.error("MappingEditor - error in deleteOriginalMapping:", error)

@@ -173,6 +173,9 @@ export default {
 
     config.conceptLists = await dispatch("loadConceptLists", config.conceptLists)
 
+    // Set autoRefresh with default values
+    config.autoRefresh = Object.assign(defaultConfig.autoRefresh, config.autoRefresh || {})
+
     // Save config
     commit({
       type: "setConfig",

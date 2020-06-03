@@ -164,7 +164,7 @@
         <template slot="button-content">
           <div
             class="navbar-settingsButton"
-            @click="$refs.settings.show()">
+            @click="openSettingsTab(0)">
             <!-- Identity icon -->
             <span
               v-if="userIdentityImage && creator.uri"
@@ -248,7 +248,7 @@
             @click="$refs.settings.show()" />
         </template>
         <p
-          v-for="(tab, index) in $t('settingsTabs').slice(1)"
+          v-for="(tab, index) in $t('settingsTabs').slice(1, $t('settingsTabs').length - (localMappingsSupported ? 0 : 1))"
           :key="`navbar-settingsTabs-${index}`"
           class="navbar-settingsTabs-row"
           @click="openSettingsTab(index+1)">
@@ -256,14 +256,14 @@
         </p>
         <hr>
         <div
-          v-if="$store.getters.getCurrentRegistry"
+          v-if="currentRegistry"
           class="font-default">
           <p
             v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,
-              'navbar-dropdown-selectable-selected': $jskos.compare(registry, $store.getters.getCurrentRegistry)
+              'navbar-dropdown-selectable-selected': $jskos.compare(registry, currentRegistry)
             }"
             @click="$store.commit({
               type: 'settings/set',
