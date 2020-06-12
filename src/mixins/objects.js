@@ -433,7 +433,7 @@ export default {
         }
         uris = uris.concat(jskos.getAllUris(concept))
         this.loadingConcepts.push(concept)
-        let entry = list.find(e => e.provider == provider && e.concepts.length < 25)
+        let entry = list.find(e => e.provider == provider && e.concepts.length < 15)
         if (entry) {
           entry.concepts.push(concept)
         } else {
