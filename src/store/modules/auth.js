@@ -59,125 +59,133 @@ const mutations = {
 const actions = {
   init({ commit, state, rootState }, url) {
 
-    // Determine whether to use ssl
-    let ssl = url.startsWith("https")
+    // Return a Promise that resolves either when application is connected, or when an error occured.
+    return new Promise(resolve => {
 
-    // Remove protocol from url
-    url = url.replace("http://", "").replace("https://", "")
+      // Determine whether to use ssl
+      let ssl = url.startsWith("https")
 
-    // Create login-client instance
-    client = new LoginClient(url, { ssl })
+      // Remove protocol from url
+      url = url.replace("http://", "").replace("https://", "")
 
-    let registries = rootState.config.registries.filter(registry => registry.has.auth)
+      // Create login-client instance
+      client = new LoginClient(url, { ssl })
 
-    // Handle events
-    client.addEventListener(null, event => {
+      let registries = rootState.config.registries.filter(registry => registry.has.auth)
+
+      // Handle events
+      client.addEventListener(null, event => {
       // Close window if one exists and matches event type
-      commit({ type: "closeWindow", eventType: event.type })
-      // Handle event
-      switch (event.type) {
-        case LoginClient.events.connect:
-          commit({
-            type: "set",
-            prop: "connected",
-            value: true,
-          })
-          break
-        case LoginClient.events.disconnect:
-          commit({
-            type: "set",
-            prop: "connected",
-            value: false,
-          })
-          break
-        case LoginClient.events.login:
-          commit({
-            type: "set",
-            prop: "user",
-            value: event.user,
-          })
-          break
-        case LoginClient.events.logout:
-          commit({
-            type: "set",
-            prop: "user",
-            value: null,
-          })
-          commit({
-            type: "set",
-            prop: "authorized",
-            value: false,
-          })
-          break
-        case LoginClient.events.update:
-          commit({
-            type: "set",
-            prop: "user",
-            value: event.user,
-          })
-          break
-        case LoginClient.events.about:
-          event.type = undefined
-          commit({
-            type: "set",
-            prop: "about",
-            value: event,
-          })
-          // Set auth public key for all providers that need authentication
-          for (let registry of registries) {
-            registry.setAuth({ key: event.publicKey })
-          }
-          break
-        case LoginClient.events.providers:
-          commit({
-            type: "set",
-            prop: "providers",
-            value: event.providers,
-          })
-          break
-        case LoginClient.events.token:
-          if (state.tokenTimeout) {
-            clearTimeout(state.tokenTimeout)
-          }
-          // Set auth for all providers that need authentication
-          for (let registry of registries) {
-            registry.setAuth({ bearerToken: event.token })
-          }
-          // Set authorized
-          commit({
-            type: "set",
-            prop: "authorized",
-            value: true,
-          })
-          // Create new timeout to unset authorized
-          commit({
-            type: "set",
-            prop: "tokenTimeout",
-            value: setTimeout(() => {
-              commit({
-                type: "set",
-                prop: "authorized",
-                value: false,
-              })
-              // Set auth to null for all providers
-              for (let registry of registries) {
-                registry.setAuth({ key: null, bearerToken: null })
-              }
-            }, event.expiresIn * 1000),
-          })
-          break
-        case LoginClient.events.error:
-          console.error("LoginClient error:", event.error)
-          break
-      }
-    })
+        commit({ type: "closeWindow", eventType: event.type })
+        // Handle event
+        switch (event.type) {
+          case LoginClient.events.connect:
+            resolve()
+            commit({
+              type: "set",
+              prop: "connected",
+              value: true,
+            })
+            break
+          case LoginClient.events.disconnect:
+            resolve()
+            commit({
+              type: "set",
+              prop: "connected",
+              value: false,
+            })
+            break
+          case LoginClient.events.login:
+            commit({
+              type: "set",
+              prop: "user",
+              value: event.user,
+            })
+            break
+          case LoginClient.events.logout:
+            commit({
+              type: "set",
+              prop: "user",
+              value: null,
+            })
+            commit({
+              type: "set",
+              prop: "authorized",
+              value: false,
+            })
+            break
+          case LoginClient.events.update:
+            commit({
+              type: "set",
+              prop: "user",
+              value: event.user,
+            })
+            break
+          case LoginClient.events.about:
+            event.type = undefined
+            commit({
+              type: "set",
+              prop: "about",
+              value: event,
+            })
+            // Set auth public key for all providers that need authentication
+            for (let registry of registries) {
+              registry.setAuth({ key: event.publicKey })
+            }
+            break
+          case LoginClient.events.providers:
+            commit({
+              type: "set",
+              prop: "providers",
+              value: event.providers,
+            })
+            break
+          case LoginClient.events.token:
+            if (state.tokenTimeout) {
+              clearTimeout(state.tokenTimeout)
+            }
+            // Set auth for all providers that need authentication
+            for (let registry of registries) {
+              registry.setAuth({ bearerToken: event.token })
+            }
+            // Set authorized
+            commit({
+              type: "set",
+              prop: "authorized",
+              value: true,
+            })
+            // Create new timeout to unset authorized
+            commit({
+              type: "set",
+              prop: "tokenTimeout",
+              value: setTimeout(() => {
+                commit({
+                  type: "set",
+                  prop: "authorized",
+                  value: false,
+                })
+                // Set auth to null for all providers
+                for (let registry of registries) {
+                  registry.setAuth({ key: null, bearerToken: null })
+                }
+              }, event.expiresIn * 1000),
+            })
+            break
+          case LoginClient.events.error:
+            resolve()
+            console.error("LoginClient error:", event.error)
+            break
+        }
+      })
 
-    client.connect()
+      client.connect()
 
-    commit({
-      type: "set",
-      prop: "available",
-      value: true,
+      commit({
+        type: "set",
+        prop: "available",
+        value: true,
+      })
+
     })
 
   },

@@ -47,7 +47,7 @@
     "cocoda-vue-tabs": "^0.1.10",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.2",
-    "gbv-login-client": "^0.2.7",
+    "gbv-login-client": "^0.2.8",
     "jskos-tools": "^1.0.8",
     "json-format-highlight": "^1.0.4",
     "localforage": "^1.7.3",
