@@ -410,7 +410,7 @@ import axios from "axios"
 
 // Import mixins
 import auth from "../mixins/auth"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import clickHandler from "../mixins/click-handler"
 import computed from "../mixins/computed"
@@ -575,10 +575,10 @@ export default {
       for (let concordance of this.concordances || []) {
         let item = { concordance }
         item.from = _.get(concordance, "fromScheme")
-        item.from = this._getObject(item.from) || item.from
+        item.from = this.getObject(item.from) || item.from
         item.fromNotation = this.$jskos.notation(item.from) || "-"
         item.to = _.get(concordance, "toScheme")
-        item.to = this._getObject(item.to) || item.to
+        item.to = this.getObject(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
         item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
         item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"

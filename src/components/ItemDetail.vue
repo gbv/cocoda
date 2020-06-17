@@ -48,7 +48,7 @@ import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import computed from "../mixins/computed"
 

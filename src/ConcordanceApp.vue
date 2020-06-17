@@ -68,7 +68,7 @@ import { refreshRouter } from "./store/plugins"
 
 // Import mixins
 import auth from "./mixins/auth"
-import objects from "./mixins/objects"
+import objects from "./mixins/cdk"
 import computed from "./mixins/computed"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
@@ -236,7 +236,7 @@ export default {
               if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
               // Load data for each concept in mapping
               _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                promises.push(this.loadDetails(concept, { scheme }).then(concept => {
+                promises.push(this.loadConcepts([concept], { scheme }).then(([concept]) => {
                   mappingFromQuery[direction][memberField][index] = concept
                 }))
               })

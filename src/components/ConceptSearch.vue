@@ -108,7 +108,7 @@ import LoadingIndicator from "./LoadingIndicator"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import clickHandler from "../mixins/click-handler"
 import dragandrop from "../mixins/dragandrop"
 import computed from "../mixins/computed"
@@ -456,7 +456,7 @@ export default {
     },
     dragStartResult(result, event) {
       let uri = _.last(result)
-      let concept = this.getObject({ uri }, { scheme: this.scheme, type: "concept" })
+      let concept = this.saveObject({ uri }, { scheme: this.scheme, type: "concept" })
       this.dragStart(concept, event)
     },
     droppedConcept(concept) {

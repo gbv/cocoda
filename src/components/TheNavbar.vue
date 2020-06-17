@@ -308,7 +308,7 @@ import _ from "lodash"
 
 // Import mixins
 import auth from "../mixins/auth"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import computed from "../mixins/computed"
 

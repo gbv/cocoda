@@ -3,7 +3,7 @@
  */
 
 import _ from "lodash"
-import objects from "./objects"
+import objects from "./cdk"
 
 export default {
   mixins: [objects],

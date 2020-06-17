@@ -453,6 +453,9 @@ const actions = {
     }
     let promises = []
     for (let registry of registries) {
+      if (registry.uri.includes("recon")) {
+        console.log("getMappings", registry, from, to)
+      }
       if (all) {
         // TODO: Is there a difference anymore?
         promises.push(registry.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, selected, cancelToken }))
@@ -511,7 +514,7 @@ const actions = {
     // TODO: Necessary?
     // Minify mappings before saving
     // mappings = mappings.map(({ mapping, original }) => ({ mapping: jskos.minifyMapping(mapping), original }))
-    return registry.saveMappings({ mappings })
+    return registry.postMappings({ mappings })
   },
 
   async removeMapping({ state, getters, rootGetters }) {
@@ -602,7 +605,7 @@ const actions = {
       console.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)
     }
-    return registry.saveMapping(item.mapping).then(mapping => {
+    return registry.postMapping({ mapping: item.mapping }).then(mapping => {
       if (mapping) {
         // Remove item from trash
         commit({

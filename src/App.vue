@@ -202,7 +202,7 @@ import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
 
 // Import mixins
 import auth from "./mixins/auth"
-import objects from "./mixins/objects"
+import objects from "./mixins/cdk"
 import computed from "./mixins/computed"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
@@ -291,8 +291,8 @@ export default {
         // Try to get objects for both URIs
         let uri1 = fromQuery[param],
           uri2 = toQuery[param],
-          object1 = uri1 && this._getObject({ uri: uri1 }),
-          object2 = uri2 && this._getObject({ uri: uri2 })
+          object1 = uri1 && this.getObject({ uri: uri1 }),
+          object2 = uri2 && this.getObject({ uri: uri2 })
         // Compare objects if they exist to prevent unnecessary reloads.
         if (object1 && object2) {
           if (!this.$jskos.compare(object1, object2)) {
@@ -647,7 +647,7 @@ export default {
         let schemeUri = selected.scheme[isLeft]
         let scheme = null
         if (schemeUri) {
-          scheme = this._getObject({ uri: schemeUri })
+          scheme = this.getObject({ uri: schemeUri })
         }
         let concept = null
         if (scheme && selected.concept[isLeft]) {
@@ -708,7 +708,7 @@ export default {
                 if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
                 // Load data for each concept in mapping
                 _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                  promises.push(this.loadDetails(concept, { scheme }).then(concept => {
+                  promises.push(this.loadConcepts([concept], { scheme }).then(([concept]) => {
                     mappingFromQuery[direction][memberField][index] = concept
                   }))
                 })

@@ -35,7 +35,7 @@ import _ from "lodash"
 import { scroller } from "vue-scrollto/src/scrollTo"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import computed from "../mixins/computed"
 import mappedStatus from "../mixins/mapped-status"
 
@@ -216,7 +216,7 @@ export default {
           // Check if concept is fully loaded
           if (!this.showChildren || (concept.ancestors && !concept.ancestors.includes(null))) {
             let fullyLoaded = true
-            for (let ancestor of concept.ancestors) {
+            for (let ancestor of concept.ancestors || []) {
               if (this.showChildren && (!ancestor.narrower || ancestor.narrower.includes(null))) {
                 fullyLoaded = false
               }
@@ -225,7 +225,7 @@ export default {
               this.shouldScroll = false
               // Open ancestors
               if (this.showChildren) {
-                for (let ancestor of this.conceptSelected.ancestors) {
+                for (let ancestor of this.conceptSelected.ancestors || []) {
                   this.open(ancestor, this.isLeft, true)
                 }
               }

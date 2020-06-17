@@ -74,12 +74,16 @@ export default {
         registry.provider = "LabelSearchSuggestion"
       }
       if (registry.provider == "OccurrencesApi") {
-        registry.api = registry.occurrences
-        delete registry.occurrences
+        if (!registry.api && registry.occurrences) {
+          registry.api = registry.occurrences
+          delete registry.occurrences
+        }
       }
       if (registry.provider == "ReconciliationApi") {
-        registry.api = registry.reconcile
-        delete registry.reconcile
+        if (!registry.api && registry.reconcile) {
+          registry.api = registry.reconcile
+          delete registry.reconcile
+        }
       }
     }
     // Assign priority values to registries (for easier comparison at other points)

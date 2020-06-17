@@ -101,7 +101,7 @@ import DataModalButton from "./DataModalButton"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 
 import computed from "../mixins/computed"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import hoverHandler from "../mixins/hover-handler"
 
@@ -188,7 +188,7 @@ export default {
           id: `custom-${index}`,
           label,
           tooltip,
-          concepts: list.concepts.map(concept => this.getObject(concept, { type: "concept" })),
+          concepts: list.concepts.map(concept => this.saveObject(concept, { type: "concept" })),
           showChildren: false,
           showScheme: true,
           url: list.url || list.conceptsUrl,

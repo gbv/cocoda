@@ -273,7 +273,7 @@ import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import clickHandler from "../mixins/click-handler"
 import hotkeys from "../mixins/hotkeys"
 import computed from "../mixins/computed"

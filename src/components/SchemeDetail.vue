@@ -129,7 +129,7 @@ import RegistryName from "./RegistryName"
 import RegistryNotation from "./RegistryNotation"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"

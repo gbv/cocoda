@@ -1,10 +1,14 @@
 /**
- * objects mixin.
+ * CDK mixin.
  *
  * Provides a centralized store (replacing the Vuex module) for storing schemes and concepts during the runtime of the application.
  * It provides methods to access the store and wrappers around loading data from the API.
  *
  * The goal is that every scheme or concept that is actively used in Cocoda is an object in the store. This provides reactivity to changes and makes things much easier.
+ *
+ * TODO:
+ * - Add error handling
+ * - ...
  */
 
 import jskos from "jskos-tools"
@@ -15,6 +19,7 @@ let objects = {}
 let topConcepts = {}
 let loadingConcepts = []
 let erroredConcepts = []
+let schemes = []
 let concordances = []
 
 export default {
@@ -24,28 +29,19 @@ export default {
       topConcepts,
       loadingConcepts,
       erroredConcepts,
+      schemes,
       concordances,
     }
   },
   computed: {
     /**
-     * List of available schemes.
-     */
-    schemes() {
-      // TODO: Sorting should be fixed in jskos-tools.
-      return this.$store.state.schemes.slice()
-    },
-    schemesLoaded() {
-      return this.$store.state.schemesLoaded
-    },
-    /**
      * List of favorite schemes.
      */
     favoriteSchemes() {
       let schemes = []
-      if (this.schemesLoaded) {
+      if (this.schemes.length) {
         for (let uri of this.$store.getters.favoriteSchemes) {
-          let scheme = this._getObject({ uri })
+          let scheme = this.getObject({ uri })
           if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
             schemes.push(scheme)
           }
@@ -58,13 +54,14 @@ export default {
      */
     favoriteConcepts() {
       let concepts = []
-      if (this.schemesLoaded) {
+      if (this.schemes.length) {
         for (let concept of this.$store.getters.favoriteConcepts) {
-          let conceptFromStore = this.getObject(concept, { type: "concept" })
+          let conceptFromStore = this.saveObject(concept, { type: "concept" })
           concepts.push(conceptFromStore)
         }
       }
       // Load details if necessary
+      // TODO: Reconsider because this is a computed property.
       this.loadConcepts(concepts.filter(concept => !concept.__DETAILSLOADED__))
       return concepts
     },
@@ -121,15 +118,17 @@ export default {
      */
     adjustConcept(object) {
       if (!object) {
-        return
+        throw new Error("Can't adjust object that is null or undefined.")
       }
       for (let prop of ["ancestors", "broader", "narrower"]) {
         if (object[prop]) {
           object[prop].forEach((concept, index) => {
             if (concept != null) {
-              concept.inScheme = concept.inScheme || object.inScheme
-              // Replace concept with concept from store
-              this.$set(object[prop], index, this.saveObject(concept, { type: "concept" }))
+              concept = this.saveObject(concept, { type: "concept", scheme: _.get(object, "inScheme[0]") })
+              if (!concept.inScheme) {
+                this.$set(concept, "inScheme", object.inScheme)
+              }
+              this.$set(object[prop], index, concept)
             }
           })
         }
@@ -153,9 +152,13 @@ export default {
      */
     saveObject(object, options = {}) {
       if (!object || !object.uri) {
+        throw new Error("Can't save object that is null or undefined or that doesn't have a URI.")
+      }
+      let existing = this.getObject(object)
+      // If it's the same object reference, return immediately
+      if (object === existing) {
         return object
       }
-      let existing = this._getObject(object)
       if (!existing) {
         object = jskos.deepCopy(object)
 
@@ -173,6 +176,7 @@ export default {
           object.type = object.type || ["http://www.w3.org/2004/02/skos/core#ConceptScheme"]
           // Set top concepts
           if (!this.topConcepts[object.uri]) {
+            // TODO: Reconsider
             this.$set(this.topConcepts, object.uri, [null])
           }
         }
@@ -181,7 +185,7 @@ export default {
           object.type = object.type || ["http://www.w3.org/2004/02/skos/core#Concept"]
           object.__ISOPEN__ = { true: false, false: false }
           object.inScheme = object.inScheme || [options.scheme]
-          object.inScheme = object.inScheme.map(scheme => this._getObject(scheme)).filter(scheme => scheme != null).sort((a, b) => {
+          object.inScheme = object.inScheme.map(scheme => this.getObject(scheme)).filter(scheme => scheme != null).sort((a, b) => {
             if (a.__SAVED__) {
               return -1
             }
@@ -205,7 +209,8 @@ export default {
         this.adjustConcept(object)
 
         // Provider adjustments
-        let provider = _.get(object, "_registry") || _.get(this._getObject(_.get(object, "inScheme[0]")), "_registry") || options.provider
+        // TODO: Is this necessary? If yes, how can we make it not be necessary?
+        let provider = _.get(object, "_registry") || _.get(this.getObject(_.get(object, "inScheme[0]")), "_registry") || options.provider
         if (provider) {
           if (type == "scheme") {
             provider.adjustSchemes([object])
@@ -242,14 +247,14 @@ export default {
      * @param {*} options
      */
     saveObjectsWithOptions(options) {
-      return (objects) => objects.map(object => this.saveObject(object, options))
+      return objects => objects.map(object => this.saveObject(object, options))
     },
     /**
      * Reads an object from the store via its URI.
      *
      * @param {*} object
      */
-    _getObject(object) {
+    getObject(object) {
       if (!object || object.__SAVED__) {
         return object
       }
@@ -262,80 +267,65 @@ export default {
       return null
     },
     /**
-     * Either returns an object already in store or saves the object and returns the saved object.
-     *
-     * TODO: Isn't this almost the same as just saveObject itself?
-     *
-     * @param {*} object
-     * @param {*} options
-     */
-    getObject(object, options) {
-      return this._getObject(object) || this.saveObject(object, options)
-    },
-    /**
      * Loads schemes from API. This should be called once upon application start.
      */
     async loadSchemes() {
       let schemes = await cdk.getSchemes()
-      schemes = schemes.map(scheme => this.saveObject(scheme, { provider: scheme._registry, type: "scheme" }))
-      // Commit schemes to store
-      this.$store.commit({
-        type: "setSchemes",
-        schemes,
-      })
-      this.$store.commit({
-        type: "setSchemesLoaded",
-        value: true,
-      })
+      for (let scheme of schemes) {
+        scheme = this.saveObject(scheme, { provider: scheme._registry, type: "scheme" })
+        if (!this.schemes.includes(scheme)) {
+          this.schemes.push(scheme)
+        }
+      }
+      return this.schemes
     },
     /**
      * Loads the available concept types for a scheme.
      *
      * @param {*} scheme
      */
-    loadTypes(scheme) {
+    async loadTypes(scheme) {
       if (!scheme || !scheme.__SAVED__) {
-        console.error("loadTypes called with object that is not saved.", scheme)
-        return Promise.resolve(scheme)
+        throw new Error(`loadTypes called with a scheme that is undefined or not saved: ${scheme && scheme.uri}`)
       }
-      let promise
-      if (!scheme || !_.isFunction(scheme._getTypes)) {
-        promise = Promise.resolve([])
-      } else {
-        promise = scheme._getTypes()
+      let types = []
+      try {
+        // TODO CDK: Is this compatible?
+        types = await scheme._getTypes()
+      } catch(error) {
+        // Ignore error, show warning only.
+        console.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
       }
-      return promise.catch(() => []).then(types => {
-        this.$set(scheme, "types", types)
-        return scheme
-      })
+      this.$set(scheme, "types", types)
+      return scheme
     },
     /**
      * Loads top concepts for a scheme.
      *
      * @param {*} scheme
      */
-    loadTop(scheme) {
+    async loadTop(scheme) {
       if (!scheme || !scheme.__SAVED__) {
-        console.error("loadTop called with scheme that is not saved.", scheme)
-        return Promise.resolve(scheme)
+        throw new Error(`loadTop called with a scheme that is undefined or not saved: ${scheme && scheme.uri}`)
       }
-      if (!scheme || (this.topConcepts[scheme.uri] && !this.topConcepts[scheme.uri].includes(null))) {
-        return Promise.resolve(scheme)
+      if (this.topConcepts[scheme.uri] && !this.topConcepts[scheme.uri].includes(null)) {
+        return this.topConcepts[scheme.uri]
       }
-      let promise
-      if (!scheme || !_.isFunction(scheme._getTop)) {
-        promise = Promise.resolve([])
-      } else {
-        promise = scheme._getTop()
+      let topConcepts = []
+      try {
+        // TODO CDK: Is this compatible?
+        topConcepts = await scheme._getTop()
+      } catch(error) {
+        // Ignore error, show warning only.
+        console.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)
       }
-      return promise.then(this.saveObjectsWithOptions({ scheme, type: "concept" })).then(top => {
-        // Set ancestors
-        for (let concept of top) {
-          this.$set(concept, "ancestors", [])
-        }
-        this.$set(this.topConcepts, scheme.uri, jskos.sortConcepts(top))
-        return scheme
-      })
+      topConcepts = this.saveObjectsWithOptions({ scheme, type: "concept" })(topConcepts)
+      // Set ancestors
+      for (let concept of topConcepts) {
+        this.$set(concept, "ancestors", [])
+      }
+      this.$set(this.topConcepts, scheme.uri, jskos.sortConcepts(topConcepts))
+      return scheme
     },
     /**
      * Loads data about concepts.
@@ -343,14 +333,14 @@ export default {
      * @param {*} concepts
      * @param {*} options - options for getConcepts call
      */
-    loadConcepts(concepts, options = {}) {
+    async loadConcepts(concepts, { registry: fallbackRegistry, scheme, ...options } = {}) {
       // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
-      // Then, sort the remaining concepts by provider.
-      let list = []
+      // Then, sort the remaining concepts by registry.
+      const list = []
       let uris = []
-      for (let concept of concepts.filter(c => c && c.uri && c.__SAVED__ && !c.__DETAILSLOADED__)) {
-        let provider = this.getProvider(concept)
-        if (!provider) {
+      for (let concept of concepts.filter(c => c && c.uri && !c.__DETAILSLOADED__)) {
+        const registry = this.getProvider(concept) || this.getProvider(scheme) || fallbackRegistry
+        if (!registry) {
           continue
         }
         if ([].concat(this.loadingConcepts, this.erroredConcepts).find(c => this.$jskos.compare(c, concept))) {
@@ -359,22 +349,24 @@ export default {
         }
         uris = uris.concat(jskos.getAllUris(concept))
         this.loadingConcepts.push(concept)
-        let entry = list.find(e => e.provider == provider && e.concepts.length < 15)
+        // TODO: Remove magic number.
+        const entry = list.find(e => e.registry == registry && e.concepts.length < 15)
         if (entry) {
           entry.concepts.push(concept)
         } else {
           list.push({
-            provider,
+            registry,
             concepts: [concept],
           })
         }
       }
-      // Load concepts by provider
-      let promises = list.map(({ provider, concepts }) => provider.getConcepts({ ...options, concepts }).then(concepts => {
+      // Load concepts by registry
+      const promises = list.map(({ registry, concepts }) => registry.getConcepts({ ...options, concepts }).then(concepts => {
         // Save and adjust results
         let uris = []
         for (let concept of concepts) {
-          concept = this.saveObject(concept)
+          // TODO: Add fallback registry here?
+          concept = this.saveObject(concept, { scheme })
           this.$set(concept, "__DETAILSLOADED__", 1)
           this.adjustConcept(concept)
           uris = uris.concat(this.$jskos.getAllUris(concept))
@@ -387,131 +379,101 @@ export default {
           }
         }
       }))
-      return Promise.all(promises).then(() => {
-        // Move all URIs that were not loaded to errored concepts
-        for (let uri of uris) {
-          let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
-          if (index >= 0) {
-            let concept =  this.loadingConcepts[index]
-            this.$set(concept, "__DETAILSLOADED__", -1)
-            this.$delete(this.loadingConcepts, index)
-            this.erroredConcepts.push(concept)
-          }
+      await Promise.all(promises)
+      // Move all URIs that were not loaded to errored concepts
+      for (let uri of uris) {
+        let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
+        if (index >= 0) {
+          let concept =  this.loadingConcepts[index]
+          this.$set(concept, "__DETAILSLOADED__", -1)
+          this.$delete(this.loadingConcepts, index)
+          this.erroredConcepts.push(concept)
         }
-        // Return objects from store
-        return concepts.map(c => this.getObject(c))
-      })
-    },
-    /**
-     * Loads details for a scheme or concept.
-     *
-     * @param {*} object
-     * @param {*} options
-     */
-    loadDetails(object, options = {}) {
-      if (!object || !object.__SAVED__) {
-        console.error("loadDetails called with object that is not saved.", object)
-        return Promise.resolve(object)
       }
-      if (!object || object.__DETAILSLOADED__) {
-        return Promise.resolve(object)
-      }
-      let scheme = _.get(object, "inScheme[0]") || options.scheme
-      let getDetails = (object._getDetails && object._getDetails())
-        || (_.get(scheme, "_registry.getConcept") && _.get(scheme, "_registry").getConcept({ concept: object }))
-        || Promise.reject("no provider found")
-      return getDetails.then(result => {
-        object = this.saveObject(result)
-        this.adjustConcept(object)
-        return object
-      }).catch(error => {
-        console.error("Error in loadDetails:", error, object)
-        return object
-      })
+      // Return objects from store
+      // ? is getObject okay here? (was saveObject previously)
+      return concepts.map(c => this.getObject(c))
     },
     /**
      * Loads narrower concepts for a concept.
      *
-     * @param {*} object
+     * @param {*} concept
      * @param {*} options
      */
-    loadNarrower(object, options = {}) {
-      if (!object || !object.__SAVED__) {
-        console.error("loadNarrower called with object that is not saved.", object)
-        return Promise.resolve(object)
+    async loadNarrower(concept, { registry: fallbackRegistry, ...options } = {}) {
+      // TODO: Does concept really need to be saved?
+      if (!concept || !concept.__SAVED__) {
+        throw new Error(`loadNarrower called with concept that is undefined or not saved: ${concept && concept.uri}.`)
       }
-      if (!object || object.narrower && !object.narrower.includes(null)) {
-        return Promise.resolve(object)
+      if (concept.narrower && !concept.narrower.includes(null)) {
+        // Narrower already loaded
+        return concept
       }
-      let scheme = _.get(object, "inScheme[0]") || options.scheme
-      let getNarrower = (object._getNarrower && object._getNarrower())
-        || (_.get(scheme, "_registry.getNarrower") && _.get(scheme, "_registry").getNarrower({ concept: object }))
-        || Promise.reject("no provider found")
-      return getNarrower.then(this.saveObjectsWithOptions({ scheme, type: "concept" })).then(narrower => {
-        for (let child of narrower) {
-          // Set ancestors of children
-          if (!object.ancestors || object.ancestors.includes(null)) {
-            this.$set(child, "ancestors", [null])
-          } else {
-            this.$set(child, "ancestors", object.ancestors.concat([object]))
-          }
-          // Set broader of children
-          this.$set(child, "broader", [object])
-          this.adjustConcept(child)
+      const registry = this.getProvider(concept) || fallbackRegistry
+      if (!registry) {
+        throw new Error(`loadNarrower called with concept that doesn't have a registry: ${concept.uri}`)
+      }
+      let narrower = await registry.getNarrower({ ...options, concept})
+      narrower = this.saveObjectsWithOptions({ type: "concept" })(narrower)
+      for (let child of narrower) {
+        // Set ancestors of children
+        if (!concept.ancestors || concept.ancestors.includes(null)) {
+          this.$set(child, "ancestors", [null])
+        } else {
+          this.$set(child, "ancestors", concept.ancestors.concat([concept]))
         }
-        this.$set(object, "narrower", this.$jskos.sortConcepts(narrower))
-        this.adjustConcept(object)
-        return object
-      }).catch(error => {
-        console.error("Error in loadNarrower:", error)
-        return object
-      })
+        // Set broader of children
+        this.$set(child, "broader", [concept])
+        this.adjustConcept(child)
+      }
+      this.$set(concept, "narrower", this.$jskos.sortConcepts(narrower))
+      this.adjustConcept(concept)
+      return concept
     },
     /**
      * Loads ancestor concepts for a concept.
      *
-     * @param {*} object
+     * @param {*} concept
      * @param {*} options
      */
-    loadAncestors(object, options = {}) {
-      if (!object || !object.__SAVED__) {
-        console.error("loadAncestors called with object that is not saved.", object)
-        return Promise.resolve(object)
+    async loadAncestors(concept, { registry: fallbackRegistry, ...options } = {}) {
+      // TODO: Does concept really need to be saved?
+      if (!concept || !concept.__SAVED__) {
+        throw new Error(`loadAncestors called with concept that is undefined or not saved: ${concept && concept.uri}.`)
       }
-      if (!object || object.ancestors && !object.ancestors.includes(null)) {
-        return Promise.resolve(object)
+      if (concept.ancestors && !concept.ancestors.includes(null)) {
+        // Ancestors already loaded
+        return concept
       }
-      let scheme = _.get(object, "inScheme[0]") || options.scheme
-      let getAncestors = (object._getAncestors && object._getAncestors())
-        || (_.get(scheme, "_registry.getAncestors") && _.get(scheme, "_registry").getAncestors({ concept: object }))
-        || Promise.reject("no provider found")
-      return getAncestors.then(this.saveObjectsWithOptions({ scheme, type: "concept" })).then(ancestors => {
-        let currentAncestors = []
-        for (let ancestor of ancestors) {
-          // Set ancestors of ancestors
-          this.$set(ancestor, "ancestors", currentAncestors.slice())
-          // Set broader of ancestors
-          this.$set(ancestor, "broader", currentAncestors.length > 0 ? [currentAncestors[currentAncestors.length - 1]] : [])
-          currentAncestors.push(ancestor)
-          this.adjustConcept(ancestor)
+      const registry = this.getProvider(concept) || fallbackRegistry
+      if (!registry) {
+        throw new Error(`loadAncestors called with concept that doesn't have a registry: ${concept.uri}`)
+      }
+
+      let ancestors = await registry.getAncestors({ ...options, concept })
+      ancestors = this.saveObjectsWithOptions({ type: "concept" })(ancestors)
+      let currentAncestors = []
+      for (let ancestor of ancestors) {
+        // Set ancestors of ancestors
+        this.$set(ancestor, "ancestors", currentAncestors.slice())
+        // Set broader of ancestors
+        this.$set(ancestor, "broader", currentAncestors.length > 0 ? [currentAncestors[currentAncestors.length - 1]] : [])
+        currentAncestors.push(ancestor)
+        this.adjustConcept(ancestor)
+      }
+      for (let child of concept.narrower || []) {
+        // Only set child's ancestors only if it doesn't have any.
+        // Note: This might have unintended side effects. If there are problems with ancestors, look here.
+        if (child && (!child.ancestors || child.ancestors.includes(null))) {
+          this.$set(child, "ancestors", ancestors.concat([concept]))
         }
-        for (let child of object.narrower || []) {
-          // Only set child's ancestors only if it doesn't have any.
-          // Note: This might have unintended side effects. If there are problems with ancestors, look here.
-          if (child && (!child.ancestors || child.ancestors.includes(null))) {
-            this.$set(child, "ancestors", ancestors.concat([object]))
-          }
-          if (child) {
-            this.adjustConcept(child)
-          }
+        if (child) {
+          this.adjustConcept(child)
         }
-        this.$set(object, "ancestors", ancestors)
-        this.adjustConcept(object)
-        return object
-      }).catch(error => {
-        console.error("Error in loadAncestors:", error)
-        return object
-      })
+      }
+      this.$set(concept, "ancestors", ancestors)
+      this.adjustConcept(concept)
+      return concept
     },
     /**
      * Wrapper around the getMappings Vuex action that replaces all objects in the mappings with objects from the store.

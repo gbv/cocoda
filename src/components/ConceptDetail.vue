@@ -261,7 +261,7 @@ import ItemDetailNarrower from "./ItemDetailNarrower"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import computed from "../mixins/computed"
 import hotkeys from "../mixins/hotkeys"
 import mappedStatus from "../mixins/mapped-status"
@@ -373,7 +373,7 @@ export default {
     },
     gndTerms() {
       // Assemble gndTerms array for display
-      let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
+      let gnd = this.getObject({ uri: "http://bartoc.org/en/node/430" })
       let mappings = _.get(this.item, "__GNDMAPPINGS__", [])
       let concepts = []
       for (let mapping of mappings) {
@@ -460,7 +460,7 @@ export default {
       // TODO: Refactoring necessary!
       if (!this.item) return
       let itemBefore = this.item
-      let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
+      let gnd = this.getObject({ uri: "http://bartoc.org/en/node/430" })
       // Don't load GND terms for GND items
       if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
         return

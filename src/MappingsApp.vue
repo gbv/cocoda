@@ -298,7 +298,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 
 // Import mixins
 import auth from "./mixins/auth"
-import objects from "./mixins/objects"
+import objects from "./mixins/cdk"
 import computed from "./mixins/computed"
 
 /**
@@ -540,7 +540,7 @@ export default {
         let concepts = this.$jskos.conceptsOfMapping(mapping)
         for (let concept of concepts) {
           if (!concept.__DETAILSLOADED__ && concept._getDetails) {
-            this.loadDetails(concept)
+            this.loadConcepts([concept])
           }
         }
       }

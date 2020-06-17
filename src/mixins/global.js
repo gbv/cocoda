@@ -131,11 +131,11 @@ export default {
           promises.push(this.loadTop(scheme))
         }
         // Load details
-        promises.push(this.loadDetails(concept))
+        promises.push(this.loadConcepts([concept]).catch(() => {}))
         // Load narrower concepts
-        promises.push(this.loadNarrower(concept))
+        promises.push(this.loadNarrower(concept).catch(() => {}))
         // Load ancestor concepts and their narrower concepts
-        promises.push(this.loadAncestors(concept))
+        promises.push(this.loadAncestors(concept).catch(() => {}))
 
         return Promise.all(promises).then(() => {
           // Load types for scheme
@@ -151,7 +151,7 @@ export default {
             let broaderPromises = []
             this.adjustConcept(concept)
             for (let broader of concept.broader.filter(concept => concept != null)) {
-              this.loadDetails(broader, { scheme })
+              this.loadConcepts([broader], { scheme })
             }
             Promise.all(broaderPromises).then(() => {
               // TODO: Is adjustment necessary?

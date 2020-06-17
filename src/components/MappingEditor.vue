@@ -231,7 +231,7 @@ import ComponentSettings from "./ComponentSettings"
 
 // Import mixins
 import auth from "../mixins/auth"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import hotkeys from "../mixins/hotkeys"
 import computed from "../mixins/computed"
@@ -578,7 +578,7 @@ export default {
           isLeft: isLeft,
         })
         // Load details if necessary
-        this.loadDetails(concept)
+        this.loadConcepts([concept])
       }
     },
     swapMapping() {

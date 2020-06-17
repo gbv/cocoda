@@ -374,7 +374,7 @@ import _ from "lodash"
 
 // Import mixins
 import auth from "../mixins/auth"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import computed from "../mixins/computed"
 import hoverHandler from "../mixins/hover-handler"
 

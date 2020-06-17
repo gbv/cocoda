@@ -15,8 +15,6 @@ Vue.use(Vuex)
 
 const state = {
   loading: 0,
-  schemes: [],
-  schemesLoaded: false,
   config: {},
   configLoaded: false,
   hoveredConcept: null,
@@ -99,19 +97,6 @@ const getters = {
 }
 
 const mutations = {
-  setSchemes(state, { schemes }) {
-    state.schemes = schemes
-    // TODO: What was this necessary for?
-    // // Adjust registries in config
-    // for (let registry of state.config.registries) {
-    //   if (_.isArray(registry.schemes)) {
-    //     registry.schemes = registry.schemes.map(scheme => schemes.find(s => jskos.compare(s, scheme)) || scheme)
-    //   }
-    // }
-  },
-  setSchemesLoaded(state, { value }) {
-    state.schemesLoaded = value
-  },
   setConfig(state, { config, option, value }) {
     if (config) {
       state.config = config

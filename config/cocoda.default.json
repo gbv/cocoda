@@ -259,7 +259,7 @@
     {
       "provider": "OccurrencesApi",
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
-      "occurrences": "//coli-conc.gbv.de/occurrences/api/",
+      "api": "//coli-conc.gbv.de/occurrences/api/",
       "notation": [
         "CO"
       ],
@@ -279,7 +279,7 @@
     {
       "provider": "ReconciliationApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
-      "reconcile": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
+      "api": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/1940"
@@ -304,7 +304,7 @@
     {
       "provider": "ReconciliationApi",
       "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
-      "reconcile": "https://lobid.org/gnd/reconcile",
+      "api": "https://lobid.org/gnd/reconcile",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/430"
@@ -329,7 +329,7 @@
     {
       "provider": "ReconciliationApi",
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
-      "reconcile": "https://coli-conc.gbv.de/nomisma-reconciliation/",
+      "api": "https://coli-conc.gbv.de/nomisma-reconciliation/",
       "schemes": [
         {
           "uri": "http://nomisma.org/id/"
