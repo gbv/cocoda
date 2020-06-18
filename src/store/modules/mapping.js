@@ -453,9 +453,6 @@ const actions = {
     }
     let promises = []
     for (let registry of registries) {
-      if (registry.uri.includes("recon")) {
-        console.log("getMappings", registry, from, to)
-      }
       if (all) {
         // TODO: Is there a difference anymore?
         promises.push(registry.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, selected, cancelToken }))
