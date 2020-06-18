@@ -511,6 +511,7 @@ const actions = {
     // TODO: Necessary?
     // Minify mappings before saving
     // mappings = mappings.map(({ mapping, original }) => ({ mapping: jskos.minifyMapping(mapping), original }))
+    mappings = mappings.map(m => m.mapping)
     return registry.postMappings({ mappings })
   },
 
