@@ -1217,7 +1217,7 @@ export default {
           })
           // Filter mappings if showAllSchemes is off and schemes don't match
           // Note: This has to be adjusted or removed when proper pagination for navigator results is implemented!
-          mappings.totalCount = undefined
+          mappings._totalCount = undefined
           if (!this.componentSettings.showAllSchemes) {
             mappings = mappings.filter(mapping => {
               if (this.selected.scheme[true] && this.selected.scheme[false]) {
@@ -1273,7 +1273,7 @@ export default {
         section.loading = loading[registry.uri]
         section.page = pages[registry.uri] || 1
         let mappings = results[registry.uri] || []
-        section.totalCount = mappings.totalCount || mappings.length
+        section.totalCount = mappings._totalCount || mappings.length
         // Set section.loading if there is null in the results
         if (mappings.length == 1 && mappings[0] == null) {
           section.loading = true
@@ -1282,8 +1282,8 @@ export default {
         if (section.totalCount == 0 && !this.componentSettings.showEmpty) {
           continue
         }
-        if (mappings.url) {
-          section.url = mappings.url
+        if (mappings._url) {
+          section.url = mappings._url
         }
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
@@ -1360,7 +1360,7 @@ export default {
           }
           section.items.push(item)
         }
-        if (mappings.totalCount === undefined) {
+        if (mappings._totalCount === undefined) {
           section.items = section.items.slice((section.page - 1) * this.componentSettings.resultLimit, section.page * this.componentSettings.resultLimit)
         }
         section.totalCount -= skipped

@@ -465,6 +465,7 @@ export default {
       if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
         return
       }
+      // TODO CDK: This only loads mappings from one registry?
       let mappings = await this.getMappings({
         direction: "both",
         from: itemBefore,

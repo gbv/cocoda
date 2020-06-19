@@ -37,13 +37,13 @@
     "post-receive": "npm run build-info"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.28",
-    "@fortawesome/free-brands-svg-icons": "^5.13.0",
-    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-brands-svg-icons": "^5.13.1",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.19.2",
     "bootstrap-vue": "2.11.0",
-    "cocoda-sdk": "github:gbv/cocoda-sdk#85b7997",
+    "cocoda-sdk": "github:gbv/cocoda-sdk#7de9d07",
     "cocoda-vue-tabs": "^0.1.10",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.2",

@@ -516,11 +516,10 @@ export default {
       // TODO: Should this be finished before loaded is set?
       this.loadFromParametersOnce(true)
       // Look up local mappings count and show warning if there are too many.
-      // Note: Do not use this.getMappings here because it leads to issues when schemes are not loaded yet.
       // TODO: Consider moving this somewhere else.
-      const mappings = await this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
-      if (mappings.totalCount && mappings.totalCount >= 500) {
-        this.alert(this.$t("general.tooManyMappings", { count: mappings.totalCount }), 0)
+      const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
+      if (mappings._totalCount && mappings._totalCount >= 500) {
+        this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
       }
       // Check for update every 60 seconds
       // TODO: Consider moving this somewhere else.
@@ -676,7 +675,10 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+        let loadMapping = (query.mappingUri ? this.getMapping({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+          if (!_.isArray(mappings)) {
+            mappings = [mappings].filter(m => m)
+          }
           if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.

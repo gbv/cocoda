@@ -476,36 +476,27 @@ export default {
       return concept
     },
     /**
-     * Wrapper around the getMappings Vuex action that replaces all objects in the mappings with objects from the store.
+     * Returns registry object from config for a registry or URI. Fallback to current registry if it's null.
      *
-     * Only use this method to load mappings!
-     *
-     * @param  {...any} params
+     * @param {Object|string} registry
      */
-    getMappings(...params) {
-      if (!params[0]) {
-        return Promise.resolve([])
+    getRegistry(registry) {
+      registry = registry || this.currentRegistry
+      // Keep backward compatibility with old way of calling
+      if (_.isString(registry)) {
+        registry = { uri: registry }
       }
-      params[0].type = "mapping/getMappings"
-      if (params[0].adjust === undefined) {
-        params[0].adjust = true
-      }
-      return this.$store.dispatch(...params).then(mappings => {
-        if (params[0].adjust) {
-          // Replace all objects in mappings with objects in store
-          for (let mapping of mappings) {
-            this.adjustMapping(mapping)
-          }
-        }
-        return mappings
-      })
+      registry = this.config.registries.find(r => jskos.compare(r, registry))
+      return registry
     },
     /**
      * Adjusts a mapping by retrieving/saving all contained schemes and concepts from/in the store.
      *
-     * @param {*} mapping
+     * @param {Object} mapping JSKOS mapping object
+     * @returns {Object}
      */
     adjustMapping(mapping) {
+      // TODO: Find and replace current mapping?
       if (!mapping) {
         return null
       }
@@ -550,6 +541,325 @@ export default {
         }
       }
       return mapping
+    },
+    prepareMapping(mapping) {
+      if (!mapping) {
+        return null
+      }
+      mapping = jskos.copyDeep(mapping)
+      // Adjust creator
+      let creator = this.creator
+      let creatorName = jskos.prefLabel(creator, { fallbackToUri: false })
+      // - All previous creators (except self) will be written to contributors.
+      // - `creator` will be overridden by self.
+      if (creator) {
+        // TODO: Re-evaluate
+        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && jskos.prefLabel(c, { fallbackToUri: false }) && creatorName == jskos.prefLabel(c, { fallbackToUri: false }))))
+        mapping.creator = [creator]
+      } else {
+        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
+        this.$delete(mapping, "creator")
+      }
+      if (mapping.contributor.length == 0) {
+        this.$delete(mapping, "contributor")
+      }
+      return mapping
+    },
+    async getMapping({ registry, adjust = true, uri, mapping, ...config }) {
+      if (!mapping && !uri) {
+        throw new Error("getMapping: Can't get mapping with neither uri nor mapping.")
+      }
+      if (!mapping) {
+        mapping = { uri }
+      }
+      if (!registry) {
+        registry = mapping._registry || this.config.registries.find(r => r.has.mappings && mapping.uri.startsWith(r._api.mappings))
+      }
+      // Assume local mappings if URI starts with "urn:uuid"
+      if (!registry && mapping.uri.startsWith("urn:uuid")) {
+        registry = this.config.registries.find(r => r.uri.endsWith("local-mappings"))
+      }
+      registry = this.getRegistry(registry)
+      if (!registry) {
+        throw new Error("getMappings: No registry to get mappings from.")
+      }
+      mapping = await registry.getMapping({ mapping, ...config })
+      if (adjust) {
+        this.adjustMapping(mapping)
+      }
+      return mapping
+    },
+    async getMappings({ registry, adjust = true, ...config }) {
+      registry = this.getRegistry(registry)
+      if (!registry) {
+        throw new Error("getMappings: No registry to get mappings from.")
+      }
+      if (!registry.has.mappings) {
+        throw new Error(`getMappings: Registry ${registry.uri} does not support mappings.`)
+      }
+      const mappings = await registry.getMappings(config)
+      if (adjust) {
+        for (let mapping of mappings) {
+          this.adjustMapping(mapping)
+        }
+      }
+      return mappings
+    },
+    async postMapping({ registry, adjust = true, reload = true, alert = true, before, after, ...config }) {
+      registry = this.getRegistry(registry || config.mapping._registry)
+      if (!registry) {
+        throw new Error("postMapping: No registry to post mapping to.")
+      }
+      before && before()
+      try {
+        config.mapping = this.prepareMapping(config.mapping)
+        const mapping = await registry.postMapping(config)
+        if (adjust) {
+          this.adjustMapping(mapping)
+        }
+        if (reload) {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+        }
+        if (alert) {
+          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+        }
+        after && after()
+        return mapping
+      } catch(error) {
+        if (alert) {
+          let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
+          // TODO: Adjust!!!
+          if (registry.has.auth && !registry.auth) {
+            message += " " + this.$t("general.authNecessary")
+          }
+          this.alert(message, null, "danger")
+        }
+        after && after(error)
+        throw error
+      }
+    },
+    async postMappings({ registry, adjust = true, reload = true, alert = true, before, after, ...config }) {
+      registry = this.getRegistry(registry)
+      if (!registry) {
+        throw new Error("postMappings: No registry to post mappings to.")
+      }
+      before && before()
+      try {
+        config.mappings = config.mappings.map(mapping => this.prepareMapping(mapping))
+        const mappings = await registry.postMappings(config)
+        if (adjust) {
+          for (let mapping of mappings) {
+            this.adjustMapping(mapping)
+          }
+        }
+        if (reload) {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+        }
+        if (alert) {
+          // TODO
+          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+        }
+        after && after()
+        return mappings
+      } catch(error) {
+        if (alert) {
+          let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
+          // TODO: Adjust!!! Also for multiple mappings.
+          if (registry.has.auth && !registry.auth) {
+            message += " " + this.$t("general.authNecessary")
+          }
+          this.alert(message, null, "danger")
+        }
+        after && after(error)
+        throw error
+      }
+    },
+    async putMapping({ registry, adjust = true, reload = true, alert = true, before, after, ...config }) {
+      registry = this.getRegistry(registry || config.mapping._registry)
+      if (!registry) {
+        throw new Error("putMapping: No registry to put mapping to.")
+      }
+      before && before()
+      try {
+        config.mapping = this.prepareMapping(config.mapping)
+        const mapping = await registry.putMapping(config)
+        if (adjust) {
+          this.adjustMapping(mapping)
+        }
+        if (reload) {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+        }
+        if (alert) {
+          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+        }
+        after && after()
+        return mapping
+      } catch(error) {
+        if (alert) {
+          let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
+          // TODO: Adjust!!!
+          if (registry.has.auth && !registry.auth) {
+            message += " " + this.$t("general.authNecessary")
+          }
+          this.alert(message, null, "danger")
+        }
+        after && after(error)
+        throw error
+      }
+    },
+    async deleteMapping({ registry, reload = true, alert = true, trash = true, before, after, ...config }) {
+      registry = this.getRegistry(registry || config.mapping._registry)
+      if (!registry) {
+        throw new Error("deleteMapping: No registry to delete mapping from.")
+      }
+      before && before()
+      try {
+        await registry.deleteMapping(config)
+        if (trash) {
+        // Add to mapping trash
+          this.$store.commit({
+            type: "mapping/addToTrash",
+            mapping: config.mapping,
+            registry,
+          })
+        }
+        // TODO: Compare with current mapping.
+        if (reload) {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+        }
+        if (alert) {
+          this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
+            // Hide alert
+            this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
+            this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: config.mapping.uri }).then(success => {
+              if (success) {
+                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+              } else {
+                this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
+              }
+            })
+          })
+        }
+        after && after()
+        return true
+      } catch(error) {
+        if (alert) {
+          this.alert(this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
+        }
+        after && after(error)
+        throw error
+      }
+    },
+    async deleteMappings({ registry, reload = true, alert = true, trash = true, before, after, ...config }) {
+      registry = this.getRegistry(registry || _.get(config, "mappings[0]._registry"))
+      if (!registry) {
+        throw new Error("deleteMapping: No registry to delete mapping from.")
+      }
+      before && before()
+      try {
+        await registry.deleteMappings(config)
+        if (trash) {
+          // Add to mapping trash
+          for (let mapping of config.mappings) {
+            this.$store.commit({
+              type: "mapping/addToTrash",
+              mapping,
+              registry,
+            })
+          }
+        }
+        // TODO: Compare with current mapping.
+        if (reload) {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+        }
+        if (alert) {
+          // TODO: Adjust!
+          this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
+            // Hide alert
+            this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
+            this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: config.mapping.uri }).then(success => {
+              if (success) {
+                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+              } else {
+                this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
+              }
+            })
+          })
+        }
+        after && after()
+        return true
+      } catch(error) {
+        if (alert) {
+          // TODO: Adjust!
+          this.alert(this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
+        }
+        after && after(error)
+        throw error
+      }
+    },
+    canCreateMapping({ registry, mapping, user = this.user }) {
+      if (!mapping || !registry) {
+        return false
+      }
+      // Check multiple things regarding fromScheme/toScheme
+      for (let side of ["fromScheme", "toScheme"]) {
+        // Require both sides
+        if (!mapping[side]) {
+          return false
+        }
+        // Check registry whitelist
+        const whitelist = _.get(registry, `config.mappings.${side}Whitelist`)
+        if (whitelist) {
+          if (!whitelist.find(s => jskos.compare(s, mapping[side]))) {
+            return false
+          }
+        }
+        // Check cardinality
+        const cardinality = _.get(registry, "config.mappings.cardinality")
+        if (cardinality == "1-to-1" && jskos.conceptsOfMapping(mapping, "to").length > 1) {
+          return false
+        }
+      }
+      // Check if user is authorized in current registry
+      if (!registry.isAuthorizedFor({
+        type: "mappings",
+        action: "create",
+        user,
+      })) {
+        return false
+      }
+      return true
+    },
+    canUpdateMapping({ registry, mapping, user = this.user }) {
+      if (!mapping) {
+        return false
+      }
+      registry = registry || mapping._registry
+      if (!registry) {
+        return false
+      }
+      return registry.isAuthorizedFor({
+        type: "mappings",
+        action: "update",
+        user,
+        crossUser: !this.$jskos.userOwnsMapping(user, mapping),
+      })
+    },
+    canDeleteMapping({ registry, mapping, user = this.user}) {
+      if (!mapping) {
+        return false
+      }
+      registry = registry || mapping._registry
+      if (!registry) {
+        return false
+      }
+      let crossUser = !jskos.userOwnsMapping(user, mapping)
+      return registry.isAuthorizedFor({
+        type: "mappings",
+        action: "delete",
+        user,
+        crossUser,
+      })
     },
   },
 }

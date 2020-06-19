@@ -316,7 +316,7 @@
               <b-button
                 variant="danger"
                 size="sm"
-                @click="deleteMappings">
+                @click="deleteMappings_">
                 {{ $t("general.yes") }}
               </b-button>
               <b-button
@@ -505,12 +505,12 @@ export default {
             }
             try {
               let mapping = JSON.parse(line)
-              mappings.push({ mapping })
+              mappings.push(mapping)
             } catch(error) {
               importResult.error += 1
             }
           }
-          this.$store.dispatch({ type: "mapping/saveMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(result => {
+          this.postMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", alert: false, refresh: false }).then(result => {
             importResult.imported = result.length
             importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
@@ -636,24 +636,23 @@ export default {
         console.error("TheSettings - Error refreshing local mappings download", error)
       })
     },
-    rewriteCreator() {
+    async rewriteCreator() {
       if (!this.localMappingsSupported) {
         return
       }
-      // 1. Load all local mappings directly from API
-      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
-        // 2. Rewrite mappings to new creator
+      try {
+        // 1. Load all local mappings directly from API
+        const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+        // 2. Put all mappings (updates creator automatically)
         for (let mapping of mappings) {
-          _.set(mapping, "creator", [this.creator])
+          await this.putMapping({ mapping, reload: false, alert: false })
         }
-        return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })), registry: "http://coli-conc.gbv.de/registry/local-mappings" })
-      }).then(() => {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
-      }).catch(error => {
+      } catch(error) {
         console.error("TheSettings - Error rewriting creator", error)
-      })
+      }
     },
     resetFlex() {
       let flex = _.cloneDeep(this.localSettings.flex)
@@ -666,25 +665,21 @@ export default {
         value: flex,
       })
     },
-    deleteMappings() {
+    async deleteMappings_() {
       if (!this.localMappingsSupported) {
         return
       }
-      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
-        return this.$store.dispatch({ type: "mapping/removeMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(removedMappings => {
-          let removedMappingsCount = removedMappings.filter(success => success).length
-          if (mappings.length != removedMappingsCount) {
-            console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappingsCount}.`)
-          }
-          this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
-          this.refreshDownloads()
-          this.deleteMappingsButtons = false
-          // Also clear mapping trash
-          this.$store.commit("mapping/clearTrash")
-        }).catch(error => {
-          console.error("TheSettings - Error deleting local mappings", error)
-        })
-      })
+      try {
+        const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+        await this.deleteMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", alert: false, refresh: false, trash: false })
+        this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+        this.refreshDownloads()
+        this.deleteMappingsButtons = false
+        // Also clear mapping trash
+        this.$store.commit("mapping/clearTrash")
+      } catch(error) {
+        console.error("TheSettings - Error deleting local mappings", error)
+      }
     },
     login(provider) {
       let url

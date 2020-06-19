@@ -239,8 +239,8 @@
           :style="`margin-left: 1px;`"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-b-tooltip.hover="{ title: canEdit(data, user) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
-            :icon="canEdit(data, user) ? 'edit' : 'clone'"
+            v-b-tooltip.hover="{ title: canUpdateMapping({ mapping: data.item.mapping, user }) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
+            :icon="canUpdateMapping({ mapping: data.item.mapping, user }) ? 'edit' : 'clone'"
             class="button"
             @click="edit(data)" />
         </div>
@@ -248,21 +248,21 @@
           v-if="showEditingTools && !$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canSave(data)"
-            v-b-tooltip.hover="{ title: canSave(data) ? $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
+            v-if="canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping })"
+            v-b-tooltip.hover="{ title: canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping }) ? $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
             class="button"
             icon="save"
-            @click="saveMapping(data.item.mapping)" />
+            @click="postMapping({ mapping: data.item.mapping, registry: currentRegistry, before: () => { loadingGlobal = true }, after: () => { loadingGlobal = false }})" />
         </div>
         <div
           v-else-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canRemove(data, user)"
+            v-if="canDeleteMapping({ mapping: data.item.mapping, user })"
             v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.has.auth && !$store.getters.getCurrentRegistry.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
             class="button-delete"
             icon="trash-alt"
-            @click="removeMapping(data.item.mapping)" />
+            @click="deleteMapping({ mapping: data.item.mapping, before: () => { loadingGlobal = true }, after: () => { loadingGlobal = false } })" />
         </div>
         <div
           v-if="showCocodaLink"
@@ -558,7 +558,8 @@ export default {
   },
   methods: {
     edit(data) {
-      const canEdit = this.canEdit(data, this.user)
+      // TODO
+      const canEdit = this.canUpdateMapping({ mapping: data.item.mapping, user: this.user })
       if (canEdit) {
         // Select registry for editing
         this.useRegistryForSaving(data.item.registry)
@@ -583,144 +584,6 @@ export default {
         type: "mapping/set",
         mapping,
         original: canEdit ? data.item.mapping : null,
-      })
-    },
-    canRemove(data, user) {
-      const registry = data.item.registry
-      const mapping = data.item.mapping
-      // Can't delete mapping from registry other than current
-      if (!this.$jskos.compare(registry, this.currentRegistry)) {
-        return false
-      }
-      let crossUser = !this.$jskos.userOwnsMapping(user, mapping)
-      return registry.isAuthorizedFor({
-        type: "mappings",
-        action: "delete",
-        user: this.user,
-        crossUser,
-      })
-    },
-    removeMapping(mapping) {
-      this.loadingGlobal = true
-      this.$store.dispatch({ type: "mapping/removeMappings", mappings: [mapping] }).then(([success]) => {
-        if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
-            // Hide alert
-            this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
-            this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: mapping.uri }).then(success => {
-              if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "success2")
-              } else {
-                this.alert(this.$t("alerts.mappingNotRestored", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "danger")
-              }
-            })
-          })
-        } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(mapping._registry, { fallbackToUri: false })]), null, "danger")
-        }
-        // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
-      }).catch(error => {
-        console.error("MappingBrowserTable - Error removing mapping", error)
-      }).then(() => {
-        this.loadingGlobal = false
-      })
-    },
-    canEdit(data, user) {
-      return data.item.registry.isAuthorizedFor({
-        type: "mappings",
-        action: "update",
-        user: user,
-        crossUser: !this.$jskos.userOwnsMapping(user, _.get(data, "item.mapping")),
-      })
-    },
-    /** Saving of mappigns */
-    canSave(data) {
-      const registry = data.item.registry
-      const mapping = data.item.mapping
-      if (!mapping) {
-        return false
-      }
-      // Don't allow saving if it's the current registry
-      if (this.$jskos.compare(registry, this.currentRegistry)) {
-        return false
-      }
-      // Check multiple things regarding fromScheme/toScheme
-      // TODO: Fix slight code duplication with MappingEditor's `mappingStatus`?
-      for (let side of ["fromScheme", "toScheme"]) {
-        // Require both sides
-        if (!mapping[side]) {
-          return false
-        }
-        // Check registry whitelist
-        const whitelist = _.get(this.currentRegistry, `config.mappings.${side}Whitelist`)
-        if (whitelist) {
-          if (!whitelist.find(s => this.$jskos.compare(s, mapping[side]))) {
-            return false
-          }
-        }
-        // Check cardinality
-        const cardinality = _.get(this.currentRegistry, "config.mappings.cardinality")
-        if (cardinality == "1-to-1" && this.$jskos.conceptsOfMapping(mapping, "to").length > 1) {
-          return false
-        }
-      }
-      // Check if user is authorized in current registry
-      if (!this.currentRegistry.isAuthorizedFor({
-        type: "mappings",
-        action: "create",
-        user: this.user,
-      })) {
-        return false
-      }
-      return true
-    },
-    copyMappingAndAdjustCreator(mapping) {
-      mapping = this.$jskos.copyDeep(mapping)
-      // Adjust creator
-      let creator = this.creator
-      let creatorName = this.$jskos.prefLabel(creator, { fallbackToUri: false })
-      // - All previous creators (except self) will be written to contributors.
-      // - `creator` will be overridden by self.
-      if (creator) {
-        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
-        mapping.creator = [creator]
-      } else {
-        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
-        this.$delete(mapping, "creator")
-      }
-      if (mapping.contributor.length == 0) {
-        this.$delete(mapping, "contributor")
-      }
-      return mapping
-    },
-    saveMapping(mapping) {
-      mapping = this.copyMappingAndAdjustCreator(mapping)
-      this.loadingGlobal = true
-      return this.$store.dispatch({ type: "mapping/saveMappings", mappings: [{ mapping }] }).then(mappings => {
-        return mappings[0]
-      }).catch(() => {
-        return null
-      }).then(mapping => {
-        if (!mapping) {
-          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })])
-          if (this.currentRegistry.has.auth && !this.currentRegistry.auth) {
-            message += " " + this.$t("general.authNecessary")
-          }
-          this.alert(message, null, "danger")
-        } else {
-          this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
-        }
-        return mapping
-      }).catch(error => {
-        console.error("MappingBrowserTable - error in saveMapping:", error)
-        return null
-      }).then(mapping => {
-        this.loadingGlobal = false
-        // Refresh list of mappings/suggestions.
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
-        // Return adjusted mapping
-        return this.adjustMapping(mapping)
       })
     },
     annotationsScore(annotations) {

@@ -1,60 +1,60 @@
 <template>
   <div
     id="mappingEditor"
-    :class="canSaveMapping ? 'mappingEditor-notSaved' : (canExportMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'mappingEditor-cantSave')">
+    :class="canSaveCurrentMapping ? 'mappingEditor-notSaved' : (canExportCurrentMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'CurrentMappingEditor-cantSave')">
     <!-- Settings -->
     <component-settings :tooltip="$t('mappingEditor.settingsButton')" />
     <div
-      v-if="canSaveMapping"
+      v-if="canSaveCurrentMapping"
       class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
       {{ $jskos.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
-        v-b-tooltip.hover="{ title: canSwapMapping ? $t('mappingEditor.swapMapping') : '', delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canSwapCurrentMapping ? $t('mappingEditor.swapMapping') : '', delay: defaults.delay.medium }"
         :class="{
-          button: canSwapMapping,
-          'button-disabled': !canSwapMapping
+          button: canSwapCurrentMapping,
+          'button-disabled': !canSwapCurrentMapping
         }"
         class="mappingEditorToolbarItem"
         @click="swapMapping">
         <font-awesome-icon icon="exchange-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canSaveMapping ? $t('mappingEditor.saveMapping') : '', delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveCurrentMapping ? $t('mappingEditor.saveMapping') : '', delay: defaults.delay.medium }"
         :class="{
-          button: canSaveMapping,
-          'button-disabled': !canSaveMapping
+          button: canSaveCurrentMapping,
+          'button-disabled': !canSaveCurrentMapping
         }"
         class="mappingEditorToolbarItem"
-        @click="saveMapping">
+        @click="saveCurrentMapping">
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canDeleteMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.has.auth || $store.getters.getCurrentRegistry.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteCurrentMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.has.auth || $store.getters.getCurrentRegistry.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
         :class="{
-          'button-delete': canDeleteMapping,
-          'button-disabled': !canDeleteMapping
+          'button-delete': canDeleteCurrentMapping,
+          'button-disabled': !canDeleteCurrentMapping
         }"
         class="mappingEditorToolbarItem"
-        @click="deleteMapping">
+        @click="deleteCurrentMapping">
         <font-awesome-icon icon="trash-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canCloneMapping ? $t('mappingEditor.cloneMapping') : '', delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canCloneCurrentMapping ? $t('mappingEditor.cloneMapping') : '', delay: defaults.delay.medium }"
         :class="{
-          'button': canCloneMapping,
-          'button-disabled': !canCloneMapping
+          'button': canCloneCurrentMapping,
+          'button-disabled': !canCloneCurrentMapping
         }"
         class="mappingEditorToolbarItem"
         @click="cloneMapping">
         <font-awesome-icon icon="clone" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canClearMapping ? $t('mappingEditor.clearMapping') : '', delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canClearCurrentMapping ? $t('mappingEditor.clearMapping') : '', delay: defaults.delay.medium }"
         :class="{
-          button: canClearMapping,
-          'button-disabled': !canClearMapping
+          button: canClearCurrentMapping,
+          'button-disabled': !canClearCurrentMapping
         }"
         class="mappingEditorToolbarItem"
         @click="clearMapping">
@@ -250,7 +250,7 @@ export default {
     original() {
       return this.$store.state.mapping.original
     },
-    canSaveMapping() {
+    canSaveCurrentMapping() {
       if (this.mappingStatus.invalid) {
         return false
       }
@@ -259,19 +259,19 @@ export default {
       }
       return this.$store.getters["mapping/canCreate"]
     },
-    canDeleteMapping() {
+    canDeleteCurrentMapping() {
       return this.$store.getters["mapping/canDelete"]
     },
-    canClearMapping() {
+    canClearCurrentMapping() {
       return this.mapping.fromScheme || this.mapping.toScheme
     },
-    canExportMapping() {
+    canExportCurrentMapping() {
       return this.mapping.fromScheme && this.mapping.toScheme
     },
-    canSwapMapping() {
+    canSwapCurrentMapping() {
       return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
     },
-    canCloneMapping() {
+    canCloneCurrentMapping() {
       return this.original.uri != null
     },
     /**
@@ -406,7 +406,7 @@ export default {
     shortcutHandler({ action, isLeft }) {
       switch(action) {
         case "saveMapping":
-          this.saveMapping()
+          this.saveCurrentMapping()
           break
         case "clearMapping":
           this.clearMapping()
@@ -416,41 +416,36 @@ export default {
           break
       }
     },
-    saveMapping() {
-      if (!this.canSaveMapping) return false
+    async saveCurrentMapping() {
+      if (!this.canSaveCurrentMapping) return false
       if (this.creator) {
         // Set creator
         this.setCreator()
       } else {
         this.removeCreator()
       }
-      let mapping = this.prepareMapping()
-      mapping.modified = (new Date()).toISOString()
-      this.loadingGlobal = true
-      this.$store.dispatch({ type: "mapping/saveMapping" }).then(mapping => {
-        if (!mapping) {
-          // TODO: Adjust
-          let message = this.$t("alerts.mappingNotSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })])
-          if (this.currentRegistry.has.auth && !this.currentRegistry.auth) {
-            message += " " + this.$t("general.authNecessary")
-          }
-          this.alert(message, null, "danger")
-          return
-        }
-        this.alert(this.$t("alerts.mappingSaved", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
-        this.$store.commit({
-          type: "mapping/set",
-          original: this.adjustMapping(mapping),
-        })
-        if (this.componentSettings.clearOnSave) {
-          this.clearMapping()
-        }
-      }).catch(error => {
-        console.error("MappingEditor - error in saveMapping:", error)
-      }).then(() => {
-        this.loadingGlobal = false
-        this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
+      // Determine whether it should update original mapping
+      const updateOriginal = this.original.uri && this.$jskos.compare(this.currentRegistry, this.original.registry)
+      // Save as new mapping or update mapping
+      const mapping = await this[updateOriginal ? "putMapping" : "postMapping"]({
+        registry: this.currentRegistry,
+        mapping: this.mapping,
+        before: () => {
+          this.loadingGlobal = true
+        },
+        after: () => {
+          this.loadingGlobal = false
+        },
       })
+      // Set saved mapping as original
+      this.$store.commit({
+        type: "mapping/set",
+        original: mapping,
+      })
+      // Clear mapping if necessary
+      if (this.componentSettings.clearOnSave) {
+        this.clearMapping()
+      }
     },
     setCreator() {
       // - All previous creators (except self) will be written to contributors.
@@ -478,41 +473,32 @@ export default {
         contributor,
       })
     },
-    deleteMapping() {
-      if (!this.canDeleteMapping) return false
+    deleteCurrentMapping() {
+      if (!this.canDeleteCurrentMapping) return false
       this.$refs.deleteModal.show()
       return true
     },
-    deleteOriginalMapping(clear = false) {
-      this.loadingGlobal = true
-      this.$store.dispatch({ type: "mapping/removeMapping" }).then(success => {
-        if (success) {
-          this.alert(this.$t("alerts.mappingDeleted", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "success2")
-          this.$store.commit("mapping/setRefresh", { registry: _.get(this.currentRegistry, "uri") })
-          if (clear) {
-            this.clearMapping()
-          }
-        } else {
-          this.alert(this.$t("alerts.mappingNotDeleted", [this.$jskos.prefLabel(this.currentRegistry, { fallbackToUri: false })]), null, "danger")
-        }
-      }).catch(error => {
-        console.error("MappingEditor - error in deleteOriginalMapping:", error)
-      }).then(() => {
-        this.loadingGlobal = false
+    async deleteOriginalMapping(clear = false) {
+      await this.deleteMapping({
+        mapping: this.mapping,
+        before: () => {
+          this.loadingGlobal = true
+        },
+        after: () => {
+          this.loadingGlobal = false
+        },
       })
+      if (clear) {
+        this.clearMapping()
+      }
       return true
     },
     clearMapping() {
-      if (!this.canClearMapping) return false
+      if (!this.canClearCurrentMapping) return false
       this.$store.commit({
         type: "mapping/empty",
       })
       return true
-    },
-    prepareMapping(mapping = null) {
-      mapping = mapping || this.$jskos.minifyMapping(this.mapping)
-      mapping = this.$jskos.addMappingIdentifiers(mapping)
-      return mapping
     },
     labelForScheme(scheme) {
       return this.$jskos.notation(scheme, "scheme")
@@ -582,7 +568,7 @@ export default {
       }
     },
     swapMapping() {
-      if (!this.canSwapMapping) {
+      if (!this.canSwapCurrentMapping) {
         return
       }
       this.$store.commit({ type: "mapping/switch" })
