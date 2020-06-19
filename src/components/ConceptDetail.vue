@@ -465,12 +465,14 @@ export default {
       if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
         return
       }
-      // TODO CDK: This only loads mappings from one registry?
-      let mappings = await this.getMappings({
+      // Load GND mappings from all stored registries
+      const mappingPromises = this.config.registries.filter(r => r.has.mappings && this.$jskos.mappingRegistryIsStored(r)).map(registry => this.getMappings({
+        registry,
         direction: "both",
         from: itemBefore,
         toScheme: gnd.uri,
-      })
+      }).catch(() => []))
+      let mappings = _.flatten(await Promise.all(mappingPromises))
 
       // Get GND concepts and load their labels
       let gndConcepts = []

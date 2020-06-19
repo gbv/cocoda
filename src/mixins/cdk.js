@@ -290,8 +290,7 @@ export default {
       }
       let types = []
       try {
-        // TODO CDK: Is this compatible?
-        types = await scheme._getTypes()
+        types = await ((scheme._getTypes && scheme._getTypes()) || (scheme._registry && scheme._registry.getTypes({ scheme })) || Promise.reject())
       } catch(error) {
         // Ignore error, show warning only.
         this.$log.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
@@ -313,8 +312,7 @@ export default {
       }
       let topConcepts = []
       try {
-        // TODO CDK: Is this compatible?
-        topConcepts = await scheme._getTop()
+        topConcepts = await ((scheme._getTop && scheme._getTop()) || (scheme._registry && scheme._registry.getTop({ scheme })) || Promise.reject())
       } catch(error) {
         // Ignore error, show warning only.
         this.$log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)

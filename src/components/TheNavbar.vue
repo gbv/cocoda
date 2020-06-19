@@ -65,7 +65,6 @@
             <font-awesome-icon icon="trash-alt" /> {{ $t("navbar.trashClearButton") }}
           </div>
         </b-dropdown-header>
-        <!-- TODO CDK -->
         <mapping-table
           class="font-default"
           :mappings="mappingTrash.map(item => item.mapping)"
