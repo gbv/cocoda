@@ -14,6 +14,7 @@
 import jskos from "jskos-tools"
 import cdk from "cocoda-sdk"
 import _ from "lodash"
+import computed from "./computed"
 
 let objects = {}
 let topConcepts = {}
@@ -23,6 +24,7 @@ let schemes = []
 let concordances = []
 
 export default {
+  mixins: [computed],
   data() {
     return {
       objects,
