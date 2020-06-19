@@ -562,14 +562,14 @@ export default {
         axios.get(this.config.mappingProviders[0].status.replace("/status", "/voc")).then(({ data }) => {
           this.mappingSchemes = data
         }).catch(error => {
-          console.warn("Error fetching mapping schemes:", error)
+          this.$log.warn("Error fetching mapping schemes:", error)
           this.mappingSchemes = []
         })
         // Load concordances from API.
         axios.get(this.concordancesUrl).then(({ data }) => {
           this.concordances = data
         }).catch(error => {
-          console.warn("Error fetching mapping schemes:", error)
+          this.$log.warn("Error fetching mapping schemes:", error)
           this.concordances = []
         }).then(() => {
           // If there are no concordances, jump to second tab.

@@ -877,7 +877,7 @@ export default {
         })
         this.concordances.length = concordances.length
       }).catch(error => {
-        console.error("MappingBrowser - Error loading concordances", error)
+        this.$log.error("MappingBrowser - Error loading concordances", error)
       }).then(() => {
         this.concordancesLoaded = true
       })
@@ -1051,7 +1051,7 @@ export default {
           limit: this.componentSettings.resultLimit,
           cancelToken: cancelToken.token,
         }).catch(error => {
-          console.warn("Mapping Browser: Error during search:", error)
+          this.$log.warn("Mapping Browser: Error during search:", error)
           return []
         }).then(mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
@@ -1153,7 +1153,7 @@ export default {
         }
 
         let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken: cancelToken.token }).catch(error => {
-          console.warn("Mapping Browser: Error during refresh (1)", error)
+          this.$log.warn("Mapping Browser: Error during refresh (1)", error)
           return []
         }).then(mappings => {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
@@ -1245,7 +1245,7 @@ export default {
           // Reset cancel token
           this.navigatorCancelToken[registry.uri] = null
         }).catch(error => {
-          console.warn("Mapping Browser: Error during refresh (2)", error)
+          this.$log.warn("Mapping Browser: Error during refresh (2)", error)
         }).then(() => {
           // Schedule auto refresh
           this.scheduleAutoRefresh(registry)

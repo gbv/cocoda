@@ -1,6 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
+import log from "../../utils/log"
 
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
@@ -451,7 +452,7 @@ const actions = {
     let item = state.mappingTrash.find(item => item.mapping.uri == uri)
     let registry = config.registries.find(registry => jskos.compare(registry, item && item.registry))
     if (!item || !registry) {
-      console.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
+      log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)
     }
     return registry.postMapping({ mapping: item.mapping }).then(mapping => {

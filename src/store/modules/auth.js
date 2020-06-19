@@ -3,6 +3,7 @@
  */
 
 import LoginClient from "gbv-login-client"
+import log from "../../utils/log"
 let client
 
 // initial state
@@ -173,7 +174,7 @@ const actions = {
             break
           case LoginClient.events.error:
             resolve()
-            console.error("LoginClient error:", event.error)
+            log.error("LoginClient error:", event.error)
             break
         }
       })

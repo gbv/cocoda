@@ -3,6 +3,7 @@ import _ from "lodash"
 import axios from "axios"
 import defaultConfig from "../config"
 import i18n from "../utils/i18n"
+import log from "../utils/log"
 // Import registry providers
 import cdk from "cocoda-sdk"
 let buildInfo
@@ -25,7 +26,7 @@ export default {
       userConfig = null
     }
     if (!_.isObject(userConfig)) {
-      console.error(`Error loading config from ${configFile}: Data is not an object.`)
+      log.error(`Error loading config from ${configFile}: Data is not an object.`)
       userConfig = { error: "malformedConfig" }
     }
     config = Object.assign({ configFile }, defaultConfig, userConfig)
@@ -166,7 +167,7 @@ export default {
       } else {
         // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
         const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry._config.version, jskosApi: buildInfo.jskosApi })
-        console.warn(text)
+        log.warn(text)
         commit("alerts/add", {
           variant: "danger",
           text,
@@ -245,7 +246,7 @@ export default {
           list = (await axios.get(url)).data
           list.url = url
         } catch (error) {
-          console.warn("Could not load list from URL:", list)
+          log.warn("Could not load list from URL:", list)
         }
         if (list) {
           conceptLists.push(list)
@@ -266,7 +267,7 @@ export default {
           let concepts = (await axios.get(url)).data
           list.concepts = concepts
         } catch (error) {
-          console.warn("Could not load concepts for list with URL:", url)
+          log.warn("Could not load concepts for list with URL:", url)
           list.concepts = []
         }
         list.conceptsUrl = url

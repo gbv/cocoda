@@ -453,7 +453,7 @@ export default {
                 if (setting.type == "Number" && !_.isNumber(value)) {
                   value = parseInt(value)
                   if (isNaN(value) || value < setting.min || value > setting.max) {
-                    console.warn(`Tried to save invalid value for setting ${componentName} -> ${settingKey}, fallback to default value (${setting.default}).`)
+                    this.$log.warn(`Tried to save invalid value for setting ${componentName} -> ${settingKey}, fallback to default value (${setting.default}).`)
                     value = setting.default
                   }
                 }
@@ -518,7 +518,7 @@ export default {
             this.refreshDownloads()
             this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           }).catch(error => {
-            console.error("TheSettings - Error uploading mappings", error)
+            this.$log.error("TheSettings - Error uploading mappings", error)
           })
         }
         reader.readAsText(this.uploadedFile)
@@ -633,7 +633,7 @@ export default {
         this.dlAllMappingsCsv = mappingCSV.fromMappings(minifiedMappings)
         this.dlMappingsReady = true
       }).catch(error => {
-        console.error("TheSettings - Error refreshing local mappings download", error)
+        this.$log.error("TheSettings - Error refreshing local mappings download", error)
       })
     },
     async rewriteCreator() {
@@ -651,7 +651,7 @@ export default {
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
       } catch(error) {
-        console.error("TheSettings - Error rewriting creator", error)
+        this.$log.error("TheSettings - Error rewriting creator", error)
       }
     },
     resetFlex() {
@@ -678,7 +678,7 @@ export default {
         // Also clear mapping trash
         this.$store.commit("mapping/clearTrash")
       } catch(error) {
-        console.error("TheSettings - Error deleting local mappings", error)
+        this.$log.error("TheSettings - Error deleting local mappings", error)
       }
     },
     login(provider) {

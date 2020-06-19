@@ -253,13 +253,13 @@ export default {
     assessing(value) {
       let provider = this.provider
       if (!provider || !provider.has.annotations) {
-        console.warn("No provider found to add annotation.")
+        this.$log.warn("No provider found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       let uri = _.get(this.imapping, "uri")
       if (!uri) {
-        console.warn("No URI found to add annotation.")
+        this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
@@ -342,7 +342,7 @@ export default {
         }
       }
       promise.catch(error => {
-        console.error("AnnotationPopover - Error adding annotation", error)
+        this.$log.error("AnnotationPopover - Error adding annotation", error)
         this.alert(this.$t("alerts.annotationError"), null, "danger")
       }).then(() => {
         this.loading = false
@@ -369,13 +369,13 @@ export default {
     async confirm() {
       const provider = this.provider
       if (!provider || !provider.has.annotations) {
-        console.warn("No provider found to add annotation.")
+        this.$log.warn("No provider found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       const uri = _.get(this.imapping, "uri")
       if (!uri) {
-        console.warn("No URI found to add annotation.")
+        this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }

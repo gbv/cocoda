@@ -195,7 +195,7 @@ export default {
             return 0
           })
           if (object.inScheme.length == 0) {
-            console.warn(object, object.uri + ": inScheme has no elements", object.inScheme.slice(), "with scheme", options.scheme)
+            this.$log.warn(object, object.uri + ": inScheme has no elements", object.inScheme.slice(), "with scheme", options.scheme)
           }
         }
 
@@ -294,7 +294,7 @@ export default {
         types = await scheme._getTypes()
       } catch(error) {
         // Ignore error, show warning only.
-        console.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
+        this.$log.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
       }
       this.$set(scheme, "types", types)
       return scheme
@@ -317,7 +317,7 @@ export default {
         topConcepts = await scheme._getTop()
       } catch(error) {
         // Ignore error, show warning only.
-        console.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)
+        this.$log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)
       }
       topConcepts = this.saveObjectsWithOptions({ scheme, type: "concept" })(topConcepts)
       // Set ancestors

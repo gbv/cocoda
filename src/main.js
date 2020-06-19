@@ -16,6 +16,10 @@ Vue.use(VueScrollTo)
 import jskos from "jskos-tools"
 Vue.prototype.$jskos = jskos
 
+// Add logger, use with this.$log.log/warn/error in components
+import log from "./utils/log"
+Vue.prototype.$log = log
+
 // Set Vuex store and path on jskos-tools' languagePreference
 import store from "./store"
 const storePath = "getters.languages"

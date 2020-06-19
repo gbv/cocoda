@@ -546,7 +546,7 @@ export default {
         }
       }
       // TODO: Remove
-      console.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
+      this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
     insertPrefLabel(isLeft) {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {
@@ -752,7 +752,7 @@ export default {
         }
       }).catch((error) => {
         this.loading = false
-        console.warn(error)
+        this.$log.warn(error)
         this.alert("There was an error loading data from URL.", null, "danger")
       })
     },
@@ -769,7 +769,7 @@ export default {
     showConcordances() {
       let mappingBrowser = this.$refs.mappingBrowser
       if (!mappingBrowser) {
-        console.warn("Could not show concordances because MappingBrowser component was not found.")
+        this.$log.warn("Could not show concordances because MappingBrowser component was not found.")
         return
       }
       if (mappingBrowser.concordancesLoaded) {
