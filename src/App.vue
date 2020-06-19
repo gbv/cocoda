@@ -194,11 +194,11 @@ import ConceptListWrapper from "./components/ConceptListWrapper"
 import ItemDetail from "./components/ItemDetail"
 import ResizingSlider from "./components/ResizingSlider"
 import _ from "lodash"
-import axios from "axios"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
+import cdk from "cocoda-sdk"
 
 // Import mixins
 import auth from "./mixins/auth"
@@ -523,22 +523,20 @@ export default {
       }
       // Check for update every 60 seconds
       // TODO: Consider moving this somewhere else.
-      // TODO CDK: Adjust with CDK
-      let updateMessageShown = false
-      setInterval(() => {
-        axios.get("./build-info.json", {
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        }).then(response => response.data).then(buildInfo => {
-          if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
+      let cancelLoadBuildInfo
+      cancelLoadBuildInfo = cdk.loadBuildInfo({
+        url: "./build-info.json",
+        buildInfo: this.config.buildInfo,
+        interval: this.config.autoRefresh.update,
+        callback: (error, buildInfo, previousBuildInfo) => {
+          if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
             this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
               location.reload(true)
             })
-            updateMessageShown = true
+            cancelLoadBuildInfo()
           }
-        }).catch(() => null)
-      }, this.config.autoRefresh.update)
+        },
+      })
       // Set schemes in registries to objects from Cocoda
       for (let registry of this.config.registries) {
         if (_.isArray(registry.schemes)) {
