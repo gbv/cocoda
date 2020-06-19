@@ -290,6 +290,9 @@ export default {
       if (!scheme || !scheme.__SAVED__) {
         throw new Error(`loadTypes called with a scheme that is undefined or not saved: ${scheme && scheme.uri}`)
       }
+      if (scheme.types && !scheme.types.includes(null)) {
+        return scheme
+      }
       let types = []
       try {
         types = await ((scheme._getTypes && scheme._getTypes()) || (scheme._registry && scheme._registry.getTypes({ scheme })) || Promise.reject())
