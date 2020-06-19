@@ -539,6 +539,12 @@ export default {
           }
         }).catch(() => null)
       }, this.config.autoRefresh.update)
+      // Set schemes in registries to objects from Cocoda
+      for (let registry of this.config.registries) {
+        if (_.isArray(registry.schemes)) {
+          registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
+        }
+      }
       // TODO: Remove
       console.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
