@@ -523,8 +523,7 @@ export default {
       }
       // Check for update every 60 seconds
       // TODO: Consider moving this somewhere else.
-      let cancelLoadBuildInfo
-      cancelLoadBuildInfo = cdk.loadBuildInfo({
+      let repeatLoadBuildInfo = cdk.loadBuildInfo({
         url: "./build-info.json",
         buildInfo: this.config.buildInfo,
         interval: this.config.autoRefresh.update,
@@ -533,7 +532,7 @@ export default {
             this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
               location.reload(true)
             })
-            cancelLoadBuildInfo()
+            repeatLoadBuildInfo.stop()
           }
         },
       })

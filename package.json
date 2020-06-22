@@ -43,7 +43,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.19.2",
     "bootstrap-vue": "2.11.0",
-    "cocoda-sdk": "github:gbv/cocoda-sdk#0da0207",
+    "cocoda-sdk": "github:gbv/cocoda-sdk#612611b",
     "cocoda-vue-tabs": "^0.1.10",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.2",
@@ -79,7 +79,7 @@
     "less": "^3.11.1",
     "less-loader": "^6.1.0",
     "lint-staged": "^10.2.4",
-    "vue-styleguidist": "^4.23.2",
+    "vue-styleguidist": "^4.25.0",
     "vue-template-compiler": "^2.6.11"
   },
   "engines": {
