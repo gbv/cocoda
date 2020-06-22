@@ -510,7 +510,7 @@ export default {
               importResult.error += 1
             }
           }
-          this.postMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", alert: false, refresh: false }).then(result => {
+          this.postMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", _alert: false, _refresh: false }).then(result => {
             importResult.imported = result.length
             importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
@@ -645,7 +645,7 @@ export default {
         const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         // 2. Put all mappings (updates creator automatically)
         for (let mapping of mappings) {
-          await this.putMapping({ mapping, reload: false, alert: false })
+          await this.putMapping({ mapping, _reload: false, _alert: false })
         }
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
@@ -671,7 +671,7 @@ export default {
       }
       try {
         const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" })
-        await this.deleteMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", alert: false, refresh: false, trash: false })
+        await this.deleteMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", _alert: false, _refresh: false, _trash: false })
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
         this.deleteMappingsButtons = false

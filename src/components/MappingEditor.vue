@@ -430,10 +430,10 @@ export default {
       const mapping = await this[updateOriginal ? "putMapping" : "postMapping"]({
         registry: this.currentRegistry,
         mapping: this.mapping,
-        before: () => {
+        _before: () => {
           this.loadingGlobal = true
         },
-        after: () => {
+        _after: () => {
           this.loadingGlobal = false
         },
       })
@@ -481,10 +481,10 @@ export default {
     async deleteOriginalMapping(clear = false) {
       await this.deleteMapping({
         mapping: this.mapping,
-        before: () => {
+        _before: () => {
           this.loadingGlobal = true
         },
-        after: () => {
+        _after: () => {
           this.loadingGlobal = false
         },
       })

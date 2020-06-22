@@ -568,7 +568,7 @@ export default {
       }
       return mapping
     },
-    async getMapping({ registry, adjust = true, uri, mapping, ...config }) {
+    async getMapping({ registry, _adjust = true, uri, mapping, ...config }) {
       if (!mapping && !uri) {
         throw new Error("getMapping: Can't get mapping with neither uri nor mapping.")
       }
@@ -587,12 +587,12 @@ export default {
         throw new Error("getMappings: No registry to get mappings from.")
       }
       mapping = await registry.getMapping({ mapping, ...config })
-      if (adjust) {
+      if (_adjust) {
         this.adjustMapping(mapping)
       }
       return mapping
     },
-    async getMappings({ registry, adjust = true, ...config }) {
+    async getMappings({ registry, _adjust = true, ...config }) {
       registry = this.getRegistry(registry)
       if (!registry) {
         throw new Error("getMappings: No registry to get mappings from.")
@@ -601,35 +601,35 @@ export default {
         throw new Error(`getMappings: Registry ${registry.uri} does not support mappings.`)
       }
       const mappings = await registry.getMappings(config)
-      if (adjust) {
+      if (_adjust) {
         for (let mapping of mappings) {
           this.adjustMapping(mapping)
         }
       }
       return mappings
     },
-    async postMapping({ registry, adjust = true, reload = true, alert = true, before, after, ...config }) {
+    async postMapping({ registry, _adjust = true, _reload = true, _alert = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry || config.mapping._registry)
       if (!registry) {
         throw new Error("postMapping: No registry to post mapping to.")
       }
-      before && before()
+      _before && _before()
       try {
         config.mapping = this.prepareMapping(config.mapping)
         const mapping = await registry.postMapping(config)
-        if (adjust) {
+        if (_adjust) {
           this.adjustMapping(mapping)
         }
-        if (reload) {
+        if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
-        if (alert) {
+        if (_alert) {
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
         }
-        after && after()
+        _after && _after()
         return mapping
       } catch(error) {
-        if (alert) {
+        if (_alert) {
           let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
           // TODO: Adjust!!!
           if (registry.has.auth && !registry.auth) {
@@ -637,35 +637,35 @@ export default {
           }
           this.alert(message, null, "danger")
         }
-        after && after(error)
+        _after && _after(error)
         throw error
       }
     },
-    async postMappings({ registry, adjust = true, reload = true, alert = true, before, after, ...config }) {
+    async postMappings({ registry, _adjust = true, _reload = true, _alert = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry)
       if (!registry) {
         throw new Error("postMappings: No registry to post mappings to.")
       }
-      before && before()
+      _before && _before()
       try {
         config.mappings = config.mappings.map(mapping => this.prepareMapping(mapping))
         const mappings = await registry.postMappings(config)
-        if (adjust) {
+        if (_adjust) {
           for (let mapping of mappings) {
             this.adjustMapping(mapping)
           }
         }
-        if (reload) {
+        if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
-        if (alert) {
+        if (_alert) {
           // TODO
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
         }
-        after && after()
+        _after && _after()
         return mappings
       } catch(error) {
-        if (alert) {
+        if (_alert) {
           let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
           // TODO: Adjust!!! Also for multiple mappings.
           if (registry.has.auth && !registry.auth) {
@@ -673,32 +673,32 @@ export default {
           }
           this.alert(message, null, "danger")
         }
-        after && after(error)
+        _after && _after(error)
         throw error
       }
     },
-    async putMapping({ registry, adjust = true, reload = true, alert = true, before, after, ...config }) {
+    async putMapping({ registry, _adjust = true, _reload = true, _alert = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry || config.mapping._registry)
       if (!registry) {
         throw new Error("putMapping: No registry to put mapping to.")
       }
-      before && before()
+      _before && _before()
       try {
         config.mapping = this.prepareMapping(config.mapping)
         const mapping = await registry.putMapping(config)
-        if (adjust) {
+        if (_adjust) {
           this.adjustMapping(mapping)
         }
-        if (reload) {
+        if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
-        if (alert) {
+        if (_alert) {
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
         }
-        after && after()
+        _after && _after()
         return mapping
       } catch(error) {
-        if (alert) {
+        if (_alert) {
           let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
           // TODO: Adjust!!!
           if (registry.has.auth && !registry.auth) {
@@ -706,19 +706,19 @@ export default {
           }
           this.alert(message, null, "danger")
         }
-        after && after(error)
+        _after && _after(error)
         throw error
       }
     },
-    async deleteMapping({ registry, reload = true, alert = true, trash = true, before, after, ...config }) {
+    async deleteMapping({ registry, _reload = true, _alert = true, _trash = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry || config.mapping._registry)
       if (!registry) {
         throw new Error("deleteMapping: No registry to delete mapping from.")
       }
-      before && before()
+      _before && _before()
       try {
         await registry.deleteMapping(config)
-        if (trash) {
+        if (_trash) {
         // Add to mapping trash
           this.$store.commit({
             type: "mapping/addToTrash",
@@ -727,10 +727,10 @@ export default {
           })
         }
         // TODO: Compare with current mapping.
-        if (reload) {
+        if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
-        if (alert) {
+        if (_alert) {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
@@ -743,25 +743,25 @@ export default {
             })
           })
         }
-        after && after()
+        _after && _after()
         return true
       } catch(error) {
-        if (alert) {
+        if (_alert) {
           this.alert(this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
         }
-        after && after(error)
+        _after && _after(error)
         throw error
       }
     },
-    async deleteMappings({ registry, reload = true, alert = true, trash = true, before, after, ...config }) {
+    async deleteMappings({ registry, _reload = true, _alert = true, _trash = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry || _.get(config, "mappings[0]._registry"))
       if (!registry) {
         throw new Error("deleteMapping: No registry to delete mapping from.")
       }
-      before && before()
+      _before && _before()
       try {
         await registry.deleteMappings(config)
-        if (trash) {
+        if (_trash) {
           // Add to mapping trash
           for (let mapping of config.mappings) {
             this.$store.commit({
@@ -772,10 +772,10 @@ export default {
           }
         }
         // TODO: Compare with current mapping.
-        if (reload) {
+        if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
-        if (alert) {
+        if (_alert) {
           // TODO: Adjust!
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
             // Hide alert
@@ -789,14 +789,14 @@ export default {
             })
           })
         }
-        after && after()
+        _after && _after()
         return true
       } catch(error) {
-        if (alert) {
+        if (_alert) {
           // TODO: Adjust!
           this.alert(this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
         }
-        after && after(error)
+        _after && _after(error)
         throw error
       }
     },

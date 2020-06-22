@@ -252,7 +252,7 @@
             v-b-tooltip.hover="{ title: canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping }) ? $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
             class="button"
             icon="save"
-            @click="postMapping({ mapping: data.item.mapping, registry: currentRegistry, before: () => { loadingGlobal = true }, after: () => { loadingGlobal = false }})" />
+            @click="postMapping({ mapping: data.item.mapping, registry: currentRegistry, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false }})" />
         </div>
         <div
           v-else-if="showEditingTools"
@@ -262,7 +262,7 @@
             v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.has.auth && !$store.getters.getCurrentRegistry.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
             class="button-delete"
             icon="trash-alt"
-            @click="deleteMapping({ mapping: data.item.mapping, before: () => { loadingGlobal = true }, after: () => { loadingGlobal = false } })" />
+            @click="deleteMapping({ mapping: data.item.mapping, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false } })" />
         </div>
         <div
           v-if="showCocodaLink"
