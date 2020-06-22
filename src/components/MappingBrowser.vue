@@ -493,8 +493,10 @@ export default {
       navigatorCancelToken: {},
       /** Currently hovered registry */
       hoveredRegistry: null,
-      /** An object for refresh timers for registries */
-      refreshTimers: {},
+      /** An object of repeat managers for registries for search */
+      searchRepeatManagers: {},
+      /** An object of repeat managers for registries for navigator */
+      navigatorRepeatManagers: {},
     }
   },
   computed: {
@@ -717,8 +719,12 @@ export default {
     },
   },
   watch: {
-    tab(tab) {
+    tab(tab, previousTab) {
       if (tab == this.tabIndexes.search) {
+        // Unpause repeat managers
+        for (let manager of Object.values(this.searchRepeatManagers)) {
+          manager && manager.isPaused && manager.start()
+        }
         // Changed tab to Mapping Search, refresh if necessary
         if (this.searchNeedsRefresh.length) {
           // If there's only one item, just run it
@@ -739,8 +745,24 @@ export default {
           }
         }
       } else if (tab == this.tabIndexes.navigator) {
-        // Changed tab to Mapping Navigator, refresh if necessary
+        // Changed tab to Mapping Navigator
+        // Unpause repeat managers
+        for (let manager of Object.values(this.navigatorRepeatManagers)) {
+          manager && manager.isPaused && manager.start()
+        }
+        // refresh if necessary
         this.navigatorRefresh()
+      }
+      // Pause repeat managers if necessary
+      if (previousTab == this.tabIndexes.search) {
+        for (let manager of Object.values(this.searchRepeatManagers)) {
+          manager && !manager.isPaused && manager.stop()
+        }
+      }
+      if (previousTab == this.tabIndexes.navigator) {
+        for (let manager of Object.values(this.navigatorRepeatManagers)) {
+          manager && !manager.isPaused && manager.stop()
+        }
       }
     },
     navigatorNeedsRefresh(value) {
@@ -884,6 +906,12 @@ export default {
     }
     this.navigatorNeedsRefresh.push(null)
   },
+  beforeDestroy() {
+    // Stop any repeat managers
+    for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers))) {
+      manager && !manager.isPaused && manager.stop()
+    }
+  },
   methods: {
     clickHandlers() {
       let popovers = []
@@ -914,24 +942,6 @@ export default {
     },
     generateCancelToken() {
       return axios.CancelToken.source()
-    },
-    clearAutoRefresh(registry) {
-      if (this.refreshTimers[registry.uri]) {
-        window.clearTimeout(this.refreshTimers[registry.uri])
-      }
-    },
-    scheduleAutoRefresh(registry) {
-      // Auto refresh stored registries
-      const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
-      if (this.$jskos.mappingRegistryIsStored(registry)) {
-        this.clearAutoRefresh(registry)
-        // Auto refresh is disabled for a value of 0
-        if (autoRefresh) {
-          this.refreshTimers[registry.uri] = setTimeout(() => {
-            this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-          }, autoRefresh)
-        }
-      }
     },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
@@ -1016,15 +1026,17 @@ export default {
           }
         }
       }
-      let promises = []
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
-        this.clearAutoRefresh(registry)
-        // Cancel previous refreshs
-        // TODO CDK
+        // Cancel previous requests
         if (this.searchCancelToken[registry.uri]) {
           this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        }
+        // Stop previous repeat
+        const manager = this.searchRepeatManagers[registry.uri]
+        if (manager && !manager.isPaused) {
+          manager.stop()
         }
         // Check if enabled
         if (!this.showRegistry[registry.uri]) {
@@ -1037,7 +1049,9 @@ export default {
         // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
-        let promise = this.getMappings({
+
+        const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
+        const getMappings = () => this.getMappings({
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
           fromScheme: this.getSchemeForFilter(this.searchFilter.fromScheme),
@@ -1050,10 +1064,8 @@ export default {
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
           limit: this.componentSettings.resultLimit,
           cancelToken: cancelToken.token,
-        }).catch(error => {
-          this.$log.warn("Mapping Browser: Error during search:", error)
-          return []
-        }).then(mappings => {
+        })
+        const handleResult = mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             let page = (this.searchPages[registry.uri] || 1)
             if (mappings.length == 0 && page > 1) {
@@ -1064,23 +1076,38 @@ export default {
               this.$set(this.searchResults, registry.uri, mappings)
               this.$set(this.searchLoading, registry.uri, false)
             }
-            // Schedule auto refresh
-            this.scheduleAutoRefresh(registry)
           }
-        })
-        promises.push(promise)
+        }
+        // Call cdk.repeat via mixin
+        if (autoRefresh) {
+          const manager = this.repeat({
+            function: () => {
+              return getMappings()
+            },
+            interval: autoRefresh,
+            callback: (error, mappings) => {
+              if (error) {
+                this.$log.warn("Mapping Browser (Search): Error during refresh", error)
+              } else {
+                handleResult(mappings)
+              }
+            },
+          })
+          this.$set(this.searchRepeatManagers, registry.uri, manager)
+        } else {
+          getMappings().then(handleResult)
+        }
       }
-      Promise.all(promises).then(() => {
-        // Set part for share link
-        let shareFilter = {}
-        _.forOwn(this.searchFilter, (value, key) => {
-          if (value) {
-            shareFilter[key] = value
-          }
-        })
-        let searchParam = encodeURIComponent(JSON.stringify(shareFilter))
-        this.searchShareLinkPart = `search=${searchParam}`
+
+      // Set share link
+      let shareFilter = {}
+      _.forOwn(this.searchFilter, (value, key) => {
+        if (value) {
+          shareFilter[key] = value
+        }
       })
+      let searchParam = encodeURIComponent(JSON.stringify(shareFilter))
+      this.searchShareLinkPart = `search=${searchParam}`
     },
     _navigatorRefresh() {
       if (!this.navigatorNeedsRefresh.length) {
@@ -1096,7 +1123,6 @@ export default {
       }
       this.navigatorNeedsRefresh = []
 
-      let promises = []
       // let conceptsToLoad = []
 
       // Prepare params
@@ -1137,7 +1163,11 @@ export default {
           continue
         }
 
-        this.clearAutoRefresh(registry)
+        // Stop previous repeat
+        const manager = this.navigatorRepeatManagers[registry.uri]
+        if (manager && !manager.isPaused) {
+          manager.stop()
+        }
 
         // Cancel previous refreshs
         if (this.navigatorCancelToken[registry.uri]) {
@@ -1152,10 +1182,9 @@ export default {
           this.$set(this.navigatorResults, registry.uri, [null])
         }
 
-        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken: cancelToken.token }).catch(error => {
-          this.$log.warn("Mapping Browser: Error during refresh (1)", error)
-          return []
-        }).then(mappings => {
+        const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
+        const getMappings = () => this.getMappings({ ...params, registry: registry.uri, cancelToken: cancelToken.token })
+        const handleResult = mappings => {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
           }
@@ -1242,16 +1271,27 @@ export default {
           if (this.navigatorPages[registry.uri] > 1 && mappings.length < (this.navigatorPages[registry.uri] - 1) * this.componentSettings.resultLimit + 1) {
             this.$set(this.navigatorPages, registry.uri, this.navigatorPages[registry.uri] - 1)
           }
-          // Reset cancel token
-          this.navigatorCancelToken[registry.uri] = null
-        }).catch(error => {
-          this.$log.warn("Mapping Browser: Error during refresh (2)", error)
-        }).then(() => {
-          // Schedule auto refresh
-          this.scheduleAutoRefresh(registry)
-        })
+        }
 
-        promises.push(promise)
+        // Call cdk.repeat via mixin
+        if (autoRefresh) {
+          const manager = this.repeat({
+            function: () => {
+              return getMappings()
+            },
+            interval: autoRefresh,
+            callback: (error, mappings) => {
+              if (error) {
+                this.$log.warn("Mapping Browser (Navigator): Error during refresh", error)
+              } else {
+                handleResult(mappings)
+              }
+            },
+          })
+          this.$set(this.navigatorRepeatManagers, registry.uri, manager)
+        } else {
+          getMappings().then(handleResult)
+        }
       }
     },
     swapClicked() {

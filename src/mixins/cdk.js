@@ -864,5 +864,9 @@ export default {
         crossUser,
       })
     },
+    // Wrapper around cdk.repeat
+    repeat(...params) {
+      return cdk.repeat(...params)
+    },
   },
 }
