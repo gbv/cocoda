@@ -336,17 +336,17 @@ export default {
      * @param {*} concepts
      * @param {*} options - options for getConcepts call
      */
-    async loadConcepts(concepts, { registry: fallbackRegistry, scheme, ...options } = {}) {
+    async loadConcepts(concepts, { registry: fallbackRegistry, scheme, force = false, ...options } = {}) {
       // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
       // Then, sort the remaining concepts by registry.
       const list = []
       let uris = []
-      for (let concept of concepts.filter(c => c && c.uri && !c.__DETAILSLOADED__)) {
+      for (let concept of concepts.filter(c => c && c.uri && (c.__DETAILSLOADED__ < 1 || force))) {
         const registry = this.getProvider(concept) || this.getProvider(scheme) || fallbackRegistry
         if (!registry) {
           continue
         }
-        if ([].concat(this.loadingConcepts, this.erroredConcepts).find(c => this.$jskos.compare(c, concept))) {
+        if (!force && [].concat(this.loadingConcepts, this.erroredConcepts).find(c => this.$jskos.compare(c, concept))) {
           // Concept is already loading or errored
           continue
         }
@@ -364,24 +364,30 @@ export default {
         }
       }
       // Load concepts by registry
-      const promises = list.map(({ registry, concepts }) => registry.getConcepts({ ...options, concepts }).then(concepts => {
-        // Save and adjust results
-        let uris = []
-        for (let concept of concepts) {
-          // TODO: Add fallback registry here?
-          concept = this.saveObject(concept, { scheme })
-          this.$set(concept, "__DETAILSLOADED__", 1)
-          this.adjustConcept(concept)
-          uris = uris.concat(this.$jskos.getAllUris(concept))
-        }
-        // Remove all loaded URIs from loadingConcepts
-        for (let uri of uris) {
-          let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
-          if (index >= 0) {
-            this.$delete(this.loadingConcepts, index)
-          }
-        }
-      }))
+      const promises = list.map(
+        ({ registry, concepts }) =>
+          registry.getConcepts({ ...options, concepts })
+            .then(concepts => {
+              // Save and adjust results
+              let uris = []
+              for (let concept of concepts) {
+                // TODO: Add fallback registry here?
+                concept = this.saveObject(concept, { scheme })
+                this.$set(concept, "__DETAILSLOADED__", 1)
+                this.adjustConcept(concept)
+                uris = uris.concat(this.$jskos.getAllUris(concept))
+              }
+              // Remove all loaded URIs from loadingConcepts
+              for (let uri of uris) {
+                let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
+                if (index >= 0) {
+                  this.$delete(this.loadingConcepts, index)
+                }
+              }
+            })
+            .catch(() => {
+              // Ignore errors (will mark concepts that weren't loaded as errored)
+            }))
       await Promise.all(promises)
       // Move all URIs that were not loaded to errored concepts
       for (let uri of uris) {

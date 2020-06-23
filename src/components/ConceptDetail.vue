@@ -454,7 +454,7 @@ export default {
       // Load GND terms
       this.loadGndTerms()
       // Load details if not loaded
-      this.loadConcepts([this.item])
+      this.loadConcepts([this.item], { force: true })
     },
     async loadGndTerms() {
       // TODO: Refactoring necessary!
