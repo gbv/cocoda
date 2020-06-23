@@ -528,10 +528,12 @@ export default {
       this.loadFromParametersOnce(true)
       // Look up local mappings count and show warning if there are too many.
       // TODO: Consider moving this somewhere else.
-      const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
-      if (mappings._totalCount && mappings._totalCount >= 500) {
-        this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
-      }
+      setTimeout(async () => {
+        const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
+        if (mappings._totalCount && mappings._totalCount >= 500) {
+          this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
+        }
+      }, 10000)
       // Check for update every 60 seconds
       if (this.config.autoRefresh.update) {
         this.repeatLoadBuildInfo = cdk.loadBuildInfo({
