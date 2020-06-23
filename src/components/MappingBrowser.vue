@@ -298,6 +298,7 @@
           :search-limit="componentSettings.resultLimit"
           :show-editing-tools="showEditingTools"
           :show-cocoda-link="showCocodaLink"
+          :registry-has-errored="registryHasErrored"
           @pageChange="changePage('search', $event)">
           <!-- Share button -->
           <!-- TODO: Figure out new place for this. -->
@@ -383,6 +384,7 @@
               v-if="(group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations).length"
               :sections="group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations"
               :search-limit="componentSettings.resultLimit"
+              :registry-has-errored="registryHasErrored"
               @pageChange="changePage('navigator', $event)" />
             <div
               v-else-if="selected.concept[true] || selected.concept[false]"
@@ -498,6 +500,8 @@ export default {
       searchRepeatManagers: {},
       /** An object of repeat managers for registries for navigator */
       navigatorRepeatManagers: {},
+      // An object of error statuses for registries
+      registryHasErrored: {},
     }
   },
   computed: {
@@ -1087,6 +1091,17 @@ export default {
         })
         const handleResult = mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
+            // Handle error
+            if (!mappings) {
+              this.$set(this.registryHasErrored, registry.uri, true)
+              // Set results to empty array if not yet set
+              if (!this.searchResults[registry.uri] || this.searchResults[registry.uri].includes(null)) {
+                this.$set(this.searchResults, registry.uri, [])
+              }
+              this.$set(this.searchLoading, registry.uri, false)
+              return
+            }
+            this.$set(this.registryHasErrored, registry.uri, false)
             let page = (this.searchPages[registry.uri] || 1)
             if (mappings.length == 0 && page > 1) {
               // When on a later page and there were zero mappings, go back one page
@@ -1108,9 +1123,8 @@ export default {
             callback: (error, mappings) => {
               if (error) {
                 this.$log.warn("Mapping Browser (Search): Error during refresh", error)
-              } else {
-                handleResult(mappings)
               }
+              handleResult(mappings)
             },
           })
           this.$set(this.searchRepeatManagers, registry.uri, manager)
@@ -1208,6 +1222,15 @@ export default {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
           }
+          if (!mappings) {
+            this.$set(this.registryHasErrored, registry.uri, true)
+            // Set results to empty array if not yet set
+            if (!this.navigatorResults[registry.uri] || this.navigatorResults[registry.uri].includes(null)) {
+              this.$set(this.navigatorResults, registry.uri, [])
+            }
+            return
+          }
+          this.$set(this.registryHasErrored, registry.uri, false)
           // Traditional way of sorting navigator results
           // TODO: Should be improved by getting results from sorted the server
           mappings = mappings.sort((a, b) => {
@@ -1303,9 +1326,8 @@ export default {
             callback: (error, mappings) => {
               if (error) {
                 this.$log.warn("Mapping Browser (Navigator): Error during refresh", error)
-              } else {
-                handleResult(mappings)
               }
+              handleResult(mappings)
             },
           })
           this.$set(this.navigatorRepeatManagers, registry.uri, manager)

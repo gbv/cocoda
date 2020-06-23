@@ -331,10 +331,16 @@
             size="sm"
             @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
-          <div
-            v-if="section.items.length < section.totalCount"
-            class="mappingBrowser-pagination-number fontSize-small">
-            {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
+          <div class="mappingBrowser-pagination-number fontSize-small">
+            <span v-if="section.items.length < section.totalCount">
+              {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
+            </span>
+            <span
+              v-if="!!registryHasErrored[section.registry.uri]"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.registryHasErrored'), delay: defaults.delay.medium }"
+              class="registry-has-errored-indicator">
+              🔴
+            </span>
           </div>
           <data-modal-button
             :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
@@ -404,6 +410,13 @@ export default {
     showCocodaLink: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * Object that maps registry URIs to a boolean which indicates whether the registry has errored.
+     */
+    registryHasErrored: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data () {
@@ -855,8 +868,11 @@ export default {
   flex: none;
   text-align: right;
   padding-top: 3px;
-  padding-right: 30px;
+  padding-right: 25px;
   color: @color-text-grey;
+}
+.registry-has-errored-indicator {
+  cursor: default;
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
