@@ -322,7 +322,8 @@ export default {
           if (error.toString().toLowerCase().indexOf("cancel") == -1 && searchQuery == this.searchQuery) {
             this.loading = false
             this.isValid = false
-            this.searchResult = [["Error! Could not reach the API. " + error]]
+            const errorKey = `search.errors.${error.name}`
+            this.searchResult = [[this.$t(this.$te(errorKey) ? errorKey : "search.errors.base")]]
           }
         }).then(() => {
           if (searchQuery == this.searchQuery) {

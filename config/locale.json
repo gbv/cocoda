@@ -65,7 +65,17 @@
     "search": {
       "placeholder": "Type to search...",
       "results": "result | results",
-      "noResults": "No results..."
+      "noResults": "No results...",
+      "errors": {
+        "base": "Error performing the search.",
+        "BackendUnavailableError": "@:search.errors.base The server is not reachable.",
+        "BackendError": "@:search.errors.base The server is reachable, but seems to have issues.",
+        "InvalidRequestError": "@:search.errors.BackendError",
+        "MissingApiUrlError": "@:search.errors.base The server doesn't seem to offer search or is not configured correctly.",
+        "NetworkError": "@:search.errors.base There are issues with the connection.",
+        "CDKError": "@:search.errors.base",
+        "MethodNotImplementedError": "@:search.errors.MissingApiUrlError"
+      }
     },
     "conceptDetail": {
       "showAllAncestors": "show all ancestors",
@@ -367,7 +377,17 @@
     "search": {
       "placeholder": "Tippen zum Suchen...",
       "results": "Ergebnis | Ergebnisse",
-      "noResults": "Keine Ergebnisse..."
+      "noResults": "Keine Ergebnisse...",
+      "errors": {
+        "base": "Bei der Suchanfrage ist ein Fehler aufgetreten.",
+        "BackendUnavailableError": "@:search.errors.base Der Server ist nicht erreichbar.",
+        "BackendError": "@:search.errors.base Der Server ist erreichbar, scheint jedoch Probleme zu haben.",
+        "InvalidRequestError": "@:search.errors.BackendError",
+        "MissingApiUrlError": "@:search.errors.base Der Server scheint keine Suche anzubieten oder wurde nicht richtig konfiguriert.",
+        "NetworkError": "@:search.errors.base Es gibt Probleme mit der Netzwerkverbindung.",
+        "CDKError": "@:search.errors.base",
+        "MethodNotImplementedError": "@:search.errors.MissingApiUrlError"
+      }
     },
     "mappingEditor": {
       "title": "Mapping-Editor",
