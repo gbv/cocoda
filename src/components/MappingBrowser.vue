@@ -414,11 +414,12 @@ import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import clickHandler from "../mixins/click-handler"
 import computed from "../mixins/computed"
+import pageVisibility from "../mixins/page-visibility"
 
 export default {
   name: "MappingBrowser",
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton },
-  mixins: [auth, objects, dragandrop, clickHandler, computed],
+  mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**
      * If false, the Mapping Navigator will be hidden.
@@ -761,6 +762,25 @@ export default {
       }
       if (previousTab == this.tabIndexes.navigator) {
         for (let manager of Object.values(this.navigatorRepeatManagers)) {
+          manager && !manager.isPaused && manager.stop()
+        }
+      }
+    },
+    isPageVisible(visible) {
+      if (visible) {
+        // Unpause repeat managers if necessary
+        if (this.tab == this.tabIndexes.search) {
+          for (let manager of Object.values(this.searchRepeatManagers)) {
+            manager && manager.isPaused && manager.start()
+          }
+        } else if (this.tab == this.tabIndexes.navigator) {
+          for (let manager of Object.values(this.navigatorRepeatManagers)) {
+            manager && manager.isPaused && manager.start()
+          }
+        }
+      } else {
+        // Pause all repeat managers
+        for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers))) {
           manager && !manager.isPaused && manager.stop()
         }
       }

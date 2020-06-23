@@ -204,6 +204,7 @@ import cdk from "cocoda-sdk"
 import auth from "./mixins/auth"
 import objects from "./mixins/cdk"
 import computed from "./mixins/computed"
+import pageVisibility from "./mixins/page-visibility"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 const ElementQueries = require("css-element-queries/src/ElementQueries")
@@ -217,7 +218,7 @@ export default {
   components: {
     TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
   },
-  mixins: [auth, objects, computed],
+  mixins: [auth, objects, computed, pageVisibility],
   data () {
     return {
       loaded: false,
@@ -248,6 +249,7 @@ export default {
           }
         })
       }, 500),
+      repeatLoadBuildInfo: null,
     }
   },
   computed: {
@@ -467,6 +469,15 @@ export default {
       },
       deep: true,
     },
+    isPageVisible(visible) {
+      if (visible) {
+        // Unpause repeat managers for build info
+        this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.start()
+      } else {
+        // Pause repeat managers for build info
+        this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
+      }
+    },
   },
   created() {
     // Load application
@@ -522,20 +533,23 @@ export default {
         this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
       }
       // Check for update every 60 seconds
-      // TODO: Consider moving this somewhere else.
-      let repeatLoadBuildInfo = cdk.loadBuildInfo({
-        url: "./build-info.json",
-        buildInfo: this.config.buildInfo,
-        interval: this.config.autoRefresh.update,
-        callback: (error, buildInfo, previousBuildInfo) => {
-          if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
-            this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
-              location.reload(true)
-            })
-            repeatLoadBuildInfo.stop()
-          }
-        },
-      })
+      if (this.config.autoRefresh.update) {
+        this.repeatLoadBuildInfo = cdk.loadBuildInfo({
+          url: "./build-info.json",
+          buildInfo: this.config.buildInfo,
+          interval: this.config.autoRefresh.update,
+          callImmediately: false,
+          callback: (error, buildInfo, previousBuildInfo) => {
+            if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
+              this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+                location.reload(true)
+              })
+              this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
+              this.repeatLoadBuildInfo = null
+            }
+          },
+        })
+      }
       // Set schemes in registries to objects from Cocoda
       for (let registry of this.config.registries) {
         if (_.isArray(registry.schemes)) {
