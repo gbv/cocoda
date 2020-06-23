@@ -234,21 +234,6 @@ export default {
       loadFromParametersOnce: _.once(this.loadFromParameters),
       forceMappingBrowser: false,
       forceMappingEditor: false,
-      // Create a debounced internal setName method
-      // TODO: Move to mixin?
-      setName_: _.debounce(() => {
-        this.setName(this.userName).then(success => {
-          if (!success) {
-            // Reset name and show error
-            this.$store.commit({
-              type: "settings/set",
-              prop: "creator",
-              value: this.user.name,
-            })
-            this.alert(this.$t("alerts.nameError"), null, "danger")
-          }
-        })
-      }, 500),
       repeatLoadBuildInfo: null,
     }
   },
@@ -442,8 +427,7 @@ export default {
     userName() {
       if (this.authorized && this.user) {
         if (this.userName != this.user.name) {
-          // Call debounced setName method
-          this.setName_()
+          this.setName(this.userName)
         }
       }
     },
@@ -483,7 +467,6 @@ export default {
     // Load application
     this.load()
     // Capture mouse position in store
-    // TODO: Consider moving this somewhere else.
     document.onmousemove = event => {
       this.$store.commit({
         type: "setMousePosition",
@@ -491,17 +474,21 @@ export default {
         y: event.pageY,
       })
     }
+    // Look up local mappings count and show warning if there are too many.
+    setTimeout(async () => {
+      const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
+      if (mappings._totalCount && mappings._totalCount >= 500) {
+        this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
+      }
+    }, 10000)
   },
   methods: {
     /**
      * Method that is called ONCE on application startup in the `created` hook.
      *
      * !DO NOT CALL MANUALLY!
-     *
-     * TODO: Consider moving this to a mixin so the code is cleaner.
      */
     async load() {
-      // TODO: Remove
       const time = new Date()
       this.loadingGlobal = true
       // Load config
@@ -526,14 +513,6 @@ export default {
       // Load from parameters
       // TODO: Should this be finished before loaded is set?
       this.loadFromParametersOnce(true)
-      // Look up local mappings count and show warning if there are too many.
-      // TODO: Consider moving this somewhere else.
-      setTimeout(async () => {
-        const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
-        if (mappings._totalCount && mappings._totalCount >= 500) {
-          this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
-        }
-      }, 10000)
       // Check for update every 60 seconds
       if (this.config.autoRefresh.update) {
         this.repeatLoadBuildInfo = cdk.loadBuildInfo({
@@ -542,6 +521,7 @@ export default {
           interval: this.config.autoRefresh.update,
           callImmediately: false,
           callback: (error, buildInfo, previousBuildInfo) => {
+            // ? Should a new build (not only a newer commit) also be shown as an update?
             if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
               this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
                 location.reload(true)
@@ -558,7 +538,6 @@ export default {
           registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
         }
       }
-      // TODO: Remove
       this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
     insertPrefLabel(isLeft) {

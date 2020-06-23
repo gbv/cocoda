@@ -414,6 +414,14 @@ export default {
       uploadedFile: null,
       uploadedFileStatus: "",
       deleteMappingsButtons: false,
+      // Debounce handler
+      updateLocalSettings: _.debounce(() => {
+        this.$store.commit({
+          type: "settings/save",
+          settings: _.cloneDeep(this.localSettings),
+        })
+        this.creatorRewritten = false
+      }, 200),
     }
   },
   computed: {
@@ -476,11 +484,7 @@ export default {
   watch: {
     localSettings: {
       handler() {
-        this.$store.commit({
-          type: "settings/save",
-          settings: this.localSettings,
-        })
-        this.creatorRewritten = false
+        this.updateLocalSettings()
       },
       deep: true,
     },
