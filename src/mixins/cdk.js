@@ -636,11 +636,7 @@ export default {
         return mapping
       } catch(error) {
         if (_alert) {
-          let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
-          // TODO: Adjust!!!
-          if (registry.has.auth && !registry.auth) {
-            message += " " + this.$t("general.authNecessary")
-          }
+          let message = `${this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
         }
         _after && _after(error)
@@ -665,18 +661,13 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
         if (_alert) {
-          // TODO
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
         }
         _after && _after()
         return mappings
       } catch(error) {
         if (_alert) {
-          let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
-          // TODO: Adjust!!! Also for multiple mappings.
-          if (registry.has.auth && !registry.auth) {
-            message += " " + this.$t("general.authNecessary")
-          }
+          let message = `${this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
         }
         _after && _after(error)
@@ -705,11 +696,7 @@ export default {
         return mapping
       } catch(error) {
         if (_alert) {
-          let message = this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
-          // TODO: Adjust!!!
-          if (registry.has.auth && !registry.auth) {
-            message += " " + this.$t("general.authNecessary")
-          }
+          const message = `${this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
         }
         _after && _after(error)
@@ -753,7 +740,8 @@ export default {
         return true
       } catch(error) {
         if (_alert) {
-          this.alert(this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
+          const message = `${this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
+          this.alert(message, null, "danger")
         }
         _after && _after(error)
         throw error
@@ -799,8 +787,8 @@ export default {
         return true
       } catch(error) {
         if (_alert) {
-          // TODO: Adjust!
-          this.alert(this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
+          const message = `${this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
+          this.alert(message, null, "danger")
         }
         _after && _after(error)
         throw error

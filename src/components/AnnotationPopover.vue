@@ -264,6 +264,9 @@ export default {
         return
       }
       this.loading = true
+      const handleError = (error, type) => {
+        this.alert(`${this.$t("alerts." + type)} ${this.getErrorMessage(error)}`, null, "danger")
+      }
       let promise
       // Three cases:
       // 1. Case: User has not assessed this mapping -> add an annotation
@@ -298,7 +301,7 @@ export default {
           }
           this.imapping.annotations.push(annotation)
           this.$emit("refresh-annotations", { uri, annotations: this.annotations })
-        })
+        }).catch(error => handleError(error, "annotationNotSaved"))
       } else {
         if (this.ownScore != value) {
           if (!this.provider.isAuthorizedFor({
@@ -319,7 +322,7 @@ export default {
             } else {
               this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             }
-          })
+          }).catch(error => handleError(error, "annotationNotSaved"))
         } else {
           if (!this.provider.isAuthorizedFor({
             type: "annotations",
@@ -338,7 +341,7 @@ export default {
             } else {
               this.alert(this.$t("alerts.annotationNotRemoved"), null, "danger")
             }
-          })
+          }).catch(error => handleError(error, "annotationNotRemoved"))
         }
       }
       promise.catch(error => {
