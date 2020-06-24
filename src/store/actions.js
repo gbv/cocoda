@@ -1,6 +1,11 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import axios from "axios"
+const axiosConfig = {
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+}
 import defaultConfig from "../config"
 import i18n from "../utils/i18n"
 import log from "../utils/log"
@@ -21,7 +26,7 @@ export default {
     let config
     let userConfig
     try {
-      userConfig = (await axios.get(configFile)).data
+      userConfig = (await axios.get(configFile, axiosConfig)).data
     } catch (error) {
       userConfig = null
     }
@@ -243,7 +248,7 @@ export default {
         // Load list from URL
         try {
           let url = list.url
-          list = (await axios.get(url)).data
+          list = (await axios.get(url, axiosConfig)).data
           list.url = url
         } catch (error) {
           log.warn("Could not load list from URL:", list)
@@ -264,7 +269,7 @@ export default {
       if (list.conceptsUrl) {
         let url = list.conceptsUrl
         try {
-          let concepts = (await axios.get(url)).data
+          let concepts = (await axios.get(url, axiosConfig)).data
           list.concepts = concepts
         } catch (error) {
           log.warn("Could not load concepts for list with URL:", url)
