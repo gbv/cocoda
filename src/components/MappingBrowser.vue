@@ -880,9 +880,28 @@ export default {
       },
       deep: true,
     },
-    "componentSettings.resultLimit"() {
+    "componentSettings.resultLimit"(newValue, oldValue) {
       // Refresh when resultLimit changes
-      this.$store.commit("mapping/setRefresh")
+      // Note: This is a workaround so that page numbers get adjusted according to the page chage.
+      let type
+      if (this.tab == this.tabIndexes.search) {
+        type = "search"
+      } else if (this.tab == this.tabIndexes.navigator) {
+        type = "navigator"
+      }
+      if (type) {
+        for (let registryUri of Object.keys(this[`${type}Results`])) {
+          let previousPage = this[`${type}Pages`][registryUri] || 1
+          let previousFirstIndex = (previousPage - 1) * oldValue
+          let newPage = Math.floor(previousFirstIndex / newValue) + 1
+          if (type == "search") {
+            this.search(registryUri, newPage)
+          } else {
+            this.$set(this.navigatorPages, registryUri, newPage)
+            this.navigatorNeedsRefresh.push(registryUri)
+          }
+        }
+      }
     },
     "componentSettings.showAllSchemes"() {
       // Refresh when showAllSchemes changes
@@ -1102,7 +1121,7 @@ export default {
               return
             }
             this.$set(this.registryHasErrored, registry.uri, false)
-            let page = (this.searchPages[registry.uri] || 1)
+            page = page || this.searchPages[registry.uri] || 1
             if (mappings.length == 0 && page > 1) {
               // When on a later page and there were zero mappings, go back one page
               // This can happen if there was a single mapping on a page and it go deleted, or mappings got deleted from the server while browsing
@@ -1110,6 +1129,8 @@ export default {
             } else {
               this.$set(this.searchResults, registry.uri, mappings)
               this.$set(this.searchLoading, registry.uri, false)
+              // Workaround: Set page again because certain circumstances can cause the page in searchPages to be set to the wrong value.
+              this.$set(this.searchPages, registry.uri, page)
             }
           }
         }
