@@ -190,29 +190,25 @@
     <b-modal
       ref="deleteModal"
       :title="$t('mappingEditor.deleteTitle')"
-      class="mappingEditor-deleteModal"
       hide-footer>
-      <b-button
-        variant="danger"
-        @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()">
-        {{ $t("mappingEditor.deleteAndClear") }}
-      </b-button>
-      <b-button
-        v-show="hasChangedFromOriginal"
-        variant="warning"
-        @click="deleteOriginalMapping() && $refs.deleteModal.hide()">
-        {{ $t("mappingEditor.deleteAndKeep") }}
-      </b-button>
-      <b-button
-        variant="primary"
-        @click="clearMapping() && $refs.deleteModal.hide()">
-        {{ $t("mappingEditor.keepAndClear") }}
-      </b-button>
-      <b-button
-        variant="secondary"
-        @click="$refs.deleteModal.hide()">
-        {{ $t("mappingEditor.cancel") }}
-      </b-button>
+      <p style="text-align: center;">
+        {{ $t("mappingEditor.deleteText") }}
+        <span v-if="hasChangedFromOriginal">
+          <br>{{ $t("mappingEditor.deleteChangesText") }}
+        </span>
+      </p>
+      <div class="mappingEditor-deleteButtons">
+        <b-button
+          variant="danger"
+          @click="deleteOriginalMapping(true) && $refs.deleteModal.hide()">
+          {{ $t("mappingEditor.deleteConfirm") }}
+        </b-button>
+        <b-button
+          variant="secondary"
+          @click="$refs.deleteModal.hide()">
+          {{ $t("mappingEditor.cancel") }}
+        </b-button>
+      </div>
     </b-modal>
     <data-modal-button
       :data="mapping"
@@ -732,9 +728,12 @@ export default {
   margin: 0 10px;
   font-size: 1.5rem;
 }
-.mappingEditor-deleteModal button {
-  margin: 10px 0;
-  width: 100%;
+.mappingEditor-deleteButtons {
+  display: flex;
+  justify-content: center;
+}
+.mappingEditor-deleteButtons button {
+  margin: 10px 20px;
 }
 
 .mappingEditor-mappingNotSaved {
