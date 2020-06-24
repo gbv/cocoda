@@ -249,7 +249,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping })"
-            v-b-tooltip.hover="{ title: canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping }) ? $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
             class="button"
             icon="save"
             @click="postMapping({ mapping: data.item.mapping, registry: currentRegistry, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false }})" />
@@ -259,7 +259,7 @@
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canDeleteMapping({ mapping: data.item.mapping, user })"
-            v-b-tooltip.hover="{ title: $store.getters.getCurrentRegistry.has.auth && !$store.getters.getCurrentRegistry.auth ? $t('general.authNecessary') : $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
             class="button-delete"
             icon="trash-alt"
             @click="deleteMapping({ mapping: data.item.mapping, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false } })" />
