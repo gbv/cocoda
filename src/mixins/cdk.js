@@ -711,15 +711,7 @@ export default {
       _before && _before()
       try {
         await registry.deleteMapping(config)
-        if (_trash) {
-        // Add to mapping trash
-          this.$store.commit({
-            type: "mapping/addToTrash",
-            mapping: config.mapping,
-            registry,
-          })
-        }
-        // TODO: Compare with current mapping.
+        this.mappingWasDeleted({ mapping: config.mapping, registry, _trash })
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
@@ -755,17 +747,9 @@ export default {
       _before && _before()
       try {
         await registry.deleteMappings(config)
-        if (_trash) {
-          // Add to mapping trash
-          for (let mapping of config.mappings) {
-            this.$store.commit({
-              type: "mapping/addToTrash",
-              mapping,
-              registry,
-            })
-          }
+        for (let mapping of config.mappings) {
+          this.mappingWasDeleted({ mapping, registry, _trash })
         }
-        // TODO: Compare with current mapping.
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
@@ -792,6 +776,21 @@ export default {
         }
         _after && _after(error)
         throw error
+      }
+    },
+    mappingWasDeleted({ mapping, registry, _trash }) {
+      // 1. Add mapping to trash
+      if (_trash) {
+        this.$store.commit({
+          type: "mapping/addToTrash",
+          mapping,
+          registry,
+        })
+      }
+      // 2. Check if current original was amongst the removed mappings
+      if (mapping.uri == this.$store.state.mapping.original.uri && jskos.compare(registry, this.$store.state.mapping.original.registry)) {
+        // Set original to null
+        this.$store.commit({ type: "mapping/set" })
       }
     },
     canCreateMapping({ registry, mapping, user = this.user }) {
