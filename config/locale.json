@@ -66,16 +66,7 @@
       "placeholder": "Type to search...",
       "results": "result | results",
       "noResults": "No results...",
-      "errors": {
-        "base": "Error performing the search.",
-        "BackendUnavailableError": "@:search.errors.base The server is not reachable.",
-        "BackendError": "@:search.errors.base The server is reachable, but seems to have issues.",
-        "InvalidRequestError": "@:search.errors.BackendError",
-        "MissingApiUrlError": "@:search.errors.base The server doesn't seem to offer search or is not configured correctly.",
-        "NetworkError": "@:search.errors.base There are issues with the connection.",
-        "CDKError": "@:search.errors.base",
-        "MethodNotImplementedError": "@:search.errors.MissingApiUrlError"
-      }
+      "error": "Error performing the search."
     },
     "conceptDetail": {
       "showAllAncestors": "show all ancestors",
@@ -310,6 +301,16 @@
     "languages": {
       "en": "English",
       "de": "German"
+    },
+    "cdkErrors": {
+      "CDKError": "Unknown error.",
+      "MethodNotImplementedError": "The server doesn't seem to support this action or is not configured correctly.",
+      "InvalidOrMissingParameterError": "A parameter seems to be invalid or missing.",
+      "BackendError": "The server seems to have issues.",
+      "BackendUnavailableError": "The server is not reachable.",
+      "NetworkError": "There are issues with the connection.",
+      "InvalidRequestError": "The request seems to be invalid.",
+      "MissingApiUrlError": "@:cdkErrors.CDKError"
     }
   },
   "de": {
@@ -379,16 +380,7 @@
       "placeholder": "Tippen zum Suchen...",
       "results": "Ergebnis | Ergebnisse",
       "noResults": "Keine Ergebnisse...",
-      "errors": {
-        "base": "Bei der Suchanfrage ist ein Fehler aufgetreten.",
-        "BackendUnavailableError": "@:search.errors.base Der Server ist nicht erreichbar.",
-        "BackendError": "@:search.errors.base Der Server ist erreichbar, scheint jedoch Probleme zu haben.",
-        "InvalidRequestError": "@:search.errors.BackendError",
-        "MissingApiUrlError": "@:search.errors.base Der Server scheint keine Suche anzubieten oder wurde nicht richtig konfiguriert.",
-        "NetworkError": "@:search.errors.base Es gibt Probleme mit der Netzwerkverbindung.",
-        "CDKError": "@:search.errors.base",
-        "MethodNotImplementedError": "@:search.errors.MissingApiUrlError"
-      }
+      "error": "Bei der Suchanfrage ist ein Fehler aufgetreten."
     },
     "mappingEditor": {
       "title": "Mapping-Editor",
@@ -623,6 +615,15 @@
     "languages": {
       "en": "Englisch",
       "de": "Deutsch"
+    },
+    "cdkErrors": {
+      "BackendUnavailableError": "Der Server ist nicht erreichbar.",
+      "BackendError": "Der Server scheint Probleme zu haben.",
+      "MissingApiUrlError": "@:cdkErrors.CDKError",
+      "MethodNotImplementedError": "Der Server scheint diese Aktion nicht zu unterstützten oder wurde nicht richtig konfiguriert.",
+      "NetworkError": "Es gibt Probleme mit der Netzwerkverbindung.",
+      "InvalidOrMissingParameterError": "Ein Parameter scheint fehlerhaft zu sein oder zu fehlen.",
+      "InvalidRequestError": "Die Anfrage scheint fehlerhaft zu sein."
     }
   }
 }

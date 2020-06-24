@@ -324,5 +324,16 @@ export default {
         return "?"
       }
     },
+    getErrorMessage(error) {
+      let errorKey = `cdkErrors.${error.name}`
+      if (!this.$te(errorKey)) {
+        errorKey = "cdkErrors.CDKError"
+      }
+      let message = `${this.$t(errorKey)}`
+      if (error.message) {
+        message += ` (${error.message})`
+      }
+      return message
+    },
   },
 }

@@ -322,8 +322,8 @@ export default {
           if (error.toString().toLowerCase().indexOf("cancel") == -1 && searchQuery == this.searchQuery) {
             this.loading = false
             this.isValid = false
-            const errorKey = `search.errors.${error.name}`
-            this.searchResult = [[this.$t(this.$te(errorKey) ? errorKey : "search.errors.base")]]
+            const message = `${this.$t("search.error")} ${this.getErrorMessage(error)}`
+            this.searchResult = [[message]]
           }
         }).then(() => {
           if (searchQuery == this.searchQuery) {
