@@ -28,8 +28,6 @@
  *
  */
 
-const _ = require("lodash")
-
 export default {
   computed: {
     mousePosition() {
@@ -40,10 +38,6 @@ export default {
     mousePosition({ x, y }) {
       this.handleMousePositionChange(x, y)
     },
-  },
-  mounted() {
-    // Restrict calling handler to once every 100 ms.
-    this.handleMousePositionChange = _.debounce(this.handleMousePositionChange_, 100)
   },
   methods: {
     isMouseInsideElement(element, { delta, x, y } = {}) {
@@ -58,7 +52,7 @@ export default {
       }
       return false
     },
-    handleMousePositionChange_(x, y) {
+    handleMousePositionChange(x, y) {
       for (let handler of this.hoverHandlers()) {
         let isInside = false
         let delta = handler.delta || 0

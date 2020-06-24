@@ -139,4 +139,13 @@ const store = new Vuex.Store({
   actions,
 })
 
+// Capture mouse position in store
+document.onmousemove = _.throttle(event => {
+  store.commit({
+    type: "setMousePosition",
+    x: event.pageX,
+    y: event.pageY,
+  })
+}, 200)
+
 export default store

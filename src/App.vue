@@ -466,14 +466,6 @@ export default {
   created() {
     // Load application
     this.load()
-    // Capture mouse position in store
-    document.onmousemove = event => {
-      this.$store.commit({
-        type: "setMousePosition",
-        x: event.pageX,
-        y: event.pageY,
-      })
-    }
     // Look up local mappings count and show warning if there are too many.
     setTimeout(async () => {
       const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
