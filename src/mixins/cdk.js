@@ -561,7 +561,7 @@ export default {
       let creatorName = jskos.prefLabel(creator, { fallbackToUri: false })
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
-      if (creator) {
+      if (creator && (creator.uri || creator.prefLabel)) {
         // TODO: Re-evaluate
         mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && jskos.prefLabel(c, { fallbackToUri: false }) && creatorName == jskos.prefLabel(c, { fallbackToUri: false }))))
         mapping.creator = [creator]
@@ -569,7 +569,27 @@ export default {
         mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
         this.$delete(mapping, "creator")
       }
-      if (mapping.contributor.length == 0) {
+      // Prevent issue with empty strings as prefLabels
+      for (let prop of ["creator", "contributor"].filter(p => mapping[p])) {
+        for (let person of mapping[prop]) {
+          if (person.uri === "") {
+            this.$delete(person, "uri")
+          }
+          _.forOwn(person.prefLabel, (value, key) => {
+            if (value == "") {
+              this.$delete(person.prefLabel, key)
+            }
+          })
+          if (_.isEmpty(person.prefLabel)) {
+            this.$delete(person, "prefLabel")
+          }
+        }
+        mapping[prop] = mapping[prop].filter(p => !_.isEmpty(p))
+      }
+      if (mapping.creator && mapping.creator.length == 0) {
+        this.$delete(mapping, "creator")
+      }
+      if (mapping.contributor && mapping.contributor.length == 0) {
         this.$delete(mapping, "contributor")
       }
       return mapping

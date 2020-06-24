@@ -78,7 +78,9 @@ const getters = {
         }
       }
     }
-    creator.prefLabel = { [language]: name || "" }
+    if (name) {
+      creator.prefLabel = { [language]: name }
+    }
     return creator
   },
   /**
