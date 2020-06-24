@@ -238,7 +238,6 @@ export default {
     }
   },
   computed: {
-    // Needed to watch for changes in the left concept.
     selectedConceptLeft() {
       return this.selected.concept[true]
     },
@@ -262,14 +261,11 @@ export default {
       }
       return locale
     },
-    mappingRegistries() {
-      let registries = this.config.registries.filter(registry =>
-        registry.has.mappings || registry.has.occurrences,
-      )
-      return registries
-    },
   },
   watch: {
+    /**
+     * Watch route of vue-router and load from parameters if necessary.
+     */
     $route({ query: toQuery }, { query: fromQuery }) {
       // Only refresh when one of the scheme/concept parameters changed
       let parameters = ["from", "fromScheme", "to", "toScheme"]
@@ -368,14 +364,12 @@ export default {
      * Update local creator name if authorized user changed.
      */
     user(current, previous) {
-      if (this.user) {
-        if (this.user.name != this.userName) {
-          this.$store.commit({
-            type: "settings/set",
-            prop: "creator",
-            value: this.user.name,
-          })
-        }
+      if (this.user && this.user.name != this.userName) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "creator",
+          value: this.user.name,
+        })
       }
       /**
        * Show alerts when user was logged in/out.
@@ -425,10 +419,8 @@ export default {
      * Update authorized user's name if creator name changed.
      */
     userName() {
-      if (this.authorized && this.user) {
-        if (this.userName != this.user.name) {
-          this.setName(this.userName)
-        }
+      if (this.authorized && this.user && this.userName != this.user.name) {
+        this.setName(this.userName)
       }
     },
     /**
