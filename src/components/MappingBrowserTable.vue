@@ -571,7 +571,6 @@ export default {
   },
   methods: {
     edit(data) {
-      // TODO
       const canEdit = this.canUpdateMapping({ mapping: data.item.mapping, user: this.user })
       if (canEdit) {
         // Select registry for editing
@@ -593,6 +592,9 @@ export default {
         return newMapping
       }
       let mapping = copyWithReferences(data.item.mapping)
+      this.$store.commit({
+        type: "mapping/empty",
+      })
       this.$store.commit({
         type: "mapping/set",
         mapping,
