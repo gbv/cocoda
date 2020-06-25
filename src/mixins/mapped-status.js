@@ -59,7 +59,7 @@ export default {
             concept.__MAPPED__.push({
               registry,
               scheme: otherScheme,
-              exist: false,
+              exist: [],
             })
           }
         })

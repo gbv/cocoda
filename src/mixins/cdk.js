@@ -536,13 +536,13 @@ export default {
                 this.$set(concept, "__MAPPED__", [])
               }
               const existing = concept.__MAPPED__.find(item => jskos.compare(item.registry, registry) && jskos.compare(item.scheme, targetScheme))
-              if (existing && !existing.exist) {
-                existing.exist = true
+              if (existing && !existing.exist.length) {
+                existing.exist.push(mapping.uri)
               } else if (!existing) {
                 concept.__MAPPED__.push({
                   registry,
                   scheme: targetScheme,
-                  exist: true,
+                  exist: [mapping.uri],
                 })
               }
             }
@@ -811,6 +811,22 @@ export default {
       if (mapping.uri == this.$store.state.mapping.original.uri && jskos.compare(registry, this.$store.state.mapping.original.registry)) {
         // Set original to null
         this.$store.commit({ type: "mapping/set" })
+      }
+      // 3. Adjust __MAPPED__ property of conceps in mapping
+      if (jskos.mappingRegistryIsStored(registry)) {
+        for (let [from, to] of [["from", "to"], ["to", "from"]]) {
+          const targetScheme = mapping[`${to}Scheme`]
+          const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
+          if (targetScheme) {
+            for (let concept of sourceConcepts) {
+              const existing = (concept.__MAPPED__ || []).find(item => jskos.compare(item.registry, registry) && jskos.compare(item.scheme, targetScheme))
+              if (!existing || !existing.exist.length) {
+                continue
+              }
+              this.$set(existing, "exist", existing.exist.filter(uri => uri != mapping.uri))
+            }
+          }
+        }
       }
     },
     canCreateMapping({ registry, mapping, user = this.user }) {

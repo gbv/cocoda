@@ -87,7 +87,7 @@ const getters = {
    * Returns the mapped status for a concept.
    */
   mappedStatus: (state) => (concept, isLeft) => {
-    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
+    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist.length && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
   },
   languages: (state) => {
     const defaultLanguages = ["en", "de"]
