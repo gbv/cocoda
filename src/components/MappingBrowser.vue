@@ -298,6 +298,7 @@
           :search-limit="componentSettings.resultLimit"
           :show-editing-tools="showEditingTools"
           :show-cocoda-link="showCocodaLink"
+          :registry-has-errored="registryHasErrored"
           @pageChange="changePage('search', $event)">
           <!-- Share button -->
           <!-- TODO: Figure out new place for this. -->
@@ -383,6 +384,7 @@
               v-if="(group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations).length"
               :sections="group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations"
               :search-limit="componentSettings.resultLimit"
+              :registry-has-errored="registryHasErrored"
               @pageChange="changePage('navigator', $event)" />
             <div
               v-else-if="selected.concept[true] || selected.concept[false]"
@@ -410,15 +412,16 @@ import axios from "axios"
 
 // Import mixins
 import auth from "../mixins/auth"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import clickHandler from "../mixins/click-handler"
 import computed from "../mixins/computed"
+import pageVisibility from "../mixins/page-visibility"
 
 export default {
   name: "MappingBrowser",
   components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton },
-  mixins: [auth, objects, dragandrop, clickHandler, computed],
+  mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**
      * If false, the Mapping Navigator will be hidden.
@@ -440,13 +443,6 @@ export default {
     showCocodaLink: {
       type: Boolean,
       default: false,
-    },
-    /**
-     * Override showRegistry from settings
-     */
-    showRegistryOverride: {
-      type: Array,
-      default: null,
     },
   },
   data() {
@@ -500,8 +496,12 @@ export default {
       navigatorCancelToken: {},
       /** Currently hovered registry */
       hoveredRegistry: null,
-      /** An object for refresh timers for registries */
-      refreshTimers: {},
+      /** An object of repeat managers for registries for search */
+      searchRepeatManagers: {},
+      /** An object of repeat managers for registries for navigator */
+      navigatorRepeatManagers: {},
+      // An object of error statuses for registries
+      registryHasErrored: {},
     }
   },
   computed: {
@@ -582,10 +582,10 @@ export default {
       for (let concordance of this.concordances || []) {
         let item = { concordance }
         item.from = _.get(concordance, "fromScheme")
-        item.from = this._getObject(item.from) || item.from
+        item.from = this.getObject(item.from) || item.from
         item.fromNotation = this.$jskos.notation(item.from) || "-"
         item.to = _.get(concordance, "toScheme")
-        item.to = this._getObject(item.to) || item.to
+        item.to = this.getObject(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
         item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
         item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
@@ -652,24 +652,14 @@ export default {
     searchRegistries() {
       return _.get(this.registryGroups.find(group => group.stored), "registries", [])
     },
-    mappingRegistries() {
-      let registries = this.config.registries.filter(registry =>
-        registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences),
-      )
-      return registries
-    },
     mappingRegistriesSorted() {
       return _.flatten(this.registryGroups.map(group => group.registries))
     },
     navigatorRegistries() {
       return this.mappingRegistriesSorted.filter(registry =>
-        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[true])) ||
-        (registry.provider.supportsScheme && registry.provider.supportsScheme(this.selected.scheme[false])),
+        (registry.supportsScheme && registry.supportsScheme(this.selected.scheme[true])) ||
+        (registry.supportsScheme && registry.supportsScheme(this.selected.scheme[false])),
       )
-    },
-    currentRegistry() {
-      return this.$store.getters.getCurrentRegistry
     },
     registryGroups() {
       let groups = [
@@ -704,37 +694,6 @@ export default {
       }
       return groups
     },
-    // show registries
-    showRegistry() {
-      let object = {}
-      // Define setter and getter for each registry separately.
-      for (let registry of this.mappingRegistries) {
-        Object.defineProperty(object, registry.uri, {
-          get: () => {
-            if (this.showRegistryOverride) {
-              return this.showRegistryOverride.includes(registry.uri)
-            }
-            let result = this.$settings.mappingBrowserShowRegistry[registry.uri]
-            if (result == null) {
-              return true
-            }
-            return result
-          },
-          set: (value) => {
-            // Only allow if it's not the current registry
-            if (value || !this.$jskos.compare(registry, this.currentRegistry)) {
-              this.$store.commit({
-                type: "settings/set",
-                prop: "mappingBrowserShowRegistry",
-                value: Object.assign({}, this.$settings.mappingBrowserShowRegistry, { [registry.uri]: value }),
-              })
-              this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-            }
-          },
-        })
-      }
-      return object
-    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
@@ -751,23 +710,26 @@ export default {
     },
     concordanceRegistries() {
       return this.config.registries.filter(r =>
-        r.provider.has.concordances // only use registries that offer concordances
-        && (!this.showRegistryOverride || this.showRegistryOverride.includes(r.uri)), // if showRegistryOverride is given, only use those registries
+        r.has.concordances, // only use registries that offer concordances
       )
     },
     concordanceUrls() {
       let urls = {}
       for (let registry of this.concordanceRegistries) {
-        if (registry.provider.has.concordances && registry.concordances) {
-          urls[this.$jskos.prefLabel(registry)] = registry.concordances
+        if (registry.has.concordances && registry._api.concordances) {
+          urls[this.$jskos.prefLabel(registry)] = registry._api.concordances
         }
       }
       return urls
     },
   },
   watch: {
-    tab(tab) {
+    tab(tab, previousTab) {
       if (tab == this.tabIndexes.search) {
+        // Unpause repeat managers
+        for (let manager of Object.values(this.searchRepeatManagers)) {
+          manager && manager.isPaused && manager.start()
+        }
         // Changed tab to Mapping Search, refresh if necessary
         if (this.searchNeedsRefresh.length) {
           // If there's only one item, just run it
@@ -788,8 +750,43 @@ export default {
           }
         }
       } else if (tab == this.tabIndexes.navigator) {
-        // Changed tab to Mapping Navigator, refresh if necessary
+        // Changed tab to Mapping Navigator
+        // Unpause repeat managers
+        for (let manager of Object.values(this.navigatorRepeatManagers)) {
+          manager && manager.isPaused && manager.start()
+        }
+        // refresh if necessary
         this.navigatorRefresh()
+      }
+      // Pause repeat managers if necessary
+      if (previousTab == this.tabIndexes.search) {
+        for (let manager of Object.values(this.searchRepeatManagers)) {
+          manager && !manager.isPaused && manager.stop()
+        }
+      }
+      if (previousTab == this.tabIndexes.navigator) {
+        for (let manager of Object.values(this.navigatorRepeatManagers)) {
+          manager && !manager.isPaused && manager.stop()
+        }
+      }
+    },
+    isPageVisible(visible) {
+      if (visible) {
+        // Unpause repeat managers if necessary
+        if (this.tab == this.tabIndexes.search) {
+          for (let manager of Object.values(this.searchRepeatManagers)) {
+            manager && manager.isPaused && manager.start()
+          }
+        } else if (this.tab == this.tabIndexes.navigator) {
+          for (let manager of Object.values(this.navigatorRepeatManagers)) {
+            manager && manager.isPaused && manager.start()
+          }
+        }
+      } else {
+        // Pause all repeat managers
+        for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers))) {
+          manager && !manager.isPaused && manager.stop()
+        }
       }
     },
     navigatorNeedsRefresh(value) {
@@ -883,9 +880,28 @@ export default {
       },
       deep: true,
     },
-    "componentSettings.resultLimit"() {
+    "componentSettings.resultLimit"(newValue, oldValue) {
       // Refresh when resultLimit changes
-      this.$store.commit("mapping/setRefresh")
+      // Note: This is a workaround so that page numbers get adjusted according to the page chage.
+      let type
+      if (this.tab == this.tabIndexes.search) {
+        type = "search"
+      } else if (this.tab == this.tabIndexes.navigator) {
+        type = "navigator"
+      }
+      if (type) {
+        for (let registryUri of Object.keys(this[`${type}Results`])) {
+          let previousPage = this[`${type}Pages`][registryUri] || 1
+          let previousFirstIndex = (previousPage - 1) * oldValue
+          let newPage = Math.floor(previousFirstIndex / newValue) + 1
+          if (type == "search") {
+            this.search(registryUri, newPage)
+          } else {
+            this.$set(this.navigatorPages, registryUri, newPage)
+            this.navigatorNeedsRefresh.push(registryUri)
+          }
+        }
+      }
     },
     "componentSettings.showAllSchemes"() {
       // Refresh when showAllSchemes changes
@@ -898,6 +914,25 @@ export default {
     "componentSettings.navigatorShowResultsForRight"() {
       // Refresh when navigatorShowResultsForRight changes
       this.$store.commit("mapping/setRefresh")
+    },
+    "componentSettings.autoRefresh"() {
+      // Refresh when autoRefresh changes
+      // Note: If we just set mapping/setRefresh, the page numbers will jump to 1.
+      let type
+      if (this.tab == this.tabIndexes.search) {
+        type = "search"
+      } else if (this.tab == this.tabIndexes.navigator) {
+        type = "navigator"
+      }
+      if (type) {
+        for (let registryUri of Object.keys(this[`${type}Results`])) {
+          if (type == "search") {
+            this.search(registryUri, this.searchPages[registryUri])
+          } else {
+            this.navigatorNeedsRefresh.push(registryUri)
+          }
+        }
+      }
     },
   },
   created() {
@@ -912,7 +947,7 @@ export default {
     if (!this.concordances || !this.concordances.length) {
       let promises = []
       for (let registry of this.concordanceRegistries) {
-        promises.push(registry.provider.getConcordances())
+        promises.push(registry.getConcordances())
       }
       Promise.all(promises).then(results => {
         let concordances = _.flatten(results)
@@ -922,12 +957,18 @@ export default {
         })
         this.concordances.length = concordances.length
       }).catch(error => {
-        console.error("MappingBrowser - Error loading concordances", error)
+        this.$log.error("MappingBrowser - Error loading concordances", error)
       }).then(() => {
         this.concordancesLoaded = true
       })
     }
     this.navigatorNeedsRefresh.push(null)
+  },
+  beforeDestroy() {
+    // Stop any repeat managers
+    for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers))) {
+      manager && !manager.isPaused && manager.stop()
+    }
   },
   methods: {
     clickHandlers() {
@@ -959,19 +1000,6 @@ export default {
     },
     generateCancelToken() {
       return axios.CancelToken.source()
-    },
-    clearAutoRefresh(registry) {
-      if (this.refreshTimers[registry.uri]) {
-        window.clearInterval(this.refreshTimers[registry.uri])
-      }
-    },
-    scheduleAutoRefresh(registry) {
-      if (registry.autoRefresh) {
-        this.clearAutoRefresh(registry)
-        this.refreshTimers[registry.uri] = setInterval(() => {
-          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-        }, Math.max(_.isInteger(registry.autoRefresh) ? registry.autoRefresh : 5000, 3000))
-      }
     },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
@@ -1045,7 +1073,7 @@ export default {
       if (this.searchFilter.partOf) {
         let toEnable = []
         for (let concordance of this.concordances.filter(c => this.$jskos.compare(c, { uri: this.searchFilter.partOf }))) {
-          let registryUri = _.get(concordance, "_provider.registry.uri")
+          let registryUri = _.get(concordance, "_registry.uri")
           if (registryUri && !toEnable.includes(registryUri)) {
             toEnable.push(registryUri)
           }
@@ -1056,14 +1084,17 @@ export default {
           }
         }
       }
-      let promises = []
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
-        this.clearAutoRefresh(registry)
-        // Cancel previous refreshs
+        // Cancel previous requests
         if (this.searchCancelToken[registry.uri]) {
           this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        }
+        // Stop previous repeat
+        const manager = this.searchRepeatManagers[registry.uri]
+        if (manager && !manager.isPaused) {
+          manager.stop()
         }
         // Check if enabled
         if (!this.showRegistry[registry.uri]) {
@@ -1076,7 +1107,9 @@ export default {
         // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
-        let promise = this.getMappings({
+
+        const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
+        const getMappings = () => this.getMappings({
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
           fromScheme: this.getSchemeForFilter(this.searchFilter.fromScheme),
@@ -1089,12 +1122,21 @@ export default {
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
           limit: this.componentSettings.resultLimit,
           cancelToken: cancelToken.token,
-        }).catch(error => {
-          console.warn("Mapping Browser: Error during search:", error)
-          return []
-        }).then(mappings => {
+        })
+        const handleResult = mappings => {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
-            let page = (this.searchPages[registry.uri] || 1)
+            // Handle error
+            if (!mappings) {
+              this.$set(this.registryHasErrored, registry.uri, true)
+              // Set results to empty array if not yet set
+              if (!this.searchResults[registry.uri] || this.searchResults[registry.uri].includes(null)) {
+                this.$set(this.searchResults, registry.uri, [])
+              }
+              this.$set(this.searchLoading, registry.uri, false)
+              return
+            }
+            this.$set(this.registryHasErrored, registry.uri, false)
+            page = page || this.searchPages[registry.uri] || 1
             if (mappings.length == 0 && page > 1) {
               // When on a later page and there were zero mappings, go back one page
               // This can happen if there was a single mapping on a page and it go deleted, or mappings got deleted from the server while browsing
@@ -1102,24 +1144,40 @@ export default {
             } else {
               this.$set(this.searchResults, registry.uri, mappings)
               this.$set(this.searchLoading, registry.uri, false)
+              // Workaround: Set page again because certain circumstances can cause the page in searchPages to be set to the wrong value.
+              this.$set(this.searchPages, registry.uri, page)
             }
-            // Schedule auto refresh
-            this.scheduleAutoRefresh(registry)
           }
-        })
-        promises.push(promise)
+        }
+        // Call cdk.repeat via mixin
+        if (autoRefresh) {
+          const manager = this.repeat({
+            function: () => {
+              return getMappings()
+            },
+            interval: autoRefresh,
+            callback: (error, mappings) => {
+              if (error) {
+                this.$log.warn("Mapping Browser (Search): Error during refresh", error)
+              }
+              handleResult(mappings)
+            },
+          })
+          this.$set(this.searchRepeatManagers, registry.uri, manager)
+        } else {
+          getMappings().then(handleResult)
+        }
       }
-      Promise.all(promises).then(() => {
-        // Set part for share link
-        let shareFilter = {}
-        _.forOwn(this.searchFilter, (value, key) => {
-          if (value) {
-            shareFilter[key] = value
-          }
-        })
-        let searchParam = encodeURIComponent(JSON.stringify(shareFilter))
-        this.searchShareLinkPart = `search=${searchParam}`
+
+      // Set share link
+      let shareFilter = {}
+      _.forOwn(this.searchFilter, (value, key) => {
+        if (value) {
+          shareFilter[key] = value
+        }
       })
+      let searchParam = encodeURIComponent(JSON.stringify(shareFilter))
+      this.searchShareLinkPart = `search=${searchParam}`
     },
     _navigatorRefresh() {
       if (!this.navigatorNeedsRefresh.length) {
@@ -1135,7 +1193,6 @@ export default {
       }
       this.navigatorNeedsRefresh = []
 
-      let promises = []
       // let conceptsToLoad = []
 
       // Prepare params
@@ -1176,7 +1233,11 @@ export default {
           continue
         }
 
-        this.clearAutoRefresh(registry)
+        // Stop previous repeat
+        const manager = this.navigatorRepeatManagers[registry.uri]
+        if (manager && !manager.isPaused) {
+          manager.stop()
+        }
 
         // Cancel previous refreshs
         if (this.navigatorCancelToken[registry.uri]) {
@@ -1191,13 +1252,21 @@ export default {
           this.$set(this.navigatorResults, registry.uri, [null])
         }
 
-        let promise = this.getMappings({ ...params, registry: registry.uri, all: true, cancelToken: cancelToken.token }).catch(error => {
-          console.warn("Mapping Browser: Error during refresh (1)", error)
-          return []
-        }).then(mappings => {
+        const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
+        const getMappings = () => this.getMappings({ ...params, registry: registry.uri, cancelToken: cancelToken.token })
+        const handleResult = mappings => {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
           }
+          if (!mappings) {
+            this.$set(this.registryHasErrored, registry.uri, true)
+            // Set results to empty array if not yet set
+            if (!this.navigatorResults[registry.uri] || this.navigatorResults[registry.uri].includes(null)) {
+              this.$set(this.navigatorResults, registry.uri, [])
+            }
+            return
+          }
+          this.$set(this.registryHasErrored, registry.uri, false)
           // Traditional way of sorting navigator results
           // TODO: Should be improved by getting results from sorted the server
           mappings = mappings.sort((a, b) => {
@@ -1256,7 +1325,7 @@ export default {
           })
           // Filter mappings if showAllSchemes is off and schemes don't match
           // Note: This has to be adjusted or removed when proper pagination for navigator results is implemented!
-          mappings.totalCount = undefined
+          mappings._totalCount = undefined
           if (!this.componentSettings.showAllSchemes) {
             mappings = mappings.filter(mapping => {
               if (this.selected.scheme[true] && this.selected.scheme[false]) {
@@ -1281,16 +1350,26 @@ export default {
           if (this.navigatorPages[registry.uri] > 1 && mappings.length < (this.navigatorPages[registry.uri] - 1) * this.componentSettings.resultLimit + 1) {
             this.$set(this.navigatorPages, registry.uri, this.navigatorPages[registry.uri] - 1)
           }
-          // Reset cancel token
-          this.navigatorCancelToken[registry.uri] = null
-        }).catch(error => {
-          console.warn("Mapping Browser: Error during refresh (2)", error)
-        }).then(() => {
-          // Schedule auto refresh
-          this.scheduleAutoRefresh(registry)
-        })
+        }
 
-        promises.push(promise)
+        // Call cdk.repeat via mixin
+        if (autoRefresh) {
+          const manager = this.repeat({
+            function: () => {
+              return getMappings()
+            },
+            interval: autoRefresh,
+            callback: (error, mappings) => {
+              if (error) {
+                this.$log.warn("Mapping Browser (Navigator): Error during refresh", error)
+              }
+              handleResult(mappings)
+            },
+          })
+          this.$set(this.navigatorRepeatManagers, registry.uri, manager)
+        } else {
+          getMappings().then(handleResult)
+        }
       }
     },
     swapClicked() {
@@ -1312,7 +1391,7 @@ export default {
         section.loading = loading[registry.uri]
         section.page = pages[registry.uri] || 1
         let mappings = results[registry.uri] || []
-        section.totalCount = mappings.totalCount || mappings.length
+        section.totalCount = mappings._totalCount || mappings.length
         // Set section.loading if there is null in the results
         if (mappings.length == 1 && mappings[0] == null) {
           section.loading = true
@@ -1321,8 +1400,8 @@ export default {
         if (section.totalCount == 0 && !this.componentSettings.showEmpty) {
           continue
         }
-        if (mappings.url) {
-          section.url = mappings.url
+        if (mappings._url) {
+          section.url = mappings._url
         }
         // Concept information possibly needs to be loaded
         this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
@@ -1399,7 +1478,7 @@ export default {
           }
           section.items.push(item)
         }
-        if (mappings.totalCount === undefined) {
+        if (mappings._totalCount === undefined) {
           section.items = section.items.slice((section.page - 1) * this.componentSettings.resultLimit, section.page * this.componentSettings.resultLimit)
         }
         section.totalCount -= skipped

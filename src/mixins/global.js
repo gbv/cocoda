@@ -36,7 +36,7 @@ export default {
      * @param {*} object
      */
     getProvider(object) {
-      return _.get(object, "_provider") || _.get(object, "inScheme[0]._provider")
+      return _.get(object, "_registry") || _.get(object, "inScheme[0]._registry")
     },
     toggleMinimize() {
       for (let child of this.$children) {
@@ -109,18 +109,18 @@ export default {
           // Load top concepts for scheme
           return this.loadTop(scheme).then(() => true)
         } else {
-          console.error("setSelected: could not find scheme in store.")
+          this.$log.error("setSelected: could not find scheme in store.")
           return Promise.resolve(false)
         }
       } else if (concept) {
         let kind = "concept"
         if (!scheme) {
-          console.error("setSelected: could not find scheme for concept in store.")
+          this.$log.error("setSelected: could not find scheme for concept in store.")
           return Promise.resolve(false)
         }
         if (!concept) {
           // This case should not happen!
-          console.error("setSelected: critical error when getting/saving concept from store.")
+          this.$log.error("setSelected: critical error when getting/saving concept from store.")
           return Promise.resolve(false)
         }
         let promises = []
@@ -131,11 +131,11 @@ export default {
           promises.push(this.loadTop(scheme))
         }
         // Load details
-        promises.push(this.loadDetails(concept))
+        promises.push(this.loadConcepts([concept]).catch(() => {}))
         // Load narrower concepts
-        promises.push(this.loadNarrower(concept))
+        promises.push(this.loadNarrower(concept).catch(() => {}))
         // Load ancestor concepts and their narrower concepts
-        promises.push(this.loadAncestors(concept))
+        promises.push(this.loadAncestors(concept).catch(() => {}))
 
         return Promise.all(promises).then(() => {
           // Load types for scheme
@@ -151,7 +151,7 @@ export default {
             let broaderPromises = []
             this.adjustConcept(concept)
             for (let broader of concept.broader.filter(concept => concept != null)) {
-              this.loadDetails(broader, { scheme })
+              this.loadConcepts([broader], { scheme })
             }
             Promise.all(broaderPromises).then(() => {
               // TODO: Is adjustment necessary?
@@ -184,7 +184,7 @@ export default {
           noQueryRefresh,
         })
       } else {
-        console.error("setSelected: called with no valid concept or scheme.")
+        this.$log.error("setSelected: called with no valid concept or scheme.")
         return Promise.resolve(false)
       }
     },
@@ -252,11 +252,11 @@ export default {
         selectText(element)
         let successful = document.execCommand("copy")
         if (!successful) {
-          console.warn("Copy to clipboard failed.")
+          this.$log.warn("Copy to clipboard failed.")
         }
         window.getSelection().removeAllRanges()
       } catch(error) {
-        console.warn("Copy to clipboard failed.")
+        this.$log.warn("Copy to clipboard failed.")
       }
     },
     /**
@@ -323,6 +323,17 @@ export default {
       } else {
         return "?"
       }
+    },
+    getErrorMessage(error) {
+      let errorKey = `cdkErrors.${error.name}`
+      if (!this.$te(errorKey)) {
+        errorKey = "cdkErrors.CDKError"
+      }
+      let message = `${this.$t(errorKey)}`
+      if (error.message) {
+        message += ` (${error.message})`
+      }
+      return message
     },
   },
 }

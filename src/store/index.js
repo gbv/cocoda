@@ -15,8 +15,6 @@ Vue.use(Vuex)
 
 const state = {
   loading: 0,
-  schemes: [],
-  schemesLoaded: false,
   config: {},
   configLoaded: false,
   hoveredConcept: null,
@@ -51,7 +49,7 @@ const getters = {
     }
     if (!registry) {
       // Fallback to first registry which can save mappings (even if the user is not authorized for it)
-      registry = state.config.registries.find(registry => _.get(registry, "provider.has.mappings.create"))
+      registry = state.config.registries.find(registry => _.get(registry, "has.mappings.create"))
     }
     return registry
   },
@@ -80,14 +78,16 @@ const getters = {
         }
       }
     }
-    creator.prefLabel = { [language]: name || "" }
+    if (name) {
+      creator.prefLabel = { [language]: name }
+    }
     return creator
   },
   /**
    * Returns the mapped status for a concept.
    */
   mappedStatus: (state) => (concept, isLeft) => {
-    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
+    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist.length && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
   },
   languages: (state) => {
     const defaultLanguages = ["en", "de"]
@@ -99,18 +99,6 @@ const getters = {
 }
 
 const mutations = {
-  setSchemes(state, { schemes }) {
-    state.schemes = schemes
-    // Adjust registries in config
-    for (let registry of state.config.registries) {
-      if (_.isArray(registry.schemes)) {
-        registry.schemes = registry.schemes.map(scheme => schemes.find(s => jskos.compare(s, scheme)) || scheme)
-      }
-    }
-  },
-  setSchemesLoaded(state, { value }) {
-    state.schemesLoaded = value
-  },
   setConfig(state, { config, option, value }) {
     if (config) {
       state.config = config
@@ -152,5 +140,14 @@ const store = new Vuex.Store({
   mutations,
   actions,
 })
+
+// Capture mouse position in store
+document.onmousemove = _.throttle(event => {
+  store.commit({
+    type: "setMousePosition",
+    x: event.pageX,
+    y: event.pageY,
+  })
+}, 200)
 
 export default store

@@ -37,8 +37,8 @@ const updateLanguages = (store) => {
       const locale = store.state.config.languages.includes(store.state.settings.settings.locale) ? store.state.settings.settings.locale : "en"
       const languages = [locale].concat(store.state.config.languages.filter(lang => lang != locale))
       for (let registry of store.state.config.registries) {
-        if (registry.provider) {
-          registry.provider.languages = languages
+        if (registry) {
+          registry.languages = languages
         }
       }
     }

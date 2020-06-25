@@ -1,6 +1,6 @@
 {
   "title": "Cocoda Mapping Tool (dev)",
-  "cocodaBaseUrl": "https://coli-conc.gbv.de/cocoda/dev/",
+  "cocodaBaseUrl": "https://gbv.github.io/cocoda/dev/",
   "auth": "https://coli-conc.gbv.de/login/",
   "registries": [
     {

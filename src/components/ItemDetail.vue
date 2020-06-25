@@ -48,7 +48,7 @@ import ComponentSettings from "./ComponentSettings"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import computed from "../mixins/computed"
 
@@ -128,11 +128,11 @@ export default {
       }
       let baseUrl
       if (this.$jskos.isScheme(this.item)) {
-        let provider = _.get(this.item, "inScheme[0]._provider") || _.get(this.item, "_provider")
-        baseUrl = _.get(provider, "registry.schemes") || _.get(provider, "registry.concepts") || _.get(provider, "registry.data")
+        let provider = _.get(this.item, "inScheme[0]._registry") || _.get(this.item, "_registry")
+        baseUrl = _.get(provider, "_api.schemes") || _.get(provider, "_api.data") || _.get(provider, "_api.concepts")
       } else {
-        let provider = _.get(this.item, "inScheme[0]._provider")
-        baseUrl = _.get(provider, "registry.concepts") || _.get(provider, "registry.data") || (_.get(provider, "getDataUrl") && provider.getDataUrl(this.item))
+        let provider = _.get(this.item, "inScheme[0]._registry")
+        baseUrl = _.get(provider, "_api.data") || (_.get(provider, "_getDataUrl") && provider._getDataUrl(this.item)) || _.get(provider, "_api.concepts")
       }
       // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
       if (!baseUrl || !_.isString(baseUrl)) {

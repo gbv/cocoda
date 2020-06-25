@@ -113,7 +113,7 @@ export default {
               value = parseInt(value)
               // Also check against min/max values
               if (isNaN(value) || value < minValue || value > maxValue) {
-                console.warn(`Tried to save invalid value for setting ${this.parentName} -> ${setting}, fallback to default value (${defaultValue}).`)
+                this.$log.warn(`Tried to save invalid value for setting ${this.parentName} -> ${setting}, fallback to default value (${defaultValue}).`)
                 value = defaultValue
               }
             }

@@ -84,11 +84,11 @@
       class="schemeDetail-identifier">
       <b>{{ $t("schemeDetail.registry") }}: </b>
       <registry-notation
-        :registry="item._provider.registry"
+        :registry="item._registry"
         :tooltip="false" />
       &nbsp;
       <registry-name
-        :registry="item._provider.registry"
+        :registry="item._registry"
         :tooltip="false" />
     </div>
 
@@ -129,7 +129,7 @@ import RegistryName from "./RegistryName"
 import RegistryNotation from "./RegistryNotation"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"

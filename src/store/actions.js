@@ -1,10 +1,16 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import axios from "axios"
+const axiosConfig = {
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+}
 import defaultConfig from "../config"
 import i18n from "../utils/i18n"
+import log from "../utils/log"
 // Import registry providers
-import providers from "../providers"
+import cdk from "cocoda-sdk"
 let buildInfo
 try {
   buildInfo = require("../../build/build-info.json")
@@ -20,12 +26,12 @@ export default {
     let config
     let userConfig
     try {
-      userConfig = (await axios.get(configFile)).data
+      userConfig = (await axios.get(configFile, axiosConfig)).data
     } catch (error) {
       userConfig = null
     }
     if (!_.isObject(userConfig)) {
-      console.error(`Error loading config from ${configFile}: Data is not an object.`)
+      log.error(`Error loading config from ${configFile}: Data is not an object.`)
       userConfig = { error: "malformedConfig" }
     }
     config = Object.assign({ configFile }, defaultConfig, userConfig)
@@ -68,6 +74,24 @@ export default {
         }
       }
     }
+    // Make old config files compatible with new registry format introduced by cocoda-sdk
+    for (let registry of config.registries) {
+      if (registry.provider == "SearchSuggestion") {
+        registry.provider = "LabelSearchSuggestion"
+      }
+      if (registry.provider == "OccurrencesApi") {
+        if (!registry.api && registry.occurrences) {
+          registry.api = registry.occurrences
+          delete registry.occurrences
+        }
+      }
+      if (registry.provider == "ReconciliationApi") {
+        if (!registry.api && registry.reconcile) {
+          registry.api = registry.reconcile
+          delete registry.reconcile
+        }
+      }
+    }
     // Assign priority values to registries (for easier comparison at other points)
     let priority = config.registries.length
     for (let registry of config.registries) {
@@ -96,28 +120,6 @@ export default {
     // Make sure auth URL always ends on a slash
     if (config.auth && !config.auth.endsWith("/")) {
       config.auth += "/"
-    }
-
-    // Load status endpoint for each registry
-    let statusPromises = config.registries.map(registry =>
-      registry.status
-        ? (
-          _.isString(registry.status)
-            // For strings, make a request
-            ? axios.get(registry.status).then(response => response.data).catch(() => {})
-            // Otherwise assume an object
-            : registry.status
-        )
-        : Promise.resolve({}))
-    let statusResults = await Promise.all(statusPromises)
-    for (let index = 0; index < config.registries.length; index += 1) {
-      let registry = config.registries[index]
-      let status = statusResults[index]
-      if (_.isObject(status) && !_.isEmpty(status)) {
-        // Merge status result and registry
-        // (registry always has priority)
-        config.registries[index] = _.merge({}, status, registry)
-      }
     }
 
     /**
@@ -158,15 +160,19 @@ export default {
       return true
     }
 
+    // Initialize registries
+    cdk.setConfig(config)
+    await Promise.all(config.registries.map(r => r.init()))
+
     // Filter out incompatible registries
     let compatibleRegistries = []
     for (let registry of config.registries) {
-      if (!buildInfo.jskosApi || !registry.config || !registry.config.version || versionCompatible(registry.config.version, buildInfo.jskosApi)) {
+      if (!buildInfo.jskosApi || !registry._config || !registry._config.version || versionCompatible(registry._config.version, buildInfo.jskosApi)) {
         compatibleRegistries.push(registry)
       } else {
         // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
-        const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry.config.version, jskosApi: buildInfo.jskosApi })
-        console.warn(text)
+        const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry._config.version, jskosApi: buildInfo.jskosApi })
+        log.warn(text)
         commit("alerts/add", {
           variant: "danger",
           text,
@@ -175,29 +181,10 @@ export default {
     }
     config.registries = compatibleRegistries
 
-    // Initialize providers for registries
-    let options = { registries: config.registries, http: axios }
-    for (let registry of config.registries) {
-      // Replace provider with provider object
-      try {
-        registry.provider = new providers[registry.provider](registry, options)
-      } catch(error) {
-        registry.provider = null
-      }
-    }
-
-    // Remove all registries without provider
-    config.registries = config.registries.filter(registry => registry.provider != null)
-
-    // Add isAuthorizedFor method from providers to registries
-    // eslint-disable-next-line require-atomic-updates
-    for (let registry of config.registries) {
-      registry.isAuthorizedFor = (...args) => {
-        return registry.provider.isAuthorizedFor(...args)
-      }
-    }
-
     config.conceptLists = await dispatch("loadConceptLists", config.conceptLists)
+
+    // Set autoRefresh with default values
+    config.autoRefresh = Object.assign(defaultConfig.autoRefresh, config.autoRefresh || {})
 
     // Save config
     commit({
@@ -261,10 +248,10 @@ export default {
         // Load list from URL
         try {
           let url = list.url
-          list = (await axios.get(url)).data
+          list = (await axios.get(url, axiosConfig)).data
           list.url = url
         } catch (error) {
-          console.warn("Could not load list from URL:", list)
+          log.warn("Could not load list from URL:", list)
         }
         if (list) {
           conceptLists.push(list)
@@ -282,10 +269,10 @@ export default {
       if (list.conceptsUrl) {
         let url = list.conceptsUrl
         try {
-          let concepts = (await axios.get(url)).data
+          let concepts = (await axios.get(url, axiosConfig)).data
           list.concepts = concepts
         } catch (error) {
-          console.warn("Could not load concepts for list with URL:", url)
+          log.warn("Could not load concepts for list with URL:", url)
           list.concepts = []
         }
         list.conceptsUrl = url

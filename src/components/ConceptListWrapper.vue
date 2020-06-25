@@ -3,7 +3,7 @@
     class="conceptListWrapper"
     :style="`${concepts.length == 0 ? 'min-height: 80px; max-height: 80px;' : ''}`">
     <tabs
-      v-model="currentChoiceIndex"
+      :value="currentChoiceIndex"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
       fill
       @change="tabChanged">
@@ -101,7 +101,7 @@ import DataModalButton from "./DataModalButton"
 import LoadingIndicatorFull from "./LoadingIndicatorFull"
 
 import computed from "../mixins/computed"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import dragandrop from "../mixins/dragandrop"
 import hoverHandler from "../mixins/hover-handler"
 
@@ -127,7 +127,7 @@ export default {
   computed: {
     dataChoices() {
       // Determine top concepts URL
-      let topConceptsUrl = _.get(this.selected.scheme[this.isLeft], "_provider.registry.top")
+      let topConceptsUrl = _.get(this.selected.scheme[this.isLeft], "_registry.top")
       if (topConceptsUrl) {
         // Add selected schemes URI
         topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`
@@ -188,7 +188,7 @@ export default {
           id: `custom-${index}`,
           label,
           tooltip,
-          concepts: list.concepts.map(concept => this.getObject(concept, { type: "concept" })),
+          concepts: list.concepts.map(concept => this.saveObject(concept, { type: "concept" })),
           showChildren: false,
           showScheme: true,
           url: list.url || list.conceptsUrl,

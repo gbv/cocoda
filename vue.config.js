@@ -17,12 +17,6 @@ module.exports = {
       filename: "index.html",
       chunks: ["chunk-vendors", "chunk-common", "app"],
     },
-    mappingsApp: {
-      entry: "src/entry/mappingsApp.js",
-      template: "public/mappings.html",
-      filename: "mappings.html",
-      chunks: ["chunk-vendors", "chunk-common", "mappingsApp"],
-    },
     concordanceApp: {
       entry: "src/entry/concordanceApp.js",
       template: "public/concordances.html",
@@ -32,24 +26,26 @@ module.exports = {
   },
   configureWebpack: {
     plugins: [
-      new CopyWebpackPlugin([
-        {
-          from: "build/build-info.json",
-          to: "",
-        },
-        {
-          from: "config/cocoda.json",
-          to: "cocoda.json",
-        },
-        {
-          from: "node_modules/bootstrap/dist/css/bootstrap.css",
-          to: "css/",
-        },
-        {
-          from: "node_modules/bootstrap-vue/dist/bootstrap-vue.css",
-          to: "css/",
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "build/build-info.json",
+            to: "",
+          },
+          {
+            from: "config/cocoda.json",
+            to: "cocoda.json",
+          },
+          {
+            from: "node_modules/bootstrap/dist/css/bootstrap.css",
+            to: "css/",
+          },
+          {
+            from: "node_modules/bootstrap-vue/dist/bootstrap-vue.css",
+            to: "css/",
+          },
+        ],
+      }),
     ],
   },
   chainWebpack: config => {

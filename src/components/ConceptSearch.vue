@@ -108,7 +108,7 @@ import LoadingIndicator from "./LoadingIndicator"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import clickHandler from "../mixins/click-handler"
 import dragandrop from "../mixins/dragandrop"
 import computed from "../mixins/computed"
@@ -154,8 +154,8 @@ export default {
       searchSelected: -1,
       // Whether to prevent hovering with the mouse (during keyboard navigation)
       preventHovering: false,
-      // Last axios cancel token
-      cancelToken: null,
+      // Last query cancel method
+      cancel: null,
       // A unique ID for the DOM (to prevent conflict with other instances of this component)
       uniqueID: null,
       // Show/hide types popover
@@ -192,7 +192,7 @@ export default {
       },
     },
     provider() {
-      return _.get(this.scheme, "_provider")
+      return _.get(this.scheme, "_registry")
     },
   },
   watch: {
@@ -202,9 +202,9 @@ export default {
     searchQuery: function (newQuestion) {
       this.searchSelected = -1
       // Already cancel previous request
-      if (this.cancelToken != null) {
-        this.cancelToken.cancel("There was a newer search query.")
-        this.cancelToken = null
+      if (this.cancel != null) {
+        this.cancel("There was a newer search query.")
+        this.cancel = null
       }
       if (newQuestion == "") {
         this.loading = false
@@ -306,10 +306,10 @@ export default {
      */
     getAnswer:  function () {
       this.searchResult = []
-      // Generate new axios cancel token
-      this.cancelToken = this.provider.getCancelToken()
       let searchQuery = this.searchQuery
-      this.provider.suggest(searchQuery, { scheme: this.scheme, types: this.selectedTypes, cancelToken: this.cancelToken.token })
+      const promise = this.provider.suggest({ search: searchQuery, scheme: this.scheme, types: this.selectedTypes })
+      this.cancel = promise.cancel
+      promise
         .then((data) => {
           if (searchQuery == this.searchQuery) {
             this.loading = false
@@ -322,7 +322,8 @@ export default {
           if (error.toString().toLowerCase().indexOf("cancel") == -1 && searchQuery == this.searchQuery) {
             this.loading = false
             this.isValid = false
-            this.searchResult = [["Error! Could not reach the API. " + error]]
+            const message = `${this.$t("search.error")} ${this.getErrorMessage(error)}`
+            this.searchResult = [[message]]
           }
         }).then(() => {
           if (searchQuery == this.searchQuery) {
@@ -337,6 +338,7 @@ export default {
                 concept.uri,
               ])
             }
+            this.cancel = null
           }
         })
     },
@@ -455,7 +457,7 @@ export default {
     },
     dragStartResult(result, event) {
       let uri = _.last(result)
-      let concept = this.getObject({ uri }, { scheme: this.scheme, type: "concept" })
+      let concept = this.saveObject({ uri }, { scheme: this.scheme, type: "concept" })
       this.dragStart(concept, event)
     },
     droppedConcept(concept) {

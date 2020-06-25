@@ -65,7 +65,8 @@
     "search": {
       "placeholder": "Type to search...",
       "results": "result | results",
-      "noResults": "No results..."
+      "noResults": "No results...",
+      "error": "Error performing the search."
     },
     "conceptDetail": {
       "showAllAncestors": "show all ancestors",
@@ -121,9 +122,9 @@
       "swapMapping": "swap source and target concepts",
       "addConcept": "add concept to mapping",
       "deleteTitle": "Delete Mapping",
-      "deleteAndClear": "Delete original mapping and clear",
-      "deleteAndKeep": "Delete original mapping and keep changes",
-      "keepAndClear": "Keep original mapping and clear",
+      "deleteText": "Do you really want to delete this mapping?",
+      "deleteChangesText": "Note: There are unsaved changes in the mapping.",
+      "deleteConfirm": "Delete original mapping",
       "cancel": "@:general.cancel",
       "removeConceptFromMapping": "remove concept from mapping",
       "settingsButton": "Mapping Editor Settings",
@@ -181,7 +182,8 @@
       "mappingConfirmedTooltip": "Confirmed",
       "openInCocoda": "open in Cocoda",
       "lockScheme": "lock search scheme to selected scheme",
-      "unlockScheme": "unlock search scheme from selected scheme"
+      "unlockScheme": "unlock search scheme from selected scheme",
+      "registryHasErrored": "There has been an error when trying to load mappings from this registry. The shown results can be inaccurate."
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -259,8 +261,8 @@
       "mappingNotRestored": "Mapping could not be restored in {0}.",
       "annotationSaved": "Annotation was saved.",
       "annotationRemoved": "Annotation was removed.",
-      "annotationNotSaved": "Annotation could not be saved. Please check authentication.",
-      "annotationNotRemoved": "Annotation could not be removed. Please check authentication.",
+      "annotationNotSaved": "Annotation could not be saved.",
+      "annotationNotRemoved": "Annotation could not be removed.",
       "annotationError": "There was an error regarding annotations. Please try again later.",
       "newVersionText": "There is a new version of Cocoda.",
       "newVersionLink": "Refresh site",
@@ -299,6 +301,16 @@
     "languages": {
       "en": "English",
       "de": "German"
+    },
+    "cdkErrors": {
+      "CDKError": "Unknown error.",
+      "MethodNotImplementedError": "The server doesn't seem to support this action or is not configured correctly.",
+      "InvalidOrMissingParameterError": "A parameter seems to be invalid or missing.",
+      "BackendError": "The server seems to have issues.",
+      "BackendUnavailableError": "The server is not reachable.",
+      "NetworkError": "There are issues with the connection.",
+      "InvalidRequestError": "The request seems to be invalid.",
+      "MissingApiUrlError": "@:cdkErrors.CDKError"
     }
   },
   "de": {
@@ -367,7 +379,8 @@
     "search": {
       "placeholder": "Tippen zum Suchen...",
       "results": "Ergebnis | Ergebnisse",
-      "noResults": "Keine Ergebnisse..."
+      "noResults": "Keine Ergebnisse...",
+      "error": "Bei der Suchanfrage ist ein Fehler aufgetreten."
     },
     "mappingEditor": {
       "title": "Mapping-Editor",
@@ -381,9 +394,9 @@
       "swapMapping": "Quell- und Zielkonzepte tauschen",
       "addConcept": "Konzept zum Mapping hinzufügen",
       "deleteTitle": "Mapping löschen",
-      "deleteAndClear": "Lösche originales Mapping und verwerfe Änderungen",
-      "deleteAndKeep": "Lösche originales Mapping und behalte Änderungen",
-      "keepAndClear": "Behalte originales Mapping und verwerte Änderungen",
+      "deleteText": "Dieses Mapping wirklich löschen?",
+      "deleteChangesText": "Anmerkung: Es gibt ungespeicherte Änderungen in dem Mapping.",
+      "deleteConfirm": "Originales Mapping löschen",
       "cancel": "@:general.cancel",
       "removeConceptFromMapping": "Konzept aus Mapping entfernen",
       "settingsButton": "Mapping-Editor Einstellungen",
@@ -531,7 +544,8 @@
       "mappingConfirmedTooltip": "Bestätigt",
       "openInCocoda": "in Cocoda öffnen",
       "lockScheme": "binde Suchvokabular an das ausgewählte Vokabular",
-      "unlockScheme": "entbinde Suchvokabular von dem ausgewählten Vokabular"
+      "unlockScheme": "entbinde Suchvokabular von dem ausgewählten Vokabular",
+      "registryHasErrored": "Beim Laden von Mappings aus diesem Register ist ein Fehler aufgetreten. Das angezeigte Ergebnis kann inakkurat sein."
     },
     "mappingDetail": {
       "title": "Mapping-Details",
@@ -601,6 +615,15 @@
     "languages": {
       "en": "Englisch",
       "de": "Deutsch"
+    },
+    "cdkErrors": {
+      "BackendUnavailableError": "Der Server ist nicht erreichbar.",
+      "BackendError": "Der Server scheint Probleme zu haben.",
+      "MissingApiUrlError": "@:cdkErrors.CDKError",
+      "MethodNotImplementedError": "Der Server scheint diese Aktion nicht zu unterstützten oder wurde nicht richtig konfiguriert.",
+      "NetworkError": "Es gibt Probleme mit der Netzwerkverbindung.",
+      "InvalidOrMissingParameterError": "Ein Parameter scheint fehlerhaft zu sein oder zu fehlen.",
+      "InvalidRequestError": "Die Anfrage scheint fehlerhaft zu sein."
     }
   }
 }

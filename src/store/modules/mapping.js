@@ -1,6 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
+import log from "../../utils/log"
 
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
@@ -291,7 +292,7 @@ const mutations = {
       state.mapping = mapping
     }
     // Save the original with identifiers and the LOCAL property.
-    registry = registry || _.get(original, "_provider.registry")
+    registry = registry || _.get(original, "_registry")
     if (original && registry) {
       state.original.uri = original.uri
       state.original.mapping = original
@@ -428,153 +429,7 @@ const mutations = {
 }
 
 // actions
-// TODO: Refactoring!
 const actions = {
-
-  getMappings({ state, commit, rootGetters, rootState }, { from, fromScheme, to, toScheme, creator, typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, registry, onlyFromMain = false, all = false, selected, cancelToken } = {}) {
-    let config = rootState.config
-    let registries = []
-    if (onlyFromMain) {
-      // Try to find registry that fits state.mappingRegistry
-      let registry = rootGetters.getCurrentRegistry
-      if (registry) {
-        registries = [registry]
-      }
-    } else {
-      if (registry) {
-        let uri = registry
-        registry = config.registries.find(registry => jskos.compare(registry, { uri }))
-        if (registry) {
-          registries = [registry]
-        }
-      } else {
-        registries = config.registries.filter(registry => registry.provider.has.mappings || (all && registry.provider.has.occurrences))
-      }
-    }
-    let promises = []
-    for (let registry of registries) {
-      if (all) {
-        promises.push(registry.provider.getAllMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, selected, cancelToken }))
-      } else {
-        promises.push(registry.provider.getMappings({ from, fromScheme, to, toScheme, creator, type: typeFilter, partOf, offset, limit, direction, mode, identifier, uri, sort, order, cancelToken }))
-      }
-    }
-    return Promise.all(promises).then(results => {
-      // Use results[0] directly to retain custom properties for single registry results
-      let mappings = results.length == 1 ? results[0] : _.union(...results)
-      if (state.original.uri) {
-        for (let mapping of mappings) {
-          if (jskos.compare(state.original.registry, mapping._provider.registry) && state.original.uri == mapping.uri) {
-            commit({
-              type: "set",
-              original: mapping,
-              registry: state.original.registry,
-              noQueryRefresh: true,
-            })
-          }
-        }
-      }
-      return mappings
-    })
-  },
-
-  // Saves current mapping if possible
-  async saveMapping({ state, getters, rootGetters }) {
-    const registry = rootGetters.getCurrentRegistry
-    let update = false
-    if (getters.canUpdate) {
-      update = true
-    }
-    if (update) {
-      return registry.provider.saveMapping(state.mapping, state.original.mapping)
-    } else {
-      if (!getters.canCreate) {
-        return null
-      }
-      return registry.provider.saveMapping(_.omit(state.mapping, ["uri"]))
-    }
-  },
-
-  saveMappings({ rootGetters, rootState }, { mappings, registry }) {
-    let config = rootState.config
-    let uri = registry
-    if (uri) {
-      registry = config.registries.find(registry => jskos.compare(registry, { uri }))
-    } else {
-      registry = rootGetters.getCurrentRegistry
-    }
-    if (!registry || !registry.provider || !(registry.provider.has.mappings && registry.provider.has.mappings.create)) {
-      console.warn("Tried to save mappings, but could not determine provider.")
-      return Promise.resolve([])
-    }
-    // Minify mappings before saving
-    mappings = mappings.map(({ mapping, original }) => ({ mapping: jskos.minifyMapping(mapping), original }))
-    return registry.provider.saveMappings(mappings)
-  },
-
-  async removeMapping({ state, getters, rootGetters }) {
-    const registry = rootGetters.getCurrentRegistry
-    if (!getters.canDelete) {
-      return null
-    }
-    return registry.provider.removeMapping(state.original.mapping)
-  },
-
-  removeMappings({ state, rootGetters, commit, rootState }, { mappings, registry }) {
-    let config = rootState.config
-    let uri = registry
-    if (uri) {
-      registry = config.registries.find(registry => jskos.compare(registry, { uri }))
-    } else {
-      registry = rootGetters.getCurrentRegistry
-    }
-    if (!registry || !registry.provider || !(registry.provider.has.mappings && registry.provider.has.mappings.delete)) {
-      console.warn("Tried to remove mappings, but could not determine provider.")
-      return Promise.resolve([])
-    }
-    return registry.provider.removeMappings(mappings).then(removedMappings => {
-      removedMappings.forEach((deleted, index) => {
-        if (deleted) {
-          let mapping = mappings[index]
-          // Check if current original was amongst the removed mappings
-          if (mapping.uri == state.original.uri && jskos.compare(_.get(mapping, "_provider.registry"), state.original.registry)) {
-            // Set original to null
-            commit({ type: "set" })
-          }
-          // Add mappings to trash
-          if (mapping) {
-            commit({
-              type: "addToTrash",
-              mapping,
-              registry,
-            })
-          }
-        }
-      })
-      return removedMappings
-    })
-  },
-
-  async transferMapping({ dispatch }, { mapping, fromRegistry, toRegistry }) {
-    let savedMapping = (await dispatch({
-      type: "saveMappings",
-      mappings: [{ mapping }],
-      registry: toRegistry,
-    }))[0]
-    if (savedMapping) {
-      let deletedMapping = (await dispatch({
-        type: "removeMappings",
-        mappings: [mapping],
-        registry: fromRegistry,
-      }))[0]
-      if (!deletedMapping) {
-        console.warn("transferMapping: Mapping saved, but could not be deleted from source.")
-      }
-      return savedMapping
-    }
-    console.warn("transferMapping: Save mapping failed.")
-    return null
-  },
 
   loadMappingTrash({ commit }) {
     return localforage.getItem(localStorageKey).then(trash => {
@@ -596,11 +451,11 @@ const actions = {
     let config = rootState.config
     let item = state.mappingTrash.find(item => item.mapping.uri == uri)
     let registry = config.registries.find(registry => jskos.compare(registry, item && item.registry))
-    if (!item || !registry || !registry.provider) {
-      console.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
+    if (!item || !registry) {
+      log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)
     }
-    return registry.provider.saveMapping(item.mapping).then(mapping => {
+    return registry.postMapping({ mapping: item.mapping }).then(mapping => {
       if (mapping) {
         // Remove item from trash
         commit({

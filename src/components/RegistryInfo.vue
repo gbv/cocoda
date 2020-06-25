@@ -35,16 +35,16 @@
       <span
         v-for="type in ['schemes', 'concepts', 'mappings', 'annotations', 'occurrences']"
         :key="`settings-info-capabilities-${type}`">
-        <span v-if="registry.provider.has[type]">
+        <span v-if="registry.has[type]">
           <font-awesome-icon
-            v-if="registry.provider.has[type]"
+            v-if="registry.has[type]"
             style="color: green; margin-left: 5px;"
             icon="code" />
           {{ $t(`registryInfo.${type}`) }}
         </span>
       </span>
       <span
-        v-if="registry.provider.has.auth"
+        v-if="registry.has.auth"
         style="margin-left: 5px;">
         <span
           v-if="registry.isAuthorizedFor({

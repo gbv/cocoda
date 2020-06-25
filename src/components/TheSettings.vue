@@ -14,8 +14,7 @@
         :value="tab"
         @change="$emit('update:tab', $event.index)">
         <tab
-          :title="$t('settingsTabs')[0]"
-          active>
+          :title="$t('settingsTabs')[0]">
           <div v-if="localSettings">
             <p v-if="user && authorized">
               <span
@@ -137,20 +136,27 @@
             v-for="(registry, index) in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
             class="settingsModal-mapping-registry"
-            @click="$store.commit({
-              type: 'settings/set',
-              prop: 'mappingRegistry',
-              value: registry.uri
-            })">
+            :class="{'selected-registry': $jskos.compare(registry, currentRegistry)}">
+            <b-form-checkbox
+              v-model="showRegistry[registry.uri]"
+              :disabled="$jskos.compare(registry, currentRegistry)" />
             <registry-info
               :registry="registry"
-              :class="{'selected-registry': $jskos.compare(registry, $store.getters.getCurrentRegistry)}"
-              class="settings-sources" />
+              class="settings-sources"
+              @click.native="$store.commit({
+                type: 'settings/set',
+                prop: 'mappingRegistry',
+                value: registry.uri
+              })" />
           </div>
           <h4>{{ $t("settings.otherRegistries") }}</h4>
           <div
             v-for="(registry, index) in config.registries.filter(registry => !$jskos.mappingRegistryIsStored(registry))"
-            :key="`settingsModal-other-registries-${index}`">
+            :key="`settingsModal-other-registries-${index}`"
+            class="settingsModal-mapping-registry">
+            <b-form-checkbox
+              v-if="registry.has.mappings"
+              v-model="showRegistry[registry.uri]" />
             <registry-info
               :registry="registry"
               class="settings-sources" />
@@ -310,7 +316,7 @@
               <b-button
                 variant="danger"
                 size="sm"
-                @click="deleteMappings">
+                @click="deleteMappings_">
                 {{ $t("general.yes") }}
               </b-button>
               <b-button
@@ -381,7 +387,7 @@ import RegistryInfo from "./RegistryInfo"
 
 // Import mixins
 import auth from "../mixins/auth"
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import computed from "../mixins/computed"
 
 /**
@@ -408,13 +414,17 @@ export default {
       uploadedFile: null,
       uploadedFileStatus: "",
       deleteMappingsButtons: false,
+      // Debounce handler
+      updateLocalSettings: _.debounce(() => {
+        this.$store.commit({
+          type: "settings/save",
+          settings: _.cloneDeep(this.localSettings),
+        })
+        this.creatorRewritten = false
+      }, 200),
     }
   },
   computed: {
-    localMappingsSupported() {
-      let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
-      return registry != null
-    },
     availableMappingRegistries() {
       return this.config.registries.filter(registry => registry.isAuthorizedFor({
         type: "mappings",
@@ -451,7 +461,7 @@ export default {
                 if (setting.type == "Number" && !_.isNumber(value)) {
                   value = parseInt(value)
                   if (isNaN(value) || value < setting.min || value > setting.max) {
-                    console.warn(`Tried to save invalid value for setting ${componentName} -> ${settingKey}, fallback to default value (${setting.default}).`)
+                    this.$log.warn(`Tried to save invalid value for setting ${componentName} -> ${settingKey}, fallback to default value (${setting.default}).`)
                     value = setting.default
                   }
                 }
@@ -474,11 +484,7 @@ export default {
   watch: {
     localSettings: {
       handler() {
-        this.$store.commit({
-          type: "settings/save",
-          settings: this.localSettings,
-        })
-        this.creatorRewritten = false
+        this.updateLocalSettings()
       },
       deep: true,
     },
@@ -503,12 +509,12 @@ export default {
             }
             try {
               let mapping = JSON.parse(line)
-              mappings.push({ mapping })
+              mappings.push(mapping)
             } catch(error) {
               importResult.error += 1
             }
           }
-          this.$store.dispatch({ type: "mapping/saveMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(result => {
+          this.postMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", _alert: false, _refresh: false }).then(result => {
             importResult.imported = result.length
             importResult.skipped = lines.length - importResult.imported - importResult.error - importResult.empty
             this.uploadedFileStatus = `${importResult.imported} mappings imported, ${importResult.skipped} skipped, ${importResult.error} errored`
@@ -516,7 +522,7 @@ export default {
             this.refreshDownloads()
             this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
           }).catch(error => {
-            console.error("TheSettings - Error uploading mappings", error)
+            this.$log.error("TheSettings - Error uploading mappings", error)
           })
         }
         reader.readAsText(this.uploadedFile)
@@ -550,7 +556,7 @@ export default {
               if (!concept.inScheme || !concept.inScheme.length) {
                 concept.inScheme = [scheme]
               }
-              promises.push(this.loadDetails(concept, { scheme }))
+              promises.push(this.loadConcepts([concept], { scheme }))
             }
           }
         }
@@ -562,7 +568,7 @@ export default {
           let mapping = this.$jskos.minifyMapping(m)
           // Add labels to concepts in mapping
           for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-            let conceptInStore = this._getObject(concept)
+            let conceptInStore = this.getObject(concept)
             let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
             if (language) {
               concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
@@ -575,8 +581,8 @@ export default {
         // First, determine available combinations of concept schemes
         for (let mapping of mappings) {
           // Adjust schemes with store
-          mapping.fromScheme = this._getObject(mapping.fromScheme) || mapping.fromScheme
-          mapping.toScheme = this._getObject(mapping.toScheme) || mapping.toScheme
+          mapping.fromScheme = this.getObject(mapping.fromScheme) || mapping.fromScheme
+          mapping.toScheme = this.getObject(mapping.toScheme) || mapping.toScheme
           let download = this.dlMappings.find(dl => this.$jskos.compare(mapping.fromScheme, dl.fromScheme) && this.$jskos.compare(mapping.toScheme, dl.toScheme))
           if (download) {
             download.mappings.push(mapping)
@@ -609,7 +615,7 @@ export default {
             // Prepare labels
             // ... for concepts
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-              let conceptInStore = this._getObject(concept)
+              let conceptInStore = this.getObject(concept)
               let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
               if (language) {
                 // NOTE: Hardcoded language, see note above.
@@ -631,27 +637,26 @@ export default {
         this.dlAllMappingsCsv = mappingCSV.fromMappings(minifiedMappings)
         this.dlMappingsReady = true
       }).catch(error => {
-        console.error("TheSettings - Error refreshing local mappings download", error)
+        this.$log.error("TheSettings - Error refreshing local mappings download", error)
       })
     },
-    rewriteCreator() {
+    async rewriteCreator() {
       if (!this.localMappingsSupported) {
         return
       }
-      // 1. Load all local mappings directly from API
-      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
-        // 2. Rewrite mappings to new creator
+      try {
+        // 1. Load all local mappings directly from API
+        const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+        // 2. Put all mappings (updates creator automatically)
         for (let mapping of mappings) {
-          _.set(mapping, "creator", [this.creator])
+          await this.putMapping({ mapping, _reload: false, _alert: false })
         }
-        return this.$store.dispatch({ type: "mapping/saveMappings", mappings: mappings.map(mapping => ({ mapping, original: mapping })), registry: "http://coli-conc.gbv.de/registry/local-mappings" })
-      }).then(() => {
         this.creatorRewritten = true
         this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
         this.refreshDownloads()
-      }).catch(error => {
-        console.error("TheSettings - Error rewriting creator", error)
-      })
+      } catch(error) {
+        this.$log.error("TheSettings - Error rewriting creator", error)
+      }
     },
     resetFlex() {
       let flex = _.cloneDeep(this.localSettings.flex)
@@ -664,25 +669,21 @@ export default {
         value: flex,
       })
     },
-    deleteMappings() {
+    async deleteMappings_() {
       if (!this.localMappingsSupported) {
         return
       }
-      this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(mappings => {
-        return this.$store.dispatch({ type: "mapping/removeMappings", mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings" }).then(removedMappings => {
-          let removedMappingsCount = removedMappings.filter(success => success).length
-          if (mappings.length != removedMappingsCount) {
-            console.warn(`Error when removing mappings, tried to remove ${mappings.length}, but only removed ${removedMappingsCount}.`)
-          }
-          this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
-          this.refreshDownloads()
-          this.deleteMappingsButtons = false
-          // Also clear mapping trash
-          this.$store.commit("mapping/clearTrash")
-        }).catch(error => {
-          console.error("TheSettings - Error deleting local mappings", error)
-        })
-      })
+      try {
+        const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+        await this.deleteMappings({ mappings, registry: "http://coli-conc.gbv.de/registry/local-mappings", _alert: false, _refresh: false, _trash: false })
+        this.$store.commit("mapping/setRefresh", { registry: "http://coli-conc.gbv.de/registry/local-mappings" })
+        this.refreshDownloads()
+        this.deleteMappingsButtons = false
+        // Also clear mapping trash
+        this.$store.commit("mapping/clearTrash")
+      } catch(error) {
+        this.$log.error("TheSettings - Error deleting local mappings", error)
+      }
     },
     login(provider) {
       let url
@@ -728,7 +729,7 @@ p {
   padding: 6px 5px;
 }
 .selected-registry {
-  background: @color-select-2;
+  background-color: @color-select-2;
 }
 .settingsModal-mapping-registry {
   display: flex;
@@ -739,9 +740,13 @@ p {
   background-color: @color-primary-5;
   cursor: pointer;
 }
+// First Child: Checkbox
 .settingsModal-mapping-registry > div:first-child {
-  flex: 2;
+  flex: none;
+  margin-left: 5px;
+  margin-right: -5px;
 }
+// Last Child: Registry Info
 .settingsModal-mapping-registry > div:last-child {
   flex: 1;
 }

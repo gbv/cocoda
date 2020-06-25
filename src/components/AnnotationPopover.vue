@@ -164,7 +164,7 @@ export default {
       return _.get(this.ownAssessment, "bodyValue")
     },
     provider() {
-      return _.get(this.imapping, "_provider")
+      return _.get(this.imapping, "_registry")
     },
     canSaveAnnotation() {
       if (!this.provider) {
@@ -190,7 +190,7 @@ export default {
         user: this.user,
       })) {
         // Check if user is in "moderatingIdentities" in jskos-server config
-        const moderatingIdentities = _.get(this.provider, "registry.config.annotations.moderatingIdentities") || []
+        const moderatingIdentities = _.get(this.provider, "_config.annotations.moderatingIdentities") || []
         if (_.intersection(moderatingIdentities, this.userUris).length > 0) {
           return true
         }
@@ -253,17 +253,20 @@ export default {
     assessing(value) {
       let provider = this.provider
       if (!provider || !provider.has.annotations) {
-        console.warn("No provider found to add annotation.")
+        this.$log.warn("No provider found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       let uri = _.get(this.imapping, "uri")
       if (!uri) {
-        console.warn("No URI found to add annotation.")
+        this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       this.loading = true
+      const handleError = (error, type) => {
+        this.alert(`${this.$t("alerts." + type)} ${this.getErrorMessage(error)}`, null, "danger")
+      }
       let promise
       // Three cases:
       // 1. Case: User has not assessed this mapping -> add an annotation
@@ -286,7 +289,7 @@ export default {
             annotation.creator.name = this.creatorName
           }
         }
-        promise = provider.addAnnotation(annotation).then(annotation => {
+        promise = provider.postAnnotation({ annotation }).then(annotation => {
           // Check if URI stayed the same
           let newUri = _.get(this.imapping, "uri")
           if (uri != newUri || !annotation) {
@@ -298,7 +301,7 @@ export default {
           }
           this.imapping.annotations.push(annotation)
           this.$emit("refresh-annotations", { uri, annotations: this.annotations })
-        })
+        }).catch(error => handleError(error, "annotationNotSaved"))
       } else {
         if (this.ownScore != value) {
           if (!this.provider.isAuthorizedFor({
@@ -311,7 +314,7 @@ export default {
             return
           }
           // 2. Case: User has assessed and changes the value
-          promise = provider.editAnnotation(this.ownAssessment, { bodyValue: value }).then(annotation => {
+          promise = provider.patchAnnotation({ annotation: { id: this.ownAssessment.id, bodyValue: value } }).then(annotation => {
             if (annotation) {
               this.ownAssessment.bodyValue = value
               this.alert(this.$t("alerts.annotationSaved"), null, "success")
@@ -319,7 +322,7 @@ export default {
             } else {
               this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             }
-          })
+          }).catch(error => handleError(error, "annotationNotSaved"))
         } else {
           if (!this.provider.isAuthorizedFor({
             type: "annotations",
@@ -338,11 +341,11 @@ export default {
             } else {
               this.alert(this.$t("alerts.annotationNotRemoved"), null, "danger")
             }
-          })
+          }).catch(error => handleError(error, "annotationNotRemoved"))
         }
       }
       promise.catch(error => {
-        console.error("AnnotationPopover - Error adding annotation", error)
+        this.$log.error("AnnotationPopover - Error adding annotation", error)
         this.alert(this.$t("alerts.annotationError"), null, "danger")
       }).then(() => {
         this.loading = false
@@ -355,7 +358,7 @@ export default {
         return
       }
       this.loading = true
-      return provider.removeAnnotation(annotation).then(success => {
+      return provider.deleteAnnotation({ annotation }).then(success => {
         this.loading = false
         // Check if annotation stayed the same or deletion was not successful
         if (annotation.id != this.annotations[index].id || !success) {
@@ -369,13 +372,13 @@ export default {
     async confirm() {
       const provider = this.provider
       if (!provider || !provider.has.annotations) {
-        console.warn("No provider found to add annotation.")
+        this.$log.warn("No provider found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
       const uri = _.get(this.imapping, "uri")
       if (!uri) {
-        console.warn("No URI found to add annotation.")
+        this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
@@ -394,7 +397,7 @@ export default {
       }
       this.loading = true
       try {
-        annotation = await provider.addAnnotation(annotation)
+        annotation = await provider.postAnnotation({ annotation })
       } catch (error) {
         annotation = null
       }

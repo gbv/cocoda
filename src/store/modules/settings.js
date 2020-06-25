@@ -1,5 +1,6 @@
 import localforage from "localforage"
 import _ from "lodash"
+import log from "../../utils/log"
 
 import componentSettings from "../../../config/settings.json"
 
@@ -53,7 +54,7 @@ const mutations = {
       state.settings = settings
       localforage.setItem(localStorageKey, settings)
     } else {
-      console.warn("Tried to save settings before they were loaded.")
+      log.warn("Tried to save settings before they were loaded.")
     }
   },
 
@@ -62,7 +63,7 @@ const mutations = {
       _.set(state.settings, prop, value)
       localforage.setItem(localStorageKey, state.settings)
     } else {
-      console.warn("Tried to save settings before they were loaded.")
+      log.warn("Tried to save settings before they were loaded.")
     }
   },
 
@@ -75,7 +76,7 @@ const mutations = {
       }
       localforage.setItem(localStorageKey, state.settings)
     } else {
-      console.warn("Tried to save settings before they were loaded.")
+      log.warn("Tried to save settings before they were loaded.")
     }
   },
 

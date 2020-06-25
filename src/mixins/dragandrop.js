@@ -23,7 +23,7 @@ export default {
     drop(event, ...params) {
       event.preventDefault()
       let uri = event.dataTransfer.getData("text")
-      let concept = this.$store.state.draggedConcept || this._getObject({ uri })
+      let concept = this.$store.state.draggedConcept || this.getObject({ uri })
       if (concept) {
         this.droppedConcept(concept, ...params)
       }

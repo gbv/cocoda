@@ -26,163 +26,163 @@
         </div>
       </b-alert>
     </div>
-    <the-navbar
-      v-if="configLoaded"
-      ref="navbar" />
-    <!-- Swap sides button -->
-    <div
-      v-show="selected.scheme[true] || selected.scheme[false]"
-      id="swapSides"
-      v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: defaults.delay.medium }"
-      @click="swapSides">
-      <font-awesome-icon icon="exchange-alt" />
-    </div>
-    <!-- Main -->
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loadingGlobal || loading" />
-    <div
-      v-if="configLoaded"
-      class="main">
+    <template v-if="loaded">
+      <the-navbar
+        ref="navbar" />
+      <!-- Swap sides button -->
       <div
-        v-if="config.error"
-        class="flexbox-row configError fontSize-large">
-        <div v-html="$t(`general.${config.error}`, config)" />
+        v-show="selected.scheme[true] || selected.scheme[false]"
+        id="swapSides"
+        v-b-tooltip.hover="{ title: $t('general.swapSides'), delay: defaults.delay.medium }"
+        @click="swapSides">
+        <font-awesome-icon icon="exchange-alt" />
       </div>
+      <!-- Main -->
       <div
-        v-else-if="schemes.length"
-        class="flexbox-row">
-        <!-- Concept components left side -->
+        class="main">
         <div
-          v-for="(isLeft, index) in [true, false]"
-          :id="'browserComponent_' + isLeft"
-          :key="'browser-'+index"
-          :class="{
-            order1: isLeft,
-            order5: !isLeft
-          }"
-          class="browser mainComponent">
-          <minimizer
-            :name="`browserComponent_${isLeft}`"
-            :is-column="true" />
-          <!-- Concept scheme selection -->
-          <concept-scheme-selection
-            :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
-            :is-left="isLeft"
-            :style="selected.scheme[isLeft] != null ? '' : 'flex: 1;'"
-            class="mainComponent visualComponent" />
-          <!-- ItemDetail and ConceptList -->
-          <div
-            v-if="selected.scheme[isLeft] != null"
-            class="conceptBrowser">
-            <!-- ItemDetail -->
-            <item-detail
-              :id="'itemDetailComponent_' + isLeft"
-              :item="selected.concept[isLeft] || selected.scheme[isLeft]"
-              :is-left="isLeft"
-              :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
-              @searchMappings="searchMappings($event)"
-              @searchConcept="setConceptSearchQuery(isLeft, $event, true)" />
-            <!-- Slider -->
-            <resizing-slider />
-            <!-- ConceptList -->
-            <concept-list-wrapper
-              :id="'conceptListComponent_' + isLeft"
-              :ref="isLeft ? 'conceptListLeft' : 'conceptListRight'"
-              :is-left="isLeft"
-              class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemList" />
-          </div>
+          v-if="config.error"
+          class="flexbox-row configError fontSize-large">
+          <div v-html="$t(`general.${config.error}`, config)" />
         </div>
-
-        <!-- Slider -->
-        <resizing-slider
-          v-if="mappingRegistries.length > 0"
-          :is-column="true"
-          class="order2" />
-
-        <!-- Mapping tools and occurrences browser -->
         <div
-          v-if="mappingRegistries.length > 0"
-          id="mappingTool"
-          class="mappingTool order3">
+          v-else-if="schemes.length"
+          class="flexbox-row">
+          <!-- Concept components left side -->
           <div
-            v-show="selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0) || !forceMappingBrowser"
-            id="mappingEditorComponent"
-            class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingEditor -->
-            <mapping-editor
-              v-if="selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0)" />
-            <!-- Placeholder -->
-            <div
-              v-else
-              class="placeholderComponentCenter">
-              <div class="fontWeight-heavy fontSize-large">
-                <p>{{ $t("general.welcome") }}</p>
-                <p>
-                  <a
-                    :href="`./user-manual-${locale}.html`"
-                    target="_blank">{{ $t("general.manual") }}</a> -
-                  <a
-                    href="https://gbv.github.io/cocoda/"
-                    target="_blank">{{ $t("general.documentation") }}</a> -
-                  <a
-                    href="https://github.com/gbv/cocoda"
-                    target="_blank">{{ $t("general.github") }}</a>
-                </p>
-                <p v-if="config.feedbackUrl">
-                  <br>
-                  <a
-                    :href="config.feedbackUrl"
-                    target="_blank">{{ $t("general.feedback") }}</a>
-                  <br>
-                  {{ $t("general.feedback2") }}
-                </p>
-                <hr v-if="!forceMappingBrowser">
-                <p v-if="!forceMappingBrowser">
-                  <span v-if="$refs.mappingBrowser && $refs.mappingBrowser.tabIndexes && $refs.mappingBrowser.tabIndexes.concordances != null">
-                    <a
-                      href=""
-                      @click.prevent="showConcordances">{{ $t("general.showConcordances") }}</a> -
-                  </span>
-                  <a
-                    href=""
-                    @click.prevent="showMappingSearch">{{ $t("general.showMappingSearch") }}</a>
-                </p>
-              </div>
-            </div>
-            <!-- Minimizer allows component to get minimized -->
+            v-for="(isLeft, index) in [true, false]"
+            :id="'browserComponent_' + isLeft"
+            :key="'browser-'+index"
+            :class="{
+              order1: isLeft,
+              order5: !isLeft
+            }"
+            class="browser mainComponent">
             <minimizer
-              v-show="!forceMappingEditor"
-              ref="mappingEditorMinimizer"
-              name="mappingEditorComponent"
-              :text="$t('mappingEditor.title')"
-              :force-minimized="forceMappingEditor ? false : null" />
+              :name="`browserComponent_${isLeft}`"
+              :is-column="true" />
+            <!-- Concept scheme selection -->
+            <concept-scheme-selection
+              :ref="isLeft ? 'conceptSchemeSelectionLeft' : 'conceptSchemeSelectionRight'"
+              :is-left="isLeft"
+              :style="selected.scheme[isLeft] != null ? '' : 'flex: 1;'"
+              class="mainComponent visualComponent" />
+            <!-- ItemDetail and ConceptList -->
+            <div
+              v-if="selected.scheme[isLeft] != null"
+              class="conceptBrowser">
+              <!-- ItemDetail -->
+              <item-detail
+                :id="'itemDetailComponent_' + isLeft"
+                :item="selected.concept[isLeft] || selected.scheme[isLeft]"
+                :is-left="isLeft"
+                :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
+                class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
+                @searchMappings="searchMappings($event)"
+                @searchConcept="setConceptSearchQuery(isLeft, $event, true)" />
+              <!-- Slider -->
+              <resizing-slider />
+              <!-- ConceptList -->
+              <concept-list-wrapper
+                :id="'conceptListComponent_' + isLeft"
+                :ref="isLeft ? 'conceptListLeft' : 'conceptListRight'"
+                :is-left="isLeft"
+                class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemList" />
+            </div>
           </div>
+
           <!-- Slider -->
           <resizing-slider
-            v-show="(selected.scheme[true] || selected.scheme[false] || forceMappingBrowser) && (selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0) || !forceMappingBrowser)"
-            :cocoda-red="true" />
-          <div
-            v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
-            id="mappingBrowserComponent"
-            class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingBrowser -->
-            <mapping-browser ref="mappingBrowser" />
-            <!-- Minimizer allows component to get minimized -->
-            <minimizer
-              ref="mappingBrowserMinimizer"
-              name="mappingBrowserComponent"
-              :text="$t('mappingBrowser.title')" />
-          </div>
-        </div>
+            v-if="mappingRegistries.length > 0"
+            :is-column="true"
+            class="order2" />
 
-        <!-- Slider -->
-        <resizing-slider
-          v-if="mappingRegistries.length > 0"
-          :is-column="true"
-          class="order4" />
+          <!-- Mapping tools and occurrences browser -->
+          <div
+            v-if="mappingRegistries.length > 0"
+            id="mappingTool"
+            class="mappingTool order3">
+            <div
+              v-show="selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0) || !forceMappingBrowser"
+              id="mappingEditorComponent"
+              class="mappingToolItem mainComponent visualComponent">
+              <!-- MappingEditor -->
+              <mapping-editor
+                v-if="selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0)" />
+              <!-- Placeholder -->
+              <div
+                v-else
+                class="placeholderComponentCenter">
+                <div class="fontWeight-heavy fontSize-large">
+                  <p>{{ $t("general.welcome") }}</p>
+                  <p>
+                    <a
+                      :href="`./user-manual-${locale}.html`"
+                      target="_blank">{{ $t("general.manual") }}</a> -
+                    <a
+                      href="https://gbv.github.io/cocoda/"
+                      target="_blank">{{ $t("general.documentation") }}</a> -
+                    <a
+                      href="https://github.com/gbv/cocoda"
+                      target="_blank">{{ $t("general.github") }}</a>
+                  </p>
+                  <p v-if="config.feedbackUrl">
+                    <br>
+                    <a
+                      :href="config.feedbackUrl"
+                      target="_blank">{{ $t("general.feedback") }}</a>
+                    <br>
+                    {{ $t("general.feedback2") }}
+                  </p>
+                  <hr v-if="!forceMappingBrowser">
+                  <p v-if="!forceMappingBrowser">
+                    <span v-if="$refs.mappingBrowser && $refs.mappingBrowser.tabIndexes && $refs.mappingBrowser.tabIndexes.concordances != null">
+                      <a
+                        href=""
+                        @click.prevent="showConcordances">{{ $t("general.showConcordances") }}</a> -
+                    </span>
+                    <a
+                      href=""
+                      @click.prevent="showMappingSearch">{{ $t("general.showMappingSearch") }}</a>
+                  </p>
+                </div>
+              </div>
+              <!-- Minimizer allows component to get minimized -->
+              <minimizer
+                v-show="!forceMappingEditor"
+                ref="mappingEditorMinimizer"
+                name="mappingEditorComponent"
+                :text="$t('mappingEditor.title')"
+                :force-minimized="forceMappingEditor ? false : null" />
+            </div>
+            <!-- Slider -->
+            <resizing-slider
+              v-show="(selected.scheme[true] || selected.scheme[false] || forceMappingBrowser) && (selected.scheme[true] || selected.scheme[false] || (forceMappingBrowser && $store.getters['mapping/getConcepts']().length > 0) || !forceMappingBrowser)"
+              :cocoda-red="true" />
+            <div
+              v-show="selected.scheme[true] || selected.scheme[false] || forceMappingBrowser"
+              id="mappingBrowserComponent"
+              class="mappingToolItem mainComponent visualComponent">
+              <!-- MappingBrowser -->
+              <mapping-browser ref="mappingBrowser" />
+              <!-- Minimizer allows component to get minimized -->
+              <minimizer
+                ref="mappingBrowserMinimizer"
+                name="mappingBrowserComponent"
+                :text="$t('mappingBrowser.title')" />
+            </div>
+          </div>
+
+          <!-- Slider -->
+          <resizing-slider
+            v-if="mappingRegistries.length > 0"
+            :is-column="true"
+            class="order4" />
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -194,16 +194,17 @@ import ConceptListWrapper from "./components/ConceptListWrapper"
 import ItemDetail from "./components/ItemDetail"
 import ResizingSlider from "./components/ResizingSlider"
 import _ from "lodash"
-import axios from "axios"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
+import cdk from "cocoda-sdk"
 
 // Import mixins
 import auth from "./mixins/auth"
-import objects from "./mixins/objects"
+import objects from "./mixins/cdk"
 import computed from "./mixins/computed"
+import pageVisibility from "./mixins/page-visibility"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 const ElementQueries = require("css-element-queries/src/ElementQueries")
@@ -217,9 +218,10 @@ export default {
   components: {
     TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
   },
-  mixins: [auth, objects, computed],
+  mixins: [auth, objects, computed, pageVisibility],
   data () {
     return {
+      loaded: false,
       loading: false,
       itemDetailSettings: {
         left: {
@@ -232,10 +234,10 @@ export default {
       loadFromParametersOnce: _.once(this.loadFromParameters),
       forceMappingBrowser: false,
       forceMappingEditor: false,
+      repeatLoadBuildInfo: null,
     }
   },
   computed: {
-    // Needed to watch for changes in the left concept.
     selectedConceptLeft() {
       return this.selected.concept[true]
     },
@@ -259,25 +261,11 @@ export default {
       }
       return locale
     },
-    mappingRegistries() {
-      let registries = this.config.registries.filter(registry =>
-        registry.provider &&
-        (registry.provider.has.mappings || registry.provider.has.occurrences),
-      )
-      return registries
-    },
   },
   watch: {
-    configLoaded(loaded) {
-      if (loaded) {
-        // Set page title
-        document.title = this.config.title
-      }
-    },
-    settingsLoaded() {
-      this.$i18n.locale = this.settingsLocale
-      this.start()
-    },
+    /**
+     * Watch route of vue-router and load from parameters if necessary.
+     */
     $route({ query: toQuery }, { query: fromQuery }) {
       // Only refresh when one of the scheme/concept parameters changed
       let parameters = ["from", "fromScheme", "to", "toScheme"]
@@ -286,8 +274,8 @@ export default {
         // Try to get objects for both URIs
         let uri1 = fromQuery[param],
           uri2 = toQuery[param],
-          object1 = uri1 && this._getObject({ uri: uri1 }),
-          object2 = uri2 && this._getObject({ uri: uri2 })
+          object1 = uri1 && this.getObject({ uri: uri1 }),
+          object2 = uri2 && this.getObject({ uri: uri2 })
         // Compare objects if they exist to prevent unnecessary reloads.
         if (object1 && object2) {
           if (!this.$jskos.compare(object1, object2)) {
@@ -376,14 +364,12 @@ export default {
      * Update local creator name if authorized user changed.
      */
     user(current, previous) {
-      if (this.user) {
-        if (this.user.name != this.userName) {
-          this.$store.commit({
-            type: "settings/set",
-            prop: "creator",
-            value: this.user.name,
-          })
-        }
+      if (this.user && this.user.name != this.userName) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "creator",
+          value: this.user.name,
+        })
       }
       /**
        * Show alerts when user was logged in/out.
@@ -433,11 +419,8 @@ export default {
      * Update authorized user's name if creator name changed.
      */
     userName() {
-      if (this.authorized && this.user) {
-        if (this.userName != this.user.name) {
-          // Call debounced setName method
-          this.setName_()
-        }
+      if (this.authorized && this.user && this.userName != this.user.name) {
+        this.setName(this.userName)
       }
     },
     /**
@@ -462,75 +445,84 @@ export default {
       },
       deep: true,
     },
+    isPageVisible(visible) {
+      if (visible) {
+        // Unpause repeat managers for build info
+        this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.start()
+      } else {
+        // Pause repeat managers for build info
+        this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
+      }
+    },
   },
   created() {
-    // Set loading to true if schemes are not loaded yet.
-    if (!this.schemes.length) {
-      this.loading = true
-    }
+    // Load application
     this.load()
-    document.onmousemove = event => {
-      this.$store.commit({
-        type: "setMousePosition",
-        x: event.pageX,
-        y: event.pageY,
-      })
-    }
-    // Check for update every 60 seconds
-    let updateMessageShown = false
-    setInterval(() => {
-      axios.get("./build-info.json", {
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-      }).then(response => response.data).then(buildInfo => {
-        if (buildInfo.gitCommit != this.config.buildInfo.gitCommit && !updateMessageShown) {
-          this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
-            location.reload(true)
-          })
-          updateMessageShown = true
-        }
-      }).catch(() => null)
-    }, 60000)
-    // Create a debounced internal setName method
-    // TODO: Move to mixin?
-    this.setName_ = _.debounce(() => {
-      this.setName(this.userName).then(success => {
-        if (!success) {
-          // Reset name and show error
-          this.$store.commit({
-            type: "settings/set",
-            prop: "creator",
-            value: this.user.name,
-          })
-          this.alert(this.$t("alerts.nameError"), null, "danger")
-        }
-      })
-    }, 500)
+    // Look up local mappings count and show warning if there are too many.
+    setTimeout(async () => {
+      const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
+      if (mappings._totalCount && mappings._totalCount >= 500) {
+        this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
+      }
+    }, 10000)
   },
   methods: {
+    /**
+     * Method that is called ONCE on application startup in the `created` hook.
+     *
+     * !DO NOT CALL MANUALLY!
+     */
     async load() {
-      // Load config and settings on first launch.
+      const time = new Date()
+      this.loadingGlobal = true
+      // Load config
       await this.$store.dispatch("loadConfig", _.get(this.$route, "query.config"))
+      // Load settings
+      await this.$store.dispatch("settings/load")
+      // Wait for authentication to initialize
       if (this.config.auth) {
         await this.$store.dispatch("auth/init", this.config.auth)
       }
-      await this.$store.dispatch("settings/load")
-      // Look up local mappings count and show warning if there are too many.
-      // Note: Do not use this.getMappings here because it leads to issues when schemes are not loaded yet.
-      const mappings = await this.$store.dispatch({ type: "mapping/getMappings", registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
-      if (mappings.totalCount && mappings.totalCount >= 500) {
-        this.alert(this.$t("general.tooManyMappings", { count: mappings.totalCount }), 0)
-      }
-    },
-    /**
-     * Properly start the application (called by settingsLoaded watcher).
-     */
-    async start() {
-      // Load schemes and mapping trash
+      // Set page title
+      document.title = this.config.title
+      // Set locale
+      this.$i18n.locale = this.settingsLocale
+      // Load schemes
       await this.loadSchemes()
+      // Load mapping trash
       await this.$store.dispatch("mapping/loadMappingTrash")
+      // Application is now considered loaded
+      this.loaded = true
+      this.loadingGlobal = false
+      // Load from parameters
+      // TODO: Should this be finished before loaded is set?
       this.loadFromParametersOnce(true)
+      // Check for update every 60 seconds
+      if (this.config.autoRefresh.update) {
+        this.repeatLoadBuildInfo = cdk.loadBuildInfo({
+          url: "./build-info.json",
+          buildInfo: this.config.buildInfo,
+          interval: this.config.autoRefresh.update,
+          callImmediately: false,
+          callback: (error, buildInfo, previousBuildInfo) => {
+            // ? Should a new build (not only a newer commit) also be shown as an update?
+            if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
+              this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+                location.reload(true)
+              })
+              this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
+              this.repeatLoadBuildInfo = null
+            }
+          },
+        })
+      }
+      // Set schemes in registries to objects from Cocoda
+      for (let registry of this.config.registries) {
+        if (_.isArray(registry.schemes)) {
+          registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
+        }
+      }
+      this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
     insertPrefLabel(isLeft) {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {
@@ -636,7 +628,7 @@ export default {
         let schemeUri = selected.scheme[isLeft]
         let scheme = null
         if (schemeUri) {
-          scheme = this._getObject({ uri: schemeUri })
+          scheme = this.getObject({ uri: schemeUri })
         }
         let concept = null
         if (scheme && selected.concept[isLeft]) {
@@ -665,11 +657,14 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+        let loadMapping = (query.mappingUri ? this.getMapping({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+          if (!_.isArray(mappings)) {
+            mappings = [mappings].filter(m => m)
+          }
           if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
-            let original = mappings.find(mapping => _.get(mapping, "_provider").isAuthorizedFor && _.get(mapping, "_provider").isAuthorizedFor({
+            let original = mappings.find(mapping => _.get(mapping, "_registry").isAuthorizedFor && _.get(mapping, "_registry").isAuthorizedFor({
               type: "mappings",
               action: "create",
               user: this.user,
@@ -697,7 +692,7 @@ export default {
                 if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
                 // Load data for each concept in mapping
                 _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                  promises.push(this.loadDetails(concept, { scheme }).then(concept => {
+                  promises.push(this.loadConcepts([concept], { scheme }).then(([concept]) => {
                     mappingFromQuery[direction][memberField][index] = concept
                   }))
                 })
@@ -733,7 +728,7 @@ export default {
         }
       }).catch((error) => {
         this.loading = false
-        console.warn(error)
+        this.$log.warn(error)
         this.alert("There was an error loading data from URL.", null, "danger")
       })
     },
@@ -750,7 +745,7 @@ export default {
     showConcordances() {
       let mappingBrowser = this.$refs.mappingBrowser
       if (!mappingBrowser) {
-        console.warn("Could not show concordances because MappingBrowser component was not found.")
+        this.$log.warn("Could not show concordances because MappingBrowser component was not found.")
         return
       }
       if (mappingBrowser.concordancesLoaded) {

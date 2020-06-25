@@ -68,6 +68,13 @@
         'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(item, isLeft),
         'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(item, isLeft)
       }">
+      <!-- Button to clear scheme -->
+      <div
+        v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: defaults.delay.medium }"
+        class="button conceptDetail-name-clearButton"
+        @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })">
+        <font-awesome-icon icon="times-circle" />
+      </div>
       <item-name
         :item="item"
         :is-highlighted="true"
@@ -254,7 +261,7 @@ import ItemDetailNarrower from "./ItemDetailNarrower"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/objects"
+import objects from "../mixins/cdk"
 import computed from "../mixins/computed"
 import hotkeys from "../mixins/hotkeys"
 import mappedStatus from "../mixins/mapped-status"
@@ -366,7 +373,7 @@ export default {
     },
     gndTerms() {
       // Assemble gndTerms array for display
-      let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
+      let gnd = this.getObject({ uri: "http://bartoc.org/en/node/430" })
       let mappings = _.get(this.item, "__GNDMAPPINGS__", [])
       let concepts = []
       for (let mapping of mappings) {
@@ -447,22 +454,25 @@ export default {
       // Load GND terms
       this.loadGndTerms()
       // Load details if not loaded
-      this.loadConcepts([this.item])
+      this.loadConcepts([this.item], { force: true })
     },
     async loadGndTerms() {
       // TODO: Refactoring necessary!
       if (!this.item) return
       let itemBefore = this.item
-      let gnd = this._getObject({ uri: "http://bartoc.org/en/node/430" })
+      let gnd = this.getObject({ uri: "http://bartoc.org/en/node/430" })
       // Don't load GND terms for GND items
       if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
         return
       }
-      let mappings = await this.getMappings({
+      // Load GND mappings from all stored registries
+      const mappingPromises = this.config.registries.filter(r => r.has.mappings && this.$jskos.mappingRegistryIsStored(r)).map(registry => this.getMappings({
+        registry,
         direction: "both",
         from: itemBefore,
         toScheme: gnd.uri,
-      })
+      }).catch(() => []))
+      let mappings = _.flatten(await Promise.all(mappingPromises))
 
       // Get GND concepts and load their labels
       let gndConcepts = []
@@ -534,7 +544,7 @@ export default {
 .conceptDetail-name {
   background-color: @color-select-2;
   position: relative;
-  padding: 0 10px;
+  padding: 0 20px;
 }
 .conceptDetail-name-clearButton {
   position: absolute;

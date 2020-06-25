@@ -6,7 +6,6 @@ Vue.config.productionTip = false
 import BootstrapVue from "bootstrap-vue"
 Vue.use(BootstrapVue)
 // Note: bootstrap css files are imported only for the app.js entry point.
-// mappingsApp imports the files directly in mappings.html.
 
 // Add vue-scrollto
 var VueScrollTo = require("vue-scrollto")
@@ -15,6 +14,10 @@ Vue.use(VueScrollTo)
 // Add jskos-tools, use with this.$jskos in components
 import jskos from "jskos-tools"
 Vue.prototype.$jskos = jskos
+
+// Add logger, use with this.$log.log/warn/error in components
+import log from "./utils/log"
+Vue.prototype.$log = log
 
 // Set Vuex store and path on jskos-tools' languagePreference
 import store from "./store"
