@@ -917,7 +917,22 @@ export default {
     },
     "componentSettings.autoRefresh"() {
       // Refresh when autoRefresh changes
-      this.$store.commit("mapping/setRefresh")
+      // Note: If we just set mapping/setRefresh, the page numbers will jump to 1.
+      let type
+      if (this.tab == this.tabIndexes.search) {
+        type = "search"
+      } else if (this.tab == this.tabIndexes.navigator) {
+        type = "navigator"
+      }
+      if (type) {
+        for (let registryUri of Object.keys(this[`${type}Results`])) {
+          if (type == "search") {
+            this.search(registryUri, this.searchPages[registryUri])
+          } else {
+            this.navigatorNeedsRefresh.push(registryUri)
+          }
+        }
+      }
     },
   },
   created() {
