@@ -26,36 +26,36 @@
         </div>
       </b-alert>
     </div>
-    <the-navbar
-      v-if="configLoaded"
-      ref="navbar"
-      title="Concordances"
-      :reduced="true" />
-    <!-- Main -->
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loadingGlobal || loading" />
-    <div
-      v-if="configLoaded && schemes.length"
-      class="main">
-      <div class="flexbox-row">
-        <!-- Mapping tools and occurrences browser -->
-        <div
-          id="mappingTool"
-          class="mappingTool order3">
+    <template v-if="loaded">
+      <the-navbar
+        ref="navbar"
+        title="Concordances"
+        :reduced="true" />
+      <!-- Main -->
+      <div
+        class="main">
+        <div class="flexbox-row">
+          <!-- Mapping tools and occurrences browser -->
           <div
-            id="mappingBrowserComponent"
-            class="mappingToolItem mainComponent visualComponent">
-            <!-- MappingBrowser -->
-            <mapping-browser
-              ref="mappingBrowser"
-              :show-navigator="false"
-              :show-editing-tools="false"
-              :show-registry-override="['http://coli-conc.gbv.de/registry/coli-conc-mappings']"
-              :show-cocoda-link="true" />
+            id="mappingTool"
+            class="mappingTool order3">
+            <div
+              id="mappingBrowserComponent"
+              class="mappingToolItem mainComponent visualComponent">
+              <!-- MappingBrowser -->
+              <mapping-browser
+                ref="mappingBrowser"
+                :show-navigator="false"
+                :show-editing-tools="false"
+                :show-registry-override="['http://coli-conc.gbv.de/registry/coli-conc-mappings']"
+                :show-cocoda-link="true" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -86,6 +86,7 @@ export default {
   mixins: [auth, objects, computed],
   data () {
     return {
+      loaded: false,
       loading: false,
       loadFromParametersOnce: _.once(this.loadFromParameters),
     }
@@ -100,10 +101,6 @@ export default {
     },
   },
   watch: {
-    settingsLoaded() {
-      this.$i18n.locale = this.settingsLocale
-      this.start()
-    },
     /**
      * Watches i18n locale (changed by user). Every change will be stored in settings.
      */
@@ -132,35 +129,36 @@ export default {
     },
   },
   created() {
-    // Set loading to true if schemes are not loaded yet.
-    if (!this.schemes.length) {
-      this.loading = true
-    }
+    // Load application
     this.load()
-    document.onmousemove = event => {
-      this.$store.commit({
-        type: "setMousePosition",
-        x: event.pageX,
-        y: event.pageY,
-      })
-    }
   },
   methods: {
-    load() {
-      // Load config and settings on first launch.
-      this.$store.dispatch("loadConfig", _.get(this.$route, "query.config")).then(() => this.$store.dispatch("settings/load"))
-    },
-    /**
-     * Properly start the application (called by settingsLoaded watcher).
-     */
-    start() {
-      // Load schemes and mapping trash
-      let promises = [
-        this.loadSchemes(),
-      ]
-      Promise.all(promises).then(() => {
-        this.loadFromParametersOnce(true)
-      })
+    async load() {
+      const time = new Date()
+      this.loadingGlobal = true
+      // Load config
+      await this.$store.dispatch("loadConfig", _.get(this.$route, "query.config"))
+      // Load settings
+      await this.$store.dispatch("settings/load")
+      // Set page title
+      document.title = this.config.title
+      // Set locale
+      this.$i18n.locale = this.settingsLocale
+      // Load schemes
+      await this.loadSchemes()
+      // Application is now considered loaded
+      this.loaded = true
+      this.loadingGlobal = false
+      // Load from parameters
+      // TODO: Should this be finished before loaded is set?
+      this.loadFromParametersOnce(true)
+      // Set schemes in registries to objects from Cocoda
+      for (let registry of this.config.registries) {
+        if (_.isArray(registry.schemes)) {
+          registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
+        }
+      }
+      this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
     loadFromParameters(firstLoad = false) {
       this.loading = true
@@ -205,7 +203,10 @@ export default {
             resolve(mappingFromQuery)
           }
         })
-        let loadMapping = (query.mappingUri ? this.getMappings({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+        let loadMapping = (query.mappingUri ? this.getMapping({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
+          if (!_.isArray(mappings)) {
+            mappings = [mappings].filter(m => m)
+          }
           if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
             // Found original mapping.
             // Prefer local mapping over other mappings.
