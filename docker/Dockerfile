@@ -27,5 +27,7 @@ RUN mkdir /config
 RUN mv ./cocoda.json ./cocoda-previous.json
 RUN ln -s /config/cocoda.json ./cocoda.json
 
-## Copy default configuration file if necessary and run nginx
-CMD [ -f /config/cocoda.json ] || cp ./cocoda-previous.json /config/cocoda.json; exec nginx -g 'daemon off;'
+COPY docker/docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["%%CMD%%"]
