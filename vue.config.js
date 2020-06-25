@@ -17,12 +17,6 @@ module.exports = {
       filename: "index.html",
       chunks: ["chunk-vendors", "chunk-common", "app"],
     },
-    mappingsApp: {
-      entry: "src/entry/mappingsApp.js",
-      template: "public/mappings.html",
-      filename: "mappings.html",
-      chunks: ["chunk-vendors", "chunk-common", "mappingsApp"],
-    },
     concordanceApp: {
       entry: "src/entry/concordanceApp.js",
       template: "public/concordances.html",
