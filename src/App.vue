@@ -454,6 +454,14 @@ export default {
         this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
       }
     },
+    "$settings.checkForUpdates"(enabled) {
+      if (enabled) {
+        this.enableUpdateCheck()
+      } else {
+        this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
+        this.repeatLoadBuildInfo = null
+      }
+    },
   },
   created() {
     // Load application
@@ -498,23 +506,8 @@ export default {
       // TODO: Should this be finished before loaded is set?
       this.loadFromParametersOnce(true)
       // Check for update every 60 seconds
-      if (this.config.autoRefresh.update) {
-        this.repeatLoadBuildInfo = cdk.loadBuildInfo({
-          url: "./build-info.json",
-          buildInfo: this.config.buildInfo,
-          interval: this.config.autoRefresh.update,
-          callImmediately: false,
-          callback: (error, buildInfo, previousBuildInfo) => {
-            // ? Should a new build (not only a newer commit) also be shown as an update?
-            if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
-              this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
-                location.reload(true)
-              })
-              this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
-              this.repeatLoadBuildInfo = null
-            }
-          },
-        })
+      if (this.config.autoRefresh.update && this.$settings.checkForUpdates) {
+        this.enableUpdateCheck()
       }
       // Set schemes in registries to objects from Cocoda
       for (let registry of this.config.registries) {
@@ -523,6 +516,24 @@ export default {
         }
       }
       this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
+    },
+    enableUpdateCheck() {
+      this.repeatLoadBuildInfo = cdk.loadBuildInfo({
+        url: "./build-info.json",
+        buildInfo: this.config.buildInfo,
+        interval: this.config.autoRefresh.update,
+        callImmediately: false,
+        callback: (error, buildInfo, previousBuildInfo) => {
+          // ? Should a new build (not only a newer commit) also be shown as an update?
+          if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
+            this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+              location.reload(true)
+            })
+            this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
+            this.repeatLoadBuildInfo = null
+          }
+        },
+      })
     },
     insertPrefLabel(isLeft) {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {

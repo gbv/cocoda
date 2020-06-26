@@ -22,6 +22,7 @@ let defaultSettings = {
     [false]: 0,
   },
   components: {},
+  checkForUpdates: true,
 }
 
 // prepare component settings
