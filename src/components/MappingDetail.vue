@@ -156,6 +156,18 @@
               </p>
             </b-col>
           </b-row>
+          <!-- Registry -->
+          <b-row v-if="mapping._registry">
+            <b-col cols="3">
+              {{ $t("schemeSelection.registryFilter") }}:
+            </b-col>
+            <b-col>
+              <registry-info
+                :registry="mapping._registry"
+                :show-details="false"
+                :show-capabilities="false" />
+            </b-col>
+          </b-row>
         </b-container>
       </div>
       <div
@@ -183,13 +195,14 @@ import DataModal from "./DataModal"
 import ItemName from "./ItemName"
 import AutoLink from "./AutoLink"
 import AnnotationList from "./AnnotationList"
+import RegistryInfo from "./RegistryInfo"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink, AnnotationList },
+  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo },
   props: {
     /**
      * Mapping object
