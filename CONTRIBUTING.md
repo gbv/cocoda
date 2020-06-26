@@ -249,6 +249,8 @@ The user interface is currently available in English and German. To facilitate c
 
 **For maintainers only**
 
+### New Release
+
 Before creating a release, be aware of the following prerequisites:
 
 - You are on the dev branch and your working tree is clean.
@@ -271,3 +273,11 @@ npm run release major
 After successfully creating a release, the script will show you some possible next steps.
 
 If there were any errors during the release, make sure to clean up your repository before trying again (reverting the version commit, etc.).
+
+### Docker
+
+Docker-related files are available in the `docker` folder. Images are published to Docker Hub via a GitHub Action (see `.github/workflows/docker.yml`). To make that work, `DOCKER_USERNAME` and `DOCKER_PASSWORD` must be set in GitHub under Settings -> Secrets. See [Publish Docker](https://github.com/marketplace/actions/publish-docker) for more details.
+
+The Docker Hub repository is https://hub.docker.com/repository/docker/coliconc/cocoda. [@stefandesu](https://github.com/stefandesu) currently maintains the organization.
+
+Due to restrictions in the Docker API, it is currently not possible to automatically set the Docker Hub description through a GitHub Action. Therefore, whenever `docker/README.md` is updated, the content must be manually copied and pasted into the Docker Hub description.
