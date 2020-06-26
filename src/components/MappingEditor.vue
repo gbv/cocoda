@@ -210,20 +210,27 @@
         </b-button>
       </div>
     </b-modal>
-    <data-modal-button
-      :data="mapping"
-      :position-right="15"
-      :position-bottom="-6"
-      type="mapping" />
+    <!-- Mapping detail modal -->
+    <mapping-detail
+      ref="mappingDetail"
+      :mapping="mapping" />
+    <div
+      class="mappingEditor-infoIcon">
+      <font-awesome-icon
+        v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
+        icon="info-circle"
+        class="button"
+        @click="$refs.mappingDetail.show()" />
+    </div>
   </div>
 </template>
 
 <script>
 import ItemName from "./ItemName"
 import MappingTypeSelection from "./MappingTypeSelection"
-import DataModalButton from "./DataModalButton"
 import _ from "lodash"
 import ComponentSettings from "./ComponentSettings"
+import MappingDetail from "./MappingDetail"
 
 // Import mixins
 import auth from "../mixins/auth"
@@ -237,7 +244,7 @@ import computed from "../mixins/computed"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, DataModalButton, ComponentSettings },
+  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
   computed: {
     mapping() {
@@ -711,7 +718,19 @@ export default {
 .mappingEditor-creator {
   position: absolute;
   bottom: -4px;
-  right: 40px;
+  right: 35px;
+}
+
+.mappingEditor-infoIcon {
+  position: absolute;
+  bottom: -4px;
+  right: 15px;
+}
+.mappingEditor-infoIcon .button {
+  color: @color-text-mediumLightGrey;
+}
+.mappingEditor-infoIcon .button:hover {
+  color: @color-button-hover;
 }
 
 .mappingEditor-title {
