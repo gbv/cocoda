@@ -468,7 +468,7 @@ export default {
     this.load()
     // Look up local mappings count and show warning if there are too many.
     setTimeout(async () => {
-      const mappings = await this.getMappings({ registry: "http://coli-conc.gbv.de/registry/local-mappings", limit: 1 })
+      const mappings = await this.getMappings({ registry: this.localMappingsRegistry, limit: 1 })
       if (mappings._totalCount && mappings._totalCount >= 500) {
         this.alert(this.$t("general.tooManyMappings", { count: mappings._totalCount }), 0)
       }

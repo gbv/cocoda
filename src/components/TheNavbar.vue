@@ -248,7 +248,7 @@
             @click="$refs.settings.show()" />
         </template>
         <p
-          v-for="(tab, index) in $t('settingsTabs').slice(1, $t('settingsTabs').length - (localMappingsSupported ? 0 : 1))"
+          v-for="(tab, index) in $t('settingsTabs').slice(1, $t('settingsTabs').length - (localMappingsRegistry ? 0 : 1))"
           :key="`navbar-settingsTabs-${index}`"
           class="navbar-settingsTabs-row"
           @click="openSettingsTab(index+1)">

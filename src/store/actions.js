@@ -168,6 +168,11 @@ export default {
     let compatibleRegistries = []
     for (let registry of config.registries) {
       if (!buildInfo.jskosApi || !registry._config || !registry._config.version || versionCompatible(registry._config.version, buildInfo.jskosApi)) {
+        // Make sure there is only one registry for local mappings
+        if (compatibleRegistries.find(r => r.constructor.providerName == "LocalMappings") && registry.constructor.providerName == "LocalMappings") {
+          log.error("There are multiple registries for LocalMappings configured. This is not supported. Please remove any additional registries for LocalMappings.")
+          continue
+        }
         compatibleRegistries.push(registry)
       } else {
         // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.

@@ -68,11 +68,10 @@ export default {
       return concepts
     },
     /**
-     * Bool whether local mappings are supported.
+     * Registry for local mappings if configured.
      */
-    localMappingsSupported() {
-      let registry = this.config.registries.find(registry => registry.uri == "http://coli-conc.gbv.de/registry/local-mappings")
-      return registry != null
+    localMappingsRegistry() {
+      return this.config.registries.find(registry => registry.constructor.providerName == "LocalMappings")
     },
     currentRegistry() {
       return this.$store.getters.getCurrentRegistry
@@ -606,7 +605,7 @@ export default {
       }
       // Assume local mappings if URI starts with "urn:uuid"
       if (!registry && mapping.uri.startsWith("urn:uuid")) {
-        registry = this.config.registries.find(r => r.uri.endsWith("local-mappings"))
+        registry = this.localMappingsRegistry
       }
       registry = this.getRegistry(registry)
       if (!registry) {
@@ -652,7 +651,7 @@ export default {
         if (_alert) {
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
           // Additionally, if this is the first time the user saved into local mappings, show an alert:
-          if (registry.constructor.providerName == "LocalMappings" && !this.$settings.hasWrittenIntoLocalMappings) {
+          if (jskos.compare(registry, this.localMappingsRegistry) && !this.$settings.hasWrittenIntoLocalMappings) {
             this.alert(
               this.$t("alerts.localMappingsFirstSaved"),
               0,
