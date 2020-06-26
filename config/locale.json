@@ -271,7 +271,8 @@
       "loggedIn": "You are now logged in.",
       "loggedOut": "You are now logged out.",
       "nameError": "There was an error setting the name.",
-      "versionMismatch": "Database {registryLabel} ({registryUri}) is not version compatible with this release (database: {registryVersion}, supported: {jskosApi}). Please contact an administrator."
+      "versionMismatch": "Database {registryLabel} ({registryUri}) is not version compatible with this release (database: {registryVersion}, supported: {jskosApi}). Please contact an administrator.",
+      "localMappingsFirstSaved": "You just saved your first mapping into \"Local\". Please note that local mappings are stored inside your browser, therefore you will lose these mappings when changing your browser or clearing your browser's storage. You can store mappings permanently inside \"Concordance Registry\" by logging in and changing your default mapping registry. Please refer to the <a href='https://gbv.github.io/cocoda/dev/user-manual-en.html#login' target='_blank'>manual</a> for more details."
     },
     "dataModal": {
       "title": "Export JSKOS Data",
@@ -587,7 +588,8 @@
       "loggedIn": "Du bist jetzt eingeloggt.",
       "loggedOut": "Du bist jetzt ausgeloggt.",
       "nameError": "Fehler beim Ändern des Namens.",
-      "versionMismatch": "Datenbank {registryLabel} ({registryUri}) ist nicht versionskompatibel mit diesem Release (Datenbank: {registryVersion}, unterstützt: {jskosApi}). Bitte einen Administrator kontaktieren."
+      "versionMismatch": "Datenbank {registryLabel} ({registryUri}) ist nicht versionskompatibel mit diesem Release (Datenbank: {registryVersion}, unterstützt: {jskosApi}). Bitte einen Administrator kontaktieren.",
+      "localMappingsFirstSaved": "Du hast soeben dein erstes Mapping in \"Lokal\" gespeichert. Bitte beachte, dass lokale Mappings in deinem Browser gespeichert werden, was bedeutet, dass sie verloren gehen, falls du den Browser wechselst oder die Daten des Browsers leerst. Es ist möglich, Mappings dauerhaft im \"Konkordanz-Register\" zu speichern, indem man sich einloggt und das Standard-Mapping-Register ändert. Bitte wende dich an das <a href='https://gbv.github.io/cocoda/dev/user-manual-de.html#benutzeraccounts' target='_blank'>Benutzerhandbuch</a> für mehr Informationen."
     },
     "dataModal": {
       "title": "JSKOS-Daten exportieren",

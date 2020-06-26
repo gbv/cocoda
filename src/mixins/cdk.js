@@ -651,6 +651,19 @@ export default {
         }
         if (_alert) {
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+          // Additionally, if this is the first time the user saved into local mappings, show an alert:
+          if (registry.constructor.providerName == "LocalMappings" && !this.$settings.hasWrittenIntoLocalMappings) {
+            this.alert(
+              this.$t("alerts.localMappingsFirstSaved"),
+              0,
+              "warning",
+            )
+            this.$store.commit({
+              type: "settings/set",
+              prop: "hasWrittenIntoLocalMappings",
+              value: true,
+            })
+          }
         }
         _after && _after()
         return mapping
