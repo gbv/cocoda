@@ -61,6 +61,10 @@ http-server -p 8000 cocoda/     # serve the pre-built release
 http-server -p 8000 dist/       # or serve the build version
 ```
 
+### Docker
+
+Cocoda is also available via Docker. Please refer to the documentation at https://hub.docker.com/repository/docker/coliconc/cocoda for more details.
+
 ## Usage
 
 There is a detailled end-user manual available [in German](https://gbv.github.io/cocoda/dev/user-manual-de.html) and [in English](https://gbv.github.io/cocoda/dev/user-manual-en.html). The German version will likely be more up-to-date. Documentation sources are located in directory `docs`.

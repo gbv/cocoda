@@ -1,0 +1,24 @@
+.DS_Store
+node_modules/
+/dist*/
+/styleguide/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+build/build-info.json
+docs/user-manual*
+
+# Relases (when using bin/build-all.sh)
+releases/
+
+# Temporary folder
+temp/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
