@@ -651,6 +651,7 @@ export default {
           scheme,
           isLeft,
           noQueryRefresh: true,
+          noLoading: true,
         }))
       }
       // Prepare application by selecting mapping from URL parameters.

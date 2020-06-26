@@ -76,7 +76,7 @@ export default {
       })
       return url.substring(0, url.length - 1)
     },
-    setSelected({ concept, scheme, isLeft, noQueryRefresh = false } = {}) {
+    setSelected({ concept, scheme, isLeft, noQueryRefresh = false, noLoading = false } = {}) {
       let loadTypes = scheme => {
         if (scheme) {
           this.loadTypes(scheme)
@@ -88,105 +88,119 @@ export default {
         isLeft,
         loadingId,
       })
-      scheme = _.get(concept, "inScheme[0]") || scheme
-      // Check if concept and scheme is already selected
-      if (jskos.compare(concept, this.$store.state.selected.concept[isLeft]) && jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
-        return Promise.resolve(true)
+      // Set loading indicator
+      if (!noLoading) {
+        this.loadingGlobal = true
       }
-      if (scheme && !concept) {
-        let kind = "both"
-        if (scheme) {
-          this.$store.commit({
-            type: "selected/set",
-            kind,
-            isLeft,
-            scheme,
-            concept: null,
-            noQueryRefresh,
-          })
-          // Load types for scheme
-          loadTypes(scheme)
-          // Load top concepts for scheme
-          return this.loadTop(scheme).then(() => true)
-        } else {
-          this.$log.error("setSelected: could not find scheme in store.")
-          return Promise.resolve(false)
+      const promise = (() => {
+        scheme = _.get(concept, "inScheme[0]") || scheme
+        // Check if concept and scheme is already selected
+        if (jskos.compare(concept, this.$store.state.selected.concept[isLeft]) && jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
+          return Promise.resolve(true)
         }
-      } else if (concept) {
-        let kind = "concept"
-        if (!scheme) {
-          this.$log.error("setSelected: could not find scheme for concept in store.")
-          return Promise.resolve(false)
-        }
-        if (!concept) {
-          // This case should not happen!
-          this.$log.error("setSelected: critical error when getting/saving concept from store.")
-          return Promise.resolve(false)
-        }
-        let promises = []
-        // Check if scheme is different from selected scheme, if not change
-        if (!jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
-          kind = "both"
-          // Load top concepts for scheme
-          promises.push(this.loadTop(scheme))
-        }
-        // Load details
-        promises.push(this.loadConcepts([concept]).catch(() => {}))
-        // Load narrower concepts
-        promises.push(this.loadNarrower(concept).catch(() => {}))
-        // Load ancestor concepts and their narrower concepts
-        promises.push(this.loadAncestors(concept).catch(() => {}))
-
-        return Promise.all(promises).then(() => {
-          // Load types for scheme
-          loadTypes(scheme)
-          // Asynchronously load its ancestors narrower concepts
-          if (concept && concept.ancestors) {
-            for (let ancestor of concept.ancestors) {
-              this.loadNarrower(ancestor)
-            }
-          }
-          // Asynchronously load information about its broader concepts
-          if (concept && concept.broader && !concept.__BROADERLOADED__) {
-            let broaderPromises = []
-            this.adjustConcept(concept)
-            for (let broader of concept.broader.filter(concept => concept != null)) {
-              this.loadConcepts([broader], { scheme })
-            }
-            Promise.all(broaderPromises).then(() => {
-              // TODO: Is adjustment necessary?
-              this.adjustConcept(concept)
-              this.$set(concept, "__BROADERLOADED__", true)
-            })
-          }
-          // TODO
-          // Only select if loadingId matches on the same side
-          if (loadingId == this.$store.state.selected.loadingId[isLeft]) {
+        if (scheme && !concept) {
+          let kind = "both"
+          if (scheme) {
             this.$store.commit({
               type: "selected/set",
               kind,
               isLeft,
-              concept,
               scheme,
-              value: concept,
+              concept: null,
               noQueryRefresh,
             })
-            return true
+            // Load types for scheme
+            loadTypes(scheme)
+            // Load top concepts for scheme
+            return this.loadTop(scheme).then(() => true)
           } else {
-            return false
+            this.$log.error("setSelected: could not find scheme in store.")
+            return Promise.resolve(false)
           }
-        })
-      } else if (isLeft != null) {
-        this.$store.commit({
-          type: "selected/clear",
-          kind: "scheme",
-          isLeft,
-          noQueryRefresh,
-        })
-      } else {
-        this.$log.error("setSelected: called with no valid concept or scheme.")
-        return Promise.resolve(false)
-      }
+        } else if (concept) {
+          let kind = "concept"
+          if (!scheme) {
+            this.$log.error("setSelected: could not find scheme for concept in store.")
+            return Promise.resolve(false)
+          }
+          if (!concept) {
+            // This case should not happen!
+            this.$log.error("setSelected: critical error when getting/saving concept from store.")
+            return Promise.resolve(false)
+          }
+          let promises = []
+          // Check if scheme is different from selected scheme, if not change
+          if (!jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
+            kind = "both"
+            // Load top concepts for scheme
+            promises.push(this.loadTop(scheme))
+          }
+          // Load details
+          promises.push(this.loadConcepts([concept]).catch(() => {}))
+          // Load narrower concepts
+          promises.push(this.loadNarrower(concept).catch(() => {}))
+          // Load ancestor concepts and their narrower concepts
+          promises.push(this.loadAncestors(concept).catch(() => {}))
+
+          return Promise.all(promises).then(() => {
+            // Load types for scheme
+            loadTypes(scheme)
+            // Asynchronously load its ancestors narrower concepts
+            if (concept && concept.ancestors) {
+              for (let ancestor of concept.ancestors) {
+                this.loadNarrower(ancestor)
+              }
+            }
+            // Asynchronously load information about its broader concepts
+            if (concept && concept.broader && !concept.__BROADERLOADED__) {
+              let broaderPromises = []
+              this.adjustConcept(concept)
+              for (let broader of concept.broader.filter(concept => concept != null)) {
+                this.loadConcepts([broader], { scheme })
+              }
+              Promise.all(broaderPromises).then(() => {
+                // TODO: Is adjustment necessary?
+                this.adjustConcept(concept)
+                this.$set(concept, "__BROADERLOADED__", true)
+              })
+            }
+            // TODO
+            // Only select if loadingId matches on the same side
+            if (loadingId == this.$store.state.selected.loadingId[isLeft]) {
+              this.$store.commit({
+                type: "selected/set",
+                kind,
+                isLeft,
+                concept,
+                scheme,
+                value: concept,
+                noQueryRefresh,
+              })
+              return true
+            } else {
+              return false
+            }
+          })
+        } else if (isLeft != null) {
+          this.$store.commit({
+            type: "selected/clear",
+            kind: "scheme",
+            isLeft,
+            noQueryRefresh,
+          })
+          return Promise.resolve(true)
+        } else {
+          this.$log.error("setSelected: called with no valid concept or scheme.")
+          return Promise.resolve(false)
+        }
+      })()
+      return promise.catch(() => false).then(success => {
+        // Set loading indicator
+        if (!noLoading) {
+          this.loadingGlobal = false
+        }
+        return success
+      })
     },
     addToMapping(params) {
       params.type = "mapping/add"
