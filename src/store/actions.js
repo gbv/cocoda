@@ -222,6 +222,17 @@ export default {
     if (!concept || !concept.uri) {
       return
     }
+    // Check whether it is really a concept
+    if (!jskos.isConcept(concept)) {
+      // Show alert
+      // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
+      const text = i18n.t("alerts.favoriteConceptsNonConcept")
+      commit("alerts/add", {
+        variant: "danger",
+        text,
+      }, { root: true })
+      return
+    }
     if (!jskos.isContainedIn(concept, getters.favoriteConcepts)) {
       // Filter properties of concepts
       let newConcept = _.pick(jskos.copyDeep(concept), ["uri", "notation", "inScheme"])
