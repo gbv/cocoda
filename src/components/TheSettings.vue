@@ -165,7 +165,7 @@
         <tab
           :title="$t('settingsTabs')[2]">
           <div class="settingsModal-componentSettings-component">
-            <p
+            <div
               v-if="localSettings"
               class="form-inline">
               <label style="padding-right: 0.5em">{{ $t("settings.language") }}:</label>
@@ -177,9 +177,21 @@
                   {{ $t(`languages.${language}`) }}
                 </option>
               </b-form-select>
-              <span
-                class="form-text text-muted"
-                v-html="$t('settings.languageContribution')" />
+            </div>
+            <span
+              class="fontSize-small text-lightGrey"
+              v-html="$t('settings.languageContribution')" />
+          </div>
+          <div
+            v-if="localSettings && config.autoRefresh.update"
+            class="settingsModal-componentSettings-component">
+            <b-form-checkbox
+              v-model="localSettings.checkForUpdates">
+              {{ $t('settings.checkForUpdates') }}
+            </b-form-checkbox>
+            <p
+              class="fontSize-small text-lightGrey">
+              {{ $t('settings.checkForUpdatesExplanation', [Math.floor(config.autoRefresh.update/1000)]) }}
             </p>
           </div>
           <div class="settingsModal-componentSettings-component">
