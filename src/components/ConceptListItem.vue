@@ -63,10 +63,9 @@
           class="fontSize-normal">
           <font-awesome-icon icon="puzzle-piece" />
         </span>
-        <!-- TODO: Special adjustment for DDC notation -->
         <span
           class="fontWeight-heavy"
-          v-html="$jskos.notation(concept, 'concept', true)" />
+          v-html="getNotation(concept, 'concept', true)" />
         <span
           :class="{
             'fontWeight-medium': isSelected

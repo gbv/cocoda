@@ -307,6 +307,33 @@ export default {
     generateID() {
       return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     },
+    // Wrapper around jskos.notation that makes adjustments if nececessary
+    getNotation(item, type, adjust = false) {
+      let notation = jskos.notation(item, type)
+      // Adjust notation for certain concept schemes -> return HTML as well
+      if (adjust) {
+        let fill = ""
+        // For DDC and SDNB only: fill number notation with trailing zeros
+        if (jskos.compare({
+          uri : "http://dewey.info/scheme/edition/e23/",
+          identifier : [
+            "http://bartoc.org/en/node/241",
+            "http://bartoc.org/en/node/18497",
+            "http://www.wikidata.org/entity/Q67011877",
+            "http://id.loc.gov/vocabulary/classSchemes/sdnb",
+            "http://uri.gbv.de/terminology/sdnb",
+          ],
+        }, _.get(item, "inScheme[0]")) && !isNaN(parseInt(notation))) {
+          while (notation.length + fill.length < 3) {
+            fill += "0"
+          }
+        }
+        if (fill.length) {
+          notation += `<span class='notation-fill text-mediumLightGrey'>${fill}</span>`
+        }
+      }
+      return notation
+    },
     // adapted from: https://stackoverflow.com/a/22429679/11050851
     hash(str) {
       var FNV1_32A_INIT = 0x811c9dc5

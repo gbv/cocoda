@@ -10,14 +10,13 @@
     @dragend="dragEnd"
     @mouseover="hovering(true)"
     @mouseout="hovering(false)">
-    <!-- TODO: Adjustment for DDC Notations -->
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
       v-b-popover="showPopover && (itemDetails.length || !showText) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${$jskos.notation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `<div class='fontSize-normal'><b>${getNotation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
       } : null"
       :to="url"
@@ -43,10 +42,9 @@
         <font-awesome-icon icon="puzzle-piece" />
       </span>
       <!-- Text for notation -->
-      <!-- TODO: Adjustment for DDC Notations -->
       <span
         :class="{ 'fontWeight-heavy': showText }"
-        v-html="$jskos.notation(item, null, true)" />
+        v-html="getNotation(item, null, true)" />
       <!-- Text for prefLabel -->
       <span
         v-if="showText || !notation"
