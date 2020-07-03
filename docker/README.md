@@ -32,7 +32,10 @@ docker run -it \
 This will create and start a Cocoda container running under host port 8080 with the configuration folder mounted under `/path/to/appdata`. Use `/path/to/appdata/cocoda.json` to configure the application (see below) and access it under `http://localhost:8080`.
 
 ### docker-compose
-`docker-compose.yml`:
+Note that depending on your system, it might be necessary to use `sudo docker-compose`.
+
+1. Create `docker-compose.yml`:
+
 ```yml
 version: "3"
 
@@ -43,16 +46,31 @@ services:
       # Mount ./config folder into container
       - ./config:/config
     ports:
-      # Default to port 8080
-      - ${PORT:-8080}:80
+      # Use host port 8080
+      - 8080:80
     restart: always
 ```
 
-Then start the application using `docker-compose up`. This will create and start a Cocoda container running under host port 8080 (or a custom port in `PORT`) with the configuration folder mounted under `./config`. Use `./config/cocoda.json` to configure the application (see below) and access it under `http://localhost:8080`.
+2. Create data folder and configuration file:
+
+```bash
+mkdir config
+echo {} > config/cocoda.json
+```
+
+Note that if you skip this step, Docker will create the folder and the file itself. Depending on your system, they might not be owned by the right user account (likely root).
+
+3. Start the application:
+
+```bash
+docker-compose up -d
+```
+
+This will create and start a Cocoda container running under host port 8080 with the configuration folder mounted under `./config`. Use `./config/cocoda.json` to configure the application (see below) and access it under `http://localhost:8080`.
 
 ## Application Setup
 
-Cocoda will create a configuration file under `/config/cocoda.json` inside the image which can be used to configure the application. By default, the file is empty (or rather an empty object `{}`). The file is merged with a default configuration (see [`cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json)) that offers a selection of preconfigured registries and other configurations.
+The configuration file under `/config/cocoda.json` inside the container (mounted to your host depending on your setup, see above) can be used to configure the application. By default, the file is empty (or rather an empty object `{}`). The file is merged with a default configuration (see [`cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json)) that offers a selection of preconfigured registries and other settings.
 
 Please refer to the [documentation](https://github.com/gbv/cocoda#configuration) on how to use the configuration file.
 
