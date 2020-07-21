@@ -37,9 +37,9 @@
     "post-receive": "npm run build-info"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.29",
-    "@fortawesome/free-brands-svg-icons": "^5.13.1",
-    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-brands-svg-icons": "^5.14.0",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "axios": "^0.19.2",
     "bootstrap-vue": "2.11.0",
@@ -50,14 +50,14 @@
     "gbv-login-client": "^0.2.9",
     "jskos-tools": "^1.0.9",
     "json-format-highlight": "^1.0.4",
-    "localforage": "^1.7.4",
+    "localforage": "~1.7.4",
     "lodash": "^4.17.19",
     "vue": "^2.6.11",
     "vue-flexible-table": "^0.3.6",
     "vue-i18n": "^8.18.2",
     "vue-router": "^3.3.4",
     "vue-scrollto": "^2.18.1",
-    "vuex": "^3.4.0"
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.6",
@@ -67,16 +67,16 @@
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
-    "copy-webpack-plugin": "^6.0.2",
+    "copy-webpack-plugin": "^6.0.3",
     "eslint": "6.8.0",
     "eslint-config-gbv": "github:gbv/eslint-config-gbv#ecaf810",
     "eslint-plugin-vue": "^6.2.2",
     "glob": "^7.1.6",
     "jsdoc-to-markdown": "^5.0.3",
-    "less": "^3.11.3",
-    "less-loader": "^6.1.2",
+    "less": "^3.12.2",
+    "less-loader": "^6.2.0",
     "lint-staged": "^10.2.11",
-    "vue-styleguidist": "^4.25.0",
+    "vue-styleguidist": "^4.27.1",
     "vue-template-compiler": "^2.6.11"
   },
   "engines": {
