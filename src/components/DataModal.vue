@@ -13,7 +13,9 @@
         </td>
         <td>
           <ul class="list-group list-group-horizontal">
-            <li class="list-group-item py-2 border-0">
+            <li
+              v-if="encodedDataCsv"
+              class="list-group-item py-2 border-0">
               <a
                 :href="'data:text/csv;charset=utf-8,' + encodedDataCsv"
                 :download="filename + '.csv'"
