@@ -36,7 +36,7 @@ deploy:
   skip_cleanup: true
   github_token: "$GITHUB_TOKEN"
   on:
-    node: '8'
+    node: '12'
     branch: dev
 - provider: releases
   api_key:
