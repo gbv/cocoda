@@ -3,7 +3,7 @@ dist: bionic # Ubuntu 18.04
 language: node_js
 node_js:
 - '12'
-- '8'
+- '10'
 
 cache:
   directories:
