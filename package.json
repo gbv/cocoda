@@ -47,16 +47,16 @@
     "cocoda-vue-tabs": "^0.1.10",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.2",
-    "gbv-login-client": "^0.2.9",
+    "gbv-login-client": "^0.2.10",
     "jskos-tools": "^1.0.9",
     "json-format-highlight": "^1.0.4",
     "localforage": "~1.7.4",
     "lodash": "^4.17.19",
     "vue": "^2.6.11",
-    "vue-flexible-table": "^0.3.6",
-    "vue-i18n": "^8.18.2",
+    "vue-flexible-table": "^0.3.7",
+    "vue-i18n": "^8.20.0",
     "vue-router": "^3.3.4",
-    "vue-scrollto": "^2.18.1",
+    "vue-scrollto": "^2.18.2",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
@@ -76,7 +76,7 @@
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
     "lint-staged": "^10.2.11",
-    "vue-styleguidist": "^4.27.1",
+    "vue-styleguidist": "^4.29.1",
     "vue-template-compiler": "^2.6.11"
   },
   "engines": {
