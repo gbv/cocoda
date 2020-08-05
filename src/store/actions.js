@@ -30,6 +30,14 @@ export default {
     } catch (error) {
       userConfig = null
     }
+    if (!userConfig) {
+      // Try again without axios config: Cache-Control header might not be allowed
+      try {
+        userConfig = (await axios.get(configFile)).data
+      } catch (error) {
+        userConfig = null
+      }
+    }
     if (!_.isObject(userConfig)) {
       log.error(`Error loading config from ${configFile}: Data is not an object.`)
       userConfig = { error: "malformedConfig" }
