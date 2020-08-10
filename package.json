@@ -55,7 +55,7 @@
     "vue": "^2.6.11",
     "vue-flexible-table": "^0.3.7",
     "vue-i18n": "^8.20.0",
-    "vue-router": "^3.3.4",
+    "vue-router": "~3.3.4",
     "vue-scrollto": "^2.18.2",
     "vuex": "^3.5.1"
   },
@@ -76,7 +76,7 @@
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
     "lint-staged": "^10.2.11",
-    "vue-styleguidist": "^4.29.1",
+    "vue-styleguidist": "^4.30.0",
     "vue-template-compiler": "^2.6.11"
   },
   "engines": {
