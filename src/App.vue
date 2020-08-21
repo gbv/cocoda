@@ -693,22 +693,32 @@ export default {
           }
         })
         let directions = ["from", "to"]
-        let memberFields = ["memberSet", "memberList", "memberChoice"]
         promises.push(loadMapping.then(( [mappingFromQuery, original = null] ) => {
           let promises = []
           if (mappingFromQuery) {
             for (let direction of directions) {
-              // Get scheme
-              let scheme = mappingFromQuery[`${direction}Scheme`]
-              for (let memberField of memberFields) {
-                if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
-                // Load data for each concept in mapping
-                _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                  promises.push(this.loadConcepts([concept], { scheme }).then(([concept]) => {
-                    mappingFromQuery[direction][memberField][index] = concept
-                  }))
-                })
+              const scheme = mappingFromQuery[`${direction}Scheme`]
+              const concepts = this.$jskos.conceptsOfMapping(mappingFromQuery, direction)
+              const memberField = Object.keys(mappingFromQuery[direction])
+              const isLeft = direction == "from" ? true : false
+              // Select scheme+concept on side if there are none
+              if (firstLoad && concepts.length && !selected.concept[isLeft]) {
+                const concept = concepts[0]
+                // ? Maybe add to outer promises?
+                promises.push(this.setSelected({
+                  concept,
+                  scheme,
+                  isLeft,
+                  noQueryRefresh: true,
+                  noLoading: true,
+                }))
               }
+              // Load data for each concept in mapping
+              _.forEach(concepts, (concept, index) => {
+                promises.push(this.loadConcepts([concept], { scheme }).then(([concept]) => {
+                  mappingFromQuery[direction][memberField][index] = concept
+                }))
+              })
             }
           }
           return Promise.all(promises).then(() => {
