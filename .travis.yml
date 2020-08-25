@@ -2,8 +2,9 @@ dist: bionic # Ubuntu 18.04
 
 language: node_js
 node_js:
-- '12'
-- '10'
+- node
+- 12
+- 10
 
 cache:
   directories:
@@ -18,7 +19,6 @@ before_install: # install Pandoc and TeX (hopefully from cache)
   - export PATH="$HOME/.local/bin:/tmp/texlive/bin/x86_64-linux:$PATH"
 
 install:
-- npm i -g npm@5.10.0
 - travis_retry npm ci
 
 script:
@@ -36,7 +36,7 @@ deploy:
   skip_cleanup: true
   github_token: "$GITHUB_TOKEN"
   on:
-    node: '12'
+    node: 12
     branch: dev
 - provider: releases
   api_key:
@@ -48,6 +48,6 @@ deploy:
   draft: true
   skip_cleanup: true
   on:
-    node: '12'
+    node: 12
     repo: gbv/cocoda
     tags: true
