@@ -48,7 +48,7 @@
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.2",
     "gbv-login-client": "^0.2.10",
-    "jskos-tools": "^1.0.10",
+    "jskos-tools": "^1.0.12",
     "json-format-highlight": "^1.0.4",
     "localforage": "^1.8.1",
     "lodash": "^4.17.20",
