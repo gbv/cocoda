@@ -67,8 +67,8 @@
     "@vue/test-utils": "^1.0.4",
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
-    "copy-webpack-plugin": "6.0.3",
-    "eslint": "7.5.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "eslint": "^7.7.0",
     "eslint-config-gbv": "github:gbv/eslint-config-gbv#ecaf810",
     "eslint-plugin-vue": "^6.2.2",
     "glob": "^7.1.6",
@@ -76,8 +76,8 @@
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
     "lint-staged": "^10.2.11",
-    "vue-styleguidist": "^4.31.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-styleguidist": "^4.31.1",
+    "vue-template-compiler": "^2.6.12"
   },
   "engines": {
     "node": ">=10.0.0",
