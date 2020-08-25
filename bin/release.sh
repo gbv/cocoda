@@ -68,11 +68,11 @@ then
   exit 1
 fi
 
-echo "- Pushing dev with tags..."
-git push --quiet --tags origin dev 2>&1 >/dev/null
+echo "- Pushing dev..."
+git push --quiet 2>&1 >/dev/null
 while [ $? -ne 0 ]; do
   waitforenter "Pushing dev failed"
-  git push --tags origin dev
+  git push
 done
 
 echo "- Checking out master and merging dev into master..."
@@ -83,11 +83,11 @@ while [ $? -ne 0 ]; do
   git merge dev
 done
 
-echo "- Pushing master branch..."
-git push --quiet 2>&1 >/dev/null
+echo "- Pushing master branch with tags..."
+git push --quiet --tags origin master 2>&1 >/dev/null
 while [ $? -ne 0 ]; do
   waitforenter "Pushing master failed"
-  git push
+  git push --tags origin master
 done
 
 echo "- Going back to dev..."
