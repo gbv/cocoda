@@ -595,6 +595,13 @@
       }
     },
     {
+      "url": "https://github.com/gbv/cocoda/wiki/Barrierefreiheit",
+      "prefLabel": {
+        "en": "Accessibility",
+        "de": "Barrierefreiheit"
+      }
+    },
+    {
       "url": "https://www.gbv.de/datenschutz",
       "prefLabel": {
         "en": "Privacy Policy",
