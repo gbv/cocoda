@@ -1316,12 +1316,8 @@ export default {
             if (points.b - points.a != 0) {
               return points.b - points.a
             }
-            // If the points are equal, sort by concepts (first from, then to).
-            let value = this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "from")
-            if (value != 0) {
-              return value
-            }
-            return this.$jskos.compareFunctions.mappingsByConcepts(a.mapping, b.mapping, "to")
+            // If the points are equal, sort by existing position.
+            return mappings.indexOf(a) - mappings.indexOf(b)
           })
           // Filter mappings if showAllSchemes is off and schemes don't match
           // Note: This has to be adjusted or removed when proper pagination for navigator results is implemented!
