@@ -880,11 +880,12 @@ html, body {
   text-align: left;
   padding: 40px 20px 40px 30px;
 }
-.configError > div, .placeholderComponentCenter > div {
+.configError, .placeholderComponentCenter {
   text-align: center;
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .configError > div {
   position: absolute;
