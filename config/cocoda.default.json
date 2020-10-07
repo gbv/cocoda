@@ -637,7 +637,7 @@
   ],
   "conceptLists": [],
   "autoRefresh": {
-    "mappings": 15000,
-    "update": 60000
+    "mappings": 10000,
+    "update": 120000
   }
 }
