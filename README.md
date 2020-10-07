@@ -63,7 +63,7 @@ http-server -p 8000 dist/       # or serve the build version
 
 ### Docker
 
-Cocoda is also available via Docker. Please refer to the documentation at https://hub.docker.com/repository/docker/coliconc/cocoda for more details.
+Cocoda is also available via Docker. Please refer to the documentation at https://hub.docker.com/r/coliconc/cocoda for more details.
 
 ## Usage
 
