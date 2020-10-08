@@ -286,7 +286,8 @@
       "mapping": "no mappings | 1 mapping | {count} mappings",
       "annotation": "no annotations | 1 annotation | {count} annotations",
       "concordance": "no concordances | 1 concordance | {count} concordances",
-      "resource": "no resources | 1 resource | {count} resources"
+      "resource": "no resources | 1 resource | {count} resources",
+      "button": "Source Data"
     },
     "registryInfo": {
       "schemes": "Schemes",
@@ -604,7 +605,8 @@
       "mapping": "keine Mappings | 1 Mapping | {count} Mappings",
       "annotation": "keine Annotationen | 1 Annotation | {count} Annotationen",
       "concordance": "keine Konkordanzen | 1 Konkordanz | {count} Konkordanzen",
-      "resource": "keine Ressourcen | 1 Ressource | {count} Ressourcen"
+      "resource": "keine Ressourcen | 1 Ressource | {count} Ressourcen",
+      "button": "Quelldaten"
     },
     "registryInfo": {
       "schemes": "Vokabulare",

@@ -2,6 +2,7 @@
   <div>
     <!-- Button -->
     <div
+      v-b-tooltip.hover="{ title: $t('dataModal.button'), delay: defaults.delay.medium }"
       class="dataModalButton"
       :style="`right: ${positionRight}px; bottom: ${positionBottom}px;`"
       @click="openDataModal">

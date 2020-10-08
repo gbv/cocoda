@@ -119,6 +119,7 @@
                 :provider="mapping._registry" />
             </b-col>
             <div
+              v-b-tooltip.hover="{ title: $t('dataModal.button'), delay: defaults.delay.medium }"
               class="dataModalButton"
               @click="$refs.dataModalAnnotations.show()">
               <font-awesome-icon icon="code" />
@@ -171,6 +172,7 @@
         </b-container>
       </div>
       <div
+        v-b-tooltip.hover="{ title: $t('dataModal.button'), delay: defaults.delay.medium }"
         class="dataModalButton"
         @click="$refs.dataModal.show()">
         <font-awesome-icon icon="code" />
