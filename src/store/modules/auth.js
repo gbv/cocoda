@@ -165,9 +165,9 @@ const actions = {
                   prop: "authorized",
                   value: false,
                 })
-                // Set auth to null for all providers
+                // Set token to null for all providers
                 for (let registry of registries) {
-                  registry.setAuth({ key: null, bearerToken: null })
+                  registry.setAuth({ bearerToken: null })
                 }
               }, event.expiresIn * 1000),
             })
