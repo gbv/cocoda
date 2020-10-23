@@ -21,7 +21,9 @@
     "manual": "make -BC docs",
     "manual-pdf": "make -BC docs pdfs",
     "release": "./bin/release.sh",
-    "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
+    "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json",
+    "tauri:build": "vue-cli-service tauri:build",
+    "tauri:serve": "vue-cli-service tauri:serve"
   },
   "lint-staged": {
     "**/*.{js,vue}": [
@@ -76,6 +78,7 @@
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
     "lint-staged": "^10.4.0",
+    "vue-cli-plugin-tauri": "~0.12.1",
     "vue-styleguidist": "^4.32.3",
     "vue-template-compiler": "^2.6.12"
   },
