@@ -128,6 +128,7 @@
                 </a>
               </p>
               <b-form-checkbox
+                v-if="favoriteSchemes.find(s => $jskos.isContainedIn(s, schemes))"
                 v-model="onlyFavorites"
                 size="sm">
                 {{ $t("schemeSelection.filterOnlyFavorites") }}
@@ -480,6 +481,11 @@ export default {
     },
     typeFilter() {
       this.schemeFilter = ""
+    },
+    favoriteSchemes() {
+      if (!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this.schemes))) {
+        this.onlyFavorites = false
+      }
     },
   },
   mounted() {
