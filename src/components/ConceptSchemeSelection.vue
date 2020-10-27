@@ -128,7 +128,7 @@
                 </a>
               </p>
               <b-form-checkbox
-                v-if="favoriteSchemes.find(s => $jskos.isContainedIn(s, schemes))"
+                v-if="allowFavoriteSchemesFilter"
                 v-model="onlyFavorites"
                 size="sm">
                 {{ $t("schemeSelection.filterOnlyFavorites") }}
@@ -463,6 +463,9 @@ export default {
       }
       return options
     },
+    allowFavoriteSchemesFilter() {
+      return !!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this.schemes))
+    },
   },
   watch: {
     popoverShown(show) {
@@ -482,8 +485,8 @@ export default {
     typeFilter() {
       this.schemeFilter = ""
     },
-    favoriteSchemes() {
-      if (!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this.schemes))) {
+    allowFavoriteSchemesFilter(value) {
+      if (!value) {
         this.onlyFavorites = false
       }
     },
@@ -495,6 +498,9 @@ export default {
     this.registryFilter = this.availableRegistries.map(r => r.uri)
     this.languageFilter = this.availableLanguages.concat([null])
     this.typeFilter = this.availableTypes.concat([null])
+    if (!this.allowFavoriteSchemesFilter) {
+      this.onlyFavorites = false
+    }
   },
   methods: {
     clickHandlers() {
