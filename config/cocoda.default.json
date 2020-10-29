@@ -363,6 +363,15 @@
   "searchLinks": [
     {
       "prefLabel": {
+        "de": "Netherlands Institute for Art History"
+      },
+      "schemeUris": [
+        "http://bartoc.org/en/node/459"
+      ],
+      "url": "https://rkd.nl/en/explore/images#filters%5Biconclass_code%5D={notation}"
+    },
+    {
+      "prefLabel": {
         "de": "ccmapper"
       },
       "url": "https://ccmapper-de.pansoft.de/m/mapping.html?id={notation}",
