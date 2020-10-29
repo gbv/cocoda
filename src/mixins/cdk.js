@@ -371,7 +371,7 @@ export default {
               let uris = []
               for (let concept of concepts) {
                 // TODO: Add fallback registry here?
-                concept = this.saveObject(concept, { scheme })
+                concept = this.saveObject(concept, { scheme, type: "concept" })
                 this.$set(concept, "__DETAILSLOADED__", 1)
                 this.adjustConcept(concept)
                 uris = uris.concat(this.$jskos.getAllUris(concept))
