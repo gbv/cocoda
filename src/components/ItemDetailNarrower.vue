@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     loadConceptsMappedStatusConceptsToLoad() {
-      return this.narrower
+      return this.narrower.filter(c => c)
     },
   },
 }
