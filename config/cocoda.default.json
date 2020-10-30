@@ -127,7 +127,10 @@
       ],
       "schemes": [
         {
-          "uri": "http://bartoc.org/en/node/313",
+          "uri": "http://zbw.eu/stw",
+          "identifier": [
+            "http://bartoc.org/en/node/313"
+          ],
           "VOCID": "stw"
         }
       ]
@@ -144,9 +147,9 @@
       ],
       "schemes": [
         {
-          "uri": "http://bartoc.org/en/node/15",
+          "uri": "http://eurovoc.europa.eu/100141",
           "identifier": [
-            "http://eurovoc.europa.eu/100141"
+            "http://bartoc.org/en/node/15"
           ],
           "notation": [
             "EUROVOC"
