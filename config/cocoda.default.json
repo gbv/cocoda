@@ -366,12 +366,30 @@
   "searchLinks": [
     {
       "prefLabel": {
-        "de": "Netherlands Institute for Art History"
+        "en": "Netherlands Institute for Art History"
       },
       "schemeUris": [
         "http://bartoc.org/en/node/459"
       ],
       "url": "https://rkd.nl/en/explore/images#filters%5Biconclass_code%5D={notation}"
+    },
+    {
+      "prefLabel": {
+        "en": "finto"
+      },
+      "schemeUris": [
+        "http://bartoc.org/en/node/459"
+      ],
+      "url": "https://finto.fi/ic/en/page/{notation}"
+    },
+    {
+      "prefLabel": {
+        "de": "Erdteilallegorien"
+      },
+      "schemeUris": [
+        "http://bartoc.org/en/node/459"
+      ],
+      "url": "https://erdteilallegorien.univie.ac.at/iconclass/{notation}"
     },
     {
       "prefLabel": {
