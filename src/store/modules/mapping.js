@@ -263,6 +263,10 @@ const mutations = {
     if (state.mapping[fromTo].memberSet.length == 0 && fromTo == "from") {
       state.mapping[helpers.fromToScheme(isLeft)] = null
     }
+    // If there are no concepts left, clear the whole mapping
+    if (jskos.conceptsOfMapping(state.mapping).length === 0) {
+      mutations.empty(state)
+    }
   },
 
   /**
