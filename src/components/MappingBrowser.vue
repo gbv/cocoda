@@ -299,48 +299,46 @@
           :show-editing-tools="showEditingTools"
           :show-cocoda-link="showCocodaLink"
           :registry-has-errored="registryHasErrored"
-          @pageChange="changePage('search', $event)">
-          <!-- Share button -->
-          <!-- TODO: Figure out new place for this. -->
-          <!-- <div
-            id="mappingBrowser-search-shareButton"
-            class="button">
-            <font-awesome-icon icon="share-alt-square" /> {{ $t("mappingBrowser.searchShareLabel") }}
-          </div>
-          <b-popover
-            :show.sync="searchShareShow"
-            target="mappingBrowser-search-shareButton"
-            triggers="click"
-            placement="bottomleft">
-            <div
-              ref="searchSharePopover">
-              <p><b>{{ $t("mappingBrowser.searchShareTitle") }}</b></p>
-              <p style="user-select: none;">
-                <b-form-checkbox
-                  v-model="searchShareIncludeSelected">
-                  {{ $t("mappingBrowser.searchShareInclude") }}
-                </b-form-checkbox>
-              </p>
-              <p id="mappingBrowser-search-shareLinkInput">
-                <pre><code>{{ searchShareLink }}</code></pre>
-              </p>
-              <p style="text-align: right;">
-                <b-button
-                  size="sm"
-                  variant="primary"
-                  @click="copyToClipboard('mappingBrowser-search-shareLinkInput')">
-                  {{ $t("mappingBrowser.searchShareCopy") }}
-                </b-button>
-              </p>
-            </div>
-          </b-popover> -->
-        </mapping-browser-table>
+          @pageChange="changePage('search', $event)" />
         <div
           v-else
           class="fontWeight-heavy"
           style="text-align: center; margin-top: 20px;">
           {{ $t("search.noResults") }}
         </div>
+        <!-- Share button -->
+        <div
+          id="mappingBrowser-search-shareButton"
+          class="button">
+          <font-awesome-icon icon="share-alt-square" /> {{ $t("mappingBrowser.searchShareLabel") }}
+        </div>
+        <b-popover
+          :show.sync="searchShareShow"
+          target="mappingBrowser-search-shareButton"
+          triggers="click"
+          placement="bottomleft">
+          <div
+            ref="searchSharePopover">
+            <p><b>{{ $t("mappingBrowser.searchShareTitle") }}</b></p>
+            <p style="user-select: none;">
+              <b-form-checkbox
+                v-model="searchShareIncludeSelected">
+                {{ $t("mappingBrowser.searchShareInclude") }}
+              </b-form-checkbox>
+            </p>
+            <p id="mappingBrowser-search-shareLinkInput">
+              <pre><code>{{ searchShareLink }}</code></pre>
+            </p>
+            <p style="text-align: right;">
+              <b-button
+                size="sm"
+                variant="primary"
+                @click="copyToClipboard('mappingBrowser-search-shareLinkInput')">
+                {{ $t("mappingBrowser.searchShareCopy") }}
+              </b-button>
+            </p>
+          </div>
+        </b-popover>
       </tab>
       <tab
         v-if="showNavigator"
@@ -1545,9 +1543,6 @@ export default {
 .mappingBrowser-navigator-results {
   flex: 1;
 }
-.mappingBrowser-registryGroup {
-  margin-bottom: 10px;
-}
 .mappingBrowser-registryGroup-header {
   text-align: left;
   padding: 0.5em 3px 3px 2em;
@@ -1584,9 +1579,13 @@ export default {
 
 #mappingBrowser-search-shareButton {
   position: absolute;
-  right: 2px;
-  top: 5px;
+  right: 20px;
+  bottom: 0px;
   z-index: @zIndex-2;
+  color: @color-text-mediumLightGrey;
+}
+#mappingBrowser-search-shareButton:hover {
+  color: @color-button-hover;
 }
 
 </style>

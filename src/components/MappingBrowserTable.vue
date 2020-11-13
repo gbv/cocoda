@@ -877,6 +877,10 @@ export default {
   cursor: default;
 }
 
+.mappingBrowser-table .flexibleTable-body {
+  padding-bottom: 20px;
+}
+
 .mappingBrowser-table .flexibleTable-section-before {
   background-color: @color-background-heading;
 }
