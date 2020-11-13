@@ -3,9 +3,9 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
-      "data": "//coli-conc.gbv.de/services/gnd.php",
-      "suggest": "//ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
-      "types": "//ws.gbv.de/suggest/gnd/types",
+      "data": "https://coli-conc.gbv.de/services/gnd.php",
+      "suggest": "https://ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
+      "types": "https://ws.gbv.de/suggest/gnd/types",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/430",
@@ -34,8 +34,8 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-concepts",
-      "data": "//coli-conc.gbv.de/services/wikidata/concept/",
-      "suggest": "//coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
+      "data": "https://coli-conc.gbv.de/services/wikidata/concept/",
+      "suggest": "https://coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/1940",
@@ -63,7 +63,7 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
-      "status": "//coli-conc.gbv.de/rvk/api/status",
+      "status": "https://coli-conc.gbv.de/rvk/api/status",
       "notation": [
         "RVK"
       ],
@@ -74,7 +74,7 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
-      "status": "//coli-conc.gbv.de/api/status",
+      "status": "https://coli-conc.gbv.de/api/status",
       "notation": [
         "J"
       ],
@@ -93,13 +93,7 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
-      "schemes": "//api.dante.gbv.de/voc",
-      "top": "//api.dante.gbv.de/voc/top",
-      "data": "//api.dante.gbv.de/data",
-      "narrower": "//api.dante.gbv.de/narrower",
-      "ancestors": "//api.dante.gbv.de/ancestors",
-      "suggest": "//api.dante.gbv.de/suggest",
-      "search": "//api.dante.gbv.de/search",
+      "status": "https://api.dante.gbv.de/status",
       "notation": [
         "D"
       ],
@@ -224,7 +218,7 @@
       }
     },
     {
-      "provider": "SearchSuggestion",
+      "provider": "LabelSearchSuggestion",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
       "excludedSchemes": [
         {
@@ -248,7 +242,7 @@
     {
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/ccmapper-mapping-recommendations",
-      "status": "//coli-conc.gbv.de/ccmapper/api/status",
+      "status": "https://coli-conc.gbv.de/ccmapper/api/status",
       "schemes": [
         {
           "uri": "http://dewey.info/scheme/edition/e23/"
@@ -269,7 +263,7 @@
     {
       "provider": "OccurrencesApi",
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
-      "api": "//coli-conc.gbv.de/occurrences/api/",
+      "api": "https://coli-conc.gbv.de/occurrences/api/",
       "notation": [
         "CO"
       ],
