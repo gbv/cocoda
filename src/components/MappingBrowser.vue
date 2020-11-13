@@ -1253,7 +1253,14 @@ export default {
         }
 
         const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
-        const getMappings = () => this.getMappings({ ...params, registry: registry.uri, cancelToken: cancelToken.token })
+        const getMappings = () => this.getMappings({
+          ...params,
+          registry: registry.uri,
+          // For recommendations: Limit results.
+          // TODO: We should support proper pagination here as well!
+          limit: this.$jskos.mappingRegistryIsStored(registry) ? 100 : this.componentSettings.resultLimit,
+          cancelToken: cancelToken.token,
+        })
         const handleResult = mappings => {
           if (cancelToken != this.navigatorCancelToken[registry.uri]) {
             return
