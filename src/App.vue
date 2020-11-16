@@ -360,17 +360,7 @@ export default {
         this.$i18n.locale = newValue
       }
     },
-    /**
-     * Update local creator name if authorized user changed.
-     */
     user(current, previous) {
-      if (this.user && this.user.name != this.userName) {
-        this.$store.commit({
-          type: "settings/set",
-          prop: "creator",
-          value: this.user.name,
-        })
-      }
       /**
        * Show alerts when user was logged in/out.
        */
@@ -386,17 +376,6 @@ export default {
             // Maybe prevent hardcoded tab index?
             navbar.openSettingsTab(0)
           }
-        })
-        // Reset user name and URI
-        this.$store.commit({
-          type: "settings/set",
-          prop: "creator",
-          value: "",
-        })
-        this.$store.commit({
-          type: "settings/set",
-          prop: "creatorUri",
-          value: "",
         })
       }
     },
