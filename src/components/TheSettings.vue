@@ -74,33 +74,10 @@
             </p>
             <p>
               <b>{{ $t("settings.creator") }}</b>
-              <span v-if="!user || localSettings.creatorUri == user.uri">
-                <!-- Default or no identity chosen - name changeable -->
-                <b-form-input
-                  v-model="localSettings.creator"
-                  :placeholder="$t('settings.creatorPlaceholder')"
-                  type="text" />
-              </span>
-              <span v-else>
-                <!-- Specific identity chosen - name is set -->
-                <div class="d-flex align-items-center">
-                  <div class="flex-grow-1">
-                    <b-form-input
-                      :value="creatorName"
-                      type="text"
-                      disabled />
-                  </div>
-                  <div
-                    v-if="userIdentityProvider"
-                    class="ml-2">
-                    <img
-                      v-if="userIdentityImage"
-                      :src="userIdentityImage"
-                      height="24px">
-                    {{ userIdentityProvider.name }}
-                  </div>
-                </div>
-              </span>
+              <b-form-input
+                v-model="localSettings.creator"
+                :placeholder="$t('settings.creatorPlaceholder')"
+                type="text" />
             </p>
             <p>
               <b>{{ $t("settings.creatorUri") }}</b>
@@ -538,6 +515,19 @@ export default {
           })
         }
         reader.readAsText(this.uploadedFile)
+      }
+    },
+    "localSettings.creatorUri"(uri) {
+      // Find name in identity and set creator
+      if (this.user) {
+        let name = this.user.name
+        const identity = Object.values(this.user.identities).find(i => i.uri === uri)
+        if (identity) {
+          name = identity.name
+        }
+        if (name) {
+          this.localSettings.creator = name
+        }
       }
     },
   },

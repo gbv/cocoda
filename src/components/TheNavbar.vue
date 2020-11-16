@@ -191,11 +191,7 @@
                 'navbar-dropdown-selectable': true,
                 'navbar-dropdown-selectable-selected': uri == creator.uri
               }"
-              @click="$store.commit({
-                type: 'settings/set',
-                prop: 'creatorUri',
-                value: uri
-              })">
+              @click="setIdentity(uri)">
               <span class="navbar-dropdown-selectable-icon">
                 <img
                   v-if="imageForIdentityUri(uri)"
@@ -402,6 +398,29 @@ export default {
     openSettingsTab(index) {
       this.settingsTab = index
       this.$refs.settings.show()
+    },
+    setIdentity(uri) {
+      this.$store.commit({
+        type: "settings/set",
+        prop: "creatorUri",
+        value: uri,
+      })
+      // Find name in identity and set creator
+      // TODO: Code duplication with TheSettings
+      if (this.user) {
+        let name = this.user.name
+        const identity = Object.values(this.user.identities).find(i => i.uri === uri)
+        if (identity) {
+          name = identity.name
+        }
+        if (name) {
+          this.$store.commit({
+            type: "settings/set",
+            prop: "creator",
+            value: name,
+          })
+        }
+      }
     },
   },
 }

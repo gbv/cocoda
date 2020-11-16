@@ -58,10 +58,6 @@ const getters = {
    */
   creator: (state) => {
     let creator = {}
-    let language = state.settings.settings.locale
-    if (!(state.config.languages || []).includes(language)) {
-      language = "en"
-    }
     let name = state.settings.settings.creator
     let uri = state.settings.settings.creatorUri
     if (!jskos.isValidUri(uri)) {
@@ -69,17 +65,9 @@ const getters = {
     }
     if (uri) {
       creator.uri = uri
-      // Override name with name from chosen identity
-      let user = state.auth.user
-      if (user) {
-        let identity = Object.values(user.identities).find(identity => identity.uri === uri)
-        if (identity && identity.name) {
-          name = identity.name
-        }
-      }
     }
     if (name) {
-      creator.prefLabel = { [language]: name }
+      creator.prefLabel = { "en": name }
     }
     return creator
   },

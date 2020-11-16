@@ -416,14 +416,6 @@ export default {
       }
     },
     /**
-     * Update authorized user's name if creator name changed.
-     */
-    userName() {
-      if (this.authorized && this.user && this.userName != this.user.name) {
-        this.setName(this.userName)
-      }
-    },
-    /**
      * Unminimize mapping browser if force mapping browser is set to true
      */
     forceMappingBrowser(force) {
