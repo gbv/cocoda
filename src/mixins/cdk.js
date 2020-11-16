@@ -564,7 +564,7 @@ export default {
         mapping.contributor = []
         for (let creator of contributor) {
           // Only add if it's not self and not already in contributor
-          if (!jskos.compare(creator, { identities: this.userUris || [] }) && !jskos.isContainedIn(creator, mapping.contributor)) {
+          if (!jskos.compare(creator, { identifier: this.userUris || [] }) && !jskos.isContainedIn(creator, mapping.contributor)) {
             mapping.contributor.push(creator)
           }
         }
