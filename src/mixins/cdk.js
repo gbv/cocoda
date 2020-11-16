@@ -557,15 +557,29 @@ export default {
       mapping = jskos.copyDeep(mapping)
       // Adjust creator
       let creator = this.creator
-      let creatorName = jskos.prefLabel(creator, { fallbackToUri: false })
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
       if (creator && (creator.uri || creator.prefLabel)) {
-        // TODO: Re-evaluate
-        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []).filter(c => !(creator.uri && c.uri && creator.uri == c.uri) && !(creatorName && jskos.prefLabel(c, { fallbackToUri: false }) && creatorName == jskos.prefLabel(c, { fallbackToUri: false }))))
+        const contributor = (mapping.contributor || []).concat(mapping.creator || [])
+        mapping.contributor = []
+        for (let creator of contributor) {
+          // Only add if it's not self and not already in contributor
+          if (!jskos.compare(creator, { identities: this.userUris || [] }) && !jskos.isContainedIn(creator, mapping.contributor)) {
+            mapping.contributor.push(creator)
+          }
+        }
         mapping.creator = [creator]
+        // If mapping as a URI already (i.e. it already exists), add creator as contributor as well
+        if (mapping.uri) {
+          mapping.contributor.push(creator)
+        }
       } else {
-        mapping.contributor = (mapping.contributor || []).concat((mapping.creator || []))
+        mapping.contributor = mapping.contributor || []
+        for (let creator of mapping.creator || []) {
+          if (!jskos.isContainedIn(creator, mapping.contributor)) {
+            mapping.contributor.push(creator)
+          }
+        }
         this.$delete(mapping, "creator")
       }
       // Prevent issue with empty strings as prefLabels
