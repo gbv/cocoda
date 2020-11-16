@@ -633,6 +633,11 @@ export default {
       }
       return mappings
     },
+    _addIdentityParams(config) {
+      config.params = config.params || {}
+      config.params.identity = this.$settings.creatorUri
+      config.params.identityName = this.$settings.creator
+    },
     async postMapping({ registry, _adjust = true, _reload = true, _alert = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry || config.mapping._registry)
       if (!registry) {
@@ -641,6 +646,7 @@ export default {
       _before && _before()
       try {
         config.mapping = this.prepareMapping(config.mapping)
+        this._addIdentityParams(config)
         const mapping = await registry.postMapping(config)
         if (_adjust) {
           this.adjustMapping(mapping)
@@ -683,6 +689,7 @@ export default {
       _before && _before()
       try {
         config.mappings = config.mappings.map(mapping => this.prepareMapping(mapping))
+        this._addIdentityParams(config)
         const mappings = await registry.postMappings(config)
         if (_adjust) {
           for (let mapping of mappings) {
@@ -714,6 +721,7 @@ export default {
       _before && _before()
       try {
         config.mapping = this.prepareMapping(config.mapping)
+        this._addIdentityParams(config)
         const mapping = await registry.putMapping(config)
         if (_adjust) {
           this.adjustMapping(mapping)
