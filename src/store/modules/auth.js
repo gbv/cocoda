@@ -49,7 +49,7 @@ const mutations = {
   closeWindow(state, { eventType }) {
     if (windowManager.window && windowManager.eventType == eventType) {
       setTimeout(() => {
-        windowManager.window.close()
+        windowManager.window && windowManager.window.close()
         windowManager.window = null
       }, 100)
     }
