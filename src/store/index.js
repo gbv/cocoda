@@ -67,7 +67,7 @@ const getters = {
       creator.uri = uri
     }
     if (name) {
-      creator.prefLabel = { "en": name }
+      creator.prefLabel = { en: name }
     }
     return creator
   },

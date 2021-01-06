@@ -707,12 +707,12 @@ export default {
     },
     replaceKey(key) {
       let replacements = {
-        "shift": "Shift",
-        "alt": "Alt",
-        "option": "Alt",
-        "ctrl": "Ctrl",
-        "meta": "Cmd",
-        "command": "Cmd",
+        shift: "Shift",
+        alt: "Alt",
+        option: "Alt",
+        ctrl: "Ctrl",
+        meta: "Cmd",
+        command: "Cmd",
       }
       return replacements[key] || key
     },

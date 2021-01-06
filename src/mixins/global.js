@@ -11,12 +11,12 @@ export default {
     return {
       // TODO: Solve differently!
       defaults: {
-        "delay": {
-          "short": { "show": 250, "hide": 0 },
-          "medium": { "show": 500, "hide": 0 },
-          "long": { "show": 1000, "hide": 0 },
+        delay: {
+          short: { show: 250, hide: 0 },
+          medium: { show: 500, hide: 0 },
+          long: { show: 1000, hide: 0 },
         },
-        "licenseBadges": {
+        licenseBadges: {
           "http://creativecommons.org/publicdomain/zero/1.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/cc-zero.svg",
           "http://creativecommons.org/licenses/by/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by.svg",
           "http://creativecommons.org/licenses/by-nc-nd/3.0/": "https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-nd.svg",

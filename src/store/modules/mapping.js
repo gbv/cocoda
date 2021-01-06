@@ -9,8 +9,8 @@ const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
 // TODO: - Add support for memberChoice and maybe memberList.
 
 const emptyMapping = {
-  from: { "memberSet": [] },
-  to: { "memberSet": [] },
+  from: { memberSet: [] },
+  to: { memberSet: [] },
   fromScheme: null,
   toScheme: null,
   type: [jskos.defaultMappingType.uri],
