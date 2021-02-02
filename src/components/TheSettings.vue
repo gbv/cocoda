@@ -22,7 +22,7 @@
                 {{ $t("settings.loggedIn") }}
               </span>
               <a
-                :href="$store.state.auth.about.baseUrl + '/account'"
+                :href="$store.state.auth.about.baseUrl + 'account'"
                 target="_blank">
                 {{ $t("settings.accountPage") }}
               </a> •
