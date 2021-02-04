@@ -7,9 +7,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "prepare": "./bin/prepare.sh",
     "dev": "npm run serve",
     "start": "npm run serve",
-    "serve": "npm run build-info; vue-cli-service serve",
+    "serve": "npm run prepare; vue-cli-service serve",
     "build": "./build/build.sh",
     "build-all": "./build/build-all.sh",
     "lint": "vue-cli-service lint --no-fix",
