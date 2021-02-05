@@ -1,0 +1,10 @@
+{
+  "version": "1.4.4",
+  "gitBranch": "dev",
+  "gitCommit": "fc7e7dcf0ceea3a2b88045ffab18235c36e625bc",
+  "gitCommitShort": "fc7e7dc",
+  "buildDate": "2021-02-05T09:50:35Z",
+  "date": "2021-02-05T09:36:30.000Z",
+  "milestoneUrl": null,
+  "jskosApi": "^1.0"
+}
