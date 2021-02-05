@@ -335,12 +335,9 @@ export default {
       let filter = this.schemeFilter.toLowerCase()
       // Filter schemes, use either text filter or other filters
       if (filter) {
+        const keywordsForScheme = (scheme) => _.flattenDeep(_.concat([], Object.values(scheme.prefLabel || {}), Object.values(scheme.altLabel || {}), scheme.notation || [])).map(k => k.toLowerCase())
         return this.schemes.filter(
-          scheme =>
-            (
-              Object.values(scheme.prefLabel || {}).find(label => label.toLowerCase().startsWith(filter)) ||
-              (scheme.notation || []).find(notation => notation.toLowerCase().startsWith(filter))
-            ),
+          scheme => keywordsForScheme(scheme).find(keyword => keyword.startsWith(filter)),
         )
       }
       return this.schemes.filter(
