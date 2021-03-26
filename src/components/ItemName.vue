@@ -13,11 +13,12 @@
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
-      v-b-popover="showPopover && (itemDetails.length || !showText) ? {
+      v-b-popover="showPopover && (itemDetails.length || !showText || !showNotation) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-normal'><b>${getNotation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `<div class='fontSize-${fontSize || 'normal'}'><b>${getNotation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
+        boundary: 'window',
       } : null"
       :to="url"
       :class="[
@@ -43,6 +44,7 @@
       </span>
       <!-- Text for notation -->
       <span
+        v-if="showNotation"
         :class="{ 'fontWeight-heavy': showText }"
         v-html="getNotation(item, null, true)" />
       <!-- Text for prefLabel -->
@@ -81,6 +83,13 @@ export default {
     fontSize: {
       type: String,
       default: "normal",
+    },
+    /**
+     * Determines whether to show or hide the notation text.
+     */
+    showNotation: {
+      type: Boolean,
+      default: true,
     },
     /**
      * Determines whether to show or hide the label text.
