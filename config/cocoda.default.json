@@ -670,5 +670,6 @@
   "autoRefresh": {
     "mappings": 10000,
     "update": 120000
-  }
+  },
+  "coli-ana": "https://coli-conc.gbv.de/coli-ana/app/"
 }

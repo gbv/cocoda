@@ -227,6 +227,53 @@
           </div>
         </tab>
       </template>
+      <!-- coli-ana (see https://github.com/gbv/cocoda/issues/524) -->
+      <tab
+        v-if="item.memberList && item.memberList.length"
+        :title="'coli-ana'">
+        <ul class="coli-ana">
+          <li>
+            <div />
+            <div>{{ $jskos.notation(item) }}</div>
+            <div />
+          </li>
+          <li
+            v-for="(member, index) of item.memberList.filter(m => m != null)"
+            :key="`${member.uri}-${index}`"
+            :class="{
+              'font-weight-bold': item.memberList[index - 1] &&
+                isMemberParentOf(item.memberList[index - 1], member) &&
+                !isMemberParentOf(member, item.memberList[index + 1]),
+            }">
+            <div>
+              <span
+                v-if="isMemberParentOf(item.memberList[index - 1], member)">
+                ↳
+              </span>
+            </div>
+            <div>{{ member.notation[1] }}</div>
+            <div>
+              <item-name
+                :item="member"
+                :show-notation="false"
+                :is-link="true"
+                :is-left="isLeft"
+                :show-popover="true"
+                font-size="small" />
+            </div>
+          </li>
+          <!-- TODO: Show note about incomplete analysis -->
+        </ul>
+        <p>
+          Go to the
+          <a
+            :href="`${config['coli-ana']}?notation=${$jskos.notation(item)}`"
+            target="_blank">
+            coli-ana web interface
+          </a>
+          for more details and information.
+        </p>
+      </tab>
       <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
       <tab
         v-if="config.searchLinks"
@@ -259,6 +306,7 @@ import ItemName from "./ItemName"
 import LoadingIndicator from "./LoadingIndicator"
 import ItemDetailNarrower from "./ItemDetailNarrower"
 import _ from "lodash"
+import axios from "axios"
 
 // Import mixins
 import objects from "../mixins/cdk"
@@ -455,6 +503,8 @@ export default {
       this.loadGndTerms()
       // Load details if not loaded
       this.loadConcepts([this.item], { force: true })
+      // Load coli-ana data
+      this.loadColiAna()
     },
     async loadGndTerms() {
       // TODO: Refactoring necessary!
@@ -489,6 +539,48 @@ export default {
 
       // Set property "__GNDMAPPINGS__" for item
       this.$set(itemBefore, "__GNDMAPPINGS__", mappings)
+    },
+    async loadColiAna() {
+      const api = this.config["coli-ana"]
+      if (!api) return
+      const itemBefore = this.item
+      if (!itemBefore) return
+      if (itemBefore.memberList) {
+        // Data already loaded
+        return
+      }
+      const ddc = this.getObject({ uri: "http://dewey.info/scheme/edition/e23/" })
+      if (!this.$jskos.compare(ddc, _.get(itemBefore, "inScheme[0]"))) {
+        // Only DDC supported for now
+        return
+      }
+      const result = await axios.get(`${api}analyze`, {
+        params: {
+          notation: this.$jskos.notation(itemBefore),
+        },
+      })
+      const resultConcept = (result.data || []).find(c => this.$jskos.compare(c, itemBefore))
+      if (resultConcept) {
+        this.$set(
+          itemBefore,
+          "memberList",
+          resultConcept.memberList.map(
+            // TODO
+            // We're calling saveObject twice due to the fact that after the first call,
+            // `broader` gets removed by calling jskos.deepCopy.
+            member => member && this.saveObject(member, {
+              scheme: ddc,
+              type: "concept",
+            }) && this.saveObject(member),
+          ),
+        )
+      }
+    },
+    isMemberParentOf(member1, member2) {
+      if (!member1 || !member2 || !member2.broader || !member2.broader.length) {
+        return false
+      }
+      return this.$jskos.compare(member1, member2.broader[0])
     },
     /**
      * Function to get element for copy to clipboard
@@ -602,6 +694,28 @@ export default {
 .conceptDetail-nextButton button, .conceptDetail-previousButton button {
   .fontSize-small;
   padding: 0px 4px;
+}
+
+// coli-ana styles
+.coli-ana {
+  list-style: none;
+  padding-left: 0;
+}
+.coli-ana > li {
+  display: flex;
+}
+.coli-ana > li > div:first-child {
+  width: 8px;
+  user-select: none;
+  color: #2121217F;
+  font-weight: normal;
+}
+.coli-ana > li > div:not(:last-child) {
+  font-family: monospace;
+}
+.coli-ana > li > div:last-child {
+  flex: 1;
+  padding-left: 5px;
 }
 
 </style>
