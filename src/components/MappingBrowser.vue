@@ -1113,7 +1113,7 @@ export default {
           fromScheme: this.getSchemeForFilter(this.searchFilter.fromScheme),
           toScheme: this.getSchemeForFilter(this.searchFilter.toScheme),
           creator: this.searchFilter.creator,
-          typeFilter: this.searchFilter.type,
+          type: this.searchFilter.type,
           direction: this.searchFilter.direction,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
