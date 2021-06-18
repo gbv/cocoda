@@ -49,9 +49,9 @@ echo "- Pulling changes from remote..."
 git pull --quiet --rebase 2>&1 >/dev/null
 iferror "Pulling changes failed, not creating a release."
 
-echo "- Running tests..."
-npm test 2>&1 >/dev/null
-iferror "Tests failed, not creating a release."
+# echo "- Running tests..."
+# npm test 2>&1 >/dev/null
+# iferror "Tests failed, not creating a release."
 
 echo "- Running npm version..."
 unset npm_config_prefix
