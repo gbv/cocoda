@@ -53,9 +53,9 @@
     "json-format-highlight": "^1.0.4",
     "localforage": "^1.9.0",
     "lodash": "^4.17.21",
-    "vue": "^2.6.12",
+    "vue": "^2.6.14",
     "vue-flexible-table": "^0.3.7",
-    "vue-i18n": "^8.24.4",
+    "vue-i18n": "^8.24.5",
     "vue-router": "^3.5.1",
     "vue-scrollto": "^2.20.0",
     "vuex": "^3.6.2"
@@ -66,11 +66,11 @@
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-service": "^4.5.13",
     "@vue/eslint-config-standard": "^5.1.2",
-    "@vue/test-utils": "^1.2.0",
+    "@vue/test-utils": "^1.2.1",
     "babel-eslint": "^10.1.0",
     "chai": "^4.3.4",
     "copy-webpack-plugin": "^6.4.1",
-    "eslint": "^7.26.0",
+    "eslint": "^7.29.0",
     "eslint-config-gbv": "^1.0.3",
     "eslint-plugin-vue": "^6.2.2",
     "glob": "^7.1.7",
@@ -79,8 +79,8 @@
     "less-loader": "^7.3.0",
     "lint-staged": "^10.5.4",
     "react": "^17.0.2",
-    "vue-styleguidist": "^4.38.2",
-    "vue-template-compiler": "^2.6.12"
+    "vue-styleguidist": "^4.40.0",
+    "vue-template-compiler": "^2.6.14"
   },
   "engines": {
     "node": ">=10.0.0",
