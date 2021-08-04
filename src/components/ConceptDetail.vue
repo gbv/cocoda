@@ -255,7 +255,7 @@
             <div>{{ member.notation[1] }}</div>
             <div>
               <item-name
-                :item="member"
+                :item="getObject(member) || member"
                 :show-notation="false"
                 :is-link="true"
                 :is-left="isLeft"
@@ -269,7 +269,6 @@
               </span>
             </div>
           </li>
-          <!-- TODO: Show note about incomplete analysis -->
         </ul>
         <p
           v-if="item.memberList[item.memberList.length - 1] === null"
@@ -566,16 +565,10 @@ export default {
         this.$set(
           itemBefore,
           "memberList",
-          resultConcept.memberList.map(
-            // TODO
-            // We're calling saveObject twice due to the fact that after the first call,
-            // `broader` gets removed by calling jskos.deepCopy.
-            member => member && this.saveObject(member, {
-              scheme: ddc,
-              type: "concept",
-            }) && this.saveObject(member),
-          ),
+          resultConcept.memberList,
         )
+        // Load concept data (in parallel)
+        this.loadConcepts(resultConcept.memberList)
         // Under certain conditions, activate the coli-ana tab
         this.$nextTick(() => {
           const tabs = this.$refs.tabs
