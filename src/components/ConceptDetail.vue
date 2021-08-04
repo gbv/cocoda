@@ -562,10 +562,23 @@ export default {
       })
       const resultConcept = (result.data || []).find(c => this.$jskos.compare(c, itemBefore))
       if (resultConcept) {
+        // Save each concept in memberList
+        resultConcept.memberList.forEach(member => {
+          this.saveObject(member, {
+            scheme: ddc,
+            type: "concept",
+          })
+        })
+        // Save memberList to item
         this.$set(
           itemBefore,
           "memberList",
-          resultConcept.memberList,
+          resultConcept.memberList.map(member => ({
+            ...member,
+            inScheme: [ddc],
+            // Ideally link to prefLabel of saved object because we need to display it.
+            prefLabel: (this.getObject(member) || member).prefLabel,
+          })),
         )
         // Load concept data (in parallel)
         this.loadConcepts(resultConcept.memberList)
@@ -573,7 +586,7 @@ export default {
         this.$nextTick(() => {
           const tabs = this.$refs.tabs
           const coliAnaTab = tabs.tabs.findIndex(tab => tab.title === "coli-ana")
-          if (itemBefore.__DETAILSLOADED__ === -1 && tabs.activeTabIndex === 0 && coliAnaTab !== -1) {
+          if (itemBefore.__DETAILSLOADED__ === -1 && coliAnaTab !== -1) {
             tabs.activateTab(coliAnaTab)
           }
         })
