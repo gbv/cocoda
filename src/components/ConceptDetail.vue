@@ -100,6 +100,7 @@
     </div>
 
     <tabs
+      ref="tabs"
       style="margin-top: 3px; position: relative;"
       borders="bottom"
       size="sm">
@@ -569,6 +570,14 @@ export default {
             }) && this.saveObject(member),
           ),
         )
+        // Under certain conditions, activate the coli-ana tab
+        this.$nextTick(() => {
+          const tabs = this.$refs.tabs
+          const coliAnaTab = tabs.tabs.findIndex(tab => tab.title === "coli-ana")
+          if (itemBefore.__DETAILSLOADED__ === -1 && tabs.activeTabIndex === 0 && coliAnaTab !== -1) {
+            tabs.activateTab(coliAnaTab)
+          }
+        })
       }
     },
     isMemberParentOf(member1, member2) {
