@@ -264,15 +264,7 @@
           </li>
           <!-- TODO: Show note about incomplete analysis -->
         </ul>
-        <p>
-          Go to the
-          <a
-            :href="`${config['coli-ana']}?notation=${$jskos.notation(item)}`"
-            target="_blank">
-            coli-ana web interface
-          </a>
-          for more details and information.
-        </p>
+        <p v-html="$t('conceptDetail.coliAnaInfo', { url: `${config['coli-ana']}?notation=${$jskos.notation(item)}` })" />
       </tab>
       <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
       <tab
