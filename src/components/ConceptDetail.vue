@@ -264,6 +264,9 @@
           </li>
           <!-- TODO: Show note about incomplete analysis -->
         </ul>
+        <p
+          v-if="item.memberList[item.memberList.length - 1] === null"
+          v-html="$t('conceptDetail.coliAnaIncomplete')" />
         <p v-html="$t('conceptDetail.coliAnaInfo', { url: `${config['coli-ana']}?notation=${$jskos.notation(item)}` })" />
       </tab>
       <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
