@@ -259,8 +259,14 @@
                 :show-notation="false"
                 :is-link="true"
                 :is-left="isLeft"
-                :show-popover="true"
                 font-size="small" />
+              <span v-if="!member.uri.includes('facet')">
+                (<item-name
+                  :item="member"
+                  :show-text="false"
+                  :is-link="false"
+                  font-size="small" />)
+              </span>
             </div>
           </li>
           <!-- TODO: Show note about incomplete analysis -->
