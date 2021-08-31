@@ -156,12 +156,19 @@ export default {
               let broaderPromises = []
               this.adjustConcept(concept)
               for (let broader of concept.broader.filter(concept => concept != null)) {
-                this.loadConcepts([broader], { scheme })
+                broaderPromises.push(this.loadConcepts([broader], { scheme }))
               }
               Promise.all(broaderPromises).then(() => {
                 // TODO: Is adjustment necessary?
                 this.adjustConcept(concept)
                 this.$set(concept, "__BROADERLOADED__", true)
+              })
+            }
+            // Asynchronously load information about its narrower concepts
+            if (concept && concept.narrower) {
+              this.loadConcepts(concept.narrower.filter(c => c != null)).catch(() => { }).then(() => {
+                // TODO: Is adjustment necessary?
+                this.adjustConcept(concept)
               })
             }
             // TODO
