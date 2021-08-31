@@ -38,9 +38,9 @@
     "post-receive": "npm run build-info"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
-    "@fortawesome/free-brands-svg-icons": "^5.15.3",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
@@ -55,8 +55,8 @@
     "lodash": "^4.17.21",
     "vue": "^2.6.14",
     "vue-flexible-table": "^0.3.7",
-    "vue-i18n": "^8.24.5",
-    "vue-router": "^3.5.1",
+    "vue-i18n": "^8.25.0",
+    "vue-router": "^3.5.2",
     "vue-scrollto": "^2.20.0",
     "vuex": "^3.6.2"
   },
