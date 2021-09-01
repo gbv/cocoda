@@ -463,6 +463,42 @@
       "schemeUris": [
         "http://uri.gbv.de/terminology/dfg/"
       ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus"
+      },
+      "url": "https://opac.k10plus.de/DB=2.299/CLK?IKT=3002&NOABS=Y&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "SWB"
+      },
+      "url": "https://swb.bsz-bw.de/DB=2.1/CMD?ACT=SRCHA&IKT=3002&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Bibliotheksverbund Bayern (BVB)"
+      },
+      "url": "https://bvbat01.bib-bvb.de/TP61/start.do?Query=0080%3D%22{notation}%22+IN+%5B1%5D",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Österreichischer Bibliothekenverbund (OBV)"
+      },
+      "url": "https://search.obvsg.at/primo-explore/search?vid=OBV&query=lsr06%2Cexact%2C{notation}%2CAND&mode=advanced",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
     }
   ],
   "favoriteSchemes": [
