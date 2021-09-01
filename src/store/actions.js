@@ -122,6 +122,9 @@ export default {
     }
     config.shortcuts = shortcuts
 
+    // Merge searchLinks field
+    config.searchLinks = [].concat(defaultConfig.searchLinks || [], userConfig.searchLinks || [])
+
     // load build info into config
     config.buildInfo = buildInfo
 
