@@ -850,6 +850,12 @@ export default {
     currentRegistry(registry) {
       // Enable registry
       this.showRegistry[registry.uri] = true
+      // Scroll to top of list if current registry is always shown at the top
+      if (this.componentSettings.moveCurrentRegistryToTop) {
+        for (let element of document.getElementsByClassName("flexibleTable-body")) {
+          element.scrollTop = 0
+        }
+      }
     },
     locale(newValue, oldValue) {
       if (newValue != oldValue) {
