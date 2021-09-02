@@ -31,6 +31,8 @@ const mutations = {
    */
   setCountdown (state, { alert, countdown }) {
     alert.countdown = countdown
+    // This allows dismissing alerts without countdown
+    alert.shouldCountdown = true
   },
 }
 

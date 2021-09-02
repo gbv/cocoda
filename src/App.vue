@@ -367,6 +367,45 @@ export default {
       if (previous !== undefined && !previous && current) {
         // Logged in
         this.alert(this.$t("alerts.loggedIn"), null, "success")
+        // Switch to different mapping registry if Local is selected
+        if (this.localMappingsRegistry && this.$jskos.compare(this.currentRegistry, this.localMappingsRegistry)) {
+          // Find first registry that allows saving mappings
+          const newRegistry = this.config.registries.find(
+            registry => this.$jskos.mappingRegistryIsStored(registry)
+              && !this.$jskos.compare(registry, this.localMappingsRegistry)
+              && registry.isAuthorizedFor({
+                type: "mappings",
+                action: "create",
+                user: current,
+              }),
+          )
+          if (newRegistry) {
+            // Set the registry
+            this.$store.commit({
+              type: "settings/set",
+              prop: "mappingRegistry",
+              value: newRegistry.uri,
+            })
+            // Show an alert that the registry was changed
+            this.alert(
+              this.$t("alerts.loggedInRegistryChanged", [this.$jskos.prefLabel(newRegistry)]),
+              0,
+              "warning",
+              this.$t("alerts.loggedInRegistryChangedUndoButton"),
+              // Handler if button is clicked
+              (alert) => {
+                // Hide alert
+                this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
+                // Switch back to local mappings
+                this.$store.commit({
+                  type: "settings/set",
+                  prop: "mappingRegistry",
+                  value: this.localMappingsRegistry.uri,
+                })
+              },
+            )
+          }
+        }
       } else if (previous && !current) {
         // Logged out
         this.alert(this.$t("alerts.loggedOut"), 10, "danger", this.$t("settings.logInButton"), () => {
