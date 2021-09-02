@@ -36,15 +36,16 @@
         var myNav = navigator.userAgent.toLowerCase()
         return (myNav.indexOf("msie") != -1 || myNav.indexOf("trident") != -1) ? true : false
       }
-      // from https://github.com/Modernizr/Modernizr/blob/master/feature-detects/cookies.js
+      // adapted from https://github.com/Modernizr/Modernizr/blob/d4c7b6082709e32fb0589ba38aa96581d44ce395/feature-detects/storage/cookies.js
       function checkCookie(){
         try {
-          document.cookie = 'cookietest=1';
-          var ret = document.cookie.indexOf('cookietest=') !== -1;
-          document.cookie = 'cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
-          return ret;
+          var cookie = "cookietest=1;samesite=lax"
+          document.cookie = cookie
+          var ret = document.cookie.indexOf('cookietest=') !== -1
+          document.cookie = cookie + "; expires=Thu, 01-Jan-1970 00:00:01 GMT"
+          return ret
         } catch (e) {
-          return false;
+          return false
         }
       }
       // Show noscript content for IE as well
