@@ -21,7 +21,7 @@
         <font-awesome-icon icon="exchange-alt" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canSaveCurrentMapping ? $t('mappingEditor.saveMapping') : '', delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canSaveCurrentMapping ? $t('mappingEditor.saveMapping', [$jskos.prefLabel(currentRegistry)]) : '', delay: defaults.delay.medium }"
         :class="{
           button: canSaveCurrentMapping,
           'button-disabled': !canSaveCurrentMapping
