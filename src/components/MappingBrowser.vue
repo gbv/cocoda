@@ -117,7 +117,7 @@
             <p style="text-align: right; font-weight: bold; padding-right: 45px;">
               {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
                 return total + parseInt(current.mappings) || 0
-              }, 0).toLocaleString() }}
+              }, 0).toLocaleString() }} {{ $t("general.of") }} {{ totalNumberOfMappings && totalNumberOfMappings.toLocaleString() || "?" }}
             </p>
             <data-modal-button
               v-if="concordances && concordances.length > 0"
@@ -447,6 +447,7 @@ export default {
     return {
       tab: 0,
       concordancesLoaded: false,
+      totalNumberOfMappings: null,
       /** Whether tab was automatically switched to Mapping Navigator once.
        *  Will not switch automatically again afterwards.
        */
@@ -947,24 +948,21 @@ export default {
     // Set tab to search on start
     this.tab = this.tabIndexes.search
   },
-  mounted() {
+  async mounted() {
     if (!this.concordances || !this.concordances.length) {
-      let promises = []
-      for (let registry of this.concordanceRegistries) {
-        promises.push(registry.getConcordances())
-      }
-      Promise.all(promises).then(results => {
-        let concordances = _.flatten(results)
+      try {
+        const concordances = _.flatten(await Promise.all(this.concordanceRegistries.map(r => r.getConcordances())))
         // Set values of concordance array that is managed by objects mixin
         _.forEach(concordances, (concordance, index) => {
           this.$set(this.concordances, index, concordance)
         })
         this.concordances.length = concordances.length
-      }).catch(error => {
+        // Also retrieve total number of mappings in those registries
+        this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
+      } catch (error) {
         this.$log.error("MappingBrowser - Error loading concordances", error)
-      }).then(() => {
-        this.concordancesLoaded = true
-      })
+      }
+      this.concordancesLoaded = true
     }
     this.navigatorNeedsRefresh.push(null)
   },
