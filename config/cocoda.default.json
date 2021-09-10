@@ -499,6 +499,16 @@
       "schemeUris": [
         "http://bartoc.org/en/node/533"
       ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus"
+      },
+      "url": "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8506&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/454",
+        "http://bartoc.org/en/node/18536"
+      ]
     }
   ],
   "favoriteSchemes": [
