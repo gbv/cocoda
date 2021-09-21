@@ -141,7 +141,7 @@
       ],
       "schemes": [
         {
-          "uri": "http://eurovoc.europa.eu/100141",
+          "uri": "http://eurovoc.europa.eu/domains",
           "identifier": [
             "http://bartoc.org/en/node/15"
           ],
