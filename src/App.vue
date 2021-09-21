@@ -198,7 +198,7 @@ import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
 import Minimizer from "./components/Minimizer"
 import { refreshRouter } from "./store/plugins"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
-import cdk from "cocoda-sdk"
+import { cdk } from "cocoda-sdk"
 
 // Import mixins
 import auth from "./mixins/auth"

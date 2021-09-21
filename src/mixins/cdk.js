@@ -12,7 +12,7 @@
  */
 
 import jskos from "jskos-tools"
-import cdk from "cocoda-sdk"
+import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed"
 

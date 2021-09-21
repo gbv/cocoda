@@ -2,6 +2,12 @@ import Vue from "vue"
 
 Vue.config.productionTip = false
 
+// Add all providers to cocoda-sdk
+import * as CocodaSDK from "cocoda-sdk"
+Object.keys(CocodaSDK).filter(key => key.endsWith("Provider")).forEach(key => {
+  CocodaSDK.cdk.addProvider(CocodaSDK[key])
+})
+
 // Import BootstrapVue
 import BootstrapVue from "bootstrap-vue"
 Vue.use(BootstrapVue)
