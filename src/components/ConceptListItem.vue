@@ -83,7 +83,7 @@
     </div>
     <!-- Small loading indicator when loading narrower -->
     <loading-indicator
-      v-if="showChildren && hasChildren && isOpen && concept.narrower.includes(null)"
+      v-if="showChildren && hasChildren && isOpen && concept.narrower && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>
