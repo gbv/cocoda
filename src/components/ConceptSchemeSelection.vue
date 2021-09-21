@@ -250,7 +250,8 @@
               :ref="index == 0 ? 'firstScheme' : null"
               :item="_scheme"
               :is-link="true"
-              :is-left="isLeft" />
+              :is-left="isLeft"
+              @click.native="hidePopover" />
           </li>
           <li v-show="isFiltered && filteredSchemes.length < schemes.length">
             <a
