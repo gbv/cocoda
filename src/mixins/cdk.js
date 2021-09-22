@@ -215,6 +215,10 @@ export default {
         if (provider) {
           if (type == "scheme") {
             provider.adjustSchemes([object])
+            // For now, we would like to keep the registry, at least in Cocoda.
+            // Later, we can rely on cocoda-sdk's registryForScheme, but we need adjustments for that.
+            // (e.g. RegistryInfo won't have any info on those registries)
+            object._registry = provider
           }
           if (type == "concept") {
             provider.adjustConcepts([object])
