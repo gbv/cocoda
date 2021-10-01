@@ -6,6 +6,11 @@ import _ from "lodash"
 import FileSaver from "file-saver"
 import jskos from "jskos-tools"
 
+// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // $& means the whole matched string
+}
+
 export default {
   data() {
     return {
@@ -340,6 +345,13 @@ export default {
         }
       }
       return notation
+    },
+    getPrefLabel(item) {
+      const notation = this.getNotation(item, null, true)
+      let prefLabel = this.$jskos.prefLabel(item, { fallbackToUri: notation == null })
+      const regex = new RegExp("^" + escapeRegExp(notation) + "\\s+(.*)$")
+      const match = prefLabel.match(regex)
+      return (match && match[1] != null) ? match[1] : prefLabel
     },
     // adapted from: https://stackoverflow.com/a/22429679/11050851
     hash(str) {

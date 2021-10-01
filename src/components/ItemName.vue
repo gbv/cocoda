@@ -16,7 +16,7 @@
       v-b-popover="showPopover && (itemDetails.length || !showText || !showNotation) ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-${fontSize || 'normal'}'><b>${getNotation(item, null, true)} ${$jskos.prefLabel(item, { fallbackToUri: false })}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `<div class='fontSize-${fontSize || 'normal'}'><b>${notation} ${prefLabel}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
         html: true,
         boundary: 'window',
       } : null"
@@ -46,14 +46,14 @@
       <span
         v-if="showNotation"
         :class="{ 'fontWeight-heavy': showText }"
-        v-html="getNotation(item, null, true)" />
+        v-html="notation" />
       <!-- Text for prefLabel -->
       <span
         v-if="showText || !notation"
         :class="{
           'fontWeight-medium': isHighlighted
         }">
-        {{ $jskos.prefLabel(item, { fallbackToUri: notation == null }) }}
+        {{ prefLabel }}
       </span>
     </div>
   </div>
@@ -165,7 +165,10 @@ export default {
       return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this.item))
     },
     notation() {
-      return this.$jskos.notation(this.item)
+      return this.getNotation(this.item, null, true)
+    },
+    prefLabel() {
+      return this.getPrefLabel(this.item)
     },
     itemDetails() {
       let result = this.$jskos.languageMapContent(this.item, "scopeNote")

@@ -70,7 +70,7 @@
           :class="{
             'fontWeight-medium': isSelected
           }">
-          {{ $jskos.prefLabel(concept, { fallbackToUri: $jskos.notation(concept).length == 0 }) }}
+          {{ getPrefLabel(concept) }}
         </span>
       </div>
       <div
