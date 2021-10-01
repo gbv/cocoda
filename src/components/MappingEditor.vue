@@ -725,6 +725,7 @@ export default {
   position: absolute;
   bottom: -4px;
   right: 15px;
+  z-index: @zIndex-2;
 }
 .mappingEditor-infoIcon .button {
   color: @color-text-mediumLightGrey;
