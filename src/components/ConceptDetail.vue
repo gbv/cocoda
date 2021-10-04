@@ -564,7 +564,7 @@ export default {
       if (resultConcept) {
         // Save each concept in memberList
         resultConcept.memberList.forEach(member => {
-          this.saveObject(member, {
+          member && this.saveObject(member, {
             scheme: ddc,
             type: "concept",
           })
@@ -573,15 +573,15 @@ export default {
         this.$set(
           itemBefore,
           "memberList",
-          resultConcept.memberList.map(member => ({
+          resultConcept.memberList.map(member => member ? ({
             ...member,
             inScheme: [ddc],
             // Ideally link to prefLabel of saved object because we need to display it.
             prefLabel: (this.getObject(member) || member).prefLabel,
-          })),
+          }) : null),
         )
         // Load concept data (in parallel)
-        this.loadConcepts(resultConcept.memberList)
+        this.loadConcepts(resultConcept.memberList.filter(member => member))
         // Under certain conditions, activate the coli-ana tab
         this.$nextTick(() => {
           const tabs = this.$refs.tabs
