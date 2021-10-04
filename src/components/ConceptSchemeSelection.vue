@@ -366,7 +366,7 @@ export default {
     },
     // Returns an array of all available languages.
     availableLanguages() {
-      return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || [])))
+      return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || []))).sort()
     },
     // Returns an array of all available registries with other filters applied (faceted browsing).
     shownRegistries() {
@@ -406,7 +406,7 @@ export default {
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
           ),
       )
-      return _.uniq([].concat(...schemes.map(scheme => scheme.languages || [])))
+      return _.uniq([].concat(...schemes.map(scheme => scheme.languages || []))).sort()
     },
     // Returns an array of available language filter options based on `shownLanguages`.
     languageFilterOptions() {
