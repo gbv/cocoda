@@ -322,7 +322,7 @@ export default {
       let concept = item.concept
       let depth = item.depth + 1
       if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
-        for (let child of concept.narrower) {
+        for (let child of concept.narrower || []) {
           let item = {
             concept: child,
             depth,
