@@ -425,14 +425,19 @@ export default {
       if (!registry) {
         throw new Error(`loadNarrower called with concept that doesn't have a registry: ${concept.uri}`)
       }
-      let narrower = await registry.getNarrower({ ...options, concept})
+      let narrower = []
+      if (registry.has.narrower) {
+        narrower = await registry.getNarrower({ ...options, concept })
+      }
       narrower = this.saveObjectsWithOptions({ type: "concept" })(narrower)
       for (let child of narrower) {
         // Set ancestors of children
-        if (!concept.ancestors || concept.ancestors.includes(null)) {
-          this.$set(child, "ancestors", [null])
-        } else {
-          this.$set(child, "ancestors", concept.ancestors.concat([concept]))
+        if (registry.has.ancestors) {
+          if (!concept.ancestors || concept.ancestors.includes(null)) {
+            this.$set(child, "ancestors", [null])
+          } else {
+            this.$set(child, "ancestors", concept.ancestors.concat([concept]))
+          }
         }
         // Set broader of children
         this.$set(child, "broader", [concept])
@@ -462,7 +467,10 @@ export default {
         throw new Error(`loadAncestors called with concept that doesn't have a registry: ${concept.uri}`)
       }
 
-      let ancestors = await registry.getAncestors({ ...options, concept })
+      let ancestors = []
+      if (registry.has.ancestors) {
+        ancestors = await registry.getAncestors({ ...options, concept })
+      }
       ancestors = this.saveObjectsWithOptions({ type: "concept" })(ancestors)
       let currentAncestors = []
       for (let ancestor of ancestors) {
@@ -476,7 +484,7 @@ export default {
       for (let child of concept.narrower || []) {
         // Only set child's ancestors only if it doesn't have any.
         // Note: This might have unintended side effects. If there are problems with ancestors, look here.
-        if (child && (!child.ancestors || child.ancestors.includes(null))) {
+        if (registry.has.ancestors && child && (!child.ancestors || child.ancestors.includes(null))) {
           this.$set(child, "ancestors", ancestors.concat([concept]))
         }
         if (child) {

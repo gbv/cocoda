@@ -152,7 +152,7 @@ export default {
             loadTypes(scheme)
             // Asynchronously load its ancestors narrower concepts
             if (concept && concept.ancestors) {
-              for (let ancestor of concept.ancestors) {
+              for (let ancestor of concept.ancestors.filter(concept => concept != null)) {
                 this.loadNarrower(ancestor)
               }
             }
