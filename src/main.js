@@ -8,6 +8,9 @@ Object.keys(CocodaSDK).filter(key => key.endsWith("Provider")).forEach(key => {
   CocodaSDK.cdk.addProvider(CocodaSDK[key])
 })
 
+import MeshApiProvider from "./utils/mesh-api-provider"
+CocodaSDK.cdk.addProvider(MeshApiProvider)
+
 // Import BootstrapVue
 import BootstrapVue from "bootstrap-vue"
 Vue.use(BootstrapVue)
