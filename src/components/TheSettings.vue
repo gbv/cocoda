@@ -160,6 +160,24 @@
               v-html="$t('settings.languageContribution')" />
           </div>
           <div
+            v-if="localSettings"
+            class="settingsModal-componentSettings-component">
+            <h5>Bevorzugte Vokabularsprachen</h5>
+            <div>
+              Sprache hinzufügen: TODO
+              <b-input
+                size="sm"
+                style="display: inline-block; width: auto;" />
+            </div>
+            <ul>
+              <li
+                v-for="(lang, index) in localSettings.preferredLanguages"
+                :key="index">
+                {{ $jskos.prefLabel(languageConceptsByTag[lang]) || lang }}
+              </li>
+            </ul>
+          </div>
+          <div
             v-if="localSettings && config.autoRefresh.update"
             class="settingsModal-componentSettings-component">
             <b-form-checkbox
@@ -373,6 +391,7 @@
 <script>
 import _ from "lodash"
 import RegistryInfo from "./RegistryInfo"
+import { cdk } from "cocoda-sdk"
 
 // Import mixins
 import auth from "../mixins/auth"
@@ -411,6 +430,13 @@ export default {
         })
         this.creatorRewritten = false
       }, 200),
+      // Registry for languages
+      languagesRegistry: cdk.initializeRegistry({
+        provider: "ConceptApi",
+        api: "https://bartoc.org/api/",
+        schemes: [{ uri: "http://bartoc.org/en/node/20287" }],
+      }),
+      languageConceptsByTag: {},
     }
   },
   computed: {
@@ -474,6 +500,18 @@ export default {
     localSettings: {
       handler() {
         this.updateLocalSettings()
+        // Load languages
+        const languagesToLoad = this.localSettings.preferredLanguages.filter(lang => this.languageConceptsByTag[lang] === undefined)
+        languagesToLoad.forEach(lang => {
+          this.languageConceptsByTag[lang] = null
+        })
+        this.languagesRegistry.getConcepts({
+          concepts: languagesToLoad.map(lang => ({ uri: `https://bartoc.org/language/${lang}` })),
+        }).then(concepts => {
+          concepts.forEach(concept => {
+            this.languageConceptsByTag[concept.notation[0]] = concept
+          })
+        })
       },
       deep: true,
     },

@@ -13,7 +13,8 @@ let defaultSettings = {
   minimized: {},
   flex: {},
   typesForSchemes: {},
-  locale: window.navigator.language || "en",
+  locale: "en",
+  preferredLanguages: [],
   favoriteConcepts: [],
   favoriteSchemes: null,
   mappingRegistry: null,
@@ -106,6 +107,10 @@ const actions = {
             newSettings.components[component][setting] = defaultSettings.components[component][setting]
           }
         }
+      }
+      // Set preferredLanguages if empty
+      if (!newSettings.preferredLanguages || newSettings.preferredLanguages.length === 0) {
+        newSettings.preferredLanguages = [newSettings.locale]
       }
       commit({
         type: "save",

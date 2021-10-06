@@ -78,11 +78,12 @@ const getters = {
     return !!_.get(concept, "__MAPPED__", []).find(item => item.exist.length && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
   },
   languages: (state) => {
-    const defaultLanguages = ["en", "de"]
+    let languages = ["en", "de"]
     if (state.configLoaded) {
-      return [state.settings.settings.locale].concat(state.config.languages || defaultLanguages)
+      languages = _.uniq(state.settings.settings.preferredLanguages.concat(state.config.languages || languages))
     }
-    return defaultLanguages
+    console.log("Languages:", languages)
+    return languages
   },
 }
 
