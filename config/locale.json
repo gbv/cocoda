@@ -105,8 +105,8 @@
       "noItems": "No Concepts available",
       "favoriteConcepts": "Favorite Concepts",
       "favoriteConceptsShort": "Favorites",
-      "topConcepts": "Top concepts of current concept scheme in a tree view",
-      "topConceptsShort": "Tree View"
+      "topConcepts": "Top concepts of current concept scheme in a hierarchical view",
+      "topConceptsShort": "Hierarchical View"
     },
     "itemDetail": {
       "pleaseSelect": "Please select a scheme or concept.",
@@ -509,8 +509,8 @@
       "noItems": "keine Konzepte vorhanden",
       "favoriteConcepts": "Konzept-Schnellauswahl",
       "favoriteConceptsShort": "Schnellauswahl",
-      "topConcepts": "Oberkonzepte des Vokabulars in Baumansicht",
-      "topConceptsShort": "Baumansicht"
+      "topConcepts": "Oberkonzepte des Vokabulars in hierarchischer Ansicht",
+      "topConceptsShort": "Hierarchische Ansicht"
     },
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
