@@ -456,7 +456,7 @@ export default {
       for (let option of options) {
         let type = kosTypes.find(t => t.uri == option.value)
         if (type) {
-          option.text = this.$jskos.prefLabel(type)
+          option.text = this.$jskos.prefLabel(type, { language: this.locale })
         }
       }
       return options

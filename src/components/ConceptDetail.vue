@@ -144,7 +144,7 @@
           :key="`conceptDetail-${isLeft}-type-${type.uri}`"
           class="conceptDetail-identifier">
           <b>{{ $t("general.type") }}:</b>
-          {{ $jskos.prefLabel(type) }}
+          {{ $jskos.prefLabel(type, { language: locale }) }}
         </div>
         <div
           v-if="item.creator && item.creator.length"

@@ -160,6 +160,52 @@
               v-html="$t('settings.languageContribution')" />
           </div>
           <div
+            v-if="localSettings"
+            class="settingsModal-componentSettings-component">
+            <h5>{{ $t("settings.preferredLanguages") }}</h5>
+            <div>
+              {{ $t("settings.preferredLanguagesAdd") }}:
+              <b-form-input
+                v-model="languageToAdd"
+                size="sm"
+                list="languages-datalist"
+                @keydown.native="addLanguageKeydown"
+                @input.native="addLanguageInput" />
+              <datalist id="languages-datalist">
+                <option
+                  v-for="lang in languages"
+                  :key="lang.uri">
+                  {{ lang.notation[0] }} {{ $jskos.prefLabel(lang, { language: locale }) }}
+                </option>
+              </datalist>
+            </div>
+            <ul>
+              <li
+                v-for="(lang, index) in localSettings.preferredLanguages"
+                :key="index">
+                <div
+                  class="button fontSize-verySmall"
+                  style="display: inline-block; margin-right: 2px;"
+                  @click="removeLanguage(lang)">
+                  <font-awesome-icon icon="times-circle" />
+                </div>
+                <div
+                  class="button fontSize-verySmall"
+                  style="display: inline-block; margin-right: 2px;"
+                  @click="moveLanguage(index, 1)">
+                  <font-awesome-icon icon="arrow-down" />
+                </div>
+                <div
+                  class="button fontSize-verySmall"
+                  style="display: inline-block;"
+                  @click="moveLanguage(index, -1)">
+                  <font-awesome-icon icon="arrow-up" />
+                </div>
+                {{ $jskos.prefLabel(languageConceptByTag(lang), { language: locale }) || lang }}
+              </li>
+            </ul>
+          </div>
+          <div
             v-if="localSettings && config.autoRefresh.update"
             class="settingsModal-componentSettings-component">
             <b-form-checkbox
@@ -191,16 +237,16 @@
                 <b-form-checkbox
                   v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
                   style="user-select: none;">
-                  {{ $jskos.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                  {{ $jskos.prefLabel(setting, { language: locale }) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
                 </b-form-checkbox>
                 <span class="fontSize-small text-lightGrey">
-                  {{ ($jskos.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
+                  {{ ($jskos.languageMapContent(setting, 'definition', { language: locale }) || [])[0] }} {{ $t("general.default") }}: {{ setting.default ? $t("general.enabled") : $t("general.disabled") }}
                 </span>
               </div>
               <div
                 v-else-if="setting.type == 'Number'"
-                v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }">
-                {{ $jskos.prefLabel(setting) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
+                v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition', { language: locale }), delay: defaults.delay.medium }">
+                {{ $jskos.prefLabel(setting, { language: locale }) }} {{ setting.sideDependent ? ` (${$t("general." + (setting.isLeft ? "left" : "right"))})` : "" }}
                 <b-input
                   v-model="component.settingsValues[setting.key + (setting.sideDependent ? `-${setting.isLeft}` : '')]"
                   type="number"
@@ -211,13 +257,13 @@
                   @click="$event.target.select()" />
                 <br>
                 <span class="fontSize-small text-lightGrey">
-                  {{ ($jskos.languageMapContent(setting, 'definition') || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
+                  {{ ($jskos.languageMapContent(setting, 'definition', { language: locale }) || [])[0] }} {{ $t("general.default") }}: {{ setting.default }}
                 </span>
               </div>
               <div
                 v-else
                 :class="setting.class">
-                {{ $jskos.prefLabel(setting) }}
+                {{ $jskos.prefLabel(setting, { language: locale }) }}
               </div>
             </div>
           </div>
@@ -234,7 +280,7 @@
                   <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
                 </td>
                 <td class="text-left">
-                  {{ $jskos.prefLabel(shortcut) || shortcut.action }}
+                  {{ $jskos.prefLabel(shortcut, { language: locale }) || shortcut.action }}
                 </td>
               </tr>
             </tbody>
@@ -321,7 +367,7 @@
             <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
             <p v-html="$t('settings.creatorRewriteText')" />
             <p class="fontSize-small">
-              <b>Name:</b> {{ $jskos.prefLabel(creator) }}<br>
+              <b>Name:</b> {{ $jskos.prefLabel(creator, { language: locale }) }}<br>
               <b>URI:</b> {{ creator.uri }}
             </p>
             <p>
@@ -373,6 +419,7 @@
 <script>
 import _ from "lodash"
 import RegistryInfo from "./RegistryInfo"
+import { cdk } from "cocoda-sdk"
 
 // Import mixins
 import auth from "../mixins/auth"
@@ -411,6 +458,15 @@ export default {
         })
         this.creatorRewritten = false
       }, 200),
+      // Registry for languages
+      languagesRegistry: cdk.initializeRegistry({
+        provider: "ConceptApi",
+        api: "https://bartoc.org/api/",
+        schemes: [{ uri: "http://bartoc.org/en/node/20287" }],
+      }),
+      languages: [],
+      languageToAdd: "",
+      addLanguageKeypress: false,
     }
   },
   computed: {
@@ -531,6 +587,11 @@ export default {
       }
     },
   },
+  created() {
+    this.languagesRegistry.getTop({ scheme: this.languagesRegistry.schemes[0] }).then(topConcepts => {
+      this.languages = topConcepts
+    })
+  },
   methods: {
     show() {
       this.$refs.settingsModal.show()
@@ -626,7 +687,7 @@ export default {
             }
             // ... for creator
             if (mapping.creator && mapping.creator[0]) {
-              mapping.creator[0].prefLabel = { de: this.$jskos.prefLabel(mapping.creator[0], { fallbackToUri: false }) }
+              mapping.creator[0].prefLabel = { de: this.$jskos.prefLabel(mapping.creator[0], { fallbackToUri: false, language: this.locale }) }
             }
           }
           download.csv = mappingCSV.fromMappings(download.mappings)
@@ -715,6 +776,42 @@ export default {
         command: "Cmd",
       }
       return replacements[key] || key
+    },
+    languageConceptByTag(tag) {
+      return this.languages.find(c => c.notation[0] === tag)
+    },
+    addLanguageKeydown(event) {
+      if (event.key) {
+        this.addLanguageKeypress = true
+      }
+      if (event.key === "Enter") {
+        this.addLanguage()
+      }
+    },
+    addLanguageInput() {
+      if (!this.addLanguageKeypress) {
+        this.addLanguage()
+      }
+      this.addLanguageKeypress = false
+    },
+    addLanguage() {
+      const tag = this.languageToAdd.split(" ")[0]
+      if (this.languages.length === 0 || this.languages.find(lang => lang.notation[0] === tag)) {
+        this.localSettings.preferredLanguages.push(tag)
+        this.languageToAdd = ""
+      }
+    },
+    removeLanguage(lang) {
+      this.localSettings.preferredLanguages = this.localSettings.preferredLanguages.filter(l => l !== lang)
+    },
+    moveLanguage(fromIndex, direction) {
+      const toIndex = fromIndex + direction
+      if (toIndex === -1 || toIndex === this.localSettings.preferredLanguages.length) {
+        return
+      }
+      const lang = this.localSettings.preferredLanguages[fromIndex]
+      this.localSettings.preferredLanguages.splice(fromIndex, 1)
+      this.localSettings.preferredLanguages.splice(toIndex, 0, lang)
     },
   },
 }

@@ -27,7 +27,7 @@
         :key="item.url"
         :href="item.url"
         target="_blank">
-        {{ $jskos.prefLabel(item) }}
+        {{ $jskos.prefLabel(item, { language: locale }) }}
       </b-nav-item>
       <!-- Help menu button -->
       <b-nav-item

@@ -5,8 +5,11 @@
 </template>
 
 <script>
+import computed from "../mixins/computed"
+
 export default {
   name: "RegistryName",
+  mixins: [computed],
   props: {
     registry: {
       type: Object,
@@ -19,7 +22,7 @@ export default {
   },
   computed: {
     registryName: function () {
-      let label = this.$jskos.prefLabel(this.registry)
+      let label = this.$jskos.prefLabel(this.registry, { language: this.locale })
       let notation = this.$jskos.notation(this.registry)
       if (label) {
         return label.replace(notation, function () { return "<b>"+notation+"</b>" })
@@ -29,7 +32,7 @@ export default {
       }
     },
     tooltipHtml() {
-      return this.$jskos.definition(this.registry).join("<br>")
+      return this.$jskos.definition(this.registry, { language: this.locale }).join("<br>")
     },
   },
 }
