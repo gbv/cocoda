@@ -140,7 +140,7 @@
                 <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
                 <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
                 {{ $t("schemeSelection.registryFilter") }}
-                ({{ registryFilter.length == availableRegistries.length ? "all" : registryFilter.length }})
+                ({{ registryFilter.length == availableRegistries.length ? $t("general.all") : registryFilter.length }})
               </div>
               <!-- Registry filter selection -->
               <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-registryFilterCollapse`">
@@ -173,7 +173,7 @@
                 <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
                 <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
                 {{ $t("schemeSelection.languageFilter") }}
-                ({{ languageFilter.length - 1 == availableLanguages.length ? "all" : languageFilter.length }})
+                ({{ languageFilter.length - 1 == availableLanguages.length ? $t("general.all") : languageFilter.length }})
               </div>
               <!-- Language filter selection -->
               <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-languageFilterCollapse`">
@@ -206,7 +206,7 @@
                 <span class="when-opened"><font-awesome-icon icon="angle-down" /></span>
                 <span class="when-closed"><font-awesome-icon icon="angle-right" /></span>
                 {{ $t("schemeSelection.typeFilter") }}
-                ({{ typeFilter.length - 1 == availableTypes.length ? "all" : typeFilter.length }})
+                ({{ typeFilter.length - 1 == availableTypes.length ? $t("general.all") : typeFilter.length }})
               </div>
               <!-- Language filter selection -->
               <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-typeFilterCollapse`">
