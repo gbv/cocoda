@@ -29,8 +29,8 @@ function buildConceptQuery({ where }) {
   WHERE {
     ?d a meshv:Descriptor .
     ?d rdfs:label ?name .
-    ?d meshv:dateCreated ?dateCreated .
-    ?d meshv:dateRevised ?dateRevised .
+    OPTIONAL { ?d meshv:dateCreated ?dateCreated } .
+    OPTIONAL { ?d meshv:dateRevised ?dateRevised } .
     ?d meshv:identifier ?identifier .
     OPTIONAL { ?d meshv:broaderDescriptor ?broaderDescriptor } .
     ${where}
@@ -40,17 +40,24 @@ function buildConceptQuery({ where }) {
   `
 }
 function queryResultToConcepts(result) {
-  return result.data.results.bindings.map(c => ({
-    inScheme: [mesh],
-    uri: c.d.value,
-    notation: [c.identifier.value],
-    prefLabel: {
-      [c.name["xml:lang"]]: c.name.value,
-    },
-    created: c.dateCreated.value,
-    modified: c.dateRevised.value,
-    broader: (c.broader.value || "").split(" ").filter(b => b.trim() !== "").map(b => ({ uri: b })),
-  }))
+  return result.data.results.bindings.map(c => {
+    const concept = {
+      inScheme: [mesh],
+      uri: c.d.value,
+      notation: [c.identifier.value],
+      prefLabel: {
+        [c.name["xml:lang"]]: c.name.value,
+      },
+      broader: (c.broader.value || "").split(" ").filter(b => b.trim() !== "").map(b => ({ uri: b })),
+    }
+    if (c.dateCreated && c.dateCreated.value) {
+      concept.created = c.dateCreated.value
+    }
+    if (c.dateRevised && c.dateRevised.value) {
+      concept.modified = c.dateRevised.value
+    }
+    return concept
+  })
 }
 
 export default class MeshApiProvider extends BaseProvider {
