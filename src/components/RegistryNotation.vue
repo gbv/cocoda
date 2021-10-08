@@ -1,6 +1,6 @@
 <template>
   <div
-    v-b-tooltip.html.left="tooltip ? $jskos.prefLabel(registry) : ''"
+    v-b-tooltip.html.left="tooltip ? $jskos.prefLabel(registry, { language: locale }) : ''"
     :class="{
       [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
       'registry-notation-current': isCurrentRegistry,
@@ -12,8 +12,11 @@
 </template>
 
 <script>
+import computed from "../mixins/computed"
+
 export default {
   name: "RegistryNotation",
+  mixins: [computed],
   props: {
     registry: {
       type: Object,

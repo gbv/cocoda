@@ -17,15 +17,15 @@
               v-if="setting.type == 'Boolean'"
               :key="`componentSettings-${setting.key}-${isLeft}`"
               v-model="settingsValues[setting.key]"
-              v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }"
+              v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition', { language: locale }), delay: defaults.delay.medium }"
               style="user-select: none;">
-              {{ $jskos.prefLabel(setting) }}
+              {{ $jskos.prefLabel(setting, { language: locale }) }}
             </b-form-checkbox>
             <div
               v-else-if="setting.type == 'Number'"
               :key="`componentSettings-${setting.key}-${isLeft}`"
-              v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition'), delay: defaults.delay.medium }">
-              {{ $jskos.prefLabel(setting) }}
+              v-b-tooltip.hover="{ title: $jskos.languageMapContent(setting, 'definition', { language: locale }), delay: defaults.delay.medium }">
+              {{ $jskos.prefLabel(setting, { language: locale }) }}
               <b-input
                 v-model="settingsValues[setting.key]"
                 type="number"
@@ -39,7 +39,7 @@
               v-else
               :key="`componentSettings-${setting.key}-${isLeft}`"
               :class="setting.class">
-              {{ $jskos.prefLabel(setting) }}
+              {{ $jskos.prefLabel(setting, { language: locale }) }}
             </p>
           </template>
         </slot>

@@ -73,7 +73,7 @@
               <a
                 :href="$jskos.mappingTypeByType(mapping.type).uri"
                 target="_blank">
-                {{ $jskos.prefLabel($jskos.mappingTypeByType(mapping.type)) }} ({{ $jskos.notation($jskos.mappingTypeByType(mapping.type)) }})
+                {{ $jskos.prefLabel($jskos.mappingTypeByType(mapping.type), { language: locale }) }} ({{ $jskos.notation($jskos.mappingTypeByType(mapping.type)) }})
               </a>
             </b-col>
           </b-row>
@@ -199,12 +199,15 @@ import AutoLink from "./AutoLink"
 import AnnotationList from "./AnnotationList"
 import RegistryInfo from "./RegistryInfo"
 
+import computed from "../mixins/computed"
+
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "MappingDetail",
   components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo },
+  mixins: [computed],
   props: {
     /**
      * Mapping object

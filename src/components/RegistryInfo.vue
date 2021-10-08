@@ -9,7 +9,7 @@
         :class="{
           'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
         }">
-        {{ $jskos.prefLabel(registry) }}
+        {{ $jskos.prefLabel(registry, { language: locale }) }}
       </span>
       <a
         v-if="showDetails"
@@ -29,7 +29,7 @@
       </span>
     </div>
     <div v-if="showDetails">
-      {{ $jskos.definition(registry).join(" ") }}
+      {{ $jskos.definition(registry, { language: locale }).join(" ") }}
     </div>
     <div v-if="showCapabilities">
       <span
@@ -72,11 +72,12 @@ import RegistryNotation from "./RegistryNotation"
 
 // Import mixins
 import auth from "../mixins/auth"
+import computed from "../mixins/computed"
 
 export default {
   name: "RegistryInfo",
   components: { RegistryNotation },
-  mixins: [auth],
+  mixins: [auth, computed],
   props: {
     registry: {
       type: Object,
