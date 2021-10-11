@@ -27,25 +27,6 @@ const mappingTrashPlugin = store => {
 }
 
 /**
- * Plugin that relays language changes to registry providers.
- *
- * @param {*} store
- */
-const updateLanguages = (store) => {
-  store.subscribe(mutation => {
-    if (mutation.type == "setConfig" || (mutation.type == "settings/set" && mutation.payload.prop == "locale")) {
-      const locale = store.state.config.languages.includes(store.state.settings.settings.locale) ? store.state.settings.settings.locale : "en"
-      const languages = [locale].concat(store.state.config.languages.filter(lang => lang != locale))
-      for (let registry of store.state.config.registries) {
-        if (registry) {
-          registry.languages = languages
-        }
-      }
-    }
-  })
-}
-
-/**
  * Helper function that refreshes the router with the current mapping and selected concepts/schemes.
  */
 const refreshRouter = (store) => {
@@ -127,5 +108,5 @@ const routerParamPlugin = store => {
   })
 }
 
-let plugins = [mappingIdentifierPlugin, mappingTrashPlugin, routerParamPlugin, updateLanguages]
+let plugins = [mappingIdentifierPlugin, mappingTrashPlugin, routerParamPlugin]
 export { plugins, refreshRouter }

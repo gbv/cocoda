@@ -42,5 +42,8 @@ export default {
     locale() {
       return this.$i18n.locale
     },
+    languages() {
+      return this.$store.getters.languages
+    },
   },
 }

@@ -250,9 +250,6 @@ export default {
     selectedSchemeLeft() {
       return this.selected.scheme[true]
     },
-    locale() {
-      return this.$i18n.locale
-    },
     settingsLocale() {
       let locale = this.$settings.locale
       // Only return valid lanugages, English as fallback.
@@ -344,11 +341,6 @@ export default {
           prop: "locale",
           value: newValue,
         })
-        // Also re-insert prefLabels after delay
-        _.delay(() => {
-          this.insertPrefLabel(true)
-          this.insertPrefLabel(false)
-        }, 300)
       }
     },
     /**
@@ -471,6 +463,19 @@ export default {
         this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
         this.repeatLoadBuildInfo = null
       }
+    },
+    languages() {
+      // Relay language changes to registry providers
+      for (let registry of this.$store.state.config.registries) {
+        if (registry) {
+          registry.languages = this.languages
+        }
+      }
+      // Also re-insert prefLabels after delay
+      _.delay(() => {
+        this.insertPrefLabel(true)
+        this.insertPrefLabel(false)
+      }, 100)
     },
   },
   created() {

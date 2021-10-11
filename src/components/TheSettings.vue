@@ -173,7 +173,7 @@
                 @input.native="addLanguageInput" />
               <datalist id="languages-datalist">
                 <option
-                  v-for="lang in languages"
+                  v-for="lang in allLanguages"
                   :key="lang.uri">
                   {{ lang.notation[0] }} {{ $jskos.prefLabel(lang, { language: locale }) }}
                 </option>
@@ -464,7 +464,7 @@ export default {
         api: "https://bartoc.org/api/",
         schemes: [{ uri: "http://bartoc.org/en/node/20287" }],
       }),
-      languages: [],
+      allLanguages: [],
       languageToAdd: "",
       addLanguageKeypress: false,
     }
@@ -589,7 +589,7 @@ export default {
   },
   created() {
     this.languagesRegistry.getTop({ scheme: this.languagesRegistry.schemes[0] }).then(topConcepts => {
-      this.languages = topConcepts
+      this.allLanguages = topConcepts
     })
   },
   methods: {
@@ -778,7 +778,7 @@ export default {
       return replacements[key] || key
     },
     languageConceptByTag(tag) {
-      return this.languages.find(c => c.notation[0] === tag)
+      return this.allLanguages.find(c => c.notation[0] === tag)
     },
     addLanguageKeydown(event) {
       if (event.key) {
@@ -796,7 +796,7 @@ export default {
     },
     addLanguage() {
       const tag = this.languageToAdd.split(" ")[0]
-      if (this.languages.length === 0 || this.languages.find(lang => lang.notation[0] === tag)) {
+      if (this.allLanguages.length === 0 || this.allLanguages.find(lang => lang.notation[0] === tag)) {
         this.localSettings.preferredLanguages.push(tag)
         this.languageToAdd = ""
       }
