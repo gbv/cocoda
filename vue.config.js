@@ -6,6 +6,7 @@ module.exports = {
     port: 8080,
     useLocalIp: false,
   },
+  lintOnSave: false,
   runtimeCompiler: true,
   productionSourceMap: false,
   publicPath: "./",
