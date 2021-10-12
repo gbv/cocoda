@@ -187,27 +187,27 @@
 </template>
 
 <script>
-import TheNavbar from "./components/TheNavbar"
-import MappingEditor from "./components/MappingEditor"
-import MappingBrowser from "./components/MappingBrowser"
-import ConceptListWrapper from "./components/ConceptListWrapper"
-import ItemDetail from "./components/ItemDetail"
-import ResizingSlider from "./components/ResizingSlider"
+import TheNavbar from "./components/TheNavbar.vue"
+import MappingEditor from "./components/MappingEditor.vue"
+import MappingBrowser from "./components/MappingBrowser.vue"
+import ConceptListWrapper from "./components/ConceptListWrapper.vue"
+import ItemDetail from "./components/ItemDetail.vue"
+import ResizingSlider from "./components/ResizingSlider.vue"
 import _ from "lodash"
-import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
-import Minimizer from "./components/Minimizer"
-import { refreshRouter } from "./store/plugins"
-import ConceptSchemeSelection from "./components/ConceptSchemeSelection"
+import LoadingIndicatorFull from "./components/LoadingIndicatorFull.vue"
+import Minimizer from "./components/Minimizer.vue"
+import { refreshRouter } from "./store/plugins.js"
+import ConceptSchemeSelection from "./components/ConceptSchemeSelection.vue"
 import { cdk } from "cocoda-sdk"
 
 // Import mixins
-import auth from "./mixins/auth"
-import objects from "./mixins/cdk"
-import computed from "./mixins/computed"
-import pageVisibility from "./mixins/page-visibility"
+import auth from "./mixins/auth.js"
+import objects from "./mixins/cdk.js"
+import computed from "./mixins/computed.js"
+import pageVisibility from "./mixins/page-visibility.js"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
-const ElementQueries = require("css-element-queries/src/ElementQueries")
+import { ElementQueries } from "css-element-queries"
 ElementQueries.listen()
 
 /**

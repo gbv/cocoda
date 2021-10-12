@@ -60,19 +60,19 @@
 </template>
 
 <script>
-import TheNavbar from "./components/TheNavbar"
-import MappingBrowser from "./components/MappingBrowser"
+import TheNavbar from "./components/TheNavbar.vue"
+import MappingBrowser from "./components/MappingBrowser.vue"
 import _ from "lodash"
-import LoadingIndicatorFull from "./components/LoadingIndicatorFull"
-import { refreshRouter } from "./store/plugins"
+import LoadingIndicatorFull from "./components/LoadingIndicatorFull.vue"
+import { refreshRouter } from "./store/plugins.js"
 
 // Import mixins
-import auth from "./mixins/auth"
-import objects from "./mixins/cdk"
-import computed from "./mixins/computed"
+import auth from "./mixins/auth.js"
+import objects from "./mixins/cdk.js"
+import computed from "./mixins/computed.js"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
-const ElementQueries = require("css-element-queries/src/ElementQueries")
+import { ElementQueries } from "css-element-queries"
 ElementQueries.listen()
 
 /**

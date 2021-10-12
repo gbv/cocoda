@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import ItemName from "./ItemName"
+import ItemName from "./ItemName.vue"
 import FlexibleTable from "vue-flexible-table"
-import RegistryNotation from "./RegistryNotation"
+import RegistryNotation from "./RegistryNotation.vue"
 import _ from "lodash"
 
 export default {

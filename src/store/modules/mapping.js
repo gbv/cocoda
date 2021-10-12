@@ -1,7 +1,7 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
-import log from "../../utils/log"
+import log from "../../utils/log.js"
 
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
@@ -60,10 +60,10 @@ const getters = {
    * @param {bool} isLeft - side of the mapping
    */
   canAdd: (state) => (concept, scheme, isLeft) => {
-    if(concept == null) {
+    if (concept == null) {
       return false
     }
-    if(getters.added(state)(concept, isLeft)) {
+    if (getters.added(state)(concept, isLeft)) {
       return false
     }
     return true

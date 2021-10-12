@@ -51,8 +51,8 @@
 <script>
 import _ from "lodash"
 
-import clickHandler from "../mixins/click-handler"
-import computed from "../mixins/computed"
+import clickHandler from "../mixins/click-handler.js"
+import computed from "../mixins/computed.js"
 
 export default {
   name: "ComponentSettings",

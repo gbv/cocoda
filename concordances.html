@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Cocoda</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>coli-conc concordances</title>
   </head>
   <body>
     <noscript>
@@ -23,7 +24,8 @@
         <p>If you think this is a bug, please create an issue in the <a href="https://github.com/gbv/cocoda/issues" target="_blank">Cocoda GitHub repository</a>.</p>
       </div>
     </noscript>
-    <div id="app"></div>
+    <div id="concordanceApp"></div>
+    <script type="module" src="/src/entry/concordanceApp.js"></script>
     <script>
       // from https://gomakethings.com/decoding-html-entities-with-vanilla-javascript/
       var decodeHTML = function (html) {

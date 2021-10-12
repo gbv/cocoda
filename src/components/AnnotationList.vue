@@ -43,10 +43,10 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink"
+import AutoLink from "./AutoLink.vue"
 
 // Import mixins
-import auth from "../mixins/auth"
+import auth from "../mixins/auth.js"
 
 export default {
   name: "AnnotationList",

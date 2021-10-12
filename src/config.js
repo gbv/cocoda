@@ -1,2 +1,2 @@
-let defaultConfig = require("../config/cocoda.default.json")
+import defaultConfig from "../config/cocoda.default.json"
 export default defaultConfig

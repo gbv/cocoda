@@ -418,13 +418,13 @@
 
 <script>
 import _ from "lodash"
-import RegistryInfo from "./RegistryInfo"
+import RegistryInfo from "./RegistryInfo.vue"
 import { cdk } from "cocoda-sdk"
 
 // Import mixins
-import auth from "../mixins/auth"
-import objects from "../mixins/cdk"
-import computed from "../mixins/computed"
+import auth from "../mixins/auth.js"
+import objects from "../mixins/cdk.js"
+import computed from "../mixins/computed.js"
 
 /**
  * The settings modal.

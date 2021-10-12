@@ -31,7 +31,7 @@
 
 <script>
 import _ from "lodash"
-import computed from "../mixins/computed"
+import computed from "../mixins/computed.js"
 
 /**
  * Adds minimizing functionality to another component.

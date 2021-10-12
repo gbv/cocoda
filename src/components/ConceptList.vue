@@ -29,15 +29,15 @@
 </template>
 
 <script>
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import ConceptListItem from "./ConceptListItem"
+import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
+import ConceptListItem from "./ConceptListItem.vue"
 import _ from "lodash"
 import { scroller } from "vue-scrollto/src/scrollTo"
 
 // Import mixins
-import objects from "../mixins/cdk"
-import computed from "../mixins/computed"
-import mappedStatus from "../mixins/mapped-status"
+import objects from "../mixins/cdk.js"
+import computed from "../mixins/computed.js"
+import mappedStatus from "../mixins/mapped-status.js"
 
 /**
  * Component that represents a (navigatable) concept list.

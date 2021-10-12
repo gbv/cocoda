@@ -37,7 +37,7 @@ fi
 [ ! -e ./config/cocoda.json ] && echo "Using empty user config for build..." && echo -n "{}" > ./config/cocoda.json
 
 # build the app
-vue-cli-service build --modern
+vite build
 success=$?
 
 if [ $success -eq 0 ]; then
@@ -51,7 +51,7 @@ fi
 
 # create and move user manual
 if [ $success -eq 0 ]; then
-  PANDOC=$(pandoc --version 2>/dev/null | awk 'NR==1 && $2>=2.3 {print}')
+  PANDOC=$(pandoc --version 2>/dev/null | awk 'NR==1 && $2>=2 {print}')
   MODIFIED_DOCS=$(git show --pretty="" --name-only HEAD docs/)
   TAGGED_COMMIT=$(git describe --exact-match --tags 2>/dev/null)
   BUILD_PDF="$MODIFIED_DOCS$TAGGED_COMMIT"

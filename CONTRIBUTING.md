@@ -8,14 +8,24 @@ To start contributing please make sure you have a [GitHub account](https://githu
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Getting Started](#getting-started)
 - [Background](#background)
 - [Documentation](#documentation)
 - [Design Guidelines](#design-guidelines)
+  - [Cards](#cards)
+  - [Fonts](#fonts)
+  - [Colors](#colors)
+  - [Tables](#tables)
+  - [Buttons](#buttons)
+  - [Z-index values](#z-index-values)
+  - [Icons](#icons)
 - [Creating Providers](#creating-providers)
 - [Component Settings](#component-settings)
 - [Translate](#translate)
 - [Publish](#publish)
+  - [New Release](#new-release)
+  - [Docker](#docker)
 
 ## Getting Started
 
@@ -40,9 +50,6 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-
-# serve documentation at localhost:6060
-npm run styleguide
 ```
 
 ## Background
@@ -64,12 +71,6 @@ Software documentation and user manuals in multiple languages are located in dir
 * [Software documentation](https://gbv.github.io/cocoda/)
 * [English user manual](https://gbv.github.io/cocoda/dev/user-manual-en.html)
 * [German user manual](https://gbv.github.io/cocoda/dev/user-manual-de.html)
-
-To build the API documentation:
-
-~~~sh
-npm run styleguide
-~~~
 
 Generation of the user manual requires [Pandoc](https://pandoc.org/) 2.7 or newer.
 

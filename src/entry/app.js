@@ -1,18 +1,20 @@
-import Vue from "vue"
-import App from "../App"
-import store from "../store"
-import router from "../router"
-import i18n from "../utils/i18n"
+import { createApp, h } from "vue-demi"
+import App from "../App.vue"
+import store from "../store/index.js"
+import router from "../router.js"
+import i18n from "../utils/i18n.js"
 
-require("../main")
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 
-new Vue({
-  el: "#app",
+const app = createApp({
   store,
   router,
-  components: { App },
-  template: "<App/>",
   i18n,
+  render: () => h(App),
 })
+
+import { supplementApp } from "../main.js"
+supplementApp(app)
+
+app.mount("#app")

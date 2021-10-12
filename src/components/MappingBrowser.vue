@@ -398,23 +398,23 @@
 </template>
 
 <script>
-import MappingBrowserTable from "./MappingBrowserTable"
+import MappingBrowserTable from "./MappingBrowserTable.vue"
 import FlexibleTable from "vue-flexible-table"
-import RegistryNotation from "./RegistryNotation"
-import ItemName from "./ItemName"
-import ComponentSettings from "./ComponentSettings"
-import DataModalButton from "./DataModalButton"
+import RegistryNotation from "./RegistryNotation.vue"
+import ItemName from "./ItemName.vue"
+import ComponentSettings from "./ComponentSettings.vue"
+import DataModalButton from "./DataModalButton.vue"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
 
 // Import mixins
-import auth from "../mixins/auth"
-import objects from "../mixins/cdk"
-import dragandrop from "../mixins/dragandrop"
-import clickHandler from "../mixins/click-handler"
-import computed from "../mixins/computed"
-import pageVisibility from "../mixins/page-visibility"
+import auth from "../mixins/auth.js"
+import objects from "../mixins/cdk.js"
+import dragandrop from "../mixins/dragandrop.js"
+import clickHandler from "../mixins/click-handler.js"
+import computed from "../mixins/computed.js"
+import pageVisibility from "../mixins/page-visibility.js"
 
 export default {
   name: "MappingBrowser",

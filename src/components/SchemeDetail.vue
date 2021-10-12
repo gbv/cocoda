@@ -122,14 +122,14 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink"
-import ItemName from "./ItemName"
-import ItemDetailNarrower from "./ItemDetailNarrower"
-import RegistryName from "./RegistryName"
-import RegistryNotation from "./RegistryNotation"
+import AutoLink from "./AutoLink.vue"
+import ItemName from "./ItemName.vue"
+import ItemDetailNarrower from "./ItemDetailNarrower.vue"
+import RegistryName from "./RegistryName.vue"
+import RegistryNotation from "./RegistryNotation.vue"
 
 // Import mixins
-import objects from "../mixins/cdk"
+import objects from "../mixins/cdk.js"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"

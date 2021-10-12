@@ -14,7 +14,7 @@
 import jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
-import computed from "./computed"
+import computed from "./computed.js"
 
 let objects = {}
 let topConcepts = {}
@@ -299,7 +299,7 @@ export default {
       let types = []
       try {
         types = await ((scheme._getTypes && scheme._getTypes()) || (scheme._registry && scheme._registry.getTypes({ scheme })) || Promise.reject())
-      } catch(error) {
+      } catch (error) {
         // Ignore error, show warning only.
         this.$log.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
       }
@@ -321,7 +321,7 @@ export default {
       let topConcepts = []
       try {
         topConcepts = await ((scheme._getTop && scheme._getTop()) || (scheme._registry && scheme._registry.getTop({ scheme })) || Promise.reject())
-      } catch(error) {
+      } catch (error) {
         // Ignore error, show warning only.
         this.$log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)
       }
@@ -396,7 +396,7 @@ export default {
       for (let uri of uris) {
         let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
         if (index >= 0) {
-          let concept =  this.loadingConcepts[index]
+          let concept = this.loadingConcepts[index]
           this.$set(concept, "__DETAILSLOADED__", -1)
           this.$delete(this.loadingConcepts, index)
           this.erroredConcepts.push(concept)
@@ -698,7 +698,7 @@ export default {
         }
         _after && _after()
         return mapping
-      } catch(error) {
+      } catch (error) {
         if (_alert) {
           let message = `${this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
@@ -730,7 +730,7 @@ export default {
         }
         _after && _after()
         return mappings
-      } catch(error) {
+      } catch (error) {
         if (_alert) {
           let message = `${this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
@@ -760,7 +760,7 @@ export default {
         }
         _after && _after()
         return mapping
-      } catch(error) {
+      } catch (error) {
         if (_alert) {
           const message = `${this.$t("alerts.mappingNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
@@ -796,7 +796,7 @@ export default {
         }
         _after && _after()
         return true
-      } catch(error) {
+      } catch (error) {
         if (_alert) {
           const message = `${this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
@@ -835,7 +835,7 @@ export default {
         }
         _after && _after()
         return true
-      } catch(error) {
+      } catch (error) {
         if (_alert) {
           const message = `${this.$t("alerts.mappingNotDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
           this.alert(message, null, "danger")
@@ -923,7 +923,7 @@ export default {
         crossUser: !this.$jskos.userOwnsMapping(user, mapping),
       })
     },
-    canDeleteMapping({ registry, mapping, user = this.user}) {
+    canDeleteMapping({ registry, mapping, user = this.user }) {
       if (!mapping) {
         return false
       }

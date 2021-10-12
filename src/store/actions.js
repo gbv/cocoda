@@ -6,17 +6,12 @@ const axiosConfig = {
     "Cache-Control": "no-cache",
   },
 }
-import defaultConfig from "../config"
-import i18n from "../utils/i18n"
-import log from "../utils/log"
+import defaultConfig from "../config.js"
+import i18n from "../utils/i18n.js"
+import log from "../utils/log.js"
 // Import registry providers
 import { cdk } from "cocoda-sdk"
-let buildInfo
-try {
-  buildInfo = require("../../build/build-info.json")
-} catch(error) {
-  buildInfo = {}
-}
+import buildInfo from "../../build/build-info.json"
 
 export default {
   async loadConfig({ commit, dispatch }, configFile) {

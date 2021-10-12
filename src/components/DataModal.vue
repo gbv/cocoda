@@ -95,7 +95,7 @@ import _ from "lodash"
 import formatHighlight from "json-format-highlight"
 
 // Import mixins
-import objects from "../mixins/cdk"
+import objects from "../mixins/cdk.js"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.

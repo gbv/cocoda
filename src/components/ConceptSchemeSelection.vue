@@ -268,17 +268,17 @@
 </template>
 
 <script>
-import ItemName from "./ItemName"
-import ConceptSearch from "./ConceptSearch"
-import ComponentSettings from "./ComponentSettings"
+import ItemName from "./ItemName.vue"
+import ConceptSearch from "./ConceptSearch.vue"
+import ComponentSettings from "./ComponentSettings.vue"
 
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk"
-import clickHandler from "../mixins/click-handler"
-import hotkeys from "../mixins/hotkeys"
-import computed from "../mixins/computed"
+import objects from "../mixins/cdk.js"
+import clickHandler from "../mixins/click-handler.js"
+import hotkeys from "../mixins/hotkeys.js"
+import computed from "../mixins/computed.js"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"

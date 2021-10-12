@@ -226,18 +226,18 @@
 </template>
 
 <script>
-import ItemName from "./ItemName"
-import MappingTypeSelection from "./MappingTypeSelection"
+import ItemName from "./ItemName.vue"
+import MappingTypeSelection from "./MappingTypeSelection.vue"
 import _ from "lodash"
-import ComponentSettings from "./ComponentSettings"
-import MappingDetail from "./MappingDetail"
+import ComponentSettings from "./ComponentSettings.vue"
+import MappingDetail from "./MappingDetail.vue"
 
 // Import mixins
-import auth from "../mixins/auth"
-import objects from "../mixins/cdk"
-import dragandrop from "../mixins/dragandrop"
-import hotkeys from "../mixins/hotkeys"
-import computed from "../mixins/computed"
+import auth from "../mixins/auth.js"
+import objects from "../mixins/cdk.js"
+import dragandrop from "../mixins/dragandrop.js"
+import hotkeys from "../mixins/hotkeys.js"
+import computed from "../mixins/computed.js"
 
 /**
  * The mapping editor component.

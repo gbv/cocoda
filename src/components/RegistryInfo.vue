@@ -68,11 +68,11 @@
 </template>
 
 <script>
-import RegistryNotation from "./RegistryNotation"
+import RegistryNotation from "./RegistryNotation.vue"
 
 // Import mixins
-import auth from "../mixins/auth"
-import computed from "../mixins/computed"
+import auth from "../mixins/auth.js"
+import computed from "../mixins/computed.js"
 
 export default {
   name: "RegistryInfo",

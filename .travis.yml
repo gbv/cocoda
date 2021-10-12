@@ -4,7 +4,6 @@ language: node_js
 node_js:
 - node
 - 12
-- 10
 
 cache:
   directories:
@@ -25,14 +24,15 @@ script:
 - npm run lint
 - cp ./.travis/cocoda.json ./config/cocoda.json # copy Travis-specific config file
 - npm run build
-- mv dist cocoda # prevent styleguide:build overriding dist
-- npm run styleguide:build
-- cp -R cocoda styleguide/dev
+- mv dist cocoda
+- mkdir dist-docs
+- cp docs/index.md dist-docs/
+- cp -R cocoda dist-docs/dev
 - zip -r "cocoda-$(git describe --tags).zip" cocoda
 
 deploy:
 - provider: pages
-  local_dir: styleguide
+  local_dir: dist-docs
   skip_cleanup: true
   github_token: "$GITHUB_TOKEN"
   on:

@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import ItemName from "./ItemName"
-import LoadingIndicator from "./LoadingIndicator"
+import ItemName from "./ItemName.vue"
+import LoadingIndicator from "./LoadingIndicator.vue"
 
-import mappedStatus from "../mixins/mapped-status"
+import mappedStatus from "../mixins/mapped-status.js"
 
 /**
  * Component that displays narrower or top concepts for ItemDetail.

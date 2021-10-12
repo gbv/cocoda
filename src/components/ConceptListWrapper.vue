@@ -27,7 +27,7 @@
           :buttons="choice.buttons"
           :shown="index == currentChoiceIndex" />
       </tab>
-      <template v-slot:title="slotProps">
+      <template #title="slotProps">
         <span>
           {{ slotProps.tab.title }}
         </span>
@@ -93,17 +93,17 @@
 </template>
 
 <script>
-import Minimizer from "./Minimizer"
-import ConceptList from "./ConceptList"
+import Minimizer from "./Minimizer.vue"
+import ConceptList from "./ConceptList.vue"
 import _ from "lodash"
-import ComponentSettings from "./ComponentSettings"
-import DataModalButton from "./DataModalButton"
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
+import ComponentSettings from "./ComponentSettings.vue"
+import DataModalButton from "./DataModalButton.vue"
+import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 
-import computed from "../mixins/computed"
-import objects from "../mixins/cdk"
-import dragandrop from "../mixins/dragandrop"
-import hoverHandler from "../mixins/hover-handler"
+import computed from "../mixins/computed.js"
+import objects from "../mixins/cdk.js"
+import dragandrop from "../mixins/dragandrop.js"
+import hoverHandler from "../mixins/hover-handler.js"
 
 export default {
   name: "ConceptListWrapper",

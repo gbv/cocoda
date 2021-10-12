@@ -3,7 +3,7 @@
  */
 
 import LoginClient from "gbv-login-client"
-import log from "../../utils/log"
+import log from "../../utils/log.js"
 let client
 
 // initial state
@@ -31,7 +31,7 @@ const mutations = {
    * - prop (required): the name of the property to be set (e.g. "authorized")
    * - value: the value to which to set the property (e.g. true)
    */
-  set (state, { prop, value = null }) {
+  set(state, { prop, value = null }) {
     state[prop] = value
   },
 
@@ -76,7 +76,7 @@ const actions = {
 
       // Handle events
       client.addEventListener(null, event => {
-      // Close window if one exists and matches event type
+        // Close window if one exists and matches event type
         commit({ type: "closeWindow", eventType: event.type })
         // Handle event
         switch (event.type) {

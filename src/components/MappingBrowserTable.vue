@@ -360,29 +360,29 @@
     <!-- Mapping annotations popover -->
     <annotation-popover
       :id="hoveredId"
-      :mapping="this.$store.state.hoveredMapping"
+      :mapping="$store.state.hoveredMapping"
       id-prefix="mappingBrowser-hoveredMapping-annotationButton-"
       @refresh-annotations="refreshAnnotations" />
   </div>
 </template>
 
 <script>
-import ItemName from "./ItemName"
-import AutoLink from "./AutoLink"
-import LoadingIndicator from "./LoadingIndicator"
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import RegistryInfo from "./RegistryInfo"
+import ItemName from "./ItemName.vue"
+import AutoLink from "./AutoLink.vue"
+import LoadingIndicator from "./LoadingIndicator.vue"
+import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
+import RegistryInfo from "./RegistryInfo.vue"
 import FlexibleTable from "vue-flexible-table"
-import MappingDetail from "./MappingDetail"
-import AnnotationPopover from "./AnnotationPopover"
-import DataModalButton from "./DataModalButton"
+import MappingDetail from "./MappingDetail.vue"
+import AnnotationPopover from "./AnnotationPopover.vue"
+import DataModalButton from "./DataModalButton.vue"
 import _ from "lodash"
 
 // Import mixins
-import auth from "../mixins/auth"
-import objects from "../mixins/cdk"
-import computed from "../mixins/computed"
-import hoverHandler from "../mixins/hover-handler"
+import auth from "../mixins/auth.js"
+import objects from "../mixins/cdk.js"
+import computed from "../mixins/computed.js"
+import hoverHandler from "../mixins/hover-handler.js"
 
 /**
  * The mapping suggestion browser component.

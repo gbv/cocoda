@@ -61,7 +61,7 @@
 
 <script>
 import _ from "lodash"
-import dragandrop from "../mixins/dragandrop"
+import dragandrop from "../mixins/dragandrop.js"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.

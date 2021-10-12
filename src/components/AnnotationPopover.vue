@@ -86,12 +86,12 @@
 
 <script>
 import _ from "lodash"
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import AnnotationList from "./AnnotationList"
+import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
+import AnnotationList from "./AnnotationList.vue"
 
 // Import mixins
-import auth from "../mixins/auth"
-import hoverHandler from "../mixins/hover-handler"
+import auth from "../mixins/auth.js"
+import hoverHandler from "../mixins/hover-handler.js"
 
 export default {
   name: "AnnotationPopover",

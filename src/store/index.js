@@ -1,15 +1,15 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import selected from "./modules/selected"
-import mapping from "./modules/mapping"
-import alerts from "./modules/alerts"
-import auth from "./modules/auth"
-import settings from "./modules/settings"
-import { plugins } from "./plugins"
+import selected from "./modules/selected.js"
+import mapping from "./modules/mapping.js"
+import alerts from "./modules/alerts.js"
+import auth from "./modules/auth.js"
+import settings from "./modules/settings.js"
+import { plugins } from "./plugins.js"
 import jskos from "jskos-tools"
 import _ from "lodash"
 // Root store
-import actions from "./actions"
+import actions from "./actions.js"
 
 Vue.use(Vuex)
 

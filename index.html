@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cocoda</title>
+  </head>
+  <body>
+    <noscript>
+      <div style="text-align: center">
+        <br><br><br><br>
+        <h1>Sorry!</h1>
+        <p>
+          This application does not work in your browser.
+        </p>
+        <p>
+          To use this application, JavaScript and Cookies are required to be enabled. You'll also need a modern web browser, like <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>.
+        </p>
+        <br><br>
+        <p>Thank you for understanding.</p>
+        <p><a href="https://coli-conc.gbv.de" target="_blank">- the coli-conc team</a></p>
+        <br><br>
+        <p>If you think this is a bug, please create an issue in the <a href="https://github.com/gbv/cocoda/issues" target="_blank">Cocoda GitHub repository</a>.</p>
+      </div>
+    </noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/entry/app.js"></script>
+    <script>
+      // from https://gomakethings.com/decoding-html-entities-with-vanilla-javascript/
+      var decodeHTML = function (html) {
+        var txt = document.createElement("textarea")
+        txt.innerHTML = html
+        return txt.value
+      }
+      // from https://stackoverflow.com/a/40852845
+      function isIE() {
+        var myNav = navigator.userAgent.toLowerCase()
+        return (myNav.indexOf("msie") != -1 || myNav.indexOf("trident") != -1) ? true : false
+      }
+      // adapted from https://github.com/Modernizr/Modernizr/blob/d4c7b6082709e32fb0589ba38aa96581d44ce395/feature-detects/storage/cookies.js
+      function checkCookie(){
+        try {
+          var cookie = "cookietest=1;samesite=lax"
+          document.cookie = cookie
+          var ret = document.cookie.indexOf('cookietest=') !== -1
+          document.cookie = cookie + "; expires=Thu, 01-Jan-1970 00:00:01 GMT"
+          return ret
+        } catch (e) {
+          return false
+        }
+      }
+      // Show noscript content for IE as well
+      if (isIE() || !checkCookie() || window.location.protocol == "file:") {
+        var noscript = document.getElementsByTagName("noscript")[0]
+        var app = document.getElementById("app")
+        var message = noscript.innerHTML
+        if (window.location.protocol == "file:") {
+          message = message.replace("in your browser", "via the <code>file://</code> protocol. Please use a web server")
+        }
+        app.innerHTML = decodeHTML(message)
+        app.removeAttribute("id")
+      }
+    </script>
+  </body>
+</html>

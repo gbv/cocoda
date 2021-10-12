@@ -302,18 +302,18 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink"
-import ItemName from "./ItemName"
-import LoadingIndicator from "./LoadingIndicator"
-import ItemDetailNarrower from "./ItemDetailNarrower"
+import AutoLink from "./AutoLink.vue"
+import ItemName from "./ItemName.vue"
+import LoadingIndicator from "./LoadingIndicator.vue"
+import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import _ from "lodash"
 import axios from "axios"
 
 // Import mixins
-import objects from "../mixins/cdk"
-import computed from "../mixins/computed"
-import hotkeys from "../mixins/hotkeys"
-import mappedStatus from "../mixins/mapped-status"
+import objects from "../mixins/cdk.js"
+import computed from "../mixins/computed.js"
+import hotkeys from "../mixins/hotkeys.js"
+import mappedStatus from "../mixins/mapped-status.js"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).

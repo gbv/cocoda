@@ -39,18 +39,18 @@
 </template>
 
 <script>
-import LoadingIndicatorFull from "./LoadingIndicatorFull"
-import Minimizer from "./Minimizer"
-import ConceptDetail from "./ConceptDetail"
-import SchemeDetail from "./SchemeDetail"
-import DataModalButton from "./DataModalButton"
-import ComponentSettings from "./ComponentSettings"
+import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
+import Minimizer from "./Minimizer.vue"
+import ConceptDetail from "./ConceptDetail.vue"
+import SchemeDetail from "./SchemeDetail.vue"
+import DataModalButton from "./DataModalButton.vue"
+import ComponentSettings from "./ComponentSettings.vue"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk"
-import dragandrop from "../mixins/dragandrop"
-import computed from "../mixins/computed"
+import objects from "../mixins/cdk.js"
+import dragandrop from "../mixins/dragandrop.js"
+import computed from "../mixins/computed.js"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).

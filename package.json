@@ -10,14 +10,12 @@
     "prepare": "./bin/prepare.sh",
     "dev": "npm run serve",
     "start": "npm run serve",
-    "serve": "npm run prepare; vue-cli-service serve",
+    "serve": "npm run prepare; vite",
     "build": "./build/build.sh",
     "build-all": "./build/build-all.sh",
-    "lint": "vue-cli-service lint --no-fix",
-    "fix": "vue-cli-service lint",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.vue .",
+    "fix": "npm run lint -- --fix",
     "lint-staged": "lint-staged",
-    "styleguide": "vue-styleguidist server",
-    "styleguide:build": "vue-styleguidist build",
     "build-info": "./build/build-info.sh > ./build/build-info.json",
     "manual": "make -BC docs",
     "manual-pdf": "make -BC docs pdfs",
@@ -26,7 +24,7 @@
   },
   "lint-staged": {
     "**/*.{js,vue}": [
-      "vue-cli-service lint"
+      "eslint --ignore-path .gitignore --ext .js,.vue"
     ],
     "**/*.json": [
       "./bin/format-json.js"
@@ -42,10 +40,11 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@vue/composition-api": "^1.2.4",
     "axios": "^0.21.4",
     "bootstrap-vue": "^2.21.2",
     "cocoda-sdk": "^2.0.4",
-    "cocoda-vue-tabs": "^0.1.10",
+    "cocoda-vue-tabs": "^0.1.12",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.5",
     "gbv-login-client": "^0.3.1",
@@ -54,36 +53,27 @@
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "vue": "^2.6.14",
-    "vue-flexible-table": "^0.3.7",
+    "vue-demi": "^0.11.4",
+    "vue-flexible-table": "^0.3.8",
     "vue-i18n": "^8.26.0",
     "vue-router": "^3.5.2",
     "vue-scrollto": "^2.20.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/babel-preset-app": "^4.5.13",
-    "@vue/cli-plugin-babel": "^4.5.13",
-    "@vue/cli-plugin-eslint": "^4.5.13",
-    "@vue/cli-service": "^4.5.13",
-    "@vue/eslint-config-standard": "^5.1.2",
-    "@vue/test-utils": "^1.2.2",
-    "babel-eslint": "^10.1.0",
-    "chai": "^4.3.4",
-    "copy-webpack-plugin": "^6.4.1",
-    "eslint": "^7.29.0",
+    "eslint": "^8.0.0",
     "eslint-config-gbv": "^1.0.3",
-    "eslint-plugin-vue": "^6.2.2",
-    "glob": "^7.2.0",
-    "jsdoc-to-markdown": "^7.0.1",
-    "less": "^3.13.1",
-    "less-loader": "^7.3.0",
-    "lint-staged": "^10.5.4",
-    "react": "^17.0.2",
-    "vue-styleguidist": "^4.41.2",
-    "vue-template-compiler": "^2.6.14"
+    "eslint-plugin-vue": "^7.19.1",
+    "less": "^4.1.2",
+    "less-loader": "^10.1.0",
+    "lint-staged": "^11.2.3",
+    "vite": "^2.6.7",
+    "vite-plugin-vue2": "^1.8.2",
+    "vue-template-compiler": "^2.6.14",
+    "yorkie": "^2.0.0"
   },
   "engines": {
-    "node": ">=10.0.0",
+    "node": ">=12",
     "npm": ">=6.8.0"
   }
 }

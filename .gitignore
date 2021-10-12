@@ -1,7 +1,6 @@
 .DS_Store
 node_modules/
 /dist*/
-/styleguide/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -30,3 +29,7 @@ temp/
 *.ntvs*
 *.njsproj
 *.sln
+
+# Certain files in public/ folder
+public/*.json
+public/css

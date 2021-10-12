@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import DataModal from "./DataModal"
+import DataModal from "./DataModal.vue"
 
 /**
  * A wrapper offering a data sources button that opens a DataModal with the provided data.

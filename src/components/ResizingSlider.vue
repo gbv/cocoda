@@ -12,7 +12,7 @@
 
 <script>
 import _ from "lodash"
-import computed from "../mixins/computed"
+import computed from "../mixins/computed.js"
 
 /**
  * Resizing slider.

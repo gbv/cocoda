@@ -1,6 +1,6 @@
 import localforage from "localforage"
 import _ from "lodash"
-import log from "../../utils/log"
+import log from "../../utils/log.js"
 
 import componentSettings from "../../../config/settings.json"
 

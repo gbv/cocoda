@@ -296,17 +296,17 @@
 </template>
 
 <script>
-import TheSettings from "./TheSettings"
-import RegistryInfo from "./RegistryInfo"
-import MappingTable from "./MappingTable"
-import ItemName from "./ItemName"
+import TheSettings from "./TheSettings.vue"
+import RegistryInfo from "./RegistryInfo.vue"
+import MappingTable from "./MappingTable.vue"
+import ItemName from "./ItemName.vue"
 import _ from "lodash"
 
 // Import mixins
-import auth from "../mixins/auth"
-import objects from "../mixins/cdk"
-import dragandrop from "../mixins/dragandrop"
-import computed from "../mixins/computed"
+import auth from "../mixins/auth.js"
+import objects from "../mixins/cdk.js"
+import dragandrop from "../mixins/dragandrop.js"
+import computed from "../mixins/computed.js"
 
 /**
  * The navigation bar.

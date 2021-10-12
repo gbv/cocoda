@@ -90,13 +90,13 @@
 </template>
 
 <script>
-import LoadingIndicator from "./LoadingIndicator"
-import ItemName from "./ItemName"
+import LoadingIndicator from "./LoadingIndicator.vue"
+import ItemName from "./ItemName.vue"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk"
-import dragandrop from "../mixins/dragandrop"
+import objects from "../mixins/cdk.js"
+import dragandrop from "../mixins/dragandrop.js"
 
 /**
  * Component that represents one concept item in a ConceptList and possibly its children.

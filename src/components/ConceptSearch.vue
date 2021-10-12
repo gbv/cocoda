@@ -104,14 +104,14 @@
 </template>
 
 <script>
-import LoadingIndicator from "./LoadingIndicator"
+import LoadingIndicator from "./LoadingIndicator.vue"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk"
-import clickHandler from "../mixins/click-handler"
-import dragandrop from "../mixins/dragandrop"
-import computed from "../mixins/computed"
+import objects from "../mixins/cdk.js"
+import clickHandler from "../mixins/click-handler.js"
+import dragandrop from "../mixins/dragandrop.js"
+import computed from "../mixins/computed.js"
 
 /**
  * Component that represents a typeahead-enabled search field for concepts.

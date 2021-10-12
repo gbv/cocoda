@@ -193,13 +193,13 @@
 </template>
 
 <script>
-import DataModal from "./DataModal"
-import ItemName from "./ItemName"
-import AutoLink from "./AutoLink"
-import AnnotationList from "./AnnotationList"
-import RegistryInfo from "./RegistryInfo"
+import DataModal from "./DataModal.vue"
+import ItemName from "./ItemName.vue"
+import AutoLink from "./AutoLink.vue"
+import AnnotationList from "./AnnotationList.vue"
+import RegistryInfo from "./RegistryInfo.vue"
 
-import computed from "../mixins/computed"
+import computed from "../mixins/computed.js"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import LoadingIndicator from "./LoadingIndicator"
+import LoadingIndicator from "./LoadingIndicator.vue"
 
 /**
  * Component that shows a loading indicator overlay covering another component.
