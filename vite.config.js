@@ -15,6 +15,7 @@ fs.copyFileSync("node_modules/bootstrap-vue/dist/bootstrap-vue.css", "public/css
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "./",
   plugins: [
     vue(),
   ],
