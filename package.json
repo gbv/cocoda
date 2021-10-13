@@ -41,7 +41,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "@vue/composition-api": "^1.2.4",
-    "axios": "^0.21.4",
+    "axios": "^0.23.0",
     "bootstrap-vue": "^2.21.2",
     "cocoda-sdk": "^2.0.4",
     "cocoda-vue-tabs": "^0.1.12",
@@ -55,7 +55,7 @@
     "vue": "^2.6.14",
     "vue-demi": "^0.11.4",
     "vue-flexible-table": "^0.3.8",
-    "vue-i18n": "^8.26.0",
+    "vue-i18n": "^8.26.1",
     "vue-router": "^3.5.2",
     "vue-scrollto": "^2.20.0",
     "vuex": "^3.6.2"

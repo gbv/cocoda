@@ -6,6 +6,10 @@ WORKDIR /usr/src/app
 RUN apk add --no-cache bash
 RUN apk add --no-cache git
 
+## Show version numbers for Node and npm
+RUN node -v
+RUN npm -v
+
 ## Install dependencies (separate step to utilize caching)
 COPY package*.json ./
 RUN npm ci
