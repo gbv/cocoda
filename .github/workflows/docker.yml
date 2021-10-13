@@ -7,7 +7,7 @@ on:
       - test
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.ref != 'refs/heads/master'
     steps:
     - uses: actions/checkout@master
@@ -20,7 +20,7 @@ jobs:
         dockerfile: docker/Dockerfile
         tag_semver: true
   publish-main:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@master
