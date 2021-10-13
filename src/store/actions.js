@@ -12,6 +12,9 @@ import log from "../utils/log.js"
 // Import registry providers
 import { cdk } from "cocoda-sdk"
 import buildInfo from "../../build/build-info.json"
+// Import cocoda.json for hot reloading; will be ignored during build
+// eslint-disable-next-line no-unused-vars
+import userConfigAtBuild from "../../config/cocoda.json"
 
 export default {
   async loadConfig({ commit, dispatch }, configFile) {
