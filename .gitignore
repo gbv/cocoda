@@ -29,7 +29,3 @@ temp/
 *.ntvs*
 *.njsproj
 *.sln
-
-# Certain files in public/ folder
-public/*.json
-public/css
