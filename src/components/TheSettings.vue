@@ -271,7 +271,9 @@
         <tab
           v-if="config.shortcuts && config.shortcuts.length"
           :title="$t('settingsTabs')[3]">
-          <table class="table table-borderless">
+          <table
+            class="table table-borderless"
+            style="height: unset;">
             <tbody>
               <tr
                 v-for="shortcut in config.shortcuts"
@@ -379,39 +381,39 @@
             </p>
           </div>
         </tab>
-      </tabs>
-      <span slot="footer">
-        <a
-          href="https://github.com/gbv/cocoda"
-          target="_blank">
-          <font-awesome-icon :icon="['fab', 'github']" />
-          GitHub
-        </a>
-        <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
-          •
-          {{ $t("settings.version") }} {{ config.buildInfo.version }}
-        </span>
-        <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-          •
-          {{ $t("settings.currentCommit") }}:
+        <span class="settingsModal-footer">
           <a
-            :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+            href="https://github.com/gbv/cocoda"
             target="_blank">
-            {{ config.buildInfo.gitCommitShort }}
+            <font-awesome-icon :icon="['fab', 'github']" />
+            GitHub
           </a>
+          <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
+            •
+            {{ $t("settings.version") }} {{ config.buildInfo.version }}
+          </span>
+          <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
+            •
+            {{ $t("settings.currentCommit") }}:
+            <a
+              :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+              target="_blank">
+              {{ config.buildInfo.gitCommitShort }}
+            </a>
+          </span>
+          <span v-if="config.buildInfo.buildDate">
+            •
+            {{ $t("settings.buildDate") }}: {{ dateToString(config.buildInfo.buildDate) }}
+          </span>
+          <br>
+          <span>
+            {{ $t("settings.suggestions1") }}
+            <a
+              href="https://github.com/gbv/cocoda/issues"
+              target="_blank">{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
+          </span>
         </span>
-        <span v-if="config.buildInfo.buildDate">
-          •
-          {{ $t("settings.buildDate") }}: {{ dateToString(config.buildInfo.buildDate) }}
-        </span>
-        <br>
-        <span>
-          {{ $t("settings.suggestions1") }}
-          <a
-            href="https://github.com/gbv/cocoda/issues"
-            target="_blank">{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
-        </span>
-      </span>
+      </tabs>
     </b-card>
   </b-modal>
 </template>
@@ -854,6 +856,11 @@ p {
 }
 .settingsModal-componentSettings-component > div {
   margin-bottom: 5px;
+}
+.settingsModal-footer {
+  padding: .75rem 1.25rem;
+  background-color: #00000008;
+  border-top: 1px solid rgba(0,0,0,.125);
 }
 </style>
 
