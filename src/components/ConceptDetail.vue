@@ -391,7 +391,7 @@ export default {
         })
         searchLinks.push({
           url,
-          label: this.$jskos.prefLabel(searchLink),
+          label: this.$jskos.prefLabel(searchLink, { language: this.locale }),
         })
       }
       // Filter out duplicate URLs (e.g. Wikipedia)
