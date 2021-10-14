@@ -100,7 +100,6 @@ export default class MeshApiProvider extends BaseProvider {
     }
     const query = buildConceptQuery({ where: `VALUES ?d { ${concepts.map(c => `<${c.uri}>`).join(" ")} } .` })
     const result = await axios({
-      ...config,
       method: "get",
       url: `${apiBase}sparql`,
       params: {
@@ -124,7 +123,6 @@ export default class MeshApiProvider extends BaseProvider {
     }
     const query = buildConceptQuery({ where: `?d meshv:broaderDescriptor <${concept.uri}> .` })
     const result = await axios({
-      ...config,
       method: "get",
       url: `${apiBase}sparql`,
       params: {
@@ -157,9 +155,12 @@ export default class MeshApiProvider extends BaseProvider {
     return this._search(config)
   }
 
-  async _search({ search, limit, offset, ...config }) {
+  async _search({ scheme, search, limit, offset, ...config }) {
     if (!search) {
       throw new errors.InvalidOrMissingParameterError({ parameter: "search" })
+    }
+    if (!scheme || !jskos.compare(scheme, mesh)) {
+      throw new errors.InvalidOrMissingParameterError({ parameter: "scheme" })
     }
     limit = limit || this._jskos.suggestResultLimit || this._defaultParams.limit
     offset = offset || this._defaultParams.offset
@@ -167,7 +168,6 @@ export default class MeshApiProvider extends BaseProvider {
     search = search.replace(/"/g, "\\\"")
     const query = buildConceptQuery({ where: `FILTER(REGEX(?name,"${search}","i"))` })
     const result = await axios({
-      ...config,
       method: "get",
       url: `${apiBase}sparql`,
       params: {
