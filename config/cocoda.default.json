@@ -160,6 +160,16 @@
       ]
     },
     {
+      "provider": "MeshApi",
+      "uri": "http://coli-conc.gbv.de/registry/mesh-concepts",
+      "prefLabel": {
+        "en": "Medical Subject Headings (MeSH)"
+      },
+      "notation": [
+        "MeSH"
+      ]
+    },
+    {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "notation": [
