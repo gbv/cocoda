@@ -170,6 +170,21 @@
       ]
     },
     {
+      "provider": "LocApi",
+      "uri": "http://coli-conc.gbv.de/registry/loc-concepts",
+      "notation": [
+        "LoC"
+      ],
+      "prefLabel": {
+        "en": "Library of Congress"
+      },
+      "definition": {
+        "en": [
+          "Access to Library of Congress vocabularies via their linked data service."
+        ]
+      }
+    },
+    {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "notation": [
