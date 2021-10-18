@@ -1,23 +1,24 @@
 <template>
   <div
-    class="conceptList"
-    :style="`margin-bottom: ${noItems ? 0 : 30}px;`">
+    class="conceptList">
     <!-- Show concepts -->
-    <div
+    <virtual-list
       ref="conceptListItems"
-      class="conceptListItems">
-      <concept-list-item
-        v-for="({ concept, depth, isSelected }, index) in items"
-        :key="`conceptListItems-${isLeft}-${index}`"
-        :concept="concept"
-        :depth="depth"
-        :is-selected="isSelected"
-        :index="index"
-        :is-left="isLeft"
-        :show-children="showChildren"
-        :show-scheme="showScheme"
-        :buttons="buttons" />
-    </div>
+      class="conceptListItems"
+      :data-key="'uri'"
+      :data-sources="items"
+      :data-component="itemComponent"
+      :keeps="50"
+      :extra-props="{
+        isLeft,
+        showChildren,
+        showScheme,
+        buttons,
+      }"
+      :wrap-style="{
+        'margin-bottom': '15px',
+      }"
+      @scroll.native="$emit('scroll')" />
     <div
       v-if="noItems"
       class="conceptListItems-noItems">
@@ -31,6 +32,7 @@
 <script>
 import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 import ConceptListItem from "./ConceptListItem.vue"
+import VirtualList from "vue-virtual-scroll-list"
 import _ from "lodash"
 import { scroller } from "vue-scrollto/src/scrollTo"
 
@@ -45,7 +47,8 @@ import mappedStatus from "../mixins/mapped-status.js"
 export default {
   name: "ConceptList",
   components: {
-    LoadingIndicatorFull, ConceptListItem,
+    LoadingIndicatorFull,
+    VirtualList,
   },
   mixins: [objects, computed, mappedStatus],
   props: {
@@ -99,6 +102,7 @@ export default {
       default: false,
     },
   },
+  emits: ["scroll"],
   data () {
     return {
       loading: false,
@@ -107,6 +111,7 @@ export default {
       scrollTo: scroller(),
       oldPreviousConcept: null,
       oldNextConcept: null,
+      itemComponent: ConceptListItem,
     }
   },
   computed: {
@@ -120,6 +125,7 @@ export default {
       let items = []
       for (let concept of this.concepts) {
         let item = {
+          uri: concept ? concept.uri : "loading",
           concept,
           depth: 0,
           isSelected: this.$jskos.compare(this.conceptSelected, concept),
@@ -232,22 +238,9 @@ export default {
               _.delay(() => {
                 // Don't scroll if concept changed in the meantime
                 if (this.shouldScroll) return
-                let el = this.$refs.conceptListItems.querySelectorAll(`[data-uri='${concept.uri}']`)[0]
-                // Find container element
-                let container = this.$refs.conceptListItems
-                while (container != null && !container.classList.contains("cocoda-vue-tabs-content")) {
-                  container = container.parentElement
-                }
-                // Scroll element
-                var options = {
-                  container,
-                  easing: "ease-in",
-                  offset: -50,
-                  cancelable: true,
-                  x: false,
-                  y: true,
-                }
-                if (el) this.scrollToInternal(el, options)
+                const index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
+                if (index === -1) return
+                this.scrollToInternal({ index })
                 this.loading = false
               }, 100)
             } else if (!fullyLoaded) {
@@ -300,20 +293,20 @@ export default {
         })
       }
     },
-    scrollToInternal(el, options) {
-      let container = options.container
-      if (container.style.display == "none") {
+    scrollToInternal({ index }) {
+      let container = this.$refs.conceptListItems
+      if (!container) {
         // Wait for later to scroll
-        this.scrollLater = { el, options }
+        this.scrollLater = { index }
       } else {
-        this.scrollTo(el, 200, options)
+        container.scrollToIndex(index - 1)
         this.scrollLater = null
       }
     },
     scroll() {
       if (this.scrollLater) {
         this.$nextTick(() => {
-          this.scrollToInternal(this.scrollLater.el, this.scrollLater.options)
+          this.scrollToInternal(this.scrollLater)
         })
       }
     },
@@ -324,6 +317,7 @@ export default {
       if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
         for (let child of concept.narrower || []) {
           let item = {
+            uri: child ? child.uri : "loading",
             concept: child,
             depth,
             isSelected: this.$jskos.compare(this.conceptSelected, child),
@@ -345,6 +339,20 @@ export default {
 <style lang="less" scoped>
 @import "../style/main.less";
 
+.conceptList {
+  height: 100%;
+}
+.conceptListItems {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: scroll;
+}
+.conceptListItems > *:first-child > *:last-child {
+  margin-bottom: 30px;
+}
 .conceptListItems-noItems {
   margin-top: 5px;
   text-align: center;

@@ -109,17 +109,13 @@ export default {
   mixins: [objects, dragandrop],
   props: {
     /**
-     * The concept object that this list item represents.
+     * Source object containing properties:
+     * - concept
+     * - depth
+     * - isSelected
      */
-    concept: {
+    source: {
       type: Object,
-      default: null,
-    },
-    /**
-     * The depth of the current item.
-     */
-    depth: {
-      type: Number,
       default: null,
     },
     /**
@@ -135,13 +131,6 @@ export default {
     isLeft: {
       type: Boolean,
       default: true,
-    },
-    /**
-     * Tells the component whether the item is selected.
-     */
-    isSelected: {
-      type: Boolean,
-      default: false,
     },
     /**
      * Whether to show children of concepts, i.e. a concept hierarchy.
@@ -200,6 +189,15 @@ export default {
     },
     showConceptMappedStatus() {
       return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
+    },
+    concept() {
+      return this.source.concept
+    },
+    depth() {
+      return this.source.depth
+    },
+    isSelected() {
+      return this.source.isSelected
     },
   },
   created() {

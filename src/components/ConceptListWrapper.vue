@@ -11,11 +11,10 @@
         v-for="(choice, index) in dataChoices"
         :key="`conceptListWrapper-dataChoice-${index}`"
         :title="choice.label"
-        style="position: relative;"
+        style="position: relative; overflow: hidden !important;"
         :hidden="choice !== currentChoice"
         @dragover.native="dragOver"
-        @drop.native="drop($event, choice.droppedConcept)"
-        @scroll.native="loadConceptsInView">
+        @drop.native="drop($event, choice.droppedConcept)">
         <!-- List of concepts -->
         <concept-list
           ref="conceptList"
@@ -25,7 +24,8 @@
           :show-scheme="choice.showScheme"
           :no-items-label="choice.noItemsLabel"
           :buttons="choice.buttons"
-          :shown="index == currentChoiceIndex" />
+          :shown="index == currentChoiceIndex"
+          @scroll="loadConceptsInView" />
       </tab>
       <template #title="slotProps">
         <span>
@@ -253,17 +253,19 @@ export default {
       }
     },
     _loadConceptsInView() {
-      let concepts = []
-      let conceptList = _.get(this, `$refs.conceptList[${this.currentChoiceIndex}]`)
-      let container = _.get(conceptList, "$parent.$el")
-      if (conceptList && conceptList.$children && container) {
-        for (let child of conceptList.$children) {
+      const concepts = []
+      const conceptList = _.get(this, `$refs.conceptList[${this.currentChoiceIndex}]`)
+      const children = _.get(conceptList, "$children[0].$children")
+      const container = _.get(conceptList, "$children[0].$el")
+      if (children && container) {
+        for (let child of children) {
           if (!child || !child.$el) {
             continue
           }
           const element = child.$el
-          if (this.checkInView(container, element)) {
-            concepts.push(child.concept)
+          const concept = _.get(child, "$children[0].concept")
+          if (concept && this.checkInView(container, element)) {
+            concepts.push(concept)
           }
         }
       }
