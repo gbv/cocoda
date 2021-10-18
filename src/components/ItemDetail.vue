@@ -146,15 +146,20 @@ export default {
      * Refreshes data when item changes.
      */
     item: function() {
-      this.$el.scrollTop = 0
+      this.scrollToTop()
     },
   },
   mounted() {
-    this.$el.scrollTop = 0
+    this.scrollToTop()
   },
   methods: {
     droppedConcept(concept) {
       this.$router.push({ path: this.getRouterUrl(concept, this.isLeft, true) })
+    },
+    scrollToTop() {
+      Array.prototype.forEach.call(this.$el.getElementsByClassName("itemDetail-content"), element => {
+        element.scrollTop = 0
+      })
     },
   },
 }
