@@ -589,6 +589,11 @@ export default {
         newMapping._registry = mapping._registry
         newMapping.fromScheme = mapping.fromScheme
         newMapping.toScheme = mapping.toScheme
+        // Move URI to identifier if user can't edit
+        if (!canEdit) {
+          newMapping.identifier = [].concat(newMapping.identifier, newMapping.uri)
+          delete newMapping.uri
+        }
         return newMapping
       }
       let mapping = copyWithReferences(data.item.mapping)
