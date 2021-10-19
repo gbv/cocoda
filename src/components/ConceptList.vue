@@ -16,6 +16,7 @@
         buttons,
       }"
       :wrap-style="{
+        'margin-top': '5px',
         'margin-bottom': '15px',
       }"
       @scroll.native="$emit('scroll')" />
