@@ -303,9 +303,8 @@ export default {
         // Wait for later to scroll
         this.scrollLater = { index }
       } else {
-        if (index !== 0) {
-          index -= 1
-        }
+        // Adjust index slightly to leave some space above selected concept after scrolling
+        index = Math.min(index, Math.abs(index - 1), Math.abs(index - 2))
         this.scrollLater = null
         _.delay(() => {
           conceptList.scrollToIndex(index)
