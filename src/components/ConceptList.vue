@@ -235,14 +235,12 @@ export default {
                   this.open(ancestor, this.isLeft, true)
                 }
               }
-              _.delay(() => {
-                // Don't scroll if concept changed in the meantime
-                if (this.shouldScroll) return
-                const index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
-                if (index === -1) return
-                this.scrollToInternal({ index })
-                this.loading = false
-              }, 100)
+              // Don't scroll if concept changed in the meantime
+              const index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
+              if (index === -1 || this.shouldScroll) {
+                return
+              }
+              this.scrollToInternal({ index })
             } else if (!fullyLoaded) {
               this.loading = true
             }
@@ -294,13 +292,24 @@ export default {
       }
     },
     scrollToInternal({ index }) {
-      let container = this.$refs.conceptListItems
-      if (!container) {
+      const conceptList = this.$refs.conceptListItems
+      // Get cocoda-vue-tabs-content element
+      let container = conceptList && conceptList.$el
+      while (container && !container.classList.contains("cocoda-vue-tabs-content")) {
+        container = container.parentElement
+      }
+      if (!conceptList || !container || container.style.display == "none") {
         // Wait for later to scroll
         this.scrollLater = { index }
       } else {
-        container.scrollToIndex(index - 1)
+        if (index !== 0) {
+          index -= 1
+        }
         this.scrollLater = null
+        _.delay(() => {
+          conceptList.scrollToIndex(index)
+          this.loading = false
+        }, 200)
       }
     },
     scroll() {
