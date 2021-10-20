@@ -272,24 +272,6 @@ export default {
       // Load concepts
       this.loadConcepts(concepts)
     },
-    /**
-     * from: https://stackoverflow.com/a/37285344
-     *
-     * Checks if element is in view relative to container element.
-     * Note: container must have "position: relative"!
-     */
-    checkInView(container, element, partial = true) {
-      let cTop = container.scrollTop
-      let cBottom = cTop + container.clientHeight
-      let eTop = element.offsetTop
-      let eBottom = eTop + element.clientHeight
-      let isTotal = (eTop >= cTop && eBottom <= cBottom)
-      let isPartial = partial && (
-        (eTop < cTop && eBottom > cTop) ||
-        (eBottom > cBottom && eTop < cBottom)
-      )
-      return (isTotal || isPartial)
-    },
     // Minimizes the concept list to only URIs and inScheme
     minimizeConcepts(concepts) {
       let newList = []

@@ -395,5 +395,26 @@ export default {
       }
       return message
     },
+    /**
+     * from: https://stackoverflow.com/a/37285344
+     *
+     * Checks if element is in view relative to container element.
+     * Note: container must have "position: relative"!
+     */
+    checkInView(container, element, partial = true) {
+      if (!container || !element) {
+        return false
+      }
+      let cTop = container.scrollTop
+      let cBottom = cTop + container.clientHeight
+      let eTop = element.offsetTop
+      let eBottom = eTop + element.clientHeight
+      let isTotal = (eTop >= cTop && eBottom <= cBottom)
+      let isPartial = partial && (
+        (eTop < cTop && eBottom > cTop) ||
+        (eBottom > cBottom && eTop < cBottom)
+      )
+      return (isTotal || isPartial)
+    },
   },
 }
