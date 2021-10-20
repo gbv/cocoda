@@ -237,11 +237,10 @@ export default {
                 }
               }
               // Don't scroll if concept changed in the meantime
-              const index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
-              if (index === -1 || this.shouldScroll) {
+              if (this.shouldScroll) {
                 return
               }
-              this.scrollToInternal({ index })
+              this.scrollToInternal({ concept })
             } else if (!fullyLoaded) {
               this.loading = true
             }
@@ -292,7 +291,7 @@ export default {
         })
       }
     },
-    scrollToInternal({ index }) {
+    scrollToInternal({ concept }) {
       const conceptList = this.$refs.conceptListItems
       // Get cocoda-vue-tabs-content element
       let container = conceptList && conceptList.$el
@@ -301,14 +300,30 @@ export default {
       }
       if (!conceptList || !container || container.style.display == "none") {
         // Wait for later to scroll
-        this.scrollLater = { index }
+        this.scrollLater = { concept }
       } else {
+        const unwind = () => {
+          this.scrollLater = null
+          this.loading = false
+        }
+        // Find index
+        let index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
+        if (index === -1) {
+          unwind()
+          return
+        }
+        // Check if concept is already in view
+        const containerToCheck = container.getElementsByClassName("conceptListItems")[0]
+        const elementToCheck = containerToCheck && containerToCheck.querySelectorAll(`.conceptListItem[data-uri="${concept.uri}"]`)[0]
+        if (this.checkInView(containerToCheck, elementToCheck)) {
+          unwind()
+          return
+        }
         // Adjust index slightly to leave some space above selected concept after scrolling
         index = Math.min(index, Math.abs(index - 1), Math.abs(index - 2))
-        this.scrollLater = null
         _.delay(() => {
           conceptList.scrollToIndex(index)
-          this.loading = false
+          unwind()
         }, 200)
       }
     },
