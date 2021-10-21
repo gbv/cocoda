@@ -262,13 +262,13 @@ If these are fulfilled, you can create a release by running one of the following
 
 ```bash
 # patch release, e.g. 0.8.0 -> 0.8.1
-npm run release patch
+npm run release:patch
 
 # minor release, e.g. 0.8.1 -> 0.9.0
-npm run release minor
+npm run release:minor
 
 # major release, e.g. 0.9.0 -> 1.0.0
-npm run release major
+npm run release:major
 ```
 
 After successfully creating a release, the script will show you some possible next steps.

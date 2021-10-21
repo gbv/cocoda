@@ -19,7 +19,9 @@
     "build-info": "./build/build-info.sh > ./build/build-info.json",
     "manual": "make -BC docs",
     "manual-pdf": "make -BC docs pdfs",
-    "release": "./bin/release.sh",
+    "release:patch": "./bin/release.sh patch",
+    "release:minor": "./bin/release.sh minor",
+    "release:major": "./bin/release.sh major",
     "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
   },
   "lint-staged": {
