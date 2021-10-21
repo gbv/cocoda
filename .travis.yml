@@ -22,7 +22,6 @@ install:
 
 script:
 - npm run lint
-- cp ./.travis/cocoda.json ./config/cocoda.json # copy Travis-specific config file
 - npm run build
 - mv dist cocoda
 - mkdir dist-docs
