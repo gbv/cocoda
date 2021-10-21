@@ -53,7 +53,7 @@ const refreshRouter = (store) => {
       if (store.state.mapping.original.uri) {
         query.mappingUri = store.state.mapping.original.uri
       } else if (store.state.mapping.original.identifier) {
-        query.mappingIdentifier = store.state.mapping.original.identifier.find(id => id.startsWith("urn:jskos:mapping:content:"))
+        query.mappingIdentifier = store.state.mapping.original.identifier.find(id => id && id.startsWith("urn:jskos:mapping:content:"))
       }
     }
   }

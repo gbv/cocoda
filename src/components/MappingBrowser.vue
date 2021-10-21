@@ -1417,7 +1417,7 @@ export default {
           if (!this.$jskos.mappingRegistryIsStored(registry)) {
             const currentRegistryResults = results[this.currentRegistry.uri] || []
             const memberIdentifier = (mapping) => {
-              return mapping && mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:members:"))
+              return mapping && mapping.identifier.find(id => id && id.startsWith("urn:jskos:mapping:members:"))
             }
             if (currentRegistryResults.find(m => memberIdentifier(m) == memberIdentifier(mapping))) {
               skipped += 1

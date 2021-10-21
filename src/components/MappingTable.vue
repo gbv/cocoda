@@ -212,7 +212,7 @@ export default {
       // Save mappings
       for (let mapping of this.mappings) {
         // Filter duplicate mappings
-        let hash = mapping.identifier ? mapping.identifier.find(id => id.startsWith("urn:jskos:mapping:content:")) : null
+        let hash = mapping.identifier ? mapping.identifier.find(id => id && id.startsWith("urn:jskos:mapping:content:")) : null
         if (!this.hideDuplicates || !hash || !hashList.includes(hash)) {
           let item = {}
           item.mapping = mapping
