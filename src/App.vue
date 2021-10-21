@@ -539,7 +539,7 @@ export default {
         url: "./build-info.json",
         buildInfo: this.config.buildInfo,
         interval: this.config.autoRefresh.update,
-        callImmediately: false,
+        callImmediately: true,
         callback: (error, buildInfo, previousBuildInfo) => {
           // ? Should a new build (not only a newer commit) also be shown as an update?
           if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
