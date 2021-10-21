@@ -115,7 +115,7 @@
             placement="auto">
             <div
               ref="filterPopover"
-              class="conceptSchemeSelection-filterPopover">
+              class="conceptSchemeSelection-filterPopover scrollable">
               <p class="fontWeight-heavy">
                 {{ $t("schemeSelection.filter") }}
               </p>
@@ -689,6 +689,7 @@ export default {
   // Popovers have a hardcoded max width of 276px and 12px padding on each side -> maximum width of content is 252px.
   min-width: 252px;
   max-width: 252px;
+  max-height: 75vh;
 }
 .conceptSchemeSelection-filterPopover .custom-control {
   height: unset !important;
