@@ -315,7 +315,7 @@ export default {
         // Check if concept is already in view
         const containerToCheck = container.getElementsByClassName("conceptListItems")[0]
         const elementToCheck = containerToCheck && containerToCheck.querySelectorAll(`.conceptListItem[data-uri="${concept.uri}"]`)[0]
-        if (this.checkInView(containerToCheck, elementToCheck)) {
+        if (this.checkInView(containerToCheck, elementToCheck, false)) {
           unwind()
           return
         }
