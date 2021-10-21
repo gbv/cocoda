@@ -236,32 +236,32 @@
           </b-popover>
         </b-form>
         <!-- List of all schemes, showing favorites first -->
-        <ul class="conceptSchemeSelection-schemeList scrollable">
-          <li
-            v-for="(_scheme, index) in filteredSchemes"
-            :key="_scheme.uri + '-scheme-list-' + id + index">
-            <font-awesome-icon
-              v-b-tooltip.hover="{ title: $jskos.isContainedIn(_scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
-              :class="$jskos.isContainedIn(_scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
-              class="pointer"
-              icon="star"
-              @click="toggleFavoriteScheme(_scheme)" />
-            <item-name
-              :ref="index == 0 ? 'firstScheme' : null"
-              :item="_scheme"
-              :is-link="true"
-              :is-left="isLeft"
-              @click.native="hidePopover" />
-          </li>
-          <li v-show="isFiltered && filteredSchemes.length < schemes.length">
-            <a
-              ref="showAllSchemesLink"
-              href=""
-              @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
-              {{ $t("schemeSelection.showAllSchemes", { count: schemes.length }) }}
-            </a>
-          </li>
-        </ul>
+        <virtual-list
+          class="conceptSchemeSelection-schemeList scrollable"
+          :data-key="'uri'"
+          :data-sources="filteredSchemes"
+          :data-component="itemComponent"
+          :keeps="50"
+          :item-class="'conceptSchemeSelection-schemeList-item'"
+          :extra-props="{
+            isLeft,
+            hidePopover,
+            favoriteSchemes,
+            toggleFavoriteScheme,
+          }">
+          <template slot="footer">
+            <div
+              v-show="isFiltered && filteredSchemes.length < schemes.length"
+              class="conceptSchemeSelection-schemeList-item">
+              <a
+                ref="showAllSchemesLink"
+                href=""
+                @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+                {{ $t("schemeSelection.showAllSchemes", { count: schemes.length }) }}
+              </a>
+            </div>
+          </template>
+        </virtual-list>
       </div>
     </div>
   </div>
@@ -271,6 +271,8 @@
 import ItemName from "./ItemName.vue"
 import ConceptSearch from "./ConceptSearch.vue"
 import ComponentSettings from "./ComponentSettings.vue"
+import VirtualList from "vue-virtual-scroll-list"
+import ConceptSchemeSelectionItemVue from "./ConceptSchemeSelectionItem.vue"
 
 import _ from "lodash"
 
@@ -291,7 +293,7 @@ import kosTypes from "../../config/kos-types.json"
  */
 export default {
   name: "ConceptSchemeSelection",
-  components: { ItemName, ConceptSearch, ComponentSettings },
+  components: { ItemName, ConceptSearch, ComponentSettings, VirtualList },
   mixins: [objects, clickHandler, hotkeys, computed],
   props: {
     /**
@@ -320,6 +322,8 @@ export default {
       typeFilter: [],
       // Flag whether to show only favorite concepts
       onlyFavorites: true,
+      // Item component for VirtualList
+      itemComponent: ConceptSchemeSelectionItemVue,
     }
   },
   computed: {
@@ -565,7 +569,7 @@ export default {
      */
     chooseFirst(event) {
       event.preventDefault()
-      let scheme = _.get(this, "$refs.firstScheme[0].item")
+      const scheme = this.filteredSchemes[0]
       if (!scheme) {
         return
       }
@@ -675,12 +679,8 @@ export default {
   flex: 1 1 auto;
   // Make sure scheme list doesn't get too small.
   min-height: 40vh;
-  list-style: none;
   padding-left: 3px;
   margin-bottom: 0px;
-}
-.conceptSchemeSelection-schemeList > li {
-  padding-top: 8px;
 }
 
 .conceptSchemeSelection-filterPopover {
@@ -708,5 +708,8 @@ export default {
 .conceptSchemeSelection .componentSettings {
   right: 3px;
   bottom: 2px;
+}
+.conceptSchemeSelection-schemeList-item {
+  padding-top: 8px;
 }
 </style>
