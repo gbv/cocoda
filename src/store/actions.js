@@ -45,11 +45,7 @@ export default {
       config.registries = [].concat(userConfig.registries || [], defaultConfig.registries || [])
       let registries = []
       for (let registry of config.registries) {
-        let index = registries.findIndex(r => r.uri == registry.uri)
-        // Ignore if it's already in the list (the earlier the registry, the higher the priority)
-        if (index == -1) {
-          registries.push(registry)
-        }
+        registries.push(registry)
       }
       config.registries = registries
     }
@@ -106,6 +102,8 @@ export default {
     }
     // Filter out registries where no provider could be initialized
     config.registries = config.registries.filter(registry => registry.provider != null)
+    // Filter out duplicate registries
+    config.registries = _.uniqBy(config.registries, r => r.uri)
 
     if (!config.registries.length && !config.error) {
       config.error = "noRegistries"

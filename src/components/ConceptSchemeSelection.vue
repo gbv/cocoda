@@ -156,7 +156,7 @@
                 </a>
                 <b-form-checkbox
                   v-for="option in registryFilterOptions"
-                  :key="`conceptSchemeSelection-filterPopover-${id}-languageFilter-${option.value}`"
+                  :key="`conceptSchemeSelection-filterPopover-${id}-registryFilter-${option.value}`"
                   v-model="registryFilter"
                   :value="option.value"
                   size="sm"
