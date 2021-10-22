@@ -888,7 +888,7 @@ html, body {
   flex: 1
 }
 #mappingBrowserComponent {
-  flex: 2;
+  flex: 3;
   min-height: 220px;
   padding: 0;
 }
