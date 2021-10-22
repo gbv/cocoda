@@ -2,8 +2,8 @@
 
 mkdir temp
 wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100' -O temp/github-milestones.json
-# Copy build-info.sh to a temporary directory so it will be accessible throughout all the builds
-cp build/build-info.sh temp/build-info.sh
+# Copy build-info.js to a temporary directory so it will be accessible throughout all the builds
+cp build/build-info.js temp/build-info.js
 
 # Stash changes before running script
 git stash save -u before-build-all
@@ -23,7 +23,7 @@ do
   # 3. Create build
   npm run build
   # 4 Create build-info.json from scratch (due to new properties)
-  VERSION=$TAG GIT_BRANCH=$GIT_BRANCH temp/build-info.sh > dist/build-info.json
+  VERSION=$TAG GIT_BRANCH=$GIT_BRANCH temp/build-info.js > dist/build-info.json
   # 5. Move build to separate folder
   mv dist releases/$TAG
   # 6. Reset repo for next checkout

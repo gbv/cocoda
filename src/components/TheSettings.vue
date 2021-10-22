@@ -396,6 +396,7 @@
             •
             {{ $t("settings.currentCommit") }}:
             <a
+              v-b-tooltip.hover="{ title: config.buildInfo.gitCommitMessage, delay: defaults.delay.short }"
               :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
               target="_blank">
               {{ config.buildInfo.gitCommitShort }}

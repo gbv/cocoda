@@ -16,7 +16,7 @@
     "lint": "eslint --ignore-path .gitignore --ext .js,.vue .",
     "fix": "npm run lint -- --fix",
     "lint-staged": "lint-staged",
-    "build-info": "./build/build-info.sh > ./build/build-info.json",
+    "build-info": "./build/build-info.js > ./build/build-info.json",
     "manual": "make -BC docs",
     "manual-pdf": "make -BC docs pdfs",
     "release:patch": "./bin/release.sh patch",
