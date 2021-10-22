@@ -614,8 +614,7 @@ export default {
   position: relative;
   order: 1;
   margin: auto 0;
-  padding-top: 20px;
-  transform: translateY(-12px);
+  transform: translateY(-10px);
 }
 .mappingEditorPart {
   flex: 1;
@@ -649,7 +648,7 @@ export default {
 .mappingScheme {
   text-align: center;
   flex: none;
-  margin: 0 0 5px 0;
+  margin: -29px 0 5px 0;
 }
 .mappingConceptList {
   flex: 1;
