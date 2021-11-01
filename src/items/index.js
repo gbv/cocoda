@@ -1,0 +1,385 @@
+/**
+ * import { ... } from "@/items"
+ *
+ * TODO
+ */
+
+import { reactive, set, del } from "@vue/composition-api"
+import _ from "lodash"
+import * as jskos from "jskos-tools"
+import { cdk } from "cocoda-sdk"
+
+const _items = reactive({})
+
+function getRegistryForItem(item) {
+  if (item._registry) {
+    return item._registry
+  }
+  const scheme = getItem(_.get(item, "inScheme[0]"))
+  if (scheme && scheme._registry) {
+    return scheme._registry
+  }
+  return null
+}
+
+export function getItem(item) {
+  for (const uri of jskos.getAllUris(item)) {
+    if (_items[uri]) {
+      return _items[uri]
+    }
+  }
+  return null
+}
+
+export function getItemByUri(uri) {
+  return getItem({ uri })
+}
+
+export function saveItem(item, options = {}) {
+  if (!item || !item.uri) {
+    throw new Error("Can't save object that is null or undefined or that doesn't have a URI.")
+  }
+  const uri = item.uri
+  const existing = _items[uri]
+  // Return immediately if object reference is the same
+  if (existing === item) {
+    return item
+  }
+
+  // Collect addition items (broader, narrower, ...) to save and replace them with URI-only objects
+  const additionalItemsToSave = []
+  for (const key of Object.keys(item)) {
+    if (!Array.isArray(item[key])) {
+      continue
+    }
+    const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts"]
+    const schemeProps = ["inScheme", "topConceptOf", "versionOf"]
+    if (![].concat(conceptProps, schemeProps).includes(key)) {
+      continue
+    }
+    item[key] = item[key].map(relatedItem => {
+      // Only replace if it has uri
+      if (relatedItem && relatedItem.uri) {
+        // Add a type to related item based on property name
+        if (schemeProps.includes(key)) {
+          relatedItem.__TYPE__ = "scheme"
+        }
+        if (conceptProps.includes(key)) {
+          relatedItem.__TYPE__ = "concept"
+        }
+        additionalItemsToSave.push(relatedItem)
+        return { uri: relatedItem.uri }
+      }
+      // Otherwise keep
+      return relatedItem
+    })
+  }
+
+  if (!existing) {
+    // Determine item type
+    const type = options.type || (jskos.isScheme(item) ? "scheme" : (jskos.isConcept(item) ? "concept" : null))
+    // Set __DETAILSLOADED__ property
+    item.__DETAILSLOADED__ = item.__DETAILSLOADED__ != null ? item.__DETAILSLOADED__ : 0
+    // __SAVED__ means it was saved
+    item.__SAVED__ = true
+
+    // Type-specific adjustments
+    if (type === "scheme") {
+      // Adjustment for schemes
+      const typeUri = "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+      item.type = item.type || []
+      if (!item.type.includes(typeUri)) {
+        item.type = [typeUri].concat(item.type)
+      }
+      // ? Anything else?
+    }
+    if (type === "concept") {
+      // Adjustments for concepts
+      const typeUri = "http://www.w3.org/2004/02/skos/core#Concept"
+      item.type = item.type || []
+      if (!item.type.includes(typeUri)) {
+        item.type = [typeUri].concat(item.type)
+      }
+      item.__ISOPEN__ = { true: false, false: false }
+      item.inScheme = item.inScheme || [options.scheme]
+      // ? Anything else?
+    }
+
+    // Registry adjustments
+    // TODO: Why is this necessary?
+    const registry = getRegistryForItem(item) || options.registry
+    if (registry) {
+      if (type === "scheme") {
+        registry.adjustSchemes([item])
+        // For now, we would like to keep the registry, at least in Cocoda.
+        // Later, we can rely on cocoda-sdk's registryForScheme, but we need adjustments for that.
+        // (e.g. RegistryInfo won't have any info on those registries)
+        item._registry = registry
+      }
+      if (type === "concept") {
+        registry.adjustConcepts([item])
+      }
+    }
+
+    // Save item
+    set(_items, uri, item)
+    for (const id of item.identifier || []) {
+      set(_items, id, _items[uri])
+    }
+
+  } else {
+    // Integrate details into existing item
+    // ? Could we use `jskos.merge` instead?
+    for (let prop of Object.keys(item)) {
+      if (
+        (
+          (
+            _.isEmpty(existing[prop]) || Array.isArray(existing[prop]) && existing[prop].includes(null)
+          ) && item[prop] != null && !_.isEqual(existing[prop], item[prop])
+        ) ||
+        (
+          _.isArray(existing[prop]) && _.isArray(item[prop]) && item[prop].length > existing[prop].length)
+      ) {
+        set(existing, prop, item[prop])
+      } else {
+        // Special cases
+        // Integrate object properties
+        if (!_.isArray(existing[prop]) && !_.isArray(item[prop]) && _.isObject(existing[prop]) && _.isObject(item[prop])) {
+          // Just overwrite null or not existing values
+          for (let prop2 of Object.keys(item[prop])) {
+            if (!existing[prop][prop2]) {
+              set(existing[prop], prop2, item[prop][prop2])
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Save additional items
+  // TODO: Do we need to do this for ALL items?
+  additionalItemsToSave.forEach(({ __TYPE__, ...item }) => saveItem(item, { type: __TYPE__ }))
+
+  return _items[uri]
+}
+
+export function saveItemsWithOptions(options) {
+  return items => items.map(item => saveItem(item, options))
+}
+
+export function removeItem(item) {
+  item = getItem(item) || item
+  for (const uri of jskos.getAllUris(item)) {
+    if (_items[uri]) {
+      _items[uri] = null
+    }
+  }
+}
+
+export function removeItemByUri(uri) {
+  removeItem({ uri })
+}
+
+export function modifyItem(item, path, value) {
+  path = _.isArray(path) ? path : path.split(".")
+  const lastProp = path.pop()
+  let object = getItem(item)
+  for (const prop of path) {
+    if (!object[prop]) {
+      set(object, prop, {})
+    }
+    object = object[prop]
+  }
+  set(object, lastProp, value)
+}
+
+export function modifyItemByUri(uri, path, value) {
+  modifyItem({ uri }, path, value)
+}
+
+export const schemes = reactive([])
+// TODO: Adjust to load one registry after another without blocking
+export async function loadSchemes() {
+  for (const scheme of await cdk.getSchemes()) {
+    saveItem(scheme, { type: "scheme" })
+    if (!schemes.find(s => jskos.compare(s, scheme))) {
+      schemes.push({ uri: scheme.uri })
+    }
+  }
+  return schemes
+}
+
+export async function loadTypes(scheme, { registry, force = false }) {
+  scheme = getItem(scheme) || scheme
+  if (!force && scheme.types && !scheme.types.includes(null)) {
+    return scheme.types
+  }
+  registry = getRegistryForItem(scheme) || registry
+  if (!registry) {
+    throw new Error(`loadTop: Could not find registry for item ${scheme.uri}`)
+  }
+  try {
+    const types = await registry.getTypes({ scheme })
+    set(scheme, "types", types)
+  } catch (error) {
+    console.error(`loadTypes: Error loading types for ${scheme.uri}`, error)
+    set(scheme, "types", [])
+  }
+  return scheme.types
+}
+
+export async function loadTop(scheme, { registry, force = false } = {}) {
+  scheme = getItem(scheme) || scheme
+  if (!force && scheme.topConcepts && !scheme.topConcepts.includes(null)) {
+    return scheme.topConcepts
+  }
+  registry = getRegistryForItem(scheme) || registry
+  if (!registry) {
+    throw new Error(`loadTop: Could not find registry for item ${scheme.uri}`)
+  }
+  try {
+    const topConcepts = (await registry.getTop({ scheme })).map(concept => {
+      // Add empty array for ancestor
+      concept.ancestors = []
+      // Save concept
+      return saveItem(concept, { type: "concept", scheme })
+    })
+    set(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(({ uri }) => ({ uri })))
+  } catch (error) {
+    console.error(`loadTop: Error loading top concepts for ${scheme.uri}`, error)
+    set(scheme, "topConcepts", [])
+  }
+  return scheme.topConcepts
+}
+
+export const loadingConcepts = reactive([])
+export const erroredConcepts = reactive([])
+export async function loadConcepts(concepts, { registry: fallbackRegistry, scheme, force = false, ...options } = {}) {
+  // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
+  // Then, sort the remaining concepts by registry.
+  const list = []
+  let uris = []
+  concepts = concepts.map(concept => getItem(concept))
+  for (let concept of concepts.filter(c => c && c.uri && (c.__DETAILSLOADED__ < 1 || force))) {
+    const registry = getRegistryForItem(concept) || getRegistryForItem(scheme) || fallbackRegistry
+    if (!registry) {
+      continue
+    }
+    if (!force && [].concat(loadingConcepts, erroredConcepts).find(c => jskos.compare(c, concept))) {
+      // Concept is already loading or errored
+      continue
+    }
+    uris = uris.concat(jskos.getAllUris(concept))
+    loadingConcepts.push(concept)
+    // TODO: Remove magic number.
+    const entry = list.find(e => e.registry == registry && e.concepts.length < 15)
+    if (entry) {
+      entry.concepts.push(concept)
+    } else {
+      list.push({
+        registry,
+        concepts: [concept],
+      })
+    }
+  }
+  // Load concepts by registry
+  const promises = list.map(
+    ({ registry, concepts }) =>
+      registry.getConcepts({ ...options, concepts })
+        .then(concepts => {
+          // Save and adjust results
+          let uris = []
+          for (let concept of concepts) {
+            concept = saveItem(concept, { scheme, type: "concept" })
+            set(concept, "__DETAILSLOADED__", 1)
+            uris = uris.concat(jskos.getAllUris(concept))
+          }
+          // Remove all loaded URIs from loadingConcepts
+          for (let uri of uris) {
+            let index = loadingConcepts.findIndex(concept => jskos.compare(concept, { uri }))
+            if (index >= 0) {
+              del(loadingConcepts, index)
+            }
+          }
+        })
+        .catch(() => {
+          // Ignore errors (will mark concepts that weren't loaded as errored)
+        }))
+  await Promise.all(promises)
+  // Move all URIs that were not loaded to errored concepts
+  for (let uri of uris) {
+    let index = loadingConcepts.findIndex(concept => jskos.compare(concept, { uri }))
+    if (index >= 0) {
+      let concept = loadingConcepts[index]
+      set(concept, "__DETAILSLOADED__", -1)
+      del(loadingConcepts, index)
+      erroredConcepts.push(concept)
+    }
+  }
+  // Return objects
+  return concepts.map(c => getItem(c))
+}
+
+export async function loadNarrower(concept, { registry, force = false } = {}) {
+  concept = getItem(concept) || concept
+  if (!force && concept.narrower && !concept.narrower.includes(null)) {
+    return concept.narrower
+  }
+  registry = getRegistryForItem(concept) || registry
+  if (!registry) {
+    throw new Error(`loadNarrower: Could not find registry for item ${concept.uri}`)
+  }
+  try {
+    const narrower = (await registry.getNarrower({ concept })).map(child => {
+      // Set ancestors
+      // TODO: Include registry.has.ancestors?
+      if (!concept.ancestors || concept.ancestors.includes(null)) {
+        child.ancestors = [null]
+      } else {
+        child.ancestors = concept.ancestors.concat([concept])
+      }
+      // Set broader
+      if (!child.broader || child.broader.includes(null)) {
+        child.broader = [concept]
+      }
+      // Save concept
+      return saveItem(child, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
+    })
+    set(concept, "narrower", jskos.sortConcepts(narrower).map(({ uri }) => ({ uri })))
+  } catch (error) {
+    console.error(`loadNarrower: Error loading narrower concepts for ${concept.uri}`, error)
+    set(concept, "narrower", [])
+  }
+  return concept.narrower
+}
+
+export async function loadAncestors(concept, { registry, force = false } = {}) {
+  concept = getItem(concept) || concept
+  if (!force && concept.ancestors && !concept.ancestors.includes(null)) {
+    return concept.ancestors
+  }
+  registry = getRegistryForItem(concept) || registry
+  if (!registry) {
+    throw new Error(`loadAncestors: Could not find registry for item ${concept.uri}`)
+  }
+  try {
+    const currentAncestors = []
+    const ancestors = (await registry.getAncestors({ concept })).map(ancestor => {
+      // Set ancestors
+      ancestor.ancestors = currentAncestors.slice()
+      currentAncestors.push({ uri: ancestor.uri })
+      // Save concept
+      return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
+    })
+    set(concept, "ancestors", ancestors.map(({ uri }) => ({ uri })))
+    // Set ancestors for narrower of concept if necessary
+    currentAncestors.push({ uri: concept.uri });
+    (concept.narrower || []).forEach(child => {
+      child && set(child, "ancestors", currentAncestors.slice())
+    })
+  } catch (error) {
+    console.error(`loadAncestors: Error loading ancestor concepts for ${concept.uri}`, error)
+    set(concept, "ancestors", [])
+  }
+  return concept.ancestors
+}
