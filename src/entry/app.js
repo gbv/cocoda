@@ -1,4 +1,4 @@
-import { createApp, h } from "vue-demi"
+import { createApp, h } from "@/composition-api"
 import App from "../App.vue"
 import store from "../store/index.js"
 import router from "../router.js"

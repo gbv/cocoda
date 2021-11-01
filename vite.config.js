@@ -8,9 +8,6 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  optimizeDeps: {
-    exclude: ["vue-demi"],
-  },
   build: {
     rollupOptions: {
       input: {
@@ -19,6 +16,12 @@ export default defineConfig({
       },
     },
     outDir: "dist-temp",
+  },
+  resolve: {
+    alias: {
+      // This allows relative imports starting with @/ instead of absolute imports
+      "@": resolve(__dirname, "./src"),
+    },
   },
   server: {
     port: 8080,
