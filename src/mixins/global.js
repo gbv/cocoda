@@ -81,13 +81,16 @@ export default {
       })
       return url.substring(0, url.length - 1)
     },
-    setSelected({ concept, scheme, isLeft, noQueryRefresh = false, noLoading = false } = {}) {
-      let loadTypes = scheme => {
-        if (scheme) {
-          this.loadTypes(scheme)
-        }
-      }
+    async setSelected({ concept, scheme, isLeft, noQueryRefresh = false, noLoading = false } = {}) {
       let loadingId = this.generateID()
+
+      scheme = _.get(concept, "inScheme[0]") || scheme
+
+      // Check if concept and scheme are already selected
+      if (jskos.compare(concept, this.$store.state.selected.concept[isLeft]) && jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
+        return true
+      }
+
       this.$store.commit({
         type: "selected/setLoadingId",
         isLeft,
@@ -97,122 +100,96 @@ export default {
       if (!noLoading) {
         this.loadingGlobal = true
       }
-      const promise = (() => {
-        scheme = _.get(concept, "inScheme[0]") || scheme
-        // Check if concept and scheme is already selected
-        if (jskos.compare(concept, this.$store.state.selected.concept[isLeft]) && jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
-          return Promise.resolve(true)
-        }
-        if (scheme && !concept) {
-          let kind = "both"
-          if (scheme) {
-            this.$store.commit({
-              type: "selected/set",
-              kind,
-              isLeft,
-              scheme,
-              concept: null,
-              noQueryRefresh,
-            })
-            // Load types for scheme
-            loadTypes(scheme)
-            // Load top concepts for scheme
-            return this.loadTop(scheme).then(() => true)
-          } else {
-            this.$log.error("setSelected: could not find scheme in store.")
-            return Promise.resolve(false)
-          }
-        } else if (concept) {
-          let kind = "concept"
-          if (!scheme) {
-            this.$log.error("setSelected: could not find scheme for concept in store.")
-            return Promise.resolve(false)
-          }
-          if (!concept) {
-            // This case should not happen!
-            this.$log.error("setSelected: critical error when getting/saving concept from store.")
-            return Promise.resolve(false)
-          }
-          let promises = []
-          // Check if scheme is different from selected scheme, if not change
-          if (!jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
-            kind = "both"
-            // Load top concepts for scheme
-            promises.push(this.loadTop(scheme))
-          }
-          // Load details
-          promises.push(this.loadConcepts([concept]).catch(() => {}))
-          // Load narrower concepts
-          promises.push(this.loadNarrower(concept).catch(() => {}))
-          // Load ancestor concepts and their narrower concepts
-          promises.push(this.loadAncestors(concept).catch(() => {}))
 
-          return Promise.all(promises).then(() => {
-            // Load types for scheme
-            loadTypes(scheme)
-            // Asynchronously load its ancestors narrower concepts
-            if (concept && concept.ancestors) {
-              for (let ancestor of concept.ancestors.filter(concept => concept != null)) {
-                this.loadNarrower(ancestor)
-              }
-            }
-            // Asynchronously load information about its broader concepts
-            if (concept && concept.broader && !concept.__BROADERLOADED__) {
-              let broaderPromises = []
-              this.adjustConcept(concept)
-              for (let broader of concept.broader.filter(concept => concept != null)) {
-                broaderPromises.push(this.loadConcepts([broader], { scheme }))
-              }
-              Promise.all(broaderPromises).then(() => {
-                // TODO: Is adjustment necessary?
-                this.adjustConcept(concept)
-                this.$set(concept, "__BROADERLOADED__", true)
-              })
-            }
-            // Asynchronously load information about its narrower concepts
-            if (concept && concept.narrower) {
-              this.loadConcepts(concept.narrower.filter(c => c != null)).catch(() => { }).then(() => {
-                // TODO: Is adjustment necessary?
-                this.adjustConcept(concept)
-              })
-            }
-            // TODO
-            // Only select if loadingId matches on the same side
-            if (loadingId == this.$store.state.selected.loadingId[isLeft]) {
-              this.$store.commit({
-                type: "selected/set",
-                kind,
-                isLeft,
-                concept,
-                scheme,
-                value: concept,
-                noQueryRefresh,
-              })
-              return true
-            } else {
-              return false
-            }
-          })
-        } else if (isLeft != null) {
-          this.$store.commit({
-            type: "selected/clear",
-            kind: "scheme",
-            isLeft,
-            noQueryRefresh,
-          })
-          return Promise.resolve(true)
-        } else {
-          this.$log.error("setSelected: called with no valid concept or scheme.")
-          return Promise.resolve(false)
-        }
-      })()
-      return promise.catch(() => false).then(success => {
+      // Call this function before returning
+      const preReturn = () => {
         // Set loading indicator
-        if (!noLoading) {
+        if (!noLoading && loadingId == this.$store.state.selected.loadingId[isLeft]) {
           this.loadingGlobal = false
         }
-        return success
-      })
+      }
+
+      if (scheme && !concept) {
+        this.$store.commit({
+          type: "selected/set",
+          kind: "both",
+          isLeft,
+          scheme,
+          concept: null,
+          noQueryRefresh,
+        })
+        // Load types for scheme
+        this.loadTypes(scheme)
+        // Load top concepts for scheme
+        // ? Should we wait for the top concepts?
+        this.loadTop(scheme)
+        preReturn()
+        return true
+      } else if (concept) {
+        let kind = "concept"
+        if (!scheme) {
+          this.$log.error("setSelected: could not find scheme for concept in store.")
+          preReturn()
+          return false
+        }
+        // Check if scheme is different from selected scheme, if not change
+        if (!jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
+          kind = "both"
+          // Load top concepts for scheme
+          // ? Should we wait for the top concepts?
+          this.loadTop(scheme)
+        }
+        // Load narrower and ancestor concepts (in background)
+        this.loadNarrower(concept)
+        this.loadAncestors(concept).then(() => {
+          // Load its ancestors' narrower concepts
+          concept.ancestors.filter(Boolean).forEach(ancestor => this.loadNarrower(ancestor))
+        })
+
+        // Load details
+        await this.loadConcepts([concept])
+
+        // Load types for scheme
+        scheme && this.loadTypes(scheme)
+
+        // Load information about its broader concepts
+        if (concept.broader && !concept.__BROADERLOADED__) {
+          this.adjustConcept(concept)
+          this.loadConcepts(concept.broader.filter(Boolean), { scheme }).then(() => {
+            this.$set(concept, "__BROADERLOADED__", true)
+          })
+        }
+
+        // Only select if loadingId matches on the same side
+        preReturn()
+        if (loadingId == this.$store.state.selected.loadingId[isLeft]) {
+          this.$store.commit({
+            type: "selected/set",
+            kind,
+            isLeft,
+            concept,
+            scheme,
+            value: concept,
+            noQueryRefresh,
+          })
+          return true
+        } else {
+          return false
+        }
+      } else if (isLeft != null) {
+        this.$store.commit({
+          type: "selected/clear",
+          kind: "scheme",
+          isLeft,
+          noQueryRefresh,
+        })
+        preReturn()
+        return true
+      } else {
+        this.$log.error("setSelected: called with no valid concept or scheme.")
+        preReturn()
+        return false
+      }
     },
     addToMapping(params) {
       params.type = "mapping/add"
