@@ -691,7 +691,7 @@ export default {
               action: "create",
               user: this.user,
             })) || loadedMappings[0]
-            mapping = mapping || this.$jskos.copyDeep(original)
+            mapping = mapping || this.adjustMapping(this.$jskos.copyDeep(original))
           }
 
           this.$store.commit({
