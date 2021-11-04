@@ -683,7 +683,7 @@ export default {
             this.$log.warn("Error loading mapping from URL parameter:", error)
           }
           loadedMappings = loadedMappings.filter(Boolean)
-          let mapping, original = null
+          let mapping = mappingFromQuery, original = null
           if (loadedMappings.length) {
             // Prefer mapping from writable registry if there are multiples
             original = loadedMappings.find(m => _.get(m, "_registry").isAuthorizedFor && _.get(m, "_registry").isAuthorizedFor({
@@ -691,9 +691,7 @@ export default {
               action: "create",
               user: this.user,
             })) || loadedMappings[0]
-            mapping = mapping || original
-          } else {
-            mapping = mappingFromQuery
+            mapping = mapping || this.$jskos.copyDeep(original)
           }
 
           this.$store.commit({
