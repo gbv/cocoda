@@ -802,21 +802,8 @@ export default {
           this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
           this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
         )) {
-          this.navigatorPages = {}
-          this.navigatorResults = {}
-          this.navigatorNeedsRefresh.push(null)
-          // Also adjust fromScheme/toScheme if locked
-          let changed = false
-          for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
-            if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
-              const scheme = this.selected.scheme[isLeft]
-              this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
-              changed = true
-            }
-          }
-          if (changed) {
-            this.searchClicked()
-          }
+          // Call debounced method
+          this.selectedChangedHandler()
         }
         this.previousSelected = {}
         this.previousSelected.concept = {
@@ -943,6 +930,8 @@ export default {
   created() {
     // Debounce navigator refresh
     this.navigatorRefresh = _.debounce(this._navigatorRefresh, 100)
+    // Debounce selectedChangedHandler
+    this.selectedChangedHandler = _.debounce(this._selectedChangedHandler, 100)
     // Clear search
     this.clearSearchFilter()
     // Set tab to search on start
@@ -999,6 +988,23 @@ export default {
         },
       })
       return popovers
+    },
+    _selectedChangedHandler() {
+      this.navigatorPages = {}
+      this.navigatorResults = {}
+      this.navigatorNeedsRefresh.push(null)
+      // Also adjust fromScheme/toScheme if locked
+      let changed = false
+      for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
+        if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
+          const scheme = this.selected.scheme[isLeft]
+          this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
+          changed = true
+        }
+      }
+      if (changed) {
+        this.searchClicked()
+      }
     },
     generateCancelToken() {
       return axios.CancelToken.source()
