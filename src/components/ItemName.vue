@@ -190,9 +190,6 @@ export default {
     },
   },
   created() {
-    if (!this.preventExternalHover && this.isLink) {
-      this.isValidLink = true
-    }
     this.hovering = _.debounce(this._hovering, 20)
   },
   methods: {
