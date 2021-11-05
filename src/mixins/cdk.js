@@ -275,7 +275,7 @@ export default {
      * Loads schemes from API. This should be called once upon application start.
      */
     async loadSchemes() {
-      let schemes = await cdk.getSchemes()
+      let schemes = await cdk.getSchemes({ timeout: 10000 })
       for (let scheme of schemes) {
         scheme = this.saveObject(scheme, { provider: scheme._registry, type: "scheme" })
         if (!this.schemes.includes(scheme)) {
