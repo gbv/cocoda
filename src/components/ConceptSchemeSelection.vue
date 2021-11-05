@@ -324,6 +324,15 @@ export default {
       onlyFavorites: true,
       // Item component for VirtualList
       itemComponent: ConceptSchemeSelectionItemVue,
+      // TODO: To mitigate performance issues, we're updating these properties in a debounced watcher.
+      // However, in the long term this should be solved in a better way. Maybe using the composition-api will help.
+      shownRegistries: [],
+      shownLanguages: [],
+      shownTypes: [],
+      registryFilterOptions: [],
+      languageFilterOptions: [],
+      typeFilterOptions: [],
+      filteredSchemes: [],
     }
   },
   computed: {
@@ -335,35 +344,6 @@ export default {
     isFiltered() {
       return this.schemeFilter != "" || this.registryFilter.length < this.availableRegistries.length || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
     },
-    // Returns schemes with filters applied.
-    filteredSchemes() {
-      let filter = this.schemeFilter.toLowerCase()
-      // Filter schemes, use either text filter or other filters
-      if (filter) {
-        const keywordsForScheme = (scheme) => _.flattenDeep(_.concat([], Object.values(scheme.prefLabel || {}), Object.values(scheme.altLabel || {}), scheme.notation || [])).map(k => k.toLowerCase())
-        return this.schemes.filter(
-          scheme => keywordsForScheme(scheme).find(keyword => keyword.startsWith(filter)),
-        )
-      }
-      return this.schemes.filter(
-        scheme =>
-          (
-            this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
-          ) &&
-          (
-            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
-            _.intersection(scheme.languages || [], this.languageFilter).length
-          ) &&
-          (
-            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
-            _.intersection(scheme.type || [], this.typeFilter).length
-          ) &&
-          (
-            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          ),
-      )
-    },
     // Returns an array of all available registries
     availableRegistries() {
       return this.config.registries.filter(registry => registry.has.concepts)
@@ -372,98 +352,9 @@ export default {
     availableLanguages() {
       return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || []))).sort()
     },
-    // Returns an array of all available registries with other filters applied (faceted browsing).
-    shownRegistries() {
-      let schemes = this.schemes.filter(
-        scheme =>
-          (
-            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
-            _.intersection(scheme.languages || [], this.languageFilter).length
-          ) &&
-          (
-            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
-            _.intersection(scheme.type || [], this.typeFilter).length
-          ) &&
-          (
-            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          ),
-      )
-      return this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._registry)))
-    },
-    // Returns an array of available registry filter options.
-    registryFilterOptions() {
-      return this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$jskos.prefLabel(registry) }))
-    },
-    // Returns an array of all available languages with other filters applied (faceted browsing).
-    shownLanguages() {
-      let schemes = this.schemes.filter(
-        scheme =>
-          (
-            this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
-          ) &&
-          (
-            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
-            _.intersection(scheme.type || [], this.typeFilter).length
-          ) &&
-          (
-            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          ),
-      )
-      return _.uniq([].concat(...schemes.map(scheme => scheme.languages || []))).sort()
-    },
-    // Returns an array of available language filter options based on `shownLanguages`.
-    languageFilterOptions() {
-      let options = []
-      if (this.schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
-        options.push({
-          value: null,
-          text: this.$t("schemeSelection.filterOther"),
-        })
-      }
-      options = this.shownLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
-      return options
-    },
     // Returns an array of all available scheme types.
     availableTypes() {
       return _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
-    },
-    // Returns an array of all available scheme types with other filters applied (faceted browsing).
-    shownTypes() {
-      let schemes = this.schemes.filter(
-        scheme =>
-          (
-            this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
-          ) &&
-          (
-            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
-            _.intersection(scheme.languages || [], this.languageFilter).length
-          ) &&
-          (
-            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
-          ),
-      )
-      return _.uniq(_.flatten(schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
-    },
-    // Returns an array of available scheme type filter options based on `shownTypes`.
-    typeFilterOptions() {
-      let options = []
-      if (this.schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
-        options.push({
-          value: null,
-          text: this.$t("schemeSelection.filterOther"),
-        })
-      }
-      options = this.shownTypes.map(type => ({ value: type, text: type })).concat(options)
-      // Look up names for types
-      for (let option of options) {
-        let type = kosTypes.find(t => t.uri == option.value)
-        if (type) {
-          option.text = this.$jskos.prefLabel(type, { language: this.locale })
-        }
-      }
-      return options
     },
     allowFavoriteSchemesFilter() {
       return !!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this.schemes))
@@ -478,22 +369,78 @@ export default {
         }, 100)
       }
     },
-    onlyFavorites() {
-      this.schemeFilter = ""
-    },
-    languageFilter() {
-      this.schemeFilter = ""
-    },
-    typeFilter() {
-      this.schemeFilter = ""
-    },
     allowFavoriteSchemesFilter(value) {
       if (!value) {
         this.onlyFavorites = false
       }
     },
+    // TODO: Can we remove all this code duplication?
+    schemes: {
+      handler() {
+        this.updateProperties()
+      },
+      deep: true,
+    },
+    schemeFilter: {
+      handler() {
+        this.updateProperties()
+      },
+      deep: true,
+    },
+    registryFilter: {
+      handler() {
+        this.updateProperties()
+      },
+      deep: true,
+    },
+    languageFilter: [
+      function() {
+        this.schemeFilter = ""
+      },
+      {
+        handler() {
+          this.updateProperties()
+        },
+        deep: true,
+      },
+    ],
+    typeFilter: [
+      function() {
+        this.schemeFilter = ""
+      },
+      {
+        handler() {
+          this.updateProperties()
+        },
+        deep: true,
+      },
+    ],
+    availableRegistries: {
+      handler() {
+        this.updateProperties()
+      },
+      deep: true,
+    },
+    onlyFavorites: [
+      function() {
+        this.schemeFilter = ""
+      },
+      {
+        handler() {
+          this.updateProperties()
+        },
+        deep: true,
+      },
+    ],
+    favoriteSchemes: {
+      handler() {
+        this.updateProperties()
+      },
+      deep: true,
+    },
   },
   mounted() {
+    this.updateProperties = _.debounce(this._updateProperties, 200)
     // Enable shortcuts
     this.enableShortcuts()
     // Set filters to all
@@ -552,6 +499,132 @@ export default {
             }
             break
         }
+      }
+    },
+    /**
+     * Method that will be called (debounced) to update certain properties for filtering.
+     *
+     * This was introduced to replace computed properties which were too resource-intensive.
+     * See https://github.com/gbv/cocoda/issues/633
+     *
+     * TODO: Optimize filtering.
+     * TODO: Reduce delay while filtering.
+     * TODO: Long term, this should be done in a better and more elegant way.
+     */
+    _updateProperties() {
+      let schemes
+      let options
+
+      // ===== shownRegistries =====
+      schemes = this.schemes.filter(
+        scheme =>
+          (
+            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+            _.intersection(scheme.languages || [], this.languageFilter).length
+          ) &&
+          (
+            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
+            _.intersection(scheme.type || [], this.typeFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          ),
+      )
+      this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._registry)))
+
+      // ===== shownLanguages =====
+      schemes = this.schemes.filter(
+        scheme =>
+          (
+            this.registryFilter.length == this.availableRegistries.length ||
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
+          ) &&
+          (
+            (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
+            _.intersection(scheme.type || [], this.typeFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          ),
+      )
+      this.shownLanguages = _.uniq([].concat(...schemes.map(scheme => scheme.languages || []))).sort()
+
+      // ===== shownTypes =====
+      schemes = this.schemes.filter(
+        scheme =>
+          (
+            this.registryFilter.length == this.availableRegistries.length ||
+            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
+          ) &&
+          (
+            (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+            _.intersection(scheme.languages || [], this.languageFilter).length
+          ) &&
+          (
+            !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          ),
+      )
+      this.shownTypes = _.uniq(_.flatten(schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
+
+      // ===== registryFilterOptions =====
+      this.registryFilterOptions = this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$jskos.prefLabel(registry) }))
+
+      // ===== languageFilterOptions =====
+      options = []
+      if (this.schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
+        options.push({
+          value: null,
+          text: this.$t("schemeSelection.filterOther"),
+        })
+      }
+      options = this.shownLanguages.map(lang => ({ value: lang, text: lang })).concat(options)
+      this.languageFilterOptions = options
+
+      // ===== typeFilterOptions =====
+      options = []
+      if (this.schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
+        options.push({
+          value: null,
+          text: this.$t("schemeSelection.filterOther"),
+        })
+      }
+      options = this.shownTypes.map(type => ({ value: type, text: type })).concat(options)
+      // Look up names for types
+      for (let option of options) {
+        let type = kosTypes.find(t => t.uri == option.value)
+        if (type) {
+          option.text = this.$jskos.prefLabel(type, { language: this.locale })
+        }
+      }
+      this.typeFilterOptions = options
+
+      // ===== filteredSchemes =====
+      let filter = this.schemeFilter.toLowerCase()
+      // Filter schemes, use either text filter or other filters
+      if (filter) {
+        const keywordsForScheme = (scheme) => _.flattenDeep(_.concat([], Object.values(scheme.prefLabel || {}), Object.values(scheme.altLabel || {}), scheme.notation || [])).map(k => k.toLowerCase())
+        this.filteredSchemes = this.schemes.filter(
+          scheme => keywordsForScheme(scheme).find(keyword => keyword.startsWith(filter)),
+        )
+      } else {
+        this.filteredSchemes = this.schemes.filter(
+          scheme =>
+            (
+              this.registryFilter.length == this.availableRegistries.length ||
+              this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
+            ) &&
+            (
+              (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
+              _.intersection(scheme.languages || [], this.languageFilter).length
+            ) &&
+            (
+              (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
+              _.intersection(scheme.type || [], this.typeFilter).length
+            ) &&
+            (
+              !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+            ),
+        )
       }
     },
     /**
