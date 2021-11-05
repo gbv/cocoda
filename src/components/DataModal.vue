@@ -143,7 +143,7 @@ export default {
   },
   data() {
     return {
-
+      preparedData: null,
     }
   },
   computed: {
@@ -171,45 +171,22 @@ export default {
       }
       return filename
     },
-    preparedData() {
-      if (this.data == null) {
-        return null
-      }
-      let dataArray = this.data
-      if (!this.isArray) {
-        dataArray = [this.data]
-      }
-      let newData = []
-      for (let object of dataArray) {
-        // Prepare object depending on type
-        let newObject
-        if (this.computedType == "mapping") {
-          newObject = this.$jskos.minifyMapping(object)
-          newObject = this.$jskos.addMappingIdentifiers(newObject)
-        } else {
-          newObject = this.$jskos.copyDeep(object)
-          // Remove all properties with null values
-          newObject = _.pick(newObject, _.keys(newObject).filter(key => newObject[key] != null))
-        }
-        if (newObject) {
-          newData.push(newObject)
-        }
-      }
-      if (!this.isArray) {
-        return newData[0]
-      }
-      return newData
-    },
     jsonData() {
+      if (!this.preparedData) {
+        return ""
+      }
       return JSON.stringify(this.preparedData, null, 2)
     },
     jsonHtml() {
-      return formatHighlight(this.preparedData)
+      return formatHighlight(this.preparedData || {})
     },
     encodedData() {
       return encodeURIComponent(this.jsonData)
     },
     encodedDataNdjson() {
+      if (!this.preparedData) {
+        return null
+      }
       let data = this.preparedData
       if (!this.isArray) {
         data = [this.preparedData]
@@ -217,7 +194,7 @@ export default {
       return encodeURIComponent(data.map(object => JSON.stringify(object)).join("\n"))
     },
     encodedDataCsv() {
-      if (!this.computedType.startsWith("mapping")) {
+      if (!this.computedType.startsWith("mapping") || !this.preparedData) {
         return null
       }
 
@@ -302,7 +279,39 @@ export default {
   },
   methods: {
     show() {
+      this.updatePreparedData()
       this.$refs.dataModal.show()
+    },
+    updatePreparedData() {
+      if (this.data == null) {
+        this.preparedData = null
+        return
+      }
+      let dataArray = this.data
+      if (!this.isArray) {
+        dataArray = [this.data]
+      }
+      let newData = []
+      for (let object of dataArray) {
+        // Prepare object depending on type
+        let newObject
+        if (this.computedType == "mapping") {
+          newObject = this.$jskos.minifyMapping(object)
+          newObject = this.$jskos.addMappingIdentifiers(newObject)
+        } else {
+          newObject = this.$jskos.copyDeep(object)
+          // Remove all properties with null values
+          newObject = _.pick(newObject, _.keys(newObject).filter(key => newObject[key] != null))
+        }
+        if (newObject) {
+          newData.push(newObject)
+        }
+      }
+      if (!this.isArray) {
+        this.preparedData = newData[0]
+      } else {
+        this.preparedData = newData
+      }
     },
   },
 }
