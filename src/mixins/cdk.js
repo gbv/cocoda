@@ -560,6 +560,13 @@ export default {
           }
         }
       }
+      // Check if mapping is equal to hoveredMapping, if yes refresh it
+      if (this.$store.state.hoveredMapping && mapping.uri === this.$store.state.hoveredMapping.uri) {
+        this.$store.commit({
+          type: "setHoveredMapping",
+          mapping,
+        })
+      }
       return mapping
     },
     prepareMapping(mapping) {

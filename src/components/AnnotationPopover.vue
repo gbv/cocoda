@@ -113,13 +113,17 @@ export default {
   },
   data() {
     return {
-      iid: null,
-      imapping: null,
       show: false,
       loading: false,
     }
   },
   computed: {
+    iid() {
+      return this.id
+    },
+    imapping() {
+      return this.mapping
+    },
     enable() {
       return this.iid && this.element
     },
@@ -199,20 +203,15 @@ export default {
     },
   },
   watch: {
-    id() {
-      // Delay setting internal IDs and mapping as a workaround for a bootstrap-vue bug
-      if (this.id && this.id != this.iid) {
-        this.iid = null
-        _.delay(() => {
-          this.iid = this.id
-          this.imapping = this.mapping
-        }, 50)
-      }
-    },
     /**
      * Make sure the div is always scrolled to the bottom
      */
-    show() {
+    show(current, previous) {
+      if (current && !previous) {
+        this.$emit("show")
+      } else if (previous && !current) {
+        this.$emit("hide")
+      }
       this.scrollToBottom()
     },
     annotations() {
@@ -466,9 +465,7 @@ export default {
 .annotationPopover-voting-button-current {
   color: @color-primary-3;
 }
-.annotationPopover-confirm {
 
-}
 .bbutton-small {
   .fontSize-small;
   padding: 2px 4px;

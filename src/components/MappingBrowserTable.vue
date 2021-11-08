@@ -362,7 +362,9 @@
       :id="hoveredId"
       :mapping="$store.state.hoveredMapping"
       id-prefix="mappingBrowser-hoveredMapping-annotationButton-"
-      @refresh-annotations="refreshAnnotations" />
+      @refresh-annotations="refreshAnnotations"
+      @show="annotationPopoverShown = true"
+      @hide="annotationPopoverShown = false" />
   </div>
 </template>
 
@@ -427,6 +429,7 @@ export default {
       mappingDetailMapping: null,
       popoverShown: {},
       currentPopovers: {},
+      annotationPopoverShown: false,
     }
   },
   computed: {
@@ -634,6 +637,10 @@ export default {
       return color
     },
     _hover(event) {
+      // Don't refresh if annotation popover is currently shown and mapping is null
+      if (this.annotationPopoverShown && !(event && event.mapping)) {
+        return
+      }
       this.$store.commit({
         type: "setHoveredMapping",
         mapping: event && event.mapping,
