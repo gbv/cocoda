@@ -836,6 +836,9 @@ export default {
       }
     },
     currentRegistry(registry) {
+      if (!registry) {
+        return
+      }
       // Enable registry
       this.showRegistry[registry.uri] = true
       // Scroll to top of list if current registry is always shown at the top
@@ -1421,7 +1424,7 @@ export default {
         for (let mapping of mappings) {
           // For mappings recommendations: If mapping with the same member identifier could be found in the results for the current registry, skip item.
           if (!this.$jskos.mappingRegistryIsStored(registry)) {
-            const currentRegistryResults = results[this.currentRegistry.uri] || []
+            const currentRegistryResults = this.currentRegistry && results[this.currentRegistry.uri] || []
             const memberIdentifier = (mapping) => {
               return mapping && mapping.identifier.find(id => id && id.startsWith("urn:jskos:mapping:members:"))
             }

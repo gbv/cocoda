@@ -45,7 +45,7 @@ export default {
       const otherScheme = this.loadConceptsMappedStatusOtherScheme
       concepts = concepts.filter(concept => !_.get(concept, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))
       const conceptUris = concepts.map(i => i.uri)
-      if (otherScheme && conceptUris.length) {
+      if (otherScheme && conceptUris.length && registry) {
         Promise.all(_.chunk(conceptUris, 15).map(uris => this.getMappings({
           from: uris.join("|"),
           toScheme: otherScheme.uri,

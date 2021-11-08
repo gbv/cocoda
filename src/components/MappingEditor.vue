@@ -31,7 +31,7 @@
         <font-awesome-icon icon="save" />
       </div>
       <div
-        v-b-tooltip.hover="{ title: canDeleteCurrentMapping ? $t('mappingEditor.deleteMapping') : ((!$store.getters.getCurrentRegistry.has.auth || $store.getters.getCurrentRegistry.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
+        v-b-tooltip.hover="{ title: canDeleteCurrentMapping ? $t('mappingEditor.deleteMapping') : ($store.getters.getCurrentRegistry && (!$store.getters.getCurrentRegistry.has.auth || $store.getters.getCurrentRegistry.auth) ? '' : $t('general.authNecessary')), delay: defaults.delay.medium }"
         :class="{
           'button-delete': canDeleteCurrentMapping,
           'button-disabled': !canDeleteCurrentMapping
@@ -282,6 +282,13 @@ export default {
      */
     mappingStatus() {
       const registry = this.currentRegistry
+      if (!registry) {
+        return {
+          message: this.$t("mappingEditor.warningNoRegistry"),
+          invalid: false,
+          warning: true,
+        }
+      }
       // Requires authentication for save
       if (!registry.isAuthorizedFor({
         type: "mappings",
