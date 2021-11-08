@@ -510,6 +510,7 @@ export default {
      * TODO: Optimize filtering.
      * TODO: Reduce delay while filtering.
      * TODO: Long term, this should be done in a better and more elegant way.
+     * TODO: Apparently, the `isContainedIn` calls take most of the computing time.
      */
     _updateProperties() {
       let schemes
