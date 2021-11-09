@@ -35,16 +35,23 @@ export function getItemByUri(uri) {
   return getItem({ uri })
 }
 
+export function getItems(items) {
+  return items.map(item => getItem(item))
+}
+
 export function saveItem(item, options = {}) {
   if (!item || !item.uri) {
     throw new Error("Can't save object that is null or undefined or that doesn't have a URI.")
   }
   const uri = item.uri
-  const existing = _items[uri]
+  const existing = getItemByUri(uri)
   // Return immediately if object reference is the same
-  if (existing === item) {
-    return item
+  if (existing === item || existing && options.returnIfExists) {
+    return existing
   }
+
+  // Determine item type
+  const type = options.type || (jskos.isScheme(item) ? "scheme" : (jskos.isConcept(item) ? "concept" : null))
 
   // Collect addition items (broader, narrower, ...) to save and replace them with URI-only objects
   const additionalItemsToSave = []
@@ -52,7 +59,7 @@ export function saveItem(item, options = {}) {
     if (!Array.isArray(item[key])) {
       continue
     }
-    const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts"]
+    const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts", "memberList"]
     const schemeProps = ["inScheme", "topConceptOf", "versionOf"]
     if (![].concat(conceptProps, schemeProps).includes(key)) {
       continue
@@ -76,8 +83,6 @@ export function saveItem(item, options = {}) {
   }
 
   if (!existing) {
-    // Determine item type
-    const type = options.type || (jskos.isScheme(item) ? "scheme" : (jskos.isConcept(item) ? "concept" : null))
     // Set __DETAILSLOADED__ property
     item.__DETAILSLOADED__ = item.__DETAILSLOADED__ != null ? item.__DETAILSLOADED__ : 0
     // __SAVED__ means it was saved
@@ -102,6 +107,9 @@ export function saveItem(item, options = {}) {
       }
       item.__ISOPEN__ = { true: false, false: false }
       item.inScheme = item.inScheme || [options.scheme]
+      if (!item.inScheme[0]) {
+        console.warn("Saving concept without scheme!!!", item, options)
+      }
       // ? Anything else?
     }
 
@@ -158,7 +166,18 @@ export function saveItem(item, options = {}) {
 
   // Save additional items
   // TODO: Do we need to do this for ALL items?
-  additionalItemsToSave.forEach(({ __TYPE__, ...item }) => saveItem(item, { type: __TYPE__ }))
+  const _item = _items[uri]
+  additionalItemsToSave.forEach(({ __TYPE__, ...item }) => {
+    const options = { type: __TYPE__ }
+    if (__TYPE__ === "concept" && !(item.inScheme && item.inScheme[0])) {
+      if (type === "concept") {
+        options.scheme = _item.inScheme[0]
+      } else if (type === "scheme") {
+        options.scheme = _item
+      }
+    }
+    saveItem(item, options)
+  })
 
   return _items[uri]
 }
@@ -209,7 +228,7 @@ export async function loadSchemes() {
   return schemes
 }
 
-export async function loadTypes(scheme, { registry, force = false }) {
+export async function loadTypes(scheme, { registry, force = false } = {}) {
   scheme = getItem(scheme) || scheme
   if (!force && scheme.types && !scheme.types.includes(null)) {
     return scheme.types
