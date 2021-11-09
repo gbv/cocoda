@@ -96,9 +96,12 @@ import formatHighlight from "json-format-highlight"
 
 // Import mixins
 import objects from "../mixins/cdk.js"
+import { getItem } from "@/items"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
+ *
+ * TODO: Rewrite to use new items plugin!
  */
 export default {
   name: "DataModal",
@@ -216,7 +219,7 @@ export default {
         // Prepare labels
         // ... for concepts
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-          let conceptInStore = this.getObject(concept)
+          let conceptInStore = getItem(concept)
           let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
           if (language) {
             // NOTE: Hardcoded language, see note above.

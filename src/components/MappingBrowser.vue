@@ -415,6 +415,7 @@ import dragandrop from "../mixins/dragandrop.js"
 import clickHandler from "../mixins/click-handler.js"
 import computed from "../mixins/computed.js"
 import pageVisibility from "../mixins/page-visibility.js"
+import { getItem, loadConcepts } from "@/items"
 
 export default {
   name: "MappingBrowser",
@@ -581,10 +582,10 @@ export default {
       for (let concordance of this.concordances || []) {
         let item = { concordance }
         item.from = _.get(concordance, "fromScheme")
-        item.from = this.getObject(item.from) || item.from
+        item.from = getItem(item.from) || item.from
         item.fromNotation = this.$jskos.notation(item.from) || "-"
         item.to = _.get(concordance, "toScheme")
-        item.to = this.getObject(item.to) || item.to
+        item.to = getItem(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
         item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
         item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
@@ -1507,7 +1508,7 @@ export default {
           toLoad.push(concept)
         }
       }
-      this.loadConcepts(toLoad)
+      loadConcepts(toLoad)
     },
     droppedConcept(object, targets) {
       _.forOwn(targets, (path, type) => {

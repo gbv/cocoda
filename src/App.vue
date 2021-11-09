@@ -208,6 +208,7 @@ import pageVisibility from "./mixins/page-visibility.js"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 import { ElementQueries } from "css-element-queries"
+import { getItem, getItemByUri, loadConcepts, loadSchemes, saveItem } from "./items"
 ElementQueries.listen()
 
 /**
@@ -271,8 +272,8 @@ export default {
         // Try to get objects for both URIs
         let uri1 = fromQuery[param],
           uri2 = toQuery[param],
-          object1 = uri1 && this.getObject({ uri: uri1 }),
-          object2 = uri2 && this.getObject({ uri: uri2 })
+          object1 = uri1 && getItem({ uri: uri1 }),
+          object2 = uri2 && getItem({ uri: uri2 })
         // Compare objects if they exist to prevent unnecessary reloads.
         if (object1 && object2) {
           if (!this.$jskos.compare(object1, object2)) {
@@ -515,7 +516,9 @@ export default {
       // Set locale
       this.$i18n.locale = this.settingsLocale
       // Load schemes
-      await this.loadSchemes()
+      const schemes = await loadSchemes()
+      // TODO: Why doesn't this.schemes = ... work?
+      schemes.forEach(scheme => this.schemes.push(scheme))
       // Load mapping trash
       await this.$store.dispatch("mapping/loadMappingTrash")
       // Application is now considered loaded
@@ -529,6 +532,7 @@ export default {
         this.enableUpdateCheck()
       }
       // Set schemes in registries to objects from Cocoda
+      // TODO: We probably don't need this anymore after changing to items plugin, right?
       for (let registry of this.config.registries) {
         if (_.isArray(registry.schemes)) {
           registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
@@ -607,7 +611,7 @@ export default {
         }
       }
       for (let uri of _.uniq([query.fromScheme, query.toScheme])) {
-        let topConcepts = this.topConcepts[uri]
+        let topConcepts = _.get(getItemByUri(uri), "topConcepts")
         for (let concept of topConcepts || []) {
           swapOpen(concept)
         }
@@ -636,11 +640,11 @@ export default {
         let schemeUri = selected.scheme[isLeft]
         let scheme = null
         if (schemeUri) {
-          scheme = this.getObject({ uri: schemeUri })
+          scheme = getItem({ uri: schemeUri })
         }
         let concept = null
         if (scheme && selected.concept[isLeft]) {
-          concept = this.saveObject({ uri: selected.concept[isLeft] }, { scheme, type: "concept" })
+          concept = saveItem({ uri: selected.concept[isLeft] }, { scheme, type: "concept" })
         }
 
         try {
@@ -704,7 +708,7 @@ export default {
           // ? Should concepts in mapping be selected like before?
 
           // Load concept data
-          this.loadConcepts(this.$jskos.conceptsOfMapping(mapping))
+          loadConcepts(this.$jskos.conceptsOfMapping(mapping))
 
           // We want to show the mapping part of the application if there's a mapping loaded
           if (mapping && firstLoad) {

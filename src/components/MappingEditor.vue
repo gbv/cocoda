@@ -244,6 +244,7 @@ import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import hotkeys from "../mixins/hotkeys.js"
 import computed from "../mixins/computed.js"
+import { loadConcepts } from "@/items"
 
 /**
  * The mapping editor component.
@@ -580,7 +581,7 @@ export default {
           isLeft: isLeft,
         })
         // Load details if necessary
-        this.loadConcepts([concept])
+        loadConcepts([concept])
       }
     },
     swapMapping() {

@@ -3,16 +3,16 @@
     class="schemeDetail">
     <!-- Name of scheme -->
     <item-name
-      :item="item"
+      :item="_item"
       :is-highlighted="true"
       font-size="normal" />
 
     <!-- License -->
     <div
-      v-if="item.license || licenseAttribution(item)"
+      v-if="_item.license || licenseAttribution(_item)"
       class="schemeDetail-license">
       <span
-        v-for="(license, index) in item.license"
+        v-for="(license, index) in _item.license"
         :key="`schemeDetail-${isLeft}-license-${index}`">
         <a
           :href="license.uri"
@@ -26,56 +26,56 @@
           </span>
         </a>
       </span>
-      <span v-if="licenseAttribution(item)">
+      <span v-if="licenseAttribution(_item)">
         by <a
-          v-if="licenseAttribution(item).url"
-          :href="licenseAttribution(item).url"
+          v-if="licenseAttribution(_item).url"
+          :href="licenseAttribution(_item).url"
           target="_blank">
-          <auto-link :link="licenseAttribution(item).label" />
+          <auto-link :link="licenseAttribution(_item).label" />
         </a>
         <span v-else>
-          <auto-link :link="licenseAttribution(item).label" />
+          <auto-link :link="licenseAttribution(_item).label" />
         </span>
       </span>
     </div>
 
     <!-- URI and identifier -->
     <div
-      v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
+      v-for="(identifier, index) in [_item.uri].concat(_item.identifier).filter(identifier => identifier != null)"
       :key="`schemeDetail-${isLeft}-identifier-${index}`"
       class="schemeDetail-identifier">
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
       <auto-link :link="identifier" />
     </div>
     <div
-      v-if="item.created"
+      v-if="_item.created"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(item.created, true) }}
+      <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(_item.created, true) }}
     </div>
     <div
-      v-if="item.issued"
+      v-if="_item.issued"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.issued") }}:</b> {{ dateToString(item.issued, true) }}
+      <b>{{ $t("conceptDetail.issued") }}:</b> {{ dateToString(_item.issued, true) }}
     </div>
     <div
-      v-if="item.modified"
+      v-if="_item.modified"
       class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(item.modified, true) }}
+      <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(_item.modified, true) }}
     </div>
     <div
-      v-if="item.languages"
+      v-if="_item.languages"
       class="schemeDetail-identifier">
-      <b>{{ $t("schemeDetail.languages") }}:</b> {{ item.languages.join(", ") }}
+      <b>{{ $t("schemeDetail.languages") }}:</b> {{ _item.languages.join(", ") }}
     </div>
     <div
-      v-if="item.type && item.type.length > 1"
+      v-if="_item.type && _item.type.length > 1"
       class="schemeDetail-identifier">
       <b>{{ $t("general.type") }}:</b>
       <span
-        v-for="(type, index) in item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
+        v-for="(type, index) in _item.type.filter(type => type != 'http://www.w3.org/2004/02/skos/core#ConceptScheme')"
         :key="`schemeDetail-${isLeft}-type-${index}`">
         {{ $jskos.prefLabel(kosTypes.find(t => t.uri == type), { language: locale }) || type }}
-        <span v-if="index != item.type.length - 2"> / </span>
+        <span v-if="index != _item.type.length - 2"> / </span>
       </span>
     </div>
 
@@ -84,24 +84,24 @@
       class="schemeDetail-identifier">
       <b>{{ $t("schemeDetail.registry") }}: </b>
       <registry-notation
-        :registry="item._registry"
+        :registry="_item._registry"
         :tooltip="false" />
       &nbsp;
       <registry-name
-        :registry="item._registry"
+        :registry="_item._registry"
         :tooltip="false" />
     </div>
 
     <!-- Link to mapping search -->
     <div
-      v-if="$jskos.notation(item)"
+      v-if="$jskos.notation(_item)"
       class="schemeDetail-identifier">
       <a
         href=""
         @click.prevent="$emit('searchMappings', {
-          fromScheme: isLeft ? $jskos.notation(item) : null,
+          fromScheme: isLeft ? $jskos.notation(_item) : null,
           fromNotation: isLeft ? '' : null,
-          toScheme: !isLeft ? $jskos.notation(item) : null,
+          toScheme: !isLeft ? $jskos.notation(_item) : null,
           toNotation: !isLeft ? '' : null,
           direction: 'both'
         })">
@@ -110,9 +110,10 @@
     </div>
 
     <!-- Top Concepts -->
+    <!-- TODO: Use topConcepts from scheme directly -->
     <item-detail-narrower
-      v-if="settings.showTopConceptsInScheme && topConcepts[item.uri] && topConcepts[item.uri].length > 0"
-      :narrower="topConcepts[item.uri]"
+      v-if="settings.showTopConceptsInScheme && topConcepts[_item.uri] && topConcepts[_item.uri].length > 0"
+      :narrower="topConcepts[_item.uri]"
       :is-left="isLeft"
       text="Top Concepts:" />
     <div v-else-if="settings.showTopConceptsInScheme">
@@ -133,6 +134,7 @@ import objects from "../mixins/cdk.js"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"
+import { getItem } from "@/items"
 
 /**
  * Component that displays a scheme's details (URI, notation, identifier, ...).
@@ -170,6 +172,11 @@ export default {
     return {
       kosTypes,
     }
+  },
+  computed: {
+    _item() {
+      return getItem(this.item) || this.item
+    },
   },
   methods: {
     licenseAttribution(detail) {

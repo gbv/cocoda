@@ -9,11 +9,11 @@
       :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
     <div
-      v-if="item != null"
+      v-if="_item != null"
       class="itemDetail-content">
       <component
         :is="type == 'Concept' ? 'ConceptDetail' : 'SchemeDetail'"
-        :item="item"
+        :item="_item"
         :is-left="isLeft"
         :settings="internalSettings"
         @searchMappings="$emit('searchMappings', $event)"
@@ -29,7 +29,7 @@
     <component-settings />
 
     <data-modal-button
-      :data="item"
+      :data="_item"
       :position-right="20"
       :url="apiUrl" />
 
@@ -51,6 +51,7 @@ import _ from "lodash"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import computed from "../mixins/computed.js"
+import { getItem } from "@/items"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -109,8 +110,11 @@ export default {
     }
   },
   computed: {
+    _item() {
+      return getItem(this.item) || this.item
+    },
     type() {
-      if (this.$jskos.isConcept(this.item)) {
+      if (this.$jskos.isConcept(this._item)) {
         return "Concept"
       } else {
         return "Scheme"
@@ -123,29 +127,29 @@ export default {
       },this.settings)
     },
     apiUrl() {
-      if (!this.item || !this.item.uri) {
+      if (!this._item || !this._item.uri) {
         return null
       }
       let baseUrl
-      if (this.$jskos.isScheme(this.item)) {
-        let provider = _.get(this.item, "inScheme[0]._registry") || _.get(this.item, "_registry")
+      if (this.$jskos.isScheme(this._item)) {
+        let provider = _.get(this._item, "inScheme[0]._registry") || _.get(this._item, "_registry")
         baseUrl = _.get(provider, "_api.schemes") || _.get(provider, "_api.data") || _.get(provider, "_api.concepts")
       } else {
-        let provider = _.get(this.item, "inScheme[0]._registry")
-        baseUrl = _.get(provider, "_api.data") || (_.get(provider, "_getDataUrl") && provider._getDataUrl(this.item)) || _.get(provider, "_api.concepts")
+        let provider = _.get(this._item, "inScheme[0]._registry")
+        baseUrl = _.get(provider, "_api.data") || (_.get(provider, "_getDataUrl") && provider._getDataUrl(this._item)) || _.get(provider, "_api.concepts")
       }
       // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
       if (!baseUrl || !_.isString(baseUrl)) {
         return null
       }
-      return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}uri=${encodeURIComponent(this.item.uri)}`
+      return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}uri=${encodeURIComponent(this._item.uri)}`
     },
   },
   watch: {
     /**
      * Refreshes data when item changes.
      */
-    item: function() {
+    _item: function() {
       this.scrollToTop()
     },
   },

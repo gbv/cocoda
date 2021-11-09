@@ -98,6 +98,8 @@ import _ from "lodash"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 
+import { getItem, loadNarrower } from "@/items"
+
 /**
  * Component that represents one concept item in a ConceptList and possibly its children.
  */
@@ -191,7 +193,7 @@ export default {
       return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
     },
     concept() {
-      return this.source.concept
+      return getItem(this.source.concept)
     },
     depth() {
       return this.source.depth
@@ -298,10 +300,10 @@ export default {
      */
     loadChildren() {
       this.loadingChildren = true
-      this.loadNarrower(this.concept).then(concept => {
+      loadNarrower(this.concept).then(() => {
         this.loadingChildren = false
         // Only scroll when concept is open
-        if (this.showChildren && concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
+        if (this.showChildren && this.concept && this.concept.__ISOPEN__ && this.concept.__ISOPEN__[this.isLeft]) {
           this.scrollTo()
         }
       })

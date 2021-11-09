@@ -5,6 +5,7 @@
 import _ from "lodash"
 import FileSaver from "file-saver"
 import jskos from "jskos-tools"
+import { getItem, loadAncestors, loadConcepts, loadNarrower, loadTop, loadTypes } from "@/items"
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
 function escapeRegExp(string) {
@@ -41,6 +42,7 @@ export default {
      * @param {*} object
      */
     getProvider(object) {
+      object = getItem(object) || object
       return _.get(object, "_registry") || _.get(object, "inScheme[0]._registry")
     },
     toggleMinimize() {
@@ -52,6 +54,7 @@ export default {
       this.$parent && this.$parent.refresh(key)
     },
     getRouterUrl(object, isLeft, forceSide = false) {
+      object = getItem(object) || object
       let query = _.cloneDeep(this.$route.query)
       let fromTo = isLeft ? "from" : "to"
       if (!object) {
@@ -64,14 +67,16 @@ export default {
         query[fromTo + "Scheme"] = object.uri
       } else {
         // Consider object a concept
-        let conceptScheme = _.get(object, "inScheme[0]")
+        let conceptScheme = getItem(_.get(object, "inScheme[0]"))
+        !conceptScheme && console.assert("getRouterUrl", object, conceptScheme)
         if (forceSide || this.$store.state.selected.scheme[isLeft] == null || this.$jskos.compare(this.$store.state.selected.scheme[isLeft], conceptScheme)) {
         // If the scheme on the same side is null or the same as the concept's scheme, don't change anything.
         } else if (this.$jskos.compare(this.$store.state.selected.scheme[!isLeft], conceptScheme) || this.$store.state.selected.scheme[!isLeft] == null) {
         // Else, if the scheme on the other side matches the concept's scheme, change sides to that.
           fromTo = fromTo == "from" ? "to" : "from"
+          console.log("getRouterUrl - changed sides", object)
         }
-        query[fromTo + "Scheme"] = _.get(object, "inScheme[0].uri")
+        query[fromTo + "Scheme"] = conceptScheme.uri
         query[fromTo] = object.uri
       }
       // Build URL
@@ -84,7 +89,9 @@ export default {
     async setSelected({ concept, scheme, isLeft, noQueryRefresh = false, noLoading = false } = {}) {
       let loadingId = this.generateID()
 
+      concept = getItem(concept) || concept
       scheme = _.get(concept, "inScheme[0]") || scheme
+      scheme = getItem(scheme) || scheme
 
       // Check if concept and scheme are already selected
       if (jskos.compare(concept, this.$store.state.selected.concept[isLeft]) && jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
@@ -119,10 +126,10 @@ export default {
           noQueryRefresh,
         })
         // Load types for scheme
-        this.loadTypes(scheme)
+        loadTypes(scheme)
         // Load top concepts for scheme
         // ? Should we wait for the top concepts?
-        this.loadTop(scheme)
+        loadTop(scheme)
         preReturn()
         return true
       } else if (concept) {
@@ -137,25 +144,24 @@ export default {
           kind = "both"
           // Load top concepts for scheme
           // ? Should we wait for the top concepts?
-          this.loadTop(scheme)
+          loadTop(scheme)
         }
         // Load narrower and ancestor concepts (in background)
-        this.loadNarrower(concept)
-        this.loadAncestors(concept).then(() => {
+        loadNarrower(concept)
+        loadAncestors(concept).then(() => {
           // Load its ancestors' narrower concepts
-          concept.ancestors.filter(Boolean).forEach(ancestor => this.loadNarrower(ancestor))
+          concept.ancestors.filter(Boolean).forEach(ancestor => loadNarrower(ancestor))
         })
 
         // Load details
-        await this.loadConcepts([concept])
+        await loadConcepts([concept])
 
         // Load types for scheme
-        scheme && this.loadTypes(scheme)
+        scheme && loadTypes(scheme)
 
         // Load information about its broader concepts
         if (concept.broader && !concept.__BROADERLOADED__) {
-          this.adjustConcept(concept)
-          this.loadConcepts(concept.broader.filter(Boolean), { scheme }).then(() => {
+          loadConcepts(concept.broader.filter(Boolean), { scheme }).then(() => {
             this.$set(concept, "__BROADERLOADED__", true)
           })
         }
@@ -270,6 +276,7 @@ export default {
      * @param {boolean} isOpen
      */
     open(concept, isLeft, isOpen) {
+      concept = getItem(concept) || concept
       if (!concept) return
       let open = Object.assign({}, concept.__ISOPEN__)
       open[isLeft] = isOpen
@@ -298,6 +305,7 @@ export default {
     },
     // Wrapper around jskos.notation that makes adjustments if nececessary
     getNotation(item, type, adjust = false) {
+      item = getItem(item) || item
       let notation = jskos.notation(item, type)
       // Adjust notation for certain concept schemes -> return HTML as well
       if (adjust) {
@@ -324,6 +332,7 @@ export default {
       return notation
     },
     getPrefLabel(item) {
+      item = getItem(item) || item
       const notation = this.getNotation(item, null, true)
       let prefLabel = this.$jskos.prefLabel(item, { fallbackToUri: notation == null })
       const regex = new RegExp("^" + escapeRegExp(notation) + "\\s+(.*)$")

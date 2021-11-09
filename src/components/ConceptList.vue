@@ -41,6 +41,7 @@ import { scroller } from "vue-scrollto/src/scrollTo"
 import objects from "../mixins/cdk.js"
 import computed from "../mixins/computed.js"
 import mappedStatus from "../mixins/mapped-status.js"
+import { getItem } from "@/items"
 
 /**
  * Component that represents a (navigatable) concept list.
@@ -120,14 +121,14 @@ export default {
       return this.selected.scheme[this.isLeft]
     },
     conceptSelected() {
-      return this.selected.concept[this.isLeft]
+      return getItem(this.selected.concept[this.isLeft])
     },
     items() {
       let items = []
       for (let concept of this.concepts) {
         let item = {
           uri: concept ? concept.uri : "loading",
-          concept,
+          concept: getItem(concept),
           depth: 0,
           isSelected: this.$jskos.compare(this.conceptSelected, concept),
         }
@@ -224,6 +225,7 @@ export default {
           if (!this.showChildren || (concept.ancestors && !concept.ancestors.includes(null))) {
             let fullyLoaded = true
             for (let ancestor of concept.ancestors || []) {
+              ancestor = getItem(ancestor)
               if (this.showChildren && (!ancestor.narrower || ancestor.narrower.includes(null))) {
                 fullyLoaded = false
               }
@@ -232,7 +234,7 @@ export default {
               this.shouldScroll = false
               // Open ancestors
               if (this.showChildren) {
-                for (let ancestor of this.conceptSelected.ancestors || []) {
+                for (let ancestor of concept.ancestors || []) {
                   this.open(ancestor, this.isLeft, true)
                 }
               }
@@ -342,7 +344,7 @@ export default {
         for (let child of concept.narrower || []) {
           let item = {
             uri: child ? child.uri : "loading",
-            concept: child,
+            concept: getItem(child),
             depth,
             isSelected: this.$jskos.compare(this.conceptSelected, child),
           }

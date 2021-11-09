@@ -230,7 +230,7 @@
       </template>
       <!-- coli-ana (see https://github.com/gbv/cocoda/issues/524) -->
       <tab
-        v-if="item.memberList && item.memberList.length"
+        v-if="memberList && memberList.length"
         :title="'coli-ana'">
         <ul class="coli-ana">
           <li>
@@ -239,23 +239,23 @@
             <div />
           </li>
           <li
-            v-for="(member, index) of item.memberList.filter(m => m != null)"
+            v-for="(member, index) of memberList.filter(m => m != null)"
             :key="`${member.uri}-${index}`"
             :class="{
-              'font-weight-bold': item.memberList[index - 1] &&
-                isMemberParentOf(item.memberList[index - 1], member) &&
-                !isMemberParentOf(member, item.memberList[index + 1]),
+              'font-weight-bold': memberList[index - 1] &&
+                isMemberParentOf(memberList[index - 1], member) &&
+                !isMemberParentOf(member, memberList[index + 1]),
             }">
             <div>
               <span
-                v-if="isMemberParentOf(item.memberList[index - 1], member)">
+                v-if="isMemberParentOf(memberList[index - 1], member)">
                 ↳
               </span>
             </div>
             <div>{{ member.notation[1] }}</div>
             <div>
               <item-name
-                :item="getObject(member) || member"
+                :item="member"
                 :show-notation="false"
                 :is-link="true"
                 :is-left="isLeft"
@@ -271,7 +271,7 @@
           </li>
         </ul>
         <p
-          v-if="item.memberList[item.memberList.length - 1] === null"
+          v-if="memberList[memberList.length - 1] === null"
           v-html="$t('conceptDetail.coliAnaIncomplete')" />
         <p v-html="$t('conceptDetail.coliAnaInfo', { url: `${config['coli-ana']}?notation=${$jskos.notation(item)}` })" />
       </tab>
@@ -315,6 +315,8 @@ import computed from "../mixins/computed.js"
 import hotkeys from "../mixins/hotkeys.js"
 import mappedStatus from "../mixins/mapped-status.js"
 
+import { getItem, getItems, loadConcepts, saveItem } from "@/items"
+
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
  */
@@ -354,20 +356,26 @@ export default {
     }
   },
   computed: {
+    _item() {
+      return getItem(this.item)
+    },
+    memberList() {
+      return this._item && this._item.memberList && getItems(this._item.memberList)
+    },
     showAddToMappingButton() {
-      return this.$store.getters["mapping/canAdd"](this.item, _.get(this.item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
+      return this.$store.getters["mapping/canAdd"](this._item, _.get(this._item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
     },
     ancestors() {
-      return _.get(this.item, "ancestors", []) || []
+      return getItems(_.get(this.item, "ancestors", []) || [])
     },
     broader() {
-      return _.get(this.item, "broader", []) || []
+      return getItems(_.get(this.item, "broader", []) || [])
     },
     // Search Links (see https://github.com/gbv/cocoda/issues/220)
     searchLinks() {
       let language = this.$i18n.locale
-      let notation = this.$jskos.notation(this.item)
-      let prefLabel = this.$jskos.prefLabel(this.item)
+      let notation = this.$jskos.notation(this._item)
+      let prefLabel = this.$jskos.prefLabel(this._item)
       let info = { language, notation, prefLabel }
       let searchLinks = []
       for (let searchLink of this.config.searchLinks) {
@@ -404,12 +412,13 @@ export default {
     },
     // Returns null or an array of type objects
     types() {
-      if (!this.item || (this.item.type || []).length <= 1) {
+      if (!this._item || (this._item.type || []).length <= 1) {
         return []
       }
       let types = []
-      let schemeTypes = _.get(this.item, "inScheme[0].types", [])
-      for (let typeUri of this.item.type || []) {
+      const scheme = getItem(_.get(this.item, "inScheme[0]"))
+      let schemeTypes = scheme.types
+      for (let typeUri of this._item.type || []) {
         if (typeUri == "http://www.w3.org/2004/02/skos/core#Concept") {
           continue
         }
@@ -422,14 +431,14 @@ export default {
     },
     gndTerms() {
       // Assemble gndTerms array for display
-      let gnd = this.getObject({ uri: "http://bartoc.org/en/node/430" })
-      let mappings = _.get(this.item, "__GNDMAPPINGS__", [])
+      let gnd = getItem({ uri: "http://bartoc.org/en/node/430" })
+      let mappings = _.get(this._item, "__GNDMAPPINGS__", [])
       let concepts = []
       for (let mapping of mappings) {
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
           if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]")) && !concepts.find(c => this.$jskos.compare(c.concept, concept))) {
             concepts.push({
-              concept,
+              concept: getItem(concept),
               type: this.$jskos.mappingTypeByType(mapping.type),
             })
           }
@@ -467,7 +476,8 @@ export default {
     },
   },
   watch: {
-    item(newItem, oldItem) {
+    // TODO: Can we watch `uri` directly?
+    _item(newItem, oldItem) {
       // Refresh component if item changed
       if(!this.$jskos.compare(newItem, oldItem)) {
         this.refresh()
@@ -503,15 +513,16 @@ export default {
       // Load GND terms
       this.loadGndTerms()
       // Load details if not loaded
-      this.loadConcepts([this.item], { force: true })
+      // ? Why force: true?
+      loadConcepts([this.item], { force: true })
       // Load coli-ana data
       this.loadColiAna()
     },
     async loadGndTerms() {
       // TODO: Refactoring necessary!
       if (!this.item) return
-      let itemBefore = this.item
-      let gnd = this.getObject({ uri: "http://bartoc.org/en/node/430" })
+      let itemBefore = this._item
+      let gnd = getItem({ uri: "http://bartoc.org/en/node/430" })
       // Don't load GND terms for GND items
       if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
         return
@@ -536,7 +547,7 @@ export default {
         }
       }
       gndConcepts = _.uniqWith(gndConcepts, this.$jskos.compare)
-      await this.loadConcepts(gndConcepts)
+      await loadConcepts(gndConcepts)
 
       // Set property "__GNDMAPPINGS__" for item
       this.$set(itemBefore, "__GNDMAPPINGS__", mappings)
@@ -544,13 +555,13 @@ export default {
     async loadColiAna() {
       const api = this.config["coli-ana"]
       if (!api) return
-      const itemBefore = this.item
+      const itemBefore = this._item
       if (!itemBefore) return
       if (itemBefore.memberList) {
         // Data already loaded
         return
       }
-      const ddc = this.getObject({ uri: "http://dewey.info/scheme/edition/e23/" })
+      const ddc = getItem({ uri: "http://dewey.info/scheme/edition/e23/" })
       if (!this.$jskos.compare(ddc, _.get(itemBefore, "inScheme[0]"))) {
         // Only DDC supported for now
         return
@@ -564,7 +575,7 @@ export default {
       if (resultConcept) {
         // Save each concept in memberList
         resultConcept.memberList.forEach(member => {
-          member && this.saveObject(member, {
+          member && saveItem(member, {
             scheme: ddc,
             type: "concept",
           })
@@ -573,15 +584,10 @@ export default {
         this.$set(
           itemBefore,
           "memberList",
-          resultConcept.memberList.map(member => member ? ({
-            ...member,
-            inScheme: [ddc],
-            // Ideally link to prefLabel of saved object because we need to display it.
-            prefLabel: (this.getObject(member) || member).prefLabel,
-          }) : null),
+          resultConcept.memberList.map(member => member ? { uri: member.uri } : null),
         )
         // Load concept data (in parallel)
-        this.loadConcepts(resultConcept.memberList.filter(member => member))
+        loadConcepts(resultConcept.memberList.filter(Boolean))
         // Under certain conditions, activate the coli-ana tab
         this.$nextTick(() => {
           const tabs = this.$refs.tabs

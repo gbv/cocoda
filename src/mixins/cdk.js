@@ -15,6 +15,7 @@ import jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
+import { getItem, getItems, saveItem, loadConcepts } from "@/items"
 
 let objects = {}
 let topConcepts = {}
@@ -43,7 +44,7 @@ export default {
       let schemes = []
       if (this.schemes.length) {
         for (let uri of this.$store.getters.favoriteSchemes) {
-          let scheme = this.getObject({ uri })
+          let scheme = getItem({ uri })
           if (scheme && !this.$jskos.isContainedIn(scheme, schemes)) {
             schemes.push(scheme)
           }
@@ -58,13 +59,16 @@ export default {
       let concepts = []
       if (this.schemes.length) {
         for (let concept of this.$store.getters.favoriteConcepts) {
-          let conceptFromStore = this.saveObject(concept, { type: "concept" })
+          if (concept && (!concept.inScheme || !concept.inScheme[0])) {
+            console.log("computed -> favorite concepts: no scheme", concept)
+          }
+          let conceptFromStore = saveItem(concept, { type: "concept" })
           concepts.push(conceptFromStore)
         }
       }
       // Load details if necessary
       // TODO: Reconsider because this is a computed property.
-      this.loadConcepts(concepts.filter(concept => !concept.__DETAILSLOADED__))
+      loadConcepts(concepts)
       return concepts
     },
     /**
@@ -118,6 +122,7 @@ export default {
      * @param {*} object
      */
     adjustConcept(object) {
+      console.warn("cdk.js - adjustConcept is deprecated")
       if (!object) {
         throw new Error("Can't adjust object that is null or undefined.")
       }
@@ -152,6 +157,7 @@ export default {
      * @param {*} options
      */
     saveObject(object, options = {}) {
+      console.warn("cdk.js - saveObject is deprecated")
       if (!object || !object.uri) {
         throw new Error("Can't save object that is null or undefined or that doesn't have a URI.")
       }
@@ -252,6 +258,7 @@ export default {
      * @param {*} options
      */
     saveObjectsWithOptions(options) {
+      console.warn("cdk.js - saveObjectsWithOptions is deprecated")
       return objects => objects.map(object => this.saveObject(object, options))
     },
     /**
@@ -260,6 +267,7 @@ export default {
      * @param {*} object
      */
     getObject(object) {
+      console.warn("cdk.js - getObject is deprecated")
       if (!object || object.__SAVED__) {
         return object
       }
@@ -275,6 +283,7 @@ export default {
      * Loads schemes from API. This should be called once upon application start.
      */
     async loadSchemes() {
+      console.warn("cdk.js - loadSchemes is deprecated")
       let schemes = await cdk.getSchemes({ timeout: 10000 })
       for (let scheme of schemes) {
         scheme = this.saveObject(scheme, { provider: scheme._registry, type: "scheme" })
@@ -290,6 +299,7 @@ export default {
      * @param {*} scheme
      */
     async loadTypes(scheme) {
+      console.warn("cdk.js - loadTypes is deprecated")
       if (!scheme || !scheme.__SAVED__) {
         throw new Error(`loadTypes called with a scheme that is undefined or not saved: ${scheme && scheme.uri}`)
       }
@@ -312,6 +322,7 @@ export default {
      * @param {*} scheme
      */
     async loadTop(scheme) {
+      console.warn("cdk.js - loadTop is deprecated")
       if (!scheme || !scheme.__SAVED__) {
         throw new Error(`loadTop called with a scheme that is undefined or not saved: ${scheme && scheme.uri}`)
       }
@@ -340,6 +351,7 @@ export default {
      * @param {*} options - options for getConcepts call
      */
     async loadConcepts(concepts, { registry: fallbackRegistry, scheme, force = false, ...options } = {}) {
+      console.warn("cdk.js - loadConcepts is deprecated")
       // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
       // Then, sort the remaining concepts by registry.
       const list = []
@@ -413,6 +425,7 @@ export default {
      * @param {*} options
      */
     async loadNarrower(concept, { registry: fallbackRegistry, ...options } = {}) {
+      console.warn("cdk.js - loadNarrower is deprecated")
       // TODO: Does concept really need to be saved?
       if (!concept || !concept.__SAVED__) {
         throw new Error(`loadNarrower called with concept that is undefined or not saved: ${concept && concept.uri}.`)
@@ -454,6 +467,7 @@ export default {
      * @param {*} options
      */
     async loadAncestors(concept, { registry: fallbackRegistry, ...options } = {}) {
+      console.warn("cdk.js - loadAncestors is deprecated")
       // TODO: Does concept really need to be saved?
       if (!concept || !concept.__SAVED__) {
         throw new Error(`loadAncestors called with concept that is undefined or not saved: ${concept && concept.uri}.`)
@@ -522,11 +536,11 @@ export default {
       }
       for (let fromTo of ["from", "to"]) {
         if (mapping[fromTo + "Scheme"]) {
-          mapping[fromTo + "Scheme"] = this.saveObject(mapping[fromTo + "Scheme"], { type: "scheme" })
+          mapping[fromTo + "Scheme"] = saveItem(mapping[fromTo + "Scheme"], { type: "scheme", returnIfExists: true })
           let scheme = mapping[fromTo + "Scheme"]
           for (let bundleType of ["memberSet", "memberList", "memberChoice"]) {
             if (_.isArray(mapping[fromTo][bundleType])) {
-              mapping[fromTo][bundleType] = mapping[fromTo][bundleType].filter(concept => concept != null).map(concept => this.saveObject(concept, { scheme, type: "concept" }))
+              mapping[fromTo][bundleType] = mapping[fromTo][bundleType].filter(concept => concept != null).map(concept => saveItem(concept, { scheme, type: "concept", returnIfExists: true }))
             }
           }
         }
@@ -539,8 +553,8 @@ export default {
       const registry = _.get(mapping, "_registry")
       if (jskos.mappingRegistryIsStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
-          const targetScheme = mapping[`${to}Scheme`]
-          const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
+          const targetScheme = getItem(mapping[`${to}Scheme`])
+          const sourceConcepts = getItems(jskos.conceptsOfMapping(mapping, from))
           if (targetScheme) {
             for (let concept of sourceConcepts) {
               if (!concept.__MAPPED__) {
@@ -868,8 +882,8 @@ export default {
       // 3. Adjust __MAPPED__ property of conceps in mapping
       if (jskos.mappingRegistryIsStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
-          const targetScheme = mapping[`${to}Scheme`]
-          const sourceConcepts = jskos.conceptsOfMapping(mapping, from)
+          const targetScheme = getItem(mapping[`${to}Scheme`])
+          const sourceConcepts = getItems(jskos.conceptsOfMapping(mapping, from))
           if (targetScheme) {
             for (let concept of sourceConcepts) {
               const existing = (concept.__MAPPED__ || []).find(item => jskos.compare(item.registry, registry) && jskos.compare(item.scheme, targetScheme))

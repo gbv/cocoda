@@ -428,6 +428,7 @@ import { cdk } from "cocoda-sdk"
 import auth from "../mixins/auth.js"
 import objects from "../mixins/cdk.js"
 import computed from "../mixins/computed.js"
+import { getItem } from "@/items"
 
 /**
  * The settings modal.
@@ -634,7 +635,7 @@ export default {
           let mapping = this.$jskos.minifyMapping(m)
           // Add labels to concepts in mapping
           for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-            let conceptInStore = this.getObject(concept)
+            let conceptInStore = getItem(concept)
             let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
             if (language) {
               concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
@@ -647,8 +648,8 @@ export default {
         // First, determine available combinations of concept schemes
         for (let mapping of mappings) {
           // Adjust schemes with store
-          mapping.fromScheme = this.getObject(mapping.fromScheme) || mapping.fromScheme
-          mapping.toScheme = this.getObject(mapping.toScheme) || mapping.toScheme
+          mapping.fromScheme = getItem(mapping.fromScheme) || mapping.fromScheme
+          mapping.toScheme = getItem(mapping.toScheme) || mapping.toScheme
           let download = this.dlMappings.find(dl => this.$jskos.compare(mapping.fromScheme, dl.fromScheme) && this.$jskos.compare(mapping.toScheme, dl.toScheme))
           if (download) {
             download.mappings.push(mapping)
@@ -681,7 +682,7 @@ export default {
             // Prepare labels
             // ... for concepts
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-              let conceptInStore = this.getObject(concept)
+              let conceptInStore = getItem(concept)
               let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
               if (language) {
                 // NOTE: Hardcoded language, see note above.

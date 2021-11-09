@@ -1,12 +1,12 @@
 <template>
   <div
-    v-if="item != null"
+    v-if="_item != null"
     :draggable="draggable"
     class="itemName"
     :class="{
       'itemName-hoverable': !preventExternalHover && isValidLink
     }"
-    @dragstart="dragStart(item, $event)"
+    @dragstart="dragStart(_item, $event)"
     @dragend="dragEnd"
     @mouseover="hovering(true)"
     @mouseout="hovering(false)">
@@ -30,14 +30,14 @@
       ]">
       <!-- Show icon for concepts where no data could be loaded -->
       <span
-        v-if="item && item.__DETAILSLOADED__ == -1"
+        v-if="_item && _item.__DETAILSLOADED__ == -1"
         v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
         class="fontSize-small">
         <font-awesome-icon icon="bolt" />
       </span>
       <!-- Show icon for combined concepts -->
       <span
-        v-if="item && item.type && item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
+        v-if="_item && _item.type && _item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
         v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: defaults.delay.medium }"
         :class="'fontSize-'+(fontSize || 'normal')">
         <font-awesome-icon icon="puzzle-piece" />
@@ -62,6 +62,7 @@
 <script>
 import _ from "lodash"
 import dragandrop from "../mixins/dragandrop.js"
+import { getItem } from "@/items"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
@@ -161,17 +162,20 @@ export default {
     }
   },
   computed: {
+    _item() {
+      return getItem(this.item) || this.item
+    },
     isHovered() {
-      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this.item))
+      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this._item))
     },
     notation() {
-      return this.getNotation(this.item, null, true)
+      return this.getNotation(this._item, null, true)
     },
     prefLabel() {
-      return this.getPrefLabel(this.item)
+      return this.getPrefLabel(this._item)
     },
     itemDetails() {
-      let result = this.$jskos.languageMapContent(this.item, "scopeNote")
+      let result = this.$jskos.languageMapContent(this._item, "scopeNote")
       if (!result || !result.length) {
         return ""
       }
@@ -180,7 +184,7 @@ export default {
     },
   },
   watch: {
-    item: function() {
+    _item: function() {
       // Force show tooltip when item has changed
       _.delay(() => {
         if (this.isHoveredFromHere) {
@@ -198,16 +202,16 @@ export default {
         this.isHoveredFromHere = true
         this.$store.commit({
           type: "setHoveredConcept",
-          concept: this.item,
+          concept: this._item,
         })
         // Set URL
-        this.url = this.getRouterUrl(this.item, this.isLeft, this.forceSide)
+        this.url = this.getRouterUrl(this._item, this.isLeft, this.forceSide)
         // Set isValidLink
         if (!this.isLink) {
           this.isValidLink = false
         } else {
           // Check if scheme is available or item itself is a scheme.
-          this.isValidLink = this.getProvider(this.item) != null
+          this.isValidLink = this.getProvider(this._item) != null
         }
         // Check whether mouse is still in element.
         window.clearInterval(this.interval)

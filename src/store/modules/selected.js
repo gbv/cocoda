@@ -1,3 +1,4 @@
+// TODO: Should we use items from store here?
 
 // initial state
 const state = {

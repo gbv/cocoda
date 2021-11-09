@@ -1,13 +1,13 @@
 <template>
   <div>
     <font-awesome-icon
-      v-b-tooltip.hover="{ title: $jskos.isContainedIn(source, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
-      :class="$jskos.isContainedIn(source, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
+      v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
+      :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
       class="pointer"
       icon="star"
-      @click="toggleFavoriteScheme(source)" />
+      @click="toggleFavoriteScheme(scheme)" />
     <item-name
-      :item="source"
+      :item="scheme"
       :is-link="true"
       :is-left="isLeft"
       @click.native="hidePopover" />
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { getItem } from "@/items"
 import ItemName from "./ItemName.vue"
 
 export default {
@@ -46,6 +47,11 @@ export default {
     isLeft: {
       type: Boolean,
       required: true,
+    },
+  },
+  computed: {
+    scheme() {
+      return getItem(this.source)
     },
   },
 }

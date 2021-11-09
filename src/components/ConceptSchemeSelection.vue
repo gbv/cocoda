@@ -284,6 +284,7 @@ import computed from "../mixins/computed.js"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"
+import { getItems } from "@/items"
 
 /**
  * Concept scheme selection component.
@@ -340,6 +341,10 @@ export default {
     scheme() {
       return this.selected.scheme[this.isLeft]
     },
+    // All schemes from store
+    _schemes() {
+      return getItems(this.schemes)
+    },
     // Indicates whether there is a filter active.
     isFiltered() {
       return this.schemeFilter != "" || this.registryFilter.length < this.availableRegistries.length || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
@@ -350,14 +355,14 @@ export default {
     },
     // Returns an array of all available languages.
     availableLanguages() {
-      return _.uniq([].concat(...this.schemes.map(scheme => scheme.languages || []))).sort()
+      return _.uniq([].concat(...this._schemes.map(scheme => scheme.languages || []))).sort()
     },
     // Returns an array of all available scheme types.
     availableTypes() {
-      return _.uniq(_.flatten(this.schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
+      return _.uniq(_.flatten(this._schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
     },
     allowFavoriteSchemesFilter() {
-      return !!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this.schemes))
+      return !!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this._schemes))
     },
   },
   watch: {
@@ -517,7 +522,7 @@ export default {
       let options
 
       // ===== shownRegistries =====
-      schemes = this.schemes.filter(
+      schemes = this._schemes.filter(
         scheme =>
           (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
@@ -534,7 +539,7 @@ export default {
       this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._registry)))
 
       // ===== shownLanguages =====
-      schemes = this.schemes.filter(
+      schemes = this._schemes.filter(
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
@@ -551,7 +556,7 @@ export default {
       this.shownLanguages = _.uniq([].concat(...schemes.map(scheme => scheme.languages || []))).sort()
 
       // ===== shownTypes =====
-      schemes = this.schemes.filter(
+      schemes = this._schemes.filter(
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
@@ -572,7 +577,7 @@ export default {
 
       // ===== languageFilterOptions =====
       options = []
-      if (this.schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
+      if (this._schemes.find(scheme => !scheme.languages || !scheme.languages.length)) {
         options.push({
           value: null,
           text: this.$t("schemeSelection.filterOther"),
@@ -583,7 +588,7 @@ export default {
 
       // ===== typeFilterOptions =====
       options = []
-      if (this.schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
+      if (this._schemes.find(scheme => !scheme.type || scheme.type.length <= 1)) {
         options.push({
           value: null,
           text: this.$t("schemeSelection.filterOther"),
@@ -604,11 +609,11 @@ export default {
       // Filter schemes, use either text filter or other filters
       if (filter) {
         const keywordsForScheme = (scheme) => _.flattenDeep(_.concat([], Object.values(scheme.prefLabel || {}), Object.values(scheme.altLabel || {}), scheme.notation || [])).map(k => k.toLowerCase())
-        this.filteredSchemes = this.schemes.filter(
+        this.filteredSchemes = this._schemes.filter(
           scheme => keywordsForScheme(scheme).find(keyword => keyword.startsWith(filter)),
         )
       } else {
-        this.filteredSchemes = this.schemes.filter(
+        this.filteredSchemes = this._schemes.filter(
           scheme =>
             (
               this.registryFilter.length == this.availableRegistries.length ||

@@ -104,6 +104,7 @@ import computed from "../mixins/computed.js"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import hoverHandler from "../mixins/hover-handler.js"
+import { getItemByUri, getItems, loadConcepts } from "@/items"
 
 export default {
   name: "ConceptListWrapper",
@@ -188,7 +189,9 @@ export default {
           id: `custom-${index}`,
           label,
           tooltip,
-          concepts: list.concepts.map(concept => this.saveObject(concept, { type: "concept" })),
+          // TODO: Do we need to save items here? If not, we can use getItems instead.
+          // concepts: list.concepts.map(concept => saveItem(concept, { type: "concept", returnIfExists: true })),
+          concepts: getItems(list.concepts),
           showChildren: false,
           showScheme: true,
           url: list.url || list.conceptsUrl,
@@ -203,7 +206,7 @@ export default {
     },
     _topConcepts() {
       let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
-      return _.get(this.topConcepts, uri) || []
+      return _.get(getItemByUri(uri), "topConcepts") || []
     },
     concepts() {
       return this.currentChoice.concepts
@@ -270,9 +273,10 @@ export default {
         }
       }
       // Load concepts
-      this.loadConcepts(concepts)
+      loadConcepts(concepts)
     },
     // Minimizes the concept list to only URIs and inScheme
+    // TODO: Is this still necessary with the new changes?
     minimizeConcepts(concepts) {
       let newList = []
       for (let concept of concepts) {

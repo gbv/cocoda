@@ -11,12 +11,12 @@
     <div class="conceptSearch-inputWrapper">
       <div
         v-if="isOpen && !loading"
-        :style="`right: ${scheme.types && scheme.types.length ? 27 : 10}px;`"
+        :style="`right: ${_scheme.types && _scheme.types.length ? 27 : 10}px;`"
         class="conceptSearch-resultCount">
         {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
       </div>
       <div
-        v-show="scheme.types && scheme.types.length > 0"
+        v-show="_scheme.types && _scheme.types.length > 0"
         :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
         class="conceptSearch-filter button">
         <font-awesome-icon icon="filter" />
@@ -34,7 +34,7 @@
             stacked
             size="sm">
             <b-form-checkbox
-              v-for="type in scheme.types"
+              v-for="type in _scheme.types"
               :key="type.uri"
               :value="type.uri"
               class="conceptSearch-filterCheckbox">
@@ -112,6 +112,7 @@ import objects from "../mixins/cdk.js"
 import clickHandler from "../mixins/click-handler.js"
 import dragandrop from "../mixins/dragandrop.js"
 import computed from "../mixins/computed.js"
+import { getItem, loadTypes, saveItem } from "@/items"
 
 /**
  * Component that represents a typeahead-enabled search field for concepts.
@@ -163,13 +164,16 @@ export default {
     }
   },
   computed: {
+    _scheme() {
+      return getItem(this.scheme) || this.scheme
+    },
     // Only for watcher
     typesForSchemes() {
       return this.$settings.typesForSchemes
     },
     selectedTypes: {
       get() {
-        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this.scheme, { uri: key }))
+        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this._scheme, { uri: key }))
         return this.$settings.typesForSchemes[key]
       },
       set(newValue) {
@@ -177,7 +181,7 @@ export default {
           return
         }
         // Save types to settings
-        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this.scheme, { uri: key })) || this.scheme.uri
+        let key = Object.keys(this.$settings.typesForSchemes).find(key => this.$jskos.compare(this._scheme, { uri: key })) || this._scheme.uri
         let typesForSchemes = _.cloneDeep(this.$settings.typesForSchemes)
         // Prevent infinite loop when stored value is equal to new value
         if (_.isEqual(newValue, typesForSchemes[key])) {
@@ -192,7 +196,7 @@ export default {
       },
     },
     provider() {
-      return _.get(this.scheme, "_registry")
+      return _.get(this._scheme, "_registry")
     },
   },
   watch: {
@@ -221,7 +225,7 @@ export default {
     /**
      * Clears the search field when scheme is changed.
      */
-    scheme: function(newValue, oldValue) {
+    _scheme: function(newValue, oldValue) {
       if (!this.$jskos.compare(oldValue, newValue)) {
         this.searchQuery = ""
         this.searchResult = []
@@ -292,10 +296,10 @@ export default {
       let uri = _.last(result)
       let concept = {
         uri: uri,
-        inScheme: [this.scheme],
+        inScheme: [this._scheme],
       }
       // Get concept from store
-      concept = this.saveObject(concept, { type: "concept", scheme: this.scheme, provider: this.provider })
+      concept = saveItem(concept, { type: "concept", scheme: this._scheme, provider: this.provider })
       return this.getRouterUrl(concept, this.isLeft)
     },
     closeResults() {
@@ -307,7 +311,7 @@ export default {
     getAnswer:  function () {
       this.searchResult = []
       let searchQuery = this.searchQuery
-      const promise = this.provider.suggest({ search: searchQuery, scheme: this.scheme, types: this.selectedTypes })
+      const promise = this.provider.suggest({ search: searchQuery, scheme: this._scheme, types: this.selectedTypes })
       this.cancel = promise.cancel
       promise
         .then((data) => {
@@ -328,7 +332,7 @@ export default {
         }).then(() => {
           if (searchQuery == this.searchQuery) {
             // If possible, add searchQuery as notation only the the result
-            const scheme = new this.$jskos.ConceptScheme(this.scheme)
+            const scheme = new this.$jskos.ConceptScheme(this._scheme)
             const concept = scheme.conceptFromNotation(searchQuery)
             if (concept && !this.searchResult.find(result => _.last(result) == concept.uri)) {
               this.searchResult.push([
@@ -449,15 +453,15 @@ export default {
     },
     _loadTypes(item) {
       // Load types for scheme
-      this.loadTypes(item).then(scheme => {
+      loadTypes(item).then(types => {
         if (!this.selectedTypes) {
-          this.selectedTypes = scheme.types.map(type => type.uri)
+          this.selectedTypes = types.map(type => type.uri)
         }
       })
     },
     dragStartResult(result, event) {
       let uri = _.last(result)
-      let concept = this.saveObject({ uri }, { scheme: this.scheme, type: "concept" })
+      let concept = saveItem({ uri }, { scheme: this._scheme, type: "concept" })
       this.dragStart(concept, event)
     },
     droppedConcept(concept) {
