@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    :class="{
+      'registry-info-inline': inline,
+    }">
     <div>
       <registry-notation
         :registry="registry"
@@ -18,7 +21,7 @@
         <font-awesome-icon icon="link" />
       </a>
       <span
-        v-if="registry.isAuthorizedFor({
+        v-if="showEditable && registry.isAuthorizedFor({
           type: 'mappings',
           action: 'create',
           user: user,
@@ -91,10 +94,25 @@ export default {
       type: Boolean,
       default: true,
     },
+    showEditable: {
+      type: Boolean,
+      default: true,
+    },
+    inline: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
 @import "../style/main.less";
+
+.registry-info-inline {
+  display: inline-block;
+}
+.registry-info-inline > div {
+  display: inline-block;
+}
 </style>
