@@ -74,7 +74,6 @@ export default {
         } else if (this.$jskos.compare(this.$store.state.selected.scheme[!isLeft], conceptScheme) || this.$store.state.selected.scheme[!isLeft] == null) {
         // Else, if the scheme on the other side matches the concept's scheme, change sides to that.
           fromTo = fromTo == "from" ? "to" : "from"
-          console.log("getRouterUrl - changed sides", object)
         }
         query[fromTo + "Scheme"] = conceptScheme.uri
         query[fromTo] = object.uri
