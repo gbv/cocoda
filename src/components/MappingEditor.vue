@@ -7,7 +7,12 @@
     <div
       v-if="canSaveCurrentMapping"
       class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
-      {{ $jskos.prefLabel($store.getters.getCurrentRegistry) }}: {{ $t("mappingEditor.notSaved") }}
+      <registry-info
+        :registry="$store.getters.getCurrentRegistry"
+        :show-details="false"
+        :show-capabilities="false"
+        :show-editable="false"
+        :inline="true" />: {{ $t("mappingEditor.notSaved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -231,6 +236,7 @@ import MappingTypeSelection from "./MappingTypeSelection.vue"
 import _ from "lodash"
 import ComponentSettings from "./ComponentSettings.vue"
 import MappingDetail from "./MappingDetail.vue"
+import RegistryInfo from "./RegistryInfo.vue"
 
 // Import mixins
 import auth from "../mixins/auth.js"
@@ -244,7 +250,7 @@ import computed from "../mixins/computed.js"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail },
+  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryInfo },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
   computed: {
     mapping() {
@@ -764,8 +770,8 @@ export default {
 
 .mappingEditor-mappingNotSaved {
   position: absolute;
-  bottom: -4px;
-  left: 1px;
+  bottom: -1px;
+  left: 0px;
   color: @color-button-delete;
   z-index: @zIndex-2;
 }
