@@ -99,10 +99,10 @@ const mutations = {
     state.configLoaded = true
   },
   setHoveredConcept(state, { concept }) {
-    state.hoveredConcept = concept
+    state.hoveredConcept = concept && { uri: concept.uri }
   },
   setDraggedConcept(state, { concept }) {
-    state.draggedConcept = concept
+    state.draggedConcept = concept && { uri: concept.uri }
   },
   setHoveredMapping(state, { mapping }) {
     state.hoveredMapping = mapping
