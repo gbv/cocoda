@@ -104,7 +104,7 @@ import computed from "../mixins/computed.js"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import hoverHandler from "../mixins/hover-handler.js"
-import { getItem, getItemByUri, getItems, loadConcepts } from "@/items"
+import { getItem, getItemByUri, loadConcepts } from "@/items"
 
 export default {
   name: "ConceptListWrapper",
@@ -189,9 +189,7 @@ export default {
           id: `custom-${index}`,
           label,
           tooltip,
-          // TODO: Do we need to save items here? If not, we can use getItems instead.
-          // concepts: list.concepts.map(concept => saveItem(concept, { type: "concept", returnIfExists: true })),
-          concepts: getItems(list.concepts),
+          concepts: list.concepts,
           showChildren: false,
           showScheme: true,
           url: list.url || list.conceptsUrl,
