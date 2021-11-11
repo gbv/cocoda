@@ -12,6 +12,9 @@ import log from "@/utils/log.js"
 
 const _items = reactive({})
 
+const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts", "memberList"]
+const schemeProps = ["inScheme", "topConceptOf", "versionOf"]
+
 function getRegistryForItem(item) {
   if (item._registry) {
     return item._registry
@@ -23,21 +26,32 @@ function getRegistryForItem(item) {
   return null
 }
 
-export function getItem(item) {
+export function getItem(item, { relatedItems = false } = {}) {
+  let result = null
   for (const uri of jskos.getAllUris(item)) {
     if (_items[uri]) {
-      return _items[uri]
+      result = _items[uri]
+      break
     }
   }
-  return null
+  if (result && relatedItems) {
+    // Create a copy of the object so we can safely modify the properties
+    result = { ...result }
+    for (const prop of [].concat(conceptProps, schemeProps)) {
+      if (result[prop]) {
+        result[prop] = result[prop].map(i => getItem(i) || i)
+      }
+    }
+  }
+  return result
 }
 
-export function getItemByUri(uri) {
-  return getItem({ uri })
+export function getItemByUri(uri, options) {
+  return getItem({ uri }, options)
 }
 
-export function getItems(items) {
-  return items.map(item => getItem(item))
+export function getItems(items, options) {
+  return items.map(item => getItem(item, options))
 }
 
 export function saveItem(item, options = {}) {
@@ -60,8 +74,6 @@ export function saveItem(item, options = {}) {
     if (!Array.isArray(item[key])) {
       continue
     }
-    const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts", "memberList"]
-    const schemeProps = ["inScheme", "topConceptOf", "versionOf"]
     if (![].concat(conceptProps, schemeProps).includes(key)) {
       continue
     }
@@ -240,11 +252,11 @@ export async function loadTypes(scheme, { registry, force = false } = {}) {
   }
   try {
     const types = await registry.getTypes({ scheme })
-    set(scheme, "types", types)
+    modifyItem(scheme, "types", types)
   } catch (error) {
     // Ignore error, show warning only.
     log.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
-    set(scheme, "types", [])
+    modifyItem(scheme, "types", [])
   }
   return scheme.types
 }
@@ -265,11 +277,11 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
       // Save concept
       return saveItem(concept, { type: "concept", scheme })
     })
-    set(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(({ uri }) => ({ uri })))
+    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(({ uri }) => ({ uri })))
   } catch (error) {
     // Ignore error, show warning only.
     log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty types list.`)
-    set(scheme, "topConcepts", [])
+    modifyItem(scheme, "topConcepts", [])
   }
   return scheme.topConcepts
 }
@@ -281,7 +293,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
   // Then, sort the remaining concepts by registry.
   const list = []
   let uris = []
-  concepts = concepts.map(concept => getItem(concept))
+  concepts = concepts.map(concept => getItem(concept, { relatedItems: true }))
   for (let concept of concepts.filter(c => c && c.uri && (c.__DETAILSLOADED__ < 1 || force))) {
     const registry = getRegistryForItem(concept) || getRegistryForItem(scheme) || fallbackRegistry
     if (!registry) {
@@ -313,7 +325,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
           let uris = []
           for (let concept of concepts) {
             concept = saveItem(concept, { scheme, type: "concept" })
-            set(concept, "__DETAILSLOADED__", 1)
+            modifyItem(concept, "__DETAILSLOADED__", 1)
             uris = uris.concat(jskos.getAllUris(concept))
           }
           // Remove all loaded URIs from loadingConcepts
@@ -333,7 +345,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
     let index = loadingConcepts.findIndex(concept => jskos.compare(concept, { uri }))
     if (index >= 0) {
       let concept = loadingConcepts[index]
-      set(concept, "__DETAILSLOADED__", -1)
+      modifyItem(concept, "__DETAILSLOADED__", -1)
       del(loadingConcepts, index)
       erroredConcepts.push(concept)
     }
@@ -343,7 +355,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
 }
 
 export async function loadNarrower(concept, { registry, force = false } = {}) {
-  concept = getItem(concept) || concept
+  concept = getItem(concept, { relatedItems: true }) || concept
   if (!force && concept.narrower && !concept.narrower.includes(null)) {
     return concept.narrower
   }
@@ -367,16 +379,16 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
       // Save concept
       return saveItem(child, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
     })
-    set(concept, "narrower", jskos.sortConcepts(narrower).map(({ uri }) => ({ uri })))
+    modifyItem(concept, "narrower", jskos.sortConcepts(narrower).map(({ uri }) => ({ uri })))
   } catch (error) {
     log.error(`Error loading narrower concepts for ${concept.uri}`, error)
-    set(concept, "narrower", [])
+    modifyItem(concept, "narrower", [])
   }
   return concept.narrower
 }
 
 export async function loadAncestors(concept, { registry, force = false } = {}) {
-  concept = getItem(concept) || concept
+  concept = getItem(concept, { relatedItems: true }) || concept
   if (!force && concept.ancestors && !concept.ancestors.includes(null)) {
     return concept.ancestors
   }
@@ -393,15 +405,15 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
       // Save concept
       return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
     })
-    set(concept, "ancestors", ancestors.map(({ uri }) => ({ uri })))
+    modifyItem(concept, "ancestors", ancestors.map(({ uri }) => ({ uri })))
     // Set ancestors for narrower of concept if necessary
     currentAncestors.push({ uri: concept.uri });
     (concept.narrower || []).forEach(child => {
-      child && set(child, "ancestors", currentAncestors.slice())
+      child && modifyItem(child, "ancestors", currentAncestors.slice())
     })
   } catch (error) {
     log.error(`Error loading ancestor concepts for ${concept.uri}`, error)
-    set(concept, "ancestors", [])
+    modifyItem(concept, "ancestors", [])
   }
   return concept.ancestors
 }
