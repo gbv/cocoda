@@ -15,7 +15,7 @@ import jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
-import { getItem, getItems, saveItem, loadConcepts } from "@/items"
+import { getItem, getItems, saveItem } from "@/items"
 
 let objects = {}
 let topConcepts = {}
@@ -56,20 +56,7 @@ export default {
      * List of favorite concepts (will be saved into store on first load).
      */
     favoriteConcepts() {
-      let concepts = []
-      if (this.schemes.length) {
-        for (let concept of this.$store.getters.favoriteConcepts) {
-          if (concept && (!concept.inScheme || !concept.inScheme[0])) {
-            console.log("computed -> favorite concepts: no scheme", concept)
-          }
-          let conceptFromStore = saveItem(concept, { type: "concept" })
-          concepts.push(conceptFromStore)
-        }
-      }
-      // Load details if necessary
-      // TODO: Reconsider because this is a computed property.
-      loadConcepts(concepts)
-      return concepts
+      return this.$store.getters.favoriteConcepts
     },
     /**
      * Registry for local mappings if configured.

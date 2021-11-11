@@ -519,6 +519,9 @@ export default {
       const schemes = await loadSchemes()
       // TODO: Why doesn't this.schemes = ... work?
       schemes.forEach(scheme => this.schemes.push(scheme))
+      // Store favorite concepts and load their details
+      this.favoriteConcepts.forEach(concept => saveItem(concept, { type: "concept" }))
+      loadConcepts(this.favoriteConcepts)
       // Load mapping trash
       await this.$store.dispatch("mapping/loadMappingTrash")
       // Application is now considered loaded
