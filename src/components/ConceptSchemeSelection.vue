@@ -284,7 +284,7 @@ import computed from "../mixins/computed.js"
 
 // KOS types
 import kosTypes from "../../config/kos-types.json"
-import { getItems } from "@/items"
+import { getItem, getItems } from "@/items"
 
 /**
  * Concept scheme selection component.
@@ -339,7 +339,7 @@ export default {
   computed: {
     // Current scheme for this side.
     scheme() {
-      return this.selected.scheme[this.isLeft]
+      return getItem(this.selected.scheme[this.isLeft])
     },
     // All schemes from store
     _schemes() {
@@ -420,32 +420,19 @@ export default {
         deep: true,
       },
     ],
-    availableRegistries: {
-      handler() {
-        this.updateProperties()
-      },
-      deep: true,
+    availableRegistries() {
+      this.updateProperties()
     },
-    onlyFavorites: [
-      function() {
-        this.schemeFilter = ""
-      },
-      {
-        handler() {
-          this.updateProperties()
-        },
-        deep: true,
-      },
-    ],
-    favoriteSchemes: {
-      handler() {
-        this.updateProperties()
-      },
-      deep: true,
+    onlyFavorites() {
+      this.schemeFilter = ""
+      this.updateProperties()
+    },
+    favoriteSchemes() {
+      this.updateProperties()
     },
   },
   mounted() {
-    this.updateProperties = _.debounce(this._updateProperties, 200)
+    this.updateProperties = _.debounce(this._updateProperties, 100)
     // Enable shortcuts
     this.enableShortcuts()
     // Set filters to all
