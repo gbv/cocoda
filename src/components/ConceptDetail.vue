@@ -380,7 +380,7 @@ export default {
       let searchLinks = []
       for (let searchLink of this.config.searchLinks) {
         // Test schemeUris
-        let scheme = this.selected.scheme[this.isLeft]
+        let scheme = getItem(this.selected.scheme[this.isLeft])
         let schemeUris = searchLink.schemeUris || []
         let match = schemeUris.length ? false : true
         for (let uri of schemeUris) {

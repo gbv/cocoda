@@ -657,8 +657,8 @@ export default {
     },
     navigatorRegistries() {
       return this.mappingRegistriesSorted.filter(registry =>
-        (registry.supportsScheme && registry.supportsScheme(this.selected.scheme[true])) ||
-        (registry.supportsScheme && registry.supportsScheme(this.selected.scheme[false])),
+        (registry.supportsScheme && registry.supportsScheme(getItem(this.selected.scheme[true]))) ||
+        (registry.supportsScheme && registry.supportsScheme(getItem(this.selected.scheme[false]))),
       )
     },
     registryGroups() {
@@ -865,7 +865,7 @@ export default {
         let changed = false
         for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
           if (this.lockScheme[isLeft]) {
-            const scheme = this.selected.scheme[isLeft]
+            const scheme = getItem(this.selected.scheme[isLeft])
             this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
             changed = true
           }
@@ -1001,7 +1001,7 @@ export default {
       let changed = false
       for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
         if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
-          const scheme = this.selected.scheme[isLeft]
+          const scheme = getItem(this.selected.scheme[isLeft])
           this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
           changed = true
         }

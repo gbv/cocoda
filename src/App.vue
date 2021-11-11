@@ -240,16 +240,16 @@ export default {
   },
   computed: {
     selectedConceptLeft() {
-      return this.selected.concept[true]
+      return getItem(this.selected.concept[true])
     },
     selectedSchemeRight() {
-      return this.selected.scheme[false]
+      return getItem(this.selected.scheme[false])
     },
     selectedConceptRight() {
-      return this.selected.concept[false]
+      return getItem(this.selected.concept[false])
     },
     selectedSchemeLeft() {
-      return this.selected.scheme[true]
+      return getItem(this.selected.scheme[true])
     },
     settingsLocale() {
       let locale = this.$settings.locale
@@ -561,7 +561,7 @@ export default {
       if (!this.$settings.components.ConceptSchemeSelection.insertPrefLabel[!isLeft]) {
         return
       }
-      let prefLabel = this.$jskos.prefLabel(this.selected.concept[isLeft], { fallbackToUri: false })
+      let prefLabel = this.$jskos.prefLabel(getItem(this.selected.concept[isLeft]), { fallbackToUri: false })
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
       this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : "")

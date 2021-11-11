@@ -104,7 +104,7 @@ import computed from "../mixins/computed.js"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import hoverHandler from "../mixins/hover-handler.js"
-import { getItemByUri, getItems, loadConcepts } from "@/items"
+import { getItem, getItemByUri, getItems, loadConcepts } from "@/items"
 
 export default {
   name: "ConceptListWrapper",
@@ -128,7 +128,7 @@ export default {
   computed: {
     dataChoices() {
       // Determine top concepts URL
-      let topConceptsUrl = _.get(this.selected.scheme[this.isLeft], "_registry.top")
+      let topConceptsUrl = _.get(getItem(this.selected.scheme[this.isLeft]), "_registry.top")
       if (topConceptsUrl) {
         // Add selected schemes URI
         topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`

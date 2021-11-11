@@ -244,7 +244,7 @@ import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import hotkeys from "../mixins/hotkeys.js"
 import computed from "../mixins/computed.js"
-import { loadConcepts } from "@/items"
+import { getItem, loadConcepts } from "@/items"
 
 /**
  * The mapping editor component.
@@ -518,7 +518,7 @@ export default {
       return true
     },
     labelForScheme(scheme) {
-      return this.$jskos.notation(scheme, "scheme")
+      return this.$jskos.notation(getItem(scheme), "scheme")
     },
     /**
      * Returns whether the add button should be enabled for a specific side

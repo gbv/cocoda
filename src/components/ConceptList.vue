@@ -118,7 +118,7 @@ export default {
   },
   computed: {
     schemeSelected() {
-      return this.selected.scheme[this.isLeft]
+      return getItem(this.selected.scheme[this.isLeft])
     },
     conceptSelected() {
       return getItem(this.selected.concept[this.isLeft])
@@ -148,7 +148,7 @@ export default {
       return this.items.length
     },
     otherScheme() {
-      return this.selected.scheme[!this.isLeft]
+      return getItem(this.selected.scheme[!this.isLeft])
     },
     loadConceptsMappedStatusConceptsToLoad() {
       return this.items.filter(i => i.concept).map(i => i.concept)
