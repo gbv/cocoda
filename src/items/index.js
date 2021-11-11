@@ -8,6 +8,7 @@ import { reactive, set, del } from "@vue/composition-api"
 import _ from "lodash"
 import * as jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
+import log from "@/utils/log.js"
 
 const _items = reactive({})
 
@@ -108,7 +109,7 @@ export function saveItem(item, options = {}) {
       item.__ISOPEN__ = { true: false, false: false }
       item.inScheme = item.inScheme || [options.scheme]
       if (!item.inScheme[0]) {
-        console.warn("Saving concept without scheme!!!", item, options)
+        log.warn("saveItem: Saving concept without scheme!!!", item, options)
       }
       // ? Anything else?
     }
@@ -241,7 +242,8 @@ export async function loadTypes(scheme, { registry, force = false } = {}) {
     const types = await registry.getTypes({ scheme })
     set(scheme, "types", types)
   } catch (error) {
-    console.error(`loadTypes: Error loading types for ${scheme.uri}`, error)
+    // Ignore error, show warning only.
+    log.warn(`Error loading types for scheme ${scheme.uri}; assuming empty types list.`)
     set(scheme, "types", [])
   }
   return scheme.types
@@ -265,7 +267,8 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
     })
     set(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(({ uri }) => ({ uri })))
   } catch (error) {
-    console.error(`loadTop: Error loading top concepts for ${scheme.uri}`, error)
+    // Ignore error, show warning only.
+    log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty types list.`)
     set(scheme, "topConcepts", [])
   }
   return scheme.topConcepts
@@ -366,7 +369,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
     })
     set(concept, "narrower", jskos.sortConcepts(narrower).map(({ uri }) => ({ uri })))
   } catch (error) {
-    console.error(`loadNarrower: Error loading narrower concepts for ${concept.uri}`, error)
+    log.error(`Error loading narrower concepts for ${concept.uri}`, error)
     set(concept, "narrower", [])
   }
   return concept.narrower
@@ -397,7 +400,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
       child && set(child, "ancestors", currentAncestors.slice())
     })
   } catch (error) {
-    console.error(`loadAncestors: Error loading ancestor concepts for ${concept.uri}`, error)
+    log.error(`Error loading ancestor concepts for ${concept.uri}`, error)
     set(concept, "ancestors", [])
   }
   return concept.ancestors
