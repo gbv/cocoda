@@ -150,8 +150,12 @@ export default {
     }
   },
   computed: {
+    // data from store
+    _dataFromStore() {
+      return this.isArray ? this.data.map(i => getItem(i) || i) : getItem(this.data) || this.data
+    },
     computedType() {
-      return this.type || (this.$jskos.isConcept(this.isArray ? this.data[0] : this.data) ? "concept" : (this.$jskos.isScheme(this.isArray ? this.data[0] : this.data) ? "scheme" : null))
+      return this.type || (this.$jskos.isConcept(this.isArray ? this._dataFromStore[0] : this._dataFromStore) ? "concept" : (this.$jskos.isScheme(this.isArray ? this._dataFromStore[0] : this._dataFromStore) ? "scheme" : "resource"))
     },
     count() {
       return _.isArray(this.data) ? this.data.length : (this.data ? 1 : 0)
@@ -168,7 +172,7 @@ export default {
       return _.isArray(this.data)
     },
     filename() {
-      let filename = this.computedType || "resource"
+      let filename = this.computedType
       if (this.isArray) {
         filename += "s"
       }
@@ -286,13 +290,13 @@ export default {
       this.$refs.dataModal.show()
     },
     updatePreparedData() {
-      if (this.data == null) {
+      if (this._dataFromStore == null) {
         this.preparedData = null
         return
       }
-      let dataArray = this.data
+      let dataArray = this._dataFromStore
       if (!this.isArray) {
-        dataArray = [this.data]
+        dataArray = [this._dataFromStore]
       }
       let newData = []
       for (let object of dataArray) {
@@ -302,7 +306,7 @@ export default {
           newObject = this.$jskos.minifyMapping(object)
           newObject = this.$jskos.addMappingIdentifiers(newObject)
         } else {
-          newObject = this.$jskos.copyDeep(object)
+          newObject = _.omit(object, Object.keys(object).filter(key => key.startsWith("_")))
           // Remove all properties with null values
           newObject = _.pick(newObject, _.keys(newObject).filter(key => newObject[key] != null))
         }
