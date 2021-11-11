@@ -674,7 +674,7 @@ export default {
       this.focusAndSelectInput()
     },
     focusAndSelectInput() {
-      let input = this.$refs.input.$el
+      let input = this.$refs.input && this.$refs.input.$el
       if (input) {
         input.focus()
         input.select()

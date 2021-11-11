@@ -672,6 +672,17 @@ export default {
       if (!registry.has.mappings) {
         throw new Error(`getMappings: Registry ${registry.uri} does not support mappings.`)
       }
+      // Adjust certain parameters in the config
+      for (const { param, relatedItems = false } of [
+        { param: "from", relatedItems: true },
+        { param: "to", relatedItems: true },
+        { param: "fromScheme" },
+        { param: "toScheme" },
+      ]) {
+        if (config[param]) {
+          config[param] = getItem(config[param], { relatedItems }) || config[param]
+        }
+      }
       const mappings = await registry.getMappings(config)
       if (_adjust) {
         for (let mapping of mappings) {

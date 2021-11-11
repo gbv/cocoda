@@ -250,6 +250,11 @@ export async function loadTypes(scheme, { registry, force = false } = {}) {
   if (!registry) {
     throw new Error(`loadTop: Could not find registry for item ${scheme.uri}`)
   }
+  if (!registry.has.types) {
+    // Set to empty array
+    modifyItem(scheme, "types", [])
+    return []
+  }
   try {
     const types = await registry.getTypes({ scheme })
     modifyItem(scheme, "types", types)
@@ -269,6 +274,11 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
   registry = getRegistryForItem(scheme) || registry
   if (!registry) {
     throw new Error(`loadTop: Could not find registry for item ${scheme.uri}`)
+  }
+  if (!registry.has.top) {
+    // Set to empty array
+    modifyItem(scheme, "topConcepts", [])
+    return []
   }
   try {
     const topConcepts = (await registry.getTop({ scheme })).map(concept => {
@@ -363,6 +373,11 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
   if (!registry) {
     throw new Error(`loadNarrower: Could not find registry for item ${concept.uri}`)
   }
+  if (!registry.has.narrower) {
+    // Set to empty array
+    modifyItem(concept, "narrower", [])
+    return []
+  }
   try {
     const narrower = (await registry.getNarrower({ concept })).map(child => {
       // Set ancestors
@@ -395,6 +410,11 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
   registry = getRegistryForItem(concept) || registry
   if (!registry) {
     throw new Error(`loadAncestors: Could not find registry for item ${concept.uri}`)
+  }
+  if (!registry.has.ancestors) {
+    // Set to empty array
+    modifyItem(concept, "ancestors", [])
+    return []
   }
   try {
     const currentAncestors = []

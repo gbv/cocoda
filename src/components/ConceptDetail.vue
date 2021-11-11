@@ -417,7 +417,7 @@ export default {
       }
       let types = []
       const scheme = getItem(_.get(this.item, "inScheme[0]"))
-      let schemeTypes = scheme.types
+      const schemeTypes = scheme.types || []
       for (let typeUri of this._item.type || []) {
         if (typeUri == "http://www.w3.org/2004/02/skos/core#Concept") {
           continue

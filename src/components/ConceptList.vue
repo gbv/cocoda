@@ -293,7 +293,10 @@ export default {
         })
       }
     },
-    scrollToInternal({ concept }) {
+    scrollToInternal({ concept } = {}) {
+      if (!concept) {
+        return
+      }
       const conceptList = this.$refs.conceptListItems
       // Get cocoda-vue-tabs-content element
       let container = conceptList && conceptList.$el
