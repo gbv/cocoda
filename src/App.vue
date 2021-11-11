@@ -532,10 +532,9 @@ export default {
         this.enableUpdateCheck()
       }
       // Set schemes in registries to objects from Cocoda
-      // TODO: We probably don't need this anymore after changing to items plugin, right?
       for (let registry of this.config.registries) {
         if (_.isArray(registry.schemes)) {
-          registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
+          registry._jskos.schemes = registry.schemes.map(scheme => getItem(scheme) || scheme)
         }
       }
       this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
