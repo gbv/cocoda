@@ -15,13 +15,12 @@ import jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
-import { getItem, getItems, saveItem } from "@/items"
+import { getItem, getItems, saveItem, schemes } from "@/items"
 
 let objects = {}
 let topConcepts = {}
 let loadingConcepts = []
 let erroredConcepts = []
-let schemes = []
 let concordances = []
 
 export default {
@@ -32,11 +31,13 @@ export default {
       topConcepts,
       loadingConcepts,
       erroredConcepts,
-      schemes,
       concordances,
     }
   },
   computed: {
+    schemes() {
+      return schemes
+    },
     /**
      * List of favorite schemes.
      */

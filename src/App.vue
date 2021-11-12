@@ -516,9 +516,7 @@ export default {
       // Set locale
       this.$i18n.locale = this.settingsLocale
       // Load schemes
-      const schemes = await loadSchemes()
-      // TODO: Why doesn't this.schemes = ... work?
-      schemes.forEach(scheme => this.schemes.push(scheme))
+      await loadSchemes()
       // Store favorite concepts and load their details
       this.favoriteConcepts.forEach(concept => saveItem(concept, { type: "concept" }))
       loadConcepts(this.favoriteConcepts)
