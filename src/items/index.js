@@ -235,7 +235,7 @@ export async function loadSchemes() {
   for (const scheme of await cdk.getSchemes()) {
     saveItem(scheme, { type: "scheme" })
     if (!schemes.find(s => jskos.compare(s, scheme))) {
-      schemes.push({ uri: scheme.uri })
+      schemes.push({ uri: scheme.uri, identifier: scheme.identifier })
     }
   }
   return schemes
