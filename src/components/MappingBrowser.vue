@@ -805,20 +805,6 @@ export default {
         )) {
           this.selectedChangedHandler()
         }
-        this.previousSelected = {}
-        this.previousSelected.concept = {
-          [true]: this.selected.concept[true] ? { uri: this.selected.concept[true].uri } : null,
-          [false]: this.selected.concept[false] ? { uri: this.selected.concept[false].uri } : null,
-        }
-        this.previousSelected.scheme = {
-          [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
-          [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
-        }
-        // Automatically switch tab if a concept was selected for the first time
-        if (!this.hasSwitchedToNavigator && (this.selected.concept[true] || this.selected.concept[false])) {
-          this.tab = this.tabIndexes.navigator
-          this.hasSwitchedToNavigator = true
-        }
       },
       deep: true,
     },
@@ -1005,6 +991,21 @@ export default {
       }
       if (changed) {
         this.searchClicked()
+      }
+      // Set previousSelected
+      this.previousSelected = {}
+      this.previousSelected.concept = {
+        [true]: this.selected.concept[true] ? { uri: this.selected.concept[true].uri } : null,
+        [false]: this.selected.concept[false] ? { uri: this.selected.concept[false].uri } : null,
+      }
+      this.previousSelected.scheme = {
+        [true]: this.selected.scheme[true] ? { uri: this.selected.scheme[true].uri } : null,
+        [false]: this.selected.scheme[false] ? { uri: this.selected.scheme[false].uri } : null,
+      }
+      // Automatically switch tab if a concept was selected for the first time
+      if (!this.hasSwitchedToNavigator && (this.selected.concept[true] || this.selected.concept[false])) {
+        this.tab = this.tabIndexes.navigator
+        this.hasSwitchedToNavigator = true
       }
     },
     generateCancelToken() {
