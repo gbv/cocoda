@@ -145,15 +145,19 @@ export default {
           // ? Should we wait for the top concepts?
           loadTop(scheme)
         }
+
+        // Load details
+        await loadConcepts([concept])
+
         // Load narrower and ancestor concepts (in background)
-        loadNarrower(concept)
+        // Note: We're waiting until after concept details are loaded because sometimes narrower/ancestors are already loaded there.
+        loadNarrower(concept).then(narrower => {
+          loadConcepts(narrower)
+        })
         loadAncestors(concept).then(() => {
           // Load its ancestors' narrower concepts
           concept.ancestors.filter(Boolean).forEach(ancestor => loadNarrower(ancestor))
         })
-
-        // Load details
-        await loadConcepts([concept])
 
         // Load types for scheme
         scheme && loadTypes(scheme)
