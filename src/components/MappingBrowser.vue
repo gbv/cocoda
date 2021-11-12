@@ -415,7 +415,7 @@ import dragandrop from "../mixins/dragandrop.js"
 import clickHandler from "../mixins/click-handler.js"
 import computed from "../mixins/computed.js"
 import pageVisibility from "../mixins/page-visibility.js"
-import { getItem, loadConcepts } from "@/items"
+import { getItem, getItems, loadConcepts } from "@/items"
 
 export default {
   name: "MappingBrowser",
@@ -803,7 +803,6 @@ export default {
           this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
           this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
         )) {
-          // Call debounced method
           this.selectedChangedHandler()
         }
         this.previousSelected = {}
@@ -934,8 +933,6 @@ export default {
   created() {
     // Debounce navigator refresh
     this.navigatorRefresh = _.debounce(this._navigatorRefresh, 100)
-    // Debounce selectedChangedHandler
-    this.selectedChangedHandler = _.debounce(this._selectedChangedHandler, 100)
     // Clear search
     this.clearSearchFilter()
     // Set tab to search on start
@@ -957,7 +954,7 @@ export default {
       }
       this.concordancesLoaded = true
     }
-    this.navigatorNeedsRefresh.push(null)
+    this.selectedChangedHandler()
   },
   beforeDestroy() {
     // Stop any repeat managers
@@ -993,7 +990,7 @@ export default {
       })
       return popovers
     },
-    _selectedChangedHandler() {
+    selectedChangedHandler() {
       this.navigatorPages = {}
       this.navigatorResults = {}
       this.navigatorNeedsRefresh.push(null)
@@ -1035,7 +1032,7 @@ export default {
       return null
     },
     getSchemeForFilter(filter) {
-      return this.schemes.find(scheme => {
+      return getItems(this.schemes).find(scheme => {
         return filter && (this.$jskos.compare(scheme, { uri: filter }) || this.$jskos.notation(scheme).toLowerCase() == filter.toLowerCase())
       })
     },
