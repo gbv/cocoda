@@ -74,6 +74,7 @@ import computed from "./mixins/computed.js"
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 import { ElementQueries } from "css-element-queries"
 ElementQueries.listen()
+import { getItem, loadConcepts, loadSchemes, saveItem } from "./items"
 
 /**
  * The main application.
@@ -145,7 +146,9 @@ export default {
       // Set locale
       this.$i18n.locale = this.settingsLocale
       // Load schemes
-      await this.loadSchemes()
+      const schemes = await loadSchemes()
+      // TODO: Why doesn't this.schemes = ... work?
+      schemes.forEach(scheme => this.schemes.push(scheme))
       // Application is now considered loaded
       this.loaded = true
       this.loadingGlobal = false
@@ -155,122 +158,132 @@ export default {
       // Set schemes in registries to objects from Cocoda
       for (let registry of this.config.registries) {
         if (_.isArray(registry.schemes)) {
-          registry._jskos.schemes = registry.schemes.map(scheme => this.schemes.find(s => this.$jskos.compare(s, scheme)) || scheme)
+          registry._jskos.schemes = registry.schemes.map(scheme => getItem(scheme) || scheme)
         }
       }
       this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
-    loadFromParameters(firstLoad = false) {
+    async loadFromParameters(firstLoad = false) {
       this.loading = true
 
       // Check route to see if navigation is necessary
-      let query = this.$route.query
+      const query = this.$route.query
 
-      let promises = []
-
-      // Set query.from/to/Scheme from mapping if not set
-      let mapping
-      try {
-        mapping = JSON.parse(query["mapping"])
-      } catch(error) {
-        mapping = null
+      // Prepare application by selecting schemes and concepts from URL parameters.
+      const selected = {
+        scheme: {
+          true: query.fromScheme,
+          false: query.toScheme,
+        },
+        concept: {
+          true: query.from,
+          false: query.to,
+        },
       }
-      if (mapping && firstLoad) {
-        for (let fromTo of ["from", "to"]) {
-          // Check if fromScheme was not set
-          if (!query[fromTo + "Scheme"]) {
-            query[fromTo + "Scheme"] = _.get(mapping[fromTo + "Scheme"], "uri")
-            // If concept in mapping is available, set that too
-            if (this.$jskos.conceptsOfMapping(mapping, fromTo).length) {
-              query[fromTo] = _.get(this.$jskos.conceptsOfMapping(mapping, fromTo), "[0].uri")
-            }
-          }
+
+      const setSelectedOnSide = async (isLeft) => {
+        // Get from store
+        let schemeUri = selected.scheme[isLeft]
+        let scheme = null
+        if (schemeUri) {
+          scheme = getItem({ uri: schemeUri })
+        }
+        let concept = null
+        if (scheme && selected.concept[isLeft]) {
+          concept = saveItem({ uri: selected.concept[isLeft] }, { scheme, type: "concept" })
+        }
+
+        try {
+          await this.setSelected({
+            concept,
+            scheme,
+            isLeft,
+            noQueryRefresh: true,
+            noLoading: true,
+          })
+        } catch (error) {
+          this.$log.warn(error)
+          // ? Should we show a user-facing error?
         }
       }
 
-      // Prepare application by selecting mapping from URL parameters.
-      if (query.mapping || query.mappingUri) {
-        let decodeMapping = new Promise(resolve => {
+      const selectMapping = async () => {
+        if (query.mapping || query.mappingUri || query.mappingIdentifier) {
+          // Decode mapping from query
           let mappingFromQuery = null
-          try {
-            mappingFromQuery = this.$jskos.normalize(JSON.parse(query["mapping"]))
-          } catch(error) {
-            // do nothing
+          if (query.mapping) {
+            try {
+              mappingFromQuery = this.adjustMapping(this.$jskos.normalize(JSON.parse(query.mapping)))
+            } catch(error) {
+              this.$log.warn("Error decoding mapping from URL parameter:", error)
+            }
           }
           if (_.isEqual(mappingFromQuery, {})) {
-            resolve(null)
-          } else {
-            resolve(mappingFromQuery)
+            mappingFromQuery = null
           }
-        })
-        let loadMapping = (query.mappingUri ? this.getMapping({ uri: query.mappingUri }) : (query.mappingIdentifier ? this.getMappings({ identifier: query.mappingIdentifier }) : Promise.resolve([]))).then(mappings => {
-          if (!_.isArray(mappings)) {
-            mappings = [mappings].filter(m => m)
+          // Load mapping from URI/identifier if available
+          let loadedMappings = []
+          try {
+            if (query.mappingUri) {
+              loadedMappings.push(await this.getMapping({ uri: query.mappingUri }))
+            } else if (query.mappingIdentifier) {
+              loadedMappings = await this.getMappings({ identifier: query.mappingIdentifier })
+            }
+          } catch (error) {
+            this.$log.warn("Error loading mapping from URL parameter:", error)
           }
-          if ((query.mappingUri || query.mappingIdentifier) && mappings.length) {
-            // Found original mapping.
-            // Prefer local mapping over other mappings.
-            let original = mappings.find(mapping => _.get(mapping, "_registry").isAuthorizedFor && _.get(mapping, "_registry").isAuthorizedFor({
+          loadedMappings = loadedMappings.filter(Boolean)
+          let mapping = mappingFromQuery, original = null
+          if (loadedMappings.length) {
+            // Prefer mapping from writable registry if there are multiples
+            original = loadedMappings.find(m => _.get(m, "_registry").isAuthorizedFor && _.get(m, "_registry").isAuthorizedFor({
               type: "mappings",
               action: "create",
               user: this.user,
-            })) || mappings[0]
-            return decodeMapping.then(this.adjustMapping).then(mapping => {
-              if (mapping) {
-                return [mapping, original]
-              } else {
-                return [original, original]
-              }
-            })
-          } else {
-            return decodeMapping.then(this.adjustMapping).then(mapping => [mapping])
+            })) || loadedMappings[0]
+            mapping = mapping || this.adjustMapping(this.$jskos.copyDeep(original))
           }
-        })
-        let directions = ["from", "to"]
-        let memberFields = ["memberSet", "memberList", "memberChoice"]
-        promises.push(loadMapping.then(( [mappingFromQuery, original = null] ) => {
-          let promises = []
-          for (let direction of directions) {
-            // Get scheme
-            let scheme = mappingFromQuery[`${direction}Scheme`]
-            for (let memberField of memberFields) {
-              if (!Array.isArray(mappingFromQuery[direction][memberField])) continue
-              // Load data for each concept in mapping
-              _.forEach(mappingFromQuery[direction][memberField], (concept, index) => {
-                promises.push(this.loadConcepts([concept], { scheme }).then(([concept]) => {
-                  mappingFromQuery[direction][memberField][index] = concept
-                }))
-              })
-            }
-          }
-          return Promise.all(promises).then(() => {
-            this.$store.commit({
-              type: "mapping/set",
-              mapping: mappingFromQuery,
-              original,
-              noQueryRefresh: true,
-            })
-          })
-        }))
-      }
 
-      Promise.all(promises).then(() => {
-        this.loading = false
-        refreshRouter(this.$store)
-        if (firstLoad) {
-          // Search share link
-          if (query.search) {
-            let filter = JSON.parse(query.search)
-            this.searchMappings(filter)
-          } else {
-            this.showConcordances()
+          this.$store.commit({
+            type: "mapping/set",
+            mapping,
+            original,
+            noQueryRefresh: true,
+          })
+
+          // ? Should concepts in mapping be selected like before?
+
+          // Load concept data
+          loadConcepts(this.$jskos.conceptsOfMapping(mapping))
+
+          // We want to show the mapping part of the application if there's a mapping loaded
+          if (mapping && firstLoad) {
+            this.forceMappingBrowser = true
           }
         }
-      }).catch((error) => {
-        this.loading = false
-        this.$log.warn(error)
-        this.alert("There was an error loading data from URL.", null, "danger")
-      })
+      }
+
+      // Note that error handling is done inside each method, so there should be no errors here
+      await Promise.all([
+        setSelectedOnSide(true),
+        setSelectedOnSide(false),
+        selectMapping(),
+      ])
+      this.loading = false
+      refreshRouter(this.$store)
+      if (firstLoad) {
+        // Search share link
+        if (query.search) {
+          let filter = JSON.parse(query.search)
+          this.forceMappingBrowser = true
+          this.searchMappings(filter)
+        } else if (query.concordances !== undefined) {
+          this.showConcordances()
+        } else if (query.mappingUri || query.mappingIdentifier) {
+          this.forceMappingBrowser = true
+          this.searchMappings()
+        }
+      }
     },
     searchMappings(filter) {
       let mappingBrowser = this.$refs.mappingBrowser
