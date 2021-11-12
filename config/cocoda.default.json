@@ -148,7 +148,8 @@
           "notation": [
             "EUROVOC"
           ],
-          "VOCID": "EuroVoc"
+          "VOCID": "EuroVoc",
+          "topConcepts": []
         },
         {
           "uri": "https://bartoc.org/ILC/1",
