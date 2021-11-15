@@ -394,12 +394,14 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
       // Save concept
       return saveItem(child, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
     })
-    modifyItem(concept, "narrower", jskos.sortConcepts(narrower).map(({ uri }) => ({ uri })))
+    const narrowerSorted = jskos.sortConcepts(narrower).map(({ uri }) => ({ uri }))
+    modifyItem(concept, "narrower", narrowerSorted)
+    return narrowerSorted
   } catch (error) {
     log.error(`Error loading narrower concepts for ${concept.uri}`, error)
     modifyItem(concept, "narrower", [])
+    return []
   }
-  return concept.narrower
 }
 
 export async function loadAncestors(concept, { registry, force = false } = {}) {
@@ -424,16 +426,17 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
       currentAncestors.push({ uri: ancestor.uri })
       // Save concept
       return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
-    })
-    modifyItem(concept, "ancestors", ancestors.map(({ uri }) => ({ uri })))
+    }).map(({ uri }) => ({ uri }))
+    modifyItem(concept, "ancestors", ancestors)
     // Set ancestors for narrower of concept if necessary
     currentAncestors.push({ uri: concept.uri });
     (concept.narrower || []).forEach(child => {
       child && modifyItem(child, "ancestors", currentAncestors.slice())
     })
+    return ancestors
   } catch (error) {
     log.error(`Error loading ancestor concepts for ${concept.uri}`, error)
     modifyItem(concept, "ancestors", [])
+    return []
   }
-  return concept.ancestors
 }

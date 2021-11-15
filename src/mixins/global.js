@@ -5,7 +5,7 @@
 import _ from "lodash"
 import FileSaver from "file-saver"
 import jskos from "jskos-tools"
-import { getItem, loadAncestors, loadConcepts, loadNarrower, loadTop, loadTypes } from "@/items"
+import { getItem, loadAncestors, loadConcepts, loadNarrower, loadTop, loadTypes, saveItem } from "@/items"
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
 function escapeRegExp(string) {
@@ -88,9 +88,9 @@ export default {
     async setSelected({ concept, scheme, isLeft, noQueryRefresh = false, noLoading = false } = {}) {
       let loadingId = this.generateID()
 
-      concept = getItem(concept) || concept
+      concept = concept && saveItem(concept, { returnIfExists: true, type: "concept", scheme })
       scheme = _.get(concept, "inScheme[0]") || scheme
-      scheme = getItem(scheme) || scheme
+      scheme = scheme && saveItem(scheme, { returnIfExists: true, type: "scheme" })
 
       // Check if concept and scheme are already selected
       if (jskos.compare(concept, this.$store.state.selected.concept[isLeft]) && jskos.compare(scheme, this.$store.state.selected.scheme[isLeft])) {
