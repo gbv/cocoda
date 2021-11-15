@@ -42,7 +42,6 @@ export default {
       if (!this.loadConceptsMappedStatus) {
         return
       }
-      // TODO: Make sure to use items in store?
       const registry = this.currentRegistry
       const otherScheme = this.loadConceptsMappedStatusOtherScheme
       concepts = getItems(concepts.filter(concept => !_.get(concept, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme))))

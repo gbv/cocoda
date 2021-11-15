@@ -104,12 +104,13 @@ import computed from "../mixins/computed.js"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import hoverHandler from "../mixins/hover-handler.js"
-import { getItem, getItemByUri, loadConcepts } from "@/items"
+import mappedStatus from "../mixins/mapped-status.js"
+import { getItem, getItemByUri, saveItem, loadConcepts } from "@/items"
 
 export default {
   name: "ConceptListWrapper",
   components: { Minimizer, ConceptList, ComponentSettings,  DataModalButton, LoadingIndicatorFull },
-  mixins: [computed, objects, dragandrop, hoverHandler],
+  mixins: [computed, objects, dragandrop, hoverHandler, mappedStatus],
   props: {
     /**
      * Tells the component on which side of the application it is.
@@ -242,9 +243,7 @@ export default {
     /**
      * When the tab changed, instruct conceptList to scroll.
      */
-    tabChanged({ index }) {
-      let conceptList = _.get(this, `$refs.conceptList[${index}]`)
-      conceptList && conceptList.scroll && conceptList.scroll()
+    tabChanged() {
       // Load concepts in view
       this.loadConceptsInView()
     },
@@ -270,8 +269,12 @@ export default {
           }
         }
       }
+      // Save concepts because it might be necessary
+      concepts.forEach(concept => saveItem(concept, { type: "concept", returnIfExists: true }))
       // Load concepts
       loadConcepts(concepts)
+      // Load mapped status for concepts
+      this.loadMappingsForConcepts(concepts, this.isLeft)
     },
     // Minimizes the concept list to only URIs and inScheme
     // TODO: Is this still necessary with the new changes?

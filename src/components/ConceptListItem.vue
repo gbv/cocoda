@@ -65,12 +65,12 @@
         </span>
         <span
           class="fontWeight-heavy"
-          v-html="getNotation(concept, 'concept', true)" />
+          v-html="notation" />
         <span
           :class="{
             'fontWeight-medium': isSelected
           }">
-          {{ getPrefLabel(concept) }}
+          {{ prefLabel }}
         </span>
       </div>
       <div
@@ -193,13 +193,23 @@ export default {
       return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
     },
     concept() {
-      return getItem(this.source.concept)
+      return getItem(this.source.concept) || this.source.concept
     },
     depth() {
       return this.source.depth
     },
     isSelected() {
       return this.source.isSelected
+    },
+    notation() {
+      return this.getNotation(this.concept, "concept", true)
+    },
+    prefLabel() {
+      let label = this.getPrefLabel(this.concept)
+      if (label === "" && this.notation === "") {
+        return this.concept.uri
+      }
+      return label
     },
   },
   created() {

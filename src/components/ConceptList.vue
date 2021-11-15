@@ -8,7 +8,7 @@
       :data-key="'uri'"
       :data-sources="items"
       :data-component="itemComponent"
-      :keeps="50"
+      :keeps="70"
       :extra-props="{
         isLeft,
         showChildren,
@@ -111,24 +111,25 @@ export default {
       currentSelectedConcept: null,
       shouldScroll: true,
       scrollTo: scroller(),
-      oldPreviousConcept: null,
-      oldNextConcept: null,
       itemComponent: ConceptListItem,
     }
   },
   computed: {
-    schemeSelected() {
-      return getItem(this.selected.scheme[this.isLeft])
-    },
     conceptSelected() {
+      return this.selected.concept[this.isLeft]
+    },
+    conceptSelectedFromStore() {
       return getItem(this.selected.concept[this.isLeft])
     },
     items() {
+      if (!this.shown) {
+        return []
+      }
       let items = []
       for (let concept of this.concepts) {
         let item = {
           uri: concept ? concept.uri : "loading",
-          concept: getItem(concept),
+          concept,
           depth: 0,
           isSelected: this.$jskos.compare(this.conceptSelected, concept),
         }
@@ -143,154 +144,149 @@ export default {
     noItems() {
       return this.items.length == 0 && !this.loading
     },
-    // Some properties needed to decide whether to load mappings
-    itemsLength() {
-      return this.items.length
-    },
     otherScheme() {
       return getItem(this.selected.scheme[!this.isLeft])
     },
-    loadConceptsMappedStatusConceptsToLoad() {
-      return this.items.filter(i => i.concept).map(i => i.concept)
-    },
-    previousConcept() {
-      // Index of current concept in the list of concepts
-      const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
-      if (index == -1) {
-        return null
-      }
-      // If the list is not a hierarchy, return the next item in the list
-      if (!this.showChildren) {
-        const item = this.items[index - 1]
-        return item && item.concept
-      }
-      // Otherwise return null (hierarchy not supported yet)
-      return null
-    },
-    nextConcept() {
-      // Index of current concept in the list of concepts
-      const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
-      if (index == -1) {
-        return null
-      }
-      // If the list is not a hierarchy, return the next item in the list
-      if (!this.showChildren) {
-        const item = this.items[index + 1]
-        return item && item.concept
-      }
-      // Otherwise go through hierarchy
-      const next = (concept, root = true) => {
-        if (!concept) {
-          return null
-        }
-        // If this is the root call and there are narrower concepts, return first child
-        if (root && concept.narrower && concept.narrower.length) {
-          return concept.narrower[0]
-        }
-        const parent = _.last(concept.ancestors) || _.first(concept.broader)
-        // Get children of parent
-        let children = _.get(parent, "narrower")
-        // If there is no parent, use top concepts as children (everything with depth 0 from items)
-        if (!parent) {
-          children = this.items.filter(item => item.depth == 0).map(item => item.concept)
-        }
-        if (!children) {
-          return null
-        }
-        // Try to find next child in list of children
-        const nextChild = children[children.findIndex(c => this.$jskos.compare(c, concept)) + 1]
-        if (nextChild) {
-          return nextChild
-        }
-        // If there is no next child, find next for parent
-        if (parent) {
-          return next(parent, false)
-        }
-        return null
-      }
-      return next(this.selected.concept[this.isLeft])
-    },
   },
   watch: {
-    conceptSelected: {
+    conceptSelectedFromStore: {
       handler() {
-        // TODO: Check
-        let concept = this.conceptSelected
-        if (concept != this.currentSelectedConcept) {
-          this.currentSelectedConcept = concept
-          this.shouldScroll = true
-        }
-        if (this.$jskos.isConcept(concept)) {
-          // Check if concept is fully loaded
-          if (!this.showChildren || (concept.ancestors && !concept.ancestors.includes(null))) {
-            let fullyLoaded = true
-            for (let ancestor of concept.ancestors || []) {
-              ancestor = getItem(ancestor)
-              if (this.showChildren && (!ancestor.narrower || ancestor.narrower.includes(null))) {
-                fullyLoaded = false
-              }
-            }
-            if (fullyLoaded && this.shouldScroll) {
-              this.shouldScroll = false
-              // Open ancestors
-              if (this.showChildren) {
-                for (let ancestor of concept.ancestors || []) {
-                  this.open(ancestor, this.isLeft, true)
-                }
-              }
-              // Don't scroll if concept changed in the meantime
-              if (this.shouldScroll) {
-                return
-              }
-              this.scrollToInternal({ concept })
-            } else if (!fullyLoaded) {
-              this.loading = true
-            }
-          } else {
-            this.loading = true
-          }
-        }
+        this.conceptSelectedUpdated()
       },
       deep: true,
     },
-    // If any of these change, mappings have to be loaded again (if necessary).
-    itemsLength() {
-      this.loadMappingsForItems()
-    },
     shown() {
-      this.commitPreviousConcept()
-      this.commitNextConcept()
+      this.conceptSelectedUpdated()
     },
-    previousConcept() {
-      if (!this.$jskos.compare(this.previousConcept, this.oldPreviousConcept)) {
-        this.commitPreviousConcept()
-        this.oldPreviousConcept = this.previousConcept
-      }
-    },
-    nextConcept() {
-      if (!this.$jskos.compare(this.nextConcept, this.oldNextConcept)) {
-        this.commitNextConcept()
-        this.oldNextConcept = this.nextConcept
-      }
+    items() {
+      this.updatePreviousAndNextConcepts()
     },
   },
   methods: {
-    commitPreviousConcept() {
-      if (this.shown) {
-        this.$store.commit({
-          type: "selected/setPreviousConcept",
-          isLeft: this.isLeft,
-          concept: this.previousConcept,
-        })
-      }
+    updatePreviousAndNextConcepts() {
+      // ===== Previous Concept =====
+      const previousConcept = (() => {
+        // Index of current concept in the list of concepts
+        const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
+        if (index == -1) {
+          return null
+        }
+        // If the list is not a hierarchy, return the next item in the list
+        if (!this.showChildren) {
+          const item = this.items[index - 1]
+          return item && item.concept
+        }
+        // Otherwise return null (hierarchy not supported yet)
+        return null
+      })()
+      this.$store.commit({
+        type: "selected/setPreviousConcept",
+        isLeft: this.isLeft,
+        concept: previousConcept,
+      })
+      // ===== Next Concept =====
+      const nextConcept = (() => {
+        // Index of current concept in the list of concepts
+        const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
+        if (index == -1) {
+          return null
+        }
+        // If the list is not a hierarchy, return the next item in the list
+        if (!this.showChildren) {
+          const item = this.items[index + 1]
+          return item && item.concept
+        }
+        // Otherwise go through hierarchy
+        const next = (concept, root = true) => {
+          if (!concept) {
+            return null
+          }
+          // If this is the root call and there are narrower concepts, return first child
+          if (root && concept.narrower && concept.narrower.length) {
+            return concept.narrower[0]
+          }
+          const parent = _.last(concept.ancestors) || _.first(concept.broader)
+          // Get children of parent
+          let children = _.get(parent, "narrower")
+          // If there is no parent, use top concepts as children (everything with depth 0 from items)
+          if (!parent) {
+            children = this.items.filter(item => item.depth == 0).map(item => item.concept)
+          }
+          if (!children) {
+            return null
+          }
+          // Try to find next child in list of children
+          const nextChild = children[children.findIndex(c => this.$jskos.compare(c, concept)) + 1]
+          if (nextChild) {
+            return nextChild
+          }
+          // If there is no next child, find next for parent
+          if (parent) {
+            return next(parent, false)
+          }
+          return null
+        }
+        return next(this.selected.concept[this.isLeft])
+      })()
+      this.$store.commit({
+        type: "selected/setNextConcept",
+        isLeft: this.isLeft,
+        concept: nextConcept,
+      })
     },
-    commitNextConcept() {
-      if (this.shown) {
-        this.$store.commit({
-          type: "selected/setNextConcept",
-          isLeft: this.isLeft,
-          concept: this.nextConcept,
-        })
+    children(item) {
+      let items = []
+      let concept = getItem(item.concept)
+      let depth = item.depth + 1
+      if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
+        for (let child of concept.narrower || []) {
+          let item = {
+            uri: child ? child.uri : "loading",
+            concept: child,
+            depth,
+            isSelected: this.$jskos.compare(this.conceptSelected, child),
+          }
+          items.push(item)
+          items = items.concat(this.children(item))
+        }
+      }
+      return items
+    },
+    conceptSelectedUpdated() {
+      if (!this.shown) {
+        return
+      }
+      // TODO: Check
+      let concept = this.conceptSelectedFromStore
+      if (!this.$jskos.compare(concept, this.currentSelectedConcept)) {
+        this.currentSelectedConcept = concept
+        this.shouldScroll = true
+      }
+      if (this.$jskos.isConcept(concept)) {
+        // Check if concept is fully loaded
+        if (!this.showChildren || (concept.ancestors && !concept.ancestors.includes(null))) {
+          let fullyLoaded = true
+          for (let ancestor of concept.ancestors || []) {
+            ancestor = getItem(ancestor)
+            if (this.showChildren && (!ancestor.narrower || ancestor.narrower.includes(null))) {
+              fullyLoaded = false
+            }
+          }
+          if (fullyLoaded && this.shouldScroll) {
+            this.shouldScroll = false
+            // Open ancestors
+            if (this.showChildren) {
+              for (let ancestor of concept.ancestors || []) {
+                this.open(ancestor, this.isLeft, true)
+              }
+            }
+            this.scrollToInternal({ concept })
+          } else if (!fullyLoaded) {
+            this.loading = true
+          }
+        } else {
+          this.loading = true
+        }
       }
     },
     scrollToInternal({ concept } = {}) {
@@ -304,61 +300,32 @@ export default {
         container = container.parentElement
       }
       if (!conceptList || !container || container.style.display == "none") {
-        // Wait for later to scroll
-        this.scrollLater = { concept }
-      } else {
-        const unwind = () => {
-          this.scrollLater = null
-          this.loading = false
-        }
-        // Find index
-        let index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
-        if (index === -1) {
-          unwind()
-          return
-        }
-        // Check if concept is already in view
-        const containerToCheck = container.getElementsByClassName("conceptListItems")[0]
-        const elementToCheck = containerToCheck && containerToCheck.querySelectorAll(`.conceptListItem[data-uri="${concept.uri}"]`)[0]
-        if (this.checkInView(containerToCheck, elementToCheck, false)) {
-          unwind()
-          return
-        }
-        // Adjust index slightly to leave some space above selected concept after scrolling
-        index = Math.min(index, Math.abs(index - 1), Math.abs(index - 2))
-        _.delay(() => {
-          conceptList.scrollToIndex(index)
-          unwind()
-        }, 200)
+        this.$log.warn("ConceptList: Can't scroll because either conceptList or container are undefined.")
+        return
       }
-    },
-    scroll() {
-      if (this.scrollLater) {
-        this.$nextTick(() => {
-          this.scrollToInternal(this.scrollLater)
-        })
+      const unwind = () => {
+        this.scrollLater = null
+        this.loading = false
       }
-    },
-    children(item) {
-      let items = []
-      let concept = item.concept
-      let depth = item.depth + 1
-      if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
-        for (let child of concept.narrower || []) {
-          let item = {
-            uri: child ? child.uri : "loading",
-            concept: getItem(child),
-            depth,
-            isSelected: this.$jskos.compare(this.conceptSelected, child),
-          }
-          items.push(item)
-          items = items.concat(this.children(item))
-        }
+      // Find index
+      let index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
+      if (index === -1) {
+        unwind()
+        return
       }
-      return items
-    },
-    loadMappingsForItems() {
-      this.loadMappingsForConcepts(this.loadConceptsMappedStatusConceptsToLoad, this.isLeft)
+      // Check if concept is already in view
+      const containerToCheck = container.getElementsByClassName("conceptListItems")[0]
+      const elementToCheck = containerToCheck && containerToCheck.querySelectorAll(`.conceptListItem[data-uri="${concept.uri}"]`)[0]
+      if (this.checkInView(containerToCheck, elementToCheck, false)) {
+        unwind()
+        return
+      }
+      // Adjust index slightly to leave some space above selected concept after scrolling
+      index = Math.min(index, Math.abs(index - 1), Math.abs(index - 2))
+      _.delay(() => {
+        conceptList.scrollToIndex(index)
+        unwind()
+      }, 200)
     },
   },
 }
