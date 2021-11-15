@@ -16,6 +16,14 @@ import buildInfo from "../../build/build-info.json"
 // eslint-disable-next-line no-unused-vars
 import userConfigAtBuild from "../../config/cocoda.json"
 
+function prepareConceptsForFavorite(concepts) {
+  return concepts.map(c => ({
+    uri: c.uri,
+    notation: c.notation,
+    inScheme: [{ uri: c.inScheme[0].uri }],
+  }))
+}
+
 export default {
   async loadConfig({ commit, dispatch }, configFile) {
     if (!configFile) {
@@ -241,14 +249,10 @@ export default {
       return
     }
     if (!jskos.isContainedIn(concept, getters.favoriteConcepts)) {
-      // Filter properties of concepts
-      let newConcept = _.pick(jskos.copyDeep(concept), ["uri", "notation", "inScheme"])
-      // Prepare inScheme
-      newConcept.inScheme = newConcept.inScheme.map(scheme => ({ uri: scheme.uri }))
       commit({
         type: "settings/set",
         prop: "favoriteConcepts",
-        value: getters.favoriteConcepts.concat([newConcept]),
+        value: prepareConceptsForFavorite(getters.favoriteConcepts.concat([concept])),
       })
     }
   },
@@ -256,7 +260,7 @@ export default {
     commit({
       type: "settings/set",
       prop: "favoriteConcepts",
-      value: getters.favoriteConcepts.filter(other => !jskos.compare(concept, other)),
+      value: prepareConceptsForFavorite(getters.favoriteConcepts.filter(other => !jskos.compare(concept, other))),
     })
   },
 
