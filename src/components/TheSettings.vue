@@ -113,10 +113,10 @@
             v-for="(registry, index) in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
             class="settingsModal-mapping-registry"
-            :class="{'selected-registry': $jskos.compare(registry, currentRegistry)}">
+            :class="{'selected-registry': $jskos.compareFast(registry, currentRegistry)}">
             <b-form-checkbox
               v-model="showRegistry[registry.uri]"
-              :disabled="$jskos.compare(registry, currentRegistry)" />
+              :disabled="$jskos.compareFast(registry, currentRegistry)" />
             <registry-info
               :registry="registry"
               class="settings-sources"

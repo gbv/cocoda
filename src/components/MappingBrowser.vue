@@ -275,7 +275,7 @@
                 :disabled="!showRegistry[registry.uri]"
                 class="mappingBrowser-search-registryNotation"
                 :class="{
-                  pointer: !$jskos.compare(registry, currentRegistry)
+                  pointer: !$jskos.compareFast(registry, currentRegistry)
                 }"
                 @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
                 @mouseover.native="hoveredRegistry = registry"
@@ -371,7 +371,7 @@
                   :disabled="!showRegistry[registry.uri]"
                   class="mappingBrowser-registryGroup-notation"
                   :class="{
-                    pointer: !$jskos.compare(registry, currentRegistry)
+                    pointer: !$jskos.compareFast(registry, currentRegistry)
                   }"
                   @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
                   @mouseover.native="hoveredRegistry = registry"
@@ -682,10 +682,10 @@ export default {
       if (this.componentSettings.moveCurrentRegistryToTop) {
         for (let group of groups) {
           group.registries = group.registries.sort((a, b) => {
-            if (this.$jskos.compare(a, this.currentRegistry)) {
+            if (this.$jskos.compareFast(a, this.currentRegistry)) {
               return -1
             }
-            if (this.$jskos.compare(b, this.currentRegistry)) {
+            if (this.$jskos.compareFast(b, this.currentRegistry)) {
               return 1
             }
             return 0
@@ -798,10 +798,10 @@ export default {
       handler() {
         // Refresh navigator if anything has actually changed
         if (!(
-          this.$jskos.compare(this.selected.concept[true], this.previousSelected.concept[true]) &&
-          this.$jskos.compare(this.selected.concept[false], this.previousSelected.concept[false]) &&
-          this.$jskos.compare(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
-          this.$jskos.compare(this.selected.scheme[false], this.previousSelected.scheme[false])
+          this.$jskos.compareFast(this.selected.concept[true], this.previousSelected.concept[true]) &&
+          this.$jskos.compareFast(this.selected.concept[false], this.previousSelected.concept[false]) &&
+          this.$jskos.compareFast(this.selected.scheme[true], this.previousSelected.scheme[true]) &&
+          this.$jskos.compareFast(this.selected.scheme[false], this.previousSelected.scheme[false])
         )) {
           this.selectedChangedHandler()
         }
@@ -983,7 +983,7 @@ export default {
       // Also adjust fromScheme/toScheme if locked
       let changed = false
       for (let [fromTo, isLeft] of [["from", true], ["to", false]]) {
-        if (this.lockScheme[isLeft] && !this.$jskos.compare(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
+        if (this.lockScheme[isLeft] && !this.$jskos.compareFast(this.selected.scheme[isLeft], this.previousSelected.scheme[isLeft])) {
           const scheme = getItem(this.selected.scheme[isLeft])
           this.searchFilterInput[`${fromTo}Scheme`] = scheme ? this.$jskos.notation(scheme) : ""
           changed = true
@@ -1397,7 +1397,7 @@ export default {
         let section = {}
         section.registry = registry
         // Add custom class for current registry
-        if (this.$jskos.compare(registry, this.currentRegistry)) {
+        if (this.$jskos.compareFast(registry, this.currentRegistry)) {
           section._class = "mappingBrowser-table-currentRegistrySection"
         }
         section.items = []
@@ -1486,7 +1486,7 @@ export default {
           // Generate unique ID from mapping JSON and registry URI as helper
           item.uniqueId = this.hash(keyPrefix + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
           // Add class to all items of hoveredRegistry
-          if (this.$jskos.compare(item.registry, this.hoveredRegistry)) {
+          if (this.$jskos.compareFast(item.registry, this.hoveredRegistry)) {
             item._rowClass += " mappingBrowser-hoveredRegistry"
           }
           section.items.push(item)

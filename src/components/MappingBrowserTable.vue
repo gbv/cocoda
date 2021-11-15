@@ -245,7 +245,7 @@
             @click="edit(data)" />
         </div>
         <div
-          v-if="showEditingTools && !$jskos.compare(data.item.registry, $store.getters.getCurrentRegistry)"
+          v-if="showEditingTools && !$jskos.compareFast(data.item.registry, $store.getters.getCurrentRegistry)"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
             v-if="canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping })"
@@ -652,7 +652,7 @@ export default {
         type: "mappings",
         action: "create",
         user: this.user,
-      }) && this.$jskos.compare(r, registry)) != null
+      }) && this.$jskos.compareFast(r, registry)) != null
     },
     useRegistryForSaving(registry) {
       if (this.$jskos.mappingRegistryIsStored(registry)) {

@@ -30,6 +30,13 @@ export function supplementApp(app) {
 
   // Add jskos-tools, use with this.$jskos in components
   Vue.prototype.$jskos = jskos
+  // Add a `compareFast` method to jskos (only compares URI)
+  jskos.compareFast = (object1, object2) => {
+    if (!object1 || !object2) {
+      return false
+    }
+    return object1.uri === object2.uri
+  }
 
   // Add logger, use with this.$log.log/warn/error in components
   Vue.prototype.$log = log

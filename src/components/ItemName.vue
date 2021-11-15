@@ -166,7 +166,7 @@ export default {
       return getItem(this.item) || this.item
     },
     isHovered() {
-      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compare(this.$store.state.hoveredConcept, this._item))
+      return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compareFast(this.$store.state.hoveredConcept, this._item))
     },
     notation() {
       return this.getNotation(this._item, null, true)

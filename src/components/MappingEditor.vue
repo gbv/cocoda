@@ -338,7 +338,7 @@ export default {
       }
       // Show warning if there is an original mapping, but it can't be updated
       // 1. Because the registry changed
-      if (this.original.uri && !this.$jskos.compare(registry, this.original.registry)) {
+      if (this.original.uri && !this.$jskos.compareFast(registry, this.original.registry)) {
         return {
           message: this.$t("mappingEditor.warningUpdateRegistry", [this.$jskos.prefLabel(this.original.registry), this.$jskos.prefLabel(registry)]),
           warning: true,
@@ -442,7 +442,7 @@ export default {
         this.removeCreator()
       }
       // Determine whether it should update original mapping
-      const updateOriginal = this.original.uri && this.$jskos.compare(this.currentRegistry, this.original.registry)
+      const updateOriginal = this.original.uri && this.$jskos.compareFast(this.currentRegistry, this.original.registry)
       // Save as new mapping or update mapping
       const mapping = await this[updateOriginal ? "putMapping" : "postMapping"]({
         registry: this.currentRegistry,

@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     isCurrentRegistry() {
-      return this.$jskos.compare(this.registry, this.$store.getters.getCurrentRegistry)
+      return this.$jskos.compareFast(this.registry, this.$store.getters.getCurrentRegistry)
     },
   },
 }

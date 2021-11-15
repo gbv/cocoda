@@ -127,7 +127,7 @@ const getters = {
     }
     // If original registry is not the currently chosen registry, return true
     const registry = rootGetters.getCurrentRegistry
-    if (!jskos.compare(state.original.registry, registry)) {
+    if (!jskos.compareFast(state.original.registry, registry)) {
       return true
     }
     const original = state.original.mapping
@@ -168,7 +168,7 @@ const getters = {
     let config = rootState.config
     let trash = []
     for (let item of state.mappingTrash) {
-      let registry = config.registries.find(registry => jskos.compare(registry, item.registry))
+      let registry = config.registries.find(registry => jskos.compareFast(registry, item.registry))
       trash.push(Object.assign({}, item, { registry }))
     }
     return trash
@@ -188,7 +188,7 @@ const getters = {
 
   canUpdate: (state, getters, rootState, rootGetters) => {
     const registry = rootGetters.getCurrentRegistry
-    if (!registry || !jskos.compare(registry, state.original.registry) || !state.mapping || !state.original.uri) {
+    if (!registry || !jskos.compareFast(registry, state.original.registry) || !state.mapping || !state.original.uri) {
       return false
     }
     const crossUser = !jskos.userOwnsMapping(rootState.auth.user, state.original.mapping)
@@ -202,7 +202,7 @@ const getters = {
 
   canDelete: (state, getters, rootState, rootGetters) => {
     const registry = rootGetters.getCurrentRegistry
-    if (!registry || !jskos.compare(registry, state.original.registry) || !state.mapping || !state.original.uri) {
+    if (!registry || !jskos.compareFast(registry, state.original.registry) || !state.mapping || !state.original.uri) {
       return false
     }
     const crossUser = !jskos.userOwnsMapping(rootState.auth.user, state.original.mapping)
@@ -454,7 +454,7 @@ const actions = {
   restoreMappingFromTrash({ state, rootState, commit }, { uri }) {
     let config = rootState.config
     let item = state.mappingTrash.find(item => item.mapping.uri == uri)
-    let registry = config.registries.find(registry => jskos.compare(registry, item && item.registry))
+    let registry = config.registries.find(registry => jskos.compareFast(registry, item && item.registry))
     if (!item || !registry) {
       log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)

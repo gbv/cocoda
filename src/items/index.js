@@ -340,7 +340,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
           }
           // Remove all loaded URIs from loadingConcepts
           for (let uri of uris) {
-            let index = loadingConcepts.findIndex(concept => jskos.compare(concept, { uri }))
+            let index = loadingConcepts.findIndex(concept => jskos.compareFast(concept, { uri }))
             if (index >= 0) {
               del(loadingConcepts, index)
             }
@@ -352,7 +352,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
   await Promise.all(promises)
   // Move all URIs that were not loaded to errored concepts
   for (let uri of uris) {
-    let index = loadingConcepts.findIndex(concept => jskos.compare(concept, { uri }))
+    let index = loadingConcepts.findIndex(concept => jskos.compareFast(concept, { uri }))
     if (index >= 0) {
       let concept = loadingConcepts[index]
       modifyItem(concept, "__DETAILSLOADED__", -1)

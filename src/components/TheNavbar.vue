@@ -259,7 +259,7 @@
             :key="`navbar-mappingRegistry-${registry.uri}`"
             :class="{
               'navbar-dropdown-selectable': true,
-              'navbar-dropdown-selectable-selected': $jskos.compare(registry, currentRegistry)
+              'navbar-dropdown-selectable-selected': $jskos.compareFast(registry, currentRegistry)
             }"
             @click="$store.commit({
               type: 'settings/set',
@@ -355,7 +355,7 @@ export default {
       let trash = this.$store.state.mapping.mappingTrash
       trash = trash.map(item => Object.assign({}, item, { mapping: this.adjustMapping(this.$jskos.copyDeep(item.mapping)) }))
       for (let item of trash) {
-        item.mapping._registry = this.config.registries.find(registry => this.$jskos.compare(registry, item.registry))
+        item.mapping._registry = this.config.registries.find(registry => this.$jskos.compareFast(registry, item.registry))
       }
       return trash
     },

@@ -44,7 +44,7 @@ export default {
       }
       const registry = this.currentRegistry
       const otherScheme = this.loadConceptsMappedStatusOtherScheme
-      concepts = getItems(concepts.filter(concept => !_.get(concept, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme))))
+      concepts = getItems(concepts.filter(concept => !_.get(concept, "__MAPPED__", []).find(item => this.$jskos.compareFast(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme))))
       const conceptUris = concepts.map(i => i.uri)
       if (otherScheme && conceptUris.length && registry) {
         Promise.all(_.chunk(conceptUris, 15).map(uris => this.getMappings({
@@ -55,7 +55,7 @@ export default {
           limit: 500,
         }))).then(() => {
           // Set to false for every concept that still has no entry for current registry + other scheme
-          for (let concept of concepts.filter(c => !_.get(c, "__MAPPED__", []).find(item => this.$jskos.compare(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))) {
+          for (let concept of concepts.filter(c => !_.get(c, "__MAPPED__", []).find(item => this.$jskos.compareFast(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))) {
             this.$set(concept, "__MAPPED__", [])
             concept.__MAPPED__.push({
               registry,

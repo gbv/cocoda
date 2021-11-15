@@ -523,14 +523,14 @@ export default {
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
           ),
       )
-      this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compare(registry, scheme._registry)))
+      this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compareFast(registry, scheme._registry)))
 
       // ===== shownLanguages =====
       schemes = this._schemes.filter(
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
+            this.registryFilter.find(uri => this.$jskos.compareFast({ uri }, scheme._registry))
           ) &&
           (
             (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
@@ -547,7 +547,7 @@ export default {
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
+            this.registryFilter.find(uri => this.$jskos.compareFast({ uri }, scheme._registry))
           ) &&
           (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
@@ -604,7 +604,7 @@ export default {
           scheme =>
             (
               this.registryFilter.length == this.availableRegistries.length ||
-              this.registryFilter.find(uri => this.$jskos.compare({ uri }, scheme._registry))
+              this.registryFilter.find(uri => this.$jskos.compareFast({ uri }, scheme._registry))
             ) &&
             (
               (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||

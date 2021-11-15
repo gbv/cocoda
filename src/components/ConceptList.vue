@@ -131,7 +131,7 @@ export default {
           uri: concept ? concept.uri : "loading",
           concept,
           depth: 0,
-          isSelected: this.$jskos.compare(this.conceptSelected, concept),
+          isSelected: this.$jskos.compareFast(this.conceptSelected, concept),
         }
         items.push(item)
         if (this.showChildren) {
@@ -164,10 +164,10 @@ export default {
   },
   methods: {
     updatePreviousAndNextConcepts() {
+      // Index of current concept in the list of concepts
+      const index = this.items.findIndex(item => this.$jskos.compareFast(item.concept, this.conceptSelected))
       // ===== Previous Concept =====
       const previousConcept = (() => {
-        // Index of current concept in the list of concepts
-        const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
         if (index == -1) {
           return null
         }
@@ -186,8 +186,6 @@ export default {
       })
       // ===== Next Concept =====
       const nextConcept = (() => {
-        // Index of current concept in the list of concepts
-        const index = this.items.findIndex(item => this.$jskos.compare(item.concept, this.conceptSelected))
         if (index == -1) {
           return null
         }
@@ -216,7 +214,7 @@ export default {
             return null
           }
           // Try to find next child in list of children
-          const nextChild = children[children.findIndex(c => this.$jskos.compare(c, concept)) + 1]
+          const nextChild = children[children.findIndex(c => this.$jskos.compareFast(c, concept)) + 1]
           if (nextChild) {
             return nextChild
           }
@@ -244,7 +242,7 @@ export default {
             uri: child ? child.uri : "loading",
             concept: child,
             depth,
-            isSelected: this.$jskos.compare(this.conceptSelected, child),
+            isSelected: this.$jskos.compareFast(this.conceptSelected, child),
           }
           items.push(item)
           items = items.concat(this.children(item))
@@ -258,7 +256,7 @@ export default {
       }
       // TODO: Check
       let concept = this.conceptSelectedFromStore
-      if (!this.$jskos.compare(concept, this.currentSelectedConcept)) {
+      if (!this.$jskos.compareFast(concept, this.currentSelectedConcept)) {
         this.currentSelectedConcept = concept
         this.shouldScroll = true
       }
@@ -308,7 +306,7 @@ export default {
         this.loading = false
       }
       // Find index
-      let index = this.items.findIndex(i => this.$jskos.compare(i.concept, concept))
+      let index = this.items.findIndex(i => this.$jskos.compareFast(i.concept, concept))
       if (index === -1) {
         unwind()
         return

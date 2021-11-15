@@ -38,7 +38,7 @@ const getters = {
   },
   getCurrentRegistry: (state) => {
     // Try to find registry that fits state.settings.settings.mappingRegistry
-    let registry = state.config.registries.find(registry => jskos.compare(registry, { uri: state.settings.settings.mappingRegistry }))
+    let registry = state.config.registries.find(registry => jskos.compareFast(registry, { uri: state.settings.settings.mappingRegistry }))
     if (!registry) {
       // Fallback to first registry into which the user can save
       registry = state.config.registries.find(registry => registry.isAuthorizedFor({
@@ -76,7 +76,7 @@ const getters = {
    */
   mappedStatus: (state) => (concept, isLeft) => {
     // TODO: Use concept from store?
-    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist.length && jskos.compare(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
+    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist.length && jskos.compareFast(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
   },
   languages: (state) => {
     let languages = ["en", "de"]

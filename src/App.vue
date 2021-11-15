@@ -276,7 +276,7 @@ export default {
           object2 = uri2 && getItem({ uri: uri2 })
         // Compare objects if they exist to prevent unnecessary reloads.
         if (object1 && object2) {
-          if (!this.$jskos.compare(object1, object2)) {
+          if (!this.$jskos.compareFast(object1, object2)) {
             refresh = true
           }
         // If at least one URI doesn't have an object, compare URIs directly.
@@ -304,7 +304,7 @@ export default {
      * Insert prefLabel into target search field if the scheme on the right changes.
      */
     selectedSchemeRight(newValue, oldValue) {
-      if (!this.$jskos.compare(newValue, oldValue)) {
+      if (!this.$jskos.compareFast(newValue, oldValue)) {
         _.delay(() => {
           this.insertPrefLabel(true)
         }, 50)
@@ -326,7 +326,7 @@ export default {
      * Insert prefLabel into target search field if the scheme on the right changes.
      */
     selectedSchemeLeft(newValue, oldValue) {
-      if (!this.$jskos.compare(newValue, oldValue)) {
+      if (!this.$jskos.compareFast(newValue, oldValue)) {
         _.delay(() => {
           this.insertPrefLabel(false)
         }, 50)
@@ -361,11 +361,11 @@ export default {
         // Logged in
         this.alert(this.$t("alerts.loggedIn"), null, "success")
         // Switch to different mapping registry if Local is selected
-        if (this.localMappingsRegistry && this.$jskos.compare(this.currentRegistry, this.localMappingsRegistry)) {
+        if (this.localMappingsRegistry && this.$jskos.compareFast(this.currentRegistry, this.localMappingsRegistry)) {
           // Find first registry that allows saving mappings
           const newRegistry = this.config.registries.find(
             registry => this.$jskos.mappingRegistryIsStored(registry)
-              && !this.$jskos.compare(registry, this.localMappingsRegistry)
+              && !this.$jskos.compareFast(registry, this.localMappingsRegistry)
               && registry.isAuthorizedFor({
                 type: "mappings",
                 action: "create",

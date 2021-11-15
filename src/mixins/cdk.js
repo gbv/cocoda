@@ -89,7 +89,7 @@ export default {
           },
           set: (value) => {
             // Only allow if it's not the current registry
-            if (value || !this.$jskos.compare(registry, this.currentRegistry)) {
+            if (value || !this.$jskos.compareFast(registry, this.currentRegistry)) {
               this.$store.commit({
                 type: "settings/set",
                 prop: "mappingBrowserShowRegistry",
@@ -382,7 +382,7 @@ export default {
               }
               // Remove all loaded URIs from loadingConcepts
               for (let uri of uris) {
-                let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
+                let index = this.loadingConcepts.findIndex(concept => this.$jskos.compareFast(concept, { uri }))
                 if (index >= 0) {
                   this.$delete(this.loadingConcepts, index)
                 }
@@ -394,7 +394,7 @@ export default {
       await Promise.all(promises)
       // Move all URIs that were not loaded to errored concepts
       for (let uri of uris) {
-        let index = this.loadingConcepts.findIndex(concept => this.$jskos.compare(concept, { uri }))
+        let index = this.loadingConcepts.findIndex(concept => this.$jskos.compareFast(concept, { uri }))
         if (index >= 0) {
           let concept = this.loadingConcepts[index]
           this.$set(concept, "__DETAILSLOADED__", -1)
@@ -508,7 +508,7 @@ export default {
       if (_.isString(registry)) {
         registry = { uri: registry }
       }
-      registry = this.config.registries.find(r => jskos.compare(r, registry))
+      registry = this.config.registries.find(r => jskos.compareFast(r, registry))
       return registry
     },
     /**
@@ -548,7 +548,7 @@ export default {
               if (!concept.__MAPPED__) {
                 this.$set(concept, "__MAPPED__", [])
               }
-              const existing = concept.__MAPPED__.find(item => jskos.compare(item.registry, registry) && jskos.compare(item.scheme, targetScheme))
+              const existing = concept.__MAPPED__.find(item => jskos.compareFast(item.registry, registry) && jskos.compare(item.scheme, targetScheme))
               if (existing && !existing.exist.length) {
                 existing.exist.push(mapping.uri)
               } else if (!existing) {
