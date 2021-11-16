@@ -452,14 +452,23 @@ const actions = {
   },
 
   restoreMappingFromTrash({ state, rootState, commit }, { uri }) {
-    let config = rootState.config
-    let item = state.mappingTrash.find(item => item.mapping.uri == uri)
-    let registry = config.registries.find(registry => jskos.compareFast(registry, item && item.registry))
+    const { registries } = rootState.config
+    const item = state.mappingTrash.find(item => item.mapping.uri == uri)
+    const registry = registries.find(registry => jskos.compareFast(registry, item && item.registry))
     if (!item || !registry) {
       log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
       return Promise.resolve(null)
     }
-    return registry.postMapping({ mapping: item.mapping }).then(mapping => {
+    const identity = _.get(item.mapping, "creator[0].uri") || rootState.settings.settings.creatorUri
+    const identityName = jskos.prefLabel(_.get(item.mapping, "creator[0]"), { fallbackToUri: false }) || rootState.settings.settings.creator
+    const config = {
+      mapping: item.mapping,
+      params: {
+        identity,
+        identityName,
+      },
+    }
+    return registry.postMapping(config).then(mapping => {
       if (mapping) {
         // Remove item from trash
         commit({
