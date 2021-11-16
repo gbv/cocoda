@@ -288,19 +288,20 @@ export default {
     chooseResult(chosenIndex) {
       this.closeResults()
       this.searchSelected = -1
-      this.$router.push({ path: this._getRouterUrl(this.searchResult[chosenIndex]) })
-      // Remove focus
-      if (document.activeElement != document.body) document.activeElement.blur()
-    },
-    _getRouterUrl(result) {
-      let uri = _.last(result)
+      const uri = _.last(this.searchResult[chosenIndex])
+      if (!uri) {
+        return
+      }
       let concept = {
-        uri: uri,
+        uri,
         inScheme: [this._scheme],
       }
       // Get concept from store
       concept = saveItem(concept, { type: "concept", scheme: this._scheme, provider: this.provider })
-      return this.getRouterUrl(concept, this.isLeft)
+      // Set selected
+      this.setSelected({ concept, isLeft: this.isLeft })
+      // Remove focus
+      if (document.activeElement != document.body) document.activeElement.blur()
     },
     closeResults() {
       this.isOpen = false

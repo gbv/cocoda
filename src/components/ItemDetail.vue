@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     droppedConcept(concept) {
-      this.$router.push({ path: this.getRouterUrl(concept, this.isLeft, true) })
+      this.setSelected({ concept, isLeft: this.isLeft })
     },
     scrollToTop() {
       Array.prototype.forEach.call(this.$el.getElementsByClassName("itemDetail-content"), element => {

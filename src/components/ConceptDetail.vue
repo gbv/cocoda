@@ -72,7 +72,7 @@
       <div
         v-b-tooltip.hover="{ title: $t('conceptDetail.clearConcept'), delay: defaults.delay.medium }"
         class="button conceptDetail-name-clearButton"
-        @click="$router.push({ path: getRouterUrl(selected.scheme[isLeft], isLeft) })">
+        @click="setSelected({ scheme: selected.scheme[isLeft], isLeft })">
         <font-awesome-icon icon="times-circle" />
       </div>
       <item-name

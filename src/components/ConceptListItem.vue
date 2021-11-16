@@ -264,7 +264,6 @@ export default {
      * Triggers a selected event.
      */
     select(concept) {
-      // FIXME: Replace with $router.push.
       this.setSelected({ isLeft: this.isLeft, concept })
     },
     /**

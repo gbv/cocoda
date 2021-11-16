@@ -624,7 +624,7 @@ export default {
      * Clears the scheme.
      */
     clearScheme() {
-      this.$router.push({ path: this.getRouterUrl(null, this.isLeft) })
+      this.setSelected({ isLeft: this.isLeft })
       // Focus and select input field with delay.
       _.delay(() => {
         this.focusAndSelectInput()
@@ -639,7 +639,7 @@ export default {
       if (!scheme) {
         return
       }
-      this.$router.push({ path: this.getRouterUrl(scheme, this.isLeft) })
+      this.setSelected({ scheme, isLeft: this.isLeft })
       this.hidePopover()
     },
     /**
