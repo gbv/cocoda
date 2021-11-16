@@ -459,14 +459,6 @@ export default {
         this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
       }
     },
-    "$settings.checkForUpdates"(enabled) {
-      if (enabled) {
-        this.enableUpdateCheck()
-      } else {
-        this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
-        this.repeatLoadBuildInfo = null
-      }
-    },
     languages() {
       // Relay language changes to registry providers
       for (let registry of this.$store.state.config.registries) {
@@ -529,7 +521,7 @@ export default {
       // TODO: Should this be finished before loaded is set?
       this.loadFromParametersOnce(true)
       // Check for update every 60 seconds
-      if (this.config.autoRefresh.update && this.$settings.checkForUpdates) {
+      if (this.config.autoRefresh.update) {
         this.enableUpdateCheck()
       }
       // Set schemes in registries to objects from Cocoda

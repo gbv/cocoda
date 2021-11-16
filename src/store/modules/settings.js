@@ -23,7 +23,6 @@ let defaultSettings = {
     [false]: 0,
   },
   components: {},
-  checkForUpdates: true,
   hasWrittenIntoLocalMappings: false,
 }
 

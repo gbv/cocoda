@@ -205,18 +205,6 @@
               </li>
             </ul>
           </div>
-          <div
-            v-if="localSettings && config.autoRefresh.update"
-            class="settingsModal-componentSettings-component">
-            <b-form-checkbox
-              v-model="localSettings.checkForUpdates">
-              {{ $t('settings.checkForUpdates') }}
-            </b-form-checkbox>
-            <p
-              class="fontSize-small text-lightGrey">
-              {{ $t('settings.checkForUpdatesExplanation', [Math.floor(config.autoRefresh.update/1000)]) }}
-            </p>
-          </div>
           <div class="settingsModal-componentSettings-component">
             <b-button
               variant="secondary"
