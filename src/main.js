@@ -32,6 +32,9 @@ export function supplementApp(app) {
   Vue.prototype.$jskos = jskos
   // Add a `compareFast` method to jskos (only compares URI)
   jskos.compareFast = (object1, object2) => {
+    if (!object1 && !object2) {
+      return true
+    }
     if (!object1 || !object2) {
       return false
     }
