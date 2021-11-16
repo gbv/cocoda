@@ -232,7 +232,7 @@ export function modifyItemByUri(uri, path, value) {
 export const schemes = reactive([])
 // TODO: Adjust to load one registry after another without blocking
 export async function loadSchemes() {
-  for (const scheme of await cdk.getSchemes()) {
+  for (const scheme of await cdk.getSchemes({ timeout: 10000 })) {
     saveItem(scheme, { type: "scheme" })
     if (!schemes.find(s => jskos.compare(s, scheme))) {
       schemes.push({ uri: scheme.uri, identifier: scheme.identifier })
