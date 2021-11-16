@@ -438,26 +438,6 @@
     },
     {
       "prefLabel": {
-        "en": "WebDewey English (requires login)",
-        "de": "WebDewey Englisch (benötigt Login)"
-      },
-      "url": "http://dewey.org/webdewey/index_11.html?recordId=ddc%3a{notation}",
-      "schemeUris": [
-        "http://bartoc.org/en/node/241"
-      ]
-    },
-    {
-      "prefLabel": {
-        "en": "WebDewey German (requires login)",
-        "de": "WebDewey Deutsch (benötigt Login)"
-      },
-      "url": "https://deweyde.pansoft.de/webdewey/index_11.html?recordId=ddc%3a{notation}",
-      "schemeUris": [
-        "http://bartoc.org/en/node/241"
-      ]
-    },
-    {
-      "prefLabel": {
         "en": "K10plus"
       },
       "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd+{notation}",

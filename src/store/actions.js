@@ -341,6 +341,44 @@ export default {
         label: jskos.prefLabel(searchLink, { language: info.locale }),
       })
     }
+    // Add custom WebDewey links for DDC
+    if (jskos.compare(scheme, { uri: "http://bartoc.org/en/node/241" })) {
+      let recordIdPrefix = "ddc"
+      let notation = info.notation
+      // Adjust notation
+      // 1. Determine postfix
+      let postfix
+      const postfixMatch = /(.+):(.+)/.exec(notation)
+      if (postfixMatch) {
+        notation = postfixMatch[1]
+        postfix = "%3b1%3b" + postfixMatch[2]
+        recordIdPrefix = "int"
+      } else {
+        postfix = ""
+      }
+      // 2. Fix ranges with .
+      const rangeMatch = /(.+)\.(.+)-.+\.(.+)/.exec(notation)
+      if (rangeMatch) {
+        notation = `${rangeMatch[1]}.${rangeMatch[2]}-.${rangeMatch[3]}`
+      }
+      notation += postfix
+      // English
+      searchLinks.push({
+        url: `http://dewey.org/webdewey/index_11.html?recordId=${recordIdPrefix}%3a${notation}`,
+        label: jskos.prefLabel({ prefLabel: {
+          en: "WebDewey English (requires login)",
+          de: "WebDewey Englisch (benötigt Login)",
+        }}, { language: info.locale }),
+      })
+      // German
+      searchLinks.push({
+        url: `https://deweyde.pansoft.de/webdewey/index_11.html?recordId=${recordIdPrefix}%3a${notation}`,
+        label: jskos.prefLabel({ prefLabel: {
+          en: "WebDewey German (requires login)",
+          de: "WebDewey Deutsch (benötigt Login)",
+        }}, { language: info.locale }),
+      })
+    }
     // Filter out duplicate URLs (e.g. Wikipedia)
     searchLinks = searchLinks.filter((link, index, self) =>
       index === self.findIndex(l => (
