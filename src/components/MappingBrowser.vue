@@ -1014,7 +1014,6 @@ export default {
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
       this.tab = this.tabIndexes.search
-      concordance
       // Clear all other search parameters.
       this.clearSearchFilter()
       // Change concordance.
