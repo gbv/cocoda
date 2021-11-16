@@ -332,8 +332,13 @@ export default {
         }).then(() => {
           if (searchQuery == this.searchQuery) {
             // If possible, add searchQuery as notation only the the result
-            const scheme = new this.$jskos.ConceptScheme(this._scheme)
-            const concept = scheme.conceptFromNotation(searchQuery)
+            let scheme, concept
+            try {
+              scheme = new this.$jskos.ConceptScheme(this._scheme)
+              concept = scheme.conceptFromNotation(searchQuery)
+            } catch (error) {
+              this.$log.warn("ConceptSearch: Error creating concept from query as notation.", error)
+            }
             if (concept && !this.searchResult.find(result => _.last(result) == concept.uri)) {
               this.searchResult.push([
                 `${searchQuery} ${this.$t("itemDetail.unknownConcept")}`,
