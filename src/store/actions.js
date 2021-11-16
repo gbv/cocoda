@@ -319,4 +319,39 @@ export default {
     return conceptLists
   },
 
+  async getSearchLinks({ state }, { scheme, ...info }) {
+    let searchLinks = []
+
+    for (let searchLink of state.config.searchLinks) {
+      // Test schemeUris
+      let schemeUris = searchLink.schemeUris || []
+      let match = schemeUris.length ? false : true
+      for (let uri of schemeUris) {
+        if (jskos.compare(scheme, { uri })) {
+          match = true
+        }
+      }
+      if (!match) {
+        continue
+      }
+      // Construct URL
+      let url = searchLink.url
+      _.forOwn(info, (value, key) => {
+        // Replace all occurrences of {key} with value
+        url = _.replace(url, new RegExp(`{${key}}`, "g"), value)
+      })
+      searchLinks.push({
+        url,
+        label: jskos.prefLabel(searchLink, { language: info.locale }),
+      })
+    }
+    // Filter out duplicate URLs (e.g. Wikipedia)
+    searchLinks = searchLinks.filter((link, index, self) =>
+      index === self.findIndex(l => (
+        l.url == link.url
+      )),
+    )
+    return searchLinks
+  },
+
 }

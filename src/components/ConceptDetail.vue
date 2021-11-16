@@ -277,7 +277,7 @@
       </tab>
       <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
       <tab
-        v-if="config.searchLinks"
+        v-if="searchLinks.length"
         :key="`conceptDetail-${isLeft}-searchLinks`"
         :title="$t('conceptDetail.searchLinks')">
         <ul style="margin-bottom: 0;">
@@ -353,6 +353,7 @@ export default {
     return {
       /** Temporarily show all ancestors if user clicked the ellipsis */
       showAncestors: false,
+      searchLinks: [],
     }
   },
   computed: {
@@ -371,44 +372,13 @@ export default {
     broader() {
       return getItems(_.get(this.item, "broader", []) || [])
     },
-    // Search Links (see https://github.com/gbv/cocoda/issues/220)
-    searchLinks() {
-      let language = this.$i18n.locale
-      let notation = this.$jskos.notation(this._item)
-      let prefLabel = this.$jskos.prefLabel(this._item)
-      let info = { language, notation, prefLabel }
-      let searchLinks = []
-      for (let searchLink of this.config.searchLinks) {
-        // Test schemeUris
-        let scheme = getItem(this.selected.scheme[this.isLeft])
-        let schemeUris = searchLink.schemeUris || []
-        let match = schemeUris.length ? false : true
-        for (let uri of schemeUris) {
-          if (this.$jskos.compare(scheme, { uri })) {
-            match = true
-          }
-        }
-        if (!match) {
-          continue
-        }
-        // Construct URL
-        let url = searchLink.url
-        _.forOwn(info, (value, key) => {
-          // Replace all occurrences of {key} with value
-          url = _.replace(url, new RegExp(`{${key}}`, "g"), value)
-        })
-        searchLinks.push({
-          url,
-          label: this.$jskos.prefLabel(searchLink, { language: this.locale }),
-        })
+    searchLinkInfo() {
+      return {
+        uri: this._item && this._item.uri,
+        language: this.locale,
+        notation: this.$jskos.notation(this._item),
+        prefLabel: this.$jskos.prefLabel(this._item, { fallbackToUri: false }),
       }
-      // Filter out duplicate URLs (e.g. Wikipedia)
-      searchLinks = searchLinks.filter((link, index, self) =>
-        index === self.findIndex(l => (
-          l.url == link.url
-        )),
-      )
-      return searchLinks
     },
     // Returns null or an array of type objects
     types() {
@@ -489,10 +459,16 @@ export default {
         this.refresh()
       }
     },
+    searchLinkInfo(newValue, oldValue) {
+      if (!_.isEqual(newValue, oldValue)) {
+        this.updateSearchLinks(newValue)
+      }
+    },
   },
   mounted() {
     // Initial refresh
     this.refresh()
+    this.updateSearchLinks(this.searchLinkInfo)
     // Enable shortcuts
     this.enableShortcuts()
   },
@@ -631,6 +607,12 @@ export default {
      */
     copyAndSearch(label) {
       this.$emit("searchConcept", label)
+    },
+    async updateSearchLinks(searchLinkInfo) {
+      this.searchLinks = await this.$store.dispatch("getSearchLinks", {
+        scheme: getItem(this.selected.scheme[this.isLeft]),
+        ...searchLinkInfo,
+      })
     },
   },
 }
