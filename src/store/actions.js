@@ -128,6 +128,13 @@ export default {
 
     // Merge searchLinks field
     config.searchLinks = [].concat(defaultConfig.searchLinks || [], userConfig.searchLinks || [])
+    // Add `schemes` field to searchLinks
+    config.searchLinks.forEach(searchLink => {
+      if (searchLink.schemes) {
+        return
+      }
+      searchLink.schemes = (searchLink.schemeUris || []).map(uri => ({ uri }))
+    })
 
     // load build info into config
     config.buildInfo = buildInfo
@@ -322,18 +329,7 @@ export default {
   async getSearchLinks({ state }, { scheme, ...info }) {
     let searchLinks = []
 
-    for (let searchLink of state.config.searchLinks) {
-      // Test schemeUris
-      let schemeUris = searchLink.schemeUris || []
-      let match = schemeUris.length ? false : true
-      for (let uri of schemeUris) {
-        if (jskos.compare(scheme, { uri })) {
-          match = true
-        }
-      }
-      if (!match) {
-        continue
-      }
+    for (let searchLink of (state.config.searchLinks || []).filter(l => l.schemes.length === 0 || jskos.isContainedIn(scheme, l.schemes))) {
       // Construct URL
       let url = searchLink.url
       _.forOwn(info, (value, key) => {
@@ -351,6 +347,7 @@ export default {
         l.url == link.url
       )),
     )
+
     return searchLinks
   },
 
