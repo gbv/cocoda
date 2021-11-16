@@ -157,6 +157,16 @@
               </p>
             </b-col>
           </b-row>
+          <!-- Catalog enrichments -->
+          <b-row v-if="catalogEnrichmentLink">
+            <b-col cols="3">
+              {{ $t("mappingDetail.catalogEnrichment") }}:
+            </b-col>
+            <b-col>
+              <auto-link
+                :link="catalogEnrichmentLink" />
+            </b-col>
+          </b-row>
           <!-- Registry -->
           <b-row v-if="mapping._registry">
             <b-col cols="3">
@@ -217,6 +227,14 @@ export default {
       default: null,
     },
 
+  },
+  computed: {
+    catalogEnrichmentLink() {
+      if (!this.mapping || !this.mapping.uri || !this.mapping.uri.startsWith("https://coli-conc.gbv.de/api/mappings/")) {
+        return null
+      }
+      return "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8659&TRM=" + this.mapping.uri.replace(/[\W_]+/g,"+")
+    },
   },
   methods: {
     show() {

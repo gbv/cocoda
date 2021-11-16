@@ -202,7 +202,8 @@
       "annotations": "Annotations",
       "note": "Note",
       "identifier": "Identifier",
-      "partOf": "Part of Concordance"
+      "partOf": "Part of Concordance",
+      "catalogEnrichment": "Search for Enrichment in K10plus"
     },
     "minimizer": {
       "minimize": "minimize card",
@@ -577,7 +578,8 @@
       "annotations": "Annotationen",
       "note": "Notiz",
       "identifier": "Identifier",
-      "partOf": "Teil der Konkordanz"
+      "partOf": "Teil der Konkordanz",
+      "catalogEnrichment": "Anreicherung im K10plus suchen"
     },
     "minimizer": {
       "minimize": "Komponente ausblenden",
