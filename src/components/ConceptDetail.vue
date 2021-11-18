@@ -315,7 +315,7 @@ import computed from "../mixins/computed.js"
 import hotkeys from "../mixins/hotkeys.js"
 import mappedStatus from "../mixins/mapped-status.js"
 
-import { getItem, getItems, loadConcepts, saveItem } from "@/items"
+import { getItem, getItems, loadConcepts, modifyItem, saveItem } from "@/items"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -526,12 +526,12 @@ export default {
       await loadConcepts(gndConcepts)
 
       // Set property "__GNDMAPPINGS__" for item
-      this.$set(itemBefore, "__GNDMAPPINGS__", mappings)
+      modifyItem(itemBefore, "__GNDMAPPINGS__", mappings)
     },
     async loadColiAna() {
       const api = this.config["coli-ana"]
       if (!api) return
-      const itemBefore = this._item
+      const itemBefore = getItem(this._item, { relatedItems: true })
       if (!itemBefore) return
       if (itemBefore.memberList) {
         // Data already loaded
@@ -557,7 +557,7 @@ export default {
           })
         })
         // Save memberList to item
-        this.$set(
+        modifyItem(
           itemBefore,
           "memberList",
           resultConcept.memberList.map(member => member ? { uri: member.uri } : null),

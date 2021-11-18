@@ -5,7 +5,7 @@
 import _ from "lodash"
 import FileSaver from "file-saver"
 import jskos from "jskos-tools"
-import { getItem, loadAncestors, loadConcepts, loadNarrower, loadTop, loadTypes, saveItem } from "@/items"
+import { getItem, loadAncestors, loadConcepts, loadNarrower, loadTop, loadTypes, modifyItem, saveItem } from "@/items"
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
 function escapeRegExp(string) {
@@ -165,7 +165,7 @@ export default {
         // Load information about its broader concepts
         if (concept.broader && !concept.__BROADERLOADED__) {
           loadConcepts(concept.broader.filter(Boolean), { scheme }).then(() => {
-            this.$set(concept, "__BROADERLOADED__", true)
+            modifyItem(concept, "__BROADERLOADED__", true)
           })
         }
 
@@ -283,7 +283,7 @@ export default {
       if (!concept) return
       let open = Object.assign({}, concept.__ISOPEN__)
       open[isLeft] = isOpen
-      this.$set(concept, "__ISOPEN__", open)
+      modifyItem(concept, "__ISOPEN__", open)
     },
     /**
      * Uses the mouse position to determine whether it is hovering over an element.

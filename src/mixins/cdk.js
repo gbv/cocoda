@@ -15,7 +15,7 @@ import jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
-import { getItem, getItems, saveItem, schemes } from "@/items"
+import { getItem, getItems, modifyItem, saveItem, schemes } from "@/items"
 
 let objects = {}
 let topConcepts = {}
@@ -153,7 +153,7 @@ export default {
           if (targetScheme) {
             for (let concept of sourceConcepts) {
               if (!concept.__MAPPED__) {
-                this.$set(concept, "__MAPPED__", [])
+                modifyItem(concept, "__MAPPED__", [])
               }
               const existing = concept.__MAPPED__.find(item => jskos.compareFast(item.registry, registry) && jskos.compare(item.scheme, targetScheme))
               if (existing && !existing.exist.length) {

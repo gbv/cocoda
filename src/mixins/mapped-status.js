@@ -2,7 +2,7 @@
  * Mixin regarding mapped status for concepts.
  */
 
-import { getItems } from "@/items"
+import { getItems, modifyItem } from "@/items"
 import _ from "lodash"
 import objects from "./cdk.js"
 
@@ -56,7 +56,7 @@ export default {
         }))).then(() => {
           // Set to false for every concept that still has no entry for current registry + other scheme
           for (let concept of concepts.filter(c => !_.get(c, "__MAPPED__", []).find(item => this.$jskos.compareFast(item.registry, registry) && this.$jskos.compare(item.scheme, otherScheme)))) {
-            this.$set(concept, "__MAPPED__", [])
+            modifyItem(concept, "__MAPPED__", [])
             concept.__MAPPED__.push({
               registry,
               scheme: otherScheme,
