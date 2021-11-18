@@ -1416,7 +1416,7 @@ export default {
           section.url = mappings._url
         }
         // Concept information possibly needs to be loaded
-        this.mbLoadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
+        loadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
         // Add items
         let skipped = 0 // Keep track of number of skipped items
         for (let mapping of mappings) {
@@ -1497,15 +1497,6 @@ export default {
         sections.push(section)
       }
       return sections
-    },
-    mbLoadConcepts(concepts) {
-      let toLoad = []
-      for (let concept of concepts) {
-        if(concept && !this.$jskos.isContainedIn(concept, this.loadingConcepts) && this.getProvider(concept)) {
-          toLoad.push(concept)
-        }
-      }
-      loadConcepts(toLoad)
     },
     droppedConcept(object, targets) {
       _.forOwn(targets, (path, type) => {
