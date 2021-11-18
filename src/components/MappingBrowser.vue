@@ -1015,7 +1015,7 @@ export default {
       // Change tab to mapping search.
       this.tab = this.tabIndexes.search
       // Clear all other search parameters.
-      this.clearSearchFilter()
+      this.clearSearchFilter({ ignoredLock: true })
       // Change concordance.
       this.searchFilterInput.partOf = concordance.uri
       // Search.
@@ -1036,7 +1036,7 @@ export default {
         return filter && (this.$jskos.compare(scheme, { uri: filter }) || this.$jskos.notation(scheme).toLowerCase() == filter.toLowerCase())
       })
     },
-    clearSearchFilter() {
+    clearSearchFilter({ ignoredLock = false } = {}) {
       this.searchFilterInput = {
         fromScheme: (this.searchFilterInput && this.searchFilterInput.fromScheme) || "",
         fromNotation: "",
@@ -1047,10 +1047,10 @@ export default {
         type: null,
         partOf: null,
       }
-      if (!this.lockScheme[true]) {
+      if (ignoredLock || !this.lockScheme[true]) {
         this.searchFilterInput.fromScheme = ""
       }
-      if (!this.lockScheme[false]) {
+      if (ignoredLock || !this.lockScheme[false]) {
         this.searchFilterInput.toScheme = ""
       }
       this.searchFilterExtended = false
