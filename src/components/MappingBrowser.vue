@@ -1405,10 +1405,6 @@ export default {
         if (mappings.length == 1 && mappings[0] == null) {
           section.loading = true
         }
-        // Hide empty section if necessary
-        if (section.totalCount == 0 && !this.componentSettings.showEmpty) {
-          continue
-        }
         if (mappings._url) {
           section.url = mappings._url
         }
