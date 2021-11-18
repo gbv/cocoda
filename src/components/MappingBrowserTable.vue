@@ -343,9 +343,11 @@
             </span>
           </div>
           <data-modal-button
+            style="margin-left: 3px;"
             :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
             :url="section.url"
             :total-count="section.totalCount"
+            :position-bottom="-1"
             type="mapping" />
         </div>
         <loading-indicator-full
