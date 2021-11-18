@@ -256,7 +256,8 @@ export default {
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
-      let uri = _.get(this.imapping, "uri")
+      const mapping = this.imapping
+      const uri = _.get(mapping, "uri")
       if (!uri) {
         this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
@@ -267,9 +268,10 @@ export default {
         this.alert(`${this.$t("alerts." + type)} ${this.getErrorMessage(error)}`, null, "danger")
       }
       let promise
+      const ownAssessment = this.ownAssessment
       // Three cases:
       // 1. Case: User has not assessed this mapping -> add an annotation
-      if (!this.ownAssessment) {
+      if (!ownAssessment) {
         if (!this.canSaveAnnotation) {
           this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
           this.loading = false
@@ -289,17 +291,15 @@ export default {
           }
         }
         promise = provider.postAnnotation({ annotation }).then(annotation => {
-          // Check if URI stayed the same
-          let newUri = _.get(this.imapping, "uri")
-          if (uri != newUri || !annotation) {
+          if (!annotation) {
             // Don't add annotation to mapping
             this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             return
           } else {
             this.alert(this.$t("alerts.annotationSaved"), null, "success")
           }
-          this.imapping.annotations.push(annotation)
-          this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+          mapping.annotations.push(annotation)
+          this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
         }).catch(error => handleError(error, "annotationNotSaved"))
       } else {
         if (this.ownScore != value) {
@@ -313,11 +313,11 @@ export default {
             return
           }
           // 2. Case: User has assessed and changes the value
-          promise = provider.patchAnnotation({ annotation: { id: this.ownAssessment.id, bodyValue: value } }).then(annotation => {
+          promise = provider.patchAnnotation({ annotation: { id: ownAssessment.id, bodyValue: value } }).then(annotation => {
             if (annotation) {
-              this.ownAssessment.bodyValue = value
+              ownAssessment.bodyValue = value
               this.alert(this.$t("alerts.annotationSaved"), null, "success")
-              this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+              this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
             } else {
               this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             }
@@ -333,10 +333,10 @@ export default {
             return
           }
           // 3. Case: User has assessed and removes his value
-          promise = this.remove(this.annotations.indexOf(this.ownAssessment)).then(success => {
+          promise = this.remove(mapping.annotations.indexOf(ownAssessment), mapping).then(success => {
             if (success) {
               this.alert(this.$t("alerts.annotationRemoved"), null, "success")
-              this.$emit("refresh-annotations", { uri, annotations: this.annotations })
+              this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
             } else {
               this.alert(this.$t("alerts.annotationNotRemoved"), null, "danger")
             }
@@ -350,21 +350,19 @@ export default {
         this.loading = false
       })
     },
-    remove(index) {
+    remove(index, mapping = this.imapping) {
       let provider = this.provider
-      let annotation = this.annotations[index]
+      let annotation = _.get(mapping, `annotations[${index}]`)
       if (!annotation) {
         return
       }
       this.loading = true
       return provider.deleteAnnotation({ annotation }).then(success => {
         this.loading = false
-        // Check if annotation stayed the same or deletion was not successful
-        if (annotation.id != this.annotations[index].id || !success) {
-          // Don't remove annotation because it changed
+        if (!success) {
           return false
         }
-        this.$delete(this.imapping.annotations, index)
+        this.$delete(mapping.annotations, index)
         return success
       })
     },
