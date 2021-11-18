@@ -416,7 +416,7 @@ import { cdk } from "cocoda-sdk"
 import auth from "../mixins/auth.js"
 import objects from "../mixins/cdk.js"
 import computed from "../mixins/computed.js"
-import { getItem } from "@/items"
+import { getItem, loadConcepts } from "@/items"
 
 /**
  * The settings modal.
@@ -611,7 +611,7 @@ export default {
               if (!concept.inScheme || !concept.inScheme.length) {
                 concept.inScheme = [scheme]
               }
-              promises.push(this.loadConcepts([concept], { scheme }))
+              promises.push(loadConcepts([concept], { scheme }))
             }
           }
         }
