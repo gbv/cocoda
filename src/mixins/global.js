@@ -308,7 +308,7 @@ export default {
     },
     // Wrapper around jskos.notation that makes adjustments if nececessary
     getNotation(item, type, adjust = false) {
-      item = getItem(item) || item
+      item = getItem(item, { relatedItems: true }) || item
       let notation = jskos.notation(item, type)
       // Adjust notation for certain concept schemes -> return HTML as well
       if (adjust) {
