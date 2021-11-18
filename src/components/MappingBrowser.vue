@@ -679,18 +679,17 @@ export default {
         group.registries.push(registry)
       }
       groups = groups.filter(group => group.registries.length > 0)
-      if (this.componentSettings.moveCurrentRegistryToTop) {
-        for (let group of groups) {
-          group.registries = group.registries.sort((a, b) => {
-            if (this.$jskos.compareFast(a, this.currentRegistry)) {
-              return -1
-            }
-            if (this.$jskos.compareFast(b, this.currentRegistry)) {
-              return 1
-            }
-            return 0
-          })
-        }
+      // Move current registry to top
+      for (let group of groups) {
+        group.registries = group.registries.sort((a, b) => {
+          if (this.$jskos.compareFast(a, this.currentRegistry)) {
+            return -1
+          }
+          if (this.$jskos.compareFast(b, this.currentRegistry)) {
+            return 1
+          }
+          return 0
+        })
       }
       return groups
     },
@@ -827,11 +826,9 @@ export default {
       }
       // Enable registry
       this.showRegistry[registry.uri] = true
-      // Scroll to top of list if current registry is always shown at the top
-      if (this.componentSettings.moveCurrentRegistryToTop) {
-        for (let element of document.getElementsByClassName("flexibleTable-body")) {
-          element.scrollTop = 0
-        }
+      // Scroll to top of list as current registry is always shown at the top
+      for (let element of document.getElementsByClassName("flexibleTable-body")) {
+        element.scrollTop = 0
       }
     },
     locale(newValue, oldValue) {

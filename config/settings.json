@@ -185,14 +185,6 @@
       },
       "type": "Boolean",
       "default": true
-    },
-    "moveCurrentRegistryToTop": {
-      "prefLabel": {
-        "en": "Currently selected mapping database at the top",
-        "de": "Ausgewählte Mapping-Datenbank oben"
-      },
-      "type": "Boolean",
-      "default": true
     }
   }
 }
