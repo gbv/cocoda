@@ -29,6 +29,7 @@ export default {
       if (concept) {
         this.droppedConcept(concept, ...params)
       }
+      this.dragEnd()
     },
     // Supposed to be overridden by components
     droppedConcept() {},
