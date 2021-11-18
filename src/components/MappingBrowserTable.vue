@@ -335,6 +335,9 @@
             <span v-if="section.items.length < section.totalCount">
               {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
             </span>
+            <span v-if="section.totalCount === 0">
+              {{ $t("mappingBrowser.noItems") }}
+            </span>
             <span
               v-if="!!registryHasErrored[section.registry.uri]"
               v-b-tooltip.hover="{ title: $t('mappingBrowser.registryHasErrored'), delay: defaults.delay.medium }"
