@@ -14,8 +14,13 @@ const _items = reactive({})
 
 const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts", "memberList"]
 const schemeProps = ["inScheme", "topConceptOf", "versionOf"]
+const relatedProps = [].concat(conceptProps, schemeProps)
+const mapUri = (object) => (object ? { uri: object.uri } : object)
 
 function getRegistryForItem(item) {
+  if (!item) {
+    return null
+  }
   if (item._registry) {
     return item._registry
   }
@@ -37,7 +42,7 @@ export function getItem(item, { relatedItems = false } = {}) {
   if (result && relatedItems) {
     // Create a copy of the object so we can safely modify the properties
     result = { ...result }
-    for (const prop of [].concat(conceptProps, schemeProps)) {
+    for (const prop of relatedProps) {
       if (result[prop]) {
         result[prop] = result[prop].map(i => getItem(i) || i)
       }
@@ -122,24 +127,11 @@ export function saveItem(item, options = {}) {
       item.inScheme = item.inScheme || [options.scheme]
       if (!item.inScheme[0]) {
         log.warn("saveItem: Saving concept without scheme!!!", item, options)
+      } else {
+        // Make sure it's URI only
+        item.inScheme = item.inScheme.map(mapUri)
       }
       // ? Anything else?
-    }
-
-    // Registry adjustments
-    // TODO: Why is this necessary?
-    const registry = getRegistryForItem(item) || options.registry
-    if (registry) {
-      if (type === "scheme") {
-        registry.adjustSchemes([item])
-        // For now, we would like to keep the registry, at least in Cocoda.
-        // Later, we can rely on cocoda-sdk's registryForScheme, but we need adjustments for that.
-        // (e.g. RegistryInfo won't have any info on those registries)
-        item._registry = registry
-      }
-      if (type === "concept") {
-        registry.adjustConcepts([item])
-      }
     }
 
     // Save item
@@ -161,7 +153,7 @@ export function saveItem(item, options = {}) {
         (
           _.isArray(existing[prop]) && _.isArray(item[prop]) && item[prop].length > existing[prop].length)
       ) {
-        set(existing, prop, item[prop])
+        modifyItem(existing, prop, item[prop])
       } else {
         // Special cases
         // Integrate object properties
@@ -169,7 +161,7 @@ export function saveItem(item, options = {}) {
           // Just overwrite null or not existing values
           for (let prop2 of Object.keys(item[prop])) {
             if (!existing[prop][prop2]) {
-              set(existing[prop], prop2, item[prop][prop2])
+              modifyItem(existing, [prop, prop2], item[prop][prop2])
             }
           }
         }
@@ -214,6 +206,9 @@ export function removeItemByUri(uri) {
 
 export function modifyItem(item, path, value) {
   path = _.isArray(path) ? path : path.split(".")
+  if (path.length === 1 && relatedProps.includes(path[0]) && Array.isArray(value)) {
+    value = value.map(mapUri)
+  }
   const lastProp = path.pop()
   let object = getItem(item)
   for (const prop of path) {
@@ -287,7 +282,7 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
       // Save concept
       return saveItem(concept, { type: "concept", scheme })
     })
-    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(({ uri }) => ({ uri })))
+    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(mapUri))
   } catch (error) {
     // Ignore error, show warning only.
     log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty types list.`)
@@ -394,7 +389,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
       // Save concept
       return saveItem(child, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
     })
-    const narrowerSorted = jskos.sortConcepts(narrower).map(({ uri }) => ({ uri }))
+    const narrowerSorted = jskos.sortConcepts(narrower).map(mapUri)
     modifyItem(concept, "narrower", narrowerSorted)
     return narrowerSorted
   } catch (error) {
@@ -426,7 +421,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
       currentAncestors.push({ uri: ancestor.uri })
       // Save concept
       return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
-    }).map(({ uri }) => ({ uri }))
+    }).map(mapUri)
     modifyItem(concept, "ancestors", ancestors)
     // Set ancestors for narrower of concept if necessary
     currentAncestors.push({ uri: concept.uri });
