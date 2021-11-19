@@ -361,7 +361,7 @@ export default {
       return getItem(this.item)
     },
     memberList() {
-      return this._item && this._item.memberList && getItems(this._item.memberList)
+      return this._item && this._item.memberList
     },
     showAddToMappingButton() {
       return this.$store.getters["mapping/canAdd"](this._item, _.get(this._item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
@@ -560,7 +560,7 @@ export default {
         modifyItem(
           itemBefore,
           "memberList",
-          resultConcept.memberList.map(member => member ? { uri: member.uri } : null),
+          resultConcept.memberList,
         )
         // Load concept data (in parallel)
         loadConcepts(resultConcept.memberList.filter(Boolean))
@@ -575,6 +575,8 @@ export default {
       }
     },
     isMemberParentOf(member1, member2) {
+      member1 = getItem(member1)
+      member2 = getItem(member2)
       if (!member1 || !member2 || !member2.broader || !member2.broader.length) {
         return false
       }

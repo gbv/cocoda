@@ -15,7 +15,7 @@ const _items = reactive({})
 const conceptProps = ["narrower", "broader", "related", "previous", "next", "ancestors", "topConcepts", "concepts", "memberList"]
 const schemeProps = ["inScheme", "topConceptOf", "versionOf"]
 const relatedProps = [].concat(conceptProps, schemeProps)
-const mapUri = (object) => (object ? { uri: object.uri } : object)
+const mapMinimalProps = (object) => (object ? { uri: object.uri, notation: object.notation } : object)
 
 function getRegistryForItem(item) {
   if (!item) {
@@ -129,7 +129,7 @@ export function saveItem(item, options = {}) {
         log.warn("saveItem: Saving concept without scheme!!!", item, options)
       } else {
         // Make sure it's URI only
-        item.inScheme = item.inScheme.map(mapUri)
+        item.inScheme = item.inScheme.map(mapMinimalProps)
       }
       // ? Anything else?
     }
@@ -207,7 +207,7 @@ export function removeItemByUri(uri) {
 export function modifyItem(item, path, value) {
   path = _.isArray(path) ? path : path.split(".")
   if (path.length === 1 && relatedProps.includes(path[0]) && Array.isArray(value)) {
-    value = value.map(mapUri)
+    value = value.map(mapMinimalProps)
   }
   const lastProp = path.pop()
   let object = getItem(item)
@@ -282,7 +282,7 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
       // Save concept
       return saveItem(concept, { type: "concept", scheme })
     })
-    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(mapUri))
+    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(mapMinimalProps))
   } catch (error) {
     // Ignore error, show warning only.
     log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty types list.`)
@@ -389,7 +389,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
       // Save concept
       return saveItem(child, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
     })
-    const narrowerSorted = jskos.sortConcepts(narrower).map(mapUri)
+    const narrowerSorted = jskos.sortConcepts(narrower).map(mapMinimalProps)
     modifyItem(concept, "narrower", narrowerSorted)
     return narrowerSorted
   } catch (error) {
@@ -421,7 +421,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
       currentAncestors.push({ uri: ancestor.uri })
       // Save concept
       return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
-    }).map(mapUri)
+    }).map(mapMinimalProps)
     modifyItem(concept, "ancestors", ancestors)
     // Set ancestors for narrower of concept if necessary
     currentAncestors.push({ uri: concept.uri });
