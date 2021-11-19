@@ -696,11 +696,14 @@ export default {
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
+    navigatorSections() {
+      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-")
+    },
     navigatorSectionsDatabases () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => this.$jskos.mappingRegistryIsStored(section.registry))
+      return this.navigatorSections.filter(section => this.$jskos.mappingRegistryIsStored(section.registry))
     },
     navigatorSectionsRecommendations () {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-").filter(section => !this.$jskos.mappingRegistryIsStored(section.registry))
+      return this.navigatorSections.filter(section => !this.$jskos.mappingRegistryIsStored(section.registry))
     },
     searchShareLink () {
       let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
