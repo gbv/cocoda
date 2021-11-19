@@ -551,7 +551,7 @@ export default {
       if (resultConcept) {
         // Save each concept in memberList
         resultConcept.memberList.forEach(member => {
-          member && saveItem(member, {
+          member && saveItem(_.omit(member, ["notation"]), {
             scheme: ddc,
             type: "concept",
           })
