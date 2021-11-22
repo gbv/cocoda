@@ -42,6 +42,7 @@
       "openLeft": "open on left side",
       "openRight": "open on right side",
       "removeFromFavorites": "remove from favorites",
+      "setIdentity": "Configure a mapping identity",
       "defaultIdentity": "Default Identity"
     },
     "schemeSelection": {
@@ -368,6 +369,7 @@
       "openLeft": "auf der linken Seite öffnen",
       "openRight": "auf der rechten Seite öffnen",
       "removeFromFavorites": "aus den Favoriten entfernen",
+      "setIdentity": "Mapping-Identität festlegen",
       "defaultIdentity": "Standard-Identität"
     },
     "schemeSelection": {

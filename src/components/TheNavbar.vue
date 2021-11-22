@@ -217,12 +217,21 @@
             </span>
           </p>
           <p
-            v-else
+            v-else-if="config.auth"
             class="navbar-dropdown-selectable"
             @click="openSettingsTab(0)">
             <span
               class="navbar-dropdown-selectable-icon">
               {{ $t("settings.logInButton") }}
+            </span>
+          </p>
+          <p
+            v-if="!config.auth && !(userUris || [creator.uri]).filter(Boolean).length"
+            class="navbar-dropdown-selectable"
+            @click="openSettingsTab(0)">
+            <span
+              class="navbar-dropdown-selectable-icon">
+              {{ $t("navbar.setIdentity") }}
             </span>
           </p>
         </div>

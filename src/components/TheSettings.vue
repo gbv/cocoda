@@ -32,7 +32,7 @@
                 {{ $t("settings.logOutButton") }}
               </a>
             </p>
-            <p v-else>
+            <p v-else-if="config.auth">
               <span class="text-danger">
                 {{ $t("settings.loggedOut") }}
               </span>
