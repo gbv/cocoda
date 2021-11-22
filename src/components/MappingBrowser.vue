@@ -729,7 +729,6 @@ export default {
       if (autoRefresh) {
         autoRefresh = Math.max(autoRefresh, 5000)
       }
-      console.log("autoRefresh", autoRefresh)
       return autoRefresh
     },
   },
