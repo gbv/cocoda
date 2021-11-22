@@ -51,6 +51,7 @@
       :url="currentChoice.url" />
     <!-- Concept List Selection Popover -->
     <b-popover
+      v-if="dataChoices.filter(choice => choice.available).length > 1"
       ref="listSelectionPopover"
       placement="top"
       :show.sync="listSelectionPopoverShow"
