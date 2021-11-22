@@ -34,7 +34,8 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-concepts",
-      "status": "https://coli-conc.gbv.de/services/wikidata/status",
+      "data": "https://coli-conc.gbv.de/services/wikidata/concept/",
+      "suggest": "https://coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/1940",
