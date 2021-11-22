@@ -112,7 +112,7 @@ Using the pre-built version, the application only has to be reloaded after editi
 
 ## Contribute
 
-Your contributions to improve Cocoda are very welcome: please [open a GitHub issue](https://github.com/gbv/cocoda/issues/new) for feature suggestions and bug reports! See the file [CONTRIBUTING.md] for more information about how and where to best contribute and for development details.
+Your contributions to improve Cocoda are very welcome: please [open a GitHub issue](https://github.com/gbv/cocoda/issues/new) for feature suggestions and bug reports! See the file [CONTRIBUTING.md](CONTRIBUTING.md) for more information about how and where to best contribute and for development details.
 
 See <https://gbv.github.io/cocoda/> for API documentation automatically build from Node sources.
 
