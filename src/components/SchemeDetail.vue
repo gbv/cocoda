@@ -180,7 +180,7 @@ export default {
   },
   methods: {
     licenseAttribution(detail) {
-      let organisation = detail.publisher || detail.creator
+      let organisation = detail.publisher
       if (!organisation || organisation.length == 0) {
         return null
       }
