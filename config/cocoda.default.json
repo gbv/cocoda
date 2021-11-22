@@ -34,11 +34,13 @@
     {
       "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-concepts",
-      "data": "https://coli-conc.gbv.de/services/wikidata/concept/",
-      "suggest": "https://coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
+      "status": "https://coli-conc.gbv.de/services/wikidata/status",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/1940",
+          "notation": [
+            "WD"
+          ],
           "concepts": [
             null
           ],
