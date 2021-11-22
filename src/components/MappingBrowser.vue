@@ -1214,7 +1214,12 @@ export default {
       let params = {
         direction: "both",
         mode: "or",
-        selected: this.selected,
+        selected: {
+          scheme: {
+            [true]: getItem(this.selected.scheme[true]),
+            [false]: getItem(this.selected.scheme[false]),
+          },
+        },
       }
       let from = this.componentSettings.navigatorShowResultsForLeft ? _.get(this, "selected.concept[true]") : null
       let to = this.componentSettings.navigatorShowResultsForRight ? _.get(this, "selected.concept[false]") : null
