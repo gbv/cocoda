@@ -724,6 +724,14 @@ export default {
       }
       return urls
     },
+    autoRefresh() {
+      let autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
+      if (autoRefresh) {
+        autoRefresh = Math.max(autoRefresh, 5000)
+      }
+      console.log("autoRefresh", autoRefresh)
+      return autoRefresh
+    },
   },
   watch: {
     tab(tab, previousTab) {
@@ -896,7 +904,7 @@ export default {
       // Refresh when navigatorShowResultsForRight changes
       this.$store.commit("mapping/setRefresh")
     },
-    "componentSettings.autoRefresh"() {
+    autoRefresh() {
       // Refresh when autoRefresh changes
       // Note: If we just set mapping/setRefresh, the page numbers will jump to 1.
       let type
@@ -1117,7 +1125,6 @@ export default {
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
 
-        const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
         const getMappings = () => this.getMappings({
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
@@ -1159,12 +1166,12 @@ export default {
           }
         }
         // Call cdk.repeat via mixin
-        if (autoRefresh) {
+        if (this.autoRefresh) {
           const manager = this.repeat({
             function: () => {
               return getMappings()
             },
-            interval: autoRefresh,
+            interval: this.autoRefresh,
             callback: (error, mappings) => {
               if (error) {
                 this.$log.warn("Mapping Browser (Search): Error during refresh", error)
@@ -1261,7 +1268,6 @@ export default {
           this.$set(this.navigatorResults, registry.uri, [null])
         }
 
-        const autoRefresh = this.componentSettings.autoRefresh === undefined ? this.config.autoRefresh.mappings : this.componentSettings.autoRefresh * 1000
         const getMappings = () => this.getMappings({
           ...params,
           registry: registry.uri,
@@ -1365,12 +1371,12 @@ export default {
         }
 
         // Call cdk.repeat via mixin
-        if (autoRefresh) {
+        if (this.autoRefresh) {
           const manager = this.repeat({
             function: () => {
               return getMappings()
             },
-            interval: autoRefresh,
+            interval: this.autoRefresh,
             callback: (error, mappings) => {
               if (error) {
                 this.$log.warn("Mapping Browser (Navigator): Error during refresh", error)
