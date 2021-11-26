@@ -239,7 +239,7 @@
             <div />
           </li>
           <li
-            v-for="(member, index) of memberList.filter(m => m != null)"
+            v-for="(member, index) of memberList"
             :key="`${member.uri}-${index}`"
             :class="{
               'font-weight-bold': memberList[index - 1] &&
@@ -271,7 +271,7 @@
           </li>
         </ul>
         <p
-          v-if="memberList[memberList.length - 1] === null"
+          v-if="!memberListComplete"
           v-html="$t('conceptDetail.coliAnaIncomplete')" />
         <p v-html="$t('conceptDetail.coliAnaInfo', { url: `${config['coli-ana']}?notation=${$jskos.notation(item)}` })" />
       </tab>
@@ -361,7 +361,10 @@ export default {
       return getItem(this.item)
     },
     memberList() {
-      return this._item && this._item.memberList
+      return this._item && this._item.memberList && this._item.memberList.filter(Boolean)
+    },
+    memberListComplete() {
+      return this._item && this._item.memberList && !this._item.memberList.includes(null)
     },
     showAddToMappingButton() {
       return this.$store.getters["mapping/canAdd"](this._item, _.get(this._item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
