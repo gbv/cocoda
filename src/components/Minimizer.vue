@@ -250,7 +250,7 @@ export default {
   user-select: none;
 }
 .minimizedOverlay:hover {
-  background-color: @color-primary-light;
+  background-color: @color-secondary-light;
 }
 .minimizedOverlay > div {
   position: absolute;
