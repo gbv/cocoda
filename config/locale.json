@@ -255,8 +255,8 @@
       "accountPage": "Account Page",
       "logInButton": "Log in",
       "logOutButton": "Log out",
-      "loggedIn": "You are logged in",
-      "loggedOut": "You are not logged in",
+      "loggedIn": "You are logged in.",
+      "loggedOut": "You are not logged in.",
       "privacyPolicy": "Privacy Policy",
       "localMappingsInfo": "Local mappings are only stored in your current browser. They are not visible to other users, but they will get lost if you purge your browser's local storage."
     },
