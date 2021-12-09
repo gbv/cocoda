@@ -174,8 +174,7 @@
             </span>
             <span v-else>
               <font-awesome-icon
-                icon="user"
-                :style="`color: ${!$store.state.auth.available ? 'black' : (authorized ? 'green' : (!$store.state.auth.connected ? 'yellow' : 'red'))} !important;`" />
+                icon="user" />
               <span :class="{ 'fontWeight-heavy': authorized }">
                 {{ creatorName || $t("settingsTabs")[0] }}
               </span>

@@ -6,8 +6,10 @@
 @color-black: #212121;
 // @color-white: #f2f1ef;
 
-@color-success: rgb(26, 197, 26);
-@color-failure: rgb(194, 0, 0);
+@color-success: #55ad44;
+@color-warning: #fdc835;
+@color-danger: rgb(206, 18, 18);
+@color-info: #5B85AA;
 
 // Adjusted base colors // ---------------------------------------------
 
@@ -17,7 +19,14 @@
 @color-secondary-light: lighten(@color-secondary, 15%);
 @color-secondary-dark: darken(@color-secondary, 15%);
 
+@color-success-light: lighten(@color-success, 15%);
 @color-success-dark: darken(@color-success, 15%);
+@color-warning-light: lighten(@color-warning, 15%);
+@color-warning-dark: darken(@color-warning, 15%);
+@color-danger-light: lighten(@color-danger, 15%);
+@color-danger-dark: darken(@color-danger, 15%);
+@color-info-light: lighten(@color-info, 15%);
+@color-info-dark: darken(@color-info, 15%);
 
 // Text colors (monochrome) // -----------------------------------------
 
@@ -51,13 +60,13 @@
 @color-button-faded: fadeout(@color-button, 80%);
 @color-button-hover: @color-secondary-dark;
 @color-button-disabled: rgb(228, 228, 228);
-@color-button-delete: @color-failure;
-@color-button-delete-hover: @color-button-hover;
+@color-button-delete: @color-danger;
+@color-button-delete-hover: @color-danger-dark;
 
 // Component specific colors // ----------------------------------------
 
-@color--mappingEditor-background-saved: #00ff0004;
-@color--mappingEditor-background-notSaved: #ff000004;
+@color--mappingEditor-background-saved: fade(@color-success-light, 4%);
+@color--mappingEditor-background-notSaved: fade(@color-danger-light, 2%);
 
 @color--conceptSearch-result-selected: @color-primary-dark;
 @color--conceptSearch-result-selected-background: @color-background-secondary;

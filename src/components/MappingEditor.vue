@@ -650,7 +650,7 @@ export default {
   border-radius: 10px;
 }
 .mappingEditorPart-dropTarget > div {
-  border: 1px dashed green;
+  border: 1px dashed @color-success-dark;
   border-radius: 10px;
 }
 .mappingEditor-addButton {

@@ -50,17 +50,20 @@ export default {
   color: white;
   height: 18px;
   .fontSize-verySmall;
-  background-color: fadeout(@color-button-delete, 80%);
+  background-color: fadeout(@color-primary, 70%); // note: only used when disabled
+}
+.registry-notation:hover, .registry-notation.registry-enabled:hover {
+  background-color: fadeout(@color-primary, 35%);
 }
 .registry-notation-current {
-  background-color: fadeout(@color-secondary, 50%);
+  background-color: fadeout(@color-secondary-dark, 70%);
 }
 .registry-notation.registry-current-enabled {
-  background-color: @color-secondary;
+  background-color: @color-secondary-dark;
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {
-  background-color: fadeout(@color-button-delete, 5%);
+  background-color: @color-primary;
   .fontWeight-heavy;
 }
 </style>

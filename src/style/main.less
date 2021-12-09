@@ -85,6 +85,15 @@ a:hover {
   text-decoration: none;
   color: @color-link-hover;
 }
+.page-link {
+  color: @color-link !important;
+}
+.page-item.disabled > .page-link {
+  color: @color-text-lightGrey !important;
+}
+.page-link:hover {
+  color: @color-link-hover !important;
+}
 
 ul {
   padding-left: 20px;
@@ -148,7 +157,7 @@ ul {
 
 // Mapped status of concept items
 .concept-mappingsExist {
-  border-right: 5px solid green;
+  border-right: 5px solid @color-success;
 }
 .concept-mappingsDoNotExist {
   border-right: 5px solid @color-background;
@@ -223,6 +232,52 @@ ul {
 }
 .modal-content, .popover-body {
   .font-default;
+}
+// buttons
+.btn-primary {
+  background-color: @color-primary;
+  border-color: @color-primary-light;
+}
+.btn-primary:hover {
+  background-color: @color-primary-dark;
+  border-color: @color-primary;
+}
+.btn-success {
+  background-color: @color-success;
+}
+.btn-success:hover {
+  background-color: @color-success-dark;
+}
+.btn-warning {
+  background-color: @color-warning;
+}
+.btn-warning:hover {
+  background-color: @color-warning-dark;
+}
+.btn-danger {
+  background-color: @color-danger;
+}
+.btn-danger:hover {
+  background-color: @color-danger-dark;
+}
+.btn-info {
+  background-color: @color-info;
+}
+.btn-info:hover {
+  background-color: @color-info-dark;
+}
+// text
+.text-success {
+  color: @color-success;
+}
+.text-warning {
+  color: @color-warning;
+}
+.text-danger {
+  color: @color-danger;
+}
+.text-info {
+  color: @color-info;
 }
 
 // Orders
