@@ -168,7 +168,7 @@ export default {
   z-index: @zIndex-2;
 }
 .componentSettings > .button {
-  color: @color-text-mediumLightGrey;
+  color: @color-button-slightlyFaded;
 }
 .componentSettings > .button:hover {
   color: @color-button-hover;

@@ -850,7 +850,7 @@ p {
 .settingsModal-footer {
   padding: .75rem 1.25rem;
   background-color: #00000008;
-  border-top: 1px solid rgba(0,0,0,.125);
+  border-top: 1px solid @color-shadow;
 }
 </style>
 

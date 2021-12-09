@@ -30,8 +30,8 @@ export default {
 
 .loader {
   .m-borderRadius(50%);
-  border: 4px solid @color--loadingIndicator-border; /* Light grey */
-  border-top: 4px solid @color--loadingIndicator-border-top; /* Blue */
+  border: 4px solid @color--loadingIndicator-border;
+  border-top: 4px solid @color--loadingIndicator-border-top;
   width: 24px;
   height: 24px;
   animation: spin 2s linear infinite;

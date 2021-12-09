@@ -118,7 +118,7 @@ export default {
   padding-left: 10px;
 }
 .annotationList > div:nth-child(odd) {
-  background-color: white;
+  background-color: @color-background;
 }
 .annotationList > div:nth-child(even) {
   background-color: fadeout(@color-text-veryLightGrey, 70%);

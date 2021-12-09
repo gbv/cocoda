@@ -660,7 +660,7 @@ export default {
   color: @color-background;
 }
 .conceptDetail-name-addButton:hover {
-  color: @color-action-1;
+  color: @color-success-dark;
 }
 
 .conceptDetail-identifier {
@@ -716,7 +716,7 @@ export default {
 .coli-ana > li > div:first-child {
   width: 8px;
   user-select: none;
-  color: #2121217F;
+  color: @color-text-lightGrey;
   font-weight: normal;
 }
 .coli-ana > li > div:not(:last-child) {

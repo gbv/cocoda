@@ -391,10 +391,7 @@ export default {
 }
 
 .addToMapping:hover {
-  color: @color-action-1;
-}
-.hovered > .addToMapping {
-  color: @color-action-2;
+  color: @color-success-dark;
 }
 
 .hovered,
@@ -402,7 +399,6 @@ export default {
 .arrowBox:hover,
 .conceptListItem:hover {
   background-color: @color-secondary;
-  color: @color-action-2;
 }
 
 .conceptListItem-buttonBefore {
@@ -412,7 +408,7 @@ export default {
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 // TODO: Use font awesome or move somewhere else
 .arrowBox > i {
-  border: solid black;
+  border: solid @color-black;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;

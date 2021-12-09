@@ -262,7 +262,9 @@ export default {
 }
 </style>
 
-<style>
+<style lang="less" scoped>
+@import "../style/colors.less";
+
 /* Multiline text truncation: http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/ */
 .itemName-details {
   overflow: hidden;
@@ -286,6 +288,6 @@ export default {
   width: 1em;
   height: 1em;
   margin-top: 0.2em;
-  background: white;
+  background: @color-background;
 }
 </style>

@@ -232,7 +232,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: darken(@color-loading-overlay-background, 20%);
+  background-color: @color-loading-overlay-background;
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized

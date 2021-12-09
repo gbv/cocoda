@@ -646,7 +646,7 @@ export default {
   flex-direction: column;
 }
 .mappingEditorPart-noConcepts > div {
-  border: 1px dashed lightGrey;
+  border: 1px dashed @color-text-veryLightGrey;
   border-radius: 10px;
 }
 .mappingEditorPart-dropTarget > div {
@@ -657,7 +657,7 @@ export default {
   font-size: 1.8em;
 }
 .mappingEditor-addButton.button:hover {
-  color: @color-action-2;
+  color: @color-success-dark;
 }
 .mappingScheme {
   text-align: center;

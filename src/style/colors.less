@@ -6,6 +6,9 @@
 @color-black: #212121;
 // @color-white: #f2f1ef;
 
+@color-success: rgb(26, 197, 26);
+@color-failure: rgb(194, 0, 0);
+
 // Adjusted base colors // ---------------------------------------------
 
 @color-primary-dark: darken(@color-primary, 15%);
@@ -13,6 +16,8 @@
 
 @color-secondary-light: lighten(@color-secondary, 15%);
 @color-secondary-dark: darken(@color-secondary, 15%);
+
+@color-success-dark: darken(@color-success, 15%);
 
 // Text colors (monochrome) // -----------------------------------------
 
@@ -23,10 +28,6 @@
 @color-text-veryLightGrey: rgb(210, 210, 210);
 
 // General colors // ---------------------------------------------------
-
-@color-action-1: darkgreen;
-@color-action-2: green;
-@color-action-3: rgb(194, 0, 0);
 
 @color-background: rgb(255, 255, 255);
 @color-background-secondary: lighten(@color-primary, 40%);
@@ -49,7 +50,7 @@
 @color-button-faded: fadeout(@color-button, 80%);
 @color-button-hover: @color-secondary-dark;
 @color-button-disabled: rgb(228, 228, 228);
-@color-button-delete: @color-action-3;
+@color-button-delete: @color-failure;
 @color-button-delete-hover: @color-button-hover;
 
 // Component specific colors // ----------------------------------------
