@@ -441,7 +441,7 @@ export default {
 nav.navbar {
   padding: 2px 8px;
   height: 42px;
-  background-color: @color-primary-light;
+  background-color: @color-background-primary;
 }
 .navbar-brand {
   color: @color-text-dark !important;
