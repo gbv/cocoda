@@ -441,7 +441,7 @@ export default {
 nav.navbar {
   padding: 2px 8px;
   height: 42px;
-  background-color: @color-primary-1;
+  background-color: @color-primary-light;
 }
 .navbar-brand {
   color: @color-text-dark !important;
@@ -517,10 +517,10 @@ hr {
   display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
-  background-color: @color-primary-5;
+  background-color: @color-background-secondary;
 }
 .favoriteConceptsDropdown-iconTarget {
-  color: @color-select;
+  color: @color-secondary;
 }
 .navbar-dropdown-selectable {
   word-break: default;
@@ -545,13 +545,13 @@ hr {
 .navbar-dropdown-selectable-selected {
   .fontWeight-heavy;
   padding-right: 5px;
-  background-color: @color-select;
+  background-color: @color-secondary;
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;
 }
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
-  background-color: @color-primary-5;
+  background-color: @color-background-secondary;
 }
 </style>

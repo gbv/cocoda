@@ -90,10 +90,10 @@ export default {
   font-weight: bold;
 }
 .mappingTypeSelected {
-  background-color: @color-select-2;
+  background-color: @color-secondary-light;
 }
 .mappingType:hover {
-  background-color: @color-select;
+  background-color: @color-secondary;
   color: @color-text-grey;
 }
 </style>

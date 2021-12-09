@@ -461,7 +461,7 @@ export default {
   flex: 1;
 }
 .annotationPopover-voting-button-current {
-  color: @color-primary-3;
+  color: @color-primary-dark;
 }
 
 .bbutton-small {

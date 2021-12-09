@@ -211,8 +211,8 @@ export default {
 .minimizeButton {
   right: 0px;
   top: 0px;
-  background: @color-button-slightlyFaded;
-  color: @color-primary-text;
+  background: @color-button-faded;
+  color: @color-background;
   border-radius: 0 0 0 3px;
 }
 .minimizeButton {
@@ -222,7 +222,7 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: @color-button-slightlyFaded;
+  color: @color-button-faded;;
   font-size: 1rem;
 }
 // Overlay when minimize button is hovered
@@ -250,7 +250,7 @@ export default {
   user-select: none;
 }
 .minimizedOverlay:hover {
-  background-color: @color-primary-1;
+  background-color: @color-primary-light;
 }
 .minimizedOverlay > div {
   position: absolute;

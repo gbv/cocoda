@@ -348,7 +348,7 @@ export default {
   padding: 4px 5px;
 }
 .conceptListWrapper-listSelectionPopover-choice:hover {
-  background-color: @color-primary-5;
+  background-color: @color-background-secondary;
   cursor: pointer;
 }
 

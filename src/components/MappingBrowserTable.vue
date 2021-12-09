@@ -775,10 +775,10 @@ export default {
   background-color: @color-table-highlight-background-0;
 }
 .mappingBrowser-table-row-edited {
-  background-color: @color-select-2;
+  background-color: @color-secondary-light;
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-edited {
-  background-color: @color-select;
+  background-color: @color-secondary;
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
@@ -877,7 +877,7 @@ export default {
 .mappingBrowser-pagination.pagination .page-item.active .page-link {
   font-weight: bold;
   color: @color-text-dark;
-  border-bottom: 3px solid @color-primary-0;
+  border-bottom: 3px solid @color-primary;
 }
 
 .mappingBrowser-pagination.pagination.pagination-hide-goToLast > li:last-child {
@@ -904,7 +904,7 @@ export default {
 
 // Custom section class for current registry
 .mappingBrowser-table-currentRegistrySection > .flexibleTable-section-before {
-  background-color: @color-select-2;
+  background-color: @color-secondary-light;
 }
 
 </style>

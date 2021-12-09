@@ -643,7 +643,7 @@ export default {
 }
 
 .conceptDetail-name {
-  background-color: @color-select-2;
+  background-color: @color-secondary-light;
   position: relative;
   padding: 0 20px;
 }

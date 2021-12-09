@@ -237,16 +237,16 @@ export default {
 }
 .resizingSliderCol {
   cursor: col-resize;
-  border-left: 2px solid @color-transparent;
-  border-right: 2px solid @color-transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
   width: 6px;
   max-width: 6px;
   display:flex;justify-content:center;align-items:center;
 }
 .resizingSliderRow {
   cursor: row-resize;
-  border-bottom: 2px solid @color-transparent;
-  border-top: 2px solid @color-transparent;
+  border-bottom: 2px solid transparent;
+  border-top: 2px solid transparent;
   height: 6px;
   max-height: 6px;
   display:flex;justify-content:center;align-items:center;

@@ -1554,7 +1554,6 @@ export default {
 .mappingBrowser-registryGroup-header {
   text-align: left;
   padding: 0.5em 3px 3px 2em;
-  border-bottom: 2px solid @color-primary-1;
 }
 .mappingBrowser-registryGroup-title {
   display:inline-block;

@@ -618,10 +618,10 @@ export default {
   background-color: @color-background;
 }
 .mappingEditor-notSaved {
-  background-color: @color-background-notSaved;
+  background-color: @color--mappingEditor-background-notSaved;
 }
 .mappingEditor-saved {
-  background-color: @color-background-saved;
+  background-color: @color--mappingEditor-background-saved;
 }
 .mappingTypeSelection {
   flex: none;
@@ -689,7 +689,7 @@ export default {
   margin: 5px 12px 5px 0;
 }
 .mappingConceptLink:hover {
-  color: @color-primary-0;
+  color: @color-primary;
 }
 .mappingNoConcepts {
   position: absolute;

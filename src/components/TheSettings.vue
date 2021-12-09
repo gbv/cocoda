@@ -820,7 +820,7 @@ p {
   padding: 6px 5px;
 }
 .selected-registry {
-  background-color: @color-select-2;
+  background-color: @color-secondary-light;
 }
 .settingsModal-mapping-registry {
   display: flex;
@@ -828,7 +828,7 @@ p {
   align-items: center;
 }
 .settingsModal-mapping-registry:hover {
-  background-color: @color-primary-5;
+  background-color: @color-background-secondary;
   cursor: pointer;
 }
 // First Child: Checkbox

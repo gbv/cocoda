@@ -53,10 +53,10 @@ export default {
   background-color: fadeout(@color-button-delete, 80%);
 }
 .registry-notation-current {
-  background-color: fadeout(@color-select, 50%);
+  background-color: fadeout(@color-secondary, 50%);
 }
 .registry-notation.registry-current-enabled {
-  background-color: @color-select;
+  background-color: @color-secondary;
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {

@@ -1,26 +1,26 @@
 // Base colors // ------------------------------------------------------
 
-@color-primary-0: rgb(88, 128, 187);
-@color-select: rgb(255, 200, 107);
+@color-primary: rgb(88, 128, 187);
+@color-secondary: rgb(253, 192, 87);
+
+@color-black: #212121;
+// @color-white: #f2f1ef;
 
 // Adjusted base colors // ---------------------------------------------
 
-@color-primary-1: lighten(@color-primary-0, 24%);
-@color-primary-2: lighten(@color-primary-0, 12%);
-@color-primary-3: darken(@color-primary-0, 12%);
-@color-primary-5: lighten(@color-primary-0, 40%);
+@color-primary-dark: darken(@color-primary, 15%);
+@color-primary-light: lighten(@color-primary, 15%);
 
-@color-select-2: lighten(@color-select, 12%);
-@color-select-darker: darken(@color-select, 24%);
+@color-secondary-light: lighten(@color-secondary, 15%);
+@color-secondary-dark: darken(@color-secondary, 15%);
 
 // Text colors (monochrome) // -----------------------------------------
 
-@color-text-dark: rgb(33, 33, 33);
+@color-text-dark: @color-black;
 @color-text-grey: rgb(74, 74, 74);
 @color-text-lightGrey: rgb(115, 115, 115);
 @color-text-mediumLightGrey: rgb(170, 170, 170);
 @color-text-veryLightGrey: rgb(210, 210, 210);
-@color-primary-text: rgba(255, 255, 255, 0.8);
 
 // General colors // ---------------------------------------------------
 
@@ -29,51 +29,43 @@
 @color-action-3: rgb(194, 0, 0);
 
 @color-background: rgb(255, 255, 255);
-@color-background-card: rgba(0, 0, 0, 0.02);
+@color-background-secondary: lighten(@color-primary, 40%);
 @color-background-heading: rgb(240, 240, 240);
 
-@color-background-saved: #00ff0004;
-@color-background-notSaved: #ff000004;
-
-@color-table-info-background: @color-primary-1;
-@color-table-highlight-background-0: lighten(@color-primary-0, 30%);
-@color-table-highlight-background-1: lighten(@color-primary-0, 34%);
+@color-table-highlight-background-0: lighten(@color-primary, 30%);
+@color-table-highlight-background-1: lighten(@color-primary, 34%);
 
 @color-loading-overlay-background: rgba(255, 255, 255, 0.6);
 
 @color-shadow: rgba(0, 0, 0, 0.2);
 
-@color-link: @color-primary-0;
-@color-link-hover: @color-primary-2;
-
-@color-light-line: rgba(0, 0, 0, 0.125);
-
-@color-transparent: rgba(1, 1, 1, 0);
+@color-link: @color-primary;
+@color-link-hover: @color-primary-light;
 
 // Button colors (monochrome) // ---------------------------------------
 
 @color-button: #555555;
 @color-button-slightlyFaded: fadeout(@color-button, 40%);
 @color-button-faded: fadeout(@color-button, 80%);
-@color-button-hover: @color-select-darker;
+@color-button-hover: @color-secondary-dark;
 @color-button-disabled: rgb(228, 228, 228);
 @color-button-delete: @color-action-3;
 @color-button-delete-hover: @color-button-hover;
 
 // Component specific colors // ----------------------------------------
 
-@color--conceptSearch-result-selected: @color-primary-3;
-@color--conceptSearch-result-selected-background: @color-primary-5;
-@color--conceptSearch-searchHighlight: @color-select-darker;
-@color--conceptSearch-searchHighlight-selected: @color-select-darker;
+@color--mappingEditor-background-saved: #00ff0004;
+@color--mappingEditor-background-notSaved: #ff000004;
+
+@color--conceptSearch-result-selected: @color-primary-dark;
+@color--conceptSearch-result-selected-background: @color-background-secondary;
+@color--conceptSearch-searchHighlight: @color-secondary-dark;
+@color--conceptSearch-searchHighlight-selected: @color-secondary-dark;
 
 @color--itemName-highlighted: @color-text-grey;
-@color--itemName-highlighted-background: @color-table-highlight-background-0;
 
 @color--loadingIndicator-border: rgb(243, 243, 243);
 @color--loadingIndicator-border-top: rgb(52, 152, 219);
-
-@color--resizingSlider: #B34D28;
 
 // Alert colors // -----------------------------------------------------
 
