@@ -233,14 +233,14 @@ ul {
 .modal-content, .popover-body {
   .font-default;
 }
-// buttons
+// bootstrap buttons
 .btn-primary {
-  background-color: @color-primary;
-  border-color: @color-primary-light;
+  background-color: @color-primary-light;
+  border-color: @color-primary;
 }
 .btn-primary:hover {
-  background-color: @color-primary-dark;
-  border-color: @color-primary;
+  background-color: @color-primary;
+  border-color: @color-primary-light;
 }
 .btn-success {
   background-color: @color-success;
@@ -266,7 +266,7 @@ ul {
 .btn-info:hover {
   background-color: @color-info-dark;
 }
-// text
+// bootstrap text
 .text-success {
   color: @color-success;
 }
@@ -278,6 +278,27 @@ ul {
 }
 .text-info {
   color: @color-info;
+}
+// bootstrap alerts
+.alert-success {
+  color: @color-success-dark !important;
+  background-color: lighten(@color-success-light, 30%) !important;
+  border-color: lighten(@color-success-light, 15%) !important;
+}
+.alert-warning {
+  color: darken(@color-warning-dark, 15%) !important;
+  background-color: lighten(@color-warning-light, 15%) !important;
+  border-color: @color-warning-light !important;
+}
+.alert-danger {
+  color: @color-danger-dark !important;
+  background-color: lighten(@color-danger-light, 30%) !important;
+  border-color: lighten(@color-danger-light, 15%) !important;
+}
+.alert-info {
+  color: @color-info-dark !important;
+  background-color: lighten(@color-info-light, 30%) !important;
+  border-color: lighten(@color-info-light, 15%) !important;
 }
 
 // Orders

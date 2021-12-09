@@ -308,7 +308,7 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
         if (_alert) {
-          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
           // Additionally, if this is the first time the user saved into local mappings, show an alert:
           if (jskos.compare(registry, this.localMappingsRegistry) && !this.$settings.hasWrittenIntoLocalMappings) {
             this.alert(
@@ -353,7 +353,7 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
         if (_alert) {
-          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
         }
         _after && _after()
         return mappings
@@ -383,7 +383,7 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
         if (_alert) {
-          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
         }
         _after && _after()
         return mapping
@@ -409,12 +409,12 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
         if (_alert) {
-          this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
+          this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
             this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: config.mapping.uri }).then(success => {
               if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
               } else {
                 this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
               }
@@ -448,12 +448,12 @@ export default {
         }
         if (_alert) {
           // TODO: Adjust!
-          this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2", this.$t("general.undo"), alert => {
+          this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
             this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: config.mapping.uri }).then(success => {
               if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success2")
+                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
               } else {
                 this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
               }

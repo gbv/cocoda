@@ -900,11 +900,6 @@ html, body {
   color: @color-button-hover;
 }
 
-.alert-success2 {
-  color: @color-alert-success;
-  background-color: @color-alert-success-background;
-}
-
 .tooltip {
   pointer-events: none !important;
 }

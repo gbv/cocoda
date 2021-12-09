@@ -80,7 +80,7 @@
           style="width: 700px;"
           @click="$store.dispatch({ type: 'mapping/restoreMappingFromTrash', uri: $event.item.mapping.uri }).then(success => {
             if (success) {
-              alert($t('alerts.mappingRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'success2')
+              alert($t('alerts.mappingRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'success')
             } else {
               alert($t('alerts.mappingNotRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'danger')
             }
