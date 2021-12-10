@@ -158,12 +158,21 @@ export default {
     shown() {
       this.conceptSelectedUpdated()
     },
-    items() {
-      this.updatePreviousAndNextConcepts()
+    items: {
+      handler() {
+        this.updatePreviousAndNextConcepts()
+      },
+      deep: true,
     },
   },
+  created() {
+    this.updatePreviousAndNextConcepts = _.debounce(this._updatePreviousAndNextConcepts, 300)
+  },
   methods: {
-    updatePreviousAndNextConcepts() {
+    _updatePreviousAndNextConcepts() {
+      if (!this.shown) {
+        return
+      }
       // Index of current concept in the list of concepts
       const index = this.items.findIndex(item => this.$jskos.compareFast(item.concept, this.conceptSelected))
       // ===== Previous Concept =====
@@ -196,6 +205,7 @@ export default {
         }
         // Otherwise go through hierarchy
         const next = (concept, root = true) => {
+          concept = getItem(concept)
           if (!concept) {
             return null
           }
@@ -203,7 +213,7 @@ export default {
           if (root && concept.narrower && concept.narrower.length) {
             return concept.narrower[0]
           }
-          const parent = _.last(concept.ancestors) || _.first(concept.broader)
+          const parent = getItem(_.last(concept.ancestors) || _.first(concept.broader))
           // Get children of parent
           let children = _.get(parent, "narrower")
           // If there is no parent, use top concepts as children (everything with depth 0 from items)

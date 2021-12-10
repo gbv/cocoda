@@ -45,10 +45,12 @@ const mutations = {
     state.loadingId[isLeft] = loadingId
   },
   setPreviousConcept (state, { isLeft, concept }) {
-    state.previousConcept[isLeft] = _.pick(concept, ["uri"])
+    const uri = concept && concept.uri
+    state.previousConcept[isLeft] = uri ? { uri } : null
   },
   setNextConcept (state, { isLeft, concept }) {
-    state.nextConcept[isLeft] = _.pick(concept, ["uri"])
+    const uri = concept && concept.uri
+    state.nextConcept[isLeft] = uri ? { uri } : null
   },
 }
 
