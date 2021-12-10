@@ -541,7 +541,7 @@ export default {
         callback: (error, buildInfo, previousBuildInfo) => {
           // ? Should a new build (not only a newer commit) also be shown as an update?
           if (!error && previousBuildInfo && buildInfo.gitCommit != previousBuildInfo.gitCommit) {
-            this.alert(this.$t("alerts.newVersionText"), 0, "info", this.$t("alerts.newVersionLink"), () => {
+            this.alert(this.$t("alerts.newVersionText"), 0, "warning", this.$t("alerts.newVersionLink"), () => {
               location.reload(true)
             })
             this.repeatLoadBuildInfo && this.repeatLoadBuildInfo.stop()
