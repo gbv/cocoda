@@ -187,7 +187,7 @@
               @drop="drop($event, { scheme: lockScheme[false] ? null : 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <b-button
               style="flex: none; margin: 3px;"
-              variant="success"
+              variant="primary"
               size="sm"
               @click="searchClicked">
               <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
@@ -332,7 +332,7 @@
             <p style="text-align: right;">
               <b-button
                 size="sm"
-                variant="success"
+                variant="primary"
                 @click="copyToClipboard('mappingBrowser-search-shareLinkInput')">
                 {{ $t("mappingBrowser.searchShareCopy") }}
               </b-button>

@@ -74,7 +74,7 @@
           class="annotationPopover-lower">
           <b-button
             class="bbutton-small"
-            variant="success"
+            variant="primary"
             @click="confirm">
             {{ $t("annotationPopover.addConfirmation") }}
           </b-button>
