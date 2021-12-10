@@ -292,6 +292,7 @@ export default {
      * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
      */
     mappingStatus() {
+      console.log("mappingStatus")
       const registry = this.currentRegistry
       if (!registry) {
         return {
@@ -299,6 +300,14 @@ export default {
           invalid: false,
           warning: true,
         }
+      }
+      // Set `toScheme` if not set
+      if (this.schemeRight && !this.mapping.fromScheme) {
+        this.$store.commit({
+          type: "mapping/setScheme",
+          isLeft: false,
+          scheme: this.schemeRight,
+        })
       }
       // Requires authentication for save
       if (!registry.isAuthorizedFor({
@@ -318,6 +327,13 @@ export default {
             message: this.$t("mappingEditor.invalidMissing", [side]),
             invalid: true,
           }
+        }
+      }
+      // Check if there are mappings on from side
+      if (this.$jskos.conceptsOfMapping(this.mapping, "from").length === 0) {
+        return {
+          message: this.$t("mappingEditor.invalidMissing", ["from"]),
+          invalid: true,
         }
       }
       // Take fromSchemeFilter/toSchemeFilter into account if they exist.
