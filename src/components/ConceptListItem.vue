@@ -76,7 +76,7 @@
       <div
         v-if="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: defaults.delay.medium}"
-        class="addToMapping"
+        class="button addToMapping"
         @click="addConcept()">
         <font-awesome-icon icon="plus-circle" />
       </div>
@@ -388,10 +388,6 @@ export default {
   transform: translateY(-50%);
   right: 8px;
   opacity: 0.7;
-}
-
-.addToMapping:hover {
-  color: @color-secondary-dark;
 }
 
 .hovered,
