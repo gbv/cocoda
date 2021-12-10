@@ -1,18 +1,22 @@
 <template>
   <div
-    id="mappingEditor"
-    :class="canSaveCurrentMapping ? 'mappingEditor-notSaved' : (canExportCurrentMapping && !hasChangedFromOriginal ? 'mappingEditor-saved' : 'CurrentMappingEditor-cantSave')">
+    id="mappingEditor">
     <!-- Settings -->
     <component-settings :tooltip="$t('mappingEditor.settingsButton')" />
     <div
-      v-if="canSaveCurrentMapping"
-      class="mappingEditor-mappingNotSaved fontSize-small fontWeight-heavy">
+      v-if="(canSaveCurrentMapping || canExportCurrentMapping && !hasChangedFromOriginal)"
+      :class="{
+        'mappingEditor-mappingNotSaved': canSaveCurrentMapping,
+        'mappingEditor-mappingSaved': canExportCurrentMapping && !hasChangedFromOriginal,
+        'fontSize-small': true,
+        'fontWeight-heavy': true
+      }">
       <registry-info
         :registry="$store.getters.getCurrentRegistry"
         :show-details="false"
         :show-capabilities="false"
         :show-editable="false"
-        :inline="true" />: {{ $t("mappingEditor.notSaved") }}
+        :inline="true" />: {{ $t(canSaveCurrentMapping ? "mappingEditor.notSaved" : "mappingEditor.saved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -613,15 +617,7 @@ export default {
   position: relative;
   display: flex;
   border: 1px solid @color-background;
-}
-.mappingEditor-cantSave {
-  background-color: @color-background;
-}
-.mappingEditor-notSaved {
-  background-color: @color--mappingEditor-background-notSaved;
-}
-.mappingEditor-saved {
-  background-color: @color--mappingEditor-background-saved;
+  background-color: @color-background
 }
 .mappingTypeSelection {
   flex: none;
@@ -769,12 +765,15 @@ export default {
   margin: 10px 20px;
 }
 
-.mappingEditor-mappingNotSaved {
+.mappingEditor-mappingNotSaved, .mappingEditor-mappingSaved {
   position: absolute;
   bottom: -1px;
   left: 0px;
-  color: @color-button-delete;
+  color: @color-danger;
   z-index: @zIndex-2;
+}
+.mappingEditor-mappingSaved {
+  color: @color-success-dark;
 }
 .mappingEditor-mappingAlert {
   // Prevent other icons from moving by using min-width
