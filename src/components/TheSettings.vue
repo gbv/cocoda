@@ -207,7 +207,7 @@
           </div>
           <div class="settingsModal-componentSettings-component">
             <b-button
-              variant="primary"
+              variant="success"
               @click="resetFlex">
               {{ $t("settings.resetSizes") }}
             </b-button>
