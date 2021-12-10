@@ -41,7 +41,8 @@
         <span v-if="registry.has[type]">
           <font-awesome-icon
             v-if="registry.has[type]"
-            style="color: green; margin-left: 5px;"
+            style="margin-left: 5px;"
+            class="text-success"
             icon="code" />
           {{ $t(`registryInfo.${type}`) }}
         </span>
@@ -55,13 +56,13 @@
             action: 'create',
             user: user,
           })"
-          style="color: green;">
+          class="text-success">
           <font-awesome-icon icon="lock-open" />
           {{ $t("registryInfo.authenticated") }}
         </span>
         <span
           v-else
-          style="color: red;">
+          class="text-danger">
           <font-awesome-icon icon="lock" />
           {{ $t("registryInfo.notAuthenticated") }}
         </span>

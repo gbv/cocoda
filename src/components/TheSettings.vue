@@ -849,7 +849,7 @@ p {
 }
 .settingsModal-footer {
   padding: .75rem 1.25rem;
-  background-color: #00000008;
+  background-color: @color-background-secondary;
   border-top: 1px solid @color-shadow;
 }
 </style>

@@ -47,7 +47,7 @@ export default {
   display: inline-block;
   text-align: center;
   .m-borderRadius(5px);
-  color: white;
+  color: @color-background;
   height: 18px;
   .fontSize-verySmall;
   background-color: fadeout(@color-primary, 70%); // note: only used when disabled
