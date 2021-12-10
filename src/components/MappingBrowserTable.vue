@@ -769,16 +769,16 @@ export default {
 @import "../style/main.less";
 
 .mappingBrowser-table-row-match {
-  background-color: @color-table-highlight-background-1;
+  background-color: @color--mappingBrowser-table-match;
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-match {
-  background-color: @color-table-highlight-background-0;
+  background-color: @color--mappingBrowser-table-match-hover;
 }
 .mappingBrowser-table-row-edited {
-  background-color: @color-secondary-light;
+  background-color: @color--mappingBrowser-table-editing;
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-edited {
-  background-color: @color-secondary;
+  background-color: @color--mappingBrowser-table-editing-hover;
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
