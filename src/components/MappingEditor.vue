@@ -292,7 +292,6 @@ export default {
      * Returns null if the mapping is valid, otherwise a string with a reason for invalidity.
      */
     mappingStatus() {
-      console.log("mappingStatus")
       const registry = this.currentRegistry
       if (!registry) {
         return {
