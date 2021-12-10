@@ -391,7 +391,7 @@ export default {
 }
 
 .addToMapping:hover {
-  color: @color-success-dark;
+  color: @color-secondary-dark;
 }
 
 .hovered,

@@ -659,9 +659,6 @@ export default {
   top: -2px;
   color: @color-background;
 }
-.conceptDetail-name-addButton:hover {
-  color: @color-success-dark;
-}
 
 .conceptDetail-identifier {
   margin: 2px 5px;

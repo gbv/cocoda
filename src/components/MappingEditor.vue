@@ -152,7 +152,7 @@
           </div>
           <div
             v-if="$store.state.draggedConcept == null"
-            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('mappingEditor.addConcept') : '', delay: defaults.delay.medium }"
+            v-b-tooltip.hover="{ title: isAddButtonEnabled(isLeft) ? $t('general.addToMapping') : '', delay: defaults.delay.medium }"
             :class="{ button: isAddButtonEnabled(isLeft), 'button-disabled': !isAddButtonEnabled(isLeft) }"
             class="mappingEditor-addButton"
             @click="addToMappingInternal(isLeft)">
@@ -651,9 +651,6 @@ export default {
 }
 .mappingEditor-addButton {
   font-size: 1.8em;
-}
-.mappingEditor-addButton.button:hover {
-  color: @color-success-dark;
 }
 .mappingScheme {
   text-align: center;
