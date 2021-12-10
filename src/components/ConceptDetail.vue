@@ -111,7 +111,8 @@
         <router-link
           :to="getRouterUrl(previousConcept, isLeft, true)">
           <b-button
-            variant="light">
+            variant="light"
+            class="button">
             <font-awesome-icon icon="arrow-left" />
           </b-button>
         </router-link>
@@ -123,7 +124,8 @@
         <router-link
           :to="getRouterUrl(nextConcept, isLeft, true)">
           <b-button
-            variant="light">
+            variant="light"
+            class="button">
             <font-awesome-icon icon="arrow-right" />
           </b-button>
         </router-link>
