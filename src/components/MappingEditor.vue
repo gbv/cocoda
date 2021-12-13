@@ -179,9 +179,6 @@
       <mapping-type-selection
         :mapping="$store.state.mapping.mapping" />
     </div>
-    <div class="mappingEditor-creator fontSize-small">
-      {{ creatorName }}
-    </div>
     <div class="mappingEditor-title">
       {{ $t("mappingEditor.title") }}
       <!-- Guideline link if available -->
@@ -734,12 +731,6 @@ export default {
 }
 .mappingButtonsFiller {
   flex: 1;
-}
-
-.mappingEditor-creator {
-  position: absolute;
-  bottom: -4px;
-  right: 35px;
 }
 
 .mappingEditor-infoIcon {
