@@ -132,11 +132,12 @@ export default {
       }
       let baseUrl
       if (this.$jskos.isScheme(this._item)) {
-        let provider = _.get(this._item, "inScheme[0]._registry") || _.get(this._item, "_registry")
-        baseUrl = _.get(provider, "_api.schemes") || _.get(provider, "_api.data") || _.get(provider, "_api.concepts")
+        const registry = _.get(this._item, "inScheme[0]._registry") || _.get(this._item, "_registry")
+        baseUrl = _.get(registry, "_api.schemes") || _.get(registry, "_api.data") || _.get(registry, "_api.concepts")
       } else {
-        let provider = _.get(this._item, "inScheme[0]._registry")
-        baseUrl = _.get(provider, "_api.data") || (_.get(provider, "_getDataUrl") && provider._getDataUrl(this._item)) || _.get(provider, "_api.concepts")
+        const scheme = getItem(_.get(this._item, "inScheme[0]"))
+        const registry = scheme && scheme._registry
+        baseUrl = _.get(registry, "_api.data") || (_.get(registry, "_getDataUrl") && registry._getDataUrl(this._item)) || _.get(registry, "_api.concepts")
       }
       // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
       if (!baseUrl || !_.isString(baseUrl)) {
