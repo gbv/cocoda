@@ -414,20 +414,13 @@ export default {
         value: uri,
       })
       // Find name in identity and set creator
-      // TODO: Code duplication with TheSettings
-      if (this.user) {
-        let name = this.user.name
-        const identity = Object.values(this.user.identities).find(i => i.uri === uri)
-        if (identity) {
-          name = identity.name
-        }
-        if (name) {
-          this.$store.commit({
-            type: "settings/set",
-            prop: "creator",
-            value: name,
-          })
-        }
+      const name = this.getNameForIdentity(uri)
+      if (name) {
+        this.$store.commit({
+          type: "settings/set",
+          prop: "creator",
+          value: name,
+        })
       }
     },
   },

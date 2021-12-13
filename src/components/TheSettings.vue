@@ -567,16 +567,14 @@ export default {
     },
     "localSettings.creatorUri"(uri) {
       // Find name in identity and set creator
-      if (this.user) {
-        let name = this.user.name
-        const identity = Object.values(this.user.identities).find(i => i.uri === uri)
-        if (identity) {
-          name = identity.name
-        }
-        if (name) {
-          this.localSettings.creator = name
-        }
+      const name = this.getNameForIdentity(uri)
+      if (name) {
+        this.localSettings.creator = name
       }
+    },
+    user() {
+      // Clone local settings again
+      this.localSettings = _.cloneDeep(this.$settings)
     },
   },
   created() {

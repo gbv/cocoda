@@ -355,11 +355,20 @@ export default {
     },
     user(current, previous) {
       /**
-       * Show alerts when user was logged in/out.
+       * Show alerts when user was logged in/out, set name/identity if necessary
        */
       if (previous !== undefined && !previous && current) {
         // Logged in
         this.alert(this.$t("alerts.loggedIn"), null, "success")
+        // Set name if necessary
+        const name = this.getNameForIdentity()
+        if (name) {
+          this.$store.commit({
+            type: "settings/set",
+            prop: "creator",
+            value: name,
+          })
+        }
         // Switch to different mapping registry if Local is selected
         if (this.localMappingsRegistry && this.$jskos.compareFast(this.currentRegistry, this.localMappingsRegistry)) {
           // Find first registry that allows saving mappings
@@ -409,6 +418,15 @@ export default {
             navbar.openSettingsTab(0)
           }
         })
+      } else if (previous && current) {
+        // Check if name was updated and change name if necessary
+        if (previous && previous.name && current && current.name && current.uri == this.creator.uri && this.creatorName === previous.name) {
+          this.$store.commit({
+            type: "settings/set",
+            prop: "creator",
+            value: current.name,
+          })
+        }
       }
     },
     /**

@@ -44,6 +44,24 @@ export default {
     setName(name) {
       return this.$store.dispatch("auth/setName", name)
     },
+    getNameForIdentity(uri) {
+      if (!uri) {
+        // Get URI from creator or default to first identity in user
+        if (this.creator.uri) {
+          uri = this.creator.uri
+        } else {
+          uri = this.userUris && this.userUris[0]
+        }
+      }
+      if (!this.user || !uri) {
+        return null
+      }
+      const identity = Object.values(this.user.identities || {}).find(i => i.uri === uri)
+      if (identity) {
+        return identity.name
+      }
+      return this.user.name
+    },
     providerForIdentityUri(uri) {
       let result = null
       _.forEach((this.user && this.user.identities) || {}, (identity, providerId) => {
