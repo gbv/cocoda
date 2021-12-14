@@ -111,7 +111,8 @@ export default {
   },
   computed: {
     _item() {
-      return getItem(this.item) || this.item
+      // Note: Related items are required for apiUrl
+      return getItem(this.item, { relatedItems: true }) || this.item
     },
     type() {
       if (this.$jskos.isConcept(this._item)) {
@@ -130,20 +131,23 @@ export default {
       if (!this._item || !this._item.uri) {
         return null
       }
-      let baseUrl
-      if (this.$jskos.isScheme(this._item)) {
-        const registry = _.get(this._item, "inScheme[0]._registry") || _.get(this._item, "_registry")
-        baseUrl = _.get(registry, "_api.schemes") || _.get(registry, "_api.data") || _.get(registry, "_api.concepts")
-      } else {
-        const scheme = getItem(_.get(this._item, "inScheme[0]"))
-        const registry = scheme && scheme._registry
-        baseUrl = _.get(registry, "_api.data") || (_.get(registry, "_getDataUrl") && registry._getDataUrl(this._item)) || _.get(registry, "_api.concepts")
-      }
-      // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
-      if (!baseUrl || !_.isString(baseUrl)) {
+      try {
+        let baseUrl
+        if (this.$jskos.isScheme(this._item)) {
+          const registry = _.get(this._item, "inScheme[0]._registry") || _.get(this._item, "_registry")
+          baseUrl = _.get(registry, "_api.schemes") || _.get(registry, "_api.data") || _.get(registry, "_api.concepts")
+        } else {
+          const registry = _.get(this._item, "inScheme[0]._registry")
+          baseUrl = _.get(registry, "_api.data") || (_.get(registry, "_getDataUrl") && registry._getDataUrl(this._item)) || _.get(registry, "_api.concepts")
+        }
+        // TODO: What to do with hardcoded schemes? See https://github.com/gbv/cocoda/issues/165. -> Show export modal with JSKOS data.
+        if (!baseUrl || !_.isString(baseUrl)) {
+          return null
+        }
+        return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}uri=${encodeURIComponent(this._item.uri)}`
+      } catch (error) {
         return null
       }
-      return `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}uri=${encodeURIComponent(this._item.uri)}`
     },
   },
   watch: {
