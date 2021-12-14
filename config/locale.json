@@ -98,8 +98,8 @@
     },
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
-      "languages": "Available languages",
-      "availableMappings": "available mappings",
+      "languages": "Languages",
+      "availableMappings": "mappings",
       "registry": "Sources"
     },
     "conceptList": {
@@ -502,8 +502,8 @@
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",
-      "languages": "Vorhandene Sprachen",
-      "availableMappings": "vorhandene Mappings",
+      "languages": "Sprachen",
+      "availableMappings": "Mappings",
       "registry": "Quellen"
     },
     "conceptList": {
