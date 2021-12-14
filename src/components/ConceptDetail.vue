@@ -173,7 +173,7 @@
             v-for="language in [$jskos.languagePreference.selectLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $jskos.languagePreference.selectLanguage(item.definition) && language != '-'))"
             :key="`conceptDetail-${isLeft}-defintion-${language}`"
             class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.definition") }} ({{ language }}):</b> {{ $jskos.definition(item, { language }).join(", ") }}
+            <b>{{ $t("conceptDetail.definition") }}:</b> {{ $jskos.definition(item, { language }).join(", ") }} <sup class="text-lightGrey">{{ language }}</sup>
           </div>
         </template>
       </tab>
@@ -187,7 +187,7 @@
             @click="copyAndSearch($jskos.prefLabel(item, { language }))">
             {{ $jskos.prefLabel(item, { language }) }}
           </span>
-          <span class="text-lightGrey">({{ language }})</span>
+          <sup class="text-lightGrey">{{ language }}</sup>
         </div>
         <!-- Explanation:
             1. Get all language keys for altLabels (Object.keys)
@@ -209,7 +209,7 @@
           <span @click="copyAndSearch(label)">
             {{ label }}
           </span>
-          <span class="text-lightGrey">({{ language }})</span>
+          <sup class="text-lightGrey">{{ language }}</sup>
         </div>
       </tab>
       <!-- GND terms, scopeNotes, editorialNotes -->
@@ -226,7 +226,7 @@
             :key="`conceptDetail-${isLeft}-notes-${language}-${index2}`"
             class="conceptDetail-note">
             <span v-html="note" />
-            <span class="text-lightGrey"> ({{ language }})</span>
+            <sup class="text-lightGrey"> {{ language }}</sup>
           </div>
         </tab>
       </template>
