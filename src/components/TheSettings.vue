@@ -392,7 +392,7 @@
           </span>
           <span v-if="config.buildInfo.buildDate">
             •
-            {{ $t("settings.buildDate") }}: {{ dateToString(config.buildInfo.buildDate) }}
+            {{ $t("settings.buildDate") }}: <date-string :date="config.buildInfo.buildDate" />
           </span>
           <br>
           <span>
@@ -410,6 +410,7 @@
 <script>
 import _ from "lodash"
 import RegistryInfo from "./RegistryInfo.vue"
+import DateString from "./DateString.vue"
 import { cdk } from "cocoda-sdk"
 
 // Import mixins
@@ -423,7 +424,7 @@ import { getItem, loadConcepts } from "@/items"
  */
 export default {
   name: "TheSettings",
-  components: { RegistryInfo },
+  components: { RegistryInfo, DateString },
   mixins: [auth, objects, computed],
   props: {
     tab: {
