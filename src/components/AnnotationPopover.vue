@@ -219,6 +219,13 @@ export default {
     },
     iid() {
       this.scrollToBottom()
+      // If shown, hide, then show again; workaround to a small bug
+      if (this.show) {
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+        })
+      }
     },
   },
   methods: {
