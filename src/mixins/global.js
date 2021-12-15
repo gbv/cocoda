@@ -353,26 +353,6 @@ export default {
       }
       return ("0000000" + (hval >>> 0).toString(16)).substr(-8)
     },
-    /**
-     * Converts a date string to a localized date string.
-     * Incomplete dates (YYYY or YYYY-MM) will be returned non-localized.
-     *
-     * @param {string} dateString a date string (compatible with new Date())
-     * @param {boolean} onlyDate if true, the time will be omitted
-     */
-    dateToString(dateString, onlyDate = false) {
-      let date = new Date(dateString)
-      let optionsDate = { year: "numeric", month: "short", day: "numeric" }
-      let options = Object.assign({ hour: "2-digit", minute: "2-digit", second: "2-digit" }, optionsDate)
-      if (date instanceof Date && !isNaN(date)) {
-        if (dateString.length < 8) {
-          return dateString
-        }
-        return onlyDate ? date.toLocaleDateString(undefined, optionsDate) : date.toLocaleString(undefined, options)
-      } else {
-        return "?"
-      }
-    },
     getErrorMessage(error) {
       let errorKey = `cdkErrors.${error.name}`
       if (!this.$te(errorKey)) {

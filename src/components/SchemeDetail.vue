@@ -47,20 +47,16 @@
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
       <auto-link :link="identifier" />
     </div>
-    <div
-      v-if="_item.created"
-      class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(_item.created, true) }}
-    </div>
-    <div
-      v-if="_item.issued"
-      class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.issued") }}:</b> {{ dateToString(_item.issued, true) }}
-    </div>
-    <div
-      v-if="_item.modified"
-      class="schemeDetail-identifier">
-      <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(_item.modified, true) }}
+    <div class="schemeDetail-identifier">
+      <span v-if="_item.created">
+        <b>{{ $t("conceptDetail.created") }}:</b> <date-string :date="_item.created" />
+      </span>
+      <span v-if="_item.issued">
+        <b>{{ $t("conceptDetail.issued") }}:</b> <date-string :date="_item.issued" />
+      </span>
+      <span v-if="_item.modified">
+        <b>{{ $t("conceptDetail.modified") }}:</b> <date-string :date="_item.modified" />
+      </span>
     </div>
     <div
       v-if="_item.languages"
@@ -128,6 +124,7 @@ import ItemName from "./ItemName.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import RegistryName from "./RegistryName.vue"
 import RegistryNotation from "./RegistryNotation.vue"
+import DateString from "./DateString.vue"
 
 // Import mixins
 import objects from "../mixins/cdk.js"
@@ -142,7 +139,7 @@ import { getItem } from "@/items"
 export default {
   name: "SchemeDetail",
   components: {
-    AutoLink, ItemName, ItemDetailNarrower, RegistryName, RegistryNotation,
+    AutoLink, ItemName, ItemDetailNarrower, RegistryName, RegistryNotation, DateString,
   },
   mixins: [objects],
   props: {

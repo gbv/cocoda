@@ -291,11 +291,9 @@
       <span
         slot="extra"
         slot-scope="data">
-        <span
+        <date-string
           v-if="data.item.occurrence == null"
-          v-b-tooltip.hover="{ title: data.value.tooltip, delay: defaults.delay.medium }">
-          {{ data.value.date }}
-        </span>
+          :date="data.value.date" />
         <span v-else-if="data.item.occurrence.count == -1">-</span>
         <span v-else>
           <auto-link
@@ -383,6 +381,7 @@ import FlexibleTable from "vue-flexible-table"
 import MappingDetail from "./MappingDetail.vue"
 import AnnotationPopover from "./AnnotationPopover.vue"
 import DataModalButton from "./DataModalButton.vue"
+import DateString from "./DateString.vue"
 import _ from "lodash"
 
 // Import mixins
@@ -396,7 +395,7 @@ import hoverHandler from "../mixins/hover-handler.js"
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton },
+  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton, DateString },
   mixins: [auth, objects, computed, hoverHandler],
   props: {
     sections: {

@@ -23,7 +23,7 @@
       </div>
       <!-- Date and creator -->
       <div class="fontSize-verySmall">
-        {{ dateToString(annotation.created, true) }}<br>
+        <date-string :date="annotation.created" /><br>
         <auto-link
           :class="{
             'fontWeight-heavy': $jskos.annotationCreatorMatches(annotation, userUris)
@@ -44,13 +44,14 @@
 
 <script>
 import AutoLink from "./AutoLink.vue"
+import DateString from "./DateString.vue"
 
 // Import mixins
 import auth from "../mixins/auth.js"
 
 export default {
   name: "AnnotationList",
-  components: { AutoLink },
+  components: { AutoLink, DateString },
   mixins: [auth],
   props: {
     annotations: {

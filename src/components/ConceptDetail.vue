@@ -153,20 +153,16 @@
           class="conceptDetail-identifier">
           <font-awesome-icon icon="user" /> {{ $jskos.prefLabel(item.creator[0]) }}
         </div>
-        <div
-          v-if="item.created"
-          class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.created") }}:</b> {{ dateToString(item.created, true) }}
-        </div>
-        <div
-          v-if="item.issued"
-          class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.issued") }}:</b> {{ dateToString(item.issued, true) }}
-        </div>
-        <div
-          v-if="item.modified"
-          class="conceptDetail-identifier">
-          <b>{{ $t("conceptDetail.modified") }}:</b> {{ dateToString(item.modified, true) }}
+        <div class="conceptDetail-identifier">
+          <span v-if="item.created">
+            <b>{{ $t("conceptDetail.created") }}:</b> <date-string :date="item.created" />
+          </span>
+          <span v-if="item.issued">
+            <b>{{ $t("conceptDetail.issued") }}:</b> <date-string :date="item.issued" />
+          </span>
+          <span v-if="item.modified">
+            <b>{{ $t("conceptDetail.modified") }}:</b> <date-string :date="item.modified" />
+          </span>
         </div>
         <template v-if="item.definition">
           <div
@@ -308,6 +304,7 @@ import AutoLink from "./AutoLink.vue"
 import ItemName from "./ItemName.vue"
 import LoadingIndicator from "./LoadingIndicator.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
+import DateString from "./DateString.vue"
 import _ from "lodash"
 import axios from "axios"
 
@@ -325,7 +322,7 @@ import { getItem, getItems, loadConcepts, modifyItem, saveItem } from "@/items"
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower,
+    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower, DateString,
   },
   mixins: [objects, computed, hotkeys, mappedStatus],
   props: {

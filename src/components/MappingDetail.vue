@@ -97,14 +97,14 @@
             <b-col cols="3">
               {{ $t("mappingDetail.created") }}:
             </b-col>
-            <b-col>{{ dateToString(mapping.created) }}</b-col>
+            <b-col><date-string :date="mapping.created" /></b-col>
           </b-row>
           <!-- Modified -->
           <b-row>
             <b-col cols="3">
               {{ $t("mappingDetail.modified") }}:
             </b-col>
-            <b-col>{{ dateToString(mapping.modified) }}</b-col>
+            <b-col><date-string :date="mapping.modified" /></b-col>
           </b-row>
           <!-- Annotations -->
           <b-row
@@ -208,6 +208,7 @@ import ItemName from "./ItemName.vue"
 import AutoLink from "./AutoLink.vue"
 import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
+import DateString from "./DateString.vue"
 
 import computed from "../mixins/computed.js"
 
@@ -216,7 +217,7 @@ import computed from "../mixins/computed.js"
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo },
+  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString },
   mixins: [computed],
   props: {
     /**
