@@ -352,7 +352,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: scroll;
+  overflow-y: auto;
 }
 .conceptListItems > *:first-child > *:last-child {
   margin-bottom: 30px;
