@@ -474,7 +474,7 @@ hr {
   color: white !important;
 }
 .nav-link:hover, .btn-link:hover {
-  color: @color-text-lightGrey !important;
+  color: @color-text-grey !important;
 }
 .feedbackModal .modal-dialog {
   height: 90%;
@@ -509,7 +509,7 @@ hr {
   display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
-  background-color: @color-background-secondary;
+  background-color: @color-secondary-light;
 }
 .favoriteConceptsDropdown-iconTarget {
   color: @color-secondary;
@@ -544,6 +544,6 @@ hr {
 }
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
-  background-color: @color-background-secondary;
+  background-color: @color-secondary-light;
 }
 </style>
