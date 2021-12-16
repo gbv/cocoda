@@ -362,7 +362,7 @@
             </p>
             <p>
               <b-button
-                :variant="creatorRewritten ? 'success' : 'warning'"
+                :variant="creatorRewritten ? 'success' : 'primary'"
                 @click="rewriteCreator">
                 {{ $t("settings.creatorRewriteButton") }}
               </b-button>
