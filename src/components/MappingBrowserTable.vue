@@ -903,7 +903,7 @@ export default {
 
 // Custom section class for current registry
 .mappingBrowser-table-currentRegistrySection > .flexibleTable-section-before {
-  background-color: @color-secondary-light;
+  background-color: @color-secondary;
 }
 
 </style>

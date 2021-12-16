@@ -50,20 +50,20 @@ export default {
   color: @color-background;
   height: 18px;
   .fontSize-verySmall;
-  background-color: fadeout(@color-primary, 70%); // note: only used when disabled
+  background-color: fadeout(@color-secondary-dark, 70%); // note: only used when disabled
 }
 .registry-notation:hover, .registry-notation.registry-enabled:hover {
-  background-color: fadeout(@color-primary, 35%);
+  background-color: fadeout(@color-secondary-dark, 35%);
 }
 .registry-notation-current {
-  background-color: fadeout(@color-secondary-dark, 70%);
+  background-color: fadeout(@color-primary, 70%);
 }
 .registry-notation.registry-current-enabled {
-  background-color: @color-secondary-dark;
+  background-color: @color-primary;
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {
-  background-color: @color-primary;
+  background-color: @color-secondary-dark;
   .fontWeight-heavy;
 }
 </style>

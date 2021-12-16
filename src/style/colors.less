@@ -1,7 +1,7 @@
 // Base colors // ------------------------------------------------------
 
-@color-primary: #b13f13;
-@color-secondary: rgb(253, 192, 87);
+@color-primary: #832e0c;
+@color-secondary: #d3c4c4;
 
 @color-black: #212121;
 // @color-white: #f2f1ef;
@@ -13,11 +13,11 @@
 
 // Adjusted base colors // ---------------------------------------------
 
-@color-primary-dark: darken(@color-primary, 15%);
+@color-primary-dark: darken(@color-primary, 5%);
 @color-primary-light: lighten(@color-primary, 15%);
 
-@color-secondary-light: lighten(@color-secondary, 15%);
-@color-secondary-dark: darken(@color-secondary, 15%);
+@color-secondary-light: lighten(@color-secondary, 8%);
+@color-secondary-dark: darken(@color-secondary, 25%);
 
 @color-success-light: lighten(@color-success, 15%);
 @color-success-dark: darken(@color-success, 15%);
@@ -39,8 +39,8 @@
 // General colors // ---------------------------------------------------
 
 @color-background: rgb(255, 255, 255);
-@color-background-primary: #e9e1e1; // red-ish grey
-@color-background-secondary: lighten(@color-background-primary, 6%);
+@color-background-primary: @color-secondary;
+@color-background-secondary: lighten(#e9e1e1, 6%);
 @color-background-heading: rgb(240, 240, 240);
 
 @color-loading-overlay-background: rgba(255, 255, 255, 0.6);
@@ -64,8 +64,8 @@
 
 @color--mappingBrowser-table-match: fadeout(@color-info-light, 80%);
 @color--mappingBrowser-table-match-hover: fadeout(@color-info-light, 70%);
-@color--mappingBrowser-table-editing: fadeout(@color-secondary-light, 40%);
-@color--mappingBrowser-table-editing-hover: fadeout(@color-secondary-light, 30%);
+@color--mappingBrowser-table-editing: fadeout(@color-secondary, 40%);
+@color--mappingBrowser-table-editing-hover: fadeout(@color-secondary, 30%);
 
 @color--conceptSearch-result-selected: @color-primary-dark;
 @color--conceptSearch-result-selected-background: @color-background-secondary;
