@@ -264,30 +264,21 @@ ul {
 .btn-danger:hover {
   background-color: @color-danger-dark;
 }
-.btn-info {
-  background-color: @color-info;
-}
-.btn-info:hover {
-  background-color: @color-info-dark;
-}
 // bootstrap text
 .text-success {
-  color: @color-success;
+  color: @color-success !important;
 }
 .text-warning {
-  color: @color-warning;
+  color: @color-warning-dark !important;
 }
 .text-danger {
-  color: @color-danger;
-}
-.text-info {
-  color: @color-info;
+  color: @color-danger !important;
 }
 // bootstrap alerts
 .alert-success {
   color: @color-success-dark !important;
-  background-color: lighten(@color-success-light, 30%) !important;
-  border-color: lighten(@color-success-light, 15%) !important;
+  background-color: lighten(@color-success-light, 50%) !important;
+  border-color: @color-success-light !important;
 }
 .alert-warning {
   color: darken(@color-warning-dark, 25%) !important;
@@ -298,11 +289,6 @@ ul {
   color: @color-danger-dark !important;
   background-color: lighten(@color-danger-light, 30%) !important;
   border-color: lighten(@color-danger-light, 15%) !important;
-}
-.alert-info {
-  color: @color-info-dark !important;
-  background-color: lighten(@color-info-light, 30%) !important;
-  border-color: lighten(@color-info-light, 15%) !important;
 }
 
 // Orders
