@@ -68,7 +68,7 @@
           v-html="notation" />
         <span
           :class="{
-            'fontWeight-medium': isSelected
+            'fontWeight-medium': true
           }">
           {{ prefLabel }}
         </span>

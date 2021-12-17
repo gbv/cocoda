@@ -51,7 +51,7 @@
       <span
         v-if="showText || !notation"
         :class="{
-          'fontWeight-medium': isHighlighted
+          'fontWeight-medium': true
         }">
         {{ prefLabel }}
       </span>
