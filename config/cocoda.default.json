@@ -443,7 +443,7 @@
       "prefLabel": {
         "en": "K10plus"
       },
-      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&IKT=8533&TRM=gnd+{notation}",
+      "url": "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8533&TRM=gnd+{notation}",
       "schemeUris": [
         "http://bartoc.org/en/node/430"
       ]
@@ -452,7 +452,7 @@
       "prefLabel": {
         "en": "K10plus"
       },
-      "url": "https://kxp.k10plus.de/DB=2.1/CMD?ACT=SRCHA&TRM=bkl+{notation}",
+      "url": "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&TRM=bkl+{notation}",
       "schemeUris": [
         "http://bartoc.org/en/node/18785"
       ]
