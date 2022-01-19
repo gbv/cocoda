@@ -380,7 +380,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
       if (!concept.ancestors || concept.ancestors.includes(null)) {
         child.ancestors = [null]
       } else {
-        child.ancestors = concept.ancestors.concat([concept])
+        child.ancestors = [concept].concat(concept.ancestors)
       }
       // Set broader
       if (!child.broader || child.broader.includes(null)) {
@@ -414,17 +414,17 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
     return []
   }
   try {
-    const currentAncestors = []
-    const ancestors = (await registry.getAncestors({ concept })).map(ancestor => {
+    let currentAncestors = []
+    const ancestors = (await registry.getAncestors({ concept })).reverse().map(ancestor => {
       // Set ancestors
       ancestor.ancestors = currentAncestors.slice()
-      currentAncestors.push({ uri: ancestor.uri })
+      currentAncestors = [{ uri: ancestor.uri }].concat(currentAncestors)
       // Save concept
       return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
-    }).map(mapMinimalProps)
+    }).map(mapMinimalProps).reverse()
     modifyItem(concept, "ancestors", ancestors)
     // Set ancestors for narrower of concept if necessary
-    currentAncestors.push({ uri: concept.uri });
+    currentAncestors = [{ uri: concept.uri }].concat(currentAncestors);
     (concept.narrower || []).forEach(child => {
       child && modifyItem(child, "ancestors", currentAncestors.slice())
     })

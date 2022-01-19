@@ -13,7 +13,7 @@
           :icon="showAncestors ? 'angle-down' : 'angle-right'" />
       </div>
       <div
-        v-for="(concept, index) in ancestors.filter(concept => concept != null)"
+        v-for="(concept, index) in ancestors.filter(concept => concept != null).reverse()"
         :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`"
         :class="{
           'concept-mappingsExist': (showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3) && loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
