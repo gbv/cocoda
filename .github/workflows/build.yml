@@ -1,0 +1,33 @@
+name: Build
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      # Install Pandoc
+      - run: sudo apt update && sudo apt install -y pandoc
+      # Install npm deps and build Cocoda with docs
+      - run: npm ci
+      - run: npm run build
+      # Adjust folder structure for GitHub Pages deployment
+      - run: mv dist cocoda
+      - run: mkdir dist-docs
+      - run: cp docs/index.md dist-docs/
+      - run: cp -R cocoda dist-docs/dev
+      - run: zip -r "cocoda-$(git describe --tags).zip" cocoda
+      - run: mv "cocoda-$(git describe --tags).zip" dist-docs/
+      # Deploy to GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./dist-docs
