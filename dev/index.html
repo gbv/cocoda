@@ -1,4 +1,39 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cocoda</title><link href="css/app.dc1d372c.css" rel="preload" as="style"><link href="css/chunk-common.acac37a1.css" rel="preload" as="style"><link href="css/chunk-vendors.65aaf78d.css" rel="preload" as="style"><link href="js/app.7cc0b2f6.js" rel="modulepreload" as="script"><link href="js/chunk-common.ed0989df.js" rel="modulepreload" as="script"><link href="js/chunk-vendors.96cda58d.js" rel="modulepreload" as="script"><link href="css/chunk-vendors.65aaf78d.css" rel="stylesheet"><link href="css/chunk-common.acac37a1.css" rel="stylesheet"><link href="css/app.dc1d372c.css" rel="stylesheet"></head><body><noscript><div style="text-align: center"><br><br><br><br><h1>Sorry!</h1><p>This application does not work in your browser.</p><p>To use this application, JavaScript and Cookies are required to be enabled. You'll also need a modern web browser, like <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>.</p><br><br><p>Thank you for understanding.</p><p><a href="https://coli-conc.gbv.de" target="_blank">- the coli-conc team</a></p><br><br><p>If you think this is a bug, please create an issue in the <a href="https://github.com/gbv/cocoda/issues" target="_blank">Cocoda GitHub repository</a>.</p></div></noscript><div id="app"></div><script>// from https://gomakethings.com/decoding-html-entities-with-vanilla-javascript/
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cocoda</title>
+    <script type="module" crossorigin src="./assets/main.973178c9.js"></script>
+    <link rel="modulepreload" href="./assets/vendor.4eff9dfb.js">
+    <link rel="modulepreload" href="./assets/main.f00f9d26.js">
+    <link rel="stylesheet" href="./assets/vendor.a40f197d.css">
+    <link rel="stylesheet" href="./assets/main.89677050.css">
+    <link rel="stylesheet" href="./assets/main.4306486c.css">
+  </head>
+  <body>
+    <noscript>
+      <div style="text-align: center">
+        <br><br><br><br>
+        <h1>Sorry!</h1>
+        <p>
+          This application does not work in your browser.
+        </p>
+        <p>
+          To use this application, JavaScript and Cookies are required to be enabled. You'll also need a modern web browser, like <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>.
+        </p>
+        <br><br>
+        <p>Thank you for understanding.</p>
+        <p><a href="https://coli-conc.gbv.de" target="_blank">- the coli-conc team</a></p>
+        <br><br>
+        <p>If you think this is a bug, please create an issue in the <a href="https://github.com/gbv/cocoda/issues" target="_blank">Cocoda GitHub repository</a>.</p>
+      </div>
+    </noscript>
+    <div id="app"></div>
+    
+    <script>
+      // from https://gomakethings.com/decoding-html-entities-with-vanilla-javascript/
       var decodeHTML = function (html) {
         var txt = document.createElement("textarea")
         txt.innerHTML = html
@@ -31,4 +66,7 @@
         }
         app.innerHTML = decodeHTML(message)
         app.removeAttribute("id")
-      }</script><script type="module" src="js/chunk-vendors.96cda58d.js"></script><script type="module" src="js/chunk-common.ed0989df.js"></script><script type="module" src="js/app.7cc0b2f6.js"></script><script>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()},!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script><script src="js/chunk-vendors-legacy.5d1e4efa.js" nomodule></script><script src="js/chunk-common-legacy.cecf8f46.js" nomodule></script><script src="js/app-legacy.4fc523c9.js" nomodule></script></body></html>
+      }
+    </script>
+  </body>
+</html>

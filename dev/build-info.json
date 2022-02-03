@@ -1,10 +1,11 @@
 {
-  "version": "1.4.6",
+  "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "99a5d249e4cbe5fb8e56b93f292dcd5332747cb7",
-  "gitCommitShort": "99a5d24",
-  "buildDate": "2021-09-03T10:58:36Z",
-  "date": "2021-09-03T10:55:28.000Z",
+  "gitCommit": "8a0356ce3d857e84e6a1cd207884c82043cf48db",
+  "gitCommitShort": "8a0356c",
+  "gitCommitMessage": "8a0356c Adjust build workflow (#661)",
+  "buildDate": "2022-02-03T11:37:51Z",
+  "date": "2022-02-03T11:36:49.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
