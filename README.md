@@ -2,7 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/gbv/cocoda.svg)](https://github.com/gbv/cocoda/releases/latest)
 [![GitHub](https://img.shields.io/github/license/gbv/cocoda.svg)](https://github.com/gbv/cocoda/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/gbv/cocoda.svg?branch=dev)](https://travis-ci.org/gbv/cocoda)
+[![Build](https://github.com/gbv/cocoda/actions/workflows/build.yml/badge.svg)](https://github.com/gbv/cocoda/actions/workflows/build.yml)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
 
 > A web-based tool for creating mappings between knowledge organization systems.
@@ -11,7 +11,12 @@ Try out the [latest release version](https://coli-conc.gbv.de/cocoda/), the [cur
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Install](#install)
+  - [Release versions](#release-versions)
+  - [Development versions](#development-versions)
+  - [Serving the Files](#serving-the-files)
+  - [Docker](#docker)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Maintainers](#maintainers)

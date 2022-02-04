@@ -6,8 +6,8 @@ VERSION=$(([ ! -z "$VERSION" ] && echo $VERSION) || node -pe "require('./package
 # Get jskos-api version from package.json
 JSKOS_API=$(node -pe "require('./package.json')['jskos-api']")
 
-# Use existing GIT_BRANCH variable first, then TRAVIS_BRANCH, then branch from git command
-GIT_BRANCH=$(([ ! -z "$GIT_BRANCH" ] && echo $GIT_BRANCH) || ([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
+# Use existing GIT_BRANCH variable first, then branch from git command
+GIT_BRANCH=$(([ ! -z "$GIT_BRANCH" ] && echo $GIT_BRANCH) || git rev-parse --abbrev-ref HEAD)
 
 # Commit hashes
 GIT_COMMIT=$(git rev-parse --verify HEAD)

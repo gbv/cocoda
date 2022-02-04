@@ -11,7 +11,7 @@ fi
 # write build info to build-info.json
 npm run build-info
 
-GIT_BRANCH=$(([ ! -z "$TRAVIS_BRANCH" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT_SHORT=$(git rev-parse --verify --short HEAD)
 
 echo "Building for branch $GIT_BRANCH ($GIT_COMMIT_SHORT)..."

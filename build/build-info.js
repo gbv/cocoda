@@ -16,8 +16,8 @@ const version = process.env.VERSION || pkg.version
 // Get jskos-api version from package.json
 const jskosApi = pkg["jskos-api"]
 
-// Use existing GIT_BRANCH variable first, then TRAVIS_BRANCH, then branch from git command
-const gitBranch = execSync("([ ! -z \"$GIT_BRANCH\" ] && echo $GIT_BRANCH) || ([ ! -z \"$TRAVIS_BRANCH\" ] && echo $TRAVIS_BRANCH) || git rev-parse --abbrev-ref HEAD")
+// Use existing GIT_BRANCH variable first, then branch from git command
+const gitBranch = execSync("([ ! -z \"$GIT_BRANCH\" ] && echo $GIT_BRANCH) || git rev-parse --abbrev-ref HEAD")
 // Commit hashes
 const gitCommit = execSync("git rev-parse --verify HEAD")
 const gitCommitShort = execSync("git rev-parse --verify --short HEAD")

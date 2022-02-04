@@ -1,7 +1,7 @@
 # [Cocoda Mapping Tool](https://github.com/gbv/cocoda)
 [![GitHub release](https://img.shields.io/github/release/gbv/cocoda.svg)](https://github.com/gbv/cocoda/releases/latest)
 [![GitHub](https://img.shields.io/github/license/gbv/cocoda.svg)](https://github.com/gbv/cocoda/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/gbv/cocoda.svg?branch=dev)](https://travis-ci.org/gbv/cocoda)
+[![Build](https://github.com/gbv/cocoda/actions/workflows/build.yml/badge.svg)](https://github.com/gbv/cocoda/actions/workflows/build.yml)
 
 Cocoda is a web-based tool for creating mappings between knowledge organization systems. It is part of a larger infrastructure of [Project coli-conc](https://coli-conc.gbv.de).
 
