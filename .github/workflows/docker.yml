@@ -5,6 +5,9 @@ on:
       - master
       - dev
       - test
+    tags:
+      - "*.*.*"
+
 jobs:
   publish:
     runs-on: ubuntu-20.04
