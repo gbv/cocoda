@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "7cf0a86a6290801dfaf08ab341a06ee93ca8c6ea",
-  "gitCommitShort": "7cf0a86",
-  "gitCommitMessage": "7cf0a86 Adjust workflow",
-  "buildDate": "2022-02-04T08:14:12Z",
-  "date": "2022-02-04T08:13:05.000Z",
+  "gitCommit": "944bfed05908ac8d04a207d98a4570c913b9bdbd",
+  "gitCommitShort": "944bfed",
+  "gitCommitMessage": "944bfed Build action: Define shell for run actions",
+  "buildDate": "2022-02-04T09:07:53Z",
+  "date": "2022-02-04T09:06:51.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
