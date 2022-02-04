@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "c3d8b97f8c4b77958788f568bed73900351ce81d",
-  "gitCommitShort": "c3d8b97",
-  "gitCommitMessage": "c3d8b97 Adjust Docker workflow to ubuntu-20.04 and adjust yml formatting",
-  "buildDate": "2022-02-04T10:45:34Z",
-  "date": "2022-02-04T10:44:16.000Z",
+  "gitCommit": "300d075511da97ec8b9b521a5d290e9eb593c913",
+  "gitCommitShort": "300d075",
+  "gitCommitMessage": "300d075 Fix Docker workflow to run on tags as well (#664)",
+  "buildDate": "2022-02-04T10:54:58Z",
+  "date": "2022-02-04T10:52:37.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
