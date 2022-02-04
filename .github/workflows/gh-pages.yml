@@ -8,7 +8,7 @@ jobs:
   gh-pages:
     runs-on: ubuntu-20.04
     steps:
-      - uses: ./.github/workflows/checkout-and-build
+      - uses: ./.github/workflows/checkout-and-build.yml
       - name: Adjust folder structure for GitHub Pages deployment
         run: |
           mv dist cocoda
