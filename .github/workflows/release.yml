@@ -5,39 +5,39 @@ name: Release
 on:
   push:
     tags:
-    - "*.*.*"
+      - "*.*.*"
 
 jobs:
   github-release:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: ./.github/actions/build
-    - name: Create zip file for release
-      run: |
-        mv dist cocoda
-        zip -r "cocoda-$(git describe --tags).zip" cocoda
-    - name: Set artifact name
-      run: |
-        echo "ARTIFACT_NAME=$(ls cocoda-*.zip)" >> $GITHUB_ENV
-    - name: Create GitHub release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Cocoda ${{ github.ref }}
-        body: TODO
-        draft: true
-        prerelease: false
-    - uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{ env.ARTIFACT_NAME }}
-        asset_name: ${{ env.ARTIFACT_NAME }}
-        asset_content_type: application/zip
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/build
+      - name: Create zip file for release
+        run: |
+          mv dist cocoda
+          zip -r "cocoda-$(git describe --tags).zip" cocoda
+      - name: Set artifact name
+        run: |
+          echo "ARTIFACT_NAME=$(ls cocoda-*.zip)" >> $GITHUB_ENV
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Cocoda ${{ github.ref }}
+          body: TODO
+          draft: true
+          prerelease: false
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ env.ARTIFACT_NAME }}
+          asset_name: ${{ env.ARTIFACT_NAME }}
+          asset_content_type: application/zip

@@ -8,19 +8,19 @@ jobs:
   gh-pages:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: ./.github/actions/build
-    - name: Adjust folder structure for GitHub Pages deployment
-      run: |
-        mv dist cocoda
-        mkdir dist-docs
-        cp docs/index.md dist-docs/
-        cp -R cocoda dist-docs/dev
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist-docs
-        enable_jekyll: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/build
+      - name: Adjust folder structure for GitHub Pages deployment
+        run: |
+          mv dist cocoda
+          mkdir dist-docs
+          cp docs/index.md dist-docs/
+          cp -R cocoda dist-docs/dev
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist-docs
+          enable_jekyll: true

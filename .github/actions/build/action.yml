@@ -10,16 +10,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: Use Node.js ${{ inputs.version }}
-    uses: actions/setup-node@v1
-    with:
-      node-version: ${{ inputs.version }}
-  - name: Install Pandoc
-    shell: bash
-    run: |
-      sudo apt update && sudo apt install -y pandoc
-  - name: Install npm deps and build Cocoda with docs
-    shell: bash
-    run: |
-      npm ci
-      npm run build
+    - name: Use Node.js ${{ inputs.version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ inputs.version }}
+    - name: Install Pandoc
+      shell: bash
+      run: |
+        sudo apt update && sudo apt install -y pandoc
+    - name: Install npm deps and build Cocoda with docs
+      shell: bash
+      run: |
+        npm ci
+        npm run build
