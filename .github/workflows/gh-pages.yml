@@ -8,17 +8,20 @@ jobs:
   gh-pages:
     runs-on: ubuntu-20.04
     steps:
-      - uses: ./.github/workflows/checkout-and-build.yml
-      - name: Adjust folder structure for GitHub Pages deployment
-        run: |
-          mv dist cocoda
-          mkdir dist-docs
-          cp docs/index.md dist-docs/
-          cp -R cocoda dist-docs/dev
-          zip -r "cocoda-$(git describe --tags).zip" cocoda
-          mv "cocoda-$(git describe --tags).zip" dist-docs/
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist-docs
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: ./.github/workflows/install-and-build.yml
+    - name: Adjust folder structure for GitHub Pages deployment
+      run: |
+        mv dist cocoda
+        mkdir dist-docs
+        cp docs/index.md dist-docs/
+        cp -R cocoda dist-docs/dev
+        zip -r "cocoda-$(git describe --tags).zip" cocoda
+        mv "cocoda-$(git describe --tags).zip" dist-docs/
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist-docs
