@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "300d075511da97ec8b9b521a5d290e9eb593c913",
-  "gitCommitShort": "300d075",
-  "gitCommitMessage": "300d075 Fix Docker workflow to run on tags as well (#664)",
-  "buildDate": "2022-02-04T10:54:58Z",
-  "date": "2022-02-04T10:52:37.000Z",
+  "gitCommit": "65be0a44722974cdb3a25c55170190dcc7f7b82c",
+  "gitCommitShort": "65be0a4",
+  "gitCommitMessage": "65be0a4 Remove any mention of Travis (#661)",
+  "buildDate": "2022-02-04T11:04:02Z",
+  "date": "2022-02-04T11:02:23.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
