@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -15,20 +15,22 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
-      # Install Pandoc
-      - run: sudo apt update && sudo apt install -y pandoc
-      # Install npm deps and build Cocoda with docs
-      - run: npm ci
-      - run: npm run build
-      # Adjust folder structure for GitHub Pages deployment
-      - run: mv dist cocoda
-      - run: mkdir dist-docs
-      - run: cp docs/index.md dist-docs/
-      - run: cp -R cocoda dist-docs/dev
-      - run: zip -r "cocoda-$(git describe --tags).zip" cocoda
-      - run: mv "cocoda-$(git describe --tags).zip" dist-docs/
-      # Deploy to GitHub Pages
-      - name: Deploy
+      - name: Install Pandoc
+        run: |
+          sudo apt update && sudo apt install -y pandoc
+      - name: Install npm deps and build Cocoda with docs
+        run: |
+          npm ci
+          npm run build
+      - name: Adjust folder structure for GitHub Pages deployment
+        run: |
+          mv dist cocoda
+          mkdir dist-docs
+          cp docs/index.md dist-docs/
+          cp -R cocoda dist-docs/dev
+          zip -r "cocoda-$(git describe --tags).zip" cocoda
+          mv "cocoda-$(git describe --tags).zip" dist-docs/
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
