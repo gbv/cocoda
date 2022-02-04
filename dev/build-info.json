@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "944bfed05908ac8d04a207d98a4570c913b9bdbd",
-  "gitCommitShort": "944bfed",
-  "gitCommitMessage": "944bfed Build action: Define shell for run actions",
-  "buildDate": "2022-02-04T09:07:53Z",
-  "date": "2022-02-04T09:06:51.000Z",
+  "gitCommit": "10666ab0067e4c2342707eec1a62439db21186c5",
+  "gitCommitShort": "10666ab",
+  "gitCommitMessage": "10666ab Enable Jekyll for GitHub Pages deployment",
+  "buildDate": "2022-02-04T09:22:59Z",
+  "date": "2022-02-04T09:21:52.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
