@@ -9,6 +9,6 @@ jobs:
         node-version: [ 12.x, 14.x, 16.x ]
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/workflows/install-and-build.yml
+    - uses: ./.github/actions/install-and-build
       with:
         node-version: ${{ matrix.node-version }}
