@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "10666ab0067e4c2342707eec1a62439db21186c5",
-  "gitCommitShort": "10666ab",
-  "gitCommitMessage": "10666ab Enable Jekyll for GitHub Pages deployment",
-  "buildDate": "2022-02-04T09:22:59Z",
-  "date": "2022-02-04T09:21:52.000Z",
+  "gitCommit": "c3d8b97f8c4b77958788f568bed73900351ce81d",
+  "gitCommitShort": "c3d8b97",
+  "gitCommitMessage": "c3d8b97 Adjust Docker workflow to ubuntu-20.04 and adjust yml formatting",
+  "buildDate": "2022-02-04T10:45:34Z",
+  "date": "2022-02-04T10:44:16.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
