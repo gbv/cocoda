@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "65be0a44722974cdb3a25c55170190dcc7f7b82c",
-  "gitCommitShort": "65be0a4",
-  "gitCommitMessage": "65be0a4 Remove any mention of Travis (#661)",
-  "buildDate": "2022-02-04T11:04:02Z",
-  "date": "2022-02-04T11:02:23.000Z",
+  "gitCommit": "db0820fc7076c9e46105633c576cb5e1a6c860d4",
+  "gitCommitShort": "db0820f",
+  "gitCommitMessage": "db0820f Adjust Vite config to remove certain warnings when building",
+  "buildDate": "2022-02-04T11:13:39Z",
+  "date": "2022-02-04T11:12:33.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
