@@ -16,6 +16,7 @@ export default defineConfig({
       },
     },
     outDir: "dist-temp",
+    chunkSizeWarningLimit: 1000,
   },
   resolve: {
     alias: {
@@ -25,5 +26,21 @@ export default defineConfig({
   },
   server: {
     port: 8080,
+  },
+  // Required to suppress warnings regarding @charset tags in compiled CSS
+  // See also: https://github.com/vitejs/vite/discussions/5079
+  css: {
+    postcss: {
+      plugins: [{
+        postcssPlugin: "internal:charset-removal",
+        AtRule: {
+          charset: (atRule) => {
+            if (atRule.name === "charset") {
+              atRule.remove()
+            }
+          },
+        },
+      }],
+    },
   },
 })
