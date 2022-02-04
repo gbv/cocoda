@@ -18,8 +18,6 @@ jobs:
         mkdir dist-docs
         cp docs/index.md dist-docs/
         cp -R cocoda dist-docs/dev
-        zip -r "cocoda-$(git describe --tags).zip" cocoda
-        mv "cocoda-$(git describe --tags).zip" dist-docs/
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
