@@ -1,37 +1,13 @@
 name: Build
-on:
-  push:
-    branches:
-      - dev
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [ 12.x, 14.x, 16.x ]
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Use Node.js 16
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-      - name: Install Pandoc
-        run: |
-          sudo apt update && sudo apt install -y pandoc
-      - name: Install npm deps and build Cocoda with docs
-        run: |
-          npm ci
-          npm run build
-      - name: Adjust folder structure for GitHub Pages deployment
-        run: |
-          mv dist cocoda
-          mkdir dist-docs
-          cp docs/index.md dist-docs/
-          cp -R cocoda dist-docs/dev
-          zip -r "cocoda-$(git describe --tags).zip" cocoda
-          mv "cocoda-$(git describe --tags).zip" dist-docs/
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist-docs
+    - uses: ./.github/workflows/checkout-and-build
+      with:
+        node-version: ${{ matrix.node-version }}
