@@ -4,6 +4,7 @@
 
 import LoginClient from "gbv-login-client"
 import log from "../../utils/log.js"
+import { closeWindow } from "@/utils/window-manager.js"
 let client
 
 // initial state
@@ -17,11 +18,6 @@ const state = {
   tokenTimeout: null,
 }
 
-let windowManager = {
-  window: null,
-  eventType: null,
-}
-
 const mutations = {
 
   /**
@@ -33,26 +29,6 @@ const mutations = {
    */
   set(state, { prop, value = null }) {
     state[prop] = value
-  },
-
-  /**
-   * Opens a URL in a new window and saves an event type so that it'll be close when that event is received.
-   */
-  openWindow(state, { url, eventType }) {
-    windowManager.window = window.open(url)
-    windowManager.eventType = eventType
-  },
-
-  /**
-   * To be called by the login-client event handler. Closes a window that was waiting for a certain event type.
-   */
-  closeWindow(state, { eventType }) {
-    if (windowManager.window && windowManager.eventType == eventType) {
-      setTimeout(() => {
-        windowManager.window && windowManager.window.close()
-        windowManager.window = null
-      }, 100)
-    }
   },
 
 }
@@ -77,7 +53,7 @@ const actions = {
       // Handle events
       client.addEventListener(null, event => {
         // Close window if one exists and matches event type
-        commit({ type: "closeWindow", eventType: event.type })
+        closeWindow({ eventType: event.type })
         // Handle event
         switch (event.type) {
           case LoginClient.events.connect:

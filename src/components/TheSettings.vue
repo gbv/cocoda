@@ -418,6 +418,7 @@ import auth from "../mixins/auth.js"
 import objects from "../mixins/cdk.js"
 import computed from "../mixins/computed.js"
 import { getItem, loadConcepts } from "@/items"
+import { openWindow } from "@/utils/window-manager.js"
 
 /**
  * The settings modal.
@@ -751,8 +752,7 @@ export default {
         url = this.config.auth + "logout"
         eventType = "logout"
       }
-      this.$store.commit({
-        type: "auth/openWindow",
+      openWindow({
         url,
         eventType,
       })

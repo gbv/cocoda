@@ -205,8 +205,7 @@
           <p
             v-if="authorized"
             class="navbar-dropdown-selectable"
-            @click="$store.commit({
-              type: 'auth/openWindow',
+            @click="openWindow({
               url: config.auth + 'logout',
               eventType: 'logout',
             })">
@@ -315,6 +314,7 @@ import auth from "../mixins/auth.js"
 import objects from "../mixins/cdk.js"
 import dragandrop from "../mixins/dragandrop.js"
 import computed from "../mixins/computed.js"
+import { openWindow } from "@/utils/window-manager.js"
 
 /**
  * The navigation bar.
@@ -338,6 +338,7 @@ export default {
   data() {
     return {
       settingsTab: 0,
+      openWindow,
     }
   },
   computed: {
