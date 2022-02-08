@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "db0820fc7076c9e46105633c576cb5e1a6c860d4",
-  "gitCommitShort": "db0820f",
-  "gitCommitMessage": "db0820f Adjust Vite config to remove certain warnings when building",
-  "buildDate": "2022-02-04T11:13:39Z",
-  "date": "2022-02-04T11:12:33.000Z",
+  "gitCommit": "0f8cedf36ce88189013b932a1c7aabe605520bb2",
+  "gitCommitShort": "0f8cedf",
+  "gitCommitMessage": "0f8cedf Move opening/closing login window into separate file (#662)",
+  "buildDate": "2022-02-08T14:09:11Z",
+  "date": "2022-02-08T14:08:11.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
