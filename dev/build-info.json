@@ -1,11 +1,11 @@
 {
   "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "2c93b57256145ec244f42349600adf77c810259d",
-  "gitCommitShort": "2c93b57",
-  "gitCommitMessage": "2c93b57 Release version 1.5.3",
-  "buildDate": "2022-02-09T08:12:33Z",
-  "date": "2022-02-09T08:11:44.000Z",
+  "gitCommit": "5d0b5186dc116992945b81f46a6abea13074b644",
+  "gitCommitShort": "5d0b518",
+  "gitCommitMessage": "5d0b518 Adjust Docker workflow",
+  "buildDate": "2022-02-09T08:21:36Z",
+  "date": "2022-02-09T08:18:38.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
