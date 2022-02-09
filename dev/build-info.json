@@ -1,11 +1,11 @@
 {
   "version": "1.5.2",
   "gitBranch": "dev",
-  "gitCommit": "0f8cedf36ce88189013b932a1c7aabe605520bb2",
-  "gitCommitShort": "0f8cedf",
-  "gitCommitMessage": "0f8cedf Move opening/closing login window into separate file (#662)",
-  "buildDate": "2022-02-08T14:09:11Z",
-  "date": "2022-02-08T14:08:11.000Z",
+  "gitCommit": "afda726d015bd9661db89352cd18fb0a26ed7044",
+  "gitCommitShort": "afda726",
+  "gitCommitMessage": "afda726 Update dependencies",
+  "buildDate": "2022-02-09T07:38:31Z",
+  "date": "2022-02-09T07:36:25.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
