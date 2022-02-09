@@ -1,11 +1,11 @@
 {
-  "version": "1.5.2",
+  "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "afda726d015bd9661db89352cd18fb0a26ed7044",
-  "gitCommitShort": "afda726",
-  "gitCommitMessage": "afda726 Update dependencies",
-  "buildDate": "2022-02-09T07:38:31Z",
-  "date": "2022-02-09T07:36:25.000Z",
+  "gitCommit": "2c93b57256145ec244f42349600adf77c810259d",
+  "gitCommitShort": "2c93b57",
+  "gitCommitMessage": "2c93b57 Release version 1.5.3",
+  "buildDate": "2022-02-09T08:12:33Z",
+  "date": "2022-02-09T08:11:44.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
