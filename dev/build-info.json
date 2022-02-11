@@ -1,11 +1,11 @@
 {
   "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "5d0b5186dc116992945b81f46a6abea13074b644",
-  "gitCommitShort": "5d0b518",
-  "gitCommitMessage": "5d0b518 Adjust Docker workflow",
-  "buildDate": "2022-02-09T08:21:36Z",
-  "date": "2022-02-09T08:18:38.000Z",
+  "gitCommit": "65b88c67da663b9c8d29fb810ca9f287819469e9",
+  "gitCommitShort": "65b88c6",
+  "gitCommitMessage": "65b88c6 Update cocoda-sdk and gbv-login-client dependencies",
+  "buildDate": "2022-02-11T10:34:05Z",
+  "date": "2022-02-11T10:32:55.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
