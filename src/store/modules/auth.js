@@ -2,7 +2,7 @@
  * Vuex module for authentication using gbv-login-client.
  */
 
-import LoginClient from "gbv-login-client"
+import { LoginClient } from "gbv-login-client"
 import log from "../../utils/log.js"
 import { closeWindow } from "@/utils/window-manager.js"
 let client
