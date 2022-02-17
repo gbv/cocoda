@@ -1,11 +1,11 @@
 {
   "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "d53022ef2cf3a94ebf6a818667dd276b028da534",
-  "gitCommitShort": "d53022e",
-  "gitCommitMessage": "d53022e Replace feedback menu button with dropdown",
-  "buildDate": "2022-02-17T11:04:17Z",
-  "date": "2022-02-17T11:03:12.000Z",
+  "gitCommit": "ada0ee742a6513d09804eb50382554036f8df836",
+  "gitCommitShort": "ada0ee7",
+  "gitCommitMessage": "ada0ee7 Revert last commit; instead, update feedback URL",
+  "buildDate": "2022-02-17T11:25:44Z",
+  "date": "2022-02-17T11:24:48.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
