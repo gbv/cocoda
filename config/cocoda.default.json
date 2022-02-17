@@ -693,6 +693,12 @@
         "en": "Privacy Policy",
         "de": "Datenschutz"
       }
+    },
+    {
+      "url": "https://coli-conc.gbv.de/contact/",
+      "prefLabel": {
+        "en": "Feedback"
+      }
     }
   ],
   "guidelines": [
