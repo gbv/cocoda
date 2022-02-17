@@ -1,11 +1,11 @@
 {
   "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "65b88c67da663b9c8d29fb810ca9f287819469e9",
-  "gitCommitShort": "65b88c6",
-  "gitCommitMessage": "65b88c6 Update cocoda-sdk and gbv-login-client dependencies",
-  "buildDate": "2022-02-11T10:34:05Z",
-  "date": "2022-02-11T10:32:55.000Z",
+  "gitCommit": "d53022ef2cf3a94ebf6a818667dd276b028da534",
+  "gitCommitShort": "d53022e",
+  "gitCommitMessage": "d53022e Replace feedback menu button with dropdown",
+  "buildDate": "2022-02-17T11:04:17Z",
+  "date": "2022-02-17T11:03:12.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
