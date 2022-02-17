@@ -36,6 +36,26 @@
         target="_blank">
         {{ $t("general.manual") }}
       </b-nav-item>
+      <!-- Feedback dropdown -->
+      <b-nav-item-dropdown
+        ref="feedbackDropdown"
+        :text="$t('navbar.feedback')"
+        menu-class="navbar-dropdown"
+        no-caret
+        right
+        @mouseover.native="dropdownSetStatus($refs.feedbackDropdown, true); _dropdownSetStatus($refs.feedbackDropdown, true)"
+        @mouseout.native="dropdownSetStatus($refs.feedbackDropdown, false)">
+        <p
+          class="navbar-dropdown-selectable"
+          @click="openWindow({ url: `mailto:coli-conc@gbv.de?subject=Cocoda Mapping Tool`, name: '_self' })">
+          {{ $t("navbar.feedbackGeneral") }}: coli-conc@gbv.de
+        </p>
+        <p
+          class="navbar-dropdown-selectable"
+          @click="openWindow({ url: 'https://github.com/gbv/cocoda/issues/new' })">
+          {{ $t("navbar.feedbackTechnical") }}
+        </p>
+      </b-nav-item-dropdown>
       <!-- Full Cocoda button (only if reduced) -->
       <b-nav-item
         v-if="reduced"

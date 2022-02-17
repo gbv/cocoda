@@ -43,7 +43,10 @@
       "openRight": "open on right side",
       "removeFromFavorites": "remove from favorites",
       "setIdentity": "Configure a mapping identity",
-      "defaultIdentity": "Default Identity"
+      "defaultIdentity": "Default Identity",
+      "feedback": "Feedback",
+      "feedbackGeneral": "General and editorial feedback",
+      "feedbackTechnical": "Technical feedback via GitHub"
     },
     "schemeSelection": {
       "source": "Source Scheme",
@@ -370,7 +373,10 @@
       "openRight": "auf der rechten Seite öffnen",
       "removeFromFavorites": "aus den Favoriten entfernen",
       "setIdentity": "Mapping-Identität festlegen",
-      "defaultIdentity": "Standard-Identität"
+      "defaultIdentity": "Standard-Identität",
+      "feedback": "Feedback",
+      "feedbackGeneral": "Allgemeine oder redaktionelle Rückmeldungen",
+      "feedbackTechnical": "Technische Rückmeldungen über GitHub"
     },
     "schemeSelection": {
       "source": "Quell-Vokabular",

@@ -693,12 +693,6 @@
         "en": "Privacy Policy",
         "de": "Datenschutz"
       }
-    },
-    {
-      "url": "https://github.com/gbv/cocoda/issues/new",
-      "prefLabel": {
-        "en": "Feedback"
-      }
     }
   ],
   "guidelines": [
