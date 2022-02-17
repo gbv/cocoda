@@ -477,22 +477,6 @@ hr {
 .nav-link:hover, .btn-link:hover {
   color: @color-text-grey !important;
 }
-.feedbackModal .modal-dialog {
-  height: 90%;
-}
-.feedbackModal .modal-content {
-  height: 100%;
-}
-.feedbackModal iframe {
-  overflow:hidden;
-  position:absolute;
-  height:100%;
-  width:100%;
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
-}
 .navbar-dropdown {
   overflow-x: hidden;
   // Offset to the right
