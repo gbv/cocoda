@@ -597,7 +597,7 @@ export default {
       if (filter) {
         const keywordsForScheme = (scheme) => _.flattenDeep(_.concat([], Object.values(scheme.prefLabel || {}), Object.values(scheme.altLabel || {}), scheme.notation || [])).map(k => k.toLowerCase())
         this.filteredSchemes = this._schemes.filter(
-          scheme => keywordsForScheme(scheme).find(keyword => keyword.startsWith(filter)),
+          scheme => keywordsForScheme(scheme).find(keyword => keyword.includes(filter)),
         )
       } else {
         this.filteredSchemes = this._schemes.filter(
