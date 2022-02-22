@@ -1,11 +1,11 @@
 {
   "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "ada0ee742a6513d09804eb50382554036f8df836",
-  "gitCommitShort": "ada0ee7",
-  "gitCommitMessage": "ada0ee7 Revert last commit; instead, update feedback URL",
-  "buildDate": "2022-02-17T11:25:44Z",
-  "date": "2022-02-17T11:24:48.000Z",
+  "gitCommit": "3134591b3fffe28ea60ca4b4d6633428436594b5",
+  "gitCommitShort": "3134591",
+  "gitCommitMessage": "3134591 ConceptSchemeSelection: Allow searching for part of label (#674)",
+  "buildDate": "2022-02-22T11:05:21Z",
+  "date": "2022-02-22T11:04:15.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
