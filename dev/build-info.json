@@ -1,11 +1,11 @@
 {
   "version": "1.5.3",
   "gitBranch": "dev",
-  "gitCommit": "93a184b76d8b4516db794034403ac27c951e6f3f",
-  "gitCommitShort": "93a184b",
-  "gitCommitMessage": "93a184b Prefer interface lang as voc lang if no pref langs are set (#672)",
-  "buildDate": "2022-02-22T11:13:48Z",
-  "date": "2022-02-22T11:11:50.000Z",
+  "gitCommit": "02c0661d489fe6537ed3f23fcb7485c1a7b54046",
+  "gitCommitShort": "02c0661",
+  "gitCommitMessage": "02c0661 Update dependencies",
+  "buildDate": "2022-02-22T11:22:45Z",
+  "date": "2022-02-22T11:21:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
