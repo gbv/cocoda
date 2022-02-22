@@ -81,7 +81,18 @@ const getters = {
   languages: (state) => {
     let languages = ["en", "de"]
     if (state.configLoaded) {
-      languages = _.uniq(state.settings.settings.preferredLanguages.concat(state.config.languages || languages))
+      languages = _.uniq(state.settings.settings.preferredLanguages.concat(
+        // Prefer interface language if no preferred languages are set
+        (state.config.languages || languages).sort((a, b) => {
+          if (a === state.settings.settings.locale) {
+            return -1
+          }
+          if (b === state.settings.settings.locale) {
+            return 1
+          }
+          return 0
+        }),
+      ))
     }
     return languages
   },
