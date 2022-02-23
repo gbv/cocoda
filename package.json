@@ -1,6 +1,6 @@
 {
   "name": "cocoda-2018",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "jskos-api": "^1.0",
   "description": "Cocoda Mapping Tool",
   "author": "Stefan Peters <stefan.peters@gbv.de>",
