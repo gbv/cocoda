@@ -575,7 +575,7 @@ export default {
       let prefLabel = this.$jskos.prefLabel(getItem(this.selected.concept[isLeft]), { fallbackToUri: false })
       // Adjust prefLabel by removing everything from the first non-whitespace, non-letter character.
       let regexResult = /^[\s\wäüöÄÜÖß]*\w/.exec(prefLabel)
-      this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : "")
+      this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : prefLabel)
     },
     setConceptSearchQuery(isLeft, query, open) {
       let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Right" : "Left"}[0]`)
