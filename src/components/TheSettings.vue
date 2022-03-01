@@ -132,7 +132,7 @@
             :key="`settingsModal-other-registries-${index}`"
             class="settingsModal-mapping-registry">
             <b-form-checkbox
-              v-if="registry.has.mappings"
+              v-if="registry.has.mappings !== false"
               v-model="showRegistry[registry.uri]" />
             <registry-info
               :registry="registry"

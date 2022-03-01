@@ -70,7 +70,7 @@ export default {
     },
     mappingRegistries() {
       let registries = this.config.registries.filter(registry =>
-        registry.has.mappings || registry.has.occurrences,
+        registry.has.mappings !== false || registry.has.occurrences !== false,
       )
       return registries
     },
@@ -264,7 +264,7 @@ export default {
       if (!registry) {
         throw new Error("getMappings: No registry to get mappings from.")
       }
-      if (!registry.has.mappings) {
+      if (registry.has.mappings == false) {
         throw new Error(`getMappings: Registry ${registry.uri} does not support mappings.`)
       }
       // Adjust certain parameters in the config

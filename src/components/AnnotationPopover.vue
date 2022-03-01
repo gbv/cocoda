@@ -258,7 +258,7 @@ export default {
     },
     assessing(value) {
       let provider = this.provider
-      if (!provider || !provider.has.annotations) {
+      if (!provider || provider.has.annotations === false) {
         this.$log.warn("No provider found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
@@ -375,7 +375,7 @@ export default {
     },
     async confirm() {
       const provider = this.provider
-      if (!provider || !provider.has.annotations) {
+      if (!provider || provider.has.annotations === false) {
         this.$log.warn("No provider found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return

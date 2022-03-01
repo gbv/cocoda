@@ -351,7 +351,7 @@ export default {
     },
     // Returns an array of all available registries
     availableRegistries() {
-      return this.config.registries.filter(registry => registry.has.concepts)
+      return this.config.registries.filter(registry => registry.has.concepts !== false)
     },
     // Returns an array of all available languages.
     availableLanguages() {

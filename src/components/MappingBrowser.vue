@@ -712,13 +712,13 @@ export default {
     },
     concordanceRegistries() {
       return this.config.registries.filter(r =>
-        r.has.concordances, // only use registries that offer concordances
+        r.has.concordances !== false, // only use registries that offer concordances
       )
     },
     concordanceUrls() {
       let urls = {}
       for (let registry of this.concordanceRegistries) {
-        if (registry.has.concordances && registry._api.concordances) {
+        if (registry.has.concordances !== false && registry._api.concordances) {
           urls[this.$jskos.prefLabel(registry)] = registry._api.concordances
         }
       }

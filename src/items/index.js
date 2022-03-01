@@ -245,7 +245,7 @@ export async function loadTypes(scheme, { registry, force = false } = {}) {
   if (!registry) {
     throw new Error(`loadTop: Could not find registry for item ${scheme.uri}`)
   }
-  if (!registry.has.types) {
+  if (registry.has.types === false) {
     // Set to empty array
     modifyItem(scheme, "types", [])
     return []
@@ -270,7 +270,7 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
   if (!registry) {
     throw new Error(`loadTop: Could not find registry for item ${scheme.uri}`)
   }
-  if (!registry.has.top) {
+  if (registry.has.top === false) {
     // Set to empty array
     modifyItem(scheme, "topConcepts", [])
     return []
@@ -368,7 +368,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
   if (!registry) {
     throw new Error(`loadNarrower: Could not find registry for item ${concept.uri}`)
   }
-  if (!registry.has.narrower) {
+  if (registry.has.narrower === false) {
     // Set to empty array
     modifyItem(concept, "narrower", [])
     return []
@@ -408,7 +408,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
   if (!registry) {
     throw new Error(`loadAncestors: Could not find registry for item ${concept.uri}`)
   }
-  if (!registry.has.ancestors) {
+  if (registry.has.ancestors === false) {
     // Set to empty array
     modifyItem(concept, "ancestors", [])
     return []
