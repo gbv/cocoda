@@ -6,6 +6,7 @@
 
 <script>
 import computed from "../mixins/computed.js"
+import { getRegistryName } from "@/utils"
 
 export default {
   name: "RegistryName",
@@ -21,15 +22,8 @@ export default {
     },
   },
   computed: {
-    registryName: function () {
-      let label = this.$jskos.prefLabel(this.registry, { language: this.locale })
-      let notation = this.$jskos.notation(this.registry)
-      if (label) {
-        return label.replace(notation, function () { return "<b>"+notation+"</b>" })
-      } else {
-        notation = 0
-        return notation || "?"
-      }
+    registryName() {
+      return getRegistryName({ registry: this.registry, locale: this.locale })
     },
     tooltipHtml() {
       return this.$jskos.definition(this.registry, { language: this.locale }).join("<br>")

@@ -12,7 +12,7 @@
         :class="{
           'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
         }">
-        {{ $jskos.prefLabel(registry, { language: locale }) }}
+        {{ registryName }}
       </span>
       <a
         v-if="showDetails"
@@ -73,6 +73,7 @@
 
 <script>
 import RegistryNotation from "./RegistryNotation.vue"
+import { getRegistryName } from "@/utils"
 
 // Import mixins
 import auth from "../mixins/auth.js"
@@ -102,6 +103,11 @@ export default {
     inline: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    registryName() {
+      return getRegistryName({ registry: this.registry, locale: this.locale })
     },
   },
 }

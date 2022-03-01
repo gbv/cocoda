@@ -1,13 +1,14 @@
 <template>
   <div
+    v-if="notation"
     v-b-tooltip.html.left="tooltip ? $jskos.prefLabel(registry, { language: locale }) : ''"
     :class="{
       [isCurrentRegistry ? 'registry-current-enabled' : 'registry-enabled']: !disabled,
       'registry-notation-current': isCurrentRegistry,
     }"
-    :style="`width: ${18 + 9 * ($jskos.notation(registry).length - 1)}px;`"
+    :style="`width: ${18 + 9 * (notation.length - 1)}px;`"
     class="registry-notation">
-    {{ $jskos.notation(registry) }}
+    {{ notation }}
   </div>
 </template>
 
@@ -34,6 +35,9 @@ export default {
   computed: {
     isCurrentRegistry() {
       return this.$jskos.compareFast(this.registry, this.$store.getters.getCurrentRegistry)
+    },
+    notation() {
+      return this.$jskos.notation(this.registry) || ""
     },
   },
 }
