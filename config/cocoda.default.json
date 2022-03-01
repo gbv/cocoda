@@ -2,6 +2,18 @@
   "registries": [
     {
       "provider": "ConceptApi",
+      "uri": "http://coli-conc.gbv.de/registry/bartoc",
+      "status": "https://bartoc.org/api/status",
+      "schemes": "https://bartoc.org/api/voc?partOf=http%3A%2F%2Fbartoc.org%2Fen%2Fnode%2F18926",
+      "notation": [
+        "BARTOC"
+      ],
+      "prefLabel": {
+        "en": "BARTOC API"
+      }
+    },
+    {
+      "provider": "ConceptApi",
       "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
       "data": "https://coli-conc.gbv.de/services/gnd.php",
       "suggest": "https://ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
@@ -64,106 +76,6 @@
       }
     },
     {
-      "provider": "ConceptApi",
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-rvk",
-      "status": "https://coli-conc.gbv.de/rvk/api/status",
-      "notation": [
-        "RVK"
-      ],
-      "prefLabel": {
-        "de": "Regensburger Verbundklassifikation"
-      }
-    },
-    {
-      "provider": "ConceptApi",
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-concepts",
-      "status": "https://coli-conc.gbv.de/api/status",
-      "notation": [
-        "J"
-      ],
-      "prefLabel": {
-        "en": "JSKOS Server"
-      },
-      "definition": {
-        "en": [
-          "central JSKOS server instance of coli-conc"
-        ],
-        "de": [
-          "zentrale JSKOS-Server Instanz von coli-conc"
-        ]
-      }
-    },
-    {
-      "provider": "ConceptApi",
-      "uri": "http://coli-conc.gbv.de/registry/dante-concepts",
-      "status": "https://api.dante.gbv.de/status",
-      "notation": [
-        "D"
-      ],
-      "prefLabel": {
-        "en": "DANTE"
-      },
-      "definition": {
-        "en": [
-          "DANTE API with vocabularies at VZG"
-        ],
-        "de": [
-          "DANTE-API der VZG"
-        ]
-      }
-    },
-    {
-      "provider": "SkosmosApi",
-      "uri": "http://coli-conc.gbv.de/registry/skosmos-zbw",
-      "api": "https://zbw.eu/beta/skosmos/rest/v1/",
-      "prefLabel": {
-        "en": "Skosmos ZBW"
-      },
-      "notation": [
-        "S_ZBW"
-      ],
-      "schemes": [
-        {
-          "uri": "http://zbw.eu/stw",
-          "identifier": [
-            "http://bartoc.org/en/node/313"
-          ],
-          "VOCID": "stw"
-        }
-      ]
-    },
-    {
-      "provider": "SkosmosApi",
-      "uri": "http://coli-conc.gbv.de/registry/skosmos-bartoc",
-      "api": "https://bartoc-skosmos.unibas.ch/rest/v1/",
-      "prefLabel": {
-        "en": "Skosmos BARTOC"
-      },
-      "notation": [
-        "S_BRTC"
-      ],
-      "schemes": [
-        {
-          "uri": "http://eurovoc.europa.eu/domains",
-          "identifier": [
-            "http://bartoc.org/en/node/15"
-          ],
-          "notation": [
-            "EUROVOC"
-          ],
-          "VOCID": "EuroVoc",
-          "topConcepts": []
-        },
-        {
-          "uri": "https://bartoc.org/ILC/1",
-          "VOCID": "ILC",
-          "notation": [
-            "ILC"
-          ]
-        }
-      ]
-    },
-    {
       "provider": "MeshApi",
       "uri": "http://coli-conc.gbv.de/registry/mesh-concepts",
       "prefLabel": {
@@ -172,21 +84,6 @@
       "notation": [
         "MeSH"
       ]
-    },
-    {
-      "provider": "LocApi",
-      "uri": "http://coli-conc.gbv.de/registry/loc-concepts",
-      "notation": [
-        "LoC"
-      ],
-      "prefLabel": {
-        "en": "Library of Congress"
-      },
-      "definition": {
-        "en": [
-          "Access to Library of Congress vocabularies via their linked data service."
-        ]
-      }
     },
     {
       "provider": "LocalMappings",
