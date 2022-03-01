@@ -147,9 +147,28 @@ export default {
     otherScheme() {
       return getItem(this.selected.scheme[!this.isLeft])
     },
+    ancestors() {
+      const ancestors = this.conceptSelectedFromStore && this.conceptSelectedFromStore.ancestors
+      if (!ancestors) {
+        return null
+      }
+      return ancestors.map(ancestor => {
+        if (!ancestor) {
+          return ancestor
+        }
+        return getItem(ancestor)
+      })
+    },
   },
   watch: {
     conceptSelectedFromStore: {
+      handler() {
+        this.conceptSelectedUpdated()
+      },
+      deep: true,
+    },
+    // We need to watch ancestors as well because the previous watcher does not cover ancestors more than one step away.
+    ancestors: {
       handler() {
         this.conceptSelectedUpdated()
       },
@@ -272,10 +291,9 @@ export default {
       }
       if (this.$jskos.isConcept(concept)) {
         // Check if concept is fully loaded
-        if (!this.showChildren || (concept.ancestors && !concept.ancestors.includes(null))) {
+        if (!this.showChildren || (this.ancestors && !this.ancestors.includes(null))) {
           let fullyLoaded = true
-          for (let ancestor of concept.ancestors || []) {
-            ancestor = getItem(ancestor)
+          for (let ancestor of this.ancestors || []) {
             if (this.showChildren && (!ancestor.narrower || ancestor.narrower.includes(null))) {
               fullyLoaded = false
             }
@@ -284,7 +302,7 @@ export default {
             this.shouldScroll = false
             // Open ancestors
             if (this.showChildren) {
-              for (let ancestor of concept.ancestors || []) {
+              for (let ancestor of this.ancestors || []) {
                 this.open(ancestor, this.isLeft, true)
               }
             }
