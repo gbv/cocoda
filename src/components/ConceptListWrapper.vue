@@ -206,7 +206,7 @@ export default {
     },
     _topConcepts() {
       let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
-      return _.get(getItemByUri(uri), "topConcepts") || []
+      return _.get(getItemByUri(uri), "topConcepts") || [null]
     },
     concepts() {
       return this.currentChoice.concepts
