@@ -18,7 +18,6 @@ const mesh = {
   concepts: [null],
   topConcepts: [],
 }
-const apiBase = "https://id.nlm.nih.gov/mesh/"
 
 function buildConceptQuery({ where }) {
   // TODO: Ordering
@@ -89,6 +88,23 @@ export default class MeshApiProvider extends BaseProvider {
     }
   }
 
+  /**
+   * Used by `registryForScheme` (see src/lib/CocodaSDK.js) to determine a provider config for a concept schceme.
+   *
+   * @param {Object} options
+   * @param {Object} options.url API URL for server
+   * @returns {Object} provider configuration
+   */
+  static _registryConfigForBartocApiConfig({ url, scheme } = {}) {
+    if (!url || !scheme) {
+      return null
+    }
+    return {
+      api: url,
+      schemes: [scheme],
+    }
+  }
+
   async getSchemes() {
     return [mesh]
   }
@@ -107,7 +123,7 @@ export default class MeshApiProvider extends BaseProvider {
     const query = buildConceptQuery({ where: `VALUES ?d { ${concepts.map(c => `<${c.uri}>`).join(" ")} } .` })
     const result = await axios({
       method: "get",
-      url: `${apiBase}sparql`,
+      url: this._api.api,
       params: {
         ...this._defaultParams,
         ...(config.params || {}),
@@ -130,7 +146,7 @@ export default class MeshApiProvider extends BaseProvider {
     const query = buildConceptQuery({ where: `?d meshv:broaderDescriptor <${concept.uri}> .` })
     const result = await axios({
       method: "get",
-      url: `${apiBase}sparql`,
+      url: this._api.api,
       params: {
         ...this._defaultParams,
         ...(config.params || {}),
@@ -175,7 +191,7 @@ export default class MeshApiProvider extends BaseProvider {
     const query = buildConceptQuery({ where: `FILTER(REGEX(?name,"${search}","i"))` })
     const result = await axios({
       method: "get",
-      url: `${apiBase}sparql`,
+      url: this._api.api,
       params: {
         ...this._defaultParams,
         ...(config.params || {}),
