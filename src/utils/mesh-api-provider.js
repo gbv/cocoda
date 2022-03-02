@@ -1,4 +1,6 @@
 import { BaseProvider, errors } from "cocoda-sdk"
+// TODO: Maybe utils should be exported from cocoda-sdk properly.
+import { listOfCapabilities } from "cocoda-sdk/dist/esm/utils"
 import axios from "axios"
 import jskos from "jskos-tools"
 
@@ -62,7 +64,7 @@ function queryResultToConcepts(result) {
 
 export default class MeshApiProvider extends BaseProvider {
 
-  _setup() {
+  _prepare() {
     this.has.schemes = true
     this.has.top = false
     this.has.data = true
@@ -71,6 +73,10 @@ export default class MeshApiProvider extends BaseProvider {
     this.has.ancestors = false
     this.has.suggest = true
     this.has.search = true
+    // Explicitly set other capabilities to false
+    listOfCapabilities.filter(c => !this.has[c]).forEach(c => {
+      this.has[c] = false
+    })
     this._defaultParams = {
       format: "JSON",
       limit: 100,
