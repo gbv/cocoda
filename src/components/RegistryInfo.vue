@@ -36,7 +36,7 @@
     </div>
     <div v-if="showCapabilities">
       <span
-        v-for="type in ['schemes', 'concepts', 'mappings', 'annotations', 'occurrences']"
+        v-for="type in ['schemes', 'concepts', 'mappings', 'concordances', 'annotations', 'occurrences']"
         :key="`settings-info-capabilities-${type}`">
         <span v-if="registry.has[type]">
           <font-awesome-icon
