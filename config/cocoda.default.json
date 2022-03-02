@@ -44,38 +44,6 @@
       }
     },
     {
-      "provider": "ConceptApi",
-      "uri": "http://coli-conc.gbv.de/registry/wikidata-concepts",
-      "data": "https://coli-conc.gbv.de/services/wikidata/concept/",
-      "suggest": "https://coli-conc.gbv.de/services/wikidata/suggest?search={searchTerms}",
-      "schemes": [
-        {
-          "uri": "http://bartoc.org/en/node/1940",
-          "notation": [
-            "WD"
-          ],
-          "concepts": [
-            null
-          ],
-          "topConcepts": []
-        }
-      ],
-      "notation": [
-        "WD"
-      ],
-      "prefLabel": {
-        "en": "Wikidata"
-      },
-      "definition": {
-        "en": [
-          "Access to Wikidata in JSKOS format"
-        ],
-        "de": [
-          "Zugriff auf Wikidata im JSKOS-Format"
-        ]
-      }
-    },
-    {
       "provider": "MeshApi",
       "uri": "http://coli-conc.gbv.de/registry/mesh-concepts",
       "prefLabel": {
