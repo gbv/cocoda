@@ -775,6 +775,7 @@ export default {
   min-height: 40vh;
   padding-left: 3px;
   margin-bottom: 0px;
+  word-wrap: break-word;
 }
 
 .conceptSchemeSelection-filterPopover {
