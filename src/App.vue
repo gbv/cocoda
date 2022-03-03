@@ -86,6 +86,7 @@
               <resizing-slider />
               <!-- ConceptList -->
               <concept-list-wrapper
+                v-if="!(isLeft ? selectedSchemeLeft : selectedSchemeRight).concepts || (isLeft ? selectedSchemeLeft : selectedSchemeRight).concepts.length"
                 :id="'conceptListComponent_' + isLeft"
                 :ref="isLeft ? 'conceptListLeft' : 'conceptListRight'"
                 :is-left="isLeft"
