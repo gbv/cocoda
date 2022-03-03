@@ -1,11 +1,11 @@
 {
   "version": "1.5.4",
   "gitBranch": "dev",
-  "gitCommit": "fdf90d94b1899f374f5763dfc4bd14047df24646",
-  "gitCommitShort": "fdf90d9",
-  "gitCommitMessage": "fdf90d9 App.vue: Small adjustment to insertPrefLabel",
-  "buildDate": "2022-02-25T09:34:02Z",
-  "date": "2022-02-25T09:33:03.000Z",
+  "gitCommit": "8c2ef9421cce7e647b68f75d9b264e516780b7d4",
+  "gitCommitShort": "8c2ef94",
+  "gitCommitMessage": "8c2ef94 Adjustments to ItemName",
+  "buildDate": "2022-03-03T11:34:55Z",
+  "date": "2022-03-03T11:33:49.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
