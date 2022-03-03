@@ -61,6 +61,7 @@
       "schemeFilterPlaceholder": "search for schemes...",
       "starAdd": "add to favorites",
       "starRemove": "remove from favorites",
+      "noConcepts": "Cocoda can't access concept data for this scheme yet.",
       "popoverShow": "show scheme selection",
       "popoverHide": "hide scheme selection",
       "showAllSchemes": "Show all {count} schemes"
@@ -390,6 +391,7 @@
       "schemeFilterPlaceholder": "Suche nach Vokabularen...",
       "starAdd": "zu Favoriten hinzufügen",
       "starRemove": "aus Favoriten entfernen",
+      "noConcepts": "Cocoda kann aktuell nicht auf Konzeptdaten dieses Vokabulars zugreifen.",
       "popoverShow": "Vokabular-Auswahl öffnen",
       "popoverHide": "Vokabular-Auswahl ausblenden",
       "showAllSchemes": "Alle {count} Vokabulare anzeigen"
