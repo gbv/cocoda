@@ -44,16 +44,16 @@
       </span>
       <!-- Text for notation -->
       <span
-        v-if="showNotation"
+        v-if="showNotation && notation"
         :class="{ 'fontWeight-heavy': showText }"
+        style="margin-right: 3px;"
         v-html="notation" />
       <!-- Text for prefLabel -->
       <span
         v-if="showText || !notation"
         :class="{
           'fontWeight-medium': true
-        }">
-        {{ prefLabel }}
+        }">{{ prefLabel }}
       </span>
     </div>
   </div>
