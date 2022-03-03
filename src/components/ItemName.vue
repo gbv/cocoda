@@ -28,13 +28,6 @@
         },
         'fontSize-'+(fontSize || 'normal')
       ]">
-      <!-- Show icon for concepts where no data could be loaded -->
-      <span
-        v-if="_item && _item.__DETAILSLOADED__ == -1"
-        v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
-        class="fontSize-small">
-        <font-awesome-icon icon="bolt" />
-      </span>
       <!-- Show icon for combined concepts -->
       <span
         v-if="_item && _item.type && _item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
@@ -56,6 +49,13 @@
         }">{{ prefLabel }}
       </span>
     </div>
+    <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
+    <span
+      v-if="isScheme ? (_item.concepts && !_item.concepts.length) : (_item && _item.__DETAILSLOADED__ == -1)"
+      v-b-tooltip.hover="{ title: isScheme ? $t('itemDetail.noConcepts') : $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
+      class="itemName-missingDataIndicator">
+      •
+    </span>
   </div>
 </template>
 
@@ -182,6 +182,9 @@ export default {
       // Line breaks between title and this content
       return [""].concat(result).join("<br>")
     },
+    isScheme() {
+      return this.$jskos.isScheme(this._item)
+    },
   },
   watch: {
     _item: function() {
@@ -289,5 +292,10 @@ export default {
   height: 1em;
   margin-top: 0.2em;
   background: @color-background;
+}
+.itemName-missingDataIndicator {
+  color: @color-danger !important;
+  font-weight: bold;
+  user-select: none;
 }
 </style>

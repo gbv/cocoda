@@ -21,14 +21,6 @@
       </div>
       <!-- Name of scheme -->
       <div class="conceptSchemeSelection-schemeName">
-        <!-- Favorite star -->
-        <font-awesome-icon
-          v-b-tooltip.hover="{ title: $jskos.isContainedIn(scheme, favoriteSchemes) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
-          :class="$jskos.isContainedIn(scheme, favoriteSchemes) ? 'starFavorite' : 'starNormal'"
-          class="pointer"
-          icon="star"
-          @click="toggleFavoriteScheme(scheme)" />
-        &nbsp;
         <!-- Name of scheme -->
         <item-name
           :item="scheme"

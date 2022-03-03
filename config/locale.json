@@ -61,7 +61,6 @@
       "schemeFilterPlaceholder": "search for schemes...",
       "starAdd": "add to favorites",
       "starRemove": "remove from favorites",
-      "noConcepts": "Cocoda can't access concept data for this scheme yet.",
       "popoverShow": "show scheme selection",
       "popoverHide": "hide scheme selection",
       "showAllSchemes": "Show all {count} schemes"
@@ -114,6 +113,7 @@
     "itemDetail": {
       "pleaseSelect": "Please select a scheme or concept.",
       "combinedConcept": "combined concept",
+      "noConcepts": "Cocoda can't access concept data for this scheme yet.",
       "unknownConcept": "unknown concept"
     },
     "mappingEditor": {
@@ -391,7 +391,6 @@
       "schemeFilterPlaceholder": "Suche nach Vokabularen...",
       "starAdd": "zu Favoriten hinzufügen",
       "starRemove": "aus Favoriten entfernen",
-      "noConcepts": "Cocoda kann aktuell nicht auf Konzeptdaten dieses Vokabulars zugreifen.",
       "popoverShow": "Vokabular-Auswahl öffnen",
       "popoverHide": "Vokabular-Auswahl ausblenden",
       "showAllSchemes": "Alle {count} Vokabulare anzeigen"
@@ -521,6 +520,7 @@
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
       "combinedConcept": "zusammengesetztes Konzept",
+      "noConcepts": "Cocoda kann aktuell nicht auf Konzeptdaten dieses Vokabulars zugreifen.",
       "unknownConcept": "unbekanntes Konzept"
     },
     "mappingBrowser": {
