@@ -1,15 +1,10 @@
 <template>
   <div
     v-if="_item != null"
-    :draggable="draggable"
     class="itemName"
-    :class="{
-      'itemName-hoverable': !preventExternalHover && isValidLink
-    }"
+    :draggable="draggable"
     @dragstart="dragStart(_item, $event)"
-    @dragend="dragEnd"
-    @mouseover="hovering(true)"
-    @mouseout="hovering(false)">
+    @dragend="dragEnd">
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
@@ -21,13 +16,17 @@
         boundary: 'window',
       } : null"
       :to="url"
+      class="itemName-inner"
       :class="[
         {
           'itemName-hovered': isValidLink && isHovered,
-          'itemName-highlighted': isHighlighted
+          'itemName-highlighted': isHighlighted,
+          'itemName-hoverable': !preventExternalHover && isValidLink,
         },
         'fontSize-'+(fontSize || 'normal')
-      ]">
+      ]"
+      @mouseover="hovering(true)"
+      @mouseout="hovering(false)">
       <!-- Show icon for combined concepts -->
       <span
         v-if="_item && _item.type && _item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
@@ -50,12 +49,12 @@
       </span>
     </div>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
-    <span
+    <div
       v-if="isScheme ? (_item.concepts && !_item.concepts.length) : (_item && _item.__DETAILSLOADED__ == -1)"
       v-b-tooltip.hover="{ title: isScheme ? $t('itemDetail.noConcepts') : $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
       class="itemName-missingDataIndicator">
       •
-    </span>
+    </div>
   </div>
 </template>
 
@@ -252,21 +251,23 @@ export default {
   display: inline;
   user-select: text !important;
 }
-.itemName > * {
+.itemName-inner, .itemName-inner > * {
   color: @color-text-dark !important;
   display: inline;
 }
-.itemName-hovered, .itemName-hoverable:hover > div {
+.itemName-hovered, .itemName-hoverable:hover {
   cursor: pointer;
   text-decoration: underline !important;
 }
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
 }
-</style>
-
-<style lang="less" scoped>
-@import "../style/colors.less";
+.itemName-missingDataIndicator {
+  color: @color-danger !important;
+  font-weight: bold;
+  display: inline;
+  user-select: none;
+}
 
 /* Multiline text truncation: http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/ */
 .itemName-details {
@@ -292,10 +293,5 @@ export default {
   height: 1em;
   margin-top: 0.2em;
   background: @color-background;
-}
-.itemName-missingDataIndicator {
-  color: @color-danger !important;
-  font-weight: bold;
-  user-select: none;
 }
 </style>
