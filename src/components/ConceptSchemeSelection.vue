@@ -123,7 +123,7 @@
                 <a
                   ref="removeAllFiltersLink"
                   href=""
-                  @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+                  @click.prevent="onlyFavorites = false; onlyWithConcepts = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
                   {{ $t("schemeSelection.filtersRemove") }}
                 </a>
               </p>
@@ -132,6 +132,11 @@
                 v-model="onlyFavorites"
                 size="sm">
                 {{ $t("schemeSelection.filterOnlyFavorites") }}
+              </b-form-checkbox>
+              <b-form-checkbox
+                v-model="onlyWithConcepts"
+                size="sm">
+                {{ $t("schemeSelection.filterOnlyWithConcepts") }}
               </b-form-checkbox>
               <!-- Registry filter -->
               <div
@@ -323,6 +328,8 @@ export default {
       typeFilter: [],
       // Flag whether to show only favorite concepts
       onlyFavorites: true,
+      // Flag whether to show only schemes that potentially have concepts
+      onlyWithConcepts: false,
       // Item component for VirtualList
       itemComponent: ConceptSchemeSelectionItemVue,
       // TODO: To mitigate performance issues, we're updating these properties in a debounced watcher.
@@ -347,7 +354,7 @@ export default {
     },
     // Indicates whether there is a filter active.
     isFiltered() {
-      return this.schemeFilter != "" || this.registryFilter.length < this.availableRegistries.length || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites
+      return this.schemeFilter != "" || this.registryFilter.length < this.availableRegistries.length || (this.languageFilter.length - 1) < this.availableLanguages.length || (this.typeFilter.length - 1) < this.availableTypes.length || this.onlyFavorites || this.onlyWithConcepts
     },
     // Returns an array of all available registries
     availableRegistries() {
@@ -425,6 +432,12 @@ export default {
     },
     onlyFavorites() {
       this.schemeFilter = ""
+      this.updateProperties()
+    },
+    onlyWithConcepts(value) {
+      if (value) {
+        this.onlyFavorites = false
+      }
       this.updateProperties()
     },
     favoriteSchemes() {
@@ -521,6 +534,9 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          ) &&
+          (
+            !this.onlyWithConcepts || this.hasConcepts(scheme)
           ),
       )
       this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compareFast(registry, scheme._registry)))
@@ -538,6 +554,9 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          ) &&
+          (
+            !this.onlyWithConcepts || this.hasConcepts(scheme)
           ),
       )
       this.shownLanguages = _.uniq([].concat(...schemes.map(scheme => scheme.languages || []))).sort()
@@ -555,6 +574,9 @@ export default {
           ) &&
           (
             !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+          ) &&
+          (
+            !this.onlyWithConcepts || this.hasConcepts(scheme)
           ),
       )
       this.shownTypes = _.uniq(_.flatten(schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
@@ -616,6 +638,9 @@ export default {
             ) &&
             (
               !this.onlyFavorites || this.$jskos.isContainedIn(scheme, this.favoriteSchemes)
+            ) &&
+            (
+              !this.onlyWithConcepts || this.hasConcepts(scheme)
             ),
         )
       }
@@ -679,6 +704,9 @@ export default {
       } else {
         this.showPopover()
       }
+    },
+    hasConcepts(scheme) {
+      return !scheme.concepts || scheme.concepts.length
     },
   },
 }
