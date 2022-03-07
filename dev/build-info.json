@@ -1,11 +1,11 @@
 {
   "version": "1.5.4",
   "gitBranch": "dev",
-  "gitCommit": "930cf8e67a136565d1040c84f58d3d52f9006acc",
-  "gitCommitShort": "930cf8e",
-  "gitCommitMessage": "930cf8e Update locale strings",
-  "buildDate": "2022-03-07T08:31:11Z",
-  "date": "2022-03-07T08:30:18.000Z",
+  "gitCommit": "ee68e1fd936559b23692f47f51ab940b08def4d3",
+  "gitCommitShort": "ee68e1f",
+  "gitCommitMessage": "ee68e1f Respect a scheme's DISPLAY.hideNotation property (#677)",
+  "buildDate": "2022-03-07T10:18:02Z",
+  "date": "2022-03-07T10:16:26.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
