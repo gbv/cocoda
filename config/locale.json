@@ -114,7 +114,7 @@
       "pleaseSelect": "Please select a scheme or concept.",
       "combinedConcept": "combined concept",
       "noConcepts": "Cocoda can't access concept data for this scheme yet.",
-      "unknownConcept": "unknown concept"
+      "unknownConcept": "Data for this concept could not be loaded."
     },
     "mappingEditor": {
       "title": "Mapping Editor",
@@ -521,7 +521,7 @@
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
       "combinedConcept": "zusammengesetztes Konzept",
       "noConcepts": "Cocoda kann aktuell nicht auf Konzeptdaten dieses Vokabulars zugreifen.",
-      "unknownConcept": "unbekanntes Konzept"
+      "unknownConcept": "Infos zu diesem Konzept konnten nicht geladen werden."
     },
     "mappingBrowser": {
       "title": "Mapping-Browser",
