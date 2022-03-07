@@ -8,7 +8,7 @@
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
-      v-b-popover="showPopover && (itemDetails.length || !showText || !showNotation) ? {
+      v-b-popover="showPopover && (itemDetails.length || !showText || !_showNotation) ? {
         placement: 'top',
         trigger: 'hover',
         content: `<div class='fontSize-${fontSize || 'normal'}'><b>${notation} ${prefLabel}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
@@ -36,7 +36,7 @@
       </span>
       <!-- Text for notation -->
       <span
-        v-if="showNotation && notation"
+        v-if="_showNotation && notation"
         :class="{ 'fontWeight-heavy': showText }"
         style="margin-right: 3px;"
         v-html="notation" />
@@ -162,10 +162,17 @@ export default {
   },
   computed: {
     _item() {
-      return getItem(this.item) || this.item
+      return getItem(this.item, { relatedItems: true }) || this.item
     },
     isHovered() {
       return this.isHoveredFromHere || (!this.preventExternalHover && this.$jskos.compareFast(this.$store.state.hoveredConcept, this._item))
+    },
+    _showNotation() {
+      return !this.showNotation ? false : (
+        _.get(this._item, "inScheme[0].DISPLAY.hideNotation") === true && this.showText && this.prefLabel
+          ? false
+          : true
+      )
     },
     notation() {
       return this.getNotation(this._item, null, true)

@@ -64,6 +64,7 @@
           <font-awesome-icon icon="puzzle-piece" />
         </span>
         <span
+          v-if="showNotation"
           class="fontWeight-heavy"
           v-html="notation" />
         <span
@@ -193,13 +194,16 @@ export default {
       return this.$store.state.settings.settings.components.ConceptListWrapper.loadConceptsMappedStatus
     },
     concept() {
-      return getItem(this.source.concept) || this.source.concept
+      return getItem(this.source.concept, { relatedItems: true }) || this.source.concept
     },
     depth() {
       return this.source.depth
     },
     isSelected() {
       return this.source.isSelected
+    },
+    showNotation() {
+      return _.get(this.concept, "inScheme[0].DISPLAY.hideNotation") === true && this.prefLabel ? false : true
     },
     notation() {
       return this.getNotation(this.concept, "concept", true)
