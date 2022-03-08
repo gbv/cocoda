@@ -282,7 +282,7 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
       // Save concept
       return saveItem(concept, { type: "concept", scheme })
     })
-    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts).map(mapMinimalProps))
+    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts, !!_.get(scheme, "DISPLAY.numericalNotation")).map(mapMinimalProps))
   } catch (error) {
     // Ignore error, show warning only.
     log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty types list.`)
@@ -374,6 +374,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
     return []
   }
   try {
+    const scheme = getItem(_.get(concept, "inScheme[0]"))
     const narrower = (await registry.getNarrower({ concept })).map(child => {
       // Set ancestors
       // TODO: Include registry.has.ancestors?
@@ -387,9 +388,9 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
         child.broader = [concept]
       }
       // Save concept
-      return saveItem(child, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
+      return saveItem(child, { type: "concept", scheme })
     })
-    const narrowerSorted = jskos.sortConcepts(narrower).map(mapMinimalProps)
+    const narrowerSorted = jskos.sortConcepts(narrower, !!_.get(scheme, "DISPLAY.numericalNotation")).map(mapMinimalProps)
     modifyItem(concept, "narrower", narrowerSorted)
     return narrowerSorted
   } catch (error) {
