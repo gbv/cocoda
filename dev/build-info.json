@@ -1,11 +1,11 @@
 {
   "version": "1.5.4",
   "gitBranch": "dev",
-  "gitCommit": "ee68e1fd936559b23692f47f51ab940b08def4d3",
-  "gitCommitShort": "ee68e1f",
-  "gitCommitMessage": "ee68e1f Respect a scheme's DISPLAY.hideNotation property (#677)",
-  "buildDate": "2022-03-07T10:18:02Z",
-  "date": "2022-03-07T10:16:26.000Z",
+  "gitCommit": "7177ad379b5f8119c50f9225a4b9f31d0ded2364",
+  "gitCommitShort": "7177ad3",
+  "gitCommitMessage": "7177ad3 Numerically sort concepts by notations if configured (#677)",
+  "buildDate": "2022-03-08T12:12:16Z",
+  "date": "2022-03-08T12:11:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
