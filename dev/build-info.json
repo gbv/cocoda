@@ -1,11 +1,11 @@
 {
   "version": "1.5.4",
   "gitBranch": "dev",
-  "gitCommit": "7177ad379b5f8119c50f9225a4b9f31d0ded2364",
-  "gitCommitShort": "7177ad3",
-  "gitCommitMessage": "7177ad3 Numerically sort concepts by notations if configured (#677)",
-  "buildDate": "2022-03-08T12:12:16Z",
-  "date": "2022-03-08T12:11:09.000Z",
+  "gitCommit": "5ff9ee9e9b8e3e222e8d4af9740ab971762ed741",
+  "gitCommitShort": "5ff9ee9",
+  "gitCommitMessage": "5ff9ee9 Small style changes",
+  "buildDate": "2022-03-09T08:17:36Z",
+  "date": "2022-03-09T08:16:11.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
