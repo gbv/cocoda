@@ -1,11 +1,11 @@
 {
   "version": "1.5.4",
   "gitBranch": "dev",
-  "gitCommit": "5ff9ee9e9b8e3e222e8d4af9740ab971762ed741",
-  "gitCommitShort": "5ff9ee9",
-  "gitCommitMessage": "5ff9ee9 Small style changes",
-  "buildDate": "2022-03-09T08:17:36Z",
-  "date": "2022-03-09T08:16:11.000Z",
+  "gitCommit": "d2f3e12e7e0dce519da353221ca424ce8848553c",
+  "gitCommitShort": "d2f3e12",
+  "gitCommitMessage": "d2f3e12 ConceptDetail: Improve sorting of labels, notes, etc. by language",
+  "buildDate": "2022-03-09T09:08:20Z",
+  "date": "2022-03-09T09:06:59.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
