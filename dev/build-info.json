@@ -1,11 +1,11 @@
 {
-  "version": "1.5.4",
+  "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "d2f3e12e7e0dce519da353221ca424ce8848553c",
-  "gitCommitShort": "d2f3e12",
-  "gitCommitMessage": "d2f3e12 ConceptDetail: Improve sorting of labels, notes, etc. by language",
-  "buildDate": "2022-03-09T09:08:20Z",
-  "date": "2022-03-09T09:06:59.000Z",
+  "gitCommit": "c6ac9d0cf8fe56ab477cc47d12ad33827da7fc35",
+  "gitCommitShort": "c6ac9d0",
+  "gitCommitMessage": "c6ac9d0 Release version 1.6.0",
+  "buildDate": "2022-03-09T09:11:06Z",
+  "date": "2022-03-09T09:07:48.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
