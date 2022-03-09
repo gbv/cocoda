@@ -38,15 +38,10 @@
       <span
         v-if="_showNotation && notation"
         :class="{ 'fontWeight-heavy': showText }"
-        style="margin-right: 3px;"
+        :style="showText ? 'margin-right: 3px;' : ''"
         v-html="notation" />
       <!-- Text for prefLabel -->
-      <span
-        v-if="showText || !notation"
-        :class="{
-          'fontWeight-medium': true
-        }">{{ prefLabel }}
-      </span>
+      <span v-if="showText || !notation">{{ prefLabel }}</span>
     </div>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
     <div
@@ -256,7 +251,7 @@ export default {
 
 .itemName {
   display: inline;
-  user-select: text !important;
+  user-select: text;
 }
 .itemName-inner, .itemName-inner > * {
   color: @color-text-dark !important;
@@ -264,7 +259,7 @@ export default {
 }
 .itemName-hovered, .itemName-hoverable:hover {
   cursor: pointer;
-  text-decoration: underline !important;
+  text-decoration: underline;
 }
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
