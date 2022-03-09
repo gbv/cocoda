@@ -166,23 +166,24 @@
           </span>
         </div>
         <template v-if="item.definition">
+          <b>{{ $t("conceptDetail.definition") }}:</b>
           <div
-            v-for="language in [$jskos.languagePreference.selectLanguage(item.definition)].concat(Object.keys(item.definition).filter(language => language != $jskos.languagePreference.selectLanguage(item.definition) && language != '-'))"
-            :key="`conceptDetail-${isLeft}-defintion-${language}`"
+            v-for="({ language, definition }, index) in Object.keys(item.definition || {}).map(language => item.definition[language].map(definition => ({ language, definition }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort(sortByLanguage)"
+            :key="`conceptDetail-${isLeft}-defintion-${language}-${index}`"
             class="conceptDetail-identifier">
-            <b>{{ $t("conceptDetail.definition") }}:</b> {{ $jskos.definition(item, { language }).join(", ") }} <sup class="text-lightGrey">{{ language }}</sup>
+            {{ definition }} <sup class="text-lightGrey">{{ language }}</sup>
           </div>
         </template>
       </tab>
       <tab :title="$t('conceptDetail.labels')">
         <div
-          v-for="language in [$jskos.languagePreference.selectLanguage(item.prefLabel)].concat(Object.keys(item.prefLabel || {}).filter(language => language != $jskos.languagePreference.selectLanguage(item.prefLabel))).filter(language => language && language != '-')"
+          v-for="({ language, label }) in Object.keys(item.prefLabel || {}).map(language => ({ language, label: item.prefLabel[language] })).filter(item => item.language != '-').sort(sortByLanguage)"
           :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
           class="conceptDetail-identifier">
           <span
             class="fontWeight-medium"
-            @click="copyAndSearch($jskos.prefLabel(item, { language }))">
-            {{ $jskos.prefLabel(item, { language }) }}
+            @click="copyAndSearch(label)">
+            {{ label }}
           </span>
           <sup class="text-lightGrey">{{ language }}</sup>
         </div>
@@ -200,7 +201,7 @@
           {{ $t("conceptDetail.altLabels") }}:
         </div>
         <div
-          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $jskos.languagePreference.selectLanguage(item.altLabel) ? -1 : (b.language == $jskos.languagePreference.selectLanguage(item.altLabel) ? 1 : 0))"
+          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort(sortByLanguage)"
           :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
           class="conceptDetail-identifier">
           <span @click="copyAndSearch(label)">
@@ -219,7 +220,7 @@
           :hidden="notes == ''"
           class="conceptDetail-notes">
           <div
-            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort((a, b) => a.language == $jskos.languagePreference.selectLanguage(notes) ? -1 : (b.language == $jskos.languagePreference.selectLanguage(notes) ? 1 : 0))"
+            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort(sortByLanguage)"
             :key="`conceptDetail-${isLeft}-notes-${language}-${index2}`"
             class="conceptDetail-note">
             <span v-html="note" />
@@ -618,6 +619,16 @@ export default {
         scheme: getItem(this.selected.scheme[this.isLeft]),
         ...searchLinkInfo,
       })
+    },
+    sortByLanguage(a, b) {
+      const aIndex = this.languages.indexOf(a.language), bIndex = this.languages.indexOf(b.language)
+      if (bIndex === -1) {
+        return -1
+      }
+      if (aIndex === -1) {
+        return 1
+      }
+      return aIndex - bIndex
     },
   },
 }
