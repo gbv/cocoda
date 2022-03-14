@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "c6ac9d0cf8fe56ab477cc47d12ad33827da7fc35",
-  "gitCommitShort": "c6ac9d0",
-  "gitCommitMessage": "c6ac9d0 Release version 1.6.0",
-  "buildDate": "2022-03-09T09:11:06Z",
-  "date": "2022-03-09T09:07:48.000Z",
+  "gitCommit": "a290946cc00cc222e5b2775a94aba357419d4b4a",
+  "gitCommitShort": "a290946",
+  "gitCommitMessage": "a290946 Update cocoda-sdk with small fix",
+  "buildDate": "2022-03-14T12:51:09Z",
+  "date": "2022-03-14T12:50:07.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
