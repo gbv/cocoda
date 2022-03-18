@@ -2,11 +2,14 @@
   <div
     :id="`annotationPopoverTop-${iid}`"
     class="annotationPopoverTop">
+    <!-- Values for disabled and triggers are needed because we're running our own logic for showing/hiding popovers. -->
     <b-popover
       v-if="enable"
       ref="annotationPopover"
       :target="element"
       :show.sync="show"
+      :triggers="[]"
+      :disabled="true"
       boundary="window"
       placement="lefttop">
       <loading-indicator-full
