@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "a290946cc00cc222e5b2775a94aba357419d4b4a",
-  "gitCommitShort": "a290946",
-  "gitCommitMessage": "a290946 Update cocoda-sdk with small fix",
-  "buildDate": "2022-03-14T12:51:09Z",
-  "date": "2022-03-14T12:50:07.000Z",
+  "gitCommit": "143044f317e353c3c26ffaa2358fc223eb4d22c9",
+  "gitCommitShort": "143044f",
+  "gitCommitMessage": "143044f Fix buggy behavior in AnnotationPopover (#680)",
+  "buildDate": "2022-03-18T08:19:05Z",
+  "date": "2022-03-18T08:16:40.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
