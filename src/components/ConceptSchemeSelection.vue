@@ -717,6 +717,8 @@ export default {
 }
 .conceptSchemeSelection-schemeName {
   padding-right: 30px;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .conceptSchemeSelection-conceptSearch {
   margin-top: 5px;
