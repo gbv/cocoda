@@ -73,7 +73,7 @@
     },
     "conceptDetail": {
       "showAllAncestors": "show all ancestors",
-      "showLessAncestors": "show less ancesters",
+      "showLessAncestors": "show fewer ancestors",
       "created": "Created",
       "modified": "Modified",
       "issued": "Issued",
@@ -141,7 +141,7 @@
       "warningNoRegistry": "There is no writable mapping registry configured in this Cocoda instance.",
       "warningUpdateRegistry": "Mapping will not be updated in {0}, but saved as a new mapping in {1}.",
       "warningUpdateNotAllowed": "Mapping can't be updated and will therefore be saved as a new mapping.",
-      "warningUpdateScheme": "Updated mapping will be saved with a different {0}, are you sure this is intented? If not, you can clone the mapping (button to the right of the delete button)."
+      "warningUpdateScheme": "Updated mapping will be saved with a different {0}, are you sure this is intended? If not, you can clone the mapping (button to the right of the delete button)."
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -177,7 +177,7 @@
       "searchClear": "Clear",
       "searchSubmit": "Search",
       "searchBidirectional": "Bidirectional",
-      "searchBidirectionalTooltip": "If checked, mappings in both directions will be searched.",
+      "searchBidirectionalTooltip": "If checked, mappings will be searched in both directions.",
       "searchShareLabel": "Link",
       "searchShareTitle": "Share link to this search",
       "searchShareInclude": "Include selected schemes and concepts",
@@ -190,7 +190,7 @@
       "openInCocoda": "open in Cocoda",
       "lockScheme": "lock search scheme to selected scheme",
       "unlockScheme": "unlock search scheme from selected scheme",
-      "registryHasErrored": "There has been an error when trying to load mappings from this registry. The shown results can be inaccurate."
+      "registryHasErrored": "There has been an error when trying to load mappings from this registry. The shown results may be inaccurate."
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -271,8 +271,8 @@
       "mappingNotRestored": "Mapping could not be restored in {0}.",
       "annotationSaved": "Annotation was saved.",
       "annotationRemoved": "Annotation was removed.",
-      "annotationNotSaved": "Annotation could not be saved.",
-      "annotationNotRemoved": "Annotation could not be removed.",
+      "annotationNotSaved": "Annotation could not be saved. Please check your authentication.",
+      "annotationNotRemoved": "Annotation could not be removed. Please check your authentication.",
       "annotationError": "There was an error regarding annotations. Please try again later.",
       "newVersionText": "There is a new version of Cocoda.",
       "newVersionLink": "Refresh site",
@@ -341,7 +341,7 @@
       "no": "Nein",
       "swapSides": "Seiten tauschen",
       "clearScheme": "Vokabular entfernen",
-      "addToMapping": "Konzepm zum Mapping hinzufügen",
+      "addToMapping": "Konzept zum Mapping hinzufügen",
       "loading": "Lade...",
       "cancel": "Abbrechen",
       "authNecessary": "Authentifizierung notwendig.",
@@ -520,7 +520,7 @@
     "itemDetail": {
       "pleaseSelect": "Bitte Vokabular oder Konzept auswählen.",
       "combinedConcept": "zusammengesetztes Konzept",
-      "noConcepts": "Cocoda kann aktuell nicht auf Konzeptdaten dieses Vokabulars zugreifen.",
+      "noConcepts": "Cocoda kann noch nicht auf Konzeptdaten dieses Vokabulars zugreifen.",
       "unknownConcept": "Infos zu diesem Konzept konnten nicht geladen werden."
     },
     "mappingBrowser": {
@@ -569,7 +569,7 @@
       "mappingConfirmedTooltip": "Bestätigt",
       "openInCocoda": "in Cocoda öffnen",
       "lockScheme": "binde Suchvokabular an das ausgewählte Vokabular",
-      "unlockScheme": "entbinde Suchvokabular von dem ausgewählten Vokabular",
+      "unlockScheme": "löse Suchvokabular von dem ausgewählten Vokabular",
       "registryHasErrored": "Beim Laden von Mappings aus diesem Register ist ein Fehler aufgetreten. Das angezeigte Ergebnis kann inakkurat sein."
     },
     "mappingDetail": {
@@ -652,10 +652,11 @@
       "BackendUnavailableError": "Der Server ist nicht erreichbar.",
       "BackendError": "Der Server scheint Probleme zu haben.",
       "MissingApiUrlError": "@:cdkErrors.CDKError",
-      "MethodNotImplementedError": "Der Server scheint diese Aktion nicht zu unterstützten oder wurde nicht richtig konfiguriert.",
+      "MethodNotImplementedError": "Der Server scheint diese Aktion nicht zu unterstützen oder wurde nicht richtig konfiguriert.",
       "NetworkError": "Es gibt Probleme mit der Netzwerkverbindung.",
       "InvalidOrMissingParameterError": "Ein Parameter scheint fehlerhaft zu sein oder zu fehlen.",
-      "InvalidRequestError": "Die Anfrage scheint fehlerhaft zu sein."
+      "InvalidRequestError": "Die Anfrage scheint fehlerhaft zu sein.",
+      "CDKError": "Unbekannter Fehler."
     }
   }
 }
