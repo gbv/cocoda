@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "55bf7924b325250e6b77dcf7866cdef477157fc4",
-  "gitCommitShort": "55bf792",
-  "gitCommitMessage": "55bf792 ConceptSchemeSelection: Fix display of long concept scheme names",
-  "buildDate": "2022-03-18T11:04:24Z",
-  "date": "2022-03-18T11:02:30.000Z",
+  "gitCommit": "d1ff9f1abb508699ce6b2c7ad71fd01883bd653a",
+  "gitCommitShort": "d1ff9f1",
+  "gitCommitMessage": "d1ff9f1 Update locale.json",
+  "buildDate": "2022-03-29T08:12:22Z",
+  "date": "2022-03-29T08:11:07.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
