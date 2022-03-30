@@ -61,7 +61,9 @@
             <flexible-table
               style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
               :fields="concordanceTableFields"
-              :items="concordanceTableItems">
+              :items="concordanceTableItems"
+              :sort-by="'date'"
+              :sort-direction="-1">
               <span
                 slot="download"
                 slot-scope="{ value }">
