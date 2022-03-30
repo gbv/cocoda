@@ -77,7 +77,7 @@
               <span
                 slot="mappings"
                 slot-scope="{ value }">
-                {{ (parseInt(value) || "?").toLocaleString() }}
+                {{ (isNaN(value) ? "?" : value).toLocaleString() }}
               </span>
               <span
                 slot="actions"
@@ -116,7 +116,7 @@
             </p>
             <p style="text-align: right; font-weight: bold; padding-right: 45px;">
               {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
-                return total + parseInt(current.mappings) || 0
+                return total + current.mappings || 0
               }, 0).toLocaleString() }} {{ $t("general.of") }} {{ totalNumberOfMappings && totalNumberOfMappings.toLocaleString() || "?" }}
             </p>
             <data-modal-button
@@ -587,11 +587,11 @@ export default {
         item.to = _.get(concordance, "toScheme")
         item.to = getItem(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
-        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || "-"
+        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || _.get(concordance, "notation[0]") || "-"
         item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
-        item.mappings = _.get(concordance, "extent")
+        item.mappings = parseInt(_.get(concordance, "extent"))
         if (item.fromNotation.toLowerCase().startsWith(this.concordanceFilter.from.toLowerCase()) && item.toNotation.toLowerCase().startsWith(this.concordanceFilter.to.toLowerCase()) && item.creator.toLowerCase().startsWith(this.concordanceFilter.creator.toLowerCase())) {
           items.push(item)
         }
