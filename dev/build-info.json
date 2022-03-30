@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "d1ff9f1abb508699ce6b2c7ad71fd01883bd653a",
-  "gitCommitShort": "d1ff9f1",
-  "gitCommitMessage": "d1ff9f1 Update locale.json",
-  "buildDate": "2022-03-29T08:12:22Z",
-  "date": "2022-03-29T08:11:07.000Z",
+  "gitCommit": "9e80ac0d8ab2ad8ac0042e35f05fbec962314938",
+  "gitCommitShort": "9e80ac0",
+  "gitCommitMessage": "9e80ac0 Small adjustment regarding description/extent of concordances",
+  "buildDate": "2022-03-30T07:30:26Z",
+  "date": "2022-03-30T07:28:37.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
