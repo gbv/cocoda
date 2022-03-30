@@ -269,6 +269,10 @@
       "mappingNotSaved": "Mapping could not be saved in {0}.",
       "mappingRestored": "Mapping was restored in {0}.",
       "mappingNotRestored": "Mapping could not be restored in {0}.",
+      "concordanceSaved": "Concordance saved.",
+      "concordanceNotSaved": "Concordance could not be saved.",
+      "concordanceDeleted": "Concordance deleted.",
+      "concordanceNotDeleted": "Concordance could not be deleted.",
       "annotationSaved": "Annotation was saved.",
       "annotationRemoved": "Annotation was removed.",
       "annotationNotSaved": "Annotation could not be saved. Please check your authentication.",
@@ -327,6 +331,14 @@
       "NetworkError": "There are issues with the connection.",
       "InvalidRequestError": "The request seems to be invalid.",
       "MissingApiUrlError": "@:cdkErrors.CDKError"
+    },
+    "concordanceEditor": {
+      "addConcordance": "Add Concordance",
+      "addConcordanceButton": "add new concordance",
+      "editConcordance": "Edit Concordance",
+      "editConcordanceButton": "edit concordance",
+      "pleaseSelect": "Please select a vocabulary",
+      "save": "Save Concordance"
     }
   },
   "de": {
@@ -599,6 +611,10 @@
       "mappingNotSaved": "Mapping konnte nicht in {0} gespeichert werden.",
       "mappingRestored": "Mapping wurde in {0} wiederhergestellt.",
       "mappingNotRestored": "Mapping konnte nicht in {0} wiederhergestellt werden.",
+      "concordanceSaved": "Konkordanz gespeichert.",
+      "concordanceNotSaved": "Konkordanz konnte nicht gespeichert werden.",
+      "concordanceDeleted": "Konkordanz gelöscht.",
+      "concordanceNotDeleted": "Konkordanz konnte nicht gelöscht werden.",
       "annotationSaved": "Annotation wurde gespeichert.",
       "annotationRemoved": "Annotation wurde entfernt.",
       "annotationNotSaved": "Annotation konnte nicht gespeichert werden. Bitte Authentifizierung prüfen.",
@@ -657,6 +673,14 @@
       "InvalidOrMissingParameterError": "Ein Parameter scheint fehlerhaft zu sein oder zu fehlen.",
       "InvalidRequestError": "Die Anfrage scheint fehlerhaft zu sein.",
       "CDKError": "Unbekannter Fehler."
+    },
+    "concordanceEditor": {
+      "addConcordance": "Konkordanz erstellen",
+      "addConcordanceButton": "neue Konkordanz erstellen",
+      "editConcordance": "Konkordanz editieren",
+      "editConcordanceButton": "Konkordanz editieren",
+      "pleaseSelect": "Bitte ein Vokabular auswählen",
+      "save": "Konkordanz speichern"
     }
   }
 }

@@ -15,6 +15,7 @@ import jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
+import auth from "./auth.js"
 import { getItem, getItems, modifyItem, saveItem, schemes } from "@/items"
 
 let objects = {}
@@ -24,7 +25,7 @@ let erroredConcepts = []
 let concordances = []
 
 export default {
-  mixins: [computed],
+  mixins: [computed, auth],
   data() {
     return {
       objects,
@@ -73,6 +74,11 @@ export default {
         registry.has.mappings !== false || registry.has.occurrences !== false,
       )
       return registries
+    },
+    concordanceRegistries() {
+      return this.config.registries.filter(r =>
+        r.has.concordances !== false, // only use registries that offer concordances
+      )
     },
     // show registries
     showRegistry() {
@@ -569,6 +575,128 @@ export default {
     // Wrapper around cdk.repeat
     repeat(...params) {
       return cdk.repeat(...params)
+    },
+    // Concordance Methods
+    async loadConcordances() {
+      try {
+        const concordances = _.flatten(await Promise.all(this.concordanceRegistries.map(r => r.getConcordances())))
+        // Set values of concordance array
+        _.forEach(concordances, (concordance, index) => {
+          this.$set(this.concordances, index, concordance)
+        })
+        this.concordances.length = concordances.length
+      } catch (error) {
+        this.$log.error("MappingBrowser - Error loading concordances", error)
+      }
+    },
+    canCreateConcordance({ registry = this.currentRegistry, concordance, user = this.user } = {}) {
+      if (!registry || !registry.isAuthorizedFor({
+        type: "concordances",
+        action: "create",
+        user,
+      })) {
+        return false
+      }
+      if (!concordance) {
+        // When no concordance is given, simply return whether user is allow to create
+        return true
+      }
+      if (!concordance.fromScheme || !concordance.toScheme) {
+        return false
+      }
+      const notation = _.get(concordance, "notation[0]")
+      if (!notation || this.concordances.find(c => _.get(c, "notation[0]") === notation)) {
+        return false
+      }
+      return true
+    },
+    canUpdateConcordance({ registry = this.currentRegistry, concordance, user = this.user }) {
+      if (!concordance) {
+        return false
+      }
+      if (!registry) {
+        return false
+      }
+      return registry.isAuthorizedFor({
+        type: "concordances",
+        action: "update",
+        user,
+        // TODO: This only includes the first creator. In the future, it should be possile to add additional creators.
+        crossUser: !this.$jskos.userOwnsMapping(user, concordance),
+      })
+    },
+    canDeleteConcordance({ registry = this.currentRegistry, concordance, user = this.user }) {
+      if (!concordance || parseInt(concordance.extent) > 0) {
+        return false
+      }
+      if (!registry) {
+        return false
+      }
+      return registry.isAuthorizedFor({
+        type: "concordances",
+        action: "delete",
+        user,
+        // TODO: This only includes the first creator. In the future, it should be possile to add additional creators.
+        crossUser: !this.$jskos.userOwnsMapping(user, concordance),
+      })
+    },
+    async postConcordance({ registry = this.currentRegistry, concordance, _reload = true, _alert = true }) {
+      try {
+        const config = {
+          concordance,
+        }
+        this._addIdentityParams(config)
+        const result = await registry.postConcordance(config)
+        if (_alert) {
+          this.alert(this.$t("alerts.concordanceSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
+        }
+        if (_reload) {
+          this.loadConcordances()
+        }
+        return result
+      } catch (error) {
+        console.error(error)
+        let message = `${this.$t("alerts.concordanceNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
+        this.alert(message, null, "danger")
+      }
+    },
+    async patchConcordance({ registry = this.currentRegistry, concordance, _reload = true, _alert = true }) {
+      try {
+        const config = {
+          concordance,
+        }
+        this._addIdentityParams(config)
+        const result = await registry.patchConcordance(config)
+        if (_alert) {
+          this.alert(this.$t("alerts.concordanceSaved"), null, "success")
+        }
+        if (_reload) {
+          this.loadConcordances()
+        }
+        return result
+      } catch (error) {
+        console.error(error)
+        let message = `${this.$t("alerts.concordanceNotSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])} ${this.getErrorMessage(error)}`
+        this.alert(message, null, "danger")
+      }
+    },
+    async deleteConcordance({ registry = this.currentRegistry, _reload = true, _alert = true, ...config }) {
+      try {
+        await registry.deleteConcordance(config)
+        if (_alert) {
+          this.alert(this.$t("alerts.concordanceDeleted"), null, "success")
+        }
+        if (_reload) {
+          this.loadConcordances()
+        }
+        return true
+      } catch (error) {
+        if (_alert) {
+          const message = `${this.$t("alerts.concordanceNotDeleted")} ${this.getErrorMessage(error)}`
+          this.alert(message, null, "danger")
+        }
+        throw error
+      }
     },
   },
 }

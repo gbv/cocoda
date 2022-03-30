@@ -55,7 +55,16 @@
                 @click="[concordanceFilter.from, concordanceFilter.to] = [concordanceFilter.to, concordanceFilter.from]">
                 <font-awesome-icon icon="exchange-alt" />
               </b-button>
+              <font-awesome-icon
+                v-if="field.key == 'actions' && canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
+                v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
+                icon="plus-square"
+                class="button"
+                @click="editConcordance(null)" />
             </div>
+            <concordance-editor-modal
+              ref="concordanceEditorModal"
+              :concordance="concordanceToEdit" />
           </div>
           <div style="flex: 1; height: 0; position: relative;">
             <flexible-table
@@ -84,6 +93,18 @@
               <span
                 slot="actions"
                 slot-scope="{ item }">
+                <font-awesome-icon
+                  v-if="canUpdateConcordance({ concordance: item.concordance })"
+                  v-b-tooltip.hover="{ title: $t('concordanceEditor.editConcordanceButton'), delay: defaults.delay.medium }"
+                  icon="edit"
+                  class="button"
+                  @click="editConcordance(item.concordance)" />
+                <font-awesome-icon
+                  v-if="canDeleteConcordance({ concordance: item.concordance })"
+                  v-b-tooltip.hover="{ title: 'edit concordance', delay: defaults.delay.medium }"
+                  icon="trash-alt"
+                  class="button-delete"
+                  @click="deleteConcordance({ concordance: item.concordance })" />
                 <font-awesome-icon
                   v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: defaults.delay.medium }"
                   icon="external-link-square-alt"
@@ -406,6 +427,7 @@ import RegistryNotation from "./RegistryNotation.vue"
 import ItemName from "./ItemName.vue"
 import ComponentSettings from "./ComponentSettings.vue"
 import DataModalButton from "./DataModalButton.vue"
+import ConcordanceEditorModal from "./ConcordanceEditorModal.vue"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
@@ -421,7 +443,7 @@ import { getItem, getItems, loadConcepts } from "@/items"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal },
   mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**
@@ -504,6 +526,7 @@ export default {
       navigatorRepeatManagers: {},
       // An object of error statuses for registries
       registryHasErrored: {},
+      concordanceToEdit: null,
     }
   },
   computed: {
@@ -529,7 +552,7 @@ export default {
         {
           key: "description",
           label: this.$t("mappingBrowser.description"),
-          width: "24%",
+          width: "22%",
           minWidth: "",
           sortable: true,
           align: "left",
@@ -564,7 +587,7 @@ export default {
         {
           key: "mappings",
           label: this.$t("registryInfo.mappings"),
-          width: "13%",
+          width: "11%",
           minWidth: "",
           sortable: true,
           align: "right",
@@ -573,7 +596,7 @@ export default {
         {
           key: "actions",
           label: "",
-          width: "4%",
+          width: "8%",
           sortable: false,
           align: "right",
         },
@@ -589,7 +612,7 @@ export default {
         item.to = _.get(concordance, "toScheme")
         item.to = getItem(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
-        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0] || _.get(concordance, "notation[0]") || "-"
+        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote", { language: this.locale }) || [])[0] || _.get(concordance, "notation[0]") || "-"
         item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
@@ -711,11 +734,6 @@ export default {
       let url = this.searchShareIncludeSelected ? window.location.href : window.location.href.split("?")[0]
       url += `${url.includes("?") ? "&" : "?"}${this.searchShareLinkPart}`
       return url
-    },
-    concordanceRegistries() {
-      return this.config.registries.filter(r =>
-        r.has.concordances !== false, // only use registries that offer concordances
-      )
     },
     concordanceUrls() {
       let urls = {}
@@ -935,18 +953,9 @@ export default {
   },
   async mounted() {
     if (!this.concordances || !this.concordances.length) {
-      try {
-        const concordances = _.flatten(await Promise.all(this.concordanceRegistries.map(r => r.getConcordances())))
-        // Set values of concordance array that is managed by objects mixin
-        _.forEach(concordances, (concordance, index) => {
-          this.$set(this.concordances, index, concordance)
-        })
-        this.concordances.length = concordances.length
-        // Also retrieve total number of mappings in those registries
-        this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
-      } catch (error) {
-        this.$log.error("MappingBrowser - Error loading concordances", error)
-      }
+      await this.loadConcordances()
+      // Also retrieve total number of mappings in those registries
+      this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
       this.concordancesLoaded = true
     }
     this.selectedChangedHandler()
@@ -1538,6 +1547,10 @@ export default {
           this.$set(this[`${type}Pages`], registry.uri, currentPage)
         })
       }
+    },
+    editConcordance(concordance) {
+      this.concordanceToEdit = concordance
+      this.$refs.concordanceEditorModal.show()
     },
   },
 }
