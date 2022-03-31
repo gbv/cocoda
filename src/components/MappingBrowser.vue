@@ -11,6 +11,19 @@
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
         <template v-if="concordances && concordances.length">
+          <!-- Add concordance button and modal -->
+          <div
+            v-if="canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
+            class="button mappingBrowser-addConcordanceButton"
+            @click="editConcordance(null)">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
+              icon="plus-square" />
+            New
+          </div>
+          <concordance-editor-modal
+            ref="concordanceEditorModal"
+            :concordance="concordanceToEdit" />
           <div style="display: flex; padding: 0px 4px;">
             <div
               v-for="field in concordanceTableFields"
@@ -55,16 +68,7 @@
                 @click="[concordanceFilter.from, concordanceFilter.to] = [concordanceFilter.to, concordanceFilter.from]">
                 <font-awesome-icon icon="exchange-alt" />
               </b-button>
-              <font-awesome-icon
-                v-if="field.key == 'actions' && canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
-                v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
-                icon="plus-square"
-                class="button"
-                @click="editConcordance(null)" />
             </div>
-            <concordance-editor-modal
-              ref="concordanceEditorModal"
-              :concordance="concordanceToEdit" />
           </div>
           <div style="flex: 1; height: 0; position: relative;">
             <flexible-table
@@ -1610,6 +1614,12 @@ export default {
 }
 #mappingBrowser-search-shareButton:hover {
   color: @color-button-hover;
+}
+
+.mappingBrowser-addConcordanceButton {
+  position: absolute;
+  top: 45px;
+  right: 10px;
 }
 
 </style>
