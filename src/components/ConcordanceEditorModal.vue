@@ -1,7 +1,7 @@
 <template>
   <b-modal
     ref="addConcordanceModal"
-    :title="$t('concordanceEditor.addConcordance')"
+    :title="$t(editing ? 'concordanceEditor.editConcordance' : 'concordanceEditor.addConcordance')"
     class="fontSize-normal"
     centered
     hide-footer
