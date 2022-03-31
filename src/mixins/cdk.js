@@ -589,6 +589,83 @@ export default {
         this.$log.error("MappingBrowser - Error loading concordances", error)
       }
     },
+    canAddMappingToConcordance({ registry = this.currentRegistry, concordance, mapping }) {
+      const user = this.user
+      const userUris = this.userUris
+      if (!concordance || !mapping || !registry || !registry.isAuthorizedFor({
+        type: "mappings",
+        action: "update",
+        user,
+      })) {
+        return false
+      }
+      // TODO: Move this method to separate method, maybe even to jskos
+      const isCreatorOrContributor = (concordance) => {
+        const mappingCreatorUris = [].concat(
+          concordance.creator || [],
+          concordance.contributor || [],
+        ).map(c => c.uri)
+        return _.intersection(userUris, mappingCreatorUris).length > 0
+      }
+      if (!mapping.partOf || mapping.partOf.length === 0) {
+        // Mapping not part of any concordance; check if user can update this mapping
+        if (!this.canUpdateMapping({ registry, mapping })) {
+          return false
+        }
+      } else {
+        // Mapping is part of concordance; check if user is creator/contributor of that concordance
+        const concordance = this.concordances.find(c => jskos.compare(c, mapping.partOf[0]))
+        if (!concordance || !isCreatorOrContributor(concordance)) {
+          return false
+        }
+      }
+      // Check if user is creator/contributor of target concordance
+      if (!isCreatorOrContributor(concordance)) {
+        // console.log("- Is not creator/contributor of target concordance")
+        return false
+      }
+      // Check if fromScheme/toScheme are equal
+      if (!jskos.compare(concordance.fromScheme, mapping.fromScheme) || !jskos.compare(concordance.toScheme, mapping.toScheme)) {
+        return false
+      }
+      return true
+    },
+    async addMappingToConcordance({ registry, _reload = true, _alert = true, mapping, concordance }) {
+      registry = this.getRegistry(registry || mapping._registry)
+      if (!registry) {
+        throw new Error("addMappingToConcordance: No registry to adjust mapping in.")
+      }
+      try {
+        const config = {
+          mapping: {
+            uri: mapping.uri,
+          },
+        }
+        if (concordance) {
+          // Add mapping to concordance
+          config.mapping.partOf = [{ uri: concordance.uri }]
+        } else {
+          // Remove mapping from concordance
+          config.mapping.partOf = []
+        }
+        const result = await registry.patchMapping(config)
+        console.log(result)
+        if (_reload) {
+          this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+          this.loadConcordances()
+        }
+        if (_alert) {
+          this.alert(this.$t(concordance ? "alerts.mappingAddedToConcordance" : "alerts.mappingRemovedFromConcordance"), null, "success")
+        }
+        return result
+      } catch (error) {
+        if (_alert) {
+          const message = `${this.$t(concordance ? "alerts.mappingNotAddedToConcordance" : "alerts.mappingNotRemovedFromConcordance")} ${this.getErrorMessage(error)}`
+          this.alert(message, null, "danger")
+        }
+        throw error
+      }
+    },
     canCreateConcordance({ registry = this.currentRegistry, concordance, user = this.user } = {}) {
       if (!registry || !registry.isAuthorizedFor({
         type: "concordances",

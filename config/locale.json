@@ -206,6 +206,7 @@
       "note": "Note",
       "identifier": "Identifier",
       "partOf": "Part of Concordance",
+      "partOfNone": "no concordance",
       "catalogEnrichment": "Search for Enrichment in K10plus"
     },
     "minimizer": {
@@ -273,6 +274,10 @@
       "concordanceNotSaved": "Concordance could not be saved.",
       "concordanceDeleted": "Concordance deleted.",
       "concordanceNotDeleted": "Concordance could not be deleted.",
+      "mappingAddedToConcordance": "Mapping was added to concordance.",
+      "mappingNotAddedToConcordance": "Mapping could not be added to concordance.",
+      "mappingRemovedFromConcordance": "Mapping was removed from concordance.",
+      "mappingNotRemovedFromConcordance": "Mapping could not be removed from concordance.",
       "annotationSaved": "Annotation was saved.",
       "annotationRemoved": "Annotation was removed.",
       "annotationNotSaved": "Annotation could not be saved. Please check your authentication.",
@@ -598,6 +603,7 @@
       "note": "Notiz",
       "identifier": "Identifier",
       "partOf": "Teil der Konkordanz",
+      "partOfNone": "keine Konkordanz",
       "catalogEnrichment": "Anreicherung im K10plus suchen"
     },
     "minimizer": {
@@ -615,6 +621,10 @@
       "concordanceNotSaved": "Konkordanz konnte nicht gespeichert werden.",
       "concordanceDeleted": "Konkordanz gelöscht.",
       "concordanceNotDeleted": "Konkordanz konnte nicht gelöscht werden.",
+      "mappingAddedToConcordance": "Mapping wurde zur Konkordanz hinzugefügt.",
+      "mappingNotAddedToConcordance": "Mapping konnte nicht zur Konkordanz hinzugefügt werden.",
+      "mappingRemovedFromConcordance": "Mapping wurde aus Konkordanz entfernt.",
+      "mappingNotRemovedFromConcordance": "Mapping konnte nicht aus Konkordanz entfernt werden",
       "annotationSaved": "Annotation wurde gespeichert.",
       "annotationRemoved": "Annotation wurde entfernt.",
       "annotationNotSaved": "Annotation konnte nicht gespeichert werden. Bitte Authentifizierung prüfen.",

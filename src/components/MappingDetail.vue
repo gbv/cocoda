@@ -126,18 +126,16 @@
             </div>
           </b-row>
           <!-- PartOf -->
-          <b-row v-if="mapping.partOf">
+          <b-row>
             <b-col cols="3">
               {{ $t("mappingDetail.partOf") }}:
             </b-col>
             <b-col>
-              <p
-                v-for="(part, index) in mapping.partOf"
-                :key="`mappingDetail-partOf-${index}`">
-                <auto-link
-                  :link="part.uri"
-                  :text="displayNameForConcordance(part)" />
-              </p>
+              <b-form-select
+                size="sm"
+                :options="concordanceOptions"
+                :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
+                @change="changeConcordance" />
             </b-col>
           </b-row>
           <!-- Identifier -->
@@ -211,6 +209,7 @@ import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
 
 import computed from "../mixins/computed.js"
+import cdk from "../mixins/cdk.js"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
@@ -218,7 +217,7 @@ import computed from "../mixins/computed.js"
 export default {
   name: "MappingDetail",
   components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString },
-  mixins: [computed],
+  mixins: [computed, cdk],
   props: {
     /**
      * Mapping object
@@ -235,6 +234,25 @@ export default {
         return null
       }
       return "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8659&TRM=" + this.mapping.uri.replace(/[\W_]+/g,"+")
+    },
+    availableTargetConcordances() {
+      console.log("availableTargetConcordances")
+      return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance }))
+    },
+    concordanceOptions() {
+      let options = [
+        { value: null, text: this.$t("mappingDetail.partOfNone") },
+      ]
+      console.log(this.availableTargetConcordances)
+      for (let concordance of this.availableTargetConcordances) {
+        let text = this.displayNameForConcordance(concordance)
+        options.push({
+          value: concordance.uri,
+          text,
+        })
+      }
+
+      return options
     },
   },
   methods: {
@@ -253,6 +271,10 @@ export default {
         }
       }
       return name
+    },
+    async changeConcordance(uri) {
+      const concordance = this.availableTargetConcordances.find(c => this.$jskos.compare(c, { uri }))
+      await this.addMappingToConcordance({ mapping: this.mapping, concordance })
     },
   },
 }
