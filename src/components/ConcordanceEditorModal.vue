@@ -31,6 +31,7 @@
       <b-input
         v-model="notation"
         type="text"
+        :placeholder="notationDefault"
         :disabled="editing" />
     </p>
     <p>
@@ -70,6 +71,7 @@ import computed from "../mixins/computed.js"
 import cdk from "../mixins/cdk.js"
 
 import _ from "lodash"
+import jskos from "jskos-tools"
 
 /**
  * ...
@@ -106,9 +108,24 @@ export default {
     toScheme() {
       return this.editing ? this.concordance.toScheme : this.selected.scheme[false]
     },
+    notationDefault() {
+      const fromSchemeNotation = this.getNotation(this.fromScheme).toLowerCase()
+      const toSchemeNotation = this.getNotation(this.toScheme).toLowerCase()
+      let notation = `${fromSchemeNotation}-${toSchemeNotation}`
+      let index = null
+      while (this.concordances.find(c => jskos.notation(c) === notation)) {
+        if (index) {
+          index += 1
+        } else {
+          index = 2
+        }
+        notation = `${fromSchemeNotation}-${toSchemeNotation}-${index}`
+      }
+      return notation
+    },
     _concordance() {
       const concordance = {
-        notation: [this.notation],
+        notation: [this.notation || this.notationDefault],
         fromScheme: this.fromScheme ? { uri: this.fromScheme.uri } : null,
         toScheme: this.toScheme ? { uri: this.toScheme.uri } : null,
       }
