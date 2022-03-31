@@ -7,10 +7,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "./bin/prepare.sh",
+    "_prepare": "./bin/prepare.sh",
     "dev": "npm run serve",
     "start": "npm run serve",
-    "serve": "npm run prepare; vite",
+    "serve": "npm run _prepare; vite",
     "build": "./build/build.sh",
     "build-all": "./build/build-all.sh",
     "lint": "eslint --ignore-path .gitignore --ext .js,.vue .",
