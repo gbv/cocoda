@@ -131,6 +131,11 @@
                   :is-left="false"
                   font-size="sm" />
               </span>
+              <span
+                slot="date"
+                slot-scope="{ value }">
+                <date-string :date="value" />
+              </span>
             </flexible-table>
           </div>
           <div style="display: flex;">
@@ -428,6 +433,7 @@ import ItemName from "./ItemName.vue"
 import ComponentSettings from "./ComponentSettings.vue"
 import DataModalButton from "./DataModalButton.vue"
 import ConcordanceEditorModal from "./ConcordanceEditorModal.vue"
+import DateString from "./DateString.vue"
 import _ from "lodash"
 // Only use for cancel token generation!
 import axios from "axios"
@@ -443,7 +449,7 @@ import { getItem, getItems, loadConcepts } from "@/items"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, DateString },
   mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**
