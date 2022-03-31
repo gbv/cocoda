@@ -50,7 +50,7 @@
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.5",
     "gbv-login-client": "^1.0.1",
-    "jskos-tools": "^1.0.25",
+    "jskos-tools": "github:gbv/jskos-tools#dev",
     "json-format-highlight": "^1.0.4",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
