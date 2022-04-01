@@ -11,15 +11,30 @@
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
         <template v-if="concordances && concordances.length">
-          <!-- Add concordance button and modal -->
+          <!-- Registry selection, add concordance button, and modal -->
           <div
-            v-if="canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
-            class="button mappingBrowser-addConcordanceButton"
-            @click="editConcordance(null)">
-            <font-awesome-icon
-              v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
-              icon="plus-square" />
-            New
+            v-if="concordanceRegistries.length"
+            class="mappingBrowser-concordanceMenu">
+            <registry-notation
+              v-for="registry in concordanceRegistries"
+              :key="registry.uri"
+              :registry="registry"
+              :disabled="!$jskos.compareFast(registry, currentConcordanceRegistry)"
+              class="mappingBrowser-search-registryNotation pointer"
+              @click.native="$store.commit({
+                type: 'settings/set',
+                prop: 'mappingRegistry',
+                value: registry.uri
+              })" />
+            <div
+              v-if="canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
+              class="button mappingBrowser-addConcordanceButton"
+              @click="editConcordance(null)">
+              <font-awesome-icon
+                v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
+                icon="plus-square" />
+              New
+            </div>
           </div>
           <concordance-editor-modal
             ref="concordanceEditorModal"
@@ -614,7 +629,7 @@ export default {
     },
     concordanceTableItems() {
       let items = []
-      for (let concordance of this.concordances || []) {
+      for (let concordance of (this.concordances || []).filter(c => this.$jskos.compare(c._registry, this.currentConcordanceRegistry))) {
         let item = { concordance }
         item.from = _.get(concordance, "fromScheme")
         item.from = getItem(item.from) || item.from
@@ -1616,10 +1631,16 @@ export default {
   color: @color-button-hover;
 }
 
-.mappingBrowser-addConcordanceButton {
+.mappingBrowser-concordanceMenu {
   position: absolute;
   top: 45px;
   right: 10px;
+}
+.mappingBrowser-concordanceMenu > * {
+  display: inline-block;
+}
+.mappingBrowser-addConcordanceButton {
+  margin-left: 4px;
 }
 
 </style>
