@@ -81,6 +81,12 @@ export default {
         r.has.concordances !== false, // only use registries that offer concordances
       )
     },
+    currentConcordanceRegistry() {
+      if (this.currentRegistry && this.currentRegistry.has.concordances) {
+        return this.currentRegistry
+      }
+      return this.concordanceRegistries[0]
+    },
     // show registries
     showRegistry() {
       let object = {}
@@ -623,7 +629,11 @@ export default {
         this.$log.error("MappingBrowser - Error loading concordances", error)
       }
     },
-    canAddMappingToConcordance({ registry = this.currentRegistry, concordance, mapping }) {
+    canAddMappingToConcordance({ registry, concordance, mapping }) {
+      registry = this.getRegistry(registry || mapping._registry)
+      if (!registry) {
+        throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
+      }
       const user = this.user
       const userUris = this.userUris
       if (!concordance || !mapping || !registry || !registry.isAuthorizedFor({
@@ -663,7 +673,11 @@ export default {
       }
       return true
     },
-    canRemoveMappingFromConcordance({ registry = this.currentRegistry, mapping }) {
+    canRemoveMappingFromConcordance({ registry, mapping }) {
+      registry = this.getRegistry(registry || mapping._registry)
+      if (!registry) {
+        throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
+      }
       const user = this.user
       const userUris = this.userUris
       if (!mapping || !registry || !registry.isAuthorizedFor({
@@ -691,7 +705,7 @@ export default {
     async addMappingToConcordance({ registry, _reload = true, _alert = true, mapping, concordance }) {
       registry = this.getRegistry(registry || mapping._registry)
       if (!registry) {
-        throw new Error("addMappingToConcordance: No registry to adjust mapping in.")
+        throw new Error("addMappingToConcordance: No registry for mapping.")
       }
       try {
         const config = {
@@ -723,7 +737,7 @@ export default {
         throw error
       }
     },
-    canCreateConcordance({ registry = this.currentRegistry, concordance, user = this.user } = {}) {
+    canCreateConcordance({ registry = this.currentConcordanceRegistry, concordance, user = this.user } = {}) {
       if (!registry || !registry.isAuthorizedFor({
         type: "concordances",
         action: "create",
@@ -744,10 +758,11 @@ export default {
       }
       return true
     },
-    canUpdateConcordance({ registry = this.currentRegistry, concordance, user = this.user }) {
+    canUpdateConcordance({ registry, concordance, user = this.user }) {
       if (!concordance) {
         return false
       }
+      registry = this.getRegistry(registry || concordance._registry)
       if (!registry) {
         return false
       }
@@ -759,10 +774,11 @@ export default {
         crossUser: !this.$jskos.userOwnsMapping(user, concordance),
       })
     },
-    canDeleteConcordance({ registry = this.currentRegistry, concordance, user = this.user }) {
+    canDeleteConcordance({ registry, concordance, user = this.user }) {
       if (!concordance || parseInt(concordance.extent) > 0) {
         return false
       }
+      registry = this.getRegistry(registry || concordance._registry)
       if (!registry) {
         return false
       }
@@ -774,7 +790,10 @@ export default {
         crossUser: !this.$jskos.userOwnsMapping(user, concordance),
       })
     },
-    async postConcordance({ registry = this.currentRegistry, concordance, _reload = true, _alert = true }) {
+    async postConcordance({ registry = this.currentConcordanceRegistry, concordance, _reload = true, _alert = true }) {
+      if (!concordance || !registry) {
+        throw new Error("postConcordance: No concordance or missing registry.")
+      }
       try {
         const config = {
           concordance,
@@ -794,7 +813,11 @@ export default {
         this.alert(message, null, "danger")
       }
     },
-    async patchConcordance({ registry = this.currentRegistry, concordance, _reload = true, _alert = true }) {
+    async patchConcordance({ registry, concordance, _reload = true, _alert = true }) {
+      registry = this.getRegistry(registry || concordance && concordance._registry)
+      if (!concordance || !registry) {
+        throw new Error("patchConcordance: No concordance or missing registry.")
+      }
       try {
         const config = {
           concordance,
@@ -814,9 +837,16 @@ export default {
         this.alert(message, null, "danger")
       }
     },
-    async deleteConcordance({ registry = this.currentRegistry, _reload = true, _alert = true, ...config }) {
+    async deleteConcordance({ registry, _reload = true, _alert = true, concordance, ...config }) {
+      registry = this.getRegistry(registry || concordance && concordance._registry)
+      if (!concordance || !registry) {
+        throw new Error("patchConcordance: No concordance or missing registry.")
+      }
       try {
-        await registry.deleteConcordance(config)
+        await registry.deleteConcordance({
+          concordance,
+          ...config,
+        })
         if (_alert) {
           this.alert(this.$t("alerts.concordanceDeleted"), null, "success")
         }
