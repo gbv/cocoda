@@ -236,14 +236,12 @@ export default {
       return "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8659&TRM=" + this.mapping.uri.replace(/[\W_]+/g,"+")
     },
     availableTargetConcordances() {
-      console.log("availableTargetConcordances")
       return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance }))
     },
     concordanceOptions() {
       let options = [
         { value: null, text: this.$t("mappingDetail.partOfNone") },
       ]
-      console.log(this.availableTargetConcordances)
       for (let concordance of this.availableTargetConcordances) {
         let text = this.displayNameForConcordance(concordance)
         options.push({
