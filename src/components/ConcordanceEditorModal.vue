@@ -175,7 +175,6 @@ export default {
       }
     },
     async addConcordance() {
-      console.log(this.description.en, this.description.de)
       const concordance = await this.postConcordance({ concordance: this._concordance })
       if (concordance) {
         this.reset()
