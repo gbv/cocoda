@@ -370,9 +370,12 @@ export default {
       // Show a warning if fromScheme/toScheme in mapping has changed from original
       for (let side of ["fromScheme", "toScheme"]) {
         if (this.original.uri && !this.$jskos.compare(this.mapping[side], this.original.mapping[side])) {
+          // Invalid if mapping is part of concordance
+          const invalid = !!_.get(this.original.mapping[side], "partOf[0]")
           return {
-            message: this.$t("mappingEditor.warningUpdateScheme", [side]),
+            message: this.$t("mappingEditor.warningUpdateScheme" + (invalid ? "Concordance" : ""), [side]),
             warning: true,
+            invalid,
           }
         }
       }
