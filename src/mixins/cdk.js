@@ -17,6 +17,7 @@ import _ from "lodash"
 import computed from "./computed.js"
 import auth from "./auth.js"
 import { getItem, getItems, modifyItem, saveItem, schemes } from "@/items"
+import log from "@/utils/log.js"
 
 let objects = {}
 let topConcepts = {}
@@ -419,7 +420,7 @@ export default {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
-            this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: config.mapping.uri }).then(success => {
+            this.restoreMappingFromTrash({ uri: config.mapping.uri }).then(success => {
               if (success) {
                 this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
               } else {
@@ -459,7 +460,7 @@ export default {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
-            this.$store.dispatch({ type: "mapping/restoreMappingFromTrash", uri: config.mapping.uri }).then(success => {
+            this.restoreMappingFromTrash({ uri: config.mapping.uri }).then(success => {
               if (success) {
                 this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
               } else {
@@ -509,6 +510,37 @@ export default {
           }
         }
       }
+    },
+    async restoreMappingFromTrash({ uri }) {
+      const item = this.$store.state.mapping.mappingTrash.find(item => item.mapping.uri == uri)
+      const registry = this.config.registries.find(registry => jskos.compareFast(registry, item && item.registry))
+      if (!item || !registry) {
+        log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
+        return false
+      }
+      // partOf needs to be updated separately via patch
+      const partOf = item.mapping.partOf
+      delete item.mapping.partOf
+      const mapping = await this.postMapping({ mapping: item.mapping, _alert: false, _reload: false })
+      if (mapping) {
+        // Add mapping to concordance if necessary
+        if (partOf) {
+          await this.addMappingToConcordance({ registry, mapping, concordance: partOf[0], _alert: false, _reload: false })
+          mapping.partOf = partOf
+        }
+        // Remove item from trash
+        this.$store.commit({
+          type: "mapping/removeFromTrash",
+          uri,
+        })
+        // Set refresh
+        this.$store.commit({
+          type: "mapping/setRefresh",
+          registry: registry.uri,
+        })
+        this.loadConcordances()
+      }
+      return true
     },
     canCreateMapping({ registry, mapping, user = this.user }) {
       if (!mapping || !registry) {

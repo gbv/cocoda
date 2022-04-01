@@ -1,7 +1,6 @@
 import jskos from "jskos-tools"
 import _ from "lodash"
 import Vue from "vue"
-import log from "../../utils/log.js"
 
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
@@ -448,40 +447,6 @@ const actions = {
           trash: [],
         })
       }
-    })
-  },
-
-  restoreMappingFromTrash({ state, rootState, commit }, { uri }) {
-    const { registries } = rootState.config
-    const item = state.mappingTrash.find(item => item.mapping.uri == uri)
-    const registry = registries.find(registry => jskos.compareFast(registry, item && item.registry))
-    if (!item || !registry) {
-      log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
-      return Promise.resolve(null)
-    }
-    const identity = _.get(item.mapping, "creator[0].uri") || rootState.settings.settings.creatorUri
-    const identityName = jskos.prefLabel(_.get(item.mapping, "creator[0]"), { fallbackToUri: false }) || rootState.settings.settings.creator
-    const config = {
-      mapping: item.mapping,
-      params: {
-        identity,
-        identityName,
-      },
-    }
-    return registry.postMapping(config).then(mapping => {
-      if (mapping) {
-        // Remove item from trash
-        commit({
-          type: "removeFromTrash",
-          uri,
-        })
-        // Set refresh
-        commit({
-          type: "setRefresh",
-          registry: registry.uri,
-        })
-      }
-      return mapping
     })
   },
 
