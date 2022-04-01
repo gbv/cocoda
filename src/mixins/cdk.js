@@ -623,7 +623,6 @@ export default {
       }
       // Check if user is creator/contributor of target concordance
       if (!isCreatorOrContributor(concordance)) {
-        // console.log("- Is not creator/contributor of target concordance")
         return false
       }
       // Check if fromScheme/toScheme are equal
@@ -651,7 +650,6 @@ export default {
           config.mapping.partOf = []
         }
         const result = await registry.patchMapping(config)
-        console.log(result)
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
           this.loadConcordances()
