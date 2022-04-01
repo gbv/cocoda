@@ -413,6 +413,7 @@ export default {
         this.mappingWasDeleted({ mapping: config.mapping, registry, _trash })
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+          _.get(config, "mapping.partOf[0]") && config.mapping.partOf[0] && this.loadConcordances()
         }
         if (_alert) {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
@@ -451,6 +452,7 @@ export default {
         }
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+          _.get(config, "mappings[0].partOf[0]") && this.loadConcordances()
         }
         if (_alert) {
           // TODO: Adjust!
