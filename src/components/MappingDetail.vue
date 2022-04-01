@@ -132,10 +132,14 @@
             </b-col>
             <b-col>
               <b-form-select
+                v-if="canRemoveMappingFromConcordance({ mapping }) || availableTargetConcordances.length > 0"
                 size="sm"
                 :options="concordanceOptions"
                 :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
                 @change="changeConcordance" />
+              <p v-else>
+                {{ (mapping.partOf && mapping.partOf[0]) ? displayNameForConcordance(mapping.partOf[0]) : $t("mappingDetail.partOfNone") }}
+              </p>
             </b-col>
           </b-row>
           <!-- Identifier -->

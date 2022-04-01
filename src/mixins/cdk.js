@@ -663,6 +663,31 @@ export default {
       }
       return true
     },
+    canRemoveMappingFromConcordance({ registry = this.currentRegistry, mapping }) {
+      const user = this.user
+      const userUris = this.userUris
+      if (!mapping || !registry || !registry.isAuthorizedFor({
+        type: "mappings",
+        action: "update",
+        user,
+      })) {
+        return false
+      }
+      // TODO: Move this method to separate method, maybe even to jskos
+      const isCreatorOrContributor = (concordance) => {
+        const mappingCreatorUris = [].concat(
+          concordance.creator || [],
+          concordance.contributor || [],
+        ).map(c => c.uri)
+        return _.intersection(userUris, mappingCreatorUris).length > 0
+      }
+      // Mapping is part of concordance; check if user is creator/contributor of that concordance
+      const concordance = mapping.partOf && mapping.partOf[0] && this.concordances.find(c => jskos.compare(c, mapping.partOf[0]))
+      if (!concordance || !isCreatorOrContributor(concordance)) {
+        return false
+      }
+      return true
+    },
     async addMappingToConcordance({ registry, _reload = true, _alert = true, mapping, concordance }) {
       registry = this.getRegistry(registry || mapping._registry)
       if (!registry) {
