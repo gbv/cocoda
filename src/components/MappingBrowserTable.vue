@@ -596,10 +596,11 @@ export default {
         newMapping._registry = mapping._registry
         newMapping.fromScheme = mapping.fromScheme
         newMapping.toScheme = mapping.toScheme
-        // Move URI to identifier if user can't edit
+        // Move URI to identifier if user can't edit; also delete partOf
         if (!canEdit) {
           newMapping.identifier = [].concat(newMapping.identifier, newMapping.uri)
           delete newMapping.uri
+          delete newMapping.partOf
         }
         return newMapping
       }

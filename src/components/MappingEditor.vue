@@ -612,6 +612,7 @@ export default {
     cloneMapping() {
       let mapping = this.$jskos.copyDeep(this.mapping)
       delete mapping.uri
+      delete mapping.partOf
       this.$store.commit({
         type: "mapping/set",
         original: null,
