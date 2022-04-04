@@ -976,6 +976,10 @@ export default {
           }
         }
       }
+      if (this.concordancesRepeatManager) {
+        // Set interval for concordancesRepeatManager
+        this.concordancesRepeatManager.interval = this.autoRefresh * 2
+      }
     },
   },
   created() {
