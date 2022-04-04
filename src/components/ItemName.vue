@@ -4,7 +4,9 @@
     class="itemName"
     :draggable="draggable"
     @dragstart="dragStart(_item, $event)"
-    @dragend="dragEnd">
+    @dragend="dragEnd"
+    @mouseover="hovering(true)"
+    @mouseout="hovering(false)">
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
@@ -24,9 +26,7 @@
           'itemName-hoverable': !preventExternalHover && isValidLink,
         },
         'fontSize-'+(fontSize || 'normal')
-      ]"
-      @mouseover="hovering(true)"
-      @mouseout="hovering(false)">
+      ]">
       <!-- Show icon for combined concepts -->
       <span
         v-if="_item && _item.type && _item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
