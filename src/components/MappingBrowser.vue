@@ -15,6 +15,15 @@
           <div
             v-if="concordanceRegistries.length"
             class="mappingBrowser-concordanceMenu">
+            <div
+              v-if="canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
+              class="button mappingBrowser-addConcordanceButton"
+              @click="editConcordance(null)">
+              <font-awesome-icon
+                v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
+                icon="plus-square" />
+              New
+            </div>
             <registry-notation
               v-for="registry in concordanceRegistries"
               :key="registry.uri"
@@ -26,15 +35,6 @@
                 prop: 'mappingRegistry',
                 value: registry.uri
               })" />
-            <div
-              v-if="canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
-              class="button mappingBrowser-addConcordanceButton"
-              @click="editConcordance(null)">
-              <font-awesome-icon
-                v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
-                icon="plus-square" />
-              New
-            </div>
           </div>
           <concordance-editor-modal
             ref="concordanceEditorModal"
@@ -1599,7 +1599,7 @@ export default {
   margin: 0 4px;
 }
 .mappingBrowser-search-registryNotation {
-  margin: auto 4px;
+  margin: auto 2px auto 4px;
 }
 .mappingBrowser-registryGroup-popover {
   display: flex;
@@ -1640,7 +1640,7 @@ export default {
   display: inline-block;
 }
 .mappingBrowser-addConcordanceButton {
-  margin-left: 4px;
+  margin-right: 4px;
 }
 
 </style>
