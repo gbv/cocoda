@@ -265,7 +265,10 @@ export default {
       if (!concordance) {
         return ""
       }
-      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false }) || this.$jskos.languageMapContent(concordance, "scopeNote") || concordance.uri || ""
+      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false })
+        || (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0]
+        || concordance.uri
+        || ""
       if (concordance.creator && concordance.creator.length) {
         let creator = this.$jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
         if (creator) {
