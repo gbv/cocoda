@@ -720,6 +720,7 @@ export default {
           // Remove mapping from concordance
           config.mapping.partOf = []
         }
+        this._addIdentityParams(config)
         const result = await registry.patchMapping(config)
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
