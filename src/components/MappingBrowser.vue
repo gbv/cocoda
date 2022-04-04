@@ -549,6 +549,8 @@ export default {
       searchRepeatManagers: {},
       /** An object of repeat managers for registries for navigator */
       navigatorRepeatManagers: {},
+      // Repeat manager for concordances
+      concordancesRepeatManager: null,
       // An object of error statuses for registries
       registryHasErrored: {},
       concordanceToEdit: null,
@@ -811,6 +813,9 @@ export default {
         }
         // refresh if necessary
         this.navigatorRefresh()
+      } else if (tab == this.tabIndexes.concordances) {
+        // Unpause repeat manager
+        this.concordancesRepeatManager && this.concordancesRepeatManager.isPaused && this.concordancesRepeatManager.start()
       }
       // Pause repeat managers if necessary
       if (previousTab == this.tabIndexes.search) {
@@ -822,6 +827,9 @@ export default {
         for (let manager of Object.values(this.navigatorRepeatManagers)) {
           manager && !manager.isPaused && manager.stop()
         }
+      }
+      if (previousTab == this.tabIndexes.concordances) {
+        this.concordancesRepeatManager && !this.concordancesRepeatManager.isPaused && this.concordancesRepeatManager.stop()
       }
     },
     isPageVisible(visible) {
@@ -835,10 +843,12 @@ export default {
           for (let manager of Object.values(this.navigatorRepeatManagers)) {
             manager && manager.isPaused && manager.start()
           }
+        } else if (this.tab == this.tabIndexes.concordances) {
+          this.concordancesRepeatManager && this.concordancesRepeatManager.isPaused && this.concordancesRepeatManager.start()
         }
       } else {
         // Pause all repeat managers
-        for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers))) {
+        for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers), this.concordancesRepeatManager)) {
           manager && !manager.isPaused && manager.stop()
         }
       }
@@ -977,17 +987,30 @@ export default {
     this.tab = this.tabIndexes.search
   },
   async mounted() {
-    if (!this.concordances || !this.concordances.length) {
-      await this.loadConcordances()
-      // Also retrieve total number of mappings in those registries
-      this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
-      this.concordancesLoaded = true
+    if (!this.concordancesRepeatManager && this.concordanceRegistries.length) {
+      if (this.autoRefresh) {
+        this.concordancesRepeatManager = this.repeat({
+          function: () => {
+            return this.refreshConcordances()
+          },
+          // Refresh less often than mappings
+          interval: this.autoRefresh * 2,
+          callback: (error) => {
+            if (error) {
+              this.$log.warn("Mapping Browser (Concordances): Error during refresh", error)
+            }
+            // No action necessary since concordances are already updated
+          },
+        })
+      } else {
+        this.refreshConcordances()
+      }
     }
     this.selectedChangedHandler()
   },
   beforeDestroy() {
     // Stop any repeat managers
-    for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers))) {
+    for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers), this.concordancesRepeatManager)) {
       manager && !manager.isPaused && manager.stop()
     }
   },
@@ -1576,6 +1599,12 @@ export default {
     editConcordance(concordance) {
       this.concordanceToEdit = concordance
       this.$refs.concordanceEditorModal.show()
+    },
+    async refreshConcordances() {
+      await this.loadConcordances()
+      // Also retrieve total number of mappings in those registries
+      this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
+      this.concordancesLoaded = true
     },
   },
 }
