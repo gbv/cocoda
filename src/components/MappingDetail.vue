@@ -131,15 +131,7 @@
               {{ $t("mappingDetail.partOf") }}:
             </b-col>
             <b-col>
-              <b-form-select
-                v-if="canRemoveMappingFromConcordance({ mapping }) || availableTargetConcordances.length > 0"
-                size="sm"
-                :options="concordanceOptions"
-                :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
-                @change="changeConcordance" />
-              <p v-else>
-                {{ (mapping.partOf && mapping.partOf[0]) ? displayNameForConcordance(mapping.partOf[0]) : $t("mappingDetail.partOfNone") }}
-              </p>
+              <concordance-selection :mapping="mapping" />
             </b-col>
           </b-row>
           <!-- Identifier -->
@@ -211,17 +203,17 @@ import AutoLink from "./AutoLink.vue"
 import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
+import ConcordanceSelection from "./ConcordanceSelection.vue"
 
 import computed from "../mixins/computed.js"
-import cdk from "../mixins/cdk.js"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString },
-  mixins: [computed, cdk],
+  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString, ConcordanceSelection },
+  mixins: [computed],
   props: {
     /**
      * Mapping object
@@ -239,47 +231,10 @@ export default {
       }
       return "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8659&TRM=" + this.mapping.uri.replace(/[\W_]+/g,"+")
     },
-    availableTargetConcordances() {
-      return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance }))
-    },
-    concordanceOptions() {
-      let options = [
-        { value: null, text: this.$t("mappingDetail.partOfNone") },
-      ]
-      for (let concordance of this.availableTargetConcordances) {
-        let text = this.displayNameForConcordance(concordance)
-        options.push({
-          value: concordance.uri,
-          text,
-        })
-      }
-
-      return options
-    },
   },
   methods: {
     show() {
       this.$refs.mappingDetail.show()
-    },
-    displayNameForConcordance(concordance) {
-      if (!concordance) {
-        return ""
-      }
-      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false })
-        || (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0]
-        || concordance.uri
-        || ""
-      if (concordance.creator && concordance.creator.length) {
-        let creator = this.$jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
-        if (creator) {
-          name += ` (${creator})`
-        }
-      }
-      return name
-    },
-    async changeConcordance(uri) {
-      const concordance = this.availableTargetConcordances.find(c => this.$jskos.compare(c, { uri }))
-      await this.addMappingToConcordance({ mapping: this.mapping, concordance })
     },
   },
 }

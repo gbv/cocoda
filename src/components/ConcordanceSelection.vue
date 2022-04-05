@@ -1,0 +1,69 @@
+<template>
+  <div>
+    <b-form-select
+      v-if="canRemoveMappingFromConcordance({ mapping }) || availableTargetConcordances.length > 0"
+      size="sm"
+      :options="concordanceOptions"
+      :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
+      @change="changeConcordance" />
+    <span v-else>
+      {{ (mapping.partOf && mapping.partOf[0]) ? displayNameForConcordance(mapping.partOf[0]) : $t("mappingDetail.partOfNone") }}
+    </span>
+  </div>
+</template>
+
+<script>
+import cdk from "../mixins/cdk.js"
+
+export default {
+  name: "ConcordanceSelection",
+  mixins: [cdk],
+  props: {
+    mapping: {
+      type: Object,
+      default: null,
+    },
+  },
+  computed: {
+    availableTargetConcordances() {
+      return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance }))
+    },
+    concordanceOptions() {
+      let options = [
+        { value: null, text: this.$t("mappingDetail.partOfNone") },
+      ]
+      for (let concordance of this.availableTargetConcordances) {
+        let text = this.displayNameForConcordance(concordance)
+        options.push({
+          value: concordance.uri,
+          text,
+        })
+      }
+
+      return options
+    },
+  },
+  methods: {
+    displayNameForConcordance(concordance) {
+      if (!concordance) {
+        return ""
+      }
+      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false })
+        || (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0]
+        || concordance.uri
+        || ""
+      if (concordance.creator && concordance.creator.length) {
+        let creator = this.$jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
+        if (creator) {
+          name += ` (${creator})`
+        }
+      }
+      return name
+    },
+    async changeConcordance(uri) {
+      const concordance = this.availableTargetConcordances.find(c => this.$jskos.compare(c, { uri }))
+      await this.addMappingToConcordance({ mapping: this.mapping, concordance })
+    },
+  },
+}
+</script>
