@@ -47,6 +47,14 @@
       </span>
     </p>
     <p>
+      <b>{{ $t("concordanceEditor.contributor") }}:</b>
+      <b-form-textarea
+        v-model="contributor"
+        rows="3"
+        max-rows="6" />
+      <sup class="text-lightGrey">{{ contributorSubtext }}</sup>
+    </p>
+    <p>
       <b-button
         v-if="editing"
         variant="primary"
@@ -75,9 +83,6 @@ import jskos from "jskos-tools"
 
 /**
  * ...
- *
- * TODO:
- * - additional contributors
  */
 export default {
   name: "ConcordanceEditorModal",
@@ -96,6 +101,7 @@ export default {
     return {
       notation: "",
       description: {},
+      contributor: "",
     }
   },
   computed: {
@@ -128,6 +134,7 @@ export default {
         notation: [this.notation || this.notationDefault],
         fromScheme: this.fromScheme ? { uri: this.fromScheme.uri } : null,
         toScheme: this.toScheme ? { uri: this.toScheme.uri } : null,
+        contributor: this.contributorArray,
       }
       for (const lang of this.config.languages) {
         if (this.description[lang]) {
@@ -145,6 +152,24 @@ export default {
     currentRegistry() {
       return this.$store.getters.getCurrentRegistry
     },
+    contributorArray() {
+      return this.contributor.split("\n").filter(Boolean).map(uri => ({ uri }))
+    },
+    contributorSubtext() {
+      let value = this.$t("concordanceEditor.contributorSubtextDefault")
+      const invalidContributorLineNumbers = []
+      let line = 1
+      for (const contributor of this.contributorArray) {
+        if (!this.$jskos.isValidUri(contributor.uri)) {
+          invalidContributorLineNumbers.push(line)
+        }
+        line += 1
+      }
+      if (invalidContributorLineNumbers.length) {
+        value = `${this.$t("concordanceEditor.contributorSubtextInvalidPrefix")} ${invalidContributorLineNumbers.join(", ")}`
+      }
+      return value
+    },
   },
   watch: {
     concordance() {
@@ -153,6 +178,7 @@ export default {
         for (const lang of this.config.languages) {
           this.$set(this.description, lang, _.get(this.concordance, `scopeNote.${lang}[0]`, ""))
         }
+        this.contributor = (this.concordance.contributor || []).map(c => c.uri).join("\n")
       } else {
         this.reset()
       }
@@ -173,6 +199,7 @@ export default {
       for (const lang of this.config.languages) {
         this.$set(this.description, lang, "")
       }
+      this.contributor = ""
     },
     async addConcordance() {
       const concordance = await this.postConcordance({ concordance: this._concordance })
@@ -185,6 +212,7 @@ export default {
       const concordance = await this.patchConcordance({ concordance: {
         uri: this.concordance.uri,
         scopeNote: this._concordance.scopeNote,
+        contributor: this._concordance.contributor,
       } })
       if (concordance) {
         this.hide()

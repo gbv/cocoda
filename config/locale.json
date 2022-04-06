@@ -345,7 +345,10 @@
       "editConcordance": "Edit Concordance",
       "editConcordanceButton": "edit concordance",
       "pleaseSelect": "Please select a vocabulary",
-      "save": "Save Concordance"
+      "save": "Save Concordance",
+      "contributor": "Contributors",
+      "contributorSubtextDefault": "One URI per line",
+      "contributorSubtextInvalidPrefix": "Invalid URI(s) on line"
     }
   },
   "de": {
@@ -694,7 +697,10 @@
       "editConcordance": "Konkordanz editieren",
       "editConcordanceButton": "Konkordanz editieren",
       "pleaseSelect": "Bitte ein Vokabular auswählen",
-      "save": "Konkordanz speichern"
+      "save": "Konkordanz speichern",
+      "contributor": "Mitwirkende",
+      "contributorSubtextDefault": "Eine URI per Zeile",
+      "contributorSubtextInvalidPrefix": "Ungültige URI(s) in Zeile"
     }
   }
 }
