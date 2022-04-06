@@ -679,7 +679,9 @@ export default {
     },
     concordanceOptions() {
       let options = [
-        { value: null, text: this.$t("mappingBrowser.searchAllConcordances") },
+        { value: null, text: "-" },
+        { value: "any", text: this.$t("mappingBrowser.searchConcordancesAny") },
+        { value: "none", text: this.$t("mappingBrowser.searchConcordancesNone") },
       ]
 
       for (let item of this.concordanceTableItems) {
