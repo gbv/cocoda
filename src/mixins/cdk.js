@@ -597,11 +597,19 @@ export default {
       if (!registry) {
         return false
       }
+      const concordance = this.concordances.find(c => jskos.compare(c, _.get(mapping, "partOf[0]")))
+      const isContributor = this.isCreatorOrContributor(concordance)
+      let crossUser = !this.$jskos.userOwnsMapping(user, mapping)
+      if (concordance && !isContributor) {
+        return false
+      } else if (isContributor) {
+        crossUser = false
+      }
       return registry.isAuthorizedFor({
         type: "mappings",
         action: "update",
         user,
-        crossUser: !this.$jskos.userOwnsMapping(user, mapping),
+        crossUser,
       })
     },
     canDeleteMapping({ registry, mapping, user = this.user }) {
