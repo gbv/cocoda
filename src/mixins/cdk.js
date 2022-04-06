@@ -548,6 +548,14 @@ export default {
       }
       return true
     },
+    isCreatorOrContributor(entity) {
+      if (!entity) return false
+      const creatorUris = [].concat(
+        entity.creator || [],
+        entity.contributor || [],
+      ).map(c => c.uri)
+      return _.intersection(this.userUris, creatorUris).length > 0
+    },
     canCreateMapping({ registry, mapping, user = this.user }) {
       if (!mapping || !registry) {
         return false
@@ -635,21 +643,12 @@ export default {
         throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
       }
       const user = this.user
-      const userUris = this.userUris
       if (!concordance || !mapping || !registry || !registry.isAuthorizedFor({
         type: "mappings",
         action: "update",
         user,
       })) {
         return false
-      }
-      // TODO: Move this method to separate method, maybe even to jskos
-      const isCreatorOrContributor = (concordance) => {
-        const mappingCreatorUris = [].concat(
-          concordance.creator || [],
-          concordance.contributor || [],
-        ).map(c => c.uri)
-        return _.intersection(userUris, mappingCreatorUris).length > 0
       }
       if (!mapping.partOf || mapping.partOf.length === 0) {
         // Mapping not part of any concordance; check if user can update this mapping
@@ -659,12 +658,12 @@ export default {
       } else {
         // Mapping is part of concordance; check if user is creator/contributor of that concordance
         const concordance = this.concordances.find(c => jskos.compare(c, mapping.partOf[0]))
-        if (!concordance || !isCreatorOrContributor(concordance)) {
+        if (!concordance || !this.isCreatorOrContributor(concordance)) {
           return false
         }
       }
       // Check if user is creator/contributor of target concordance
-      if (!isCreatorOrContributor(concordance)) {
+      if (!this.isCreatorOrContributor(concordance)) {
         return false
       }
       // Check if fromScheme/toScheme are equal
@@ -679,7 +678,6 @@ export default {
         throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
       }
       const user = this.user
-      const userUris = this.userUris
       if (!mapping || !registry || !registry.isAuthorizedFor({
         type: "mappings",
         action: "update",
@@ -687,17 +685,9 @@ export default {
       })) {
         return false
       }
-      // TODO: Move this method to separate method, maybe even to jskos
-      const isCreatorOrContributor = (concordance) => {
-        const mappingCreatorUris = [].concat(
-          concordance.creator || [],
-          concordance.contributor || [],
-        ).map(c => c.uri)
-        return _.intersection(userUris, mappingCreatorUris).length > 0
-      }
       // Mapping is part of concordance; check if user is creator/contributor of that concordance
       const concordance = mapping.partOf && mapping.partOf[0] && this.concordances.find(c => jskos.compare(c, mapping.partOf[0]))
-      if (!concordance || !isCreatorOrContributor(concordance)) {
+      if (!concordance || !this.isCreatorOrContributor(concordance)) {
         return false
       }
       return true
