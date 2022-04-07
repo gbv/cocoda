@@ -53,6 +53,11 @@ const getters = {
     }
     return registry
   },
+  concordanceRegistries: (state) => {
+    return (state.config.registries || []).filter(r =>
+      r.has.concordances !== false,
+    )
+  },
   /**
    * Returns a creator object based on the local settings.
    */

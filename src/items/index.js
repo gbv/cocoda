@@ -9,6 +9,7 @@ import _ from "lodash"
 import * as jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
 import log from "@/utils/log.js"
+import store from "@/store"
 
 const _items = reactive({})
 
@@ -434,5 +435,20 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
     log.error(`Error loading ancestor concepts for ${concept.uri}`, error)
     modifyItem(concept, "ancestors", [])
     return []
+  }
+}
+
+// Concordances
+export const concordances = reactive([])
+export async function loadConcordances() {
+  try {
+    const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances())))
+    // Set values of concordance array
+    _.forEach(result, (concordance, index) => {
+      set(concordances, index, concordance)
+    })
+    set(concordances, "length", result.length)
+  } catch (error) {
+    log.error("MappingBrowser - Error loading concordances", error)
   }
 }

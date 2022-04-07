@@ -16,10 +16,8 @@ import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
 import auth from "./auth.js"
-import { getItem, getItems, modifyItem, saveItem, schemes, loadingConcepts, erroredConcepts } from "@/items"
+import { getItem, getItems, modifyItem, saveItem, schemes, loadingConcepts, erroredConcepts, concordances, loadConcordances } from "@/items"
 import log from "@/utils/log.js"
-
-let concordances = []
 
 export default {
   mixins: [computed, auth],
@@ -71,9 +69,7 @@ export default {
       return registries
     },
     concordanceRegistries() {
-      return this.config.registries.filter(r =>
-        r.has.concordances !== false, // only use registries that offer concordances
-      )
+      return this.$store.getters.concordanceRegistries
     },
     currentConcordanceRegistry() {
       if (this.currentRegistry && this.currentRegistry.has.concordances) {
@@ -652,18 +648,7 @@ export default {
       return cdk.repeat(...params)
     },
     // Concordance Methods
-    async loadConcordances() {
-      try {
-        const concordances = _.flatten(await Promise.all(this.concordanceRegistries.map(r => r.getConcordances())))
-        // Set values of concordance array
-        _.forEach(concordances, (concordance, index) => {
-          this.$set(this.concordances, index, concordance)
-        })
-        this.concordances.length = concordances.length
-      } catch (error) {
-        this.$log.error("MappingBrowser - Error loading concordances", error)
-      }
-    },
+    loadConcordances,
     canAddMappingToConcordance({ registry, concordance, mapping }) {
       registry = this.getRegistry(registry || mapping._registry)
       if (!registry) {
