@@ -520,7 +520,7 @@ export default {
       }
       try {
         const hasConcordance = !!_.get(item, "mapping.partOf[0]")
-        const mapping = await this.postMapping({ mapping: item.mapping, _alert: false, _reload: false })
+        const mapping = await this.postMapping({ registry, mapping: item.mapping, _alert: false, _reload: false })
         if (mapping) {
           // Remove item from trash
           this.$store.commit({
