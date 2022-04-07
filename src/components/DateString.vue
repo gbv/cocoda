@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { computed, defineComponent } from "@vue/composition-api"
+import { computed, defineComponent } from "@/composition-api"
 
 export default defineComponent({
   props: {

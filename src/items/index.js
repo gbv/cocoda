@@ -4,7 +4,7 @@
  * TODO
  */
 
-import { reactive, set, del } from "@vue/composition-api"
+import { reactive, set, del } from "@/composition-api"
 import _ from "lodash"
 import * as jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
