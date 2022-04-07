@@ -625,6 +625,7 @@ export default {
       if (!concordance) {
         return false
       }
+      concordance = this.concordances.find(c => this.$jskos.compare(c, concordance)) || concordance
       registry = this.getRegistry(registry || concordance._registry)
       if (!registry) {
         return false
@@ -641,6 +642,7 @@ export default {
       if (!concordance || parseInt(concordance.extent) > 0) {
         return false
       }
+      concordance = this.concordances.find(c => this.$jskos.compare(c, concordance)) || concordance
       registry = this.getRegistry(registry || concordance._registry)
       if (!registry) {
         return false
@@ -677,7 +679,8 @@ export default {
       }
     },
     async patchConcordance({ registry, concordance, _reload = true, _alert = true }) {
-      registry = this.getRegistry(registry || concordance && concordance._registry)
+      const originalConcordance = this.concordances.find(c => this.$jskos.compare(c, concordance))
+      registry = this.getRegistry(registry || concordance && concordance._registry || originalConcordance && originalConcordance._registry)
       if (!concordance || !registry) {
         throw new Error("patchConcordance: No concordance or missing registry.")
       }
@@ -701,7 +704,8 @@ export default {
       }
     },
     async deleteConcordance({ registry, _reload = true, _alert = true, concordance, ...config }) {
-      registry = this.getRegistry(registry || concordance && concordance._registry)
+      const originalConcordance = this.concordances.find(c => this.$jskos.compare(c, concordance))
+      registry = this.getRegistry(registry || concordance && concordance._registry || originalConcordance && originalConcordance._registry)
       if (!concordance || !registry) {
         throw new Error("patchConcordance: No concordance or missing registry.")
       }
