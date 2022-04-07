@@ -3,6 +3,7 @@ import _ from "lodash"
 import Vue from "vue"
 
 import localforage from "localforage"
+import { canCreateMapping, canDeleteMapping, canUpdateMapping } from "@/utils/mapping-helpers"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
 
 // TODO: - Add support for memberChoice and maybe memberList.
@@ -174,15 +175,11 @@ const getters = {
   },
 
   canCreate: (state, getters, rootState, rootGetters) => {
-    const registry = rootGetters.getCurrentRegistry
-    if (!registry) {
-      return false
-    }
-    return registry.isAuthorizedFor({
-      type: "mappings",
-      action: "create",
+    return canCreateMapping({
+      registry: rootGetters.getCurrentRegistry,
+      mapping: state.mapping,
       user: rootState.auth.user,
-    }) && !!state.mapping.fromScheme && !!state.mapping.toScheme
+    })
   },
 
   canUpdate: (state, getters, rootState, rootGetters) => {
@@ -190,13 +187,12 @@ const getters = {
     if (!registry || !jskos.compareFast(registry, state.original.registry) || !state.mapping || !state.original.uri) {
       return false
     }
-    const crossUser = !jskos.userOwnsMapping(rootState.auth.user, state.original.mapping)
-    return registry.isAuthorizedFor({
-      type: "mappings",
-      action: "update",
+    return canUpdateMapping({
+      registry,
+      mapping: state.mapping,
       user: rootState.auth.user,
-      crossUser,
-    }) && !!state.mapping.fromScheme && !!state.mapping.toScheme
+      original: state.original.mapping,
+    })
   },
 
   canDelete: (state, getters, rootState, rootGetters) => {
@@ -204,12 +200,11 @@ const getters = {
     if (!registry || !jskos.compareFast(registry, state.original.registry) || !state.mapping || !state.original.uri) {
       return false
     }
-    const crossUser = !jskos.userOwnsMapping(rootState.auth.user, state.original.mapping)
-    return registry.isAuthorizedFor({
-      type: "mappings",
-      action: "delete",
+    return canDeleteMapping({
+      registry,
+      mapping: state.mapping,
       user: rootState.auth.user,
-      crossUser,
+      original: state.original.mapping,
     })
   },
 
