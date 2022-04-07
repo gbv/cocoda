@@ -16,21 +16,15 @@ import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
 import auth from "./auth.js"
-import { getItem, getItems, modifyItem, saveItem, schemes } from "@/items"
+import { getItem, getItems, modifyItem, saveItem, schemes, loadingConcepts, erroredConcepts } from "@/items"
 import log from "@/utils/log.js"
 
-let objects = {}
-let topConcepts = {}
-let loadingConcepts = []
-let erroredConcepts = []
 let concordances = []
 
 export default {
   mixins: [computed, auth],
   data() {
     return {
-      objects,
-      topConcepts,
       loadingConcepts,
       erroredConcepts,
       concordances,

@@ -106,10 +106,9 @@
     </div>
 
     <!-- Top Concepts -->
-    <!-- TODO: Use topConcepts from scheme directly -->
     <item-detail-narrower
-      v-if="settings.showTopConceptsInScheme && topConcepts[_item.uri] && topConcepts[_item.uri].length > 0"
-      :narrower="topConcepts[_item.uri]"
+      v-if="settings.showTopConceptsInScheme && _item.topConcepts && _item.topConcepts.length > 0"
+      :narrower="_item.topConcepts"
       :is-left="isLeft"
       text="Top Concepts:" />
     <div v-else-if="settings.showTopConceptsInScheme">
