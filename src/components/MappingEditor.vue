@@ -516,7 +516,7 @@ export default {
     },
     async deleteOriginalMapping(clear = false) {
       await this.deleteMapping({
-        mapping: this.mapping,
+        mapping: this.original.mapping,
         _before: () => {
           this.loadingGlobal = true
         },
