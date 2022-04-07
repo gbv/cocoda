@@ -112,7 +112,12 @@ export function canDeleteMapping({ registry, mapping, user, original }) {
   if (!registry) {
     return false
   }
+  const concordance = concordances.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
+  const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
+  if (concordance && !isContributor) {
+    return false
+  }
   return registry.isAuthorizedFor({
     type: "mappings",
     action: "delete",
