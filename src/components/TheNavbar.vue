@@ -78,13 +78,7 @@
           :show-registry="true"
           :hide-duplicates="false"
           style="width: 700px;"
-          @click="restoreMappingFromTrash({ uri: $event.item.mapping.uri }).then(success => {
-            if (success) {
-              alert($t('alerts.mappingRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'success')
-            } else {
-              alert($t('alerts.mappingNotRestored', [$jskos.prefLabel($event.item.registry, { fallbackToUri: false })]), null, 'danger')
-            }
-          })" />
+          @click="restoreMappingFromTrash({ uri: $event.item.mapping.uri })" />
       </b-nav-item-dropdown>
       <!-- Favorite concepts -->
       <b-nav-item-dropdown

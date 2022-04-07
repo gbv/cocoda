@@ -311,9 +311,19 @@ export default {
       }
       _before && _before()
       try {
-        config.mapping = this.prepareMapping(config.mapping)
+        const concordance = this.concordances.find(c => jskos.compare(c, _.get(config, "mapping.partOf[0]")))
+        config.mapping = this.prepareMapping(_.omit(config.mapping, "partOf"))
         this._addIdentityParams(config)
         const mapping = await registry.postMapping(config)
+        // Also add mapping to concordance if necessary
+        if (concordance) {
+          try {
+            await this.addMappingToConcordance({ registry, _alert: false, mapping, concordance })
+            mapping.partOf = [{ uri: concordance.uri }]
+          } catch (error) {
+            // ignore, but alert will be shown
+          }
+        }
         if (_adjust) {
           this.adjustMapping(mapping)
         }
@@ -321,7 +331,16 @@ export default {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
         }
         if (_alert) {
-          this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
+          let message = this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })])
+          if (concordance) {
+            if (mapping.partOf) {
+              message += " " + this.$t("alerts.andAddedToConcordance")
+            } else {
+              message += ", " + this.$t("alerts.butNotAddedToConcordance")
+            }
+          }
+          message += "."
+          this.alert(message, null, concordance && !mapping.partOf ? "warning" : "success")
           // Additionally, if this is the first time the user saved into local mappings, show an alert:
           if (jskos.compare(registry, this.localMappingsRegistry) && !this.$settings.hasWrittenIntoLocalMappings) {
             this.alert(
@@ -426,13 +445,7 @@ export default {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
-            this.restoreMappingFromTrash({ uri: config.mapping.uri }).then(success => {
-              if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
-              } else {
-                this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
-              }
-            })
+            this.restoreMappingFromTrash({ uri: config.mapping.uri })
           })
         }
         _after && _after()
@@ -462,17 +475,10 @@ export default {
           _.get(config, "mappings[0].partOf[0]") && this.loadConcordances()
         }
         if (_alert) {
-          // TODO: Adjust!
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
             this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
-            this.restoreMappingFromTrash({ uri: config.mapping.uri }).then(success => {
-              if (success) {
-                this.alert(this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")
-              } else {
-                this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
-              }
-            })
+            this.restoreMappingFromTrash({ uri: config.mapping.uri })
           })
         }
         _after && _after()
@@ -520,33 +526,46 @@ export default {
     async restoreMappingFromTrash({ uri }) {
       const item = this.$store.state.mapping.mappingTrash.find(item => item.mapping.uri == uri)
       const registry = this.config.registries.find(registry => jskos.compareFast(registry, item && item.registry))
+      const showFailureAlert = () => this.alert(this.$t("alerts.mappingNotRestored", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "danger")
       if (!item || !registry) {
         log.warn("Tried to restore mapping from trash, but could not find item or determine provider.", item)
+        showFailureAlert()
         return false
       }
-      // partOf needs to be updated separately via patch
-      const partOf = item.mapping.partOf
-      delete item.mapping.partOf
-      const mapping = await this.postMapping({ mapping: item.mapping, _alert: false, _reload: false })
-      if (mapping) {
-        // Add mapping to concordance if necessary
-        if (partOf) {
-          await this.addMappingToConcordance({ registry, mapping, concordance: partOf[0], _alert: false, _reload: false })
-          mapping.partOf = partOf
+      try {
+        const hasConcordance = !!_.get(item, "mapping.partOf[0]")
+        const mapping = await this.postMapping({ mapping: item.mapping, _alert: false, _reload: false })
+        if (mapping) {
+          // Remove item from trash
+          this.$store.commit({
+            type: "mapping/removeFromTrash",
+            uri,
+          })
+          // Set refresh
+          this.$store.commit({
+            type: "mapping/setRefresh",
+            registry: registry.uri,
+          })
+          this.loadConcordances()
+          // Show alert
+          let message = this.$t("alerts.mappingRestored", [jskos.prefLabel(registry, { fallbackToUri: false })])
+          if (hasConcordance) {
+            if (mapping.partOf) {
+              message += " " + this.$t("alerts.andAddedToConcordance")
+            } else {
+              message += ", " + this.$t("alerts.butNotAddedToConcordance")
+            }
+          }
+          message += "."
+          this.alert(message, null, hasConcordance && !mapping.partOf ? "warning" : "success")
+        } else {
+          showFailureAlert()
         }
-        // Remove item from trash
-        this.$store.commit({
-          type: "mapping/removeFromTrash",
-          uri,
-        })
-        // Set refresh
-        this.$store.commit({
-          type: "mapping/setRefresh",
-          registry: registry.uri,
-        })
-        this.loadConcordances()
+        return !!mapping
+      } catch (error) {
+        showFailureAlert()
+        return false
       }
-      return true
     },
     isCreatorOrContributor(entity) {
       if (!entity) return false
@@ -576,6 +595,12 @@ export default {
         // Check cardinality
         const cardinality = _.get(registry, "config.mappings.cardinality")
         if (cardinality == "1-to-1" && jskos.conceptsOfMapping(mapping, "to").length > 1) {
+          return false
+        }
+      }
+      if (mapping.partOf && mapping.partOf[0]) {
+        // Check if user can add mapping to concordance as well
+        if (!this.canAddMappingToConcordance({ registry, mapping: _.omit(mapping, "partOf"), concordance: this.concordances.find(c => jskos.compare(c, mapping.partOf[0])) })) {
           return false
         }
       }
