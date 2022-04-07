@@ -28,10 +28,7 @@ export function isCreatorOrContributor(entity, user) {
   return _.intersection(userUris(user), creatorUris).length > 0
 }
 
-export function canCreateMapping({ registry, mapping, user }) {
-  if (!mapping || !registry) {
-    return false
-  }
+function checkMappingSchemes({ mapping, registry }) {
   // Check multiple things regarding fromScheme/toScheme
   for (let side of ["fromScheme", "toScheme"]) {
     // Require both sides
@@ -51,6 +48,16 @@ export function canCreateMapping({ registry, mapping, user }) {
       return false
     }
   }
+  return true
+}
+
+export function canCreateMapping({ registry, mapping, user }) {
+  if (!mapping || !registry) {
+    return false
+  }
+  if (!checkMappingSchemes({ mapping, registry })) {
+    return false
+  }
   if (mapping.partOf && mapping.partOf[0]) {
     // Check if user can add mapping to concordance as well
     if (!canAddMappingToConcordance({ registry, mapping: _.omit(mapping, "partOf"), concordance: concordances.find(c => jskos.compare(c, mapping.partOf[0])) })) {
@@ -68,17 +75,21 @@ export function canCreateMapping({ registry, mapping, user }) {
   return true
 }
 
-export function canUpdateMapping({ registry, mapping, user }) {
+export function canUpdateMapping({ registry, mapping, user, original }) {
   if (!mapping) {
     return false
   }
   registry = registry || mapping._registry
+  original = original || mapping
   if (!registry) {
+    return false
+  }
+  if (!checkMappingSchemes({ mapping, registry })) {
     return false
   }
   const concordance = concordances.find(c => jskos.compare(c, _.get(mapping, "partOf[0]")))
   const isContributor = isCreatorOrContributor(concordance, user)
-  let crossUser = !jskos.userOwnsMapping(user, mapping)
+  let crossUser = !jskos.userOwnsMapping(user, original)
   if (concordance && !isContributor) {
     return false
   } else if (isContributor) {
@@ -92,15 +103,16 @@ export function canUpdateMapping({ registry, mapping, user }) {
   })
 }
 
-export function canDeleteMapping({ registry, mapping, user }) {
+export function canDeleteMapping({ registry, mapping, user, original }) {
   if (!mapping) {
     return false
   }
   registry = registry || mapping._registry
+  original = original || mapping
   if (!registry) {
     return false
   }
-  let crossUser = !jskos.userOwnsMapping(user, mapping)
+  let crossUser = !jskos.userOwnsMapping(user, original)
   return registry.isAuthorizedFor({
     type: "mappings",
     action: "delete",
