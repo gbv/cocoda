@@ -248,7 +248,7 @@
           v-if="showEditingTools && !$jskos.compareFast(data.item.registry, $store.getters.getCurrentRegistry)"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping })"
+            v-if="canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping, user })"
             v-b-tooltip.hover="{ title: $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
             class="button"
             icon="save"

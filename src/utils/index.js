@@ -26,3 +26,11 @@ export function getRegistryName({ registry, locale }) {
   }
   return ""
 }
+
+export function userUris(user) {
+  if (!user) {
+    return null
+  }
+  let uris = [user.uri].concat(Object.values(user.identities).map(identity => identity.uri)).filter(uri => uri != null)
+  return uris
+}

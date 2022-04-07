@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-select
-      v-if="canRemoveMappingFromConcordance({ mapping }) || availableTargetConcordances.length > 0"
+      v-if="canRemoveMappingFromConcordance({ mapping, user }) || availableTargetConcordances.length > 0"
       size="sm"
       :options="concordanceOptions"
       :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     availableTargetConcordances() {
-      return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance }))
+      return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance, user: this.user }))
     },
     concordanceOptions() {
       let options = [

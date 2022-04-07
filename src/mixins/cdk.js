@@ -18,6 +18,15 @@ import computed from "./computed.js"
 import auth from "./auth.js"
 import { getItem, getItems, modifyItem, saveItem, schemes, loadingConcepts, erroredConcepts, concordances, loadConcordances } from "@/items"
 import log from "@/utils/log.js"
+import {
+  getRegistry,
+  canCreateMapping,
+  canUpdateMapping,
+  canDeleteMapping,
+  canAddMappingToConcordance,
+  canRemoveMappingFromConcordance,
+
+} from "@/utils/mapping-helpers.js"
 
 export default {
   mixins: [computed, auth],
@@ -107,20 +116,7 @@ export default {
     },
   },
   methods: {
-    /**
-     * Returns registry object from config for a registry or URI. Fallback to current registry if it's null.
-     *
-     * @param {Object|string} registry
-     */
-    getRegistry(registry) {
-      registry = registry || this.currentRegistry
-      // Keep backward compatibility with old way of calling
-      if (_.isString(registry)) {
-        registry = { uri: registry }
-      }
-      registry = this.config.registries.find(r => jskos.compareFast(r, registry))
-      return registry
-    },
+    getRegistry,
     /**
      * Adjusts a mapping by retrieving/saving all contained schemes and concepts from/in the store.
      *
@@ -557,153 +553,17 @@ export default {
         return false
       }
     },
-    isCreatorOrContributor(entity) {
-      if (!entity) return false
-      const creatorUris = [].concat(
-        entity.creator || [],
-        entity.contributor || [],
-      ).map(c => c.uri)
-      return _.intersection(this.userUris, creatorUris).length > 0
-    },
-    canCreateMapping({ registry, mapping, user = this.user }) {
-      if (!mapping || !registry) {
-        return false
-      }
-      // Check multiple things regarding fromScheme/toScheme
-      for (let side of ["fromScheme", "toScheme"]) {
-        // Require both sides
-        if (!mapping[side]) {
-          return false
-        }
-        // Check registry whitelist
-        const whitelist = _.get(registry, `config.mappings.${side}Whitelist`)
-        if (whitelist) {
-          if (!whitelist.find(s => jskos.compare(s, mapping[side]))) {
-            return false
-          }
-        }
-        // Check cardinality
-        const cardinality = _.get(registry, "config.mappings.cardinality")
-        if (cardinality == "1-to-1" && jskos.conceptsOfMapping(mapping, "to").length > 1) {
-          return false
-        }
-      }
-      if (mapping.partOf && mapping.partOf[0]) {
-        // Check if user can add mapping to concordance as well
-        if (!this.canAddMappingToConcordance({ registry, mapping: _.omit(mapping, "partOf"), concordance: this.concordances.find(c => jskos.compare(c, mapping.partOf[0])) })) {
-          return false
-        }
-      }
-      // Check if user is authorized in current registry
-      if (!registry.isAuthorizedFor({
-        type: "mappings",
-        action: "create",
-        user,
-      })) {
-        return false
-      }
-      return true
-    },
-    canUpdateMapping({ registry, mapping, user = this.user }) {
-      if (!mapping) {
-        return false
-      }
-      registry = registry || mapping._registry
-      if (!registry) {
-        return false
-      }
-      const concordance = this.concordances.find(c => jskos.compare(c, _.get(mapping, "partOf[0]")))
-      const isContributor = this.isCreatorOrContributor(concordance)
-      let crossUser = !this.$jskos.userOwnsMapping(user, mapping)
-      if (concordance && !isContributor) {
-        return false
-      } else if (isContributor) {
-        crossUser = false
-      }
-      return registry.isAuthorizedFor({
-        type: "mappings",
-        action: "update",
-        user,
-        crossUser,
-      })
-    },
-    canDeleteMapping({ registry, mapping, user = this.user }) {
-      if (!mapping) {
-        return false
-      }
-      registry = registry || mapping._registry
-      if (!registry) {
-        return false
-      }
-      let crossUser = !jskos.userOwnsMapping(user, mapping)
-      return registry.isAuthorizedFor({
-        type: "mappings",
-        action: "delete",
-        user,
-        crossUser,
-      })
-    },
+    canCreateMapping,
+    canUpdateMapping,
+    canDeleteMapping,
     // Wrapper around cdk.repeat
     repeat(...params) {
       return cdk.repeat(...params)
     },
     // Concordance Methods
     loadConcordances,
-    canAddMappingToConcordance({ registry, concordance, mapping }) {
-      registry = this.getRegistry(registry || mapping._registry)
-      if (!registry) {
-        throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
-      }
-      const user = this.user
-      if (!concordance || !mapping || !registry || !registry.isAuthorizedFor({
-        type: "mappings",
-        action: "update",
-        user,
-      })) {
-        return false
-      }
-      if (!mapping.partOf || mapping.partOf.length === 0) {
-        // Mapping not part of any concordance; check if user can update this mapping
-        if (!this.canUpdateMapping({ registry, mapping })) {
-          return false
-        }
-      } else {
-        // Mapping is part of concordance; check if user is creator/contributor of that concordance
-        const concordance = this.concordances.find(c => jskos.compare(c, mapping.partOf[0]))
-        if (!concordance || !this.isCreatorOrContributor(concordance)) {
-          return false
-        }
-      }
-      // Check if user is creator/contributor of target concordance
-      if (!this.isCreatorOrContributor(concordance)) {
-        return false
-      }
-      // Check if fromScheme/toScheme are equal
-      if (!jskos.compare(concordance.fromScheme, mapping.fromScheme) || !jskos.compare(concordance.toScheme, mapping.toScheme)) {
-        return false
-      }
-      return true
-    },
-    canRemoveMappingFromConcordance({ registry, mapping }) {
-      registry = this.getRegistry(registry || mapping._registry)
-      if (!registry) {
-        throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
-      }
-      const user = this.user
-      if (!mapping || !registry || !registry.isAuthorizedFor({
-        type: "mappings",
-        action: "update",
-        user,
-      })) {
-        return false
-      }
-      // Mapping is part of concordance; check if user is creator/contributor of that concordance
-      const concordance = mapping.partOf && mapping.partOf[0] && this.concordances.find(c => jskos.compare(c, mapping.partOf[0]))
-      if (!concordance || !this.isCreatorOrContributor(concordance)) {
-        return false
-      }
-      return true
-    },
+    canAddMappingToConcordance,
+    canRemoveMappingFromConcordance,
     async addMappingToConcordance({ registry, _reload = true, _alert = true, mapping, concordance }) {
       registry = this.getRegistry(registry || mapping._registry)
       if (!registry) {

@@ -3,6 +3,7 @@
  */
 
 import _ from "lodash"
+import { userUris } from "@/utils"
 
 export default {
   computed: {
@@ -22,11 +23,7 @@ export default {
       return _.get(this, "$store.state.auth.providers")
     },
     userUris() {
-      if (!this.user) {
-        return null
-      }
-      let uris = [this.user.uri].concat(Object.values(this.user.identities).map(identity => identity.uri)).filter(uri => uri != null)
-      return uris
+      return userUris(this.user)
     },
     userIdentityImage() {
       if (this.userIdentityProvider && this.userIdentityProvider.image) {
