@@ -228,6 +228,12 @@
         class="button"
         @click="$refs.mappingDetail.show()" />
     </div>
+    <concordance-selection
+      v-if="original.uri || canSaveCurrentMapping"
+      class="mappingEditor-concordanceSelection"
+      :mapping="original.uri ? original.mapping : mapping"
+      :registry="currentRegistry"
+      @change="setConcordance" />
   </div>
 </template>
 
@@ -238,6 +244,7 @@ import _ from "lodash"
 import ComponentSettings from "./ComponentSettings.vue"
 import MappingDetail from "./MappingDetail.vue"
 import RegistryInfo from "./RegistryInfo.vue"
+import ConcordanceSelection from "./ConcordanceSelection.vue"
 
 // Import mixins
 import auth from "../mixins/auth.js"
@@ -252,7 +259,7 @@ import { getItem, loadConcepts } from "@/items"
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryInfo },
+  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryInfo, ConcordanceSelection },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
   computed: {
     mapping() {
@@ -622,6 +629,12 @@ export default {
         mapping,
       })
     },
+    setConcordance(concordance) {
+      this.$store.commit({
+        type: "mapping/setConcordance",
+        concordance,
+      })
+    },
   },
 }
 </script>
@@ -785,6 +798,13 @@ export default {
 .mappingEditor-mappingAlert {
   // Prevent other icons from moving by using min-width
   min-width: 16px;
+  z-index: @zIndex-2;
+}
+.mappingEditor-concordanceSelection {
+  position: absolute;
+  bottom: -4px;
+  right: 35px;
+  max-width: 35%;
   z-index: @zIndex-2;
 }
 
