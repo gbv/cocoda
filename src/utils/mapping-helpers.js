@@ -60,7 +60,7 @@ export function canCreateMapping({ registry, mapping, user }) {
   }
   if (mapping.partOf && mapping.partOf[0]) {
     // Check if user can add mapping to concordance as well
-    if (!canAddMappingToConcordance({ registry, mapping: _.omit(mapping, "partOf"), concordance: concordances.find(c => jskos.compare(c, mapping.partOf[0])) })) {
+    if (!canAddMappingToConcordance({ registry, user, mapping: _.omit(mapping, "partOf"), concordance: concordances.find(c => jskos.compare(c, mapping.partOf[0])), isExistingMapping: false })) {
       return false
     }
   }
@@ -126,11 +126,8 @@ export function canDeleteMapping({ registry, mapping, user, original }) {
   })
 }
 
-export function canAddMappingToConcordance({ registry, concordance, mapping, user }) {
+export function canAddMappingToConcordance({ registry, concordance, mapping, user, isExistingMapping = true }) {
   registry = getRegistry(registry || mapping._registry)
-  if (!registry) {
-    throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
-  }
   if (!concordance || !mapping || !registry || !registry.isAuthorizedFor({
     type: "mappings",
     action: "update",
@@ -138,7 +135,9 @@ export function canAddMappingToConcordance({ registry, concordance, mapping, use
   })) {
     return false
   }
-  if (!mapping.partOf || mapping.partOf.length === 0) {
+  if (!isExistingMapping) {
+    // Don't check other conditions if mapping doesn't exist yet
+  } else if (!mapping.partOf || mapping.partOf.length === 0) {
     // Mapping not part of any concordance; check if user can update this mapping
     if (!canUpdateMapping({ registry, mapping, user })) {
       return false
@@ -163,9 +162,6 @@ export function canAddMappingToConcordance({ registry, concordance, mapping, use
 
 export function canRemoveMappingFromConcordance({ registry, mapping, user }) {
   registry = getRegistry(registry || mapping._registry)
-  if (!registry) {
-    throw new Error("canRemoveMappingFromConcordance: No registry for mapping.")
-  }
   if (!mapping || !registry || !registry.isAuthorizedFor({
     type: "mappings",
     action: "update",
