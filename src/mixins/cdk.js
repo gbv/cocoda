@@ -175,6 +175,15 @@ export default {
           mapping,
         })
       }
+      // Check if mapping is equal to original (MappingEditor); if yes, refresh it
+      if (this.$store.state.mapping.original.uri && mapping.uri === this.$store.state.mapping.original.uri) {
+        this.$store.commit({
+          type: "mapping/set",
+          original: mapping,
+          // Also override mapping if it hasn't changed from original
+          mapping: this.$store.getters["mapping/hasChangedFromOriginal"] ? null : mapping,
+        })
+      }
       return mapping
     },
     prepareMapping(mapping) {
@@ -564,7 +573,7 @@ export default {
     loadConcordances,
     canAddMappingToConcordance,
     canRemoveMappingFromConcordance,
-    async addMappingToConcordance({ registry, _reload = true, _alert = true, mapping, concordance }) {
+    async addMappingToConcordance({ registry, _reload = true, _alert = true, _adjust = true, mapping, concordance }) {
       registry = this.getRegistry(registry || mapping._registry)
       if (!registry) {
         throw new Error("addMappingToConcordance: No registry for mapping.")
@@ -584,6 +593,9 @@ export default {
         }
         this._addIdentityParams(config)
         const result = await registry.patchMapping(config)
+        if (_adjust) {
+          this.adjustMapping(result)
+        }
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
           this.loadConcordances()
