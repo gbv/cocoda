@@ -367,6 +367,14 @@ const mutations = {
     }
   },
 
+  setConcordance(state, { concordance }) {
+    if (concordance && concordance.uri) {
+      state.mapping.partOf = [{ uri: concordance.uri }]
+    } else {
+      Vue.delete(state.mapping, "partOf")
+    }
+  },
+
   switch(state) {
     Object.assign(state.mapping, {
       from: state.mapping.to,
