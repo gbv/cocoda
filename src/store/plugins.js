@@ -96,6 +96,7 @@ const routerParamPlugin = store => {
       "mapping/removeAll",
       "mapping/set",
       "mapping/setType",
+      "mapping/setConcordance",
       "mapping/switch",
       "mapping/empty",
     ]
