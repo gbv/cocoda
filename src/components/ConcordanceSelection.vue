@@ -23,10 +23,23 @@ export default {
       type: Object,
       default: null,
     },
+    registry: {
+      type: Object,
+      default: null,
+    },
   },
   computed: {
+    isExistingMapping() {
+      return !!this.mapping._registry
+    },
     availableTargetConcordances() {
-      return this.concordances.filter(concordance => this.canAddMappingToConcordance({ mapping: this.mapping, concordance, user: this.user }))
+      return this.concordances.filter(concordance => this.canAddMappingToConcordance({
+        registry: this.registry,
+        mapping: this.mapping,
+        concordance,
+        user: this.user,
+        isExistingMapping: this.isExistingMapping,
+      }))
     },
     concordanceOptions() {
       let options = [
@@ -62,7 +75,12 @@ export default {
     },
     async changeConcordance(uri) {
       const concordance = this.availableTargetConcordances.find(c => this.$jskos.compare(c, { uri }))
-      await this.addMappingToConcordance({ mapping: this.mapping, concordance })
+      // Behavior depends on whether the mapping already exists
+      if (this.isExistingMapping) {
+        await this.addMappingToConcordance({ mapping: this.mapping, concordance })
+      } else {
+        this.$emit("change", concordance)
+      }
     },
   },
 }
