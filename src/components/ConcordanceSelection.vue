@@ -78,9 +78,8 @@ export default {
       // Behavior depends on whether the mapping already exists
       if (this.isExistingMapping) {
         await this.addMappingToConcordance({ mapping: this.mapping, concordance })
-      } else {
-        this.$emit("change", concordance)
       }
+      this.$emit("change", concordance)
     },
   },
 }
