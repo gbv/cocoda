@@ -60,6 +60,11 @@ export function getItems(items, options) {
   return items.map(item => getItem(item, options))
 }
 
+export function compareItems(item1, item2) {
+  // Simply use items from store if available for comparison
+  return jskos.compare(getItem(item1) || item1, getItem(item2) || item2)
+}
+
 export function saveItem(item, options = {}) {
   if (!item || !item.uri) {
     throw new Error("Can't save object that is null or undefined or that doesn't have a URI.")
@@ -444,10 +449,6 @@ export async function loadConcordances() {
   try {
     const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances())))
     _.forEach(result, (concordance, index) => {
-      // Override scheme from store
-      for (const prop of ["fromScheme", "toScheme"]) {
-        concordance[prop] = concordance[prop] && saveItem(concordance[prop], { type: "scheme" })
-      }
       // Set values of concordance array
       set(concordances, index, concordance)
     })

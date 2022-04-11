@@ -1,5 +1,6 @@
 import router from "../router.js"
 import jskos from "jskos-tools"
+import { compareItems } from "@/items"
 
 /**
  * Plugin that recalculates the mapping identifier for the current mapping on each change.
@@ -126,7 +127,7 @@ const lastUsedConcordancePlugin = store => {
     else if (lastUsedConcordanceStore.concordance && ["mapping/add", "mapping/set", "mapping/switch"].includes(mutation.type)) {
       const concordance = lastUsedConcordanceStore.concordance
       // Compare against last used concordance and set concordance if necessary
-      if (jskos.compare(concordance.fromScheme, store.state.mapping.mapping.fromScheme) && jskos.compare(concordance.toScheme, store.state.mapping.mapping.toScheme)) {
+      if (compareItems(concordance.fromScheme, store.state.mapping.mapping.fromScheme) && compareItems(concordance.toScheme, store.state.mapping.mapping.toScheme)) {
         store.commit({
           type: "mapping/setConcordance",
           concordance,

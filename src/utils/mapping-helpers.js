@@ -1,7 +1,7 @@
 import _ from "lodash"
 import jskos from "jskos-tools"
 import { userUris } from "@/utils"
-import { concordances } from "@/items"
+import { concordances, compareItems } from "@/items"
 import store from "@/store"
 
 /**
@@ -38,7 +38,7 @@ function checkMappingSchemes({ mapping, registry }) {
     // Check registry whitelist
     const whitelist = _.get(registry, `config.mappings.${side}Whitelist`)
     if (whitelist) {
-      if (!whitelist.find(s => jskos.compare(s, mapping[side]))) {
+      if (!whitelist.find(s => compareItems(s, mapping[side]))) {
         return false
       }
     }
@@ -154,7 +154,7 @@ export function canAddMappingToConcordance({ registry, concordance, mapping, use
     return false
   }
   // Check if fromScheme/toScheme are equal
-  if (!jskos.compare(concordance.fromScheme, mapping.fromScheme) || !jskos.compare(concordance.toScheme, mapping.toScheme)) {
+  if (!compareItems(concordance.fromScheme, mapping.fromScheme) || !compareItems(concordance.toScheme, mapping.toScheme)) {
     return false
   }
   return true
