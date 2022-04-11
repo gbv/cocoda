@@ -390,7 +390,14 @@ const mutations = {
     }
   },
 
-  setIdentifier(state) {
+  setIdentifier(state, { uri } = {}) {
+    if (uri) {
+      // Save old URI if necessary
+      if (state.mapping.uri && state.mapping.uri !== uri) {
+        state.mapping.identifier = (state.mapping.identifier || []).concat(state.mapping.uri)
+      }
+      state.mapping.uri = uri
+    }
     // Only set identifier if both fromScheme and toScheme are available
     if (state.mapping.fromScheme && state.mapping.toScheme) {
       state.mapping = jskos.addMappingIdentifiers(state.mapping)

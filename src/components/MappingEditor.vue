@@ -485,9 +485,15 @@ export default {
         type: "mapping/set",
         original: mapping,
       })
-      // Clear mapping if necessary
       if (this.componentSettings.clearOnSave) {
+        // Clear mapping if necessary
         this.clearMapping()
+      } else {
+        // Otherwise update mapping URI
+        this.$store.commit({
+          type: "mapping/setIdentifier",
+          uri: mapping.uri,
+        })
       }
     },
     setCreator() {
