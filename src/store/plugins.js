@@ -109,5 +109,38 @@ const routerParamPlugin = store => {
   })
 }
 
-let plugins = [mappingIdentifierPlugin, mappingTrashPlugin, routerParamPlugin]
+/**
+ * Plugin that remembers last used concordance for mapping in MappingEditor
+ */
+const lastUsedConcordanceStore = {
+  concordance: undefined,
+}
+const lastUsedConcordancePlugin = store => {
+  store.subscribe(mutation => {
+    if (mutation.payload && mutation.payload.skipPlugin) {
+      return
+    }
+    if (mutation.type === "mapping/setConcordance") {
+      lastUsedConcordanceStore.concordance = mutation.payload && mutation.payload.concordance
+    }
+    else if (lastUsedConcordanceStore.concordance && ["mapping/add", "mapping/set", "mapping/switch"].includes(mutation.type)) {
+      const concordance = lastUsedConcordanceStore.concordance
+      // Compare against last used concordance and set concordance if necessary
+      if (jskos.compare(concordance.fromScheme, store.state.mapping.mapping.fromScheme) && jskos.compare(concordance.toScheme, store.state.mapping.mapping.toScheme)) {
+        store.commit({
+          type: "mapping/setConcordance",
+          concordance,
+        })
+      } else {
+        store.commit({
+          type: "mapping/setConcordance",
+          concordance: null,
+          skipPlugin: true,
+        })
+      }
+    }
+  })
+}
+
+let plugins = [mappingIdentifierPlugin, mappingTrashPlugin, routerParamPlugin, lastUsedConcordancePlugin]
 export { plugins, refreshRouter }
