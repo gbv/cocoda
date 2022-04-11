@@ -438,6 +438,9 @@ export default {
     "original.uri"() {
       this.setCreator()
     },
+    mapping() {
+      this.setCreator()
+    },
   },
   mounted() {
     // Enable shortcuts
@@ -497,6 +500,10 @@ export default {
       }
     },
     setCreator() {
+      // Skip if creator already matches
+      if (this.mapping.creator && (this.creator === this.mapping.creator[0] || this.$jskos.compare(this.creator, this.mapping.creator[0]))) {
+        return
+      }
       // - All previous creators (except self) will be written to contributors.
       // - `creator` will be overridden by self.
       let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && this.creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))

@@ -248,7 +248,7 @@
           v-if="showEditingTools && !$jskos.compareFast(data.item.registry, $store.getters.getCurrentRegistry)"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canCreateMapping({ registry: currentRegistry, mapping: data.item.mapping, user })"
+            v-if="canCreateMapping({ registry: currentRegistry, mapping: Object.assign(data.item.mapping, { partOf: null }), user })"
             v-b-tooltip.hover="{ title: $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
             class="button"
             icon="save"
@@ -601,6 +601,7 @@ export default {
           newMapping.identifier = [].concat(newMapping.identifier, newMapping.uri)
           delete newMapping.uri
           delete newMapping.partOf
+          delete newMapping._registry
         }
         return newMapping
       }
