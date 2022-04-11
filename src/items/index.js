@@ -443,8 +443,12 @@ export const concordances = reactive([])
 export async function loadConcordances() {
   try {
     const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances())))
-    // Set values of concordance array
     _.forEach(result, (concordance, index) => {
+      // Override scheme from store
+      for (const prop of ["fromScheme", "toScheme"]) {
+        concordance[prop] = concordance[prop] && saveItem(concordance[prop], { type: "scheme" })
+      }
+      // Set values of concordance array
       set(concordances, index, concordance)
     })
     set(concordances, "length", result.length)
