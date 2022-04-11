@@ -93,18 +93,6 @@
               :sort-by="'date'"
               :sort-direction="-1">
               <span
-                slot="download"
-                slot-scope="{ value }">
-                <span
-                  v-for="(distribution, index) in value"
-                  :key="index">
-                  <a
-                    v-if="nameOfDistribution(distribution)"
-                    :href="distribution.download">
-                    {{ nameOfDistribution(distribution) }}
-                  </a></span>
-              </span>
-              <span
                 slot="mappings"
                 slot-scope="{ value }">
                 {{ (isNaN(value) ? "?" : value).toLocaleString() }}
@@ -112,6 +100,11 @@
               <span
                 slot="actions"
                 slot-scope="{ item }">
+                <font-awesome-icon
+                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
+                  icon="info-circle"
+                  class="button"
+                  @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
                 <font-awesome-icon
                   v-if="canUpdateConcordance({ concordance: item.concordance })"
                   v-b-tooltip.hover="{ title: $t('concordanceEditor.editConcordanceButton'), delay: defaults.delay.medium }"
@@ -172,6 +165,10 @@
               :position-right="20"
               :url="concordanceUrls"
               type="concordance" />
+            <!-- Concordance detail modal -->
+            <concordance-detail
+              ref="concordanceDetail"
+              :concordance="concordanceToEdit" />
           </div>
         </template>
       </tab>
@@ -452,6 +449,7 @@ import ItemName from "./ItemName.vue"
 import ComponentSettings from "./ComponentSettings.vue"
 import DataModalButton from "./DataModalButton.vue"
 import ConcordanceEditorModal from "./ConcordanceEditorModal.vue"
+import ConcordanceDetail from "./ConcordanceDetail.vue"
 import DateString from "./DateString.vue"
 import _ from "lodash"
 // Only use for cancel token generation!
@@ -468,7 +466,7 @@ import { getItem, getItems, loadConcepts } from "@/items"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, DateString },
+  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, ConcordanceDetail, DateString },
   mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**
@@ -579,11 +577,11 @@ export default {
         {
           key: "description",
           label: this.$t("mappingBrowser.description"),
-          width: "22%",
+          width: "30%",
           minWidth: "",
           sortable: true,
           align: "left",
-          class: "mappingBrowser-from750",
+          class: "mappingBrowser-from550",
         },
         {
           key: "creator",
@@ -603,15 +601,6 @@ export default {
           class: "mappingBrowser-from550",
         },
         {
-          key: "download",
-          label: this.$t("mappingBrowser.download"),
-          width: "11%",
-          minWidth: "",
-          sortable: false,
-          align: "left",
-          class: "mappingBrowser-from650",
-        },
-        {
           key: "mappings",
           label: this.$t("registryInfo.mappings"),
           width: "11%",
@@ -623,9 +612,10 @@ export default {
         {
           key: "actions",
           label: "",
-          width: "8%",
+          width: "11%",
           sortable: false,
           align: "right",
+          class: "mappingBrowser-actions",
         },
       ]
     },
@@ -1092,16 +1082,6 @@ export default {
       this.searchFilterInput.partOf = concordance.uri
       // Search.
       this.searchClicked()
-    },
-    nameOfDistribution(distribution) {
-      let mimetype = distribution.mimetype
-      if (mimetype.includes("json")) {
-        return "JSKOS"
-      }
-      if (mimetype.includes("csv")) {
-        return "CSV"
-      }
-      return null
     },
     getSchemeForFilter(filter) {
       return getItems(this.schemes).find(scheme => {
@@ -1716,6 +1696,9 @@ export default {
 
 #mappingBrowser .componentSettings {
   right: 3px;
+}
+.mappingBrowser-actions > span > * {
+  margin-right: 1px;
 }
 
 </style>
