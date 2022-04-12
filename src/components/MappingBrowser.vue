@@ -94,8 +94,13 @@
               :sort-direction="-1">
               <span
                 slot="mappings"
-                slot-scope="{ value }">
+                slot-scope="{ item, value }">
                 {{ (isNaN(value) ? "?" : value).toLocaleString() }}
+                <font-awesome-icon
+                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: defaults.delay.medium }"
+                  icon="external-link-square-alt"
+                  class="button"
+                  @click="showMappingsForConcordance(item.concordance)" />
               </span>
               <span
                 slot="actions"
@@ -117,11 +122,6 @@
                   icon="trash-alt"
                   class="button-delete"
                   @click="deleteConcordance({ concordance: item.concordance })" />
-                <font-awesome-icon
-                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: defaults.delay.medium }"
-                  icon="external-link-square-alt"
-                  class="button"
-                  @click="showMappingsForConcordance(item.concordance)" />
               </span>
               <span
                 slot="from"
