@@ -501,7 +501,7 @@ export default {
     },
     setCreator() {
       // Skip if creator already matches
-      if (this.mapping.creator && (this.creator === this.mapping.creator[0] || this.$jskos.compare(this.creator, this.mapping.creator[0]))) {
+      if (_.isEqual(this.creator, _.get(this.mapping, "creator[0]"))) {
         return
       }
       // - All previous creators (except self) will be written to contributors.
