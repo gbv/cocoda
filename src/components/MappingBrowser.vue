@@ -303,6 +303,15 @@
               </div>
               <div style="flex-basis: 100%; height: 0;" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
+                {{ $t("mappingBrowser.searchCardinality") }}:
+              </div>
+              <b-form-select
+                v-model="searchFilterInput.cardinality"
+                style="flex: 1; margin: 3px;"
+                size="sm"
+                :options="cardinalityOptions"
+                @keyup.enter.native="searchClicked" />
+              <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.concordance") }}:
               </div>
               <b-form-select
@@ -666,6 +675,18 @@ export default {
         })
       }
       return options
+    },
+    cardinalityOptions() {
+      return [
+        {
+          text: this.$t("mappingBrowser.searchCardinality1n"),
+          value: "1-to-n",
+        },
+        {
+          text: this.$t("mappingBrowser.searchCardinality11"),
+          value: "1-to-1",
+        },
+      ]
     },
     concordanceOptions() {
       let options = [
@@ -1097,6 +1118,7 @@ export default {
         creator: "",
         direction: "",
         type: null,
+        cardinality: "1-to-n",
         partOf: null,
       }
       if (ignoredLock || !this.lockScheme[true]) {
@@ -1177,6 +1199,7 @@ export default {
           creator: this.searchFilter.creator,
           type: this.searchFilter.type,
           direction: this.searchFilter.direction,
+          cardinality: this.searchFilter.cardinality,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
