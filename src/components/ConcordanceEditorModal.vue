@@ -7,7 +7,12 @@
     hide-footer
     size="md">
     <p>
-      <b>{{ $t("schemeSelection.source") }}:</b><br>
+      <b>{{ $t("schemeSelection.source") }}:</b>
+      <item-suggest
+        v-if="!editing"
+        :search="searchSchemes"
+        @select="selectScheme({ isLeft: true, scheme: $event })" />
+      <br v-else>
       <item-name
         v-if="fromScheme"
         :font-size="'large'"
@@ -17,7 +22,12 @@
       </span>
     </p>
     <p>
-      <b>{{ $t("schemeSelection.target") }}:</b><br>
+      <b>{{ $t("schemeSelection.target") }}:</b>
+      <item-suggest
+        v-if="!editing"
+        :search="searchSchemes"
+        @select="selectScheme({ isLeft: false, scheme: $event })" />
+      <br v-else>
       <item-name
         v-if="toScheme"
         :font-size="'large'"
@@ -74,19 +84,21 @@
 
 <script>
 import ItemName from "./ItemName.vue"
+import ItemSuggest from "./ItemSuggest.vue"
 
 import computed from "../mixins/computed.js"
 import cdk from "../mixins/cdk.js"
 
 import _ from "lodash"
 import jskos from "jskos-tools"
+import { compareItems, getItem } from "@/items"
 
 /**
  * ...
  */
 export default {
   name: "ConcordanceEditorModal",
-  components: { ItemName },
+  components: { ItemName, ItemSuggest },
   mixins: [computed, cdk],
   props: {
     /**
@@ -217,6 +229,27 @@ export default {
       if (concordance) {
         this.hide()
       }
+    },
+    async searchSchemes(query) {
+      query = query.toLowerCase()
+      const results = this.schemes.map(scheme => getItem(scheme)).filter(
+        scheme => (scheme.notation || []).concat(Object.values(scheme.prefLabel || {})).join("").toLowerCase().includes(query),
+      )
+      // Convert to OpenSearch Suggest Format
+      const result = [query]
+      result[1] = results.map(r => jskos.notation(r) + " " + jskos.prefLabel(r))
+      result[2] = results.map(() => "")
+      result[3] = results.map(r => r.uri)
+      return result
+    },
+    selectScheme({ isLeft, scheme }) {
+      if (compareItems(scheme, this.selected.scheme[isLeft])) {
+        return
+      }
+      this.setSelected({
+        isLeft,
+        scheme,
+      })
     },
   },
 }

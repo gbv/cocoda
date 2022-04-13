@@ -16,7 +16,7 @@
             v-if="concordanceRegistries.length"
             class="mappingBrowser-concordanceMenu">
             <div
-              v-if="canCreateConcordance() && selected.scheme[true] && selected.scheme[false]"
+              v-if="canCreateConcordance()"
               class="button mappingBrowser-addConcordanceButton"
               @click="editConcordance(null)">
               <font-awesome-icon
