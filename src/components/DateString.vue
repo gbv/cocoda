@@ -1,6 +1,5 @@
 <template>
-  <span
-    v-b-tooltip.hover="{ title: tooltip, delay: defaults.delay.medium }">
+  <span>
     {{ dateShort }}
   </span>
 </template>
@@ -17,10 +16,8 @@ export default defineComponent({
   },
   setup(props) {
     const dateShort = computed(() => props.date.slice(0, 10))
-    const tooltip = computed(() => props.date.length > 10 ? props.date.replace("T", " ").replace("Z", " (UTC)") : null)
     return {
       dateShort,
-      tooltip,
     }
   },
 })
