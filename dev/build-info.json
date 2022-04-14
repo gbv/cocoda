@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "02083445a9412ecfb9ed75547f74a2a4440436ea",
-  "gitCommitShort": "0208344",
-  "gitCommitMessage": "0208344 Small fix regarding creator in MappingEditor",
-  "buildDate": "2022-04-13T09:39:15Z",
-  "date": "2022-04-13T09:19:03.000Z",
+  "gitCommit": "13103fafdf179929588197b40b7628e984de1139",
+  "gitCommitShort": "13103fa",
+  "gitCommitMessage": "13103fa Update dependencies",
+  "buildDate": "2022-04-14T05:21:28Z",
+  "date": "2022-04-14T05:20:23.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
