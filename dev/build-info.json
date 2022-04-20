@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "4328c22874198c959443fa7a0e0b2a783c220363",
-  "gitCommitShort": "4328c22",
-  "gitCommitMessage": "4328c22 Update dependencies",
-  "buildDate": "2022-04-19T08:04:18Z",
-  "date": "2022-04-19T08:03:07.000Z",
+  "gitCommit": "b994b38e2ff01c70a09a56f2225eda764a0ed2c3",
+  "gitCommitShort": "b994b38",
+  "gitCommitMessage": "b994b38 MappingEditor: Rewrite setCreator to fix issues (#685)",
+  "buildDate": "2022-04-20T07:48:17Z",
+  "date": "2022-04-20T07:45:58.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
