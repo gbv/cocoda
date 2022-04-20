@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "b994b38e2ff01c70a09a56f2225eda764a0ed2c3",
-  "gitCommitShort": "b994b38",
-  "gitCommitMessage": "b994b38 MappingEditor: Rewrite setCreator to fix issues (#685)",
-  "buildDate": "2022-04-20T07:48:17Z",
-  "date": "2022-04-20T07:45:58.000Z",
+  "gitCommit": "877fc7bac32945ee74240a952d7e13c331f56cc9",
+  "gitCommitShort": "877fc7b",
+  "gitCommitMessage": "877fc7b Mapping Search: Set default sort to created descending (#463)",
+  "buildDate": "2022-04-20T08:18:35Z",
+  "date": "2022-04-20T08:14:27.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
