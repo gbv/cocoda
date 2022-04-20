@@ -583,29 +583,7 @@ export default {
         // Select registry for editing
         this.useRegistryForSaving(data.item.registry)
       }
-      let copyWithReferences = mapping => {
-        let newMapping = this.$jskos.copyDeep(mapping)
-        newMapping.from.memberSet = mapping.from.memberSet.slice()
-        if (newMapping.to.memberSet) {
-          newMapping.to.memberSet = mapping.to.memberSet.slice()
-        } else if (newMapping.to.memberList) {
-          newMapping.to.memberList = mapping.to.memberList.slice()
-        } else if (newMapping.to.memberChoice) {
-          newMapping.to.memberChoice = mapping.to.memberChoice.slice()
-        }
-        newMapping._registry = mapping._registry
-        newMapping.fromScheme = mapping.fromScheme
-        newMapping.toScheme = mapping.toScheme
-        // Move URI to identifier if user can't edit; also delete partOf
-        if (!canEdit) {
-          newMapping.identifier = [].concat(newMapping.identifier, newMapping.uri)
-          delete newMapping.uri
-          delete newMapping.partOf
-          delete newMapping._registry
-        }
-        return newMapping
-      }
-      let mapping = copyWithReferences(data.item.mapping)
+      let mapping = this.copyMappingWithReferences(data.item.mapping)
       this.$store.commit({
         type: "mapping/empty",
       })

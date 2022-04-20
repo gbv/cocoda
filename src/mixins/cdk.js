@@ -117,6 +117,29 @@ export default {
   },
   methods: {
     getRegistry,
+    copyMappingWithReferences(mapping) {
+      const newMapping = this.$jskos.copyDeep(mapping)
+      newMapping.from.memberSet = mapping.from.memberSet.slice()
+      if (newMapping.to.memberSet) {
+        newMapping.to.memberSet = mapping.to.memberSet.slice()
+      } else if (newMapping.to.memberList) {
+        newMapping.to.memberList = mapping.to.memberList.slice()
+      } else if (newMapping.to.memberChoice) {
+        newMapping.to.memberChoice = mapping.to.memberChoice.slice()
+      }
+      newMapping.partOf = newMapping.partOf && newMapping.partOf.slice()
+      newMapping._registry = mapping._registry
+      newMapping.fromScheme = mapping.fromScheme
+      newMapping.toScheme = mapping.toScheme
+      // Move URI to identifier if user can't edit; also delete partOf
+      if (!this.canUpdateMapping({ mapping, user: this.user })) {
+        newMapping.identifier = [].concat(newMapping.identifier, newMapping.uri)
+        delete newMapping.uri
+        delete newMapping.partOf
+        delete newMapping._registry
+      }
+      return newMapping
+    },
     /**
      * Adjusts a mapping by retrieving/saving all contained schemes and concepts from/in the store.
      *
@@ -181,7 +204,7 @@ export default {
           type: "mapping/set",
           original: mapping,
           // Also override mapping if it hasn't changed from original
-          mapping: this.$store.getters["mapping/hasChangedFromOriginal"] ? null : mapping,
+          mapping: this.$store.getters["mapping/hasChangedFromOriginal"] ? null : this.copyMappingWithReferences(mapping),
         })
       }
       return mapping
