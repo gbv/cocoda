@@ -1202,6 +1202,8 @@ export default {
           cardinality: this.searchFilter.cardinality,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
+          sort: "created",
+          order: "desc",
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
           limit: this.componentSettings.resultLimit,
           cancelToken: cancelToken.token,
