@@ -500,22 +500,35 @@ export default {
       }
     },
     setCreator() {
-      // Skip if creator already matches
-      if (_.isEqual(this.creator, _.get(this.mapping, "creator[0]"))) {
+      const updatingOriginal = this.$store.getters["mapping/canUpdate"]
+      const creatorIndex = (this.mapping.creator || []).findIndex(c => this.$jskos.compare({ uri: c.uri }, { identifier: this.userUris }))
+      if (updatingOriginal && creatorIndex === -1) {
+        // Don't update creator if editing foreign mapping
         return
+      } else if (creatorIndex === -1) {
+        // When not updating existing mapping, add previous creator to contributor and override creator with self
+        let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && this.creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
+        this.$store.commit({
+          type: "mapping/setCreator",
+          creator: [this.creator],
+        })
+        this.$store.commit({
+          type: "mapping/setContributor",
+          contributor,
+        })
+      } else {
+        // Skip if creator already matches
+        if (_.isEqual(this.creator, this.mapping.creator[creatorIndex])) {
+          return
+        }
+        // Otherwise update creator
+        const creator = this.mapping.creator.slice()
+        creator[creatorIndex] = this.creator
+        this.$store.commit({
+          type: "mapping/setCreator",
+          creator,
+        })
       }
-      // - All previous creators (except self) will be written to contributors.
-      // - `creator` will be overridden by self.
-      let contributor = (this.mapping.contributor || []).concat((this.mapping.creator || []).filter(c => !(this.creator.uri && c.uri && this.creator.uri == c.uri) && !(this.creatorName && this.$jskos.prefLabel(c, { fallbackToUri: false }) && this.creatorName == this.$jskos.prefLabel(c, { fallbackToUri: false }))))
-      let creator = [this.creator]
-      this.$store.commit({
-        type: "mapping/setCreator",
-        creator,
-      })
-      this.$store.commit({
-        type: "mapping/setContributor",
-        contributor,
-      })
     },
     removeCreator() {
       // - All previous creators will be written to contributors.
