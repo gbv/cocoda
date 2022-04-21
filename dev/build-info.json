@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "ad6130b658d508778b3a28ea856582b48e234095",
-  "gitCommitShort": "ad6130b",
-  "gitCommitMessage": "ad6130b MappingBrowser: Indicate which concordances the user can contribute to",
-  "buildDate": "2022-04-21T10:18:14Z",
-  "date": "2022-04-21T10:17:10.000Z",
+  "gitCommit": "d277cee6b96955c9449c0430c8299e48a9aad72f",
+  "gitCommitShort": "d277cee",
+  "gitCommitMessage": "d277cee MappingEditor: Disable swap mapping when it is part of concordance",
+  "buildDate": "2022-04-21T10:49:39Z",
+  "date": "2022-04-21T10:48:25.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
