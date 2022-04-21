@@ -225,7 +225,7 @@
       "Data Sources",
       "User Interface",
       "Shortcuts",
-      "Local Mappings"
+      "My Data"
     ],
     "settings": {
       "title": "Settings",
@@ -240,6 +240,10 @@
       "creatorRewriteTitle": "Rewrite Creator",
       "creatorRewriteText": "Clicking the button below will rewrite the creator for all local mappings with the following information:",
       "creatorRewriteButton": "Rewrite creator for all local mappings",
+      "dataInRegistries": "Data in Registries",
+      "dataInRegistriesSubtitle": "The following list shows API links for your created entities in registries that you can currently write into.",
+      "noDataForRegistry": "No data for this registry.",
+      "localMappings": "Local Mappings",
       "localDownload": "Download Local Mappings",
       "localDownloadJskos": "Download all {0} mappings as JSKOS",
       "localDownloadCsv": "Download all {0} mappings as CSV",
@@ -463,7 +467,7 @@
       "Datenquellen",
       "Oberfläche",
       "Tastaturkürzel",
-      "Lokale Mappings"
+      "Meine Daten"
     ],
     "settings": {
       "title": "Einstellungen",
@@ -478,6 +482,10 @@
       "creatorRewriteTitle": "Creator-Feld überschreiben",
       "creatorRewriteText": "Durch den nachfolgenden Button wird der creator aller lokaler Mappings mit folgenden Informationen überschrieben:",
       "creatorRewriteButton": "creator-Feld für alle lokalen Mappings überschreiben",
+      "dataInRegistries": "Daten in Datenbanken",
+      "dataInRegistriesSubtitle": "Die folgende Liste zeigt API-Links von erstellten Daten für Datenbanken, die aktuell schreibbar sind.",
+      "noDataForRegistry": "Keine Daten für diese Datenbank.",
+      "localMappings": "Lokale Mappings",
       "localDownload": "Lokale Mappings herunterladen",
       "localDownloadJskos": "Lade alle {0} Mappings als JSKOS herunter",
       "localDownloadCsv": "Lade alle {0} Mappings als CSV herunter",

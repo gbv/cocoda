@@ -277,8 +277,41 @@
           </table>
         </tab>
         <tab
-          v-if="localMappingsRegistry"
           :title="$t('settingsTabs')[4]">
+          <h3>{{ $t("settings.dataInRegistries") }}</h3>
+          <p>
+            {{ $t("settings.dataInRegistriesSubtitle") }}
+          </p>
+          <p
+            v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry) && !$jskos.compare(registry, localMappingsRegistry))"
+            :key="registry.uri">
+            <registry-info
+              :registry="registry"
+              :show-details="false"
+              :show-capabilities="false"
+              :show-editable="false" />
+            <ul class="myDataDownloads">
+              <li
+                v-for="type in ['mappings', 'concordances', 'annotations'].filter(t => registry.isAuthorizedFor({
+                  type: t,
+                  action: 'create',
+                  user,
+                }))"
+                :key="type">
+                {{ $t(`registryInfo.${type}`) }}:
+                <a
+                  :href="`${registry._api[type]}?creator=${encodeURIComponent(userUris.join('|'))}`"
+                  target="_blank">
+                  {{ $t("dataModal.apiLinks") }} {{ $t("dataModal.apiUrl") }}
+                </a>
+              </li>
+              <li class="myDataDownloads-noData">
+                {{ $t("settings.noDataForRegistry") }}
+              </li>
+            </ul>
+          </p>
+
+          <h3>{{ $t("settings.localMappings") }}</h3>
           <div>
             <p>{{ $t("settings.localMappingsInfo") }}</p>
           </div>
@@ -352,7 +385,7 @@
               </b-button>
             </p>
           </div>
-          <br><br>
+          <br>
           <div v-if="localMappingsRegistry && dlAllMappings">
             <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
             <p v-html="$t('settings.creatorRewriteText')" />
@@ -851,13 +884,14 @@ p {
   background-color: @color-background-secondary;
   border-top: 1px solid @color-shadow;
 }
+// Hide no data tag if it's not first child
+.myDataDownloads > li:not(:first-child).myDataDownloads-noData {
+  display: none;
+}
+
 </style>
 
 <style>
-
-#settingsModal h4 {
-  padding-top: 15px;
-}
 
 #settingsModal .modal-dialog {
   height: 90%;
