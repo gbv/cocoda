@@ -25,6 +25,7 @@ import {
   canDeleteMapping,
   canAddMappingToConcordance,
   canRemoveMappingFromConcordance,
+  isCreatorOrContributor,
 
 } from "@/utils/mapping-helpers.js"
 
@@ -596,6 +597,7 @@ export default {
     loadConcordances,
     canAddMappingToConcordance,
     canRemoveMappingFromConcordance,
+    isCreatorOrContributor,
     async addMappingToConcordance({ registry, _reload = true, _alert = true, _adjust = true, mapping, concordance }) {
       registry = this.getRegistry(registry || mapping._registry)
       if (!registry) {

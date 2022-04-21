@@ -144,6 +144,20 @@
                   font-size="sm" />
               </span>
               <span
+                slot="creator"
+                slot-scope="{ value, item }">
+                <font-awesome-icon
+                  v-if="isCreatorOrContributor(item.concordance, user) && item.concordance._registry.isAuthorizedFor({
+                    type: 'mappings',
+                    action: 'update',
+                    user,
+                  })"
+                  v-b-tooltip="$t('mappingBrowser.canSaveIntoConcordanceTooltip')"
+                  style="font-size: 12px;"
+                  icon="pencil-alt" />
+                {{ value }}
+              </span>
+              <span
                 slot="date"
                 slot-scope="{ value }">
                 <date-string :date="value" />
