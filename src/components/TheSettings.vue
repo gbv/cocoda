@@ -283,7 +283,7 @@
             {{ $t("settings.dataInRegistriesSubtitle") }}
           </p>
           <p
-            v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry) && !$jskos.compare(registry, localMappingsRegistry))"
+            v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry) && !$jskos.compare(registry, localMappingsRegistry) && registry.uri !== 'http://coli-conc.gbv.de/registry/wikidata-mappings')"
             :key="registry.uri">
             <registry-info
               :registry="registry"
