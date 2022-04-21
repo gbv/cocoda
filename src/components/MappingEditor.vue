@@ -287,7 +287,7 @@ export default {
       return this.mapping.fromScheme && this.mapping.toScheme
     },
     canSwapCurrentMapping() {
-      return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0
+      return this.$jskos.conceptsOfMapping(this.mapping, "to").length <= 1 && this.$jskos.conceptsOfMapping(this.mapping).length > 0 && (!this.mapping.partOf || this.mapping.partOf.length === 0)
     },
     canCloneCurrentMapping() {
       return this.original.uri != null
