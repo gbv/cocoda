@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "e4530ef317dcca4c42eaebbe617d71b803411e4f",
-  "gitCommitShort": "e4530ef",
-  "gitCommitMessage": "e4530ef Some adjustments to ConcordanceEditorModal",
-  "buildDate": "2022-04-21T09:52:30Z",
-  "date": "2022-04-21T09:51:22.000Z",
+  "gitCommit": "ad6130b658d508778b3a28ea856582b48e234095",
+  "gitCommitShort": "ad6130b",
+  "gitCommitMessage": "ad6130b MappingBrowser: Indicate which concordances the user can contribute to",
+  "buildDate": "2022-04-21T10:18:14Z",
+  "date": "2022-04-21T10:17:10.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
