@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "10360105f23376244eae326c2ab62255bd692351",
-  "gitCommitShort": "1036010",
-  "gitCommitMessage": "1036010 Settings: Hide Wikidata mappings from My Data links (#520)",
-  "buildDate": "2022-04-21T08:47:26Z",
-  "date": "2022-04-21T08:46:01.000Z",
+  "gitCommit": "e4530ef317dcca4c42eaebbe617d71b803411e4f",
+  "gitCommitShort": "e4530ef",
+  "gitCommitMessage": "e4530ef Some adjustments to ConcordanceEditorModal",
+  "buildDate": "2022-04-21T09:52:30Z",
+  "date": "2022-04-21T09:51:22.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
