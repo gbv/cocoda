@@ -7,9 +7,9 @@
     hide-footer
     size="md">
     <p>
-      <b>{{ $t("schemeSelection.source") }}:</b>
+      <b>{{ $t("schemeSelection.source") }}</b>
       <item-suggest
-        v-if="!editing"
+        v-if="!editing && !fromScheme"
         :search="searchSchemes"
         @select="selectScheme({ isLeft: true, scheme: $event })" />
       <br v-else>
@@ -20,11 +20,18 @@
       <span v-else>
         {{ $t("concordanceEditor.pleaseSelect") }}
       </span>
+      <font-awesome-icon
+        v-if="fromScheme"
+        v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: defaults.delay.medium }"
+        class="button"
+        style="margin: -3px 2px 0px 4px;"
+        icon="times-circle"
+        @click="selectScheme({ isLeft: true, scheme: null })" />
     </p>
     <p>
-      <b>{{ $t("schemeSelection.target") }}:</b>
+      <b>{{ $t("schemeSelection.target") }}</b>
       <item-suggest
-        v-if="!editing"
+        v-if="!editing && !toScheme"
         :search="searchSchemes"
         @select="selectScheme({ isLeft: false, scheme: $event })" />
       <br v-else>
@@ -35,9 +42,16 @@
       <span v-else>
         {{ $t("concordanceEditor.pleaseSelect") }}
       </span>
+      <font-awesome-icon
+        v-if="toScheme"
+        v-b-tooltip.hover="{ title: $t('general.clearScheme'), delay: defaults.delay.medium }"
+        class="button"
+        style="margin: -3px 2px 0px 4px;"
+        icon="times-circle"
+        @click="selectScheme({ isLeft: false, scheme: null })" />
     </p>
     <p>
-      <b>Notation:</b>
+      <b>Notation</b>
       <b-input
         v-model="notation"
         type="text"
@@ -45,7 +59,7 @@
         :disabled="editing" />
     </p>
     <p>
-      <b>{{ $t("mappingBrowser.description") }}:</b>
+      <b>{{ $t("mappingBrowser.description") }}</b>
       <span
         v-for="lang in config.languages"
         :key="lang">
@@ -57,7 +71,7 @@
       </span>
     </p>
     <p>
-      <b>{{ $t("concordanceEditor.contributor") }}:</b>
+      <b>{{ $t("concordanceEditor.contributor") }}</b>
       <b-form-textarea
         v-model="contributor"
         rows="3"
