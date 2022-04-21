@@ -63,6 +63,21 @@
               </p>
             </b-col>
           </b-row>
+          <!-- Contributor -->
+          <b-row v-if="contributors.length">
+            <b-col cols="3">
+              {{ $t("mappingDetail.contributor") }}:
+            </b-col>
+            <b-col>
+              <p
+                v-for="(contributor, index) in contributors"
+                :key="`mappingDetail-contributor-${index}`">
+                <auto-link
+                  :link="contributor.url || contributor.uri"
+                  :text="$jskos.prefLabel(contributor)" />
+              </p>
+            </b-col>
+          </b-row>
           <!-- Created -->
           <b-row>
             <b-col cols="3">
@@ -173,6 +188,11 @@ export default {
       default: null,
     },
 
+  },
+  computed: {
+    contributors() {
+      return (this.concordance.contributor || []).filter(c => !this.$jskos.isContainedIn(c, this.concordance.creator))
+    },
   },
   methods: {
     show() {

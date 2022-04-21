@@ -92,6 +92,21 @@
               </p>
             </b-col>
           </b-row>
+          <!-- Contributor -->
+          <b-row v-if="contributors.length">
+            <b-col cols="3">
+              {{ $t("mappingDetail.contributor") }}:
+            </b-col>
+            <b-col>
+              <p
+                v-for="(contributor, index) in contributors"
+                :key="`mappingDetail-contributor-${index}`">
+                <auto-link
+                  :link="contributor.url || contributor.uri"
+                  :text="$jskos.prefLabel(contributor)" />
+              </p>
+            </b-col>
+          </b-row>
           <!-- Created -->
           <b-row>
             <b-col cols="3">
@@ -230,6 +245,9 @@ export default {
         return null
       }
       return "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8659&TRM=" + this.mapping.uri.replace(/[\W_]+/g,"+")
+    },
+    contributors() {
+      return (this.mapping.contributor || []).filter(c => !this.$jskos.isContainedIn(c, this.mapping.creator))
     },
   },
   methods: {
