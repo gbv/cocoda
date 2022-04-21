@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "877fc7bac32945ee74240a952d7e13c331f56cc9",
-  "gitCommitShort": "877fc7b",
-  "gitCommitMessage": "877fc7b Mapping Search: Set default sort to created descending (#463)",
-  "buildDate": "2022-04-20T08:18:35Z",
-  "date": "2022-04-20T08:14:27.000Z",
+  "gitCommit": "b32a42fa99532da80b287a57400a2889c76bc58d",
+  "gitCommitShort": "b32a42f",
+  "gitCommitMessage": "b32a42f Settings: Extend Local Mappings tab to My Data tab (#520)",
+  "buildDate": "2022-04-21T08:41:59Z",
+  "date": "2022-04-21T08:40:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
