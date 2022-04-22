@@ -192,7 +192,7 @@ export default {
         line += 1
       }
       if (invalidContributorLineNumbers.length) {
-        value = `${this.$t("concordanceEditor.contributorSubtextInvalidPrefix")} ${invalidContributorLineNumbers.join(", ")}`
+        value += ` ${this.$t("concordanceEditor.contributorSubtextInvalidPrefix")} ${invalidContributorLineNumbers.join(", ")}`
       }
       return value
     },

@@ -361,7 +361,7 @@
       "pleaseSelect": "Please select a vocabulary",
       "save": "Save Concordance",
       "contributor": "Contributors",
-      "contributorSubtextDefault": "One URI per line",
+      "contributorSubtextDefault": "One URI per line. You and all contributors will be able to add mappings to the concordance, edit mappings that belong to the concordance, and remove mappings from the concordance. Only you will be able to edit this concordance's metadata, including adding/removing contributors.",
       "contributorSubtextInvalidPrefix": "Invalid URI(s) on line"
     }
   },
@@ -727,7 +727,7 @@
       "pleaseSelect": "Bitte ein Vokabular auswählen",
       "save": "Konkordanz speichern",
       "contributor": "Mitwirkende",
-      "contributorSubtextDefault": "Eine URI per Zeile",
+      "contributorSubtextDefault": "Eine URI per Zeile. Du und alle Mitwirkenden werden Mappings zu der Konkordanz hinzufügen, Mappings innerhalb der Konkordanz bearbeiten und Mappings aus der Konkordanz entfernen können. Nur du wirst die Metadaten der Konkordanz bearbeiten und Mitwirkende hinzufügen/entfernen können.",
       "contributorSubtextInvalidPrefix": "Ungültige URI(s) in Zeile"
     }
   }
