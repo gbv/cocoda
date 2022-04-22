@@ -17,7 +17,9 @@
         v-if="fromScheme"
         :font-size="'large'"
         :item="fromScheme" />
-      <span v-else>
+      <span
+        v-else
+        class="concordanceEditor-subtitle">
         {{ $t("concordanceEditor.pleaseSelect") }}
       </span>
       <font-awesome-icon
@@ -39,7 +41,9 @@
         v-if="toScheme"
         :font-size="'large'"
         :item="toScheme" />
-      <span v-else>
+      <span
+        v-else
+        class="concordanceEditor-subtitle">
         {{ $t("concordanceEditor.pleaseSelect") }}
       </span>
       <font-awesome-icon
@@ -55,6 +59,7 @@
       <b-input
         v-model="notation"
         type="text"
+        size="sm"
         :placeholder="notationDefault"
         :disabled="editing" />
     </p>
@@ -66,8 +71,9 @@
         <b-input
           v-model="description[lang]"
           type="text"
+          size="sm"
           :placeholder="$t('mappingBrowser.description')" />
-        <sup class="text-lightGrey">{{ lang }}</sup>
+        <span class="concordanceEditor-subtitle">{{ $t(`languages.${lang}`) }} ({{ lang }})</span>
       </span>
     </p>
     <p>
@@ -75,8 +81,9 @@
       <b-form-textarea
         v-model="contributor"
         rows="3"
-        max-rows="6" />
-      <sup class="text-lightGrey">{{ contributorSubtext }}</sup>
+        max-rows="6"
+        style="margin-bottom: 3px;" />
+      <span class="concordanceEditor-subtitle">{{ contributorSubtext }}</span>
     </p>
     <p>
       <b-button
@@ -271,5 +278,17 @@ export default {
 
 <style lang="less" scoped>
 @import "../style/main.less";
+
+p {
+  margin: 10px 0 !important;
+}
+
+.concordanceEditor-subtitle {
+  .text-lightGrey;
+  .fontSize-verySmall;
+  display:block;
+  line-height: 1.3;
+  margin: 0 0 4px 3px;
+}
 
 </style>

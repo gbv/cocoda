@@ -305,7 +305,6 @@ export default defineComponent({
 
 .jskos-vue-itemSuggest {
   position: relative;
-  height: 34px;
 }
 .jskos-vue-itemSuggest > input {
   width: 100%;
