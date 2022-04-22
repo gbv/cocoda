@@ -386,6 +386,13 @@ export default {
           }
         }
       }
+      // Show a warning if mapping is going to be removed from concordance, but user is not the creator
+      if (this.$store.getters["mapping/hasConcordanceChangedFromOriginal"] && !_.get(this.mapping, "partOf[0]") && !(this.mapping.creator || []).find(c => this.$jskos.compare({ uri: c.uri }, { identifier: this.userUris }))) {
+        return {
+          message: this.$t("mappingEditor.warningRemoveFromConcordanceWhenNotCreator"),
+          warning: true,
+        }
+      }
       // Otherwise it's valid
       return {
         message: null,

@@ -142,7 +142,8 @@
       "warningUpdateRegistry": "Mapping will not be updated in {0}, but saved as a new mapping in {1}.",
       "warningUpdateNotAllowed": "Mapping can't be updated and will therefore be saved as a new mapping.",
       "warningUpdateScheme": "Updated mapping will be saved with a different {0}, are you sure this is intended? If not, you can clone the mapping (button to the right of the delete button).",
-      "warningUpdateSchemeConcordance": "{0} can't be changed because the mapping is part of a concordance."
+      "warningUpdateSchemeConcordance": "{0} can't be changed because the mapping is part of a concordance.",
+      "warningRemoveFromConcordanceWhenNotCreator": "Because this mapping was not created by you, you will lose write access to it if you remove it from the concordance."
     },
     "mappingBrowser": {
       "title": "Mapping Browser",
@@ -462,7 +463,8 @@
       "warningUpdateRegistry": "Mapping wird nicht in {0} aktualisiert, sondern als neues Mapping in {1} gespeichert.",
       "warningUpdateNotAllowed": "Mapping kann nicht aktualisiert werden und wird deshalb als neues Mapping gespeichert.",
       "warningUpdateScheme": "Das aktualisierte Mapping wird mit anderem {0} gespeichert, ist das so gewollt? Falls nicht, kann das Mapping geklont werden (Button rechts vom Löschen-Button).",
-      "warningUpdateSchemeConcordance": "Das Mapping ist Teil einer Konkordanz, weshalb {0} nicht geändert werden kann."
+      "warningUpdateSchemeConcordance": "Das Mapping ist Teil einer Konkordanz, weshalb {0} nicht geändert werden kann.",
+      "warningRemoveFromConcordanceWhenNotCreator": "Da du dieses Mapping nicht selbst erstellt hast, verlierst du die Schreibrechte, sobald das Mapping aus der Konkordanz entfernt wird."
     },
     "settingsTabs": [
       "Account",
