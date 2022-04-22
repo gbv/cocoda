@@ -432,6 +432,8 @@ export default {
         }
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
+          // Also reload concordances because it might have been changed
+          this.loadConcordances()
         }
         if (_alert) {
           this.alert(this.$t("alerts.mappingSaved", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success")

@@ -464,6 +464,11 @@ export default {
     },
     async saveCurrentMapping() {
       if (!this.canSaveCurrentMapping) return false
+      // If only concordance has changed, save that change only
+      if (!this.$store.getters["mapping/hasMappingChangedFromOriginal"] && this.$store.getters["mapping/hasConcordanceChangedFromOriginal"]) {
+        await this.addMappingToConcordance({ mapping: this.mapping, concordance: _.get(this.mapping, "partOf[0]") })
+        return
+      }
       if (this.creator) {
         // Set creator
         this.setCreator()

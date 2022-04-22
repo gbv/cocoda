@@ -118,7 +118,7 @@ const getters = {
     return state.mapping[helpers.fromToScheme(isLeft)]
   },
 
-  hasChangedFromOriginal: (state, getters, rootState, rootGetters) => {
+  hasMappingChangedFromOriginal: (state, getters, rootState, rootGetters) => {
     if (!state.mapping) {
       return false
     }
@@ -162,6 +162,14 @@ const getters = {
       return true
     }
     return !jskos.compareMappings(original, state.mapping)
+  },
+
+  hasChangedFromOriginal: (state, getters) => {
+    return getters.hasMappingChangedFromOriginal || getters.hasConcordanceChangedFromOriginal
+  },
+
+  hasConcordanceChangedFromOriginal: (state) => {
+    return !jskos.compare(_.get(state.mapping, "partOf[0]"), _.get(state.original, "mapping.partOf[0]"))
   },
 
   mappingTrash: (state, getters, rootState) => {

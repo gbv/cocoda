@@ -30,16 +30,13 @@ export default {
     },
   },
   computed: {
-    isExistingMapping() {
-      return !!this.mapping._registry
-    },
     availableTargetConcordances() {
       return this.concordances.filter(concordance => this.canAddMappingToConcordance({
         registry: this.registry,
         mapping: this.mapping,
         concordance,
         user: this.user,
-        isExistingMapping: this.isExistingMapping,
+        isExistingMapping: !!this.mapping._registry,
       }))
     },
     concordanceOptions() {
@@ -61,10 +58,6 @@ export default {
     displayNameForConcordance,
     async changeConcordance(uri) {
       const concordance = this.availableTargetConcordances.find(c => this.$jskos.compare(c, { uri }))
-      // Behavior depends on whether the mapping already exists
-      if (this.isExistingMapping) {
-        await this.addMappingToConcordance({ mapping: this.mapping, concordance })
-      }
       this.$emit("change", concordance)
     },
   },
