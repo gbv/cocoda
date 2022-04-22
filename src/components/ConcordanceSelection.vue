@@ -14,6 +14,7 @@
 
 <script>
 import cdk from "../mixins/cdk.js"
+import { displayNameForConcordance } from "@/utils"
 
 export default {
   name: "ConcordanceSelection",
@@ -57,22 +58,7 @@ export default {
     },
   },
   methods: {
-    displayNameForConcordance(concordance) {
-      if (!concordance) {
-        return ""
-      }
-      let name = this.$jskos.prefLabel(concordance, { fallbackToUri: false })
-        || (this.$jskos.languageMapContent(concordance, "scopeNote") || [])[0]
-        || concordance.uri
-        || ""
-      if (concordance.creator && concordance.creator.length) {
-        let creator = this.$jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
-        if (creator) {
-          name += ` (${creator})`
-        }
-      }
-      return name
-    },
+    displayNameForConcordance,
     async changeConcordance(uri) {
       const concordance = this.availableTargetConcordances.find(c => this.$jskos.compare(c, { uri }))
       // Behavior depends on whether the mapping already exists

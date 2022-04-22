@@ -27,6 +27,23 @@ export function getRegistryName({ registry, locale }) {
   return ""
 }
 
+export function displayNameForConcordance(concordance) {
+  if (!concordance) {
+    return ""
+  }
+  let name = jskos.prefLabel(concordance, { fallbackToUri: false })
+    || (jskos.languageMapContent(concordance, "scopeNote") || [])[0]
+    || concordance.uri
+    || ""
+  if (concordance.creator && concordance.creator.length) {
+    let creator = jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
+    if (creator) {
+      name += ` (${creator})`
+    }
+  }
+  return name
+}
+
 export function userUris(user) {
   if (!user) {
     return null

@@ -141,12 +141,14 @@
             </div>
           </b-row>
           <!-- PartOf -->
-          <b-row>
+          <b-row v-if="mapping.partOf && mapping.partOf[0]">
             <b-col cols="3">
               {{ $t("mappingDetail.partOf") }}:
             </b-col>
             <b-col>
-              <concordance-selection :mapping="mapping" />
+              <auto-link
+                :link="mapping.partOf[0].uri"
+                :text="displayNameForConcordance(mapping.partOf[0])" />
             </b-col>
           </b-row>
           <!-- Identifier -->
@@ -218,16 +220,16 @@ import AutoLink from "./AutoLink.vue"
 import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
-import ConcordanceSelection from "./ConcordanceSelection.vue"
 
 import computed from "../mixins/computed.js"
+import { displayNameForConcordance } from "@/utils"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString, ConcordanceSelection },
+  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString },
   mixins: [computed],
   props: {
     /**
@@ -254,6 +256,7 @@ export default {
     show() {
       this.$refs.mappingDetail.show()
     },
+    displayNameForConcordance,
   },
 }
 </script>
