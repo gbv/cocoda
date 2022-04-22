@@ -62,6 +62,7 @@
         size="sm"
         :placeholder="notationDefault"
         :disabled="editing" />
+      <span class="concordanceEditor-subtitle">{{ $t("concordanceEditor.notationSubtext") }}</span>
     </p>
     <p>
       <b>{{ $t("mappingBrowser.description") }}</b>
@@ -82,8 +83,12 @@
         v-model="contributor"
         rows="3"
         max-rows="6"
+        size="sm"
         style="margin-bottom: 3px;" />
-      <span class="concordanceEditor-subtitle">{{ contributorSubtext }}</span>
+      <span class="concordanceEditor-subtitle">{{ $t("concordanceEditor.contributorSubtextDefault") }}</span>
+      <span
+        v-if="contributorSubtextError"
+        class="concordanceEditor-subtitle">{{ contributorSubtextError }}</span>
     </p>
     <p>
       <b-button
@@ -188,8 +193,7 @@ export default {
     contributorArray() {
       return this.contributor.split("\n").filter(Boolean).map(uri => ({ uri }))
     },
-    contributorSubtext() {
-      let value = this.$t("concordanceEditor.contributorSubtextDefault")
+    contributorSubtextError() {
       const invalidContributorLineNumbers = []
       let line = 1
       for (const contributor of this.contributorArray) {
@@ -199,9 +203,9 @@ export default {
         line += 1
       }
       if (invalidContributorLineNumbers.length) {
-        value += ` ${this.$t("concordanceEditor.contributorSubtextInvalidPrefix")} ${invalidContributorLineNumbers.join(", ")}`
+        return `${this.$t("concordanceEditor.contributorSubtextInvalidPrefix")} ${invalidContributorLineNumbers.join(", ")}.`
       }
-      return value
+      return null
     },
   },
   watch: {
@@ -288,7 +292,7 @@ p {
   .fontSize-verySmall;
   display:block;
   line-height: 1.3;
-  margin: 0 0 4px 3px;
+  margin: 2px 0 4px 3px;
 }
 
 </style>
