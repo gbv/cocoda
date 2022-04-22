@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "83e2e075a313163c090b1e3a6a537c433ef7ae5a",
-  "gitCommitShort": "83e2e07",
-  "gitCommitMessage": "83e2e07 MappingEditor: Show warning when removing mapping from concordance...",
-  "buildDate": "2022-04-22T08:33:42Z",
-  "date": "2022-04-22T08:31:45.000Z",
+  "gitCommit": "bc53ea43829cac97ab10e498aabd0e22691da26c",
+  "gitCommitShort": "bc53ea4",
+  "gitCommitMessage": "bc53ea4 ConcordanceEditorModal: More improvements and add notation subtext",
+  "buildDate": "2022-04-22T09:13:16Z",
+  "date": "2022-04-22T09:11:59.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
