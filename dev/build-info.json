@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "a22d9cf0d08b49dbf16cdfe0ff27ea8b371f21ab",
-  "gitCommitShort": "a22d9cf",
-  "gitCommitMessage": "a22d9cf Adjust action buttons for list of concordances",
-  "buildDate": "2022-04-25T07:49:20Z",
-  "date": "2022-04-25T07:48:08.000Z",
+  "gitCommit": "c56acf4bc59b291ba9083a93e632f1359706ef3a",
+  "gitCommitShort": "c56acf4b",
+  "gitCommitMessage": "c56acf4b Move concordance deletion from inline button to edit modal",
+  "buildDate": "2022-04-25T08:29:09Z",
+  "date": "2022-04-25T08:27:56.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
