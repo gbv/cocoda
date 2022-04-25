@@ -105,6 +105,15 @@
         {{ $t("concordanceEditor.addConcordance") }}
       </b-button>
     </p>
+    <p v-if="editing && canDeleteConcordance({ concordance })">
+      <b>{{ $t("concordanceEditor.deleteConcordanceTitle") }}</b><br>
+      <b-button
+        variant="danger"
+        @click="deleteConcordance({ concordance }); hide()">
+        {{ $t("concordanceEditor.deleteConcordanceButton") }}
+      </b-button>
+      <span class="concordanceEditor-subtitle">{{ $t("concordanceEditor.deleteConcordanceSubtitle") }}</span>
+    </p>
   </b-modal>
 </template>
 

@@ -125,14 +125,6 @@
                 </div>
                 <div class="mappingBrowser-toolbar-button">
                   <font-awesome-icon
-                    v-if="canDeleteConcordance({ concordance: item.concordance })"
-                    v-b-tooltip.hover="{ title: $t('mappingBrowser.deleteConcordanceTooltip'), delay: defaults.delay.medium }"
-                    icon="trash-alt"
-                    class="button-delete"
-                    @click="deleteConcordance({ concordance: item.concordance })" />
-                </div>
-                <div class="mappingBrowser-toolbar-button">
-                  <font-awesome-icon
                     v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
                     icon="info-circle"
                     class="button"
