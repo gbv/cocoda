@@ -378,7 +378,7 @@ export default {
       for (let side of ["fromScheme", "toScheme"]) {
         if (this.original.uri && !this.$jskos.compare(this.mapping[side], this.original.mapping[side])) {
           // Invalid if mapping is part of concordance
-          const invalid = !!_.get(this.original.mapping[side], "partOf[0]")
+          const invalid = !!_.get(this.original.mapping, "partOf[0]")
           return {
             message: this.$t("mappingEditor.warningUpdateScheme" + (invalid ? "Concordance" : ""), [side]),
             warning: true,
