@@ -249,11 +249,10 @@
           v-else-if="showEditingTools"
           class="mappingBrowser-toolbar-button">
           <font-awesome-icon
-            v-if="canDeleteMapping({ mapping: data.item.mapping, user })"
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.delete'), delay: defaults.delay.medium }"
-            class="button-delete"
+            v-b-tooltip.hover="{ title: canDeleteMapping({ mapping: data.item.mapping, user }) ? $t('mappingBrowser.delete') : $t('mappingBrowser.cantDelete'), delay: defaults.delay.medium }"
+            :class="canDeleteMapping({ mapping: data.item.mapping, user }) ? 'button-delete' : 'button-disabled'"
             icon="trash-alt"
-            @click="deleteMapping({ mapping: data.item.mapping, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false } })" />
+            @click="canDeleteMapping({ mapping: data.item.mapping, user }) && deleteMapping({ mapping: data.item.mapping, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false } })" />
         </div>
         <div
           v-if="showCocodaLink"
