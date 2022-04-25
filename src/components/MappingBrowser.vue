@@ -105,23 +105,39 @@
               <span
                 slot="actions"
                 slot-scope="{ item }">
-                <font-awesome-icon
-                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
-                  icon="info-circle"
-                  class="button"
-                  @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
-                <font-awesome-icon
-                  v-if="canUpdateConcordance({ concordance: item.concordance })"
-                  v-b-tooltip.hover="{ title: $t('concordanceEditor.editConcordanceButton'), delay: defaults.delay.medium }"
-                  icon="edit"
-                  class="button"
-                  @click="editConcordance(item.concordance)" />
-                <font-awesome-icon
-                  v-if="canDeleteConcordance({ concordance: item.concordance })"
-                  v-b-tooltip.hover="{ title: 'edit concordance', delay: defaults.delay.medium }"
-                  icon="trash-alt"
-                  class="button-delete"
-                  @click="deleteConcordance({ concordance: item.concordance })" />
+                <div class="mappingBrowser-toolbar-button">
+                  <font-awesome-icon
+                    v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
+                    icon="info-circle"
+                    class="button"
+                    @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
+                </div>
+                <div class="mappingBrowser-toolbar-button">
+                  <font-awesome-icon
+                    v-if="canUpdateConcordance({ concordance: item.concordance })"
+                    v-b-tooltip.hover="{ title: $t('mappingBrowser.editConcordanceTooltip'), delay: defaults.delay.medium }"
+                    icon="edit"
+                    class="button"
+                    @click="editConcordance(item.concordance)" />
+                  <font-awesome-icon
+                    v-else-if="isCreatorOrContributor(item.concordance, user) && item.concordance._registry.isAuthorizedFor({
+                      type: 'mappings',
+                      action: 'update',
+                      user,
+                    })"
+                    v-b-tooltip="$t('mappingBrowser.canSaveIntoConcordanceTooltip')"
+                    class="button"
+                    style="font-size: 12px;"
+                    icon="pencil-alt" />
+                </div>
+                <div class="mappingBrowser-toolbar-button">
+                  <font-awesome-icon
+                    v-if="canDeleteConcordance({ concordance: item.concordance })"
+                    v-b-tooltip.hover="{ title: $t('mappingBrowser.deleteConcordanceTooltip'), delay: defaults.delay.medium }"
+                    icon="trash-alt"
+                    class="button-delete"
+                    @click="deleteConcordance({ concordance: item.concordance })" />
+                </div>
               </span>
               <span
                 slot="from"
@@ -145,16 +161,7 @@
               </span>
               <span
                 slot="creator"
-                slot-scope="{ value, item }">
-                <font-awesome-icon
-                  v-if="isCreatorOrContributor(item.concordance, user) && item.concordance._registry.isAuthorizedFor({
-                    type: 'mappings',
-                    action: 'update',
-                    user,
-                  })"
-                  v-b-tooltip="$t('mappingBrowser.canSaveIntoConcordanceTooltip')"
-                  style="font-size: 12px;"
-                  icon="pencil-alt" />
+                slot-scope="{ value }">
                 {{ value }}
               </span>
               <span
@@ -1695,6 +1702,13 @@ export default {
 }
 .mappingBrowser-addConcordanceButton {
   margin-right: 4px;
+}
+
+.mappingBrowser-toolbar-button {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  text-align: center;
 }
 
 </style>
