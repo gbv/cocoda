@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "c56acf4bc59b291ba9083a93e632f1359706ef3a",
-  "gitCommitShort": "c56acf4b",
-  "gitCommitMessage": "c56acf4b Move concordance deletion from inline button to edit modal",
-  "buildDate": "2022-04-25T08:29:09Z",
-  "date": "2022-04-25T08:27:56.000Z",
+  "gitCommit": "a5f4da3b86518f15d8378016ff13751a1d09fe0a",
+  "gitCommitShort": "a5f4da3b",
+  "gitCommitMessage": "a5f4da3b MappingEditor: Fix issues with certain edge cases",
+  "buildDate": "2022-04-25T10:02:58Z",
+  "date": "2022-04-25T10:01:03.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
