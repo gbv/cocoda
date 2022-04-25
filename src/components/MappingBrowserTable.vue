@@ -226,15 +226,6 @@
           </span>
         </div>
         <div
-          v-if="data.item.mapping"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
-            icon="info-circle"
-            class="button"
-            @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
-        </div>
-        <div
           v-if="showEditingTools"
           :style="`margin-left: 1px;`"
           class="mappingBrowser-toolbar-button">
@@ -272,6 +263,15 @@
             class="button"
             icon="external-link-square-alt"
             @click="openInCocoda(data.item.mapping)" />
+        </div>
+        <div
+          v-if="data.item.mapping"
+          class="mappingBrowser-toolbar-button">
+          <font-awesome-icon
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
+            icon="info-circle"
+            class="button"
+            @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
         </div>
       </span>
       <span

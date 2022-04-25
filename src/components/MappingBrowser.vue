@@ -107,13 +107,6 @@
                 slot-scope="{ item }">
                 <div class="mappingBrowser-toolbar-button">
                   <font-awesome-icon
-                    v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
-                    icon="info-circle"
-                    class="button"
-                    @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
-                </div>
-                <div class="mappingBrowser-toolbar-button">
-                  <font-awesome-icon
                     v-if="canUpdateConcordance({ concordance: item.concordance })"
                     v-b-tooltip.hover="{ title: $t('mappingBrowser.editConcordanceTooltip'), delay: defaults.delay.medium }"
                     icon="edit"
@@ -137,6 +130,13 @@
                     icon="trash-alt"
                     class="button-delete"
                     @click="deleteConcordance({ concordance: item.concordance })" />
+                </div>
+                <div class="mappingBrowser-toolbar-button">
+                  <font-awesome-icon
+                    v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
+                    icon="info-circle"
+                    class="button"
+                    @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
                 </div>
               </span>
               <span
