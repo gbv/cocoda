@@ -399,12 +399,16 @@ const mutations = {
   },
 
   setIdentifier(state, { uri } = {}) {
-    if (uri) {
+    if (uri || uri === null) {
       // Save old URI if necessary
       if (state.mapping.uri && state.mapping.uri !== uri) {
         state.mapping.identifier = (state.mapping.identifier || []).concat(state.mapping.uri)
       }
-      state.mapping.uri = uri
+      if (uri) {
+        state.mapping.uri = uri
+      } else {
+        Vue.delete(state.mapping, "uri")
+      }
     }
     // Only set identifier if both fromScheme and toScheme are available
     if (state.mapping.fromScheme && state.mapping.toScheme) {

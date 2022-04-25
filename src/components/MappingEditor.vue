@@ -471,8 +471,10 @@ export default {
     },
     async saveCurrentMapping() {
       if (!this.canSaveCurrentMapping) return false
+      // Determine whether it should update original mapping
+      const updateOriginal = this.$store.getters["mapping/canUpdate"]
       // If only concordance has changed, save that change only
-      if (!this.$store.getters["mapping/hasMappingChangedFromOriginal"] && this.$store.getters["mapping/hasConcordanceChangedFromOriginal"]) {
+      if (updateOriginal && !this.$store.getters["mapping/hasMappingChangedFromOriginal"] && this.$store.getters["mapping/hasConcordanceChangedFromOriginal"]) {
         await this.addMappingToConcordance({ mapping: this.mapping, concordance: _.get(this.mapping, "partOf[0]") })
         return
       }
@@ -482,8 +484,13 @@ export default {
       } else {
         this.removeCreator()
       }
-      // Determine whether it should update original mapping
-      const updateOriginal = this.original.uri && this.$jskos.compareFast(this.currentRegistry, this.original.registry)
+      // Remove original URI from mapping if it can't be updated
+      if (!updateOriginal) {
+        this.$store.commit({
+          type: "mapping/setIdentifier",
+          uri: null,
+        })
+      }
       // Save as new mapping or update mapping
       const mapping = await this[updateOriginal ? "putMapping" : "postMapping"]({
         registry: this.currentRegistry,
@@ -512,6 +519,7 @@ export default {
       }
     },
     setCreator() {
+      if (!this.creator || !this.userUris || this.userUris.length === 0) return
       const updatingOriginal = this.$store.getters["mapping/canUpdate"]
       const creatorIndex = (this.mapping.creator || []).findIndex(c => this.$jskos.compare({ uri: c.uri }, { identifier: this.userUris }))
       if (updatingOriginal && creatorIndex === -1) {
