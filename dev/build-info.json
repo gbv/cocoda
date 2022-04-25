@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "a5f4da3b86518f15d8378016ff13751a1d09fe0a",
-  "gitCommitShort": "a5f4da3b",
-  "gitCommitMessage": "a5f4da3b MappingEditor: Fix issues with certain edge cases",
-  "buildDate": "2022-04-25T10:02:58Z",
-  "date": "2022-04-25T10:01:03.000Z",
+  "gitCommit": "5d04b46da95335ffdc70c4f1a7e184cd659b7c72",
+  "gitCommitShort": "5d04b46d",
+  "gitCommitMessage": "5d04b46d MappingEditor: Further fix for edge case",
+  "buildDate": "2022-04-25T10:15:32Z",
+  "date": "2022-04-25T10:14:24.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
