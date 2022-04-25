@@ -231,7 +231,7 @@
     <concordance-selection
       v-if="original.uri || canSaveCurrentMapping"
       class="mappingEditor-concordanceSelection"
-      :mapping="original.uri ? original.mapping : mapping"
+      :mapping="mapping"
       :registry="currentRegistry"
       @change="setConcordance" />
   </div>
@@ -489,6 +489,12 @@ export default {
         this.$store.commit({
           type: "mapping/setIdentifier",
           uri: null,
+        })
+      } else if (!this.mapping.uri) {
+        // We need to update the mapping URI back to the original URI
+        this.$store.commit({
+          type: "mapping/setIdentifier",
+          uri: this.original.uri,
         })
       }
       // Save as new mapping or update mapping

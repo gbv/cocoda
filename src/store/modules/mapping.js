@@ -405,7 +405,10 @@ const mutations = {
         state.mapping.identifier = (state.mapping.identifier || []).concat(state.mapping.uri)
       }
       if (uri) {
+        // Set URI
         state.mapping.uri = uri
+        // Remove same URI from identifier field
+        state.mapping.identifier = state.mapping.identifier.filter(id => id !== uri)
       } else {
         Vue.delete(state.mapping, "uri")
       }
