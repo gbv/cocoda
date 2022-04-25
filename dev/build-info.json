@@ -1,11 +1,11 @@
 {
   "version": "1.6.0",
   "gitBranch": "dev",
-  "gitCommit": "bc53ea43829cac97ab10e498aabd0e22691da26c",
-  "gitCommitShort": "bc53ea4",
-  "gitCommitMessage": "bc53ea4 ConcordanceEditorModal: More improvements and add notation subtext",
-  "buildDate": "2022-04-22T09:13:16Z",
-  "date": "2022-04-22T09:11:59.000Z",
+  "gitCommit": "a22d9cf0d08b49dbf16cdfe0ff27ea8b371f21ab",
+  "gitCommitShort": "a22d9cf",
+  "gitCommitMessage": "a22d9cf Adjust action buttons for list of concordances",
+  "buildDate": "2022-04-25T07:49:20Z",
+  "date": "2022-04-25T07:48:08.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
