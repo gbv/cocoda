@@ -1,11 +1,11 @@
 {
-  "version": "1.6.0",
+  "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "b8dbb3ce75d6f06568abc5d1ef6785c3665fd20a",
-  "gitCommitShort": "b8dbb3ce",
-  "gitCommitMessage": "b8dbb3ce MappingEditor: Fix typo in code that leads to very rare edge case",
-  "buildDate": "2022-04-25T10:21:26Z",
-  "date": "2022-04-25T10:20:13.000Z",
+  "gitCommit": "db703036d654bc31625e1ed160372f441e2ddfd1",
+  "gitCommitShort": "db703036",
+  "gitCommitMessage": "db703036 Release version 1.7.0",
+  "buildDate": "2022-04-27T08:10:06Z",
+  "date": "2022-04-27T08:09:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
