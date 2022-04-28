@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "db703036d654bc31625e1ed160372f441e2ddfd1",
-  "gitCommitShort": "db703036",
-  "gitCommitMessage": "db703036 Release version 1.7.0",
-  "buildDate": "2022-04-27T08:10:06Z",
-  "date": "2022-04-27T08:09:09.000Z",
-  "milestoneUrl": null,
+  "gitCommit": "e9deb5622cb5bed7693949522333f05d1c7604ba",
+  "gitCommitShort": "e9deb562",
+  "gitCommitMessage": "e9deb562 Update build script and add config-only build mode (#618)",
+  "buildDate": "2022-04-28T08:05:51Z",
+  "date": "2022-04-28T08:04:46.000Z",
+  "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
