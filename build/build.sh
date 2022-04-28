@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check if build script is run as config-only
+CONFIG_ONLY=
+if [[ \ $*\  == *\ --config-only\ * ]]; then
+  CONFIG_ONLY=yes
+fi
+
 # get github-milestones.json if it doesn't exist yet
 DELETE_TEMP=
 if [ ! -e ./temp/github-milestones.json ]; then
@@ -18,7 +24,6 @@ echo "Building for branch $GIT_BRANCH ($GIT_COMMIT_SHORT)..."
 
 # if there was no config file before, remember this and delete the generated config at the end of the script
 USERCONFIG=
-MALFORMED_CONFIG=
 
 if [ -e ./config/cocoda.json ]; then
   # Check for JSON validity
@@ -36,21 +41,27 @@ fi
 # make sure a cocoda.json file exists in all cases
 [ ! -e ./config/cocoda.json ] && echo "Using empty user config for build..." && echo -n "{}" > ./config/cocoda.json
 
-# build the app
-vite build
-success=$?
+# build the app OR copy config file
+if [ $CONFIG_ONLY ]; then
+  echo "--config-only is given; copying cocoda.json to dist/"
+  cp ./config/cocoda.json ./dist/cocoda.json
+  success=$?
+else
+  vite build
+  success=$?
+fi
 
-if [ $success -eq 0 ]; then
+if [ $success -ne 0 ]; then
+  echo "Build has failed!"
+fi
+
+if [ $success -eq 0 ] && [ ! $CONFIG_ONLY ]; then
   # remove previous dist directory
   [ -e dist/ ] && [ -e dist-temp/ ] && rm -r dist
   # rename dist-temp to dist
   [ -e dist-temp/ ] && mv dist-temp dist
-else
-  echo "Build has failed!"
-fi
 
-# create and move user manual
-if [ $success -eq 0 ]; then
+  # create and move user manual
   PANDOC=$(pandoc --version 2>/dev/null | awk 'NR==1 && $2>=2 {print}')
   MODIFIED_DOCS=$(git show --pretty="" --name-only HEAD docs/)
   TAGGED_COMMIT=$(git describe --exact-match --tags 2>/dev/null)
