@@ -71,14 +71,14 @@ Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste mö
 ### Vokabulardetails
 
 Diese Komponente zeigt Vokabular-Informationen wie Identifier, Erstellungsdatum, Lizenz, Herausgeber, Vokabulartypen und [Datenquelle](#datenquellen) an. Wenn die [Baumansicht](#baumansicht) minimiert ist, werden hier außerdem die Oberkonzepte angezeigt. Der Link auf ![](img/icons/external-link-square.svg){height=1em} vorhandene Mappings öffnet die [Mapping-Suche](#mapping-suche).
- 
+
 ![](img/cocoda-classdet-de.png){width=50% .border .border-dark}
 
 ### Suche nach Konzepten
 
 Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite autmatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon ![](img/icons/filter.svg){height=1em}. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel `Ctrl+f` (links) und `Ctrl+g` (rechts).
 
-Durch Suche nach einer syntaktisch korrekten Notation lässt sich ein Konzept auswählen auch wenn zu dieser Notation kein Konzept gefunden wurde. Solche unbekannten Konzepte werden mit einem Blitz ![](img/icons/bolt.svg){height=1em} gekennzeichnet. 
+Durch Suche nach einer syntaktisch korrekten Notation lässt sich ein Konzept auswählen auch wenn zu dieser Notation kein Konzept gefunden wurde. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.
 
 ### Konzeptdetails
 
@@ -148,8 +148,8 @@ Links unten im Editor steht wer das Mapping erstellt hat bzw. bei neuen Mappings
 * **<** spezifischere Bedeutung (z.B. Teil-Ganzes-Beziehung)
 * **~** verwandte, assoziative Verknüpfung
 * **→** allgemeine Mapping-Relation mit unbekanntem Bedeutungszusammenhang
-  
-Falls für die ausgewählte Kombinationen von Quell- und Zielvokabular Hinweise zum Mappingvorgang konfiguriert sind, werden diese über ein Hilfe-Info ![](img/icons/question-circle.svg){height=1em} 
+
+Falls für die ausgewählte Kombinationen von Quell- und Zielvokabular Hinweise zum Mappingvorgang konfiguriert sind, werden diese über ein Hilfe-Info ![](img/icons/question-circle.svg){height=1em}
 aufrufbar.
 
 ### Konkordanzen

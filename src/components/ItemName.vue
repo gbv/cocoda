@@ -47,7 +47,7 @@
     <div
       v-if="isScheme ? (_item.concepts && !_item.concepts.length) : (_item && _item.__DETAILSLOADED__ == -1)"
       v-b-tooltip.hover="{ title: isScheme ? $t('itemDetail.noConcepts') : $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
-      class="itemName-missingDataIndicator">
+      class="missingDataIndicator">
       •
     </div>
   </div>
@@ -263,12 +263,6 @@ export default {
 }
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
-}
-.itemName-missingDataIndicator {
-  color: @color-danger !important;
-  font-weight: bold;
-  display: inline;
-  user-select: none;
 }
 
 /* Multiline text truncation: http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/ */

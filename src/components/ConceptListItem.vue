@@ -49,13 +49,6 @@
         <span v-if="scheme && showScheme">
           {{ $jskos.notation(scheme) }}
         </span>
-        <!-- Show icon for concepts where no data could be loaded -->
-        <span
-          v-if="concept && concept.__DETAILSLOADED__ == -1"
-          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
-          class="fontSize-small">
-          <font-awesome-icon icon="bolt" />
-        </span>
         <!-- Show icon for combined concepts -->
         <span
           v-if="concept && concept.type && concept.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
@@ -72,6 +65,13 @@
             'fontWeight-medium': true
           }">
           {{ prefLabel }}
+        </span>
+        <!-- Show icon for concepts where no data could be loaded -->
+        <span
+          v-if="concept && concept.__DETAILSLOADED__ == -1"
+          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
+          class="missingDataIndicator">
+          •
         </span>
       </div>
       <div

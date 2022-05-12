@@ -8,7 +8,7 @@ import log from "./utils/log.js"
 import store from "./store/index.js"
 import { Tabs, Tab } from "cocoda-vue-tabs"
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faCheckSquare, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt, faPuzzlePiece, faExclamation, faShareAltSquare, faRecycle, faCaretSquareLeft, faCaretSquareRight, faClipboard, faAngleDoubleRight, faClone, faExclamationCircle, faQuestionCircle, faChevronUp, faChevronDown, faPencilAlt, faArrowRight, faArrowLeft, faArrowUp, faArrowDown, faSyncAlt, faList, faSitemap, faBolt, faSeedling } from "@fortawesome/free-solid-svg-icons"
+import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faCheckSquare, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt, faPuzzlePiece, faExclamation, faShareAltSquare, faRecycle, faCaretSquareLeft, faCaretSquareRight, faClipboard, faAngleDoubleRight, faClone, faExclamationCircle, faQuestionCircle, faChevronUp, faChevronDown, faPencilAlt, faArrowRight, faArrowLeft, faArrowUp, faArrowDown, faSyncAlt, faList, faSitemap, faSeedling } from "@fortawesome/free-solid-svg-icons"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import globalMixins from "./mixins/global.js"
@@ -115,7 +115,6 @@ export function supplementApp(app) {
   library.add(faSyncAlt)
   library.add(faList)
   library.add(faSitemap)
-  library.add(faBolt)
   library.add(faSeedling)
   app.component("FontAwesomeIcon", FontAwesomeIcon)
 
