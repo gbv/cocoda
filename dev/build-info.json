@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "e9deb5622cb5bed7693949522333f05d1c7604ba",
-  "gitCommitShort": "e9deb562",
-  "gitCommitMessage": "e9deb562 Update build script and add config-only build mode (#618)",
-  "buildDate": "2022-04-28T08:05:51Z",
-  "date": "2022-04-28T08:04:46.000Z",
+  "gitCommit": "f094b24e799a92da6bac436e7ef149836405a6bf",
+  "gitCommitShort": "f094b24e",
+  "gitCommitMessage": "f094b24e Replace bolt icon with red dot everywhere",
+  "buildDate": "2022-05-12T08:24:41Z",
+  "date": "2022-05-12T08:21:30.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
