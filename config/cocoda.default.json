@@ -307,7 +307,7 @@
       "prefLabel": {
         "en": "K10plus"
       },
-      "url": "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&TRM=bkl+{notation}",
+      "url": "https://opac.k10plus.de/DB=2.299/CLK?IKT=5004&TRM={notation}",
       "schemeUris": [
         "http://bartoc.org/en/node/18785"
       ]
