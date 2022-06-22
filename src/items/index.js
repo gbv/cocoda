@@ -291,7 +291,7 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
     modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts, !!_.get(scheme, "DISPLAY.numericalNotation")).map(mapMinimalProps))
   } catch (error) {
     // Ignore error, show warning only.
-    log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty types list.`)
+    log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)
     modifyItem(scheme, "topConcepts", [])
   }
   return scheme.topConcepts
