@@ -325,6 +325,16 @@
                 :options="cardinalityOptions"
                 @keyup.enter.native="searchClicked" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
+                {{ $t("mappingBrowser.searchAnnotated") }}:
+              </div>
+              <b-form-select
+                v-model="searchFilterInput.annotated"
+                style="flex: 1; margin: 3px;"
+                size="sm"
+                :options="annotatedOptions"
+                @keyup.enter.native="searchClicked" />
+              <div style="flex-basis: 100%; height: 0;" />
+              <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.concordance") }}:
               </div>
               <b-form-select
@@ -699,6 +709,15 @@ export default {
           text: this.$t("mappingBrowser.searchCardinality11"),
           value: "1-to-1",
         },
+      ]
+    },
+    annotatedOptions() {
+      return [
+        { value: null, text: "-" },
+        { value: { annotatedFor: "assessing" }, text: this.$t("mappingBrowser.searchAnnotatedAssessingAny") },
+        { value: { annotatedFor: "assessing", annotatedWith: "+1" }, text: this.$t("mappingBrowser.searchAnnotatedAssessingPlus") },
+        { value: { annotatedFor: "assessing", annotatedWith: "-1" }, text: this.$t("mappingBrowser.searchAnnotatedAssessingMinus") },
+        { value: { annotatedFor: "moderating" }, text: this.$t("mappingBrowser.searchAnnotatedConfirmed") },
       ]
     },
     concordanceOptions() {
@@ -1132,6 +1151,7 @@ export default {
         direction: "",
         type: null,
         cardinality: "1-to-n",
+        annotated: null,
         partOf: null,
       }
       if (ignoredLock || !this.lockScheme[true]) {
@@ -1213,6 +1233,8 @@ export default {
           type: this.searchFilter.type,
           direction: this.searchFilter.direction,
           cardinality: this.searchFilter.cardinality,
+          annotatedFor: this.searchFilter.annotated && this.searchFilter.annotated.annotatedFor,
+          annotatedWith: this.searchFilter.annotated && this.searchFilter.annotated.annotatedWith,
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
           sort: "created",
