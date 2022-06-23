@@ -45,7 +45,7 @@
     "@vue/composition-api": "^1.6.2",
     "axios": "~0.26.1",
     "bootstrap-vue": "^2.22.0",
-    "cocoda-sdk": "^3.2.0",
+    "cocoda-sdk": "^3.2.1",
     "cocoda-vue-tabs": "^0.1.12",
     "css-element-queries": "^1.2.3",
     "file-saver": "^2.0.5",
