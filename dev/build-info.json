@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "6b1a255c499854da3306ddb3c78e9b08dfdc7607",
-  "gitCommitShort": "6b1a255c",
-  "gitCommitMessage": "6b1a255c MappingSearch: Add first implementation for filter by annotation (#605)",
-  "buildDate": "2022-06-23T08:31:16Z",
-  "date": "2022-06-23T08:29:33.000Z",
+  "gitCommit": "a9b3853a6042c99de2240acfb1f68f034f5d67cd",
+  "gitCommitShort": "a9b3853a",
+  "gitCommitMessage": "a9b3853a Update cocoda-sdk",
+  "buildDate": "2022-06-23T08:58:03Z",
+  "date": "2022-06-23T08:57:03.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
