@@ -480,11 +480,7 @@ export default {
     },
     languages() {
       // Relay language changes to registry providers
-      for (let registry of this.$store.state.config.registries) {
-        if (registry) {
-          registry.languages = this.languages
-        }
-      }
+      this.updateLanguagesForSchemeRegistries()
       // Also re-insert prefLabels after delay
       _.delay(() => {
         this.insertPrefLabel(true)
@@ -528,6 +524,8 @@ export default {
       this.$i18n.locale = this.settingsLocale
       // Load schemes
       await loadSchemes()
+      // Also reloaded languages for scheme registries now that all schemes are loaded
+      this.updateLanguagesForSchemeRegistries()
       // Store favorite concepts and load their details
       this.favoriteConcepts.forEach(concept => saveItem(concept, { type: "concept" }))
       loadConcepts(this.favoriteConcepts)
@@ -787,6 +785,14 @@ export default {
             unwatch && unwatch()
           },
         )
+      }
+    },
+    updateLanguagesForSchemeRegistries() {
+      for (let scheme of this.schemes) {
+        scheme = getItem(scheme)
+        if (scheme._registry) {
+          scheme._registry.languages = this.languages
+        }
       }
     },
   },
