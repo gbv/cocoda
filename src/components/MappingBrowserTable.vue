@@ -330,7 +330,7 @@
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div class="mappingBrowser-pagination-number fontSize-small">
             <span v-if="section.items.length < section.totalCount">
-              {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
+              {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount === 9999999 ? "?" : section.totalCount.toLocaleString() }}
             </span>
             <span v-if="section.totalCount === 0">
               {{ $t("mappingBrowser.noItems") }}

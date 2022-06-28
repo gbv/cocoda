@@ -54,7 +54,7 @@
       </tr>
       <tr v-if="url">
         <td class="fontWeight-heavy text-right">
-          {{ $t("dataModal.apiLinks") }} ({{ (totalCount || count).toLocaleString() }})
+          {{ $t("dataModal.apiLinks") }} ({{ (totalCount && totalCount === 9999999) ? "?" : (totalCount || count).toLocaleString() }})
         </td>
         <td>
           <ul class="list-group list-group-horizontal list-group-flush">
@@ -163,7 +163,7 @@ export default {
     numberText() {
       let count = this.count
       if (this.totalCount && count != this.totalCount) {
-        return `${count.toLocaleString()} ${this.$t("general.of")} ` + this.$tc(`dataModal.${this.computedType}`, this.totalCount, { count: this.totalCount.toLocaleString() })
+        return `${count.toLocaleString()} ${this.$t("general.of")} ` + this.$tc(`dataModal.${this.computedType}`, this.totalCount, { count: this.totalCount === 9999999 ? "?" : this.totalCount.toLocaleString() })
       } else {
         return this.$tc(`dataModal.${this.computedType}`, count, { count })
       }
