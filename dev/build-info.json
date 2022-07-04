@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "9e76bbf4179f26593ee9914ae2da1f5ac976244a",
-  "gitCommitShort": "9e76bbf4",
-  "gitCommitMessage": "9e76bbf4 Update dev dependencies and increase minimum Node.js to v14 (#690)",
-  "buildDate": "2022-07-04T09:34:52Z",
-  "date": "2022-07-04T09:33:38.000Z",
+  "gitCommit": "fa89895847d7604d3ec8c58f3fc9a91b57fe6beb",
+  "gitCommitShort": "fa898958",
+  "gitCommitMessage": "fa898958 Update Vue.js to 2.7.1",
+  "buildDate": "2022-07-04T11:01:07Z",
+  "date": "2022-07-04T11:00:09.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
