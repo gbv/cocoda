@@ -47,7 +47,7 @@ git clone https://github.com/gbv/cocoda.git
 cd cododa
 ```
 
-Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build (requires Node.js v10 or above):
+Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build (requires Node.js v14.15 or above, v16 recommended):
 
 ```bash
 npm ci

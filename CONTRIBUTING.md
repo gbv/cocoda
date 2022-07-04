@@ -29,7 +29,7 @@ To start contributing please make sure you have a [GitHub account](https://githu
 
 ## Getting Started
 
-Its recommended to use Node.js v10 or above.
+It's recommended to use Node.js v16 or above.
 
 ``` bash
 # get the sources
