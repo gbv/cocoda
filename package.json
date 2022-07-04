@@ -53,7 +53,7 @@
     "json-format-highlight": "^1.0.4",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "vue": "^2.7.0",
+    "vue": "^2.7.1",
     "vue-flexible-table": "^0.3.8",
     "vue-i18n": "^8.27.2",
     "vue-router": "^3.5.4",
