@@ -64,7 +64,7 @@ Note: This is a 90% copy of jskos-vue's ItemSuggest component, only slightly adj
 	 * - add drag and drop for concepts
 	 */
 
-import { defineComponent, nextTick, ref, watch } from "@/composition-api"
+import { defineComponent, nextTick, ref, watch } from "vue"
 import LoadingIndicator from "./LoadingIndicator.vue"
 import VueScrollTo from "vue-scrollto"
 import clickHandler from "../mixins/click-handler.js"
