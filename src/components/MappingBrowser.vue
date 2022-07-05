@@ -714,14 +714,13 @@ export default {
     annotatedOptions() {
       return [
         { value: null, text: "-" },
-        { value: { annotatedFor: "any" }, text: this.$t("mappingBrowser.searchAnnotatedAny") },
-        { value: { annotatedFor: "none" }, text: this.$t("mappingBrowser.searchAnnotatedNone") },
         { value: { annotatedFor: "assessing" }, text: this.$t("mappingBrowser.searchAnnotatedAssessingAny") },
         { value: { annotatedFor: "assessing", annotatedWith: "+1" }, text: this.$t("mappingBrowser.searchAnnotatedAssessingPlus") },
         { value: { annotatedFor: "assessing", annotatedWith: "-1" }, text: this.$t("mappingBrowser.searchAnnotatedAssessingMinus") },
         { value: { annotatedFor: "!assessing" }, text: this.$t("mappingBrowser.searchAnnotatedNotAssessing") },
         { value: { annotatedFor: "moderating" }, text: this.$t("mappingBrowser.searchAnnotatedConfirmed") },
         { value: { annotatedFor: "!moderating" }, text: this.$t("mappingBrowser.searchAnnotatedNotConfirmed") },
+        { value: { annotatedFor: "none" }, text: this.$t("mappingBrowser.searchAnnotatedNone") },
       ]
     },
     concordanceOptions() {
