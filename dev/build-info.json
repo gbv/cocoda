@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "0ab4a6deb0dadbdef8fb30b2e75fa417599abf66",
-  "gitCommitShort": "0ab4a6de",
-  "gitCommitMessage": "0ab4a6de Mapping Search: Adjust annotation filter options (#605)",
-  "buildDate": "2022-07-05T08:46:00Z",
-  "date": "2022-07-05T08:44:35.000Z",
+  "gitCommit": "155af9acd6ebbdc6c1ef1a7d94c5a6dfbcdc4a6d",
+  "gitCommitShort": "155af9ac",
+  "gitCommitMessage": "155af9ac ConceptSchemeSelection: Add sensible sorting to results",
+  "buildDate": "2022-07-05T09:13:41Z",
+  "date": "2022-07-05T09:12:22.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
