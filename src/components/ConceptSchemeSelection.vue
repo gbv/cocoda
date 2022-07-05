@@ -612,7 +612,21 @@ export default {
         const keywordsForScheme = (scheme) => _.flattenDeep(_.concat([], Object.values(scheme.prefLabel || {}), Object.values(scheme.altLabel || {}), scheme.notation || [])).map(k => k.toLowerCase())
         this.filteredSchemes = this._schemes.filter(
           scheme => keywordsForScheme(scheme).find(keyword => keyword.includes(filter)),
-        )
+        ).sort((a, b) => {
+          if (this.$jskos.notation(a).toLowerCase().startsWith(filter)) {
+            return -1
+          }
+          if (this.$jskos.notation(b).toLowerCase().startsWith(filter)) {
+            return 1
+          }
+          if (this.$jskos.prefLabel(a).toLowerCase().startsWith(filter)) {
+            return -1
+          }
+          if (this.$jskos.prefLabel(b).toLowerCase().startsWith(filter)) {
+            return 1
+          }
+          return 0
+        })
       } else {
         this.filteredSchemes = this._schemes.filter(
           scheme =>
