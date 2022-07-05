@@ -4,7 +4,7 @@
  * TODO
  */
 
-import { reactive, set, del } from "vue"
+import { reactive, ref, set, del } from "vue"
 import _ from "lodash"
 import * as jskos from "jskos-tools"
 import { cdk } from "cocoda-sdk"
@@ -230,13 +230,13 @@ export function modifyItemByUri(uri, path, value) {
   modifyItem({ uri }, path, value)
 }
 
-export const schemes = reactive([])
+export const schemes = ref([])
 // TODO: Adjust to load one registry after another without blocking
 export async function loadSchemes() {
   for (const scheme of await cdk.getSchemes({ timeout: 10000 })) {
     saveItem(scheme, { type: "scheme" })
-    if (!schemes.find(s => jskos.compare(s, scheme))) {
-      schemes.push({ uri: scheme.uri, identifier: scheme.identifier })
+    if (!schemes.value.find(s => jskos.compare(s, scheme))) {
+      schemes.value.push({ uri: scheme.uri, identifier: scheme.identifier })
     }
   }
   return schemes
@@ -297,8 +297,8 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
   return scheme.topConcepts
 }
 
-export const loadingConcepts = reactive([])
-export const erroredConcepts = reactive([])
+export const loadingConcepts = ref([])
+export const erroredConcepts = ref([])
 export async function loadConcepts(concepts, { registry: fallbackRegistry, scheme, force = false, ...options } = {}) {
   // Filter out concepts that are not saved, already have details loaded, or don't have a provider.
   // Then, sort the remaining concepts by registry.
@@ -310,12 +310,12 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
     if (!registry) {
       continue
     }
-    if (!force && [].concat(loadingConcepts, erroredConcepts).find(c => jskos.compare(c, concept))) {
+    if (!force && [].concat(loadingConcepts.value, erroredConcepts.value).find(c => jskos.compare(c, concept))) {
       // Concept is already loading or errored
       continue
     }
     uris = uris.concat(jskos.getAllUris(concept))
-    loadingConcepts.push(concept)
+    loadingConcepts.value.push(concept)
     // TODO: Remove magic number.
     const entry = list.find(e => e.registry == registry && e.concepts.length < 15)
     if (entry) {
@@ -341,9 +341,9 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
           }
           // Remove all loaded URIs from loadingConcepts
           for (let uri of uris) {
-            let index = loadingConcepts.findIndex(concept => jskos.compareFast(concept, { uri }))
+            let index = loadingConcepts.value.findIndex(concept => jskos.compareFast(concept, { uri }))
             if (index >= 0) {
-              del(loadingConcepts, index)
+              del(loadingConcepts.value, index)
             }
           }
         })
@@ -353,12 +353,12 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
   await Promise.all(promises)
   // Move all URIs that were not loaded to errored concepts
   for (let uri of uris) {
-    let index = loadingConcepts.findIndex(concept => jskos.compareFast(concept, { uri }))
+    let index = loadingConcepts.value.findIndex(concept => jskos.compareFast(concept, { uri }))
     if (index >= 0) {
-      let concept = loadingConcepts[index]
+      let concept = loadingConcepts.value[index]
       modifyItem(concept, "__DETAILSLOADED__", -1)
-      del(loadingConcepts, index)
-      erroredConcepts.push(concept)
+      del(loadingConcepts.value, index)
+      erroredConcepts.value.push(concept)
     }
   }
   // Return objects
@@ -444,15 +444,15 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
 }
 
 // Concordances
-export const concordances = reactive([])
+export const concordances = ref([])
 export async function loadConcordances() {
   try {
     const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances())))
     _.forEach(result, (concordance, index) => {
       // Set values of concordance array
-      set(concordances, index, concordance)
+      set(concordances.value, index, concordance)
     })
-    set(concordances, "length", result.length)
+    set(concordances.value, "length", result.length)
   } catch (error) {
     log.error("MappingBrowser - Error loading concordances", error)
   }

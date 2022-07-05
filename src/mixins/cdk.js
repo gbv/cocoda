@@ -36,12 +36,10 @@ export default {
       loadingConcepts,
       erroredConcepts,
       concordances,
+      schemes,
     }
   },
   computed: {
-    schemes() {
-      return schemes
-    },
     /**
      * List of favorite schemes.
      */
