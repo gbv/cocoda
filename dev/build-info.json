@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "6d2ab34403b413a84edcdf8351e7682fe264f516",
-  "gitCommitShort": "6d2ab344",
-  "gitCommitMessage": "6d2ab344 Items plugin: Use ref instead of reactive for some values (#689)",
-  "buildDate": "2022-07-05T08:31:28Z",
-  "date": "2022-07-05T08:29:24.000Z",
+  "gitCommit": "0ab4a6deb0dadbdef8fb30b2e75fa417599abf66",
+  "gitCommitShort": "0ab4a6de",
+  "gitCommitMessage": "0ab4a6de Mapping Search: Adjust annotation filter options (#605)",
+  "buildDate": "2022-07-05T08:46:00Z",
+  "date": "2022-07-05T08:44:35.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
