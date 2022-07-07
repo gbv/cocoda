@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "155af9acd6ebbdc6c1ef1a7d94c5a6dfbcdc4a6d",
-  "gitCommitShort": "155af9ac",
-  "gitCommitMessage": "155af9ac ConceptSchemeSelection: Add sensible sorting to results",
-  "buildDate": "2022-07-05T09:13:41Z",
-  "date": "2022-07-05T09:12:22.000Z",
+  "gitCommit": "b1d64d26475a98f8eec5cf267903b4cc0f560178",
+  "gitCommitShort": "b1d64d26",
+  "gitCommitMessage": "b1d64d26 Update dependencies",
+  "buildDate": "2022-07-07T07:33:37Z",
+  "date": "2022-07-07T07:32:35.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
