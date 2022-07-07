@@ -247,7 +247,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/colors.less";
+@import "@/style/colors.less";
 
 .button {
   cursor: pointer;

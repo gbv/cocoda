@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import computed from "../mixins/computed.js"
+import computed from "@/mixins/computed.js"
 
 export default {
   name: "RegistryNotation",
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .registry-notation {
   user-select: none;

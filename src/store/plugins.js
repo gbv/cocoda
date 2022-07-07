@@ -1,4 +1,4 @@
-import router from "../router.js"
+import router from "@/router.js"
 import jskos from "jskos-tools"
 import { compareItems } from "@/items"
 

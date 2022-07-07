@@ -12,7 +12,7 @@
 
 <script>
 import _ from "lodash"
-import computed from "../mixins/computed.js"
+import computed from "@/mixins/computed.js"
 
 /**
  * Resizing slider.
@@ -229,7 +229,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .resizingSliderCol, .resizingSliderRow {
   flex: 0 1 6px;

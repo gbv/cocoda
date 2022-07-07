@@ -1,8 +1,8 @@
 import localforage from "localforage"
 import _ from "lodash"
-import log from "../../utils/log.js"
+import log from "@/utils/log.js"
 
-import componentSettings from "../../../config/settings.json"
+import componentSettings from "@/../config/settings.json"
 
 const localStorageKey = "cocoda-settings--" + window.location.pathname
 

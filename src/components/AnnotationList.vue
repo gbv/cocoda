@@ -47,7 +47,7 @@ import AutoLink from "./AutoLink.vue"
 import DateString from "./DateString.vue"
 
 // Import mixins
-import auth from "../mixins/auth.js"
+import auth from "@/mixins/auth.js"
 
 export default {
   name: "AnnotationList",
@@ -98,7 +98,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .annotationList {
   max-height: 300px;

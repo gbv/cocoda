@@ -76,8 +76,8 @@ import RegistryNotation from "./RegistryNotation.vue"
 import { getRegistryName } from "@/utils"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import computed from "../mixins/computed.js"
+import auth from "@/mixins/auth.js"
+import computed from "@/mixins/computed.js"
 
 export default {
   name: "RegistryInfo",
@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .registry-info-inline {
   display: inline-block;

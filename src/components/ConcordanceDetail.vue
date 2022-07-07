@@ -170,7 +170,7 @@ import AutoLink from "./AutoLink.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
 
-import computed from "../mixins/computed.js"
+import computed from "@/mixins/computed.js"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
@@ -213,7 +213,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .concordanceDetail-container > .row {
   margin-bottom: 10px;

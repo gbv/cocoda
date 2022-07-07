@@ -447,9 +447,9 @@ import DateString from "./DateString.vue"
 import { cdk } from "cocoda-sdk"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import objects from "../mixins/cdk.js"
-import computed from "../mixins/computed.js"
+import auth from "@/mixins/auth.js"
+import objects from "@/mixins/cdk.js"
+import computed from "@/mixins/computed.js"
 import { getItem, loadConcepts } from "@/items"
 import { openWindow } from "@/utils/window-manager.js"
 
@@ -842,7 +842,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 p {
   margin: 5px 0 20px 0 !important;

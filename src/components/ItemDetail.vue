@@ -48,9 +48,9 @@ import ComponentSettings from "./ComponentSettings.vue"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk.js"
-import dragandrop from "../mixins/dragandrop.js"
-import computed from "../mixins/computed.js"
+import objects from "@/mixins/cdk.js"
+import dragandrop from "@/mixins/dragandrop.js"
+import computed from "@/mixins/computed.js"
 import { getItem } from "@/items"
 
 /**
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .itemDetail {
   position: relative;

@@ -31,7 +31,7 @@
 
 <script>
 import _ from "lodash"
-import computed from "../mixins/computed.js"
+import computed from "@/mixins/computed.js"
 
 /**
  * Adds minimizing functionality to another component.
@@ -206,7 +206,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .minimizeButton {
   right: 0px;

@@ -1,17 +1,17 @@
 import Vue from "vue"
 import * as CocodaSDK from "cocoda-sdk"
-import MeshApiProvider from "./utils/mesh-api-provider.js"
+import MeshApiProvider from "@/utils/mesh-api-provider.js"
 import BootstrapVue from "bootstrap-vue"
 import VueScrollTo from "vue-scrollto"
 import jskos from "jskos-tools"
-import log from "./utils/log.js"
-import store from "./store/index.js"
+import log from "@/utils/log.js"
+import store from "@/store/index.js"
 import { Tabs, Tab } from "cocoda-vue-tabs"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { faStar, faPlusCircle, faExchangeAlt, faThumbsUp, faThumbsDown, faAngleDown, faAngleRight, faAngleLeft, faLevelUpAlt, faLevelDownAlt, faEllipsisV, faEllipsisH, faSortUp, faTimesCircle, faLink, faIdCard, faUser, faSearch, faFilter, faCode, faCog, faDownload, faCaretDown, faInfoCircle, faComment, faEdit, faSave, faTrashAlt, faBan, faWindowMinimize, faPlusSquare, faCheck, faCheckSquare, faLock, faLockOpen, faExternalLinkSquareAlt, faLongArrowAltDown, faLongArrowAltUp, faExternalLinkAlt, faPuzzlePiece, faExclamation, faShareAltSquare, faRecycle, faCaretSquareLeft, faCaretSquareRight, faClipboard, faAngleDoubleRight, faClone, faExclamationCircle, faQuestionCircle, faChevronUp, faChevronDown, faPencilAlt, faArrowRight, faArrowLeft, faArrowUp, faArrowDown, faSyncAlt, faList, faSitemap, faSeedling } from "@fortawesome/free-solid-svg-icons"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import globalMixins from "./mixins/global.js"
+import globalMixins from "@/mixins/global.js"
 
 // Add all providers to cocoda-sdk
 Object.keys(CocodaSDK).filter(key => key.endsWith("Provider")).forEach(key => {

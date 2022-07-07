@@ -488,12 +488,12 @@ import _ from "lodash"
 import axios from "axios"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import objects from "../mixins/cdk.js"
-import dragandrop from "../mixins/dragandrop.js"
-import clickHandler from "../mixins/click-handler.js"
-import computed from "../mixins/computed.js"
-import pageVisibility from "../mixins/page-visibility.js"
+import auth from "@/mixins/auth.js"
+import objects from "@/mixins/cdk.js"
+import dragandrop from "@/mixins/dragandrop.js"
+import clickHandler from "@/mixins/click-handler.js"
+import computed from "@/mixins/computed.js"
+import pageVisibility from "@/mixins/page-visibility.js"
 import { getItem, getItems, loadConcepts } from "@/items"
 
 export default {
@@ -1660,7 +1660,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .mappingBrowser-navigator-results {
   flex: 1;
@@ -1731,7 +1731,7 @@ export default {
 </style>
 
 <style lang="less">
-@import "../style/main.less";
+@import "@/style/main.less";
 
 #mappingBrowser[max-width~="750px"] .mappingBrowser-from750 {
   display: none;

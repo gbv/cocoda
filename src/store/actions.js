@@ -6,15 +6,15 @@ const axiosConfig = {
     "Cache-Control": "no-cache",
   },
 }
-import defaultConfig from "../config.js"
-import i18n from "../utils/i18n.js"
-import log from "../utils/log.js"
+import defaultConfig from "@/../config/cocoda.default.json"
+import i18n from "@/utils/i18n.js"
+import log from "@/utils/log.js"
 // Import registry providers
 import { cdk } from "cocoda-sdk"
-import buildInfo from "../../build/build-info.json"
+import buildInfo from "@/../build/build-info.json"
 // Import cocoda.json for hot reloading; will be ignored during build
 // eslint-disable-next-line no-unused-vars
-import userConfigAtBuild from "../../config/cocoda.json"
+import userConfigAtBuild from "@/../config/cocoda.json"
 
 function prepareConceptsForFavorite(concepts) {
   return concepts.map(c => ({

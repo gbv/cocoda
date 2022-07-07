@@ -101,11 +101,11 @@ import ComponentSettings from "./ComponentSettings.vue"
 import DataModalButton from "./DataModalButton.vue"
 import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 
-import computed from "../mixins/computed.js"
-import objects from "../mixins/cdk.js"
-import dragandrop from "../mixins/dragandrop.js"
-import hoverHandler from "../mixins/hover-handler.js"
-import mappedStatus from "../mixins/mapped-status.js"
+import computed from "@/mixins/computed.js"
+import objects from "@/mixins/cdk.js"
+import dragandrop from "@/mixins/dragandrop.js"
+import hoverHandler from "@/mixins/hover-handler.js"
+import mappedStatus from "@/mixins/mapped-status.js"
 import { getItem, getItemByUri, saveItem, loadConcepts } from "@/items"
 
 export default {
@@ -325,7 +325,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .conceptListWrapper .cocoda-vue-tabs-content {
   padding: 5px 0 0 0 !important;

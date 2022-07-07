@@ -93,8 +93,8 @@ import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 import AnnotationList from "./AnnotationList.vue"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import hoverHandler from "../mixins/hover-handler.js"
+import auth from "@/mixins/auth.js"
+import hoverHandler from "@/mixins/hover-handler.js"
 
 export default {
   name: "AnnotationPopover",
@@ -426,7 +426,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .annotationPopover {
   display: flex;

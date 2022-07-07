@@ -67,7 +67,7 @@ Note: This is a 90% copy of jskos-vue's ItemSuggest component, only slightly adj
 import { defineComponent, nextTick, ref, watch } from "vue"
 import LoadingIndicator from "./LoadingIndicator.vue"
 import VueScrollTo from "vue-scrollto"
-import clickHandler from "../mixins/click-handler.js"
+import clickHandler from "@/mixins/click-handler.js"
 import _ from "lodash"
 
 // import "../shared.css"
@@ -301,7 +301,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .jskos-vue-itemSuggest {
   position: relative;

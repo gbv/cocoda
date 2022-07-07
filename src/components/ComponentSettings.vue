@@ -51,8 +51,8 @@
 <script>
 import _ from "lodash"
 
-import clickHandler from "../mixins/click-handler.js"
-import computed from "../mixins/computed.js"
+import clickHandler from "@/mixins/click-handler.js"
+import computed from "@/mixins/computed.js"
 
 export default {
   name: "ComponentSettings",
@@ -159,7 +159,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .componentSettings {
   position: absolute;

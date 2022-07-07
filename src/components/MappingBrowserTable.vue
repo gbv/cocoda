@@ -384,10 +384,10 @@ import DateString from "./DateString.vue"
 import _ from "lodash"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import objects from "../mixins/cdk.js"
-import computed from "../mixins/computed.js"
-import hoverHandler from "../mixins/hover-handler.js"
+import auth from "@/mixins/auth.js"
+import objects from "@/mixins/cdk.js"
+import computed from "@/mixins/computed.js"
+import hoverHandler from "@/mixins/hover-handler.js"
 
 /**
  * The mapping suggestion browser component.
@@ -728,7 +728,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .noItems {
   margin: 30px auto 5px auto;
@@ -744,7 +744,7 @@ export default {
 </style>
 
 <style lang="less">
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .mappingBrowser-table-row-match {
   background-color: @color--mappingBrowser-table-match;

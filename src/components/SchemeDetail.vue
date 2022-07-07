@@ -126,10 +126,10 @@ import RegistryNotation from "./RegistryNotation.vue"
 import DateString from "./DateString.vue"
 
 // Import mixins
-import objects from "../mixins/cdk.js"
+import objects from "@/mixins/cdk.js"
 
 // KOS types
-import kosTypes from "../../config/kos-types.json"
+import kosTypes from "@/../config/kos-types.json"
 import { getItem } from "@/items"
 
 /**
@@ -190,7 +190,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .schemeDetail-license {
   margin-top: 5px;

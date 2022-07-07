@@ -26,7 +26,7 @@ export default {
 
 <!-- from: https://www.w3schools.com/howto/howto_css_loader.asp -->
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .loader {
   .m-borderRadius(50%);

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import computed from "../mixins/computed.js"
+import computed from "@/mixins/computed.js"
 import { getRegistryName } from "@/utils"
 
 export default {

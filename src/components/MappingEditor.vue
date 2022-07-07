@@ -247,11 +247,11 @@ import RegistryInfo from "./RegistryInfo.vue"
 import ConcordanceSelection from "./ConcordanceSelection.vue"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import objects from "../mixins/cdk.js"
-import dragandrop from "../mixins/dragandrop.js"
-import hotkeys from "../mixins/hotkeys.js"
-import computed from "../mixins/computed.js"
+import auth from "@/mixins/auth.js"
+import objects from "@/mixins/cdk.js"
+import dragandrop from "@/mixins/dragandrop.js"
+import hotkeys from "@/mixins/hotkeys.js"
+import computed from "@/mixins/computed.js"
 import { getItem, loadConcepts } from "@/items"
 
 /**
@@ -692,7 +692,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 #mappingEditor {
   position: relative;

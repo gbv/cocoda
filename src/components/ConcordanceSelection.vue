@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import cdk from "../mixins/cdk.js"
+import cdk from "@/mixins/cdk.js"
 import { displayNameForConcordance } from "@/utils"
 
 export default {

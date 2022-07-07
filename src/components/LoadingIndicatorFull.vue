@@ -41,8 +41,8 @@ export default {
 </script>
 
 <style lang="less">
-@import "../style/z-index.less";
-@import "../style/utilities.less";
+@import "@/style/z-index.less";
+@import "@/style/utilities.less";
 
 .loadingIndicatorFull {
   z-index: @zIndex-8 !important;

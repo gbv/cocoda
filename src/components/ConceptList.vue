@@ -38,9 +38,9 @@ import _ from "lodash"
 import { scroller } from "vue-scrollto/src/scrollTo"
 
 // Import mixins
-import objects from "../mixins/cdk.js"
-import computed from "../mixins/computed.js"
-import mappedStatus from "../mixins/mapped-status.js"
+import objects from "@/mixins/cdk.js"
+import computed from "@/mixins/computed.js"
+import mappedStatus from "@/mixins/mapped-status.js"
 import { getItem } from "@/items"
 
 /**
@@ -359,7 +359,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .conceptList {
   height: 100%;

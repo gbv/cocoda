@@ -3,7 +3,7 @@
  */
 
 import { LoginClient } from "gbv-login-client"
-import log from "../../utils/log.js"
+import log from "@/utils/log.js"
 import { closeWindow } from "@/utils/window-manager.js"
 let client
 

@@ -95,7 +95,7 @@ import _ from "lodash"
 import formatHighlight from "json-format-highlight"
 
 // Import mixins
-import objects from "../mixins/cdk.js"
+import objects from "@/mixins/cdk.js"
 import { getItem } from "@/items"
 
 /**
@@ -325,7 +325,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .dataModal-json {
   height: 600px;

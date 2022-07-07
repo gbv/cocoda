@@ -274,13 +274,13 @@ import ConceptSchemeSelectionItemVue from "./ConceptSchemeSelectionItem.vue"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk.js"
-import clickHandler from "../mixins/click-handler.js"
-import hotkeys from "../mixins/hotkeys.js"
-import computed from "../mixins/computed.js"
+import objects from "@/mixins/cdk.js"
+import clickHandler from "@/mixins/click-handler.js"
+import hotkeys from "@/mixins/hotkeys.js"
+import computed from "@/mixins/computed.js"
 
 // KOS types
-import kosTypes from "../../config/kos-types.json"
+import kosTypes from "@/../config/kos-types.json"
 import { getItem, getItems } from "@/items"
 
 /**
@@ -719,7 +719,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .conceptSchemeSelection {
   position: relative;

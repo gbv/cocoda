@@ -55,7 +55,7 @@
 
 <script>
 import _ from "lodash"
-import dragandrop from "../mixins/dragandrop.js"
+import dragandrop from "@/mixins/dragandrop.js"
 import { getItem } from "@/items"
 
 /**
@@ -247,7 +247,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .itemName {
   display: inline;

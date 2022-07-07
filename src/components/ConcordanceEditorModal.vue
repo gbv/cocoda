@@ -121,8 +121,8 @@
 import ItemName from "./ItemName.vue"
 import ItemSuggest from "./ItemSuggest.vue"
 
-import computed from "../mixins/computed.js"
-import cdk from "../mixins/cdk.js"
+import computed from "@/mixins/computed.js"
+import cdk from "@/mixins/cdk.js"
 
 import _ from "lodash"
 import jskos from "jskos-tools"
@@ -290,7 +290,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 p {
   margin: 10px 0 !important;

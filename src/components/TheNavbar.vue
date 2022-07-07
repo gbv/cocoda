@@ -304,10 +304,10 @@ import ItemName from "./ItemName.vue"
 import _ from "lodash"
 
 // Import mixins
-import auth from "../mixins/auth.js"
-import objects from "../mixins/cdk.js"
-import dragandrop from "../mixins/dragandrop.js"
-import computed from "../mixins/computed.js"
+import auth from "@/mixins/auth.js"
+import objects from "@/mixins/cdk.js"
+import dragandrop from "@/mixins/dragandrop.js"
+import computed from "@/mixins/computed.js"
 import { openWindow } from "@/utils/window-manager.js"
 
 /**
@@ -423,7 +423,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 nav.navbar {
   padding: 2px 8px;
@@ -457,7 +457,7 @@ hr {
 </style>
 
 <style lang="less">
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .nav-link, .nav-link > span, .btn-link {
   color: @color-text-dark !important;

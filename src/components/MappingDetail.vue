@@ -221,7 +221,7 @@ import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
 
-import computed from "../mixins/computed.js"
+import computed from "@/mixins/computed.js"
 import { displayNameForConcordance } from "@/utils"
 
 /**
@@ -262,7 +262,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .mappingDetail-container > .row {
   margin-bottom: 10px;

@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .mappingTypes {
   width: 72px;

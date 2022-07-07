@@ -108,10 +108,10 @@ import LoadingIndicator from "./LoadingIndicator.vue"
 import _ from "lodash"
 
 // Import mixins
-import objects from "../mixins/cdk.js"
-import clickHandler from "../mixins/click-handler.js"
-import dragandrop from "../mixins/dragandrop.js"
-import computed from "../mixins/computed.js"
+import objects from "@/mixins/cdk.js"
+import clickHandler from "@/mixins/click-handler.js"
+import dragandrop from "@/mixins/dragandrop.js"
+import computed from "@/mixins/computed.js"
 import { getItem, loadTypes, saveItem } from "@/items"
 
 /**
@@ -478,7 +478,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../style/main.less";
+@import "@/style/main.less";
 
 .conceptSearch {
   position: relative;
@@ -559,7 +559,7 @@ export default {
 </style>
 
 <style lang="less">
-@import "../style/colors.less";
+@import "@/style/colors.less";
 
 // Has to be global to work
 .conceptSearch-searchHighlight {
