@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "042863cec4b32e2153181f6d265d1ef352b62d6e",
-  "gitCommitShort": "042863ce",
-  "gitCommitMessage": "042863ce Refactor imports to use @/ where possible",
-  "buildDate": "2022-07-07T07:48:02Z",
-  "date": "2022-07-07T07:46:42.000Z",
+  "gitCommit": "9cb1c5a43b232d4fb4791e272724db7bcf0e9db7",
+  "gitCommitShort": "9cb1c5a4",
+  "gitCommitMessage": "9cb1c5a4 Update dependencies",
+  "buildDate": "2022-07-18T08:29:17Z",
+  "date": "2022-07-18T08:27:35.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
