@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "9cb1c5a43b232d4fb4791e272724db7bcf0e9db7",
-  "gitCommitShort": "9cb1c5a4",
-  "gitCommitMessage": "9cb1c5a4 Update dependencies",
-  "buildDate": "2022-07-18T08:29:17Z",
-  "date": "2022-07-18T08:27:35.000Z",
+  "gitCommit": "217d0a5eda2759881af0a7f6bbf74d779b21c0fa",
+  "gitCommitShort": "217d0a5e",
+  "gitCommitMessage": "217d0a5e Mapping Navigator: Temporarily disable filtering recommendations",
+  "buildDate": "2022-07-19T10:05:53Z",
+  "date": "2022-07-19T10:04:37.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
