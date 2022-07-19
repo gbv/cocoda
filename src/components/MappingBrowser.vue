@@ -1535,16 +1535,17 @@ export default {
         let skipped = 0 // Keep track of number of skipped items
         for (let mapping of mappings) {
           // For mappings recommendations: If mapping with the same member identifier could be found in the results for the current registry, skip item.
-          if (!this.$jskos.mappingRegistryIsStored(registry)) {
-            const currentRegistryResults = this.currentRegistry && results[this.currentRegistry.uri] || []
-            const memberIdentifier = (mapping) => {
-              return mapping && mapping.identifier.find(id => id && id.startsWith("urn:jskos:mapping:members:"))
-            }
-            if (currentRegistryResults.find(m => memberIdentifier(m) == memberIdentifier(mapping))) {
-              skipped += 1
-              continue
-            }
-          }
+          // ! Temporarily disable this feature
+          // if (!this.$jskos.mappingRegistryIsStored(registry)) {
+          //   const currentRegistryResults = this.currentRegistry && results[this.currentRegistry.uri] || []
+          //   const memberIdentifier = (mapping) => {
+          //     return mapping && mapping.identifier.find(id => id && id.startsWith("urn:jskos:mapping:members:"))
+          //   }
+          //   if (currentRegistryResults.find(m => memberIdentifier(m) == memberIdentifier(mapping))) {
+          //     skipped += 1
+          //     continue
+          //   }
+          // }
 
           let item = { mapping, registry }
           item.sourceScheme = _.get(mapping, "fromScheme") || undefined
