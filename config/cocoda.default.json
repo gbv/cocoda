@@ -102,6 +102,17 @@
       }
     },
     {
+      "provider": "MappingsApi",
+      "uri": "http://coli-conc.gbv.de/registry/konsys-mappings",
+      "status": "https://konsys.uni-konstanz.de/api/jskos/status",
+      "notation": [
+        "KSM"
+      ],
+      "prefLabel": {
+        "en": "KonSys Mappings"
+      }
+    },
+    {
       "provider": "LabelSearchSuggestion",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
       "excludedSchemes": [
