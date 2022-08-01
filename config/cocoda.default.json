@@ -156,6 +156,17 @@
       }
     },
     {
+      "uri": "http://coli-conc.gbv.de/registry/occurrences",
+      "provider": "OccurrencesApi",
+      "api": "https://coli-conc.gbv.de/occurrences/api/",
+      "notation": [
+        "CO"
+      ],
+      "prefLabel": {
+        "en": "Co-Occurrences"
+      }
+    },
+    {
       "provider": "ReconciliationApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
       "api": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
