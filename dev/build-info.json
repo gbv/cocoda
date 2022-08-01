@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "2bcfd417e7d280d1bf69566b2c86130e60a7db2f",
-  "gitCommitShort": "2bcfd417",
-  "gitCommitMessage": "2bcfd417 Add KonSys mappings to default config",
-  "buildDate": "2022-07-26T06:51:14Z",
-  "date": "2022-07-26T06:49:55.000Z",
+  "gitCommit": "c3841b0e2a69be12cac54303dcf1732959989929",
+  "gitCommitShort": "c3841b0e",
+  "gitCommitMessage": "c3841b0e Re-enable co-occurrences via new server implementation",
+  "buildDate": "2022-08-01T10:06:52Z",
+  "date": "2022-08-01T10:05:01.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
