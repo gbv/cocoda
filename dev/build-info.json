@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "c3841b0e2a69be12cac54303dcf1732959989929",
-  "gitCommitShort": "c3841b0e",
-  "gitCommitMessage": "c3841b0e Re-enable co-occurrences via new server implementation",
-  "buildDate": "2022-08-01T10:06:52Z",
-  "date": "2022-08-01T10:05:01.000Z",
+  "gitCommit": "bbf8f328a431de947b000bb942f67b8436439ddc",
+  "gitCommitShort": "bbf8f328",
+  "gitCommitMessage": "bbf8f328 Update cocoda-sdk to v3.2.2 for changes to occurrences provider",
+  "buildDate": "2022-08-03T08:36:38Z",
+  "date": "2022-08-03T08:35:34.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
