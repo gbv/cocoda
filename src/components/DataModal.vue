@@ -133,7 +133,7 @@ export default {
      * For objects, provide a title as keys and the URLs as values.
      */
     url: {
-      type: [String, Object],
+      type: [String, Object, Array],
       default: null,
     },
     /**
