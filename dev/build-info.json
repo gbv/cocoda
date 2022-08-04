@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "5bde33d4f685538ed1f3a623eb7e9d3c3d9232e6",
-  "gitCommitShort": "5bde33d4",
-  "gitCommitMessage": "5bde33d4 Move occurrences registry above ccmapper registry",
-  "buildDate": "2022-08-03T08:37:35Z",
-  "date": "2022-08-03T08:36:20.000Z",
+  "gitCommit": "4e5c07cb46527511f1d863c612d7d333cb3de930",
+  "gitCommitShort": "4e5c07cb",
+  "gitCommitMessage": "4e5c07cb Reduce UI headings",
+  "buildDate": "2022-08-04T09:13:45Z",
+  "date": "2022-08-04T09:12:20.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
