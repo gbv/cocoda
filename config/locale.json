@@ -32,7 +32,7 @@
       "type": "Type",
       "noRegistries": "The configuration contains no providers. Please consult the <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>documentation</a> how to configure providers!",
       "storedMappings": "Mappings",
-      "recommendedMappings": "Recommendations"
+      "recommendedMappings": "Suggestions"
     },
     "navbar": {
       "trashTitle": "Recently Deleted Mappings",
