@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "4e5c07cb46527511f1d863c612d7d333cb3de930",
-  "gitCommitShort": "4e5c07cb",
-  "gitCommitMessage": "4e5c07cb Reduce UI headings",
-  "buildDate": "2022-08-04T09:13:45Z",
-  "date": "2022-08-04T09:12:20.000Z",
+  "gitCommit": "1adea7f31d1a4d91eb8ce1eb3e36a7217e7357d2",
+  "gitCommitShort": "1adea7f3",
+  "gitCommitMessage": "1adea7f3 UI: Recommendations => Suggestions",
+  "buildDate": "2022-08-18T07:19:45Z",
+  "date": "2022-08-18T07:17:17.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
