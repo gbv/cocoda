@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "5b2d7e3f830c8601508aa160d0a7fac135e72f9e",
-  "gitCommitShort": "5b2d7e3f",
-  "gitCommitMessage": "5b2d7e3f Abbreviate KonSys mapping registry",
-  "buildDate": "2022-09-15T10:38:16Z",
-  "date": "2022-09-15T10:37:04.000Z",
+  "gitCommit": "c7d08439872f4a7ab8f1773582141069c6afe91c",
+  "gitCommitShort": "c7d08439",
+  "gitCommitMessage": "c7d08439 Implement changes necessary for updated crossUser behavior",
+  "buildDate": "2022-09-20T11:20:44Z",
+  "date": "2022-09-20T11:18:53.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
