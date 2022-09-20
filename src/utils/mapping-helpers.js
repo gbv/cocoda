@@ -90,7 +90,7 @@ export function canUpdateMapping({ registry, mapping, user, original }) {
   const concordance = concordances.value.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
   const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
-  if (concordance && !isContributor) {
+  if (concordance && !crossUser && !isContributor) {
     return false
   } else if (isContributor) {
     crossUser = false
@@ -115,7 +115,7 @@ export function canDeleteMapping({ registry, mapping, user, original }) {
   const concordance = concordances.value.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
   const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
-  if (concordance && !isContributor) {
+  if (concordance && !crossUser && !isContributor) {
     return false
   }
   return registry.isAuthorizedFor({
