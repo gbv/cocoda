@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "807dbe224b2f0e585585b1fa1a2848f527dd7c14",
-  "gitCommitShort": "807dbe22",
-  "gitCommitMessage": "807dbe22 MappingBrowser: Don't show save button for suggestions",
-  "buildDate": "2022-09-26T09:02:21Z",
-  "date": "2022-09-26T09:01:04.000Z",
+  "gitCommit": "5729e26041a3f4508a0011b1c6f8cba0cafda2d2",
+  "gitCommitShort": "5729e260",
+  "gitCommitMessage": "5729e260 MappingBrowser pagination: Add go to page button (#387)",
+  "buildDate": "2022-09-26T09:42:50Z",
+  "date": "2022-09-26T09:40:46.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
