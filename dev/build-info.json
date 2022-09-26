@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "c7d08439872f4a7ab8f1773582141069c6afe91c",
-  "gitCommitShort": "c7d08439",
-  "gitCommitMessage": "c7d08439 Implement changes necessary for updated crossUser behavior",
-  "buildDate": "2022-09-20T11:20:44Z",
-  "date": "2022-09-20T11:18:53.000Z",
+  "gitCommit": "807dbe224b2f0e585585b1fa1a2848f527dd7c14",
+  "gitCommitShort": "807dbe22",
+  "gitCommitMessage": "807dbe22 MappingBrowser: Don't show save button for suggestions",
+  "buildDate": "2022-09-26T09:02:21Z",
+  "date": "2022-09-26T09:01:04.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
