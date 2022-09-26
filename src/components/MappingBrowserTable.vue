@@ -379,7 +379,7 @@
       :key="section.id"
       :show.sync="popoverShown[`goToPage-${section.id}`]"
       :target="`mappingBrowser-pagination-goToPage-${section.id}`"
-      triggers="['click', 'hover']"
+      triggers="click"
       placement="bottomleft"
       @hide="popoverHide($event, `goToPage-${section.id}`)">
       <div>
