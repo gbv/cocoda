@@ -329,6 +329,12 @@
             @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div class="mappingBrowser-pagination-number fontSize-small">
+            <div
+              v-if="section.totalCount >= 1000"
+              :id="`mappingBrowser-pagination-goToPage-${section.id}`"
+              class="button"
+              style="display: inline-block"
+              @click="$set(popoverShown, `goToPage-${section.id}`, false)">go to page…</div>
             <span v-if="section.items.length < section.totalCount">
               {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
             </span>
@@ -367,6 +373,33 @@
       @refresh-annotations="refreshAnnotations"
       @show="annotationPopoverShown = true"
       @hide="annotationPopoverShown = false" />
+    <!-- Go to page popovers -->
+    <b-popover
+      v-for="section in sections.filter(s => s.totalCount >= 1000)"
+      :key="section.id"
+      :show.sync="popoverShown[`goToPage-${section.id}`]"
+      :target="`mappingBrowser-pagination-goToPage-${section.id}`"
+      triggers="['click', 'hover']"
+      placement="bottomleft"
+      @hide="popoverHide($event, `goToPage-${section.id}`)">
+      <div>
+        <p>
+          <b-input
+            v-model="goToPageValues[section.id]"
+            type="number"
+            size="sm"
+            style="display: inline-block; width: 100px;"
+            @keyup.enter.native="goToPage(section)" />
+          <b-button
+            variant="primary"
+            size="sm"
+            :disabled="!goToPageValues[section.id]"
+            @click="goToPage(section)">
+            Go
+          </b-button>
+        </p>
+      </div>
+    </b-popover>
   </div>
 </template>
 
@@ -433,6 +466,7 @@ export default {
       popoverShown: {},
       currentPopovers: {},
       annotationPopoverShown: false,
+      goToPageValues: {},
     }
   },
   computed: {
@@ -722,6 +756,10 @@ export default {
       //   }
       // }
       window.open(url.substring(0, url.length - 1), "_self")
+    },
+    goToPage(section) {
+      this.$emit("pageChange", { registry: section.registry, page: this.goToPageValues[section.id], userInitiated: true })
+      this.$set(this.popoverShown, `goToPage-${section.id}`, false)
     },
   },
 }

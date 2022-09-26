@@ -1511,7 +1511,9 @@ export default {
     resultsToSections(results, pages, loading, keyPrefix) {
       let sections = []
       for (let registry of this.mappingRegistriesSorted.filter(registry => results[registry.uri])) {
-        let section = {}
+        let section = {
+          id: registry.uri,
+        }
         section.registry = registry
         // Add custom class for current registry
         if (this.$jskos.compareFast(registry, this.currentRegistry)) {
