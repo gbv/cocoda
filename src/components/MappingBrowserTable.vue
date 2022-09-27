@@ -398,7 +398,7 @@
           <b-button
             variant="primary"
             size="sm"
-            :disabled="!goToPageValues[section.id]"
+            :disabled="!goToPageValues[section.id] || goToPageValues[section.id] <= 0 || goToPageValues[section.id] > section.lastPage"
             @click="goToPage(section)">
             {{ $t("mappingBrowser.goToPageButton") }}
           </b-button>
