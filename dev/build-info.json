@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "bd6c325b33c88b5fe309487f33a2b4c52c311f31",
-  "gitCommitShort": "bd6c325b",
-  "gitCommitMessage": "bd6c325b MappingBrowser go to page: Hide popover when clicked elsewhere (#387)",
-  "buildDate": "2022-09-27T08:32:56Z",
-  "date": "2022-09-27T08:31:46.000Z",
+  "gitCommit": "6a845ecc87851222b873ed2bcf12429780f0ac2c",
+  "gitCommitShort": "6a845ecc",
+  "gitCommitMessage": "6a845ecc MappingBrowser go to page: Adjustment to when button is shown (#387)",
+  "buildDate": "2022-09-27T08:38:18Z",
+  "date": "2022-09-27T08:37:19.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
