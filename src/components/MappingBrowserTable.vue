@@ -329,12 +329,15 @@
             @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div class="mappingBrowser-pagination-number fontSize-small">
-            <div
+            <a
               v-if="section.totalCount >= 1000"
               :id="`mappingBrowser-pagination-goToPage-${section.id}`"
-              class="button"
-              style="display: inline-block"
-              @click="$set(popoverShown, `goToPage-${section.id}`, false)">go to page…</div>
+              href=""
+              class="fontSize-verySmall"
+              style="margin-right: 10px;"
+              @click.stop.prevent="$set(popoverShown, `goToPage-${section.id}`, false)">
+              <font-awesome-icon icon="arrow-right-to-bracket" />
+            </a>
             <span v-if="section.items.length < section.totalCount">
               {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
             </span>
