@@ -330,7 +330,7 @@
             @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
           <div class="mappingBrowser-pagination-number fontSize-small">
             <a
-              v-if="section.totalCount >= 1000"
+              v-if="section.lastPage > 4"
               :id="`mappingBrowser-pagination-goToPage-${section.id}`"
               v-b-tooltip.hover.left="{ title: $t('mappingBrowser.goToPageTooltip'), delay: defaults.delay.medium }"
               href=""
@@ -379,7 +379,7 @@
       @hide="annotationPopoverShown = false" />
     <!-- Go to page popovers -->
     <b-popover
-      v-for="section in sections.filter(s => s.totalCount >= 1000)"
+      v-for="section in sections.filter(s => s.lastPage > 4)"
       :key="section.randomId"
       :show.sync="popoverShown[`goToPage-${section.id}`]"
       :target="`mappingBrowser-pagination-goToPage-${section.id}`"
