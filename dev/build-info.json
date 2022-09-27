@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "6a845ecc87851222b873ed2bcf12429780f0ac2c",
-  "gitCommitShort": "6a845ecc",
-  "gitCommitMessage": "6a845ecc MappingBrowser go to page: Adjustment to when button is shown (#387)",
-  "buildDate": "2022-09-27T08:38:18Z",
-  "date": "2022-09-27T08:37:19.000Z",
+  "gitCommit": "e18530b1332e7e7265c2d9b9b656486af915bc8c",
+  "gitCommitShort": "e18530b1",
+  "gitCommitMessage": "e18530b1 MappingBrowser go to page: Disable button for invalid page number (#387)",
+  "buildDate": "2022-09-27T08:44:34Z",
+  "date": "2022-09-27T08:43:11.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
