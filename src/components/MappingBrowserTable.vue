@@ -384,6 +384,7 @@
       :target="`mappingBrowser-pagination-goToPage-${section.id}`"
       triggers="click"
       placement="bottomleft"
+      @shown="goToPagePopoverShown"
       @hide="popoverHide($event, `goToPage-${section.id}`)">
       <div>
         <p>
@@ -763,6 +764,13 @@ export default {
     goToPage(section) {
       this.$emit("pageChange", { registry: section.registry, page: this.goToPageValues[section.id], userInitiated: true })
       this.$set(this.popoverShown, `goToPage-${section.id}`, false)
+    },
+    goToPagePopoverShown(event) {
+      const inputField = event.relatedTarget && event.relatedTarget.getElementsByTagName("input")[0]
+      if (inputField) {
+        inputField.focus()
+        inputField.select()
+      }
     },
   },
 }
