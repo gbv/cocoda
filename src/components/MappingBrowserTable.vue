@@ -387,7 +387,7 @@
       placement="bottomleft"
       @shown="goToPagePopoverShown"
       @hide="popoverHide($event, `goToPage-${section.id}`)">
-      <div>
+      <div ref="goToPagePopover">
         <p>
           <b-input
             v-model="goToPageValues[section.id]"
@@ -429,6 +429,7 @@ import auth from "@/mixins/auth.js"
 import objects from "@/mixins/cdk.js"
 import computed from "@/mixins/computed.js"
 import hoverHandler from "@/mixins/hover-handler.js"
+import clickHandler from "@/mixins/click-handler.js"
 
 /**
  * The mapping suggestion browser component.
@@ -436,7 +437,7 @@ import hoverHandler from "@/mixins/hover-handler.js"
 export default {
   name: "MappingBrowser",
   components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton, DateString },
-  mixins: [auth, objects, computed, hoverHandler],
+  mixins: [auth, objects, computed, hoverHandler, clickHandler],
   props: {
     sections: {
       type: Array,
@@ -710,6 +711,17 @@ export default {
         })
       })
       return handlers
+    },
+    // Click handler for go to page popover (makes it hide when clicked elsewhere)
+    clickHandlers() {
+      return [{
+        elements: [this.$refs.goToPagePopover && this.$refs.goToPagePopover[0]].concat(this.sections.map(section => document.getElementById(`mappingBrowser-pagination-goToPage-${section.id}`))).filter(Boolean),
+        handler: () => {
+          Object.keys(this.popoverShown).filter(key => key.startsWith("goToPage-")).forEach(key => {
+            this.popoverShown[key] = false
+          })
+        },
+      }]
     },
     searchForCreator(uri) {
       let mappingBrowser = this.$parent
