@@ -1513,6 +1513,7 @@ export default {
       for (let registry of this.mappingRegistriesSorted.filter(registry => results[registry.uri])) {
         let section = {
           id: registry.uri,
+          randomId: this.generateID(),
         }
         section.registry = registry
         // Add custom class for current registry

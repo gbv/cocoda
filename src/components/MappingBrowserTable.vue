@@ -379,7 +379,7 @@
     <!-- Go to page popovers -->
     <b-popover
       v-for="section in sections.filter(s => s.totalCount >= 1000)"
-      :key="section.id"
+      :key="section.randomId"
       :show.sync="popoverShown[`goToPage-${section.id}`]"
       :target="`mappingBrowser-pagination-goToPage-${section.id}`"
       triggers="click"
