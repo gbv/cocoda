@@ -332,6 +332,7 @@
             <a
               v-if="section.totalCount >= 1000"
               :id="`mappingBrowser-pagination-goToPage-${section.id}`"
+              v-b-tooltip.hover.left="{ title: $t('mappingBrowser.goToPageTooltip'), delay: defaults.delay.medium }"
               href=""
               class="fontSize-verySmall"
               style="margin-right: 10px;"
@@ -399,11 +400,11 @@
             size="sm"
             :disabled="!goToPageValues[section.id]"
             @click="goToPage(section)">
-            Go
+            {{ $t("mappingBrowser.goToPageButton") }}
           </b-button>
         </p>
         <p>
-          {{ section.lastPage }} total pages
+          {{ section.lastPage.toLocaleString() }} {{ $t("mappingBrowser.goToPageTotalPages") }}
         </p>
       </div>
     </b-popover>

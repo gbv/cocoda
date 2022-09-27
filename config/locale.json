@@ -209,7 +209,10 @@
       "openInCocoda": "open in Cocoda",
       "lockScheme": "lock search scheme to selected scheme",
       "unlockScheme": "unlock search scheme from selected scheme",
-      "registryHasErrored": "There has been an error when trying to load mappings from this registry. The shown results may be inaccurate."
+      "registryHasErrored": "There has been an error when trying to load mappings from this registry. The shown results may be inaccurate.",
+      "goToPageTooltip": "Go to page",
+      "goToPageButton": "Go",
+      "goToPageTotalPages": "total pages"
     },
     "mappingDetail": {
       "title": "Mapping Details",
@@ -643,7 +646,10 @@
       "openInCocoda": "in Cocoda öffnen",
       "lockScheme": "binde Suchvokabular an das ausgewählte Vokabular",
       "unlockScheme": "löse Suchvokabular von dem ausgewählten Vokabular",
-      "registryHasErrored": "Beim Laden von Mappings aus diesem Register ist ein Fehler aufgetreten. Das angezeigte Ergebnis kann inakkurat sein."
+      "registryHasErrored": "Beim Laden von Mappings aus diesem Register ist ein Fehler aufgetreten. Das angezeigte Ergebnis kann inakkurat sein.",
+      "goToPageTooltip": "Springe zu Seite",
+      "goToPageButton": "Springen",
+      "goToPageTotalPages": "Seiten insgesamt"
     },
     "mappingDetail": {
       "title": "Mapping-Details",
