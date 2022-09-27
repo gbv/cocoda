@@ -1525,6 +1525,8 @@ export default {
         section.page = pages[registry.uri] || 1
         let mappings = results[registry.uri] || []
         section.totalCount = mappings._totalCount || mappings.length
+        // Calculate last page
+        section.lastPage = Math.ceil(section.totalCount / this.componentSettings.resultLimit)
         // Set section.loading if there is null in the results
         if (mappings.length == 1 && mappings[0] == null) {
           section.loading = true

@@ -402,6 +402,9 @@
             Go
           </b-button>
         </p>
+        <p>
+          {{ section.lastPage }} total pages
+        </p>
       </div>
     </b-popover>
   </div>
