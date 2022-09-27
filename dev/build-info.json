@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "2e674ae98fbb980303f07879ed1ce05bbecab82f",
-  "gitCommitShort": "2e674ae9",
-  "gitCommitMessage": "2e674ae9 MappingBrowser pagination: Fix go to page button (#387)",
-  "buildDate": "2022-09-26T09:47:20Z",
-  "date": "2022-09-26T09:46:23.000Z",
+  "gitCommit": "e206a3a9ce970b119a2eabb59791ee4e93add2c8",
+  "gitCommitShort": "e206a3a9",
+  "gitCommitMessage": "e206a3a9 MappingBrowser go to page: Fix bug by using random ID (#387)",
+  "buildDate": "2022-09-27T07:32:28Z",
+  "date": "2022-09-27T07:26:11.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
