@@ -1418,9 +1418,16 @@ export default {
 
               let leftIsLeft = this.$jskos.isContainedIn(this.selected.concept[true], conceptsLeft)
               let rightIsRight = this.$jskos.isContainedIn(this.selected.concept[false], conceptsRight)
+              let schemeLeftIsLeft = this.$jskos.compare(this.selected.scheme[true], mapping.fromScheme)
+              let schemeRightIsRight = this.$jskos.compare(this.selected.scheme[false], mapping.toScheme)
 
               if (leftIsLeft && rightIsRight) {
                 // Mapping gets full score
+                return
+              }
+              points[key] -= 1
+              if (schemeLeftIsLeft && schemeRightIsRight) {
+                // Mapping with correct schemes gets second highest score
                 return
               }
               points[key] -= 1
