@@ -335,7 +335,7 @@
               v-b-tooltip.hover.left="{ title: $t('mappingBrowser.goToPageTooltip'), delay: defaults.delay.medium }"
               href=""
               class="fontSize-verySmall"
-              style="margin-right: 10px;"
+              style="margin-right: 6px;"
               @click.stop.prevent="$set(popoverShown, `goToPage-${section.id}`, false)">
               <font-awesome-icon icon="arrow-right-to-bracket" />
             </a>
