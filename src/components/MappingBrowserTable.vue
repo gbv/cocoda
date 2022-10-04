@@ -290,8 +290,11 @@
       <span
         slot="extra"
         slot-scope="data">
+        <span v-if="data.item.mapping && data.item.mapping.mappingRelevance">
+          {{ data.item.mapping.mappingRelevance.toPrecision(3) }}
+        </span>
         <date-string
-          v-if="data.item.occurrence == null"
+          v-else-if="data.item.occurrence == null"
           :date="data.value.date" />
         <span v-else-if="data.item.occurrence.count == -1">-</span>
         <span v-else>
