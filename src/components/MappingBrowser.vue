@@ -1386,6 +1386,8 @@ export default {
           // For recommendations: Limit results.
           // TODO: We should support proper pagination here as well!
           limit: this.$jskos.mappingRegistryIsStored(registry) ? 100 : this.componentSettings.resultLimit,
+          // Sort by mappingRelevance if not stored
+          sort: this.$jskos.mappingRegistryIsStored(registry) ? "modified" : "mappingRelevance",
           cancelToken: cancelToken.token,
         })
         const handleResult = mappings => {
