@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "e5f202d3c44f2a04b6332ac141eab25620566e95",
-  "gitCommitShort": "e5f202d3",
-  "gitCommitMessage": "e5f202d3 MappingBrowser: Slight adjustment to navigator sorting logic",
-  "buildDate": "2022-09-28T09:43:59Z",
-  "date": "2022-09-28T09:42:51.000Z",
+  "gitCommit": "5525bdb790c35909fc16d453d44f13640bff3930",
+  "gitCommitShort": "5525bdb7",
+  "gitCommitMessage": "5525bdb7 Mapping Navigator: Show mappingRelevance in list if it exists",
+  "buildDate": "2022-10-04T09:41:14Z",
+  "date": "2022-10-04T09:39:26.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
