@@ -1409,6 +1409,9 @@ export default {
               // Sort by occurrence count descending
               return _.get(b, "_occurrence.count", 0) - _.get(a, "_occurrence.count", 0)
             }
+            if (a.mappingRelevance && b.mappingRelevance) {
+              return b.mappingRelevance - a.mappingRelevance
+            }
             let points = {
               a: 10, b: 10,
             }
