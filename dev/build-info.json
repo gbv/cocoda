@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "a64cd4516c39a4e0184d09e542d97b9d5283cebd",
-  "gitCommitShort": "a64cd451",
-  "gitCommitMessage": "a64cd451 Mapping Navigator: Add sorting to API request",
-  "buildDate": "2022-10-04T10:41:46Z",
-  "date": "2022-10-04T10:40:21.000Z",
+  "gitCommit": "937984b823eb48c358620186413eccb57f4fe97c",
+  "gitCommitShort": "937984b8",
+  "gitCommitMessage": "937984b8 Mapping Navigator: Add small hack to display of mappingRelevance",
+  "buildDate": "2022-10-04T10:46:01Z",
+  "date": "2022-10-04T10:44:30.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
