@@ -290,12 +290,8 @@
       <span
         slot="extra"
         slot-scope="data">
-        <span v-if="data.item.mapping && data.item.mapping.mappingRelevance">
-          <!-- TODO: Only apply this for CCMapper mappings, even if it's a hack. -->
-          {{ Math.round(Math.pow(10, data.item.mapping.mappingRelevance * 5.6) - 1) }}
-        </span>
         <date-string
-          v-else-if="data.item.occurrence == null"
+          v-if="data.item.occurrence == null"
           :date="data.value.date" />
         <span v-else-if="data.item.occurrence.count == -1">-</span>
         <span v-else>
