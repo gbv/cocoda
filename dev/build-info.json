@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "296b3c003a059eff0b92c5a6cc22726e4e54c10c",
-  "gitCommitShort": "296b3c00",
-  "gitCommitMessage": "296b3c00 Mapping Navigator: Remove display of mappingRelevance again",
-  "buildDate": "2022-10-05T05:55:51Z",
-  "date": "2022-10-05T05:54:33.000Z",
+  "gitCommit": "28476487946d910d0a9be0bbfd0f2000800d21c6",
+  "gitCommitShort": "28476487",
+  "gitCommitMessage": "28476487 Update dependencies",
+  "buildDate": "2022-10-05T06:05:12Z",
+  "date": "2022-10-05T06:04:18.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
