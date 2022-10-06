@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "28476487946d910d0a9be0bbfd0f2000800d21c6",
-  "gitCommitShort": "28476487",
-  "gitCommitMessage": "28476487 Update dependencies",
-  "buildDate": "2022-10-05T06:05:12Z",
-  "date": "2022-10-05T06:04:18.000Z",
+  "gitCommit": "2496d2cfbf7330dc356814265e3e2b7b6bd112ca",
+  "gitCommitShort": "2496d2cf",
+  "gitCommitMessage": "2496d2cf Add dev version of cocoda-sdk from Git to test MyCoRe provider",
+  "buildDate": "2022-10-06T08:32:48Z",
+  "date": "2022-10-06T08:31:30.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
