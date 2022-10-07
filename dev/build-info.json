@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "98cea9c563e1bb73ba5bfa1e1eab49a62f478f5d",
-  "gitCommitShort": "98cea9c5",
-  "gitCommitMessage": "98cea9c5 Display mapping type with interface language (#695)",
-  "buildDate": "2022-10-07T09:15:46Z",
-  "date": "2022-10-07T09:14:07.000Z",
+  "gitCommit": "77c45d2137e39030be0d1a255ad8c5fca054cc88",
+  "gitCommitShort": "77c45d21",
+  "gitCommitMessage": "77c45d21 Update cocoda-sdk in package-lock.json to latest dev version",
+  "buildDate": "2022-10-07T10:34:53Z",
+  "date": "2022-10-07T10:33:41.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
