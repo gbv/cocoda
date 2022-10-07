@@ -160,7 +160,7 @@
         slot-scope="{ value }">
         <span
           v-if="value != null && $jskos.notation(value) != '→'"
-          v-b-tooltip.hover="{ title: $jskos.prefLabel(value, { fallbackToUri: false }), delay: defaults.delay.medium }">
+          v-b-tooltip.hover="{ title: $jskos.prefLabel(value, { fallbackToUri: false, language: locale }), delay: defaults.delay.medium }">
           {{ $jskos.notation(value) }}
         </span>
       </span>

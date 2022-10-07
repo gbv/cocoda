@@ -693,7 +693,7 @@ export default {
       }]
       for (let type of this.$jskos.mappingTypes) {
         options.push({
-          text: `${this.$jskos.notation(type)} ${this.$jskos.prefLabel(type)}`,
+          text: `${this.$jskos.notation(type)} ${this.$jskos.prefLabel(type, { language: this.locale })}`,
           value: type.uri,
         })
       }

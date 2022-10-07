@@ -6,7 +6,7 @@
     <div
       v-for="mappingType in mappingTypes"
       :key="mappingType.uri"
-      v-b-tooltip.hover.right="{ title: $jskos.prefLabel(mappingType) + definition(mappingType), delay: defaults.delay.medium }"
+      v-b-tooltip.hover.right="{ title: $jskos.prefLabel(mappingType, { language: locale }) + definition(mappingType), delay: defaults.delay.medium }"
       :class="{
         mappingTypeSelected: hovered && (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
         'fontWeight-heavy': (mappingType && mappingTypeSelected) && mappingType.uri == mappingTypeSelected.uri,
@@ -21,11 +21,14 @@
 </template>
 
 <script>
+import computed from "@/mixins/computed.js"
+
 /**
  * The mapping type selection component.
  */
 export default {
   name: "MappingTypeSelection",
+  mixins: [computed],
   props: {
     /**
      * The mapping for which the type should be selected.
@@ -59,7 +62,7 @@ export default {
       })
     },
     definition(mappingType) {
-      let definition = this.$jskos.definition(mappingType)
+      let definition = this.$jskos.definition(mappingType, { language: this.locale })
       if (definition.length) {
         return ": " + definition.join(", ")
       }
