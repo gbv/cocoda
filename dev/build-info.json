@@ -1,11 +1,11 @@
 {
   "version": "1.7.0",
   "gitBranch": "dev",
-  "gitCommit": "37903cdbe36e33e816f167560d4d1f95f29ab30f",
-  "gitCommitShort": "37903cdb",
-  "gitCommitMessage": "37903cdb Fix cocoda-sdk entry in package.json",
-  "buildDate": "2022-10-06T08:44:43Z",
-  "date": "2022-10-06T08:43:34.000Z",
+  "gitCommit": "1b6449e40cdc3049f0f06ad4cd119a9523d6ccc2",
+  "gitCommitShort": "1b6449e4",
+  "gitCommitMessage": "1b6449e4 Update cocoda-sdk in package-lock.json to latest dev version",
+  "buildDate": "2022-10-07T08:29:42Z",
+  "date": "2022-10-07T08:28:27.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/26?closed=1",
   "jskosApi": "^1.0"
 }
