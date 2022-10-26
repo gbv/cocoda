@@ -51,6 +51,15 @@ function checkMappingSchemes({ mapping, registry }) {
   return true
 }
 
+function hasCrossUserForConcordances({ registry, user, action }) {
+  return registry.isAuthorizedFor({
+    type: "concordances",
+    action,
+    user,
+    crossUser: true,
+  })
+}
+
 export function canCreateMapping({ registry, mapping, user }) {
   if (!mapping || !registry) {
     return false
@@ -90,7 +99,7 @@ export function canUpdateMapping({ registry, mapping, user, original }) {
   const concordance = concordances.value.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
   const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
-  if (concordance && !crossUser && !isContributor) {
+  if (concordance && !crossUser && !isContributor && !hasCrossUserForConcordances({ registry, user, action: "update" })) {
     return false
   } else if (isContributor) {
     crossUser = false
@@ -115,7 +124,7 @@ export function canDeleteMapping({ registry, mapping, user, original }) {
   const concordance = concordances.value.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
   const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
-  if (concordance && !crossUser && !isContributor) {
+  if (concordance && !crossUser && !isContributor && !hasCrossUserForConcordances({ registry, user, action: "update" })) {
     return false
   }
   return registry.isAuthorizedFor({
@@ -145,12 +154,12 @@ export function canAddMappingToConcordance({ registry, concordance, mapping, use
   } else {
     // Mapping is part of concordance; check if user is creator/contributor of that concordance
     const concordance = concordances.value.find(c => jskos.compare(c, mapping.partOf[0]))
-    if (!concordance || !isCreatorOrContributor(concordance, user)) {
+    if (!concordance || !isCreatorOrContributor(concordance, user) && !hasCrossUserForConcordances({ registry, user, action: "update" })) {
       return false
     }
   }
   // Check if user is creator/contributor of target concordance
-  if (!isCreatorOrContributor(concordance, user)) {
+  if (!isCreatorOrContributor(concordance, user) && !hasCrossUserForConcordances({ registry, user, action: "update" })) {
     return false
   }
   // Check if fromScheme/toScheme are equal
@@ -171,7 +180,7 @@ export function canRemoveMappingFromConcordance({ registry, mapping, user }) {
   }
   // Mapping is part of concordance; check if user is creator/contributor of that concordance
   const concordance = mapping.partOf && mapping.partOf[0] && concordances.value.find(c => jskos.compare(c, mapping.partOf[0]))
-  if (!concordance || !isCreatorOrContributor(concordance, user)) {
+  if (!concordance || !isCreatorOrContributor(concordance, user) && !hasCrossUserForConcordances({ registry, user, action: "update" })) {
     return false
   }
   return true
