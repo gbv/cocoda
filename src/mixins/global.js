@@ -147,16 +147,16 @@ export default {
         }
 
         // Load details
-        await loadConcepts([concept])
+        concept = (await loadConcepts([concept]))[0] || concept
 
         // Load narrower and ancestor concepts (in background)
         // Note: We're waiting until after concept details are loaded because sometimes narrower/ancestors are already loaded there.
         loadNarrower(concept).then(narrower => {
           loadConcepts(narrower)
         })
-        loadAncestors(concept).then(() => {
+        loadAncestors(concept).then(ancestors => {
           // Load its ancestors' narrower concepts
-          concept.ancestors.filter(Boolean).forEach(ancestor => loadNarrower(ancestor))
+          ancestors.filter(Boolean).forEach(ancestor => loadNarrower(ancestor))
         })
 
         // Load types for scheme
