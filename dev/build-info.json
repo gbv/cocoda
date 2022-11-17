@@ -1,11 +1,11 @@
 {
   "version": "1.8.0",
   "gitBranch": "dev",
-  "gitCommit": "6629117bd1b4d608426e4f41f352bac69ab5b408",
-  "gitCommitShort": "6629117b",
-  "gitCommitMessage": "6629117b Fix crossUser issue when assigning mapping to concordance",
-  "buildDate": "2022-10-26T08:44:29Z",
-  "date": "2022-10-26T08:39:08.000Z",
+  "gitCommit": "2e69d78465b0743093384a83fa29259d1bd43af6",
+  "gitCommitShort": "2e69d784",
+  "gitCommitMessage": "2e69d784 Fix potential issue in setSelected",
+  "buildDate": "2022-11-17T10:31:57Z",
+  "date": "2022-11-17T10:30:53.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/34?closed=1",
   "jskosApi": "^1.0"
 }
