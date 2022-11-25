@@ -1,11 +1,11 @@
 {
   "version": "1.8.0",
   "gitBranch": "dev",
-  "gitCommit": "2e69d78465b0743093384a83fa29259d1bd43af6",
-  "gitCommitShort": "2e69d784",
-  "gitCommitMessage": "2e69d784 Fix potential issue in setSelected",
-  "buildDate": "2022-11-17T10:31:57Z",
-  "date": "2022-11-17T10:30:53.000Z",
+  "gitCommit": "f14da492b370593199d97774a30fc6fe3aafd6af",
+  "gitCommitShort": "f14da492",
+  "gitCommitMessage": "f14da492 Add link to CSV export in data view for mappings (#696)",
+  "buildDate": "2022-11-25T10:38:33Z",
+  "date": "2022-11-25T10:37:26.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/34?closed=1",
   "jskosApi": "^1.0"
 }
