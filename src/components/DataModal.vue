@@ -262,7 +262,7 @@ export default {
         return []
       }
       let urls = []
-      for (let type of ["json", "ndjson"]) {
+      for (let type of (this.type === "mapping" ? ["csv", "tsv"] : []).concat(["json", "ndjson"])) {
         for (let title of Object.keys(this.urls)) {
           const address = this.urls[title]
           try {
