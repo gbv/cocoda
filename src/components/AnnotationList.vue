@@ -91,6 +91,8 @@ export default {
       this.$delete(this.annotations, index)
       // Show alert
       this.alert(this.$t("alerts.annotationRemoved"), null, "success")
+      // Emit event
+      this.$emit("refresh-annotations", { annotations: this.annotations })
       return success
     },
   },

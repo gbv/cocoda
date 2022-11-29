@@ -29,7 +29,8 @@
               :annotations="annotations"
               :provider="provider"
               class="annotationPopover-history"
-              @loading="loading = $event" />
+              @loading="loading = $event"
+              @refresh-annotations="$emit('refresh-annotations', { uri: imapping.uri, annotations: $event.annotations })" />
           </div>
           <!-- Right side: voting and score -->
           <div class="annotationPopover-voting">
@@ -101,7 +102,7 @@ export default {
   components: { LoadingIndicatorFull, AnnotationList },
   mixins: [auth, hoverHandler],
   props: {
-    id: {
+    eid: {
       type: String,
       default: null,
     },
@@ -118,11 +119,12 @@ export default {
     return {
       show: false,
       loading: false,
+      element: null,
     }
   },
   computed: {
     iid() {
-      return this.id
+      return this.eid
     },
     imapping() {
       return this.mapping
@@ -132,9 +134,6 @@ export default {
     },
     elementId() {
       return this.idPrefix + (this.iid || "")
-    },
-    element() {
-      return document.getElementById(this.elementId)
     },
     annotations() {
       return _.get(this.imapping, "annotations") || []
@@ -242,6 +241,11 @@ export default {
           delta: 5,
           handler: (isInside) => {
             this.show = isInside
+            // Update element if necessary
+            const element = document.getElementById(this.elementId)
+            if (this.mapping && this.element !== element) {
+              this.element = element
+            }
           },
         },
       ]

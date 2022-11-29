@@ -371,7 +371,7 @@
       :mapping="mappingDetailMapping" />
     <!-- Mapping annotations popover -->
     <annotation-popover
-      :id="hoveredId"
+      :eid="hoveredId"
       :mapping="$store.state.hoveredMapping"
       id-prefix="mappingBrowser-hoveredMapping-annotationButton-"
       @refresh-annotations="refreshAnnotations"
