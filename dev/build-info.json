@@ -1,11 +1,11 @@
 {
   "version": "1.8.0",
   "gitBranch": "dev",
-  "gitCommit": "debdf4454f230d71b39ab9bc5b9f7b0870d76907",
-  "gitCommitShort": "debdf445",
-  "gitCommitMessage": "debdf445 Add annotations to Mapping Editor (#698)",
-  "buildDate": "2022-11-29T13:09:38Z",
-  "date": "2022-11-29T13:03:24.000Z",
+  "gitCommit": "f85738a8aeaf912ccb212fc10ffaf394c2bafb85",
+  "gitCommitShort": "f85738a8",
+  "gitCommitMessage": "f85738a8 Fix small issue with AnnotationPopover (#698)",
+  "buildDate": "2022-11-29T13:16:28Z",
+  "date": "2022-11-29T13:15:37.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/34?closed=1",
   "jskosApi": "^1.0"
 }
