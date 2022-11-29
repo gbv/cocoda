@@ -430,6 +430,7 @@ import objects from "@/mixins/cdk.js"
 import computed from "@/mixins/computed.js"
 import hoverHandler from "@/mixins/hover-handler.js"
 import clickHandler from "@/mixins/click-handler.js"
+import { annotationsScore, annotationButtonColor } from "@/utils/annotation-helpers"
 
 /**
  * The mapping suggestion browser component.
@@ -635,33 +636,8 @@ export default {
         original: canEdit ? data.item.mapping : null,
       })
     },
-    annotationsScore(annotations) {
-      let score = 0
-      for (let { bodyValue } of annotations.filter(annotation => annotation.motivation == "assessing")) {
-        score += parseInt(bodyValue) || 0
-      }
-      let sign = score > 0 ? "+" : (score < 0 ? "-" : "±")
-      score = Math.abs(score)
-      return { score, sign }
-    },
-    annotationButtonColor(annotations) {
-      // A score of +3 or -3 means it will have 100% transparency.
-      let maxIntensity = 3
-      let { score, sign } = this.annotationsScore(annotations)
-      let delta = Math.min(score / maxIntensity, 1) * 150
-      let r = 85, g = 85, b = 85
-      if (sign == "-") {
-        r += delta
-        g -= 50
-        b -= 50
-      } else if (sign == "+") {
-        g += delta
-        r -= 50
-        b -= 50
-      }
-      let color = `rgb(${r}, ${g}, ${b})`
-      return color
-    },
+    annotationsScore,
+    annotationButtonColor,
     _hover(event) {
       // Don't refresh if annotation popover is currently shown and mapping is null
       if (this.annotationPopoverShown && !(event && event.mapping)) {

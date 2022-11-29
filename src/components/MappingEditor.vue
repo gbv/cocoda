@@ -20,6 +20,23 @@
     </div>
     <div class="mappingEditorToolbar">
       <div
+        :id="`mappingEditor-annotationButton-${original.uri}`"
+        :style="original.uri && annotations ? `color: ${annotationButtonColor(annotations)};` : ''"
+        :class="{
+          button: original.uri && original.mapping.annotations,
+          'button-disabled': !(original.uri && original.mapping.annotations),
+        }"
+        class="mappingEditorToolbarItem fontWeight-heavy">
+        <span v-if="annotations.find(annotation => annotation.motivation == 'moderating')">
+          <font-awesome-icon
+            class="text-success"
+            icon="check" />
+        </span>
+        <span v-else>
+          {{ annotationsScore(annotations).sign }}{{ annotationsScore(annotations).score }}
+        </span>
+      </div>
+      <div
         v-b-tooltip.hover="{ title: canSwapCurrentMapping ? $t('mappingEditor.swapMapping') : '', delay: defaults.delay.medium }"
         :class="{
           button: canSwapCurrentMapping,
@@ -234,6 +251,11 @@
       :mapping="mapping"
       :registry="currentRegistry"
       @change="setConcordance" />
+    <!-- Mapping annotations popover -->
+    <annotation-popover
+      :eid="`mappingEditor-annotationButton-${original.uri}`"
+      :mapping="original.uri && original.mapping"
+      @refresh-annotations="refreshAnnotations" />
   </div>
 </template>
 
@@ -245,6 +267,7 @@ import ComponentSettings from "./ComponentSettings.vue"
 import MappingDetail from "./MappingDetail.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import ConcordanceSelection from "./ConcordanceSelection.vue"
+import AnnotationPopover from "./AnnotationPopover.vue"
 
 // Import mixins
 import auth from "@/mixins/auth.js"
@@ -253,13 +276,14 @@ import dragandrop from "@/mixins/dragandrop.js"
 import hotkeys from "@/mixins/hotkeys.js"
 import computed from "@/mixins/computed.js"
 import { getItem, loadConcepts } from "@/items"
+import { annotationsScore, annotationButtonColor } from "@/utils/annotation-helpers"
 
 /**
  * The mapping editor component.
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryInfo, ConcordanceSelection },
+  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryInfo, ConcordanceSelection, AnnotationPopover },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
   computed: {
     mapping() {
@@ -267,6 +291,9 @@ export default {
     },
     original() {
       return this.$store.state.mapping.original
+    },
+    annotations() {
+      return this.original.mapping && this.original.mapping.annotations || []
     },
     canSaveCurrentMapping() {
       if (this.mappingStatus.invalid) {
@@ -456,6 +483,15 @@ export default {
     this.setCreator()
   },
   methods: {
+    refreshAnnotations(data) {
+      if (data.uri === this.original.uri && this.original.registry) {
+        console.log("refreshAnnotations")
+        // Send mapping refresh request
+        this.$store.commit("mapping/setRefresh", { registry: this.original.registry.uri })
+      }
+    },
+    annotationsScore,
+    annotationButtonColor,
     shortcutHandler({ action, isLeft }) {
       switch(action) {
         case "saveMapping":
