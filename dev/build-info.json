@@ -1,11 +1,11 @@
 {
   "version": "1.8.0",
   "gitBranch": "dev",
-  "gitCommit": "f14da492b370593199d97774a30fc6fe3aafd6af",
-  "gitCommitShort": "f14da492",
-  "gitCommitMessage": "f14da492 Add link to CSV export in data view for mappings (#696)",
-  "buildDate": "2022-11-25T10:38:33Z",
-  "date": "2022-11-25T10:37:26.000Z",
+  "gitCommit": "debdf4454f230d71b39ab9bc5b9f7b0870d76907",
+  "gitCommitShort": "debdf445",
+  "gitCommitMessage": "debdf445 Add annotations to Mapping Editor (#698)",
+  "buildDate": "2022-11-29T13:09:38Z",
+  "date": "2022-11-29T13:03:24.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/34?closed=1",
   "jskosApi": "^1.0"
 }
