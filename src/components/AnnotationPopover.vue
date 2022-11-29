@@ -243,7 +243,7 @@ export default {
             this.show = isInside
             // Update element if necessary
             const element = document.getElementById(this.elementId)
-            if (this.mapping && this.element !== element) {
+            if (element && this.mapping && this.element !== element) {
               this.element = element
             }
           },
