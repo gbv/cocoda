@@ -2,6 +2,9 @@
   "include": [
     "./src/**/*"
   ],
+  "exclude": [
+    "./dist/**/*"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -9,6 +12,10 @@
         "src/*"
       ]
     },
+    "outDir": "./dist",
     "allowJs": true
+  },
+  "vueCompilerOptions": {
+    "target": 2.7
   }
 }
