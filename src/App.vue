@@ -744,7 +744,6 @@ export default {
           this.showConcordances()
         } else if (query.mappingUri || query.mappingIdentifier) {
           this.forceMappingBrowser = true
-          this.searchMappings()
         }
       }
     },
