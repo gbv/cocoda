@@ -1,11 +1,11 @@
 {
   "version": "1.8.0",
   "gitBranch": "dev",
-  "gitCommit": "91bdc9b9b53363c614b22372ab535f09539ef38b",
-  "gitCommitShort": "91bdc9b9",
-  "gitCommitMessage": "91bdc9b9 Small fixes to tsconfig.json",
-  "buildDate": "2022-11-30T06:54:45Z",
-  "date": "2022-11-30T06:52:54.000Z",
+  "gitCommit": "015228b912e7d765d85c7d3c7421784d55496707",
+  "gitCommitShort": "015228b9",
+  "gitCommitMessage": "015228b9 Fix small issue where Cocoda is not launched on Mapping Navigator",
+  "buildDate": "2022-11-30T07:37:55Z",
+  "date": "2022-11-30T07:36:53.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/34?closed=1",
   "jskosApi": "^1.0"
 }
