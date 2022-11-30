@@ -23,11 +23,11 @@
         :id="`mappingEditor-annotationButton-${original.uri}`"
         :style="original.uri && annotations ? `color: ${annotationButtonColor(annotations)};` : ''"
         :class="{
-          button: original.uri && original.mapping.annotations,
-          'button-disabled': !(original.uri && original.mapping.annotations),
+          button: original.uri && annotations,
+          'button-disabled': !(original.uri && annotations),
         }"
         class="mappingEditorToolbarItem fontWeight-heavy">
-        <span v-if="annotations.find(annotation => annotation.motivation == 'moderating')">
+        <span v-if="(annotations || []).find(annotation => annotation.motivation == 'moderating')">
           <font-awesome-icon
             class="text-success"
             icon="check" />
@@ -293,7 +293,7 @@ export default {
       return this.$store.state.mapping.original
     },
     annotations() {
-      return this.original.mapping && this.original.mapping.annotations || []
+      return this.original.uri && this.original.mapping.annotations
     },
     canSaveCurrentMapping() {
       if (this.mappingStatus.invalid) {
@@ -485,7 +485,6 @@ export default {
   methods: {
     refreshAnnotations(data) {
       if (data.uri === this.original.uri && this.original.registry) {
-        console.log("refreshAnnotations")
         // Send mapping refresh request
         this.$store.commit("mapping/setRefresh", { registry: this.original.registry.uri })
       }
