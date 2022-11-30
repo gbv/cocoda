@@ -1,11 +1,11 @@
 {
-  "version": "1.8.0",
+  "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "015228b912e7d765d85c7d3c7421784d55496707",
-  "gitCommitShort": "015228b9",
-  "gitCommitMessage": "015228b9 Fix small issue where Cocoda is not launched on Mapping Navigator",
-  "buildDate": "2022-11-30T07:37:55Z",
-  "date": "2022-11-30T07:36:53.000Z",
-  "milestoneUrl": "https://github.com/gbv/cocoda/milestone/34?closed=1",
+  "gitCommit": "89aa33b1bbca6cbdaca256a0bc7655bcb21e129c",
+  "gitCommitShort": "89aa33b1",
+  "gitCommitMessage": "89aa33b1 Release version 1.8.1",
+  "buildDate": "2022-11-30T07:51:31Z",
+  "date": "2022-11-30T07:49:07.000Z",
+  "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
