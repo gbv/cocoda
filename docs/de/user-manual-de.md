@@ -31,7 +31,7 @@ Der restliche Bildschirm ist in drei Bereiche mit mehreren **Komponenten** aufge
 Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] geöffnet während in der Mitte allgemeine Hinweise angezeigt werden. Die Größe einzelner Komponenten lässt sich mit den Punkten ![](img/icons/ellipsis-v.svg){height=1em} bzw. ![](img/icons/ellipsis-h.svg){height=1em} ändern, das Minimieren-Icon ![](img/icons/window-minimize.svg){height=1em} blendet eine Komponente aus. Darüber hinaus haben einige Komponenten rechts unten Icons zur:
 
 * ![](img/icons/cog.svg){height=1em} Einstellung des Verhaltens der Komponente
-* ![](img/icons/code.svg){height=1em} Detailansicht der in einer Komponente angezeigten [Daten und Quellen](#datenquellen-import-und-export)
+* ![](img/icons/code.svg){height=1em} Detailansicht der in einer Komponente angezeigten [Daten und Quellen](#export-und-import)
 
 ## Benutzeraccounts
 
