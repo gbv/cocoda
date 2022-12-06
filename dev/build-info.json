@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "89aa33b1bbca6cbdaca256a0bc7655bcb21e129c",
-  "gitCommitShort": "89aa33b1",
-  "gitCommitMessage": "89aa33b1 Release version 1.8.1",
-  "buildDate": "2022-11-30T07:51:31Z",
-  "date": "2022-11-30T07:49:07.000Z",
+  "gitCommit": "6bec7c513eca1705e06279735952d88ea0f4ae96",
+  "gitCommitShort": "6bec7c51",
+  "gitCommitMessage": "6bec7c51 correct link in line 34",
+  "buildDate": "2022-12-06T10:11:19Z",
+  "date": "2022-12-06T10:10:13.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
