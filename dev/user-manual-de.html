@@ -64,13 +64,14 @@
 <li><img src="img/icons/code.svg" style="height:1em" /> Detailansicht der in einer Komponente angezeigten <a href="#export-und-import">Daten und Quellen</a></li>
 </ul>
 <h2 id="benutzeraccounts">Benutzeraccounts</h2>
-<p>Grundätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die <a href="#einstellungen">Einstellungen</a> werden daher auch nur im Browser gespeichert. Zum Login können vorhandene Accounts bei externen Diensten verwendet werden:</p>
+<p>Grundsätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die <a href="#einstellungen">Einstellungen</a> werden daher auch nur im Browser gespeichert. Zum Login können vorhandene Accounts bei externen Diensten verwendet werden:</p>
 <ul>
 <li>ORCID</li>
 <li>Wikimedia (Wikipedia, Wikidata…), GitHub und StackExchange</li>
 <li>LDAP (nur VZG-intern)</li>
+<li>KENOM</li>
 </ul>
-<p>Diese externen Accounts heißen in Cocoda <strong>Identitäten</strong>. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der <a href="#menüleiste">Menüleiste</a> angezeigt und können dort gewechselt werden. Weitere Details sind in den <a href="#einstellungen">Einstellungen</a> unter “Accounts” einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:</p>
+<p>Diese externen Accounts heißen in Cocoda <strong>Identitäten</strong>. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der <a href="#benutzeroberfläche">Menüleiste</a> angezeigt und können dort gewechselt werden. Weitere Details sind in den <a href="#einstellungen">Einstellungen</a> unter “Account” einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:</p>
 <ul>
 <li>Ist die personenbezogene Zuordnung von Beiträgen gewünscht, empfehlen wir ORCID- oder Wikimedia-Identitäten auszuwählen</li>
 <li>Andernfalls wird ein Account-Identifier verwendet dessen Zuordnung zu Identitäten nur den Adminstratoren der Mapping-Datenbank bei der VZG einsehbar ist</li>
@@ -87,23 +88,23 @@
 <li><a href="#listenansicht">Ansicht von Konzeptlisten</a> (falls vorhanden)</li>
 </ul>
 <!--
-Cocoda empfehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
+Cocoda empfiehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
 -->
 <h3 id="vokabularauswahl">Vokabularauswahl</h3>
-<p>Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> kann die Liste nach Quelle, Sprache, Vokabular-Typ und Favoriten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert so ist ein Filter aktiv. Mit dem Stern <img src="img/icons/star.svg" style="height:1em" /> lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt. Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> hinter dem Vokabularnamen lässt sich das Vokabular abwählen. Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel <code>Ctrl+Shift+f</code> (links) und <code>Ctrl+Shift+g</code> (rechts).</p>
+<p>Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> kann die Liste nach Quelle, Sprache, Vokabular-Typ, Favoriten und nur Vokabularen mit Konzepten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert so ist ein Filter aktiv. Mit der Pflanze <img src="img/icons/seedling-solid.svg" style="height:1em" /> lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt. Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> hinter dem Vokabularnamen lässt sich das Vokabular abwählen. Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel <code>Ctrl+Shift+f</code> (links) und <code>Ctrl+Shift+g</code> (rechts).</p>
 <h3 id="vokabulardetails">Vokabulardetails</h3>
 <p>Diese Komponente zeigt Vokabular-Informationen wie Identifier, Erstellungsdatum, Lizenz, Herausgeber, Vokabulartypen und <a href="#datenquellen">Datenquelle</a> an. Wenn die <a href="#baumansicht">Baumansicht</a> minimiert ist, werden hier außerdem die Oberkonzepte angezeigt. Der Link auf <img src="img/icons/external-link-square.svg" style="height:1em" /> vorhandene Mappings öffnet die <a href="#mapping-suche">Mapping-Suche</a>.</p>
 <p><img src="img/cocoda-classdet-de.png" class="border border-dark" style="width:50.0%" /></p>
 <h3 id="suche-nach-konzepten">Suche nach Konzepten</h3>
-<p>Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite autmatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon <img src="img/icons/filter.svg" style="height:1em" />. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel <code>Ctrl+f</code> (links) und <code>Ctrl+g</code> (rechts).</p>
+<p>Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite automatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon <img src="img/icons/filter.svg" style="height:1em" />. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel <code>Ctrl+f</code> (links) und <code>Ctrl+g</code> (rechts).</p>
 <p>Durch Suche nach einer syntaktisch korrekten Notation lässt sich ein Konzept auswählen auch wenn zu dieser Notation kein Konzept gefunden wurde. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.</p>
 <h3 id="konzeptdetails">Konzeptdetails</h3>
 <p>Nach Auswahl eines Konzepts werden statt <a href="#vokabulardetails">Vokabulardetails</a> Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):</p>
 <ul>
 <li>Info: Metadaten wie Identifier und Änderungsdatum</li>
-<li>Bezeichnungen: Vorzungs- und Alternativbenennungen</li>
+<li>Bezeichnungen: Vorzugs- und Alternativbenennungen</li>
 <li>Scope/Editorial: Verwendungshinweise und Beschreibungen</li>
-<li>Suchlinks: konfigurierbare Links in andere Datenbanken (Wikipedia, K0plus…)</li>
+<li>Links: Links in andere Datenbanken (Wikipedia, K0plus…)</li>
 </ul>
 <p>Der Stern <img src="img/icons/star.svg" style="height:1em" /> fügt das Konzept zur Schnellauswahl-Liste hinzu bzw. entfernt es daraus. Das Plus-Zeichen <img src="img/icons/plus-circle.svg" style="height:1em" /> dient dazu das Konzept in den <a href="#mapping-editor">Mapping-Editor</a> zu übernehmen. Der Pfeil <img src="img/icons/arrow-right.svg" style="height:1em" /> wählt das nächste Konzept in der <a href="#baumansicht">Baumansicht</a> oder aus der aktuell ausgewählten <a href="#listenansicht">Liste</a> aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel <code>Alt+n</code> (links) und <code>Alt+m</code> (rechts).</p>
 <p><img src="img/cocoda-concdet-de.png" class="border border-dark center" style="width:55.0%" /></p>
@@ -115,15 +116,15 @@ Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort od
 
 -->
 <h3 id="baumansicht">Baumansicht</h3>
-<p>Neben der Browsing-Möglichkeit über <a href="#vokabulardetails">Vokabulardetails</a> und <a href="#konzeptdetails">Konzeptdetails</a> wird für monohierarchischen Vokabularen eine <img src="img/icons/sitemap-solid.svg" style="height:1em" /> Baumdarstellung angeboten.</p>
+<p>Neben der Browsing-Möglichkeit über <a href="#vokabulardetails">Vokabulardetails</a> und <a href="#konzeptdetails">Konzeptdetails</a> wird bei monohierarchischen Vokabularen eine <img src="img/icons/sitemap-solid.svg" style="height:1em" /> Baumdarstellung angeboten.</p>
 <p><img src="img/cocoda-conctree-de.png" class="border border-dark center" style="width:50.0%" /></p>
 <h3 id="listenansicht">Listenansicht</h3>
 <p>Statt der Baumansicht können über ein Popup <img src="img/icons/angle-up-solid.svg" style="height:1em" /> die Liste von Schnellauswahl-Konzepten <img src="img/icons/star.svg" style="height:1em" /> sowie je nach Konfiguration weitere Konzept-Listen <img src="img/icons/list-solid.svg" style="height:1em" /> ausgewählt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon <img src="img/icons/sync-alt-solid.svg" style="height:1em" />.</p>
 <h2 id="mappings">Mappings</h2>
-<p>Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewertung von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und einer Menge von Konzepten aus einem gemeinsamen Vokabular. Zur Auswahl, Erstellung und Bearbeitung von Mappings werden in der Mitte der Benutzeroberfläche zwei Komponenten angeboten:</p>
+<p>Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewertung von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und einer Menge von Konzepten aus einem anderen Vokabular. Zur Auswahl, Erstellung und Bearbeitung von Mappings werden in der Mitte der Benutzeroberfläche zwei Komponenten angeboten:</p>
 <ul>
 <li><a href="#mapping-editor">Mapping-Editor</a> zum Erstellen und Bearbeiten von Mappings</li>
-<li>Mapping-Browser bestehend aus Bereichen für <a href="#konkordanzen">Konkordanzen</a>, <a href="#mapping-suche">Suche</a> und [Navigator] für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen</li>
+<li>Mapping-Browser bestehend aus Bereichen für <a href="#konkordanzen">Konkordanzen</a>, <a href="#mapping-suche">Suche</a> und <a href="#mapping-navigator">Navigator</a> für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen</li>
 </ul>
 <p>Mappings können außerdem je nach Konfiguration mit <a href="#bewertungen">Bewertungen</a> versehen werden. Mappings und Bewertungen können in verschiedenen <a href="#mapping-datenbanken">Mapping-Datenbanken</a> gespeichert werden.</p>
 <h3 id="mapping-editor">Mapping-Editor</h3>
