@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "2b608b20f8aafa8fe3f87e65db982eb840b29fde",
-  "gitCommitShort": "2b608b20",
-  "gitCommitMessage": "2b608b20 Add files via upload",
-  "buildDate": "2022-12-06T14:01:58Z",
-  "date": "2022-12-06T14:01:11.000Z",
+  "gitCommit": "0a4366b9b7d3f5bdda3384e981828f7580975bc9",
+  "gitCommitShort": "0a4366b9",
+  "gitCommitMessage": "0a4366b9 Delete cocoda-concdet-de.png",
+  "buildDate": "2022-12-06T14:03:01Z",
+  "date": "2022-12-06T14:00:54.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
