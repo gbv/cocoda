@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "1eaf201f1f3adbba24acd8efd1eba6bb6331c0ec",
-  "gitCommitShort": "1eaf201f",
-  "gitCommitMessage": "1eaf201f Delete cocoda-conctree-de.png",
-  "buildDate": "2022-12-06T14:16:31Z",
-  "date": "2022-12-06T14:15:36.000Z",
+  "gitCommit": "dac7759955327512dea5a150c4fb7891876f1116",
+  "gitCommitShort": "dac77599",
+  "gitCommitMessage": "dac77599 Add files via upload",
+  "buildDate": "2022-12-06T14:16:46Z",
+  "date": "2022-12-06T14:15:56.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
