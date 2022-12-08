@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "a1e793193907eb6b99d9fa5258e000de28a67595",
-  "gitCommitShort": "a1e79319",
-  "gitCommitMessage": "a1e79319 Add files via upload",
-  "buildDate": "2022-12-08T15:14:18Z",
-  "date": "2022-12-08T15:13:39.000Z",
+  "gitCommit": "caf9ee61b83d75b8d115e877d40c253b39f0fe6a",
+  "gitCommitShort": "caf9ee61",
+  "gitCommitMessage": "caf9ee61 Some minor changes from #Mapping-Editor to bottom",
+  "buildDate": "2022-12-08T15:53:00Z",
+  "date": "2022-12-08T15:52:08.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }

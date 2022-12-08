@@ -121,26 +121,17 @@ Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort od
 <h3 id="listenansicht">Listenansicht</h3>
 <p>Statt der Baumansicht können über ein Popup <img src="img/icons/angle-up-solid.svg" style="height:1em" /> die Liste von Schnellauswahl-Konzepten <img src="img/icons/star.svg" style="height:1em" /> sowie je nach Konfiguration weitere Konzept-Listen <img src="img/icons/list-solid.svg" style="height:1em" /> ausgewählt werden. Die Aktualisierung zusätzlicher Listen erfolgt erst durch Neu-Laden mit dem Aktualisieren-Icon <img src="img/icons/sync-alt-solid.svg" style="height:1em" />.</p>
 <h2 id="mappings">Mappings</h2>
-<p>Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewertung von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und einer Menge von Konzepten aus einem anderen Vokabular. Zur Auswahl, Erstellung und Bearbeitung von Mappings werden in der Mitte der Benutzeroberfläche zwei Komponenten angeboten:</p>
+<p>Die Hauptaufgabe von Cocoda liegt in der Erstellung, Bearbeitung, Suche und Bewertung von Mappings. Ein Mapping ist eine gerichtete Verbindung zwischen einem Konzept und einem oder mehreren Konzept(en) aus einem anderen Vokabular. Zur Auswahl, Erstellung und Bearbeitung von Mappings werden in der Mitte der Benutzeroberfläche zwei Komponenten angeboten:</p>
 <ul>
 <li><a href="#mapping-editor">Mapping-Editor</a> zum Erstellen und Bearbeiten von Mappings</li>
-<li>Mapping-Browser bestehend aus Bereichen für <a href="#konkordanzen">Konkordanzen</a>, <a href="#mapping-suche">Suche</a> und <a href="#mapping-navigator">Navigator</a> für Suche, Browsing und Bewertung von Mappings und Mapping-Vorschlägen</li>
+<li>Mapping-Browser bestehend aus Bereichen für <a href="#konkordanzen">Konkordanzen</a>, <a href="#mapping-suche">Suche</a> und <a href="#mapping-navigator">Navigator</a> für Suche, Browsing und Bewertung von Mappings und Suche nach Mapping-Vorschlägen</li>
 </ul>
 <p>Mappings können außerdem je nach Konfiguration mit <a href="#bewertungen">Bewertungen</a> versehen werden. Mappings und Bewertungen können in verschiedenen <a href="#mapping-datenbanken">Mapping-Datenbanken</a> gespeichert werden.</p>
 <h3 id="mapping-editor">Mapping-Editor</h3>
-<p>Der Mapping-Editor dient der detaillierten Bearbeitung eines Mappings. Dazu können Konzepte per Drag und Drop in den Mapping-Editor gezogen oder mit dem Plus-Icon <img src="img/icons/plus-circle.svg" style="height:1em" /> von der linken oder rechten Seite übernommen werden. Zum Übernahme des jeweils ausgewählten Konzepts gibt es außerdem Tastaturkürzel (<code>Ctrl+a</code> bzw. <code>Ctrl+d</code>). Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> kann ein Konzept wieder entfernt werden.</p>
-<p>In den Einstellungen des Editors kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich wenn ein Konzept keine Entsprechung im Ziel-Vokabular hat.</p>
+<p>Der Mapping-Editor dient der detaillierten Bearbeitung eines Mappings. Dazu können Konzepte per Drag und Drop in den Mapping-Editor gezogen oder mit dem Plus-Icon <img src="img/icons/plus-circle.svg" style="height:1em" /> von der linken oder rechten Seite übernommen werden. Zur Übernahme des jeweils ausgewählten Konzepts gibt es außerdem Tastaturkürzel (<code>Ctrl+a</code> bzw. <code>Ctrl+d</code>). Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> kann ein Konzept wieder entfernt werden.</p>
+<p>In den Einstellungen des Editors <img src="img/icons/cog.svg" style="height:1em" /> kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich wenn ein Konzept keine Entsprechung im Ziel-Vokabular hat.</p>
 <p><img src="img/cocoda-mappingeditor1-de.png" class="border border-dark" /></p>
-<p>Der Editor zeigt an, ob und in welcher <a href="#mapping-datenbanken">Datenbank</a> ein Mapping gespeichert wurde bzw. gespeichert werden soll. Am unteren Rand des Editors stehen folgende Aktionen bereit:</p>
-<ul>
-<li><img src="img/icons/exchange.svg" style="height:1em" /> Quell- und Zielkonzept des Mappings vertauschen</li>
-<li><img src="img/icons/save.svg" style="height:1em" /> Mapping speichern (Tastaturkürzel <code>Ctrl+s</code>)</li>
-<li><img src="img/icons/trash.svg" style="height:1em" /> Mapping löschen</li>
-<li><img src="img/icons/clone-solid.svg" style="height:1em" /> Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen</li>
-<li><img src="img/icons/ban.svg" style="height:1em" /> Mapping leeren um ein neues Mapping zu erstellen (<code>Ctrl+Shift+c</code>)</li>
-</ul>
-<p>Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen geändert werden.</p>
-<p>Links unten im Editor steht wer das Mapping erstellt hat bzw. bei neuen Mappings mit welchem Benutzernamen das Mapping gespeichert wird. In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende <strong>Mapping-Typen</strong> stehen zur Auswahl:</p>
+<p>In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende <strong>Mapping-Typen</strong> stehen zur Auswahl:</p>
 <ul>
 <li><strong>=</strong> exakte Übereinstimmung: gleiche Bedeutung</li>
 <li><strong>≈</strong> hohe Übereinstimmung: in etwa gleiche Bedeutung</li>
@@ -149,9 +140,19 @@ Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort od
 <li><strong>~</strong> verwandte, assoziative Verknüpfung</li>
 <li><strong>→</strong> allgemeine Mapping-Relation mit unbekanntem Bedeutungszusammenhang</li>
 </ul>
+<p>Rechts unten kann je nach Berechtigung eine Konkordanz ausgewählt werden, in die das Mapping gespeichert werden soll. Links unten wird angezeigt, ob und in welcher <a href="#mapping-datenbanken">Datenbank</a> ein Mapping gespeichert wurde bzw. gespeichert werden soll. Am unteren Rand des Editors stehen folgende Aktionen bereit:</p>
+<ul>
+<li><strong>±0</strong> Mapping bewerten</li>
+<li><img src="img/icons/exchange.svg" style="height:1em" /> Quell- und Zielkonzept des Mappings vertauschen</li>
+<li><img src="img/icons/save.svg" style="height:1em" /> Mapping speichern (Tastaturkürzel <code>Ctrl+s</code>)</li>
+<li><img src="img/icons/trash.svg" style="height:1em" /> Mapping löschen</li>
+<li><img src="img/icons/clone-solid.svg" style="height:1em" /> Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen</li>
+<li><img src="img/icons/ban.svg" style="height:1em" /> Mapping leeren um ein neues Mapping zu erstellen (<code>Ctrl+Shift+c</code>)</li>
+</ul>
+<p>Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen des Editors <img src="img/icons/cog.svg" style="height:1em" /> geändert werden.</p>
 <p>Falls für die ausgewählte Kombinationen von Quell- und Zielvokabular Hinweise zum Mappingvorgang konfiguriert sind, werden diese über ein Hilfe-Info <img src="img/icons/question-circle.svg" style="height:1em" /> aufrufbar.</p>
 <h3 id="konkordanzen">Konkordanzen</h3>
-<p>Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon <img src="img/icons/external-link-square.svg" style="height:1em" /> öffnet die <a href="#mapping-suche">Mapping-Suche</a> mit Filter auf der jeweiligen Konkordanz.</p>
+<p>Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon <img src="img/icons/external-link-square.svg" style="height:1em" /> öffnet die <a href="#mapping-suche">Mapping-Suche</a> mit Filter auf der jeweiligen Konkordanz. Je nach Berechtigung lassen sich neue Konkordanzen mit <img src="square-plus-solid.svg" style="height:1em" /> anlegen und mit <img src="pen-to-square-solid.svg" style="height:1em" /> bearbeiten. Über das Info-Icon <img src="img/icons/info-circle.svg" style="height:1em" /> erhält man alle Informationen zur Konkordanz.</p>
 <p><img src="img/cocoda-mapping-browser-con-de.png" class="border border-dark" style="width:100.0%" /></p>
 <!--
 Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
@@ -166,7 +167,7 @@ Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Map
 Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 -->
 <h3 id="mapping-suche">Mapping-Suche</h3>
-<p>Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene <a href="#datenquellen">Datenquellen</a>. In der Erste Zeile des Suchformulars können folgende Filter angegeben werden:</p>
+<p>Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene <a href="#datenquellen">Datenquellen</a>. In der ersten Zeile des Suchformulars können folgende Filter angegeben werden:</p>
 <ul>
 <li>Quell-Vokabular</li>
 <li>Quellnotation oder -URI</li>
@@ -174,18 +175,20 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <li>Zielnotation oder -URI</li>
 </ul>
 <p>Vokabulare und Konzepte lassen sich auch per Drag &amp; Drop in die Suchfelder eintragen.</p>
-<p>Mit dem Schloss-Icon <img src="img/icons/lock-solid.svg" style="height:1em" /> bzw. <img src="img/icons/lock-open-solid.svg" style="height:1em" /> kann festgelegt werden dass immer automatisch das per <a href="#vokabularauswahl">Vokabularauswahl</a> gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> werden weitere Suchmöglichkeiten angeboten:</p>
+<p>Mit dem Schloss-Icon <img src="img/icons/lock-solid.svg" style="height:1em" /> bzw. <img src="img/icons/lock-open-solid.svg" style="height:1em" /> kann festgelegt werden, dass immer automatisch das per <a href="#vokabularauswahl">Vokabularauswahl</a> gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> werden weitere Suchmöglichkeiten angeboten:</p>
 <ul>
 <li>Autor/Autorin</li>
 <li>Mapping-Typ</li>
-<li>Konkordanz</li>
 <li>Bidirektionale Suche (Quell- und Ziel- auch vertauscht suchen)</li>
+<li>Kardinalität</li>
+<li>Bewertung</li>
+<li>Konkordanz</li>
 <li><a href="#mapping-datenbanken">Mapping-Datenbanken</a> in denen gesucht werden soll</li>
 </ul>
 <p>Sollte die Suche keine oder zu wenige Ergebnisse liefern kann es sein dass zu viele Filter gesetzt sind. Der Leeren-Button <img src="img/icons/ban.svg" style="height:1em" /> setzt alle Filter zurück. Das Share-Icon <img src="img/icons/share-alt-square-solid.svg" style="height:1em" /> beinhaltet die URL auf die aktuelle Suche um diese als Bookmark zu speichern oder weiterzugeben.</p>
 <p>Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt und entspricht der Ansicht im Mapping-Navigator. Die einzelnen Quellen können durch Klick auf ihren Namen ein- und ausgeblendet werden.</p>
 <h3 id="mapping-navigator">Mapping-Navigator</h3>
-<p>Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen lassen sich durch Klick auf ihre Kürzel ein- und ausblenden. Datenquellen in die geschrieben werden kann sind mit einem Stift <img src="img/icons/pencil-alt-solid.svg" style="height:1em" /> markiert. Zu jedem Mapping bzw. Mapping-Vorschlag werden angezeigt:</p>
+<p>Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen lassen sich durch Klick auf ihre Kürzel ein- und ausblenden. Datenquellen, in die geschrieben werden kann, sind mit einem Stift <img src="img/icons/pencil-alt-solid.svg" style="height:1em" /> markiert. Zu jedem Mapping bzw. Mapping-Vorschlag werden angezeigt:</p>
 <ul>
 <li>Quellvokabular und -Konzept</li>
 <li>Mapping-Typ</li>
@@ -195,32 +198,31 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <p>Sowie je nach Einstellungen:</p>
 <ul>
 <li><a href="#bewertungen">Bewertungen</a></li>
-<li><img src="img/icons/info-circle.svg" style="height:1em" /> Detailinformationen zum Mapping</li>
 <li><img src="img/icons/edit.svg" style="height:1em" /> Mapping bearbeiten</li>
-<li><img src="img/icons/clone-solid.svg" style="height:1em" /> Mapping oder Vorschlag in den Mapping-Editor kopieren</li>
-<li><img src="img/icons/save.svg" style="height:1em" /> Mapping-Vorschlag speichern</li>
 <li><img src="img/icons/trash.svg" style="height:1em" /> Mapping löschen</li>
+<li><img src="img/icons/info-circle.svg" style="height:1em" /> Detailinformationen zum Mapping oder Vorschlag</li>
+<li><img src="img/icons/clone-solid.svg" style="height:1em" /> Vorschlag in den Mapping-Editor kopieren</li>
 </ul>
 <h3 id="bewertungen">Bewertungen</h3>
-<p>Grundsätzlich sind zwei Arten von Bewertungen möglich, wobei es von der Konfiguration abhängt wer welche Bewertungen abgeben kann:</p>
+<p>Grundsätzlich sind zwei Arten von Bewertungen möglich, wobei es von der Konfiguration abhängt, wer welche Bewertungen abgeben kann:</p>
 <ul>
 <li>Bewertung durch Zustimmung <img src="img/icons/thumbs-up.svg" style="height:1em" /> bzw. Widerspruch <img src="img/icons/thumbs-down.svg" style="height:1em" /></li>
 <li>Bewertung durch Bestätigung <img src="img/icons/check.svg" style="height:1em" /> (in der Regel nur für ausgewählte Accounts)</li>
 </ul>
-<p>Zustimmungen und Ablehnungen werden als <code>+1</code> bzw. <code>-1</code> gewertet und in ihrer Summe angezeigt. Bei Bestätigungen reicht <em>eine</em> Bewertung damit statt der Summe ein Haken <img src="img/icons/check.svg" style="height:1em" /> angezeigt wird. Alle Bewertungen erfolgen Benutzerbezogen, es ist also einsehbar wer wann welche Bewertung abgegeben hat. Eigene Bewertungen können wieder entfernt werden.</p>
+<p>Zustimmungen und Ablehnungen werden als <code>+1</code> bzw. <code>-1</code> gewertet und in ihrer Summe angezeigt. Bei Bestätigungen reicht <em>eine</em> Bewertung damit statt der Summe ein Haken <img src="img/icons/check.svg" style="height:1em" /> angezeigt wird. Alle Bewertungen erfolgen benutzerbezogen. Es ist also einsehbar, wer wann welche Bewertung abgegeben hat. Eigene Bewertungen können wieder entfernt werden.</p>
 <h2 id="einstellungen">Einstellungen</h2>
-<p>Ein Klick auf den Benutzernamen in der <a href="#benutzeroberfläche">Menüleiste</a> öffnet die Einstellungen. Darüber hinaus können einige Komponenten mit dem Icon <img src="img/icons/cog.svg" style="height:1em" /> konfiguriert werden. Da Cocoda keine <a href="#benutzeraccounts">Benutzeraccounts</a> verwaltet werden die Einstellungen nur lokal im Browser gespeichert. Die Einstellungen sind in Bereiche unterteilt:</p>
+<p>Ein Klick auf den Benutzernamen in der <a href="#benutzeroberfläche">Menüleiste</a> öffnet die Einstellungen. Darüber hinaus können einige Komponenten mit dem Icon <img src="img/icons/cog.svg" style="height:1em" /> konfiguriert werden. Da Cocoda keine <a href="#benutzeraccounts">Benutzeraccounts</a> verwaltet, werden die Einstellungen nur lokal im Browser gespeichert. Die Einstellungen sind in verschiedene Bereiche unterteilt:</p>
 <ul>
 <li>Account: Identität zur Speicherung von <a href="#mappings">Mappings</a> und <a href="#bewertungen">Bewertungen</a></li>
 <li>Datenquellen: Übersicht aller verfügbaren <a href="#datenquellen">Datenquellen</a></li>
 <li>Oberfläche: Einstellungen zur <a href="#benutzeroberfläche">Benutzeroberfläche</a> wie die Sprache</li>
 <li>Tastaturkürzel: vorhandene Tastaturkürzel</li>
-<li>Lokale Mappings: Import und Export von im Browser gespeicherten Mappings</li>
+<li>Meine Daten: Import und Export von Mappings</li>
 </ul>
 <h2 id="datenquellen">Datenquellen</h2>
-<p>Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Die Daten und API-Aufrufe sind jeweils über das Quelltext-Icon <img src="img/icons/code.svg" style="height:1em" /> erreichbar. Die je nach Instanz konfigurieren Datenquellen sind in den Einstellungen einsehbar.</p>
+<p>Cocoda greift als reine Webanwendung auf alle Informationen über Web-Schnittstellen (APIs) zu. Die Daten und API-Aufrufe sind jeweils über das Quelltext-Icon <img src="img/icons/code.svg" style="height:1em" /> erreichbar. Die je nach Instanz konfigurierten Datenquellen sind in den Einstellungen einsehbar.</p>
 <h3 id="mapping-datenbanken">Mapping-Datenbanken</h3>
-<p>Mapping-Datenbanken dienen der Speicherung von <a href="#mappings">Mappings</a> und <a href="#bewertungen">Bewertungen</a>. Die jeweils ausgewählte Datenbank ist gelb hinterlegt und kann über die <a href="#benutzeroberfläche">Menüleiste</a> oder durch Klick auf den Namen der Datenbank im Mapping-Browser ausgewählt werden. Die meisten Instanzen enthalten diese Datenbanken:</p>
+<p>Mapping-Datenbanken dienen der Speicherung von <a href="#mappings">Mappings</a> und <a href="#bewertungen">Bewertungen</a>. Die jeweils ausgewählte Datenbank ist farblich hinterlegt und kann über die Einstellungen oder durch Klick auf den Namen der Datenbank im Mapping-Browser ausgewählt werden. Die meisten Instanzen enthalten diese Datenbanken:</p>
 <ul>
 <li><strong>L</strong> Lokal: Mappings werden im Browser gespeichert</li>
 <li><strong>C</strong> Konkordanz-Register: öffentliche Datenbank aller im Projekt coli-conc gesammelten Mappings und Bewertungen</li>
@@ -229,7 +231,7 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <h3 id="weitere-datenquellen">Weitere Datenquellen</h3>
 <p>Vokabulare und Mapping-Vorschläge können per JSKOS-API, per Skosmos-API und per OpenRefine Reconciliation API in eine Cocoda-Instanz eingebunden werden. Das Hinzufügen weiterer Datenquellen über die Benutzeroberfläche ist bislang nicht möglich.</p>
 <h3 id="export-und-import">Export und Import</h3>
-<p>Zum Export verwenden sie das das Quelltext-Icon <img src="img/icons/code.svg" style="height:1em" /> um Daten in <a href="https://gbv.github.io/jskos/jskos.html">JSKOS</a> und CSV-Format herunterzuladen bzw. API-Aufrufe zum Abruf der Daten zu ermitteln.</p>
+<p>Zum Export von Daten aus Cocoda verwenden Sie das Quelltext-Icon <img src="img/icons/code.svg" style="height:1em" />. Die <a href="https://gbv.github.io/jskos/jskos.html">JSKOS</a>-Daten können in verschiedenen Formaten wie CSV und JSON heruntergeladen werden. Teilweise stehen auch API-Aufrufe zum Abruf der Daten bereit.</p>
 <p>Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Fragen dazu mit uns in Verbindung (<a href="http://coli-conc.gbv.de/contact/" class="uri">http://coli-conc.gbv.de/contact/</a>).</p>
 <p>Der Massenimport von Mappings ist über die Weboberfläche bislang nur in der Datenbank <strong>L</strong> Lokal möglich.</p>
 <h2 id="weitere-informationen">Weitere Informationen</h2>
