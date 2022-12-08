@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "d927982c32ad4a82a46d106f8f7d44294b5de881",
-  "gitCommitShort": "d927982c",
-  "gitCommitMessage": "d927982c Delete cocoda-mapping-browser-con-de.png",
-  "buildDate": "2022-12-08T15:07:33Z",
-  "date": "2022-12-08T15:06:46.000Z",
+  "gitCommit": "65430f9992f8ce35d41b51fd8f6913cf0efac34f",
+  "gitCommitShort": "65430f99",
+  "gitCommitMessage": "65430f99 Add files via upload",
+  "buildDate": "2022-12-08T15:07:44Z",
+  "date": "2022-12-08T15:06:59.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
