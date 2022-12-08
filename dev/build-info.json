@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "3579de36ce3236769c47710b4fcceb4db478ad45",
-  "gitCommitShort": "3579de36",
-  "gitCommitMessage": "3579de36 Add files via upload",
-  "buildDate": "2022-12-08T16:21:14Z",
-  "date": "2022-12-08T16:20:19.000Z",
+  "gitCommit": "f85eed81062e23da1502c40d4fc2170e43e3c871",
+  "gitCommitShort": "f85eed81",
+  "gitCommitMessage": "f85eed81 linked gear-icons to new file",
+  "buildDate": "2022-12-08T16:39:40Z",
+  "date": "2022-12-08T16:39:02.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
