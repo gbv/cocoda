@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "f85eed81062e23da1502c40d4fc2170e43e3c871",
-  "gitCommitShort": "f85eed81",
-  "gitCommitMessage": "f85eed81 linked gear-icons to new file",
-  "buildDate": "2022-12-08T16:39:40Z",
-  "date": "2022-12-08T16:39:02.000Z",
+  "gitCommit": "2762a44533b1149f1f6f8dea4e38ce3afe53dddf",
+  "gitCommitShort": "2762a445",
+  "gitCommitMessage": "2762a445 changing attributes of one icon",
+  "buildDate": "2022-12-08T16:42:33Z",
+  "date": "2022-12-08T16:41:25.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
