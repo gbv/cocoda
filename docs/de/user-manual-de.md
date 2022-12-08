@@ -21,7 +21,7 @@ Die **Menüleiste** enthält (je nach Konfiguration):
 * ![](img/icons/trash.svg){height=1em} Mülleimer zur Ansicht und zum Wiederherstellen der zuletzt gelöschten Mappings
 * ![](img/icons/star.svg){height=1em} Schnellauswahl von gemerkten Konzepten
 * ![](img/icons/user-solid.svg){height=1em} [Benutzeraccount](#benutzeraccounts) und -name. Nach erfolgreichem Login wird der Benutzername fett markiert und per Schnellauswahl lässt sich die Identität zur Speicherung von [Mappings] und [Bewertungen] wechseln
-* ![](img/icons/cog.svg){height=1em} [Einstellungen] mit Schnellauswahl der [Datenbank] in die Mappings und Bewertungen gespeichert werden
+* ![](img/icons/gear-solid.svg){height=1em} [Einstellungen] mit Schnellauswahl der [Datenbank] in die Mappings und Bewertungen gespeichert werden
 
 Der restliche Bildschirm ist in drei Bereiche mit mehreren **Komponenten** aufgeteilt:
 
@@ -30,7 +30,7 @@ Der restliche Bildschirm ist in drei Bereiche mit mehreren **Komponenten** aufge
 
 Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] geöffnet während in der Mitte allgemeine Hinweise angezeigt werden. Die Größe einzelner Komponenten lässt sich mit den Punkten ![](img/icons/ellipsis-v.svg){height=1em} bzw. ![](img/icons/ellipsis-h.svg){height=1em} ändern, das Minimieren-Icon ![](img/icons/window-minimize.svg){height=1em} blendet eine Komponente aus. Darüber hinaus haben einige Komponenten rechts unten Icons zur:
 
-* ![](img/icons/cog.svg){height=1em} Einstellung des Verhaltens der Komponente
+* ![](img/icons/gear-solid.svg){height=1em} Einstellung des Verhaltens der Komponente
 * ![](img/icons/code.svg){height=1em} Detailansicht der in einer Komponente angezeigten [Daten und Quellen](#export-und-import)
 
 ## Benutzeraccounts
@@ -127,7 +127,7 @@ Mappings können außerdem je nach Konfiguration mit [Bewertungen] versehen werd
 
 Der Mapping-Editor dient der detaillierten Bearbeitung eines Mappings. Dazu können Konzepte per Drag und Drop in den Mapping-Editor gezogen oder mit dem Plus-Icon ![](img/icons/plus-circle.svg){height=1em} von der linken oder rechten Seite übernommen werden. Zur Übernahme des jeweils ausgewählten Konzepts gibt es außerdem Tastaturkürzel (`Ctrl+a` bzw. `Ctrl+d`). Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} kann ein Konzept wieder entfernt werden.
 
-In den Einstellungen des Editors ![](img/icons/cog.svg){height=1em} kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich wenn ein Konzept keine Entsprechung im Ziel-Vokabular hat.
+In den Einstellungen des Editors ![](img/icons/gear-solid.svg){height=1em, color=rgb(170,170,170)} kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich wenn ein Konzept keine Entsprechung im Ziel-Vokabular hat.
 
 ![](img/cocoda-mappingeditor1-de.png){.border .border-dark}
 
@@ -149,7 +149,7 @@ Rechts unten kann je nach Berechtigung eine Konkordanz ausgewählt werden, in di
 * ![](img/icons/clone-solid.svg){height=1em} Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen
 * ![](img/icons/ban.svg){height=1em} Mapping leeren um ein neues Mapping zu erstellen (`Ctrl+Shift+c`)
 
-Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen des Editors ![](img/icons/cog.svg){height=1em} geändert werden.
+Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen des Editors ![](img/icons/gear-solid.svg){height=1em} geändert werden.
 
 Falls für die ausgewählte Kombinationen von Quell- und Zielvokabular Hinweise zum Mappingvorgang konfiguriert sind, werden diese über ein Hilfe-Info ![](img/icons/question-circle.svg){height=1em}
 aufrufbar.
@@ -227,7 +227,7 @@ Zustimmungen und Ablehnungen werden als `+1` bzw. `-1` gewertet und in ihrer Sum
 
 ## Einstellungen
 
-Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. Darüber hinaus können einige Komponenten mit dem Icon ![](img/icons/cog.svg){height=1em} konfiguriert werden. Da Cocoda keine [Benutzeraccounts] verwaltet, werden die Einstellungen nur lokal im Browser gespeichert. Die Einstellungen sind in verschiedene Bereiche unterteilt:
+Ein Klick auf den Benutzernamen in der [Menüleiste] öffnet die Einstellungen. Darüber hinaus können einige Komponenten mit dem Icon ![](img/icons/gear-solid.svg){height=1em} konfiguriert werden. Da Cocoda keine [Benutzeraccounts] verwaltet, werden die Einstellungen nur lokal im Browser gespeichert. Die Einstellungen sind in verschiedene Bereiche unterteilt:
 
 * Account: Identität zur Speicherung von [Mappings] und [Bewertungen]
 * Datenquellen: Übersicht aller verfügbaren [Datenquellen]
