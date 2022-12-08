@@ -156,7 +156,7 @@ aufrufbar.
 
 ### Konkordanzen
 
-Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.^[Siehe auch <http://coli-conc.gbv.de/concordances/> für eine Übersicht] Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon ![](img/icons/external-link-square.svg){height=1em} öffnet die [Mapping-Suche] mit Filter auf der jeweiligen Konkordanz. Je nach Berechtigung lassen sich neue Konkordanzen mit ![](img/icons/square-plus-solid.svg){height=1em} anlegen und mit ![](image/icons/pen-to-square-solid.svg){height=1em} bearbeiten. Über das Info-Icon ![](img/icons/info-circle.svg){height=1em} erhält man alle Informationen zur Konkordanz.
+Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.^[Siehe auch <http://coli-conc.gbv.de/concordances/> für eine Übersicht] Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon ![](img/icons/external-link-square.svg){height=1em} öffnet die [Mapping-Suche] mit Filter auf der jeweiligen Konkordanz. Je nach Berechtigung lassen sich neue Konkordanzen mit ![](img/icons/square-plus-solid.svg){height=1em} anlegen und mit ![](img/icons/pen-to-square-solid.svg){height=1em} bearbeiten. Über das Info-Icon ![](img/icons/info-circle.svg){height=1em} erhält man alle Informationen zur Konkordanz.
 
 ![](img/cocoda-mapping-browser-con-de.png){width=100% .border .border-dark}
 
