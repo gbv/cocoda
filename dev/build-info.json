@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "a869eb28368ca969df094b4157753e39544fdcfd",
-  "gitCommitShort": "a869eb28",
-  "gitCommitMessage": "a869eb28 resetting changes",
-  "buildDate": "2022-12-08T16:53:33Z",
-  "date": "2022-12-08T16:52:47.000Z",
+  "gitCommit": "e004a932248f627f59b0fc02073074bc370ea95f",
+  "gitCommitShort": "e004a932",
+  "gitCommitMessage": "e004a932 Delete cog.svg",
+  "buildDate": "2022-12-08T16:54:10Z",
+  "date": "2022-12-08T16:53:10.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
