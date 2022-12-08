@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "57719f928cf2170e9ad165fccf69135ea2d18fee",
-  "gitCommitShort": "57719f92",
-  "gitCommitMessage": "57719f92 Delete cocoda-mappingeditor1-de.png",
-  "buildDate": "2022-12-08T14:12:40Z",
-  "date": "2022-12-08T14:11:45.000Z",
+  "gitCommit": "63c61bc1b71d068bbf1c146b7a1cf396c118f91f",
+  "gitCommitShort": "63c61bc1",
+  "gitCommitMessage": "63c61bc1 Add files via upload",
+  "buildDate": "2022-12-08T14:12:53Z",
+  "date": "2022-12-08T14:12:01.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
