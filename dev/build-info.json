@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "2762a44533b1149f1f6f8dea4e38ce3afe53dddf",
-  "gitCommitShort": "2762a445",
-  "gitCommitMessage": "2762a445 changing attributes of one icon",
-  "buildDate": "2022-12-08T16:42:33Z",
-  "date": "2022-12-08T16:41:25.000Z",
+  "gitCommit": "95d1e08a1c53180b627f162d9e3ebc99f9bc220e",
+  "gitCommitShort": "95d1e08a",
+  "gitCommitMessage": "95d1e08a changing color of a icon",
+  "buildDate": "2022-12-08T16:45:16Z",
+  "date": "2022-12-08T16:44:26.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
