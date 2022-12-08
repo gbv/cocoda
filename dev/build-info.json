@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "caf9ee61b83d75b8d115e877d40c253b39f0fe6a",
-  "gitCommitShort": "caf9ee61",
-  "gitCommitMessage": "caf9ee61 Some minor changes from #Mapping-Editor to bottom",
-  "buildDate": "2022-12-08T15:53:00Z",
-  "date": "2022-12-08T15:52:08.000Z",
+  "gitCommit": "1af0897d79d19495241f9ad0fc18d2692a28c147",
+  "gitCommitShort": "1af0897d",
+  "gitCommitMessage": "1af0897d correct two links",
+  "buildDate": "2022-12-08T16:10:42Z",
+  "date": "2022-12-08T16:09:50.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
