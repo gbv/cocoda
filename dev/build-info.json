@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "a2234384d65543b7f74b665fbf6572d49172d029",
-  "gitCommitShort": "a2234384",
-  "gitCommitMessage": "a2234384 Mapping Search: Add option to change sort order for results",
-  "buildDate": "2022-12-16T08:43:10Z",
-  "date": "2022-12-16T08:41:57.000Z",
+  "gitCommit": "0dcda38e16f79707069f4271c3c16d42f62729e0",
+  "gitCommitShort": "0dcda38e",
+  "gitCommitMessage": "0dcda38e MappingBrowser: Add localized strings for search order filter",
+  "buildDate": "2022-12-16T08:51:27Z",
+  "date": "2022-12-16T08:50:28.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
