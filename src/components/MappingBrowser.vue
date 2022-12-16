@@ -752,11 +752,11 @@ export default {
     orderOptions() {
       return [
         {
-          text: "descending by date and source concept",
+          text: this.$t("mappingBrowser.searchOrderDescending"),
           value: "desc",
         },
         {
-          text: "ascending by date and source concept",
+          text: this.$t("mappingBrowser.searchOrderAscending"),
           value: "asc",
         },
       ]
