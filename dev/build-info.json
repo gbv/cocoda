@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "e004a932248f627f59b0fc02073074bc370ea95f",
-  "gitCommitShort": "e004a932",
-  "gitCommitMessage": "e004a932 Delete cog.svg",
-  "buildDate": "2022-12-08T16:54:10Z",
-  "date": "2022-12-08T16:53:10.000Z",
+  "gitCommit": "a2234384d65543b7f74b665fbf6572d49172d029",
+  "gitCommitShort": "a2234384",
+  "gitCommitMessage": "a2234384 Mapping Search: Add option to change sort order for results",
+  "buildDate": "2022-12-16T08:43:10Z",
+  "date": "2022-12-16T08:41:57.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
