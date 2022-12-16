@@ -343,6 +343,15 @@
                 size="sm"
                 :options="concordanceOptions"
                 @keyup.enter.native="searchClicked" />
+              <div style="text-align: right; flex: none; margin: auto 5px;">
+                Sort:
+              </div>
+              <b-form-select
+                v-model="searchFilterInput.order"
+                style="flex: 1; margin: 3px;"
+                size="sm"
+                :options="orderOptions"
+                @keyup.enter.native="searchClicked" />
               <!-- Registry selection -->
               <registry-notation
                 v-for="registry in searchRegistries"
@@ -739,6 +748,18 @@ export default {
       }
 
       return options
+    },
+    orderOptions() {
+      return [
+        {
+          text: "descending by date and source concept",
+          value: "desc",
+        },
+        {
+          text: "ascending by date and source concept",
+          value: "asc",
+        },
+      ]
     },
     searchFromScheme() {
       return this.getSchemeForFilter(this.searchFilterInput.fromScheme)
@@ -1156,6 +1177,7 @@ export default {
         cardinality: "1-to-n",
         annotated: null,
         partOf: null,
+        order: "desc",
       }
       if (ignoredLock || !this.lockScheme[true]) {
         this.searchFilterInput.fromScheme = ""
@@ -1241,7 +1263,7 @@ export default {
           partOf: this.searchFilter.partOf,
           registry: registry.uri,
           sort: "created",
-          order: "desc",
+          order: this.searchFilter.order,
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
           limit: this.componentSettings.resultLimit,
           cancelToken: cancelToken.token,
