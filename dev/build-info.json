@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "e654704c31ec53640ddc3168f94812391b76b27a",
-  "gitCommitShort": "e654704c",
-  "gitCommitMessage": "e654704c Add experimental BK suggestions via typesense-suggest-backend",
-  "buildDate": "2022-12-21T10:21:39Z",
-  "date": "2022-12-21T10:20:37.000Z",
+  "gitCommit": "1a59ccd084117e59bf42bb20296b8cff98642c08",
+  "gitCommitShort": "1a59ccd0",
+  "gitCommitMessage": "1a59ccd0 Update cocoda-sdk dependency with small bug fix",
+  "buildDate": "2022-12-21T10:55:49Z",
+  "date": "2022-12-21T10:54:54.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
