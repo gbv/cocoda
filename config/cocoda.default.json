@@ -124,6 +124,9 @@
         },
         {
           "uri": "http://nomisma.org/id/"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18785"
         }
       ],
       "notation": [
@@ -132,6 +135,31 @@
       "prefLabel": {
         "en": "coli-conc Suggestions",
         "de": "coli-conc Vorschläge"
+      }
+    },
+    {
+      "provider": "LabelSearchSuggestion",
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations-bk",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/18785"
+        }
+      ],
+      "overrides": [
+        {
+          "uri": "http://bartoc.org/en/node/18785",
+          "identifier": [
+            "http://uri.gbv.de/terminology/bk/"
+          ],
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        }
+      ],
+      "notation": [
+        "BK"
+      ],
+      "prefLabel": {
+        "en": "BK Suggestions (experimental)",
+        "de": "BK Vorschläge (experimentell)"
       }
     },
     {
