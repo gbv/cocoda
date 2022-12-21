@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "0dcda38e16f79707069f4271c3c16d42f62729e0",
-  "gitCommitShort": "0dcda38e",
-  "gitCommitMessage": "0dcda38e MappingBrowser: Add localized strings for search order filter",
-  "buildDate": "2022-12-16T08:51:27Z",
-  "date": "2022-12-16T08:50:28.000Z",
+  "gitCommit": "e654704c31ec53640ddc3168f94812391b76b27a",
+  "gitCommitShort": "e654704c",
+  "gitCommitMessage": "e654704c Add experimental BK suggestions via typesense-suggest-backend",
+  "buildDate": "2022-12-21T10:21:39Z",
+  "date": "2022-12-21T10:20:37.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
