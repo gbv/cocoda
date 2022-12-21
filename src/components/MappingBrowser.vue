@@ -1407,7 +1407,7 @@ export default {
           registry: registry.uri,
           // For recommendations: Limit results.
           // TODO: We should support proper pagination here as well!
-          limit: this.$jskos.mappingRegistryIsStored(registry) ? 100 : this.componentSettings.resultLimit,
+          limit: this.$jskos.mappingRegistryIsStored(registry) ? 100 : 30,
           // Sort by mappingRelevance if not stored
           sort: this.$jskos.mappingRegistryIsStored(registry) ? "modified" : "mappingRelevance",
           cancelToken: cancelToken.token,
