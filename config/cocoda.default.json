@@ -139,7 +139,7 @@
     },
     {
       "provider": "LabelSearchSuggestion",
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations-bk",
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations-experimental",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/18785"
@@ -155,11 +155,11 @@
         }
       ],
       "notation": [
-        "BK"
+        "CRe"
       ],
       "prefLabel": {
-        "en": "BK Suggestions (experimental)",
-        "de": "BK Vorschläge (experimentell)"
+        "en": "coli-conc Suggestions (experimental)",
+        "de": "coli-conc Vorschläge (experimentell)"
       }
     },
     {
