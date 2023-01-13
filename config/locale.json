@@ -99,6 +99,7 @@
     },
     "schemeDetail": {
       "noTopConcepts": "No top concepts",
+      "links": "Links",
       "languages": "Languages",
       "availableMappings": "mappings",
       "registry": "Sources"
@@ -568,6 +569,7 @@
     },
     "schemeDetail": {
       "noTopConcepts": "Keine Oberkonzepte",
+      "links": "Links",
       "languages": "Sprachen",
       "availableMappings": "Mappings",
       "registry": "Quellen"

@@ -331,7 +331,7 @@ export default {
 
     for (let searchLink of (state.config.searchLinks || []).filter(l => l.schemes.length === 0 || jskos.isContainedIn(scheme, l.schemes))) {
       // Construct URL
-      let url = searchLink.url
+      let url = searchLink.url + (searchLink.urlSuffix ?? "")
       _.forOwn(info, (value, key) => {
         // Replace all occurrences of {key} with value
         url = _.replace(url, new RegExp(`{${key}}`, "g"), value)
