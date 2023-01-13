@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "3b1987264e49242cdaeace150fc5c48b49602275",
-  "gitCommitShort": "3b198726",
-  "gitCommitMessage": "3b198726 Add localized interface text for new concordance button",
-  "buildDate": "2023-01-13T08:47:18Z",
-  "date": "2023-01-13T08:43:47.000Z",
+  "gitCommit": "973ecedae0f1965da7adc8eaaf4db9f5c257d192",
+  "gitCommitShort": "973eceda",
+  "gitCommitMessage": "973eceda MappingBrowser: Add explanation tooltip for occurrences count",
+  "buildDate": "2023-01-13T10:08:29Z",
+  "date": "2023-01-13T10:02:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
