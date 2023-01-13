@@ -22,7 +22,7 @@
               <font-awesome-icon
                 v-b-tooltip.hover="{ title: $t('concordanceEditor.addConcordanceButton'), delay: defaults.delay.medium }"
                 icon="plus-square" />
-              New
+              {{ $t("mappingBrowser.newConcordance") }}
             </div>
             <registry-notation
               v-for="registry in concordanceRegistries"
