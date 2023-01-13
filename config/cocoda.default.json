@@ -348,7 +348,7 @@
       "prefLabel": {
         "en": "K10plus"
       },
-      "url": "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8533&TRM=gnd+{notation}",
+      "url": "https://opac.k10plus.de/DB=2.299/CLK?IKT=8549&TRM={notation}",
       "schemeUris": [
         "http://bartoc.org/en/node/430"
       ]
