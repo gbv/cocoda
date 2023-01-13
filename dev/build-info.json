@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "1a59ccd084117e59bf42bb20296b8cff98642c08",
-  "gitCommitShort": "1a59ccd0",
-  "gitCommitMessage": "1a59ccd0 Update cocoda-sdk dependency with small bug fix",
-  "buildDate": "2022-12-21T10:55:49Z",
-  "date": "2022-12-21T10:54:54.000Z",
+  "gitCommit": "3b1987264e49242cdaeace150fc5c48b49602275",
+  "gitCommitShort": "3b198726",
+  "gitCommitMessage": "3b198726 Add localized interface text for new concordance button",
+  "buildDate": "2023-01-13T08:47:18Z",
+  "date": "2023-01-13T08:43:47.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
