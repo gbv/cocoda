@@ -420,6 +420,14 @@ export default {
           warning: true,
         }
       }
+      // Show a warning if mapping has the default mapping type
+      if (this.mapping?.type?.[0] === "http://www.w3.org/2004/02/skos/core#mappingRelation") {
+        return {
+          message: this.$t("mappingEditor.warningNoMappingType"),
+          invalid: false,
+          warning: true,
+        }
+      }
       // Otherwise it's valid
       return {
         message: null,
