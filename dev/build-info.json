@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "973ecedae0f1965da7adc8eaaf4db9f5c257d192",
-  "gitCommitShort": "973eceda",
-  "gitCommitMessage": "973eceda MappingBrowser: Add explanation tooltip for occurrences count",
-  "buildDate": "2023-01-13T10:08:29Z",
-  "date": "2023-01-13T10:02:43.000Z",
+  "gitCommit": "d560fb28413dd940fcbbb3a60b8c6d61a7c3f5c0",
+  "gitCommitShort": "d560fb28",
+  "gitCommitMessage": "d560fb28 MappingEditor: Show recommendation to set mapping type if not specified",
+  "buildDate": "2023-01-16T09:53:29Z",
+  "date": "2023-01-16T09:51:38.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
