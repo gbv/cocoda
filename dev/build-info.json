@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "d560fb28413dd940fcbbb3a60b8c6d61a7c3f5c0",
-  "gitCommitShort": "d560fb28",
-  "gitCommitMessage": "d560fb28 MappingEditor: Show recommendation to set mapping type if not specified",
-  "buildDate": "2023-01-16T09:53:29Z",
-  "date": "2023-01-16T09:51:38.000Z",
+  "gitCommit": "0d4675745239fd5098b460b19ef9d1f5232fe275",
+  "gitCommitShort": "0d467574",
+  "gitCommitMessage": "0d467574 Remove mistakenly committed lines from main.js",
+  "buildDate": "2023-01-18T08:10:26Z",
+  "date": "2023-01-18T08:09:28.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
