@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "c5d74474ac1d05fb843853e856b58e15300c6921",
-  "gitCommitShort": "c5d74474",
-  "gitCommitMessage": "c5d74474 Update dependencies, including Vite 4",
-  "buildDate": "2023-01-18T11:07:41Z",
-  "date": "2023-01-18T11:03:12.000Z",
+  "gitCommit": "d236bb8cf11d9cdf2635c249fe953dab68518808",
+  "gitCommitShort": "d236bb8c",
+  "gitCommitMessage": "d236bb8c Update GitHub workflows",
+  "buildDate": "2023-01-18T11:27:00Z",
+  "date": "2023-01-18T11:25:53.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
