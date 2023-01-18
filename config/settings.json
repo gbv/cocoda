@@ -35,7 +35,7 @@
         "de": "Konzept beim Hinzufügen zu Mapping auswählen"
       },
       "type": "Boolean",
-      "default": true
+      "default": false
     },
     "loadConceptsMappedStatus": {
       "prefLabel": {
