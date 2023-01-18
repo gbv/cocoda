@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "d236bb8cf11d9cdf2635c249fe953dab68518808",
-  "gitCommitShort": "d236bb8c",
-  "gitCommitMessage": "d236bb8c Update GitHub workflows",
-  "buildDate": "2023-01-18T11:27:00Z",
-  "date": "2023-01-18T11:25:53.000Z",
+  "gitCommit": "b48b3dcb5376b6923dd39f4ee1e62c5e6e9c9791",
+  "gitCommitShort": "b48b3dcb",
+  "gitCommitMessage": "b48b3dcb Add terser as dev dependency to fix build issues with Node.js 14",
+  "buildDate": "2023-01-18T11:30:14Z",
+  "date": "2023-01-18T11:29:14.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
