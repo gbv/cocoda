@@ -126,6 +126,9 @@
           "uri": "http://nomisma.org/id/"
         },
         {
+          "uri": "http://bartoc.org/en/node/533"
+        },
+        {
           "uri": "http://bartoc.org/en/node/18785"
         }
       ],
@@ -142,10 +145,20 @@
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations-experimental",
       "schemes": [
         {
+          "uri": "http://bartoc.org/en/node/533"
+        },
+        {
           "uri": "http://bartoc.org/en/node/18785"
         }
       ],
       "overrides": [
+        {
+          "uri": "http://bartoc.org/en/node/533",
+          "identifier": [
+            "http://uri.gbv.de/terminology/rvk/"
+          ],
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
         {
           "uri": "http://bartoc.org/en/node/18785",
           "identifier": [
