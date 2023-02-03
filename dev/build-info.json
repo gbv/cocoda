@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "9e1c541dddf5947feb4e5e2853a8420ba412be7a",
-  "gitCommitShort": "9e1c541d",
-  "gitCommitMessage": "9e1c541d ConceptSearch: Fix display language in search type filter",
-  "buildDate": "2023-02-03T09:51:38Z",
-  "date": "2023-02-03T09:50:13.000Z",
+  "gitCommit": "55d0aa51d444d29b0439a70d703466d408ddd5bd",
+  "gitCommitShort": "55d0aa51",
+  "gitCommitMessage": "55d0aa51 ConceptSearch: Fix small issue related to type filter",
+  "buildDate": "2023-02-03T13:03:25Z",
+  "date": "2023-02-03T13:01:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
