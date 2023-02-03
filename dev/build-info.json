@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "38c10d6e7c8b3fdbdd6db7331470e5f11b653827",
-  "gitCommitShort": "38c10d6e",
-  "gitCommitMessage": "38c10d6e Remove LobidApi from default config; will be served via BARTOC",
-  "buildDate": "2023-02-03T14:20:29Z",
-  "date": "2023-02-03T14:19:18.000Z",
+  "gitCommit": "8db01321a1fc7cf68caf7953d9ef1cbeb8c0ebdb",
+  "gitCommitShort": "8db01321",
+  "gitCommitMessage": "8db01321 Update cocoda-sdk",
+  "buildDate": "2023-02-03T14:28:19Z",
+  "date": "2023-02-03T14:27:08.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
