@@ -13,16 +13,6 @@
       }
     },
     {
-      "provider": "LobidApi",
-      "uri": "http://coli-conc.gbv.de/registry/lobid-gnd",
-      "prefLabel": {
-        "en": "GND via lobid"
-      },
-      "notation": [
-        "LOBID"
-      ]
-    },
-    {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "notation": [
