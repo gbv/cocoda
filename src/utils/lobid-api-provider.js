@@ -3,8 +3,6 @@ import axios from "axios"
 import jskos from "jskos-tools"
 
 // TODOs:
-// - Fix Cocoda type filter (if `types` for a scheme changes, old filter settings are kept forever)
-// - Better error handling
 // - Check (and fix if necessary) _registryConfigForBartocApiConfig
 
 const gndJson = {
@@ -135,11 +133,9 @@ export default class LobidApiProvider extends BaseProvider {
 
   _prepare() {
     this.has.schemes = true
-    this.has.top = false
     this.has.data = true
     this.has.concepts = true
     this.has.narrower = true
-    this.has.ancestors = false
     this.has.suggest = true
     this.has.search = true
     // Explicitly set other capabilities to false
@@ -186,15 +182,20 @@ export default class LobidApiProvider extends BaseProvider {
       }
       return gnd.notationFromUri(fixURI(concept?.uri))
     }).filter(Boolean)
+    const errors = []
     const results = await Promise.all(notations.map(async notation => {
       try {
         const result = await axios.get(`https://lobid.org/gnd/${notation}.json`)
         return toJSKOS(result.data)
       } catch (error) {
-        // TODO: What to do with errors?
-        return null
+        errors.push(error)
       }
     }))
+    // Only throw error if ALL given concepts failed to load
+    if (errors.length === concepts.length) {
+      // Just throw the first error
+      throw errors[0]
+    }
     return results.filter(Boolean)
   }
 
