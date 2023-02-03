@@ -13,35 +13,14 @@
       }
     },
     {
-      "provider": "ConceptApi",
-      "uri": "http://coli-conc.gbv.de/registry/gnd-concepts",
-      "data": "https://coli-conc.gbv.de/services/gnd.php",
-      "suggest": "https://ws.gbv.de/suggest/gnd/?searchterm={searchTerms}",
-      "types": "https://ws.gbv.de/suggest/gnd/types",
-      "schemes": [
-        {
-          "uri": "http://bartoc.org/en/node/430",
-          "concepts": [
-            null
-          ],
-          "topConcepts": []
-        }
-      ],
-      "notation": [
-        "G"
-      ],
+      "provider": "LobidApi",
+      "uri": "http://coli-conc.gbv.de/registry/lobid-gnd",
       "prefLabel": {
-        "de": "Gemeinsame Normdatei",
-        "en": "Integrated Authority File"
+        "en": "GND via lobid"
       },
-      "definition": {
-        "en": [
-          "Access to a copy of GND at VZG"
-        ],
-        "de": [
-          "Zugriff auf eine GND-Kopie an der VZG"
-        ]
-      }
+      "notation": [
+        "LOBID"
+      ]
     },
     {
       "provider": "LocalMappings",
