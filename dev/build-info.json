@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "3b7131bf2da996478a9264bfffbcc9ca7589aa17",
-  "gitCommitShort": "3b7131bf",
-  "gitCommitMessage": "3b7131bf Add RVK to coli-conc experimental suggestions",
-  "buildDate": "2023-02-01T06:19:45Z",
-  "date": "2023-02-01T06:18:31.000Z",
+  "gitCommit": "9e1c541dddf5947feb4e5e2853a8420ba412be7a",
+  "gitCommitShort": "9e1c541d",
+  "gitCommitMessage": "9e1c541d ConceptSearch: Fix display language in search type filter",
+  "buildDate": "2023-02-03T09:51:38Z",
+  "date": "2023-02-03T09:50:13.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
