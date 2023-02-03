@@ -250,6 +250,13 @@ export default class LobidApiProvider extends BaseProvider {
     return results.data
   }
 
+  async getTypes({ scheme }) {
+    if (!scheme || !jskos.compare(scheme, gndJson)) {
+      throw new errors.InvalidOrMissingParameterError({ parameter: "search", message: scheme?.uri ? `scheme ${scheme?.uri} not supported` : "" })
+    }
+    return gndJson.types
+  }
+
 }
 
 LobidApiProvider.providerName = "LobidApi"
