@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "62288e37a5d28ebc1a6f89fe4be699e009e62991",
-  "gitCommitShort": "62288e37",
-  "gitCommitMessage": "62288e37 Lobid provider: Implement getTypes method",
-  "buildDate": "2023-02-03T13:24:11Z",
-  "date": "2023-02-03T13:14:20.000Z",
+  "gitCommit": "75bedf7fb82310c21003f24c240d7149de9361d0",
+  "gitCommitShort": "75bedf7f",
+  "gitCommitMessage": "75bedf7f Move LobidApi to cocoda-sdk (via GitHub dev branch)",
+  "buildDate": "2023-02-03T14:08:47Z",
+  "date": "2023-02-03T14:06:56.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
