@@ -227,15 +227,7 @@ export default {
      */
     _scheme: function(newValue, oldValue) {
       if (!this.$jskos.compare(oldValue, newValue)) {
-        this.searchQuery = ""
-        this.searchResult = []
-        this.isOpen = false
-        this.isValid = false
-        this.loading = false
-        this.searchSelected = -1
-      }
-      if (newValue != null) {
-        this._loadTypes(newValue)
+        this.clear()
       }
     },
     typesForSchemes() {
@@ -245,12 +237,24 @@ export default {
     },
   },
   created: function () {
+    this.clear()
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)
     // Create a unique ID for the DOM IDs
     this.uniqueID = this.generateID()
   },
   methods: {
+    clear() {
+      this.searchQuery = ""
+      this.searchResult = []
+      this.isOpen = false
+      this.isValid = false
+      this.loading = false
+      this.searchSelected = -1
+      if (this._scheme) {
+        this._loadTypes(this._scheme)
+      }
+    },
     clickHandlers() {
       return [
         // Result list
@@ -462,6 +466,9 @@ export default {
       loadTypes(item).then(types => {
         if (!this.selectedTypes) {
           this.selectedTypes = types.map(type => type.uri)
+        } else {
+          // Filter out types that don't exist on scheme
+          this.selectedTypes = this.selectedTypes.filter(type => types.find(t => t.uri === type))
         }
       })
     },
