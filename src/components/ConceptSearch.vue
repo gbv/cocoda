@@ -38,7 +38,7 @@
               :key="type.uri"
               :value="type.uri"
               class="conceptSearch-filterCheckbox">
-              {{ $jskos.prefLabel(type) }}
+              {{ $jskos.prefLabel(type, { language: locale }) }}
             </b-form-checkbox>
           </b-form-checkbox-group>
         </div>
