@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "c42de3d00bac45f8de1432663b5b39ee67efa0f8",
-  "gitCommitShort": "c42de3d0",
-  "gitCommitMessage": "c42de3d0 Adjust URL of cocoda-sdk dev branch dependency",
-  "buildDate": "2023-02-06T06:02:15Z",
-  "date": "2023-02-06T06:00:46.000Z",
+  "gitCommit": "222c95cc00a70929aec81e21707d0f9a4c1fe82c",
+  "gitCommitShort": "222c95cc",
+  "gitCommitMessage": "222c95cc Fix package-lock.json",
+  "buildDate": "2023-02-06T06:24:06Z",
+  "date": "2023-02-06T06:22:01.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
