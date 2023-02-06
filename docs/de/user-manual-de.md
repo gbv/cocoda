@@ -38,17 +38,17 @@ Beim Start von Cocoda sind zunächst nur die Komponenten zur [Vokabularauswahl] 
 Grundsätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die [Einstellungen](#einstellungen) werden daher auch nur im Browser gespeichert. Zum Login können vorhandene Accounts bei externen Diensten verwendet werden:
 
 * ORCID
-* Wikimedia (Wikipedia, Wikidata...), GitHub und StackExchange
+* Wikimedia (Wikipedia, Wikidata...)
+* GitHub
+* StackExchange
 * LDAP (nur VZG-intern)
-* KENOM
 
 Diese externen Accounts heißen in Cocoda **Identitäten**. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der [Menüleiste](#benutzeroberfläche) angezeigt und können dort gewechselt werden. Weitere Details sind in den [Einstellungen](#einstellungen) unter "Account" einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:
 
 * Ist die personenbezogene Zuordnung von Beiträgen nicht gewünscht, sollte die Standard-Identität ausgewählt werden. Hierbei wird ein Account-Identifier verwendet dessen Zuordnung zu Identitäten nur den Adminstratoren der Mapping-Datenbank bei der VZG einsehbar ist. Zusätzlich sollte ein Pseudonym als Name vergeben werden.
+* Wird eine der anderen Identitäten ausgewählt, lässt sich der / die Nutzer(in) öffentlich über die Identitäts-URL identifizieren.
 
 ![](img/cocoda-login-select-identity-de.png){width=50% .border .border-dark}
-
-* Wird eine der anderen Identitäten ausgewählt, lässt sich die / der Autor(in) öffentlich über die Identitäts-URL identifizieren.
 
 Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
 
