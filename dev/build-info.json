@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "d36964cd19f9a309eb640a39deea3195018306b4",
-  "gitCommitShort": "d36964cd",
-  "gitCommitMessage": "d36964cd Minor changes at Benutzeraccounts",
-  "buildDate": "2023-02-06T11:52:21Z",
-  "date": "2023-02-06T11:49:31.000Z",
+  "gitCommit": "3ce4ceba04baf5e0672dcce77bad85b09b07806c",
+  "gitCommitShort": "3ce4ceba",
+  "gitCommitMessage": "3ce4ceba Correct typo error",
+  "buildDate": "2023-02-06T12:02:12Z",
+  "date": "2023-02-06T11:59:25.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
