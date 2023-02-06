@@ -1,6 +1,6 @@
 ## Einleitung
 
-Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Die Webanwendung zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...) wird als Teil des [Projekt coli-conc](https://coli-conc.gbv.de/) an der [Verbundzentrale des GBV (VZG)](https://www.gbv.de/) gepflegt. Die Anwendungsfälle von Cocoda reichen vom Mapping eigener Systematiken auf etabliertere Vokabulare über die Erstellung von Mappings zur Verbesserung des Retrieval in Katalogen und Discovery-Systemen bis hin zur Sammlung von Mappings in Wikidata als zentralem Normdaten-Hub.
+Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Die Webanwendung zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...) wird als Teil des [Projektes coli-conc](https://coli-conc.gbv.de/) an der [Verbundzentrale des GBV (VZG)](https://www.gbv.de/) gepflegt. Die Anwendungsfälle von Cocoda reichen vom Mapping eigener Systematiken auf etabliertere Vokabulare über die Erstellung von Mappings zur Verbesserung des Retrieval in Katalogen und Discovery-Systemen bis hin zur Sammlung von Mappings in Wikidata als zentralem Normdaten-Hub.
 
 Unter <https://coli-conc.gbv.de/cocoda/> sind mehrere Anleitungen, Screencasts sowie unterschiedlich konfigurierte Instanzen von Cocoda verlinkt, darunter:
 
@@ -44,10 +44,13 @@ Grundsätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die [Einstellung
 
 Diese externen Accounts heißen in Cocoda **Identitäten**. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der [Menüleiste](#benutzeroberfläche) angezeigt und können dort gewechselt werden. Weitere Details sind in den [Einstellungen](#einstellungen) unter "Account" einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:
 
-* Ist die personenbezogene Zuordnung von Beiträgen gewünscht, empfehlen wir ORCID- oder Wikimedia-Identitäten auszuwählen
-* Andernfalls wird ein Account-Identifier verwendet dessen Zuordnung zu Identitäten nur den Adminstratoren der Mapping-Datenbank bei der VZG einsehbar ist
+* Ist die personenbezogene Zuordnung von Beiträgen nicht gewünscht, sollte die Standard-Identität ausgewählt werden. Hierbei wird ein Account-Identifier verwendet dessen Zuordnung zu Identitäten nur den Adminstratoren der Mapping-Datenbank bei der VZG einsehbar ist. Zusätzlich sollte ein Pseudonym als Name vergeben werden.
 
-Ohne Login lassen sich Mappings nur lokal im eigenen Browser speichern. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
+![](img/cocoda-login-select-identity-de.png){width=50% .border .border-dark}
+
+* Wird eine der anderen Identitäten ausgewählt, lässt sich die / der Autor(in) öffentlich über die Identitäts-URL identifizieren.
+
+Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
 
 
 ## Vokabulare und Konzepte
@@ -147,7 +150,7 @@ Rechts unten kann je nach Berechtigung eine Konkordanz ausgewählt werden, in di
 * ![](img/icons/save.svg){height=1em} Mapping speichern (Tastaturkürzel `Ctrl+s`)
 * ![](img/icons/trash.svg){height=1em} Mapping löschen
 * ![](img/icons/clone-solid.svg){height=1em} Mapping duplizieren um ein neues Mapping mit gleichem Inhalt zu erstellen
-* ![](img/icons/ban.svg){height=1em} Mapping leeren um ein neues Mapping zu erstellen (`Ctrl+Shift+c`)
+* ![](img/icons/ban.svg){height=1em} Mapping leeren, um ein neues Mapping zu erstellen (`Ctrl+Shift+c`)
 
 Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen des Editors ![](img/icons/gear-solid.svg){height=1em} geändert werden.
 
