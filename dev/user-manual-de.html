@@ -67,18 +67,17 @@
 <p>Grundsätzlich verwaltet Cocoda keine eigenen Benutzeraccounts. Die <a href="#einstellungen">Einstellungen</a> werden daher auch nur im Browser gespeichert. Zum Login können vorhandene Accounts bei externen Diensten verwendet werden:</p>
 <ul>
 <li>ORCID</li>
-<li>Wikimedia (Wikipedia, Wikidata…), GitHub und StackExchange</li>
+<li>Wikimedia (Wikipedia, Wikidata…)</li>
+<li>GitHub</li>
+<li>StackExchange</li>
 <li>LDAP (nur VZG-intern)</li>
-<li>KENOM</li>
 </ul>
 <p>Diese externen Accounts heißen in Cocoda <strong>Identitäten</strong>. Die jeweils ausgewählte Identität und der dazugehörige Nutzername werden nach erfolgreichem Login in der <a href="#benutzeroberfläche">Menüleiste</a> angezeigt und können dort gewechselt werden. Weitere Details sind in den <a href="#einstellungen">Einstellungen</a> unter “Account” einsehbar. Ob und mit welcher Identität Cocoda Nutzerbeiträge öffentlich einsehbar abspeichert, können Nutzer selber entscheiden:</p>
 <ul>
 <li>Ist die personenbezogene Zuordnung von Beiträgen nicht gewünscht, sollte die Standard-Identität ausgewählt werden. Hierbei wird ein Account-Identifier verwendet dessen Zuordnung zu Identitäten nur den Adminstratoren der Mapping-Datenbank bei der VZG einsehbar ist. Zusätzlich sollte ein Pseudonym als Name vergeben werden.</li>
+<li>Wird eine der anderen Identitäten ausgewählt, lässt sich der / die Nutzer(in) öffentlich über die Identitäts-URL identifizieren.</li>
 </ul>
 <p><img src="img/cocoda-login-select-identity-de.png" class="border border-dark" style="width:50.0%" /></p>
-<ul>
-<li>Wird eine der anderen Identitäten ausgewählt, lässt sich die / der Autor(in) öffentlich über die Identitäts-URL identifizieren.</li>
-</ul>
 <p>Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.</p>
 <h2 id="vokabulare-und-konzepte">Vokabulare und Konzepte</h2>
 <p>Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von <strong>Vokabularen</strong> von unterschiedliche <a href="#datenquellen">Datenquellen</a>. Ein Vokabular besteht aus <strong>Konzepten</strong> und Informationen über das jeweilige Vokabular. Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:</p>
