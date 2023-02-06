@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "f8b477a1ad7574f5587713fae02d9449e0e83c95",
-  "gitCommitShort": "f8b477a1",
-  "gitCommitMessage": "f8b477a1 Upload file.",
-  "buildDate": "2023-02-06T11:15:36Z",
-  "date": "2023-02-06T11:11:50.000Z",
+  "gitCommit": "caea88f5fa14940418870e44ed19c33d4a62dfe4",
+  "gitCommitShort": "caea88f5",
+  "gitCommitMessage": "caea88f5 Mainly rewrite section \"Benutzeraccounts\"",
+  "buildDate": "2023-02-06T11:33:21Z",
+  "date": "2023-02-06T11:28:33.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
