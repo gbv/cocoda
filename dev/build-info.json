@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "6294940f93b4606b952c76f5f306d64f7ee6230d",
-  "gitCommitShort": "6294940f",
-  "gitCommitMessage": "6294940f First step of review",
-  "buildDate": "2023-02-08T10:59:05Z",
-  "date": "2023-02-08T10:58:00.000Z",
+  "gitCommit": "0ab3ebd5710a44c4ddfeee6c8bc07a76d7d0c0c9",
+  "gitCommitShort": "0ab3ebd5",
+  "gitCommitMessage": "0ab3ebd5 Add file via upload",
+  "buildDate": "2023-02-08T12:14:04Z",
+  "date": "2023-02-08T12:13:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
