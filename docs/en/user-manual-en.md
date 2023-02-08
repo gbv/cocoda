@@ -1,59 +1,93 @@
 ---
-date: 2019-12-02
+date: 2023-02-08
 ...
 
+## Manual is beeing reviewd currently
+
+<!--
+ToDos:
+- kurz coli-rich (inkl. Verlinkung) und das Redaktionsverfahren der eingetragenen Mappings im K10plus (inkl. Pflege von Updates) beschreiben: ein Absatz zum Workflow - von der Erstellung von Mappings bis zur Anreicherung via coli-rich; DA und dann die Redaktionsverfahren
+- Alte Screenshots löschen: 
+  - ![](img/cocoda-login1-en.png)
+  - ![](img/cocoda-settings-account1-en.png)
+  - ![](img/cocoda-settings-account2-en.png)
+  - ![](img/cocoda-loginserver-en.png)
+  - ![](img/cocoda-homepage2-en.png)
+-->
 
 ## Introduction
-Cocoda should be usable with any modern web browser (at least Firefox and Chromium). The application requires at least HD resolution (1366×768) but FHD (1920×1080) or more is highly recommended.
-Using Fullscreen also shows pictures better.
+This manual gives a brief introduction to the main components of Cocoda. The web application for creating and managing mappings between knowledge organization systems (classifications, standards data, thesauri...) is maintained as part of the [coli-conc project](https://coli-conc.gbv.de/) at the [Head Office of the GBV Common Library Network (VZG)](https://en.gbv.de/). Cocoda use cases range from mapping own classifications to more established vocabularies, to creating mappings to improve retrieval in catalogs and discovery systems, to collecting mappings in Wikidata as a central hub for standards data.
+
+Several tutorials, screencasts, and variously configured instances of Cocoda are linked at <https://coli-conc.gbv.de/cocoda/>, including:
+
+* the current release version: <https://coli-conc.gbv.de/cocoda/app/>
+* the current development version: <https://coli-conc.gbv.de/cocoda/dev/>
+
+Depending on the configuration of the Cocoda instance, some of the features described here may not be available.
 
 ## User Interface
-The user interface is divided into several **cards** which can be resized and arranged in different configurations. Most of these cards are implemented as [components](#components) which can also be used in other web applications.
+Firefox or Chromium is recommended as the browser and a screen with at least Full HD resolution (1920×1080). The user interface can be customized via the [settings](#settings); among other things, the language can be changed.
 
-* By default, the left and right side of the interface allow [browsing in concept schemes](#concepts) to inspect and select concepts from source and target vocabulary respectively.
+The **menu bar** contains (depending on the configuration):
 
-* In between there are several cards to create, modify, browse, and evaluate [mappings and mapping recommendations](#mappings).
+* Logo and name of the respective Cocoda instance
+* ![](img/icons/exchange.svg){height=1em} Left-right arrows to change the mapping direction
+* Links to imprint, privacy policy, manual and feedback option
+* ![](img/icons/trash.svg){height=1em} Trash can to view and restore last deleted mappings
+* ![](img/icons/star.svg){height=1em} Quick selection of remembered concepts
+* ![](img/icons/user-solid.svg){height=1em} [User account](#user-accounts) and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving [mappings](#) and [ratings](#)
+* ![](img/icons/gear-solid.svg){height=1em} [Settings](#) with quick selection of the [database](#) into which mappings and ratings are saved
 
-All cards can be hidden with a **minimize button** in the top right of each card and resized by dragging on the **divider line** between cards.
+The rest of the screen is divided into three areas with several **components**:
 
-![](img/cocoda-homepage-en.png)
+* Components for selecting [vocabularies and concepts](#) Left and Right.
+* Components for selecting, creating, and editing [mappings](#) in the middle.
 
+When Cocoda is started, initially only the components for [vocabulary selection](#vocabularies-selection) are open while general notes are displayed in the center. The size of individual components can be changed with the dots or, the minimize icon hides a component. In addition, some components have icons in the lower right corner:
 
-## Login
-To log in, simply click on the 'Settings' button in the menu bar.
+* Setting the behavior of the component
+* Detailed view of the data and sources displayed in a component
 
-![](img/cocoda-login1-en.png)
+## User accounts
+In principle, Cocoda does not manage its own user accounts. The [settings](#settings) are therefore also only stored in the browser. Existing accounts with external services can be used for login:
 
-On the settings screen under the tab 'Accounts', click on one of the available login buttons (currently GitHub, ORCID, and VZG LDAP). You will be required to authenticate with the respective service and confirm that you'd like to use your account to log in with our service.
+* ORCID
+* Wikimedia (Wikipedia, Wikidata...)
+* GitHub
+* StackExchange
+* LDAP (only VZG internal)
 
-![](img/cocoda-settings-account1-en.png)
+These external accounts are called **Identities** in Cocoda. The identity selected in each case and the corresponding username are displayed in the [menu bar](#user interface) after successful login and can be changed there. Further details can be viewed in the [settings](#preferences) under "Account". Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:
 
-After you logged in, the pages should look like this:
+* If the personal assignment of contributions is not desired, the default identity should be selected. In this case, an account identifier is used whose assignment to identities is only visible to the administrators of the mapping database at VZG. In addition, a pseudonym should be assigned as a name.
+* If one of the other identities is selected, the user can be publicly identified by the identity URI.
 
-![](img/cocoda-settings-account2-en.png)
+![](img/cocoda-login-select-identity-en.png){width=50% .border .border-dark}
 
-You can now change the registry to save your mappings between 'Local' (your browser) and 'Concordance Registry' (database from the GBV). You can also change your display name and the identity which will be stored in the mappings you save.
+If mappings should not be publicly viewable at all, mappings can also be saved locally in your own browser without login. However, this feature is disabled in some Cocoda instances for the sake of clarity.
 
-By clicking on 'Account Page', you will be forwarded to a separate Login Server page. Here you can inspect your information, add or remove connected accounts, log out, or delete your user account. Deleting your account will immediately remove your data from the database, but already created accounts will still contain your identity information.
+<!--
+Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
+-->
 
-![](img/cocoda-loginserver-en.png)
-
-When logged in, you will also see either a green icon (see screenshot) or the chosen identity provider's icon next to your name, as well as the registry which is used to save mappings.
-
-![](img/cocoda-homepage2-en.png)
-
-## Concept Schemes
+## Vocabularies and concepts
 Individual knowledge organization systems are referred to as **concept schemes** or just **schemes**. Concept schemes are also known as ontologies, (controlled) vocabularies, taxonomies, and terminologies. Cocoda provides access to multiple concept schemes from multiple sources.
 
 A concept scheme is an organized collection of [concepts](#concepts) and additional information about the concept scheme.  Cocoda recommends all concept schemes to be registered in the [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) and to use its identifiers for to uniquely refer to indivial concept schemes.
 
 To give an example the Dewey Decimal Classification (DDC) is a concept scheme of type universal library classification, published by OCLC and registered in BARTOC with URI <http://bartoc.org/en/node/241>.
 
-### Scheme Details
+### Vocabularies selection
 
 The details card shows a scheme's or concept's detailed information. In case of a scheme it currently shows the notation, label, license, publisher, and identifier. It will also show a scheme's top concepts if the tree view is minimized. In case of a concept it currently shows a concept's ancestors, its notation and preferred label, notes (scope notes and editorial notes), register entries and additional labels, identifiers, GND terms, and narrower concepts. In most cases, not all of these informations are available for a concept.
 
 ![](img/cocoda-classdet-en.png)
+
+### Details of the vocabulary
+### Search for concepts
+### Details of the concept
+### Tree view
+### List view
 
 ## Concepts
 A **concept** identifies and individual object such as a person, a place, or a topic. Most concepts have at least a possibly unique preferred **label**, a unique **notation**, and a globally unique URI.
