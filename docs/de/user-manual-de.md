@@ -52,10 +52,17 @@ Diese externen Accounts heißen in Cocoda **Identitäten**. Die jeweils ausgewä
 
 Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
 
+<!--
+Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
+-->
+
 
 ## Vokabulare und Konzepte
 
-Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von **Vokabularen** von unterschiedliche [Datenquellen](#datenquellen). Ein Vokabular besteht aus **Konzepten** und Informationen über das jeweilige Vokabular. Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:
+Cocoda bietet einen einheitlichen Zugang zu einer Vielzahl von **Vokabularen** wie Ontologien, Klassifikationen, Taxonomien und Terminologien aus verschiedenen [Datenquellen](#Datenquellen). Ein Vokabular ist eine organisierte Sammlung von Konzepten mit zusätzlichen Informationen über das Vokabular. Ein **Konzept** ist ein individuelles Objekt wie eine Person, einen Ort oder ein Thema. Die meisten Konzepte haben eine eindeutige Notation und Bezeichnung und eine einzigartige URI, um sie identifizieren zu können.
+Cocoda empfiehlt alle Vokabulare, im [Basic Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) zu registrieren und dessen IDs zu verwenden, um eindeutig auf einzelne Vokabulare zu verweisen. Die Dewey-Dezimalklassifikation (DDC) ist beispielsweise ein Vokabular des Typs Universelle Bibliotheksklassifikation, das von OCLC veröffentlicht und in BARTOC mit der URI <http://bartoc.org/en/node/241> registriert wurde.
+
+Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:
 
 * [Auswahl von Quell- bzw. Zielvokabular](#vokabularauswahl)
 * [Ansicht von Informationen über ein ausgewähltes Vokabular](#vokabulardetails)
@@ -64,13 +71,9 @@ Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von **Vokabularen
 * [hierarchisches Browsing im ausgewählten Vokabular](#baumansicht) (falls vorhanden)
 * [Ansicht von Konzeptlisten](#listenansicht) (falls vorhanden)
 
-<!--
-Cocoda empfiehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
--->
-
 ### Vokabularauswahl
 
-Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} kann die Liste nach Quelle, Sprache, Vokabular-Typ, Favoriten und nur Vokabularen mit Konzepten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert so ist ein Filter aktiv. Mit der Pflanze ![](img/icons/seedling-solid.svg){height=1em} lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt. Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} hinter dem Vokabularnamen lässt sich das Vokabular abwählen. Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel `Ctrl+Shift+f` (links) und `Ctrl+Shift+g` (rechts).
+Die Auswahl eines Vokabulars ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} kann die Liste nach Quelle, Sprache, Vokabular-Typ, Favoriten und nur Vokabularen mit Konzepten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert, so ist ein Filter aktiv. Mit der Pflanze ![](img/icons/seedling-solid.svg){height=1em} lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt. Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz ![](img/icons/times-circle.svg){height=1em} hinter dem Vokabularnamen lässt sich das Vokabular abwählen. Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel `Ctrl+Shift+f` (links) und `Ctrl+Shift+g` (rechts).
 
 ### Vokabulardetails
 
@@ -82,11 +85,14 @@ Diese Komponente zeigt Vokabular-Informationen wie Identifier, Erstellungsdatum,
 
 Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite automatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon ![](img/icons/filter.svg){height=1em}. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel `Ctrl+f` (links) und `Ctrl+g` (rechts).
 
-Durch Suche nach einer syntaktisch korrekten Notation lässt sich ein Konzept auswählen auch wenn zu dieser Notation kein Konzept gefunden wurde. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.
+Es können auch Konzepte ausgewählt werden, auch wenn es im betreffenden Vokabular kein Konzept mit der eingegebenen Notation gibt. Dazu muss nach einer syntaktisch korrekten Notation gesucht werden. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.
 
 ### Konzeptdetails
 
 Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):
+
+<!--nächster Absatz korrigieren nach erfolgter Neubenennung der Tabs
+-->
 
 * Info: Metadaten wie Identifier und Änderungsdatum
 * Bezeichnungen: Vorzugs- und Alternativbenennungen
@@ -98,14 +104,6 @@ Das Plus-Zeichen ![](img/icons/plus-circle.svg){height=1em} dient dazu das Konze
 Der Pfeil ![](img/icons/arrow-right.svg){height=1em} wählt das nächste Konzept in der [Baumansicht] oder aus der aktuell ausgewählten [Liste](#listenansicht) aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel `Alt+n` (links) und `Alt+m` (rechts).
 
 ![](img/cocoda-concdet-de.png){width=55% .border .border-dark .center}
-
-<!--
-
-## Hintergrund
-
-Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort oder ein Thema, die meisten Konzepte haben eine einzigartige Notation, Bezeichnung und URI, um sie identifizieren zu können.
-
--->
 
 ### Baumansicht
 
@@ -267,6 +265,12 @@ Zum Export von Daten aus Cocoda verwenden Sie das Quelltext-Icon ![](img/icons/c
 Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Fragen dazu mit uns in Verbindung (<http://coli-conc.gbv.de/contact/>).
 
 Der Massenimport von Mappings ist über die Weboberfläche bislang nur in der Datenbank **L** Lokal möglich.
+
+<!--
+ToDo (Uma): kurz coli-rich (inkl. Verlinkung) und das Redaktionsverfahren der eingetragenen Mappings im K10plus (inkl. Pflege von Updates) beschreiben.
+- ein Absatz zum Workflow - von der Erstellung von Mappings bis zur Anreicherung via coli-rich; DA und dann die Redaktionsverfahren
+- englisches Benutzerhandbuch nicht vergessen!
+-->
 
 ## Weitere Informationen
 
