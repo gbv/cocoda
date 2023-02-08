@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "d264ec81dcfd7ef89c120fdee100b538c50b6687",
-  "gitCommitShort": "d264ec81",
-  "gitCommitMessage": "d264ec81 Update dependencies",
-  "buildDate": "2023-02-06T13:30:11Z",
-  "date": "2023-02-06T13:28:42.000Z",
+  "gitCommit": "6294940f93b4606b952c76f5f306d64f7ee6230d",
+  "gitCommitShort": "6294940f",
+  "gitCommitMessage": "6294940f First step of review",
+  "buildDate": "2023-02-08T10:59:05Z",
+  "date": "2023-02-08T10:58:00.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
