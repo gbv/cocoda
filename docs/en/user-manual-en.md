@@ -2,7 +2,7 @@
 date: 2023-02-08
 ...
 
-## Manual is beeing reviewd currently
+## Manual is beeing reviewed currently
 
 <!--
 ToDos:
@@ -13,9 +13,13 @@ ToDos:
   - ![](img/cocoda-settings-account2-en.png)
   - ![](img/cocoda-loginserver-en.png)
   - ![](img/cocoda-homepage2-en.png)
+  - ![](img/cocoda-classdet-en.png)
+  - ![](img/cocoda-concdet-en.png)
+  - ![](img/cocoda-conctree-en.png)
 -->
 
 ## Introduction
+
 This manual gives a brief introduction to the main components of Cocoda. The web application for creating and managing mappings between knowledge organization systems (classifications, standards data, thesauri...) is maintained as part of the [coli-conc project](https://coli-conc.gbv.de/) at the [Head Office of the GBV Common Library Network (VZG)](https://en.gbv.de/). Cocoda use cases range from mapping own classifications to more established vocabularies, to creating mappings to improve retrieval in catalogs and discovery systems, to collecting mappings in Wikidata as a central hub for standards data.
 
 Several tutorials, screencasts, and variously configured instances of Cocoda are linked at <https://coli-conc.gbv.de/cocoda/>, including:
@@ -49,6 +53,7 @@ When Cocoda is started, initially only the components for [vocabulary selection]
 * Detailed view of the data and sources displayed in a component
 
 ## User accounts
+
 In principle, Cocoda does not manage its own user accounts. The [settings](#settings) are therefore also only stored in the browser. Existing accounts with external services can be used for login:
 
 * ORCID
@@ -70,50 +75,63 @@ If mappings should not be publicly viewable at all, mappings can also be saved l
 Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
 -->
 
-## Vocabularies and concepts
-Individual knowledge organization systems are referred to as **concept schemes** or just **schemes**. Concept schemes are also known as ontologies, (controlled) vocabularies, taxonomies, and terminologies. Cocoda provides access to multiple concept schemes from multiple sources.
+## Concept schemes and concepts
 
-A concept scheme is an organized collection of [concepts](#concepts) and additional information about the concept scheme.  Cocoda recommends all concept schemes to be registered in the [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) and to use its identifiers for to uniquely refer to indivial concept schemes.
+Cocoda provides unified access to a variety of **concept schemes** (or just **schemes**) like ontologies, (controlled) vocabularies, taxonomies, and terminologies from different [data sources](#data-sources). A concept scheme is an organized collection of concepts with additional information about the concept scheme. A **concept** is an individual object such as a person, a place, or a topic. Most concepts have at least a unique preferred label, a unique notation, and a globally unique URI.
+Cocoda recommends all concept schemes to be registered in the [Basic Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) and to use its identifiers to uniquely refer to indivial concept schemes. For instance, the Dewey Decimal Classification (DDC) is a concept scheme of type universal library classification, published by OCLC and registered in BARTOC with URI <http://bartoc.org/en/node/241>.
 
-To give an example the Dewey Decimal Classification (DDC) is a concept scheme of type universal library classification, published by OCLC and registered in BARTOC with URI <http://bartoc.org/en/node/241>.
+The display of concept schemes and concepts on the left and right side respectively consists of components for:
 
-### Vocabularies selection
+* [selection of source or target scheme](#scheme-selection)
+* [view information about a selected scheme](#scheme-details)
+* [Search for concepts in the selected scheme](#search-for-concepts)
+* [view information about a selected concept](#concept-details)
+* [hierarchical browsing in selected scheme](#treeview) (if available)
+* [view concept lists](#listview) (if available).
 
-The details card shows a scheme's or concept's detailed information. In case of a scheme it currently shows the notation, label, license, publisher, and identifier. It will also show a scheme's top concepts if the tree view is minimized. In case of a concept it currently shows a concept's ancestors, its notation and preferred label, notes (scope notes and editorial notes), register entries and additional labels, identifiers, GND terms, and narrower concepts. In most cases, not all of these informations are available for a concept.
+### Scheme selection
 
-![](img/cocoda-classdet-en.png)
+The selection of a scheme is possible via title search and via the vocabulary list. The filter icon ![](img/icons/filter.svg){height=1em} can be used to limit the list by source, language, vocabulary type, favorites and only vocabularies with concepts. If the filter icon is marked with a dot, a filter is active. With the plant ![](img/icons/seedling-solid.svg){height=1em} a vocabulary can be selected or deselected as a favorite. Favorites are always displayed first. After selecting a vocabulary, a search field appears and information about the vocabulary is displayed. With the cross ![](img/icons/times-circle.svg){height=1em} behind the scheme name the scheme can be deselected. For quick access to the scheme selection there are keyboard shortcuts `Ctrl+Shift+f` (left) and `Ctrl+Shift+g` (right).
 
-### Details of the vocabulary
+### Scheme details
+
+This component displays scheme information like identifier, creation date, license, publisher, scheme types and [data source](#data-sources). If the [treeview](#treeview) is minimized, the top concepts are also displayed here. The link to ![](img/icons/external-link-square.svg){height=1em} existing mappings opens the [mapping search](#mapping-search).
+
+![](img/cocoda-classdet-en.png){width=50% .border .border-dark}
+
 ### Search for concepts
-### Details of the concept
-### Tree view
-### List view
 
-## Concepts
-A **concept** identifies and individual object such as a person, a place, or a topic. Most concepts have at least a possibly unique preferred **label**, a unique **notation**, and a globally unique URI.
+In the search field concepts can be searched for by notations or by label. It is possible to configure this component to fill in the label of the selected concept in the search field on the opposite site automatically. Some schemes offer the option to filter concepts by type: in such a case a special icon ![](img/icons/filter.svg){height=1em} is displayed in the search field. There are shortcuts to activate the search for concepts briefly: `Ctrl+f` (left scheme) und `Ctrl+g` (right scheme).
 
-The left and right side of Cocoda user interface allow browsing in a concept scheme to search, inspect, and select individual concepts. Each concept browser at the left and the right side of the interface consists of:
+It is also possible to select concepts although there is no concept with the given notation in this scheme. This can be done by searching with a syntactically correct notation. These concepts are marked with a red dot (<span style="color: red;">•</span>).
 
-* a dropdown menu on the top to **select a concept scheme**
+### Concept details
 
-* a **search field** to find concepts in a selected scheme by notation or label
+After selecting a concept, information about the selected concept is displayed instead of [vocabulary details](#vocabularydetails). Besides superclasses and subclasses (if available):
 
-* a card that shows **details** about the selected scheme or the selected concept
+<!--rewrite next section after changing tab labels
+-->
 
-* a **concept tree** for hierarchical browsing if the selected scheme is a classification or taxonomy
+* Info: metadata like identifier and modification date.
+* Designations: Preferred and alternative designations.
+* Scope/Editorial: usage notes and descriptions
+* Links: Links in other databases (Wikipedia, K0plus...).
 
-* A list of bookmarked concept schemes is shown if no concept scheme was selected.
+The star ![](img/icons/star.svg){height=1em} adds or removes the concept from the quick selection list.
+The plus sign ![](img/icons/plus-circle.svg){height=1em} is used to add the concept to the [Mapping Editor](#).
+The arrow ![](img/icons/arrow-right.svg){height=1em} selects the next concept in the [tree view](#treeview) or from the currently selected [list](#listview). For quick switching there are keyboard shortcuts `Alt+n` (left) and `Alt+m` (right) for this action.
 
-### Concept Details
+![](img/cocoda-concdet-de.png){width=55% .border .border-dark .center}
 
-![](img/cocoda-concdet-en.png)
+### Treeview
 
-### Concept Tree
+In addition to browsing via [scheme details](#scheme-details) and [concept details](#concept-details) tree view ![](img/icons/sitemap-solid.svg){height=1em} is provided for monohierarchical schemes.
 
-If the selected scheme supports hierarchical navigation, the concept tree will show the top concepts. Clicking on a concept in the tree view will select the concept and show its details in the detail card. You can show a concept's narrower concepts by clicking on the arrow beside the concept in the tree. Double clicking a concept will both select it and show its narrower concepts. You can also use the detail card to browse by clicking on a concept's ancestors (at the top) and narrower concepts (at the bottom).
-![](img/cocoda-conctree-en.png)
+![](img/cocoda-conctree-de.png){width=50% .border .border-dark .center}
 
+### Listview
 
+Instead of the tree view, a popup ![](img/icons/angle-up-solid.svg){height=1em} can be used to select the list of quick selection concepts ![](img/icons/star.svg){height=1em} and, depending on the configuration, additional concept lists ![](img/icons/list-solid.svg){height=1em}. Additional lists are updated only by reloading them with the refresh icon ![](img/icons/sync-alt-solid.svg){height=1em}.
 
 ## Mappings
 The central part of the user interface shows multiple cards to create, modify, browse, and evaluate mappings. A **mapping** is a directed connection between one concepts and one or more concepts from another concept scheme (more complex mappings may be supported in a later release).
