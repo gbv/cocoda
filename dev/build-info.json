@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "2ccfe7b4e289f38332677b267c9b07bef8cfcaef",
-  "gitCommitShort": "2ccfe7b4",
-  "gitCommitMessage": "2ccfe7b4 Add new screenshot",
-  "buildDate": "2023-02-08T12:53:39Z",
-  "date": "2023-02-08T12:52:51.000Z",
+  "gitCommit": "c319ac912e3ad668290420d2a6736cae239c287d",
+  "gitCommitShort": "c319ac91",
+  "gitCommitMessage": "c319ac91 Second step of reviewing",
+  "buildDate": "2023-02-08T16:01:08Z",
+  "date": "2023-02-08T16:00:17.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
