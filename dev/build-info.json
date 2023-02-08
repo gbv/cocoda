@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "2540a059d8caba4f4f415a9bb32af2eac069829f",
-  "gitCommitShort": "2540a059",
-  "gitCommitMessage": "2540a059 Delete cocoda-classdet.en.png",
-  "buildDate": "2023-02-08T12:53:18Z",
-  "date": "2023-02-08T12:52:21.000Z",
+  "gitCommit": "2ccfe7b4e289f38332677b267c9b07bef8cfcaef",
+  "gitCommitShort": "2ccfe7b4",
+  "gitCommitMessage": "2ccfe7b4 Add new screenshot",
+  "buildDate": "2023-02-08T12:53:39Z",
+  "date": "2023-02-08T12:52:51.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
