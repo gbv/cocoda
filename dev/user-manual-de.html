@@ -79,8 +79,12 @@
 </ul>
 <p><img src="img/cocoda-login-select-identity-de.png" class="border border-dark" style="width:50.0%" /></p>
 <p>Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.</p>
+<!--
+Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
+-->
 <h2 id="vokabulare-und-konzepte">Vokabulare und Konzepte</h2>
-<p>Cocoda ermöglicht den einheitlichen Zugriff auf eine Vielzahl von <strong>Vokabularen</strong> von unterschiedliche <a href="#datenquellen">Datenquellen</a>. Ein Vokabular besteht aus <strong>Konzepten</strong> und Informationen über das jeweilige Vokabular. Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:</p>
+<p>Cocoda bietet einen einheitlichen Zugang zu einer Vielzahl von <strong>Vokabularen</strong> wie Ontologien, Klassifikationen, Taxonomien und Terminologien aus verschiedenen <a href="#Datenquellen">Datenquellen</a>. Ein Vokabular ist eine organisierte Sammlung von Konzepten mit zusätzlichen Informationen über das Vokabular. Ein <strong>Konzept</strong> ist ein individuelles Objekt wie eine Person, einen Ort oder ein Thema. Die meisten Konzepte haben eine eindeutige Notation und Bezeichnung und eine einzigartige URI, um sie identifizieren zu können. Cocoda empfiehlt alle Vokabulare, im <a href="https://BARTOC.org">Basic Register of Thesauri, Ontologies &amp; Classifications (BARTOC)</a> zu registrieren und dessen IDs zu verwenden, um eindeutig auf einzelne Vokabulare zu verweisen. Die Dewey-Dezimalklassifikation (DDC) ist beispielsweise ein Vokabular des Typs Universelle Bibliotheksklassifikation, das von OCLC veröffentlicht und in BARTOC mit der URI <a href="http://bartoc.org/en/node/241" class="uri">http://bartoc.org/en/node/241</a> registriert wurde.</p>
+<p>Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:</p>
 <ul>
 <li><a href="#vokabularauswahl">Auswahl von Quell- bzw. Zielvokabular</a></li>
 <li><a href="#vokabulardetails">Ansicht von Informationen über ein ausgewähltes Vokabular</a></li>
@@ -89,19 +93,18 @@
 <li><a href="#baumansicht">hierarchisches Browsing im ausgewählten Vokabular</a> (falls vorhanden)</li>
 <li><a href="#listenansicht">Ansicht von Konzeptlisten</a> (falls vorhanden)</li>
 </ul>
-<!--
-Cocoda empfiehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) registriert werden und man diese Indentifier dann als Links benutzt um Vokabulare zu identifizieren. (Beispiel DDC: <http://bartoc.org/en/node/241>)
--->
 <h3 id="vokabularauswahl">Vokabularauswahl</h3>
-<p>Die Auswahl eines Vokabular ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> kann die Liste nach Quelle, Sprache, Vokabular-Typ, Favoriten und nur Vokabularen mit Konzepten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert so ist ein Filter aktiv. Mit der Pflanze <img src="img/icons/seedling-solid.svg" style="height:1em" /> lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt. Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> hinter dem Vokabularnamen lässt sich das Vokabular abwählen. Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel <code>Ctrl+Shift+f</code> (links) und <code>Ctrl+Shift+g</code> (rechts).</p>
+<p>Die Auswahl eines Vokabulars ist per Titelsuche und über die Vokabular-Liste möglich. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> kann die Liste nach Quelle, Sprache, Vokabular-Typ, Favoriten und nur Vokabularen mit Konzepten eingeschränkt werden. Ist das Filter-Icon mit einem Punkt markiert, so ist ein Filter aktiv. Mit der Pflanze <img src="img/icons/seedling-solid.svg" style="height:1em" /> lässt sich ein Vokabular als Favorit aus- bzw. abwählen. Die Favoriten werden immer zuerst angezeigt. Nach Auswahl eines Vokabulars erscheint ein Suchfeld und es werden Informationen über das Vokabular angezeigt. Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> hinter dem Vokabularnamen lässt sich das Vokabular abwählen. Zum schnellen Zugriff auf die Vokabularauswahl gibt es die Tastaturkürzel <code>Ctrl+Shift+f</code> (links) und <code>Ctrl+Shift+g</code> (rechts).</p>
 <h3 id="vokabulardetails">Vokabulardetails</h3>
 <p>Diese Komponente zeigt Vokabular-Informationen wie Identifier, Erstellungsdatum, Lizenz, Herausgeber, Vokabulartypen und <a href="#datenquellen">Datenquelle</a> an. Wenn die <a href="#baumansicht">Baumansicht</a> minimiert ist, werden hier außerdem die Oberkonzepte angezeigt. Der Link auf <img src="img/icons/external-link-square.svg" style="height:1em" /> vorhandene Mappings öffnet die <a href="#mapping-suche">Mapping-Suche</a>.</p>
 <p><img src="img/cocoda-classdet-de.png" class="border border-dark" style="width:50.0%" /></p>
 <h3 id="suche-nach-konzepten">Suche nach Konzepten</h3>
 <p>Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite automatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon <img src="img/icons/filter.svg" style="height:1em" />. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel <code>Ctrl+f</code> (links) und <code>Ctrl+g</code> (rechts).</p>
-<p>Durch Suche nach einer syntaktisch korrekten Notation lässt sich ein Konzept auswählen auch wenn zu dieser Notation kein Konzept gefunden wurde. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.</p>
+<p>Es können auch Konzepte ausgewählt werden, auch wenn es im betreffenden Vokabular kein Konzept mit der eingegebenen Notation gibt. Dazu muss nach einer syntaktisch korrekten Notation gesucht werden. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.</p>
 <h3 id="konzeptdetails">Konzeptdetails</h3>
 <p>Nach Auswahl eines Konzepts werden statt <a href="#vokabulardetails">Vokabulardetails</a> Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):</p>
+<!--nächster Absatz korrigieren nach erfolgter Neubenennung der Tabs
+-->
 <ul>
 <li>Info: Metadaten wie Identifier und Änderungsdatum</li>
 <li>Bezeichnungen: Vorzugs- und Alternativbenennungen</li>
@@ -110,13 +113,6 @@ Cocoda empfiehlt, dass alle Vokabulare im [Basel Register of Thesauri, Ontologie
 </ul>
 <p>Der Stern <img src="img/icons/star.svg" style="height:1em" /> fügt das Konzept zur Schnellauswahl-Liste hinzu bzw. entfernt es daraus. Das Plus-Zeichen <img src="img/icons/plus-circle.svg" style="height:1em" /> dient dazu das Konzept in den <a href="#mapping-editor">Mapping-Editor</a> zu übernehmen. Der Pfeil <img src="img/icons/arrow-right.svg" style="height:1em" /> wählt das nächste Konzept in der <a href="#baumansicht">Baumansicht</a> oder aus der aktuell ausgewählten <a href="#listenansicht">Liste</a> aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel <code>Alt+n</code> (links) und <code>Alt+m</code> (rechts).</p>
 <p><img src="img/cocoda-concdet-de.png" class="border border-dark center" style="width:55.0%" /></p>
-<!--
-
-## Hintergrund
-
-Ein Konzept ist ein eigenständiges Objekt, zum Beispiel eine Person, ein Ort oder ein Thema, die meisten Konzepte haben eine einzigartige Notation, Bezeichnung und URI, um sie identifizieren zu können.
-
--->
 <h3 id="baumansicht">Baumansicht</h3>
 <p>Neben der Browsing-Möglichkeit über <a href="#vokabulardetails">Vokabulardetails</a> und <a href="#konzeptdetails">Konzeptdetails</a> wird bei monohierarchischen Vokabularen eine <img src="img/icons/sitemap-solid.svg" style="height:1em" /> Baumdarstellung angeboten.</p>
 <p><img src="img/cocoda-conctree-de.png" class="border border-dark center" style="width:50.0%" /></p>
@@ -236,6 +232,11 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <p>Zum Export von Daten aus Cocoda verwenden Sie das Quelltext-Icon <img src="img/icons/code.svg" style="height:1em" />. Die <a href="https://gbv.github.io/jskos/jskos.html">JSKOS</a>-Daten können in verschiedenen Formaten wie CSV und JSON heruntergeladen werden. Teilweise stehen auch API-Aufrufe zum Abruf der Daten bereit.</p>
 <p>Zusätzliche Vokabulare, Mappings und Mapping-Vorschläge können durch entsprechende Konfiguration einer Cocoda-Instanz in die Anwendung eingebunden werden. Bitte setzen Sie sich bei Fragen dazu mit uns in Verbindung (<a href="http://coli-conc.gbv.de/contact/" class="uri">http://coli-conc.gbv.de/contact/</a>).</p>
 <p>Der Massenimport von Mappings ist über die Weboberfläche bislang nur in der Datenbank <strong>L</strong> Lokal möglich.</p>
+<!--
+ToDo (Uma): kurz coli-rich (inkl. Verlinkung) und das Redaktionsverfahren der eingetragenen Mappings im K10plus (inkl. Pflege von Updates) beschreiben.
+- ein Absatz zum Workflow - von der Erstellung von Mappings bis zur Anreicherung via coli-rich; DA und dann die Redaktionsverfahren
+- englisches Benutzerhandbuch nicht vergessen!
+-->
 <h2 id="weitere-informationen">Weitere Informationen</h2>
 <p>Weitere Informationen, Anleitungen, Screencasts u.v.m. finden sich über die Projekthomepage <a href="https://coli-conc.gbv.de/" class="uri">https://coli-conc.gbv.de/</a>. Für Fragen und Rückmeldungen zur Software benutzen Sie am Besten den <a href="https://github.com/gbv/cocoda/issues">GitHub IssueTracker</a>.</p>
 <p>Die in Cocoda verwendeten Icons stammen von <a href="https://fontawesome.com/">fontawesome</a> und sind unter <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> lizensiert.</p>
