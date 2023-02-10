@@ -2,25 +2,9 @@
 date: 2023-02-08
 ...
 
-## Manual is beeing reviewed currently
-
 <!--
 ToDos:
 - kurz coli-rich (inkl. Verlinkung) und das Redaktionsverfahren der eingetragenen Mappings im K10plus (inkl. Pflege von Updates) beschreiben: ein Absatz zum Workflow - von der Erstellung von Mappings bis zur Anreicherung via coli-rich; DA und dann die Redaktionsverfahren
-- Alte Screenshots löschen: 
-  - ![](img/cocoda-login1-en.png)
-  - ![](img/cocoda-settings-account1-en.png)
-  - ![](img/cocoda-settings-account2-en.png)
-  - ![](img/cocoda-loginserver-en.png)
-  - ![](img/cocoda-homepage2-en.png)
-  - ![](img/cocoda-classdet-en.png)
-  - ![](img/cocoda-concdet-en.png)
-  - ![](img/cocoda-conctree-en.png)
-  - ![](img/cocoda-mappingeditor-en.png)
-  - ![](img/cocoda-settings-layout-en.png)
-  - ![](img/cocoda-settings-keysho-en.png)
-  - ![](img/cocoda-settings-datsor-en.png)
-  - ![](img/cocoda-settings-locmap-en.png)
 -->
 
 ## Introduction
@@ -46,7 +30,7 @@ The **menu bar** contains (depending on the configuration):
 * ![](img/icons/trash.svg){height=1em} Trash can to view and restore last deleted mappings
 * ![](img/icons/star.svg){height=1em} Quick selection of remembered concepts
 * ![](img/icons/user-solid.svg){height=1em} [User account](#user-accounts) and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving [mappings](#mappings) and [ratings](#ratings)
-* ![](img/icons/gear-solid.svg){height=1em} [Settings](#settings) with quick selection of the [database](#mappings-databases) into which mappings and ratings are saved
+* ![](img/icons/gear-solid.svg){height=1em} [Settings](#settings) with quick selection of the [database](#mapping-databases) into which mappings and ratings are saved
 
 The rest of the screen is divided into three areas with several **components**:
 
@@ -113,7 +97,7 @@ It is also possible to select concepts although there is no concept with the giv
 
 ### Concept details
 
-After selecting a concept, information about the selected concept is displayed instead of [vocabulary details](#scheme-details). Besides superclasses and subclasses (if available):
+After selecting a concept, information about the selected concept is displayed instead of [scheme details](#scheme-details). Besides superclasses and subclasses (if available):
 
 <!--rewrite next section after changing tab labels
 -->
@@ -153,8 +137,6 @@ Mappings can also be assigned [ratings](#ratings) depending on the configuration
 The mapping editor is used for detailed editing of a mapping. For this purpose, concepts can be dragged and dropped into the mapping editor or taken over from the left or right side with the plus icon ![](img/icons/plus-circle.svg){height=1em}. There are also keyboard shortcuts (`Ctrl+a` or `Ctrl+d`) for taking over the respective selected concept. With the cross ![](img/icons/times-circle.svg){height=1em} a concept can be removed again.
 
 In the editor settings ![](img/icons/gear-solid.svg){height=1em} you can specify that only 1-to-1 mappings are allowed; otherwise a concept can also be mapped to a combination of several target concepts (AND operation). For multiple alternative target concepts (OR-link), multiple mappings should be created instead. Furthermore, null mappings are possible if a concept has no equivalent in the target vocabulary.
-
-![](img/cocoda-mappingeditor1-en.png){.border .border-dark}
 
 In the middle of the editor, the type of mapping can be selected. The following **mapping types** are available for selection:
 
@@ -249,14 +231,6 @@ Basically two types of ratings are possible, whereby it depends on the configura
 
 Approvals and rejections are rated as `+1` and `-1` respectively, and their sum is displayed. For approvals *one* rating is enough for a checkmark ![](img/icons/check.svg){height=1em} to be displayed instead of the sum. All ratings are user related. So it is visible who has given which rating and when. Own evaluations can be removed again.
 
-## Registries
-
-A **registry** is an individual source of data about [concept schemes](#concept-schemes), [concepts](#concepts), [mappings](#mappings) etc. An example is the public [concordance registry](http://coli-conc.gbv.de/concordances/) with concordances and mappings collected in project coli-conc.
-
-Registries can be configured via the `registries` field in the [configuration](#configuration). The technical access to data from a registry is implemented via [providers](#providers).
-
-Configured mapping registries can be enabled and disabled in the mapping browser to show or hide their mappings.
-
 ## Settings
 
 A click on the user name in the [menu bar](#user-interface) opens the settings. In addition, some components can be configured with the icon ![](img/icons/gear-solid.svg){height=1em}. Since Cocoda does not manage [user accounts](#user-accounts), the settings are only stored locally in the browser. The settings are divided into different sections:
@@ -297,11 +271,7 @@ Additional vocabularies, mappings and mapping suggestions can be included in the
 
 Mass import of mappings via the web interface is so far only possible in the **L** Local database.
 
-<!--
-ToDo (Uma): briefly describe coli-rich (incl. linking) and the editorial process of registered mappings in K10plus (incl. maintenance of updates).
-- a paragraph on workflow - from creation of mappings to enrichment via coli-rich; DA and then the editorial procedures.
-- don't forget the english user manual!
--->
+<!--coli-rich-->
 
 ## Further information
 
