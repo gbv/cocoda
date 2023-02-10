@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "6ed07492154490eb199fca5e2ed3ddbfdaed1f90",
-  "gitCommitShort": "6ed07492",
-  "gitCommitMessage": "6ed07492 No more needed (manual review)",
-  "buildDate": "2023-02-10T14:09:41Z",
-  "date": "2023-02-10T14:08:54.000Z",
+  "gitCommit": "ddaea878bfb4a5b0793705d791c00356e77cf6a9",
+  "gitCommitShort": "ddaea878",
+  "gitCommitMessage": "ddaea878 No more needed (manual review)",
+  "buildDate": "2023-02-10T14:10:26Z",
+  "date": "2023-02-10T14:09:31.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
