@@ -69,15 +69,15 @@ ToDos:
 <li>Links to imprint, privacy policy, manual and feedback option</li>
 <li><img src="img/icons/trash.svg" style="height:1em" /> Trash can to view and restore last deleted mappings</li>
 <li><img src="img/icons/star.svg" style="height:1em" /> Quick selection of remembered concepts</li>
-<li><img src="img/icons/user-solid.svg" style="height:1em" /> <a href="#user-accounts">User account</a> and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving <a href="#">mappings</a> and <a href="#">ratings</a></li>
-<li><img src="img/icons/gear-solid.svg" style="height:1em" /> <a href="#">Settings</a> with quick selection of the <a href="#">database</a> into which mappings and ratings are saved</li>
+<li><img src="img/icons/user-solid.svg" style="height:1em" /> <a href="#user-accounts">User account</a> and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving <a href="#mappings">mappings</a> and <a href="#ratings">ratings</a></li>
+<li><img src="img/icons/gear-solid.svg" style="height:1em" /> <a href="#settings">Settings</a> with quick selection of the <a href="#mappings-databases">database</a> into which mappings and ratings are saved</li>
 </ul>
 <p>The rest of the screen is divided into three areas with several <strong>components</strong>:</p>
 <ul>
-<li>Components for selecting <a href="#">vocabularies and concepts</a> Left and Right.</li>
-<li>Components for selecting, creating, and editing <a href="#">mappings</a> in the middle.</li>
+<li>Components for selecting <a href="#concept-schemes-and-concepts">Concept schemes and concepts</a> Left and Right.</li>
+<li>Components for selecting, creating, and editing <a href="#mappings">mappings</a> in the middle.</li>
 </ul>
-<p>When Cocoda is started, initially only the components for <a href="#vocabularies-selection">vocabulary selection</a> are open while general notes are displayed in the center. The size of individual components can be changed with the dots or, the minimize icon hides a component. In addition, some components have icons in the lower right corner:</p>
+<p>When Cocoda is started, initially only the components for <a href="#scheme-selection">scheme selection</a> are open while general notes are displayed in the center. The size of individual components can be changed with the dots or, the minimize icon hides a component. In addition, some components have icons in the lower right corner:</p>
 <ul>
 <li>Setting the behavior of the component</li>
 <li>Detailed view of the data and sources displayed in a component</li>
@@ -91,7 +91,7 @@ ToDos:
 <li>StackExchange</li>
 <li>LDAP (only VZG internal)</li>
 </ul>
-<p>These external accounts are called <strong>Identities</strong> in Cocoda. The identity selected in each case and the corresponding username are displayed in the <a href="#user%20interface">menu bar</a> after successful login and can be changed there. Further details can be viewed in the <a href="#preferences">settings</a> under “Account”. Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:</p>
+<p>These external accounts are called <strong>Identities</strong> in Cocoda. The identity selected in each case and the corresponding username are displayed in the <a href="#user-interface">menu bar</a> after successful login and can be changed there. Further details can be viewed in the <a href="#settings">settings</a> under “Account”. Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:</p>
 <ul>
 <li>If the personal assignment of contributions is not desired, the default identity should be selected. In this case, an account identifier is used whose assignment to identities is only visible to the administrators of the mapping database at VZG. In addition, a pseudonym should be assigned as a name.</li>
 <li>If one of the other identities is selected, the user can be publicly identified by the identity URI.</li>
@@ -121,7 +121,7 @@ Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten blei
 <p>In the search field concepts can be searched for by notations or by label. It is possible to configure this component to fill in the label of the selected concept in the search field on the opposite site automatically. Some schemes offer the option to filter concepts by type: in such a case a special icon <img src="img/icons/filter.svg" style="height:1em" /> is displayed in the search field. There are shortcuts to activate the search for concepts briefly: <code>Ctrl+f</code> (left scheme) und <code>Ctrl+g</code> (right scheme).</p>
 <p>It is also possible to select concepts although there is no concept with the given notation in this scheme. This can be done by searching with a syntactically correct notation. These concepts are marked with a red dot (<span style="color: red;">•</span>).</p>
 <h3 id="concept-details">Concept details</h3>
-<p>After selecting a concept, information about the selected concept is displayed instead of <a href="#vocabularydetails">vocabulary details</a>. Besides superclasses and subclasses (if available):</p>
+<p>After selecting a concept, information about the selected concept is displayed instead of <a href="#scheme-details">vocabulary details</a>. Besides superclasses and subclasses (if available):</p>
 <!--rewrite next section after changing tab labels
 -->
 <ul>
@@ -130,7 +130,7 @@ Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten blei
 <li>Scope/Editorial: usage notes and descriptions</li>
 <li>Links: Links in other databases (Wikipedia, K0plus…).</li>
 </ul>
-<p>The star <img src="img/icons/star.svg" style="height:1em" /> adds or removes the concept from the quick selection list. The plus sign <img src="img/icons/plus-circle.svg" style="height:1em" /> is used to add the concept to the <a href="#">Mapping Editor</a>. The arrow <img src="img/icons/arrow-right.svg" style="height:1em" /> selects the next concept in the <a href="#treeview">tree view</a> or from the currently selected <a href="#listview">list</a>. For quick switching there are keyboard shortcuts <code>Alt+n</code> (left) and <code>Alt+m</code> (right) for this action.</p>
+<p>The star <img src="img/icons/star.svg" style="height:1em" /> adds or removes the concept from the quick selection list. The plus sign <img src="img/icons/plus-circle.svg" style="height:1em" /> is used to add the concept to the <a href="#mapping-editor">Mapping Editor</a>. The arrow <img src="img/icons/arrow-right.svg" style="height:1em" /> selects the next concept in the <a href="#treeview">tree view</a> or from the currently selected <a href="#listview">list</a>. For quick switching there are keyboard shortcuts <code>Alt+n</code> (left) and <code>Alt+m</code> (right) for this action.</p>
 <p><img src="img/cocoda-concdet-de.png" class="border border-dark center" style="width:55.0%" /></p>
 <h3 id="treeview">Treeview</h3>
 <p>In addition to browsing via <a href="#scheme-details">scheme details</a> and <a href="#concept-details">concept details</a> tree view <img src="img/icons/sitemap-solid.svg" style="height:1em" /> is provided for monohierarchical schemes.</p>
