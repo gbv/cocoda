@@ -35,6 +35,7 @@ Several tutorials, screencasts, and variously configured instances of Cocoda are
 Depending on the configuration of the Cocoda instance, some of the features described here may not be available.
 
 ## User Interface
+
 Firefox or Chromium is recommended as the browser and a screen with at least Full HD resolution (1920×1080). The user interface can be customized via the [settings](#settings); among other things, the language can be changed.
 
 The **menu bar** contains (depending on the configuration):
@@ -44,15 +45,15 @@ The **menu bar** contains (depending on the configuration):
 * Links to imprint, privacy policy, manual and feedback option
 * ![](img/icons/trash.svg){height=1em} Trash can to view and restore last deleted mappings
 * ![](img/icons/star.svg){height=1em} Quick selection of remembered concepts
-* ![](img/icons/user-solid.svg){height=1em} [User account](#user-accounts) and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving [mappings](#) and [ratings](#)
-* ![](img/icons/gear-solid.svg){height=1em} [Settings](#) with quick selection of the [database](#) into which mappings and ratings are saved
+* ![](img/icons/user-solid.svg){height=1em} [User account](#user-accounts) and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving [mappings](#mappings) and [ratings](#ratings)
+* ![](img/icons/gear-solid.svg){height=1em} [Settings](#settings) with quick selection of the [database](#mappings-databases) into which mappings and ratings are saved
 
 The rest of the screen is divided into three areas with several **components**:
 
-* Components for selecting [vocabularies and concepts](#) Left and Right.
-* Components for selecting, creating, and editing [mappings](#) in the middle.
+* Components for selecting [Concept schemes and concepts](#concept-schemes-and-concepts) Left and Right.
+* Components for selecting, creating, and editing [mappings](#mappings) in the middle.
 
-When Cocoda is started, initially only the components for [vocabulary selection](#vocabularies-selection) are open while general notes are displayed in the center. The size of individual components can be changed with the dots or, the minimize icon hides a component. In addition, some components have icons in the lower right corner:
+When Cocoda is started, initially only the components for [scheme selection](#scheme-selection) are open while general notes are displayed in the center. The size of individual components can be changed with the dots or, the minimize icon hides a component. In addition, some components have icons in the lower right corner:
 
 * Setting the behavior of the component
 * Detailed view of the data and sources displayed in a component
@@ -67,7 +68,7 @@ In principle, Cocoda does not manage its own user accounts. The [settings](#sett
 * StackExchange
 * LDAP (only VZG internal)
 
-These external accounts are called **Identities** in Cocoda. The identity selected in each case and the corresponding username are displayed in the [menu bar](#user interface) after successful login and can be changed there. Further details can be viewed in the [settings](#preferences) under "Account". Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:
+These external accounts are called **Identities** in Cocoda. The identity selected in each case and the corresponding username are displayed in the [menu bar](#user-interface) after successful login and can be changed there. Further details can be viewed in the [settings](#settings) under "Account". Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:
 
 * If the personal assignment of contributions is not desired, the default identity should be selected. In this case, an account identifier is used whose assignment to identities is only visible to the administrators of the mapping database at VZG. In addition, a pseudonym should be assigned as a name.
 * If one of the other identities is selected, the user can be publicly identified by the identity URI.
@@ -112,7 +113,7 @@ It is also possible to select concepts although there is no concept with the giv
 
 ### Concept details
 
-After selecting a concept, information about the selected concept is displayed instead of [vocabulary details](#vocabularydetails). Besides superclasses and subclasses (if available):
+After selecting a concept, information about the selected concept is displayed instead of [vocabulary details](#scheme-details). Besides superclasses and subclasses (if available):
 
 <!--rewrite next section after changing tab labels
 -->
@@ -123,7 +124,7 @@ After selecting a concept, information about the selected concept is displayed i
 * Links: Links in other databases (Wikipedia, K0plus...).
 
 The star ![](img/icons/star.svg){height=1em} adds or removes the concept from the quick selection list.
-The plus sign ![](img/icons/plus-circle.svg){height=1em} is used to add the concept to the [Mapping Editor](#).
+The plus sign ![](img/icons/plus-circle.svg){height=1em} is used to add the concept to the [Mapping Editor](#mapping-editor).
 The arrow ![](img/icons/arrow-right.svg){height=1em} selects the next concept in the [tree view](#treeview) or from the currently selected [list](#listview). For quick switching there are keyboard shortcuts `Alt+n` (left) and `Alt+m` (right) for this action.
 
 ![](img/cocoda-concdet-de.png){width=55% .border .border-dark .center}
@@ -139,6 +140,7 @@ In addition to browsing via [scheme details](#scheme-details) and [concept detai
 Instead of the tree view, a popup ![](img/icons/angle-up-solid.svg){height=1em} can be used to select the list of quick selection concepts ![](img/icons/star.svg){height=1em} and, depending on the configuration, additional concept lists ![](img/icons/list-solid.svg){height=1em}. Additional lists are updated only by reloading them with the refresh icon ![](img/icons/sync-alt-solid.svg){height=1em}.
 
 ## Mappings
+
 The main task of Cocoda is to create, edit, search and evaluate mappings. A mapping is a directed connection between a concept and one or more concepts from another vocabulary. To select, create and edit mappings, two components are provided in the center of the user interface:
 
 * [mapping editor](#mapping-editor) for creating and editing mappings.
@@ -248,6 +250,7 @@ Basically two types of ratings are possible, whereby it depends on the configura
 Approvals and rejections are rated as `+1` and `-1` respectively, and their sum is displayed. For approvals *one* rating is enough for a checkmark ![](img/icons/check.svg){height=1em} to be displayed instead of the sum. All ratings are user related. So it is visible who has given which rating and when. Own evaluations can be removed again.
 
 ## Registries
+
 A **registry** is an individual source of data about [concept schemes](#concept-schemes), [concepts](#concepts), [mappings](#mappings) etc. An example is the public [concordance registry](http://coli-conc.gbv.de/concordances/) with concordances and mappings collected in project coli-conc.
 
 Registries can be configured via the `registries` field in the [configuration](#configuration). The technical access to data from a registry is implemented via [providers](#providers).
@@ -259,12 +262,12 @@ Configured mapping registries can be enabled and disabled in the mapping browser
 A click on the user name in the [menu bar](#user-interface) opens the settings. In addition, some components can be configured with the icon ![](img/icons/gear-solid.svg){height=1em}. Since Cocoda does not manage [user accounts](#user-accounts), the settings are only stored locally in the browser. The settings are divided into different sections:
 
 * Account: Identity for storing [mappings](#mappings) and [ratings](#ratings).
-* Data Sources: Overview of all available [data sources].
-* Interface: settings for the [user interface] like the language
+* Data Sources: Overview of all available [data sources](#data-sources).
+* Interface: settings for the [user interface](#user-interface) like the language
 * Keyboard shortcuts: available keyboard shortcuts
 * My data: Import and export mappings
 
-[menu bar]: #userinterface
+[menu bar]: #user-interface
 
 ## Data sources
 
@@ -274,7 +277,7 @@ Cocoda, as a pure web application, accesses all information via web interfaces (
 
 [database]: #mapping-databases
 
-Mapping databases are used to store [mappings] and [ratings]. The database selected in each case is highlighted and can be selected via the settings or by clicking on the name of the database in the mapping browser. Most instances contain these databases:
+Mapping databases are used to store [mappings](#mappings) and [ratings](#ratings). The database selected in each case is highlighted and can be selected via the settings or by clicking on the name of the database in the mapping browser. Most instances contain these databases:
 
 * **L** Local: Mappings are stored in the browser.
 * **C** Concordance register: public database of all mappings and assessments collected in the coli-conc project.
