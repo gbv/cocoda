@@ -16,6 +16,11 @@ ToDos:
   - ![](img/cocoda-classdet-en.png)
   - ![](img/cocoda-concdet-en.png)
   - ![](img/cocoda-conctree-en.png)
+  - ![](img/cocoda-mappingeditor-en.png)
+  - ![](img/cocoda-settings-layout-en.png)
+  - ![](img/cocoda-settings-keysho-en.png)
+  - ![](img/cocoda-settings-datsor-en.png)
+  - ![](img/cocoda-settings-locmap-en.png)
 -->
 
 ## Introduction
@@ -134,35 +139,113 @@ In addition to browsing via [scheme details](#scheme-details) and [concept detai
 Instead of the tree view, a popup ![](img/icons/angle-up-solid.svg){height=1em} can be used to select the list of quick selection concepts ![](img/icons/star.svg){height=1em} and, depending on the configuration, additional concept lists ![](img/icons/list-solid.svg){height=1em}. Additional lists are updated only by reloading them with the refresh icon ![](img/icons/sync-alt-solid.svg){height=1em}.
 
 ## Mappings
-The central part of the user interface shows multiple cards to create, modify, browse, and evaluate mappings. A **mapping** is a directed connection between one concepts and one or more concepts from another concept scheme (more complex mappings may be supported in a later release).
+The main task of Cocoda is to create, edit, search and evaluate mappings. A mapping is a directed connection between a concept and one or more concepts from another vocabulary. To select, create and edit mappings, two components are provided in the center of the user interface:
 
-Mappings can be managed with:
+* [mapping editor](#mapping-editor) for creating and editing mappings.
+* Mapping browser consisting of areas for [concordances](#concordances), [search](#mapping-search) and [navigator](#mapping-navigator) for searching, browsing and rating mappings and searching for mapping suggestions.
 
-* a **mapping editor** to create and modify individual mappings
-
-* a **mapping browser** that lists existing mappings (from local storage or a mapping provider) as well as mapping recommendations (currently occurrences and co-occurrences of selected concepts)
+Mappings can also be assigned [ratings](#ratings) depending on the configuration. Mappings and ratings can be stored in different [mapping databases](#mapping-databases).
 
 ### Mapping Editor
 
-To add a concept to the mapping, you first have to select the concept (by clicking on it in the tree view, detail view, or anywhere else) and then clicking the plus (+) button on the bottom of the mapping editor (alternatively you can click the (+) button next to the concept in the detail card). You can also quickly add concepts from the tree view by clicking on the small plus button on the right of the concepts. Additionally, you can just drag and drop concepts into the Mapping Editor. In the middle of the mapping editor, you can choose the type of the mapping (exact match, close match, broader match, narrower match, related match, or mapping relation). At the bottom of the card, there are different action buttons for saving a mapping, deleting a mapping, clearing the editor, and exporting the mapping (in that order). The faint background of the card depicts whether the current mapping is saved (green) or not yet saved (red). As of now, you can only save a mapping locally in your browser. In the future, you will be able to authenticate and contribute mappings to a database.
+The mapping editor is used for detailed editing of a mapping. For this purpose, concepts can be dragged and dropped into the mapping editor or taken over from the left or right side with the plus icon ![](img/icons/plus-circle.svg){height=1em}. There are also keyboard shortcuts (`Ctrl+a` or `Ctrl+d`) for taking over the respective selected concept. With the cross ![](img/icons/times-circle.svg){height=1em} a concept can be removed again.
 
-![](img/cocoda-mappingeditor-en.png)
+In the editor settings ![](img/icons/gear-solid.svg){height=1em} you can specify that only 1-to-1 mappings are allowed; otherwise a concept can also be mapped to a combination of several target concepts (AND operation). For multiple alternative target concepts (OR-link), multiple mappings should be created instead. Furthermore, null mappings are possible if a concept has no equivalent in the target vocabulary.
 
-### Mapping Browser
+![](img/cocoda-mappingeditor1-en.png){.border .border-dark}
 
-The mapping browser shows existing mappings as well as mapping recommendations for selected concepts from the source and target schemes. At the top of the card, it is possible to select and deselect different sources. Currently available are:
+In the middle of the editor, the type of mapping can be selected. The following **mapping types** are available for selection:
 
-- Local: mappings saved in local storage.
-- Registry: the Coli-conc registry which contains all mappings listed [here](http://coli-conc.gbv.de/concordances/).
-- Occurrences: mapping recommendations based on occurrences and co-occurrences of the selected concepts with other concepts from a library catalog. Right now, it takes the data from the [GVK](https://gso.gbv.de/), but in the future it will be possible to choose from several catalogs. Clicking on the number of occurrences will open a link to the catalog.
+* **=** exact match: same meaning.
+* **≈** close match: same general idea but not fully identical meaning
+* **>** more general meaning (e.g., superior to inferior).
+* **<** more specific meaning (e.g., part-whole relationship).
+* **~** related, associative linkage.
+* **→** general mapping relation with unknown meaning context.
 
-<!--By default, it will show mappings to/from all schemes no matter which scheme is selected on the other side, but you can restrict this by changing the option in the bottom right from "Show All Mappings" to "Show Only Mappings to Selected Scheme". -->
+On the bottom right, depending on the authorization, a concordance can be selected into which the mapping should be saved. At the bottom left, it is shown if and in which [database](#mapping-databases) a mapping has been saved or should be saved. At the bottom of the editor the following actions are available:
 
-For each mapping or mapping recommendation, there are some available actions on the right of each row:
-- Edit: saves the mapping or recommendation to local storage and loads it into MappingEditor for editing.
-- Save: saves the mapping or recommendation to local storage (not available for local mappings or if it's already in local storage).
-- Delete: deletes a mapping (currently only available for local mappings).
+* **±0** Evaluate mapping
+* ![](img/icons/exchange.svg){height=1em} swap source and target of mapping
+* ![](img/icons/save.svg){height=1em} save mapping (keyboard shortcut `Ctrl+s`)
+* ![](img/icons/trash.svg){height=1em} delete mapping
+* ![](img/icons/clone-solid.svg){height=1em} duplicate mapping to create a new mapping with the same content
+* ![](img/icons/ban.svg){height=1em} empty mapping to create a new mapping (`Ctrl+Shift+c`)
 
+After saving, the editor will be emptied to avoid overwriting the saved mapping; this behavior can be changed in the editor settings ![](img/icons/gear-solid.svg){height=1em}.
+
+If mapping hints are configured for the selected source and target vocabulary combinations, they will be accessible via a help info ![](img/icons/question-circle.svg){height=1em}
+can be called.
+
+### Concordances
+
+The first pane of the Mapping Browser component lists concordances where mappings have been collected in a coordinated fashion.^[See also <http://coli-conc.gbv.de/concordances/> for an overview] The concordances can be filtered by source and target vocabulary and by publisher. The link icon ![](img/icons/external-link-square.svg){height=1em} opens the [mapping search] with filter on the respective concordance. Depending on the permission, new concordances can be created with ![](img/icons/square-plus-solid.svg){height=1em} and edited with ![](img/icons/pen-to-square-solid.svg){height=1em}. With the info icon ![](img/icons/info-circle.svg){height=1em} you get all information about the concordance.
+
+![](img/cocoda-mapping-browser-con-en.png){width=100% .border .border-dark}
+
+<!--
+Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
+
+- Mapping-Details anzeigen: zeigt Mapping-Details an
+- Bearbeiten: holt das Mapping in den Mapping-Editor
+- Speichern: speichert das Mapping in die ausgewählte Datenbank
+- Löschen löscht eigene Mappings
+
+Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
+
+Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
+-->
+
+### Mapping Search
+
+The mapping search provides a meta search for mappings in existing [data sources](#data-sources). The following filters can be specified in the first line of the search form:
+
+* source vocabulary
+* source notation or URI
+* target vocabulary
+* target notation or URI
+
+Vocabularies and concepts can also be dragged and dropped into the search fields.
+
+The lock icon ![](img/icons/lock-solid.svg){height=1em} or ![](img/icons/lock-open-solid.svg){height=1em} can be used to specify that the source or target vocabulary selected via [sheme selection](#scheme-selection) should always be used automatically. The filter icon ![](img/icons/filter.svg){height=1em} offers further search options:
+
+* Author/Author
+* Mapping type
+* Bidirectional search (search source and target also interchanged)
+* Cardinality
+* Rating
+* Concordance
+* [Mapping databases](#mapping-databases) to be searched in
+
+If the search returns no or too few results, it may be that too many filters are set. The Clear button ![](img/icons/ban.svg){height=1em} resets all filters. The share icon ![](img/icons/share-alt-square-solid.svg){height=1em} contains the URL to the current search to bookmark or share it.
+
+The mapping search results list is divided by data source and corresponds to the view in the Mapping Navigator. The individual sources can be shown or hidden by clicking on their name.
+
+### Mapping Navigator
+
+In the Mapping Navigator, mappings and mapping suggestions from various data sources are displayed that match the concepts selected on the left or right. For which concepts and vocabularies mappings should be considered in the navigator can be defined in the settings. The individual data sources can be shown or hidden by clicking on their abbreviations. Data sources that can be written to are marked with a pen ![](img/icons/pencil-alt-solid.svg){height=1em}. For each mapping or mapping suggestion are displayed:
+
+* Source vocabulary and concept.
+* mapping type
+* Target vocabulary and concept
+* Created by whom and when
+
+As well as depending on the settings:
+
+* [ratings](#ratings)
+* ![](img/icons/edit.svg){height=1em} Edit mapping
+* ![](img/icons/trash.svg){height=1em} delete mapping
+* ![](img/icons/info-circle.svg){height=1em} detail information about the mapping or suggestion
+* ![](img/icons/clone-solid.svg){height=1em} copy suggestion to mapping editor
+
+### Ratings
+
+Basically two types of ratings are possible, whereby it depends on the configuration who can give which ratings:
+
+* Rating by approval ![](img/icons/thumbs-up.svg){height=1em} or disagreement ![](img/icons/thumbs-down.svg){height=1em}
+* Evaluation by confirmation ![](img/icons/check.svg){height=1em} (usually only for selected accounts).
+
+Approvals and rejections are rated as `+1` and `-1` respectively, and their sum is displayed. For approvals *one* rating is enough for a checkmark ![](img/icons/check.svg){height=1em} to be displayed instead of the sum. All ratings are user related. So it is visible who has given which rating and when. Own evaluations can be removed again.
 
 ## Registries
 A **registry** is an individual source of data about [concept schemes](#concept-schemes), [concepts](#concepts), [mappings](#mappings) etc. An example is the public [concordance registry](http://coli-conc.gbv.de/concordances/) with concordances and mappings collected in project coli-conc.
@@ -171,20 +254,54 @@ Registries can be configured via the `registries` field in the [configuration](#
 
 Configured mapping registries can be enabled and disabled in the mapping browser to show or hide their mappings.
 
-
 ## Settings
-In the settings at the tab 'Layout' you can change the handling of the site or the language.
 
-![](img/cocoda-settings-layout-en.png)
+A click on the user name in the [menu bar](#user-interface) opens the settings. In addition, some components can be configured with the icon ![](img/icons/gear-solid.svg){height=1em}. Since Cocoda does not manage [user accounts](#user-accounts), the settings are only stored locally in the browser. The settings are divided into different sections:
 
-At the tab 'Keyboard Shortcuts' you can check out keyboard-shortcuts 
+* Account: Identity for storing [mappings](#mappings) and [ratings](#ratings).
+* Data Sources: Overview of all available [data sources].
+* Interface: settings for the [user interface] like the language
+* Keyboard shortcuts: available keyboard shortcuts
+* My data: Import and export mappings
 
-![](img/cocoda-settings-keysho-en.png)
+[menu bar]: #userinterface
 
-At the tab 'Data Sources' you can get an overview of all sources of the cocoda-data
+## Data sources
 
-![](img/cocoda-settings-datsor-en.png)
+Cocoda, as a pure web application, accesses all information via web interfaces (APIs). The data and API calls are each accessible via the source code icon ![](img/icons/code.svg){height=1em}. The data sources configured per instance can be viewed in the settings.
 
-At the tab 'Local Mappings' you can upload, download delete and rewrite the creator of the local mappings (Local Mappings are only saved in your browser).
+### Mapping databases
 
-![](img/cocoda-settings-locmap-en.png)
+[database]: #mapping-databases
+
+Mapping databases are used to store [mappings] and [ratings]. The database selected in each case is highlighted and can be selected via the settings or by clicking on the name of the database in the mapping browser. Most instances contain these databases:
+
+* **L** Local: Mappings are stored in the browser.
+* **C** Concordance register: public database of all mappings and assessments collected in the coli-conc project.
+* **W** Wikidata mappings: read and write access to mappings in Wikidata.
+
+### Other data sources
+
+Vocabularies and mapping suggestions can be included in a Cocoda instance via JSKOS API, via Skosmos API and via OpenRefine Reconciliation API. Adding additional data sources via the user interface is not possible yet.
+
+### Export and import
+
+[JSKOS]: https://gbv.github.io/jskos/jskos.html
+
+To export data from Cocoda, use the source icon ![](img/icons/code.svg){height=1em}. The [JSKOS] data can be downloaded in various formats such as CSV and JSON. Partial API calls are also available to retrieve the data.
+
+Additional vocabularies, mappings and mapping suggestions can be included in the application by configuring a Cocoda instance accordingly. Please contact us if you have any questions about this (<http://coli-conc.gbv.de/contact/>).
+
+Mass import of mappings via the web interface is so far only possible in the **L** Local database.
+
+<!--
+ToDo (Uma): briefly describe coli-rich (incl. linking) and the editorial process of registered mappings in K10plus (incl. maintenance of updates).
+- a paragraph on workflow - from creation of mappings to enrichment via coli-rich; DA and then the editorial procedures.
+- don't forget the english user manual!
+-->
+
+## Further information
+
+More information, tutorials, screencasts and more can be found via the project homepage <https://coli-conc.gbv.de/>. For questions and feedback about the software, it is best to use the [GitHub IssueTracker](https://github.com/gbv/cocoda/issues).
+
+The icons used in Cocoda are from [fontawesome](https://fontawesome.com/) and licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
