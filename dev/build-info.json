@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "43107ccc6b481afbd1c7b358523e609191775816",
-  "gitCommitShort": "43107ccc",
-  "gitCommitMessage": "43107ccc Minor changes",
-  "buildDate": "2023-02-13T11:34:25Z",
-  "date": "2023-02-13T11:33:32.000Z",
+  "gitCommit": "035f317878176e38bc00e7f4c79488690971f8a7",
+  "gitCommitShort": "035f3178",
+  "gitCommitMessage": "035f3178 Delete file to uplode corrected file",
+  "buildDate": "2023-02-13T12:26:27Z",
+  "date": "2023-02-13T12:25:31.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
