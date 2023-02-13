@@ -131,6 +131,30 @@
           </b-button>
         </router-link>
       </div>
+      <!-- Content tabs (Content, Translations) -->
+      <template v-for="([languageList, tabTitle], tabIndex) in [[mainLanguages, $t('conceptDetail.mainTab')], [additionalLanguages, $t('conceptDetail.additionalLanguagesTab')]].filter(([languages]) => languages.length)">
+        <tab
+          :key="tabIndex"
+          :title="tabTitle">
+          <template v-for="{ title, languageMap, isArray } in content.filter(part => languageList.find(language => part.languageMap[language]))">
+            <div
+              :key="title"
+              style="margin-bottom: 8px;">
+              <template v-for="language in languageList.filter(language => languageMap[language])">
+                <div
+                  v-for="(text, index) in isArray ? languageMap[language] : [languageMap[language]]"
+                  :key="`${language}-${index}`"
+                  class="conceptDetail-identifier">
+                  <span @click="copyAndSearch(text)">
+                    {{ text }}
+                  </span>
+                  <sup class="text-lightGrey">{{ title }} - {{ language }}</sup>
+                </div>
+              </template>
+            </div>
+          </template>
+        </tab>
+      </template>
       <!-- URI and identifier -->
       <tab :title="$t('conceptDetail.info')">
         <div
@@ -175,59 +199,6 @@
           </div>
         </template>
       </tab>
-      <tab :title="$t('conceptDetail.labels')">
-        <div
-          v-for="({ language, label }) in Object.keys(item.prefLabel || {}).map(language => ({ language, label: item.prefLabel[language] })).filter(item => item.language != '-').sort(sortByLanguage)"
-          :key="`conceptDetail-${isLeft}-prefLabel-${language}`"
-          class="conceptDetail-identifier">
-          <span
-            class="fontWeight-medium"
-            @click="copyAndSearch(label)">
-            {{ label }}
-          </span>
-          <sup class="text-lightGrey">{{ language }}</sup>
-        </div>
-        <!-- Explanation:
-            1. Get all language keys for altLabels (Object.keys)
-            2. Create objects in the form { language, label } (map)
-            3. Flatten the array (reduce)
-            4. Filter `-` language (filter)
-            5. Sort current language higher (sort)
-           -->
-        <div
-          v-if="$jskos.languageMapContent(item, 'altLabel')"
-          class="fontWeight-heavy"
-          style="margin-top: 10px;">
-          {{ $t("conceptDetail.altLabels") }}:
-        </div>
-        <div
-          v-for="({ language, label }, index) in Object.keys(item.altLabel || {}).map(language => item.altLabel[language].map(label => ({ language, label }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort(sortByLanguage)"
-          :key="`conceptDetail-${isLeft}-altLabel-${language}-${index}`"
-          class="conceptDetail-identifier">
-          <span @click="copyAndSearch(label)">
-            {{ label }}
-          </span>
-          <sup class="text-lightGrey">{{ language }}</sup>
-        </div>
-      </tab>
-      <!-- GND terms, scopeNotes, editorialNotes -->
-      <template
-        v-for="([notes, title], index) in [[{ de: gndTerms }, $t('conceptDetail.gnd')], [item.scopeNote, $t('conceptDetail.scope')], [item.editorialNote, $t('conceptDetail.editorial')]].filter(item => Object.values(item[0] || {}).reduce((prev, cur) => prev + cur.length, 0) > 0)">
-        <!-- TODO: Adjust this as soon as cocoda-vue-tabs has the option to hide tabs -->
-        <tab
-          :key="`conceptDetail-${isLeft}-notes-${index}`"
-          :title="title"
-          :hidden="notes == ''"
-          class="conceptDetail-notes">
-          <div
-            v-for="({ language, note }, index2) in Object.keys(notes || {}).map(language => notes[language].map(note => ({ language, note }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort(sortByLanguage)"
-            :key="`conceptDetail-${isLeft}-notes-${language}-${index2}`"
-            class="conceptDetail-note">
-            <span v-html="note" />
-            <sup class="text-lightGrey"> {{ language }}</sup>
-          </div>
-        </tab>
-      </template>
       <!-- coli-ana (see https://github.com/gbv/cocoda/issues/524) -->
       <tab
         v-if="memberList && memberList.length"
@@ -421,7 +392,7 @@ export default {
       let gndTerms = []
       let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow", "conceptDetail.relevanceGeneric"]
       for (let relevance of relevanceOrder) {
-        let term = `<strong>${this.$t("conceptDetail.relevance")}: ${this.$t(relevance)}</strong> - `
+        let term = ""
         let terms = []
         for (let { concept } of concepts.filter(c => c.type.RELEVANCE == this.$t(relevance, "en"))) {
           if (concept && (this.$jskos.prefLabel(concept, { fallbackToUri: false }))) {
@@ -447,6 +418,75 @@ export default {
         return []
       }
       return [this.item].concat(this.item.ancestors || [], this.item.broader || []).filter(concept => concept != null)
+    },
+    // Content to be shown under "Concept" and "Translations" tabs
+    content() {
+      const content = [
+        {
+          title: this.$t("conceptDetail.prefLabel"),
+          prop: "prefLabel",
+          languageMap: this.item.prefLabel,
+        },
+        {
+          title: this.$t("conceptDetail.altLabel"),
+          prop: "altLabel",
+          languageMap: this.item.altLabel,
+          isArray: true,
+        },
+        {
+          title: this.$t("conceptDetail.gnd"),
+          languageMap: this.gndTerms.length ? { de: this.gndTerms } : null,
+          isArray: true,
+        },
+        {
+          title: this.$t("conceptDetail.scope"),
+          prop: "scopeNote",
+          languageMap: this.item.scopeNote,
+          isArray: true,
+        },
+        {
+          title: this.$t("conceptDetail.editorial"),
+          prop: "editorialNote",
+          languageMap: this.item.editorialNote,
+          isArray: true,
+        },
+      ]
+      return content.filter(part => part.languageMap && Object.keys(part.languageMap).length)
+    },
+    // All available content languages
+    allLanguages() {
+      const props = this.content.map(part => part.prop).filter(Boolean)
+      const languageSet = new Set()
+      for (let prop of props) {
+        Object.keys(this.item[prop] ?? {}).forEach(key => languageSet.add(key))
+      }
+      return Array.from(languageSet).filter(language => language !== "-")
+    },
+    // Main languages for content to be shown under Concept tab; usually selected language + English
+    mainLanguages() {
+      const props = this.content.map(part => part.prop).filter(Boolean)
+      let language
+      for (let prop of props) {
+        language = this.$jskos.languagePreference.selectLanguage(this.item[prop])
+        if (language) {
+          break
+        }
+      }
+      const languages = []
+      if (language) {
+        languages.push(language)
+      }
+      if (language !== "en" && this.allLanguages.includes("en")) {
+        languages.push("en")
+      }
+      if (languages.length === 0) {
+        languages.push(this.$jskos.languagePreference.getLanguages()?.[0])
+      }
+      return languages
+    },
+    // Additional languages for content to be shown under Translations tab; allLanguages minus mainLanguages
+    additionalLanguages() {
+      return this.allLanguages.filter(language => !this.mainLanguages.includes(language))
     },
   },
   watch: {
