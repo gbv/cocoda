@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "e660882a3cfdf90d28ec6ffbaadffe6aa5309b5e",
-  "gitCommitShort": "e660882a",
-  "gitCommitMessage": "e660882a Restructure ConceptDetails (#701)",
-  "buildDate": "2023-02-13T12:55:30Z",
-  "date": "2023-02-13T12:54:24.000Z",
+  "gitCommit": "f59d0a4bbb38d6d94270ac8a09057c8dcd0959f1",
+  "gitCommitShort": "f59d0a4b",
+  "gitCommitMessage": "f59d0a4b Remove KonSys Mappings from default config",
+  "buildDate": "2023-02-13T13:20:21Z",
+  "date": "2023-02-13T13:18:58.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
