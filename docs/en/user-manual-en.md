@@ -9,7 +9,7 @@ ToDos:
 
 ## Introduction
 
-This manual gives a brief introduction to the main components of Cocoda. The web application for creating and managing mappings between knowledge organization systems (classifications, standards data, thesauri...) is maintained as part of the [coli-conc project](https://coli-conc.gbv.de/) at the [Head Office of the GBV Common Library Network (VZG)](https://en.gbv.de/). Cocoda use cases range from mapping own classifications to more established vocabularies, to creating mappings to improve retrieval in catalogs and discovery systems, to collecting mappings in Wikidata as a central hub for standards data.
+This manual gives a brief introduction to the main components of Cocoda. The web application for creating and managing mappings between knowledge organization systems (classifications, authorities, thesauri...) is maintained as part of the [coli-conc project](https://coli-conc.gbv.de/) at the [Head Office of the GBV Common Library Network (VZG)](https://en.gbv.de/). Cocoda use cases range from mapping own classifications to more established vocabularies, to creating mappings to improve retrieval in catalogs and discovery systems, to collecting mappings in Wikidata as a central hub for authorities.
 
 Several tutorials, screencasts, and variously configured instances of Cocoda are linked at <https://coli-conc.gbv.de/cocoda/>, including:
 
@@ -59,7 +59,7 @@ These external accounts are called **Identities** in Cocoda. The identity select
 
 ![](img/cocoda-login-select-identity-en.png){width=50% .border .border-dark}
 
-If mappings should not be publicly viewable at all, mappings can also be saved locally in your own browser without login. However, this feature is disabled in some Cocoda instances for the sake of clarity.
+If mappings should not be publicly viewable at all, mappings can also be saved locally in the own browser without login. However, this feature is disabled in some Cocoda instances for the sake of clarity.
 
 <!--
 Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
