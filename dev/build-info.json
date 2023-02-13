@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "104449e4b0f2b28dc81333e3f0f8ae29c6c58eb3",
-  "gitCommitShort": "104449e4",
-  "gitCommitMessage": "104449e4 Delete old Screenshot to replace it",
-  "buildDate": "2023-02-13T11:24:22Z",
-  "date": "2023-02-13T11:23:13.000Z",
+  "gitCommit": "b8e5881b5a7e861cfd14e23f37e84f9a21abb4eb",
+  "gitCommitShort": "b8e5881b",
+  "gitCommitMessage": "b8e5881b Upload new Screenshot",
+  "buildDate": "2023-02-13T11:24:54Z",
+  "date": "2023-02-13T11:24:02.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
