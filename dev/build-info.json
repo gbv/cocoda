@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "f743e7e110ad64c405266d83845698ce159488e8",
-  "gitCommitShort": "f743e7e1",
-  "gitCommitMessage": "f743e7e1 Upload new Screenshot",
-  "buildDate": "2023-02-13T12:26:57Z",
-  "date": "2023-02-13T12:26:06.000Z",
+  "gitCommit": "e660882a3cfdf90d28ec6ffbaadffe6aa5309b5e",
+  "gitCommitShort": "e660882a",
+  "gitCommitMessage": "e660882a Restructure ConceptDetails (#701)",
+  "buildDate": "2023-02-13T12:55:30Z",
+  "date": "2023-02-13T12:54:24.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
