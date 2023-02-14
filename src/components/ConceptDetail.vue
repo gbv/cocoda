@@ -132,25 +132,18 @@
         </router-link>
       </div>
       <!-- Content tabs (Content, Translations) -->
-      <template v-for="([languageList, tabTitle], tabIndex) in [[mainLanguages, $t('conceptDetail.mainTab')], [additionalLanguages, $t('conceptDetail.additionalLanguagesTab')]].filter(([languages]) => languages.length)">
+      <template v-for="([contentMap, tabTitle], tabIndex) in [[mainLanguagesContentMap, $t('conceptDetail.mainTab')], [additionalLanguagesContentMap, $t('conceptDetail.additionalLanguagesTab')]].filter(([contentMap]) => Object.keys(contentMap).length)">
         <tab
           :key="tabIndex"
           :title="tabTitle">
-          <template v-for="{ title, languageMap, isArray } in content.filter(part => languageList.find(language => part.languageMap[language]))">
+          <template v-for="({ sources, languages, margin }, text, index) in contentMap">
             <div
-              :key="title"
-              style="margin-bottom: 8px;">
-              <template v-for="language in languageList.filter(language => languageMap[language])">
-                <div
-                  v-for="(text, index) in isArray ? languageMap[language] : [languageMap[language]]"
-                  :key="`${language}-${index}`"
-                  class="conceptDetail-identifier">
-                  <span @click="copyAndSearch(text)">
-                    {{ text }}
-                  </span>
-                  <sup class="text-lightGrey">{{ title }} - {{ language }}</sup>
-                </div>
-              </template>
+              :key="index"
+              :style="`margin-bottom: ${margin ? 8 : 0}px;`">
+              <span @click="copyAndSearch(text)">
+                {{ text }}
+              </span>
+              <sup class="text-lightGrey">{{ sources.join(", ") }}; {{ languages.join(", ") }}</sup>
             </div>
           </template>
         </tab>
@@ -488,6 +481,12 @@ export default {
     additionalLanguages() {
       return this.allLanguages.filter(language => !this.mainLanguages.includes(language))
     },
+    mainLanguagesContentMap() {
+      return this.contentMapByLanguages(this.mainLanguages)
+    },
+    additionalLanguagesContentMap() {
+      return this.contentMapByLanguages(this.additionalLanguages)
+    },
   },
   watch: {
     // TODO: Can we watch `uri` directly?
@@ -669,6 +668,40 @@ export default {
         return 1
       }
       return aIndex - bIndex
+    },
+    contentMapByLanguages(languages) {
+      const contentMap = {}
+      let lastOfSecion
+      for (const { title, languageMap, isArray } of this.content) {
+        for (let language of languages) {
+          if (!languageMap[language]) {
+            continue
+          }
+          const array = isArray ? languageMap[language] : [languageMap[language]]
+          if (!array.length) {
+            continue
+          }
+          for (let text of array) {
+            if (!contentMap[text]) {
+              lastOfSecion = contentMap[text] = {
+                sources: new Set(),
+                languages: new Set(),
+              }
+            }
+            contentMap[text].sources.add(title)
+            contentMap[text].languages.add(language)
+          }
+        }
+        if (lastOfSecion) {
+          lastOfSecion.margin = true
+        }
+      }
+      // Convert all sets into arrays
+      Object.values(contentMap).forEach(value => {
+        value.sources = Array.from(value.sources)
+        value.languages = Array.from(value.languages)
+      })
+      return contentMap
     },
   },
 }
