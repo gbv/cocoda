@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "f59d0a4bbb38d6d94270ac8a09057c8dcd0959f1",
-  "gitCommitShort": "f59d0a4b",
-  "gitCommitMessage": "f59d0a4b Remove KonSys Mappings from default config",
-  "buildDate": "2023-02-13T13:20:21Z",
-  "date": "2023-02-13T13:18:58.000Z",
+  "gitCommit": "afc62020309986bdebb06224ea18448a0c75d2ad",
+  "gitCommitShort": "afc62020",
+  "gitCommitMessage": "afc62020 ConceptDetails: Improve Concept/Translations tab (#701)",
+  "buildDate": "2023-02-14T08:48:26Z",
+  "date": "2023-02-14T08:47:07.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
