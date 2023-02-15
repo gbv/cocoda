@@ -449,7 +449,7 @@ export default {
       return this.selected.scheme[false]
     },
     currentGuidelines() {
-      return (this.config.guidelines || []).find(g => this.$jskos.compare(g.fromScheme, this.selected.scheme[true]) && this.$jskos.compare(g.toScheme, this.selected.scheme[false]))
+      return (this.config.guidelines || []).find(g => this.$jskos.compare(g.fromScheme, getItem(this.selected.scheme[true])) && this.$jskos.compare(g.toScheme, getItem(this.selected.scheme[false])))
     },
   },
   watch: {
