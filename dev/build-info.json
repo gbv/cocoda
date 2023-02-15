@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "afc62020309986bdebb06224ea18448a0c75d2ad",
-  "gitCommitShort": "afc62020",
-  "gitCommitMessage": "afc62020 ConceptDetails: Improve Concept/Translations tab (#701)",
-  "buildDate": "2023-02-14T08:48:26Z",
-  "date": "2023-02-14T08:47:07.000Z",
+  "gitCommit": "9ae84605abce1b18b9422883646e9686a4ca0f05",
+  "gitCommitShort": "9ae84605",
+  "gitCommitMessage": "9ae84605 Fix guideline icon in MappingEditor (#702)",
+  "buildDate": "2023-02-15T08:49:21Z",
+  "date": "2023-02-15T08:47:59.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
