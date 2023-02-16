@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "9ae84605abce1b18b9422883646e9686a4ca0f05",
-  "gitCommitShort": "9ae84605",
-  "gitCommitMessage": "9ae84605 Fix guideline icon in MappingEditor (#702)",
-  "buildDate": "2023-02-15T08:49:21Z",
-  "date": "2023-02-15T08:47:59.000Z",
+  "gitCommit": "0290d608643c1f187b1e3f8091b341d0e9714cf2",
+  "gitCommitShort": "0290d608",
+  "gitCommitMessage": "0290d608 MappingBrowser: Support mappings embedded in concept data (#620)",
+  "buildDate": "2023-02-16T09:39:30Z",
+  "date": "2023-02-16T09:38:13.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
