@@ -814,11 +814,77 @@ export default {
       }
       return groups
     },
+    embeddedMappings() {
+      const mappings = [].concat(...[true, false].map(side => getItem(this.selected.concept[side])?.mappings || []))
+      loadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
+      // Only return mappings where both fromScheme and toScheme are supported; also load concept data
+      return mappings.filter(mapping => {
+        const fromScheme = getItem(mapping.fromScheme)
+        const toScheme = getItem(mapping.toScheme)
+        // Filter out mappings with unsupported schemes and where both sides match
+        if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
+          return false
+        }
+        this.adjustMapping(mapping)
+        // Load concept data for both sides
+        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
+        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
+        return true
+      })
+    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
     navigatorSections() {
-      return this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-")
+      // Add embedded mapping section if they exist
+      let results = this.resultsToSections(this.navigatorResults, this.navigatorPages, this.navigatorLoading, "mappingNavigator-")
+      if (this.embeddedMappings.length) {
+        const section = {}
+        const registry = {
+          uri: "internal:embedded-mappings",
+          prefLabel: {
+            en: "Embedded Mappings",
+            de: "Enthaltene Mappings",
+          },
+          definition: {
+            en: ["Mappings that are embedded directly in the concept data."],
+            de: ["Mappings, die direkt in den Konzeptdaten enthalten sind."],
+          },
+          randomId: this.generateID(),
+          stored: true,
+          // ? Do we need this elsewhere?
+          readonly: true,
+          isAuthorizedFor() { return false },
+        }
+        section.id = registry.uri
+        section.registry = registry
+        section.page = 1
+        section.totalCount = this.embeddedMappings.length
+        section.items = this.embeddedMappings.map(mapping => {
+          let item = { mapping, registry }
+          item.sourceScheme = _.get(mapping, "fromScheme") || undefined
+          item.targetScheme = _.get(mapping, "toScheme") || undefined
+          item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
+          item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
+          // Save concepts as xLabels attribute as well
+          item.sourceConceptsLong = item.sourceConcepts
+          item.targetConceptsLong = item.targetConcepts
+          item._rowClass = ""
+          item.source = "Embedded Mappings"
+          item.sourceShort = "embedded"
+          item.type = this.$jskos.mappingTypeByType(mapping.type)
+          // Generate unique ID from mapping JSON and registry URI as helper
+          item.uniqueId = this.hash("mappingNavigator-" + registry.uri + JSON.stringify(_.omit(this.$jskos.copyDeep(mapping))))
+          item.extra = { date: mapping.modified || mapping.created }
+          // Add class to all items of hoveredRegistry
+          if (this.$jskos.compareFast(item.registry, this.hoveredRegistry)) {
+            item._rowClass += " mappingBrowser-hoveredRegistry"
+          }
+          return item
+        })
+        results = [section].concat(results)
+      }
+      return results
     },
     navigatorSectionsDatabases () {
       return this.navigatorSections.filter(section => this.$jskos.mappingRegistryIsStored(section.registry))
