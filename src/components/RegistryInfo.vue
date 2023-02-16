@@ -21,6 +21,12 @@
         <font-awesome-icon icon="link" />
       </a>
       <span
+        v-if="showInfoIcon && definition"
+        v-b-tooltip="definition"
+        style="font-size: 12px; padding-left: 5px;">
+        <font-awesome-icon icon="info-circle" />
+      </span>
+      <span
         v-if="showEditable && registry.isAuthorizedFor({
           type: 'mappings',
           action: 'create',
@@ -32,7 +38,7 @@
       </span>
     </div>
     <div v-if="showDetails">
-      {{ $jskos.definition(registry, { language: locale }).join(" ") }}
+      {{ definition }}
     </div>
     <div v-if="showCapabilities">
       <span
@@ -88,6 +94,10 @@ export default {
       type: Object,
       default: null,
     },
+    showInfoIcon: {
+      type: Boolean,
+      default: false,
+    },
     showDetails: {
       type: Boolean,
       default: true,
@@ -108,6 +118,9 @@ export default {
   computed: {
     registryName() {
       return getRegistryName({ registry: this.registry, locale: this.locale })
+    },
+    definition() {
+      return this.$jskos.definition(this.registry, { language: this.locale }).join(" ")
     },
   },
 }

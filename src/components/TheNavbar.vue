@@ -269,6 +269,7 @@
             })">
             <registry-info
               :registry="registry"
+              :show-info-icon="true"
               :show-details="false"
               :show-capabilities="false" />
           </p>

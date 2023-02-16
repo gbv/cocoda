@@ -315,6 +315,7 @@
             @click="useRegistryForSaving(section.registry)">
             <registry-info
               :registry="section.registry"
+              :show-info-icon="true"
               :show-details="false"
               :show-capabilities="false" />
           </div>
