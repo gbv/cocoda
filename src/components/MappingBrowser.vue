@@ -1153,6 +1153,17 @@ export default {
       }
     }
     this.selectedChangedHandler()
+    // When a registry is hidden, remove its repeat managers so it doesn't refresh mappings and appear again
+    this.mappingRegistries.forEach(({ uri }) => {
+      this.$watch(() => this.showRegistry[uri], (show) => {
+        if (!show) {
+          // Remove repeat managers
+          [this.searchRepeatManagers, this.navigatorRepeatManagers].map(managers => managers[uri]).forEach(manager => {
+            manager && !manager.isPaused && manager.stop()
+          })
+        }
+      })
+    })
   },
   beforeDestroy() {
     // Stop any repeat managers
