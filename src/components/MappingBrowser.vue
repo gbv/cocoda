@@ -858,9 +858,9 @@ export default {
         }
         section.id = registry.uri
         section.registry = registry
-        section.page = 1
+        section.page = this.navigatorPages[registry.uri] || 1
         section.totalCount = this.embeddedMappings.length
-        section.items = this.embeddedMappings.map(mapping => {
+        section.items = this.embeddedMappings.slice((section.page - 1) * this.componentSettings.resultLimit, section.page * this.componentSettings.resultLimit).map(mapping => {
           let item = { mapping, registry }
           item.sourceScheme = _.get(mapping, "fromScheme") || undefined
           item.targetScheme = _.get(mapping, "toScheme") || undefined
