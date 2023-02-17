@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "0290d608643c1f187b1e3f8091b341d0e9714cf2",
-  "gitCommitShort": "0290d608",
-  "gitCommitMessage": "0290d608 MappingBrowser: Support mappings embedded in concept data (#620)",
-  "buildDate": "2023-02-16T09:39:30Z",
-  "date": "2023-02-16T09:38:13.000Z",
+  "gitCommit": "cc31f3782930905afaa5d3a1dff7769ae7893b93",
+  "gitCommitShort": "cc31f378",
+  "gitCommitMessage": "cc31f378 MappingBrowser: Fix pagination for embedded mappings (#620)",
+  "buildDate": "2023-02-17T09:25:58Z",
+  "date": "2023-02-17T09:24:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
