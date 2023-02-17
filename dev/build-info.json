@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "e6e0814c8404b0346d3678590fb6643077b97860",
-  "gitCommitShort": "e6e0814c",
-  "gitCommitMessage": "e6e0814c MappingBrowser: Fix edge case for embedded mappings pagination (#620)",
-  "buildDate": "2023-02-17T09:46:51Z",
-  "date": "2023-02-17T09:45:22.000Z",
+  "gitCommit": "ce2aa307c5b332d9a4cf20fa3394beddf40fae42",
+  "gitCommitShort": "ce2aa307",
+  "gitCommitMessage": "ce2aa307 ConceptDetail: Adjust how GND terms are assembled",
+  "buildDate": "2023-02-17T12:48:19Z",
+  "date": "2023-02-17T12:47:05.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
