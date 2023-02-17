@@ -387,16 +387,10 @@ export default {
       let gndTerms = []
       let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow", "conceptDetail.relevanceGeneric"]
       for (let relevance of relevanceOrder) {
-        let term = ""
-        let terms = []
         for (let { concept } of concepts.filter(c => c.type.RELEVANCE == this.$t(relevance, "en"))) {
           if (concept && (this.$jskos.prefLabel(concept, { fallbackToUri: false }))) {
-            terms.push(_.escape(this.$jskos.prefLabel(concept)))
+            gndTerms.push(_.escape(this.$jskos.prefLabel(concept)))
           }
-        }
-        if (terms.length > 0) {
-          term = term + terms.join(", ")
-          gndTerms.push(term)
         }
       }
       return gndTerms
