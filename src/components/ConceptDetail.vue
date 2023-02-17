@@ -325,6 +325,9 @@ export default {
     _item() {
       return getItem(this.item)
     },
+    gnd() {
+      return getItem({ uri: "http://bartoc.org/en/node/430" })
+    },
     memberList() {
       return this._item && this._item.memberList && this._item.memberList.filter(Boolean)
     },
@@ -369,12 +372,11 @@ export default {
     },
     gndTerms() {
       // Assemble gndTerms array for display
-      let gnd = getItem({ uri: "http://bartoc.org/en/node/430" })
       let mappings = _.get(this._item, "__GNDMAPPINGS__", [])
       let concepts = []
       for (let mapping of mappings) {
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-          if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]")) && !concepts.find(c => this.$jskos.compare(c.concept, concept))) {
+          if (this.$jskos.compare(this.gnd, _.get(concept, "inScheme[0]")) && !concepts.find(c => this.$jskos.compare(c.concept, concept))) {
             concepts.push({
               concept: getItem(concept),
               type: this.$jskos.mappingTypeByType(mapping.type),
@@ -541,9 +543,11 @@ export default {
       // TODO: Refactoring necessary!
       if (!this.item) return
       let itemBefore = this._item
-      let gnd = getItem({ uri: "http://bartoc.org/en/node/430" })
+      if (!this.gnd) {
+        return
+      }
       // Don't load GND terms for GND items
-      if (this.$jskos.compare(gnd, _.get(itemBefore, "inScheme[0]"))) {
+      if (this.$jskos.compare(this.gnd, _.get(itemBefore, "inScheme[0]"))) {
         return
       }
       // Load GND mappings from all stored registries
@@ -551,7 +555,7 @@ export default {
         registry,
         direction: "both",
         from: itemBefore,
-        toScheme: gnd.uri,
+        toScheme: this.gnd.uri,
       }).catch(() => []))
       let mappings = _.flatten(await Promise.all(mappingPromises))
 
@@ -560,7 +564,7 @@ export default {
       for (let mapping of mappings) {
         let concepts = this.$jskos.conceptsOfMapping(mapping)
         for (let concept of concepts) {
-          if (this.$jskos.compare(gnd, _.get(concept, "inScheme[0]"))) {
+          if (this.$jskos.compare(this.gnd, _.get(concept, "inScheme[0]"))) {
             gndConcepts.push(concept)
           }
         }
