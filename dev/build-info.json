@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "cc31f3782930905afaa5d3a1dff7769ae7893b93",
-  "gitCommitShort": "cc31f378",
-  "gitCommitMessage": "cc31f378 MappingBrowser: Fix pagination for embedded mappings (#620)",
-  "buildDate": "2023-02-17T09:25:58Z",
-  "date": "2023-02-17T09:24:09.000Z",
+  "gitCommit": "e6e0814c8404b0346d3678590fb6643077b97860",
+  "gitCommitShort": "e6e0814c",
+  "gitCommitMessage": "e6e0814c MappingBrowser: Fix edge case for embedded mappings pagination (#620)",
+  "buildDate": "2023-02-17T09:46:51Z",
+  "date": "2023-02-17T09:45:22.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
