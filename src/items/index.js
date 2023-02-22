@@ -329,8 +329,16 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
   }
   // Load concepts by registry
   const promises = list.map(
-    ({ registry, concepts }) =>
-      registry.getConcepts({ ...options, concepts })
+    ({ registry, concepts }) => {
+      // Add `properties=mappings` to request
+      let properties = options.params?.properties ?? registry._defaultParams?.properties
+      if (properties) {
+        properties += ",mappings"
+      } else {
+        properties = "+mappings"
+      }
+      _.set(options, "params.properties", properties)
+      return registry.getConcepts({ ...options, concepts })
         .then(concepts => {
           // Save and adjust results
           let uris = []
@@ -349,7 +357,9 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
         })
         .catch(() => {
           // Ignore errors (will mark concepts that weren't loaded as errored)
-        }))
+        })
+    },
+  )
   await Promise.all(promises)
   // Move all URIs that were not loaded to errored concepts
   for (let uri of uris) {
