@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "776c5729ef6a9770a227e9049cf85d72a8f05c1b",
-  "gitCommitShort": "776c5729",
-  "gitCommitMessage": "776c5729 Add properties=mappings to concept data requests",
-  "buildDate": "2023-02-22T08:18:12Z",
-  "date": "2023-02-22T08:16:38.000Z",
+  "gitCommit": "9f748cf9113c831bb9b9038a6caae809bce74a25",
+  "gitCommitShort": "9f748cf9",
+  "gitCommitMessage": "9f748cf9 MappingBrowser: Adjust how/when embedded mappings are refreshed (#620)",
+  "buildDate": "2023-02-22T09:54:14Z",
+  "date": "2023-02-22T09:52:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
