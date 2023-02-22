@@ -593,6 +593,8 @@ export default {
       // An object of error statuses for registries
       registryHasErrored: {},
       concordanceToEdit: null,
+      // List of mappings embedded in concept data; will be set when 1) concept changed, 2) tab changed to Navigator
+      embeddedMappings: [],
     }
   },
   computed: {
@@ -814,24 +816,6 @@ export default {
       }
       return groups
     },
-    embeddedMappings() {
-      const mappings = [].concat(...[true, false].map(side => getItem(this.selected.concept[side])?.mappings || []))
-      loadConcepts(_.flatten(mappings.map(mapping => this.$jskos.conceptsOfMapping(mapping))))
-      // Only return mappings where both fromScheme and toScheme are supported; also load concept data
-      return mappings.filter(mapping => {
-        const fromScheme = getItem(mapping.fromScheme)
-        const toScheme = getItem(mapping.toScheme)
-        // Filter out mappings with unsupported schemes and where both sides match
-        if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
-          return false
-        }
-        this.adjustMapping(mapping)
-        // Load concept data for both sides
-        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
-        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
-        return true
-      })
-    },
     searchSections () {
       return this.resultsToSections(this.searchResults, this.searchPages, this.searchLoading, "mappingSearch-")
     },
@@ -953,6 +937,8 @@ export default {
         for (let manager of Object.values(this.navigatorRepeatManagers)) {
           manager && manager.isPaused && manager.start()
         }
+        // refresh embedded mappings
+        this.refreshEmbeddedMappings()
         // refresh if necessary
         this.navigatorRefresh()
       } else if (tab == this.tabIndexes.concordances) {
@@ -1230,6 +1216,7 @@ export default {
         this.tab = this.tabIndexes.navigator
         this.hasSwitchedToNavigator = true
       }
+      this.refreshEmbeddedMappings()
     },
     generateCancelToken() {
       return axios.CancelToken.source()
@@ -1778,6 +1765,37 @@ export default {
       // Also retrieve total number of mappings in those registries
       this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
       this.concordancesLoaded = true
+    },
+    refreshEmbeddedMappings() {
+      const detectScheme = (conceptUri) => {
+        const schemes = [this.selected.scheme[true], this.selected.scheme[false]].concat(this.schemes).filter(Boolean).map(getItem)
+        return schemes.find(scheme => {
+          scheme = new this.$jskos.ConceptScheme(scheme)
+          return !!scheme?.notationFromUri(conceptUri)
+        })
+      }
+      const mappings = [].concat(...[true, false].map(side => getItem(this.selected.concept[side])?.mappings || []))
+      // Only return mappings where both fromScheme and toScheme are supported; also load concept data
+      const results = mappings.filter(mapping => {
+        const fromScheme = getItem(mapping.fromScheme) || detectScheme(mapping.from?.memberSet?.[0]?.uri)
+        const toScheme = getItem(mapping.toScheme) || detectScheme(mapping.to?.memberSet?.[0]?.uri)
+        // Filter out mappings with unsupported schemes and where both sides match
+        if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
+          return false
+        }
+        if (!mapping.fromScheme) {
+          mapping.fromScheme = { uri: fromScheme.uri }
+        }
+        if (!mapping.toScheme) {
+          mapping.toScheme = { uri: toScheme.uri }
+        }
+        this.adjustMapping(mapping)
+        // Load concept data for both sides
+        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
+        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
+        return true
+      })
+      this.embeddedMappings = results
     },
   },
 }
