@@ -873,7 +873,7 @@ export default {
           }
           return item
         })
-        results = [section].concat(results)
+        results = results.concat(section)
       }
       return results
     },
