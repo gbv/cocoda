@@ -10,12 +10,13 @@
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
-      v-b-popover="showPopover && (itemDetails.length || !showText || !_showNotation) ? {
+      v-b-popover="_showPopover ? {
         placement: 'top',
         trigger: 'hover',
-        content: `<div class='fontSize-${fontSize || 'normal'}'><b>${notation} ${prefLabel}</b></div><div class='fontSize-small itemName-details'>${itemDetails}</div>`,
+        content: `${popoverHTML}`,
         html: true,
         boundary: 'window',
+        delay: defaults.delay.short,
       } : null"
       :to="url"
       class="itemName-inner"
@@ -50,6 +51,13 @@
       class="missingDataIndicator">
       •
     </div>
+    <!-- Content for popover -->
+    <div
+      v-if="_showPopover && isHoveredFromHere"
+      :id="tooltipDOMID + '-contentMap'"
+      style="display: none">
+      <content-map :content-map="contentMap" />
+    </div>
   </div>
 </template>
 
@@ -58,11 +66,15 @@ import _ from "lodash"
 import dragandrop from "@/mixins/dragandrop.js"
 import { getItem } from "@/items"
 
+import ContentMap from "./ContentMap.vue"
+import { mainLanguagesContentMapForConcept } from "@/utils/concept-helpers"
+
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
  */
 export default {
   name: "ItemName",
+  components: { ContentMap },
   mixins: [dragandrop],
   props: {
     /**
@@ -153,6 +165,8 @@ export default {
       url: "",
       isValidLink: false,
       interval: null,
+      // We are using this inside a v-b-popover directive. To have up-to-date data, it is set on hover.
+      popoverHTML: "",
     }
   },
   computed: {
@@ -175,26 +189,19 @@ export default {
     prefLabel() {
       return this.getPrefLabel(this._item)
     },
-    itemDetails() {
-      let result = this.$jskos.languageMapContent(this._item, "scopeNote")
-      if (!result || !result.length) {
-        return ""
-      }
-      // Line breaks between title and this content
-      return [""].concat(result).join("<br>")
-    },
     isScheme() {
       return this.$jskos.isScheme(this._item)
     },
-  },
-  watch: {
-    _item: function() {
-      // Force show tooltip when item has changed
-      _.delay(() => {
-        if (this.isHoveredFromHere) {
-          this.$refs.tooltip && this.$refs.tooltip.$emit("open")
-        }
-      }, 50)
+    // Content for popover with ContentMap component
+    contentMap() {
+      const contentMap = mainLanguagesContentMapForConcept(this._item)
+      Object.values(contentMap).filter(map => map.props.includes("prefLabel")).forEach(map => {
+        map.classes = "fontWeight-heavy"
+      })
+      return contentMap
+    },
+    _showPopover() {
+      return this.showPopover && (!this.showText || !this._showNotation || Object.values(this.contentMap).find(map => map.props[0] !== "prefLabel"))
     },
   },
   created() {
@@ -225,6 +232,10 @@ export default {
             window.clearInterval(this.interval)
           }
         }, 500)
+        // Set popover HTML
+        this._showPopover && this.$nextTick(() => {
+          this.popoverHTML = document.getElementById(this.tooltipDOMID + "-contentMap").innerHTML
+        })
       } else {
         this.isHoveredFromHere = false
         this.$store.commit({
@@ -232,13 +243,6 @@ export default {
           concept: null,
         })
         window.clearInterval(this.interval)
-      }
-    },
-    trimTooltip(text) {
-      if (text.length > 80) {
-        return text.substring(0,75) + "..."
-      } else {
-        return text
       }
     },
   },
