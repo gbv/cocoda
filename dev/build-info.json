@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "18758503a2ac00c15d3857655f17f99d9194f12f",
-  "gitCommitShort": "18758503",
-  "gitCommitMessage": "18758503 Mapping Navigator: Reduce paddings/margins to make it more compact",
-  "buildDate": "2023-02-28T09:28:46Z",
-  "date": "2023-02-28T09:27:25.000Z",
+  "gitCommit": "7f5cdf0e1a9046707ec0ce8895dd2d8706b11ed6",
+  "gitCommitShort": "7f5cdf0e",
+  "gitCommitMessage": "7f5cdf0e ItemName: Adjust detail popover with new ContentMap component (#700)",
+  "buildDate": "2023-02-28T11:55:56Z",
+  "date": "2023-02-28T11:54:03.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
