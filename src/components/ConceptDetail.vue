@@ -136,16 +136,9 @@
         <tab
           :key="tabIndex"
           :title="tabTitle">
-          <template v-for="({ sources, languages, margin }, text, index) in contentMap">
-            <div
-              :key="index"
-              :style="`margin-bottom: ${margin ? 8 : 0}px;`">
-              <span @click="copyAndSearch(text)">
-                {{ text }}
-              </span>
-              <sup class="text-lightGrey">{{ sources.join(", ") }}; {{ languages.join(", ") }}</sup>
-            </div>
-          </template>
+          <content-map
+            :content-map="contentMap"
+            @click="copyAndSearch($event)" />
         </tab>
       </template>
       <!-- URI and identifier -->
@@ -271,6 +264,7 @@ import ItemName from "./ItemName.vue"
 import LoadingIndicator from "./LoadingIndicator.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import DateString from "./DateString.vue"
+import ContentMap from "./ContentMap.vue"
 import _ from "lodash"
 import axios from "axios"
 
@@ -281,6 +275,7 @@ import hotkeys from "@/mixins/hotkeys.js"
 import mappedStatus from "@/mixins/mapped-status.js"
 
 import { getItem, getItems, loadConcepts, modifyItem, saveItem } from "@/items"
+import { mainLanguagesContentMapForConcept, additionalLanguagesContentMapForConcept } from "@/utils/concept-helpers"
 
 /**
  * Component that displays an item's (either scheme or concept) details (URI, notation, identifier, ...).
@@ -288,7 +283,7 @@ import { getItem, getItems, loadConcepts, modifyItem, saveItem } from "@/items"
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower, DateString,
+    AutoLink, ItemName, LoadingIndicator, ItemDetailNarrower, DateString, ContentMap,
   },
   mixins: [objects, computed, hotkeys, mappedStatus],
   props: {
@@ -408,80 +403,11 @@ export default {
       }
       return [this.item].concat(this.item.ancestors || [], this.item.broader || []).filter(concept => concept != null)
     },
-    // Content to be shown under "Concept" and "Translations" tabs
-    content() {
-      const content = [
-        {
-          title: this.$t("conceptDetail.prefLabel"),
-          prop: "prefLabel",
-          languageMap: this.item.prefLabel,
-        },
-        {
-          title: this.$t("conceptDetail.altLabel"),
-          prop: "altLabel",
-          languageMap: this.item.altLabel,
-          isArray: true,
-        },
-        {
-          title: this.$t("conceptDetail.gnd"),
-          languageMap: this.gndTerms.length ? { de: this.gndTerms } : null,
-          isArray: true,
-        },
-        {
-          title: this.$t("conceptDetail.scope"),
-          prop: "scopeNote",
-          languageMap: this.item.scopeNote,
-          isArray: true,
-        },
-        {
-          title: this.$t("conceptDetail.editorial"),
-          prop: "editorialNote",
-          languageMap: this.item.editorialNote,
-          isArray: true,
-        },
-      ]
-      return content.filter(part => part.languageMap && Object.keys(part.languageMap).length)
-    },
-    // All available content languages
-    allLanguages() {
-      const props = this.content.map(part => part.prop).filter(Boolean)
-      const languageSet = new Set()
-      for (let prop of props) {
-        Object.keys(this.item[prop] ?? {}).forEach(key => languageSet.add(key))
-      }
-      return Array.from(languageSet).filter(language => language !== "-")
-    },
-    // Main languages for content to be shown under Concept tab; usually selected language + English
-    mainLanguages() {
-      const props = this.content.map(part => part.prop).filter(Boolean)
-      let language
-      for (let prop of props) {
-        language = this.$jskos.languagePreference.selectLanguage(this.item[prop])
-        if (language) {
-          break
-        }
-      }
-      const languages = []
-      if (language) {
-        languages.push(language)
-      }
-      if (language !== "en" && this.allLanguages.includes("en")) {
-        languages.push("en")
-      }
-      if (languages.length === 0) {
-        languages.push(this.$jskos.languagePreference.getLanguages()?.[0])
-      }
-      return languages
-    },
-    // Additional languages for content to be shown under Translations tab; allLanguages minus mainLanguages
-    additionalLanguages() {
-      return this.allLanguages.filter(language => !this.mainLanguages.includes(language))
-    },
     mainLanguagesContentMap() {
-      return this.contentMapByLanguages(this.mainLanguages)
+      return mainLanguagesContentMapForConcept(this.item)
     },
     additionalLanguagesContentMap() {
-      return this.contentMapByLanguages(this.additionalLanguages)
+      return additionalLanguagesContentMapForConcept(this.item)
     },
   },
   watch: {
@@ -666,40 +592,6 @@ export default {
         return 1
       }
       return aIndex - bIndex
-    },
-    contentMapByLanguages(languages) {
-      const contentMap = {}
-      let lastOfSecion
-      for (const { title, languageMap, isArray } of this.content) {
-        for (let language of languages) {
-          if (!languageMap[language]) {
-            continue
-          }
-          const array = isArray ? languageMap[language] : [languageMap[language]]
-          if (!array.length) {
-            continue
-          }
-          for (let text of array) {
-            if (!contentMap[text]) {
-              lastOfSecion = contentMap[text] = {
-                sources: new Set(),
-                languages: new Set(),
-              }
-            }
-            contentMap[text].sources.add(title)
-            contentMap[text].languages.add(language)
-          }
-        }
-        if (lastOfSecion) {
-          lastOfSecion.margin = true
-        }
-      }
-      // Convert all sets into arrays
-      Object.values(contentMap).forEach(value => {
-        value.sources = Array.from(value.sources)
-        value.languages = Array.from(value.languages)
-      })
-      return contentMap
     },
   },
 }
