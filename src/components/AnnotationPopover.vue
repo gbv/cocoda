@@ -147,7 +147,7 @@ export default {
       return `${sign}${Math.abs(score)}`
     },
     ownAssessment() {
-      if (!this.userUris && this.creator.uri) {
+      if (!this.userUris && this.creator.uri && this.provider) {
         // Special case: If the user is not logged in (i.e. no userUris), and there is a creator URI, AND the registry allows crossUser requests for updating/deleting annotations.
         if (this.provider.isAuthorizedFor({
           type: "annotations",
