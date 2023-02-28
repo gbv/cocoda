@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "9f748cf9113c831bb9b9038a6caae809bce74a25",
-  "gitCommitShort": "9f748cf9",
-  "gitCommitMessage": "9f748cf9 MappingBrowser: Adjust how/when embedded mappings are refreshed (#620)",
-  "buildDate": "2023-02-22T09:54:14Z",
-  "date": "2023-02-22T09:52:19.000Z",
+  "gitCommit": "18758503a2ac00c15d3857655f17f99d9194f12f",
+  "gitCommitShort": "18758503",
+  "gitCommitMessage": "18758503 Mapping Navigator: Reduce paddings/margins to make it more compact",
+  "buildDate": "2023-02-28T09:28:46Z",
+  "date": "2023-02-28T09:27:25.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
