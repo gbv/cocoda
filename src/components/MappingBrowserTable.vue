@@ -917,7 +917,7 @@ export default {
 }
 
 .mappingBrowser-table .flexibleTable-body {
-  padding-bottom: 20px;
+  padding-bottom: 5px;
 }
 
 .mappingBrowser-table .flexibleTable-section-before {

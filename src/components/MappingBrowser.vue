@@ -1809,7 +1809,7 @@ export default {
 }
 .mappingBrowser-registryGroup-header {
   text-align: left;
-  padding: 0.5em 3px 3px 2em;
+  padding: 3px 3px 3px 2em;
 }
 .mappingBrowser-registryGroup-title {
   display:inline-block;
