@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "7f5cdf0e1a9046707ec0ce8895dd2d8706b11ed6",
-  "gitCommitShort": "7f5cdf0e",
-  "gitCommitMessage": "7f5cdf0e ItemName: Adjust detail popover with new ContentMap component (#700)",
-  "buildDate": "2023-02-28T11:55:56Z",
-  "date": "2023-02-28T11:54:03.000Z",
+  "gitCommit": "54c6f093c6ef48182d02424989985788f4801952",
+  "gitCommitShort": "54c6f093",
+  "gitCommitMessage": "54c6f093 Add draft concerning deleting (account) data",
+  "buildDate": "2023-03-13T16:10:16Z",
+  "date": "2023-03-13T16:09:28.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }

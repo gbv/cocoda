@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="dcterms.date" content="2023-02-28" />
+  <meta name="dcterms.date" content="2023-03-13" />
   <title>Cocoda-Benutzerhandbuch</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -32,7 +32,7 @@
       </div>
         <div class="col-sm-9">
           <h1>Cocoda-Benutzerhandbuch</h1>
-          <p class="date">version 1.8.1 (2023-02-28)</p>
+          <p class="date">version 1.8.1 (2023-03-13)</p>
 <h2 id="einleitung">Einleitung</h2>
 <p>Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Die Webanwendung zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri…) wird als Teil des <a href="https://coli-conc.gbv.de/">Projektes coli-conc</a> an der <a href="https://www.gbv.de/">Verbundzentrale des GBV (VZG)</a> gepflegt. Die Anwendungsfälle von Cocoda reichen vom Mapping eigener Systematiken auf etabliertere Vokabulare über die Erstellung von Mappings zur Verbesserung des Retrieval in Katalogen und Discovery-Systemen bis hin zur Sammlung von Mappings in Wikidata als zentralem Normdaten-Hub.</p>
 <p>Unter <a href="https://coli-conc.gbv.de/cocoda/" class="uri">https://coli-conc.gbv.de/cocoda/</a> sind mehrere Anleitungen, Screencasts sowie unterschiedlich konfigurierte Instanzen von Cocoda verlinkt, darunter:</p>
@@ -78,10 +78,11 @@
 <li>Wird eine der anderen Identitäten ausgewählt, lässt sich der / die Nutzer(in) öffentlich über die Identitäts-URI identifizieren.</li>
 </ul>
 <p><img src="img/cocoda-login-select-identity-de.png" class="border border-dark" style="width:50.0%" /></p>
-<p>Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.</p>
 <!--
-Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
+Entwurf für Text zum Thema Löschen der Daten:
+Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen werden. Mit Klick auf "Delete user account", werden diese Daten sofort und unwiderruflich aus unserer Datenbank gelöscht. Dies gilt **nicht** für Daten, die in Zusammenhang mit diesen Accountdaten stehen wie z.B. Mappings. 
 -->
+<p>Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.</p>
 <h2 id="vokabulare-und-konzepte">Vokabulare und Konzepte</h2>
 <p>Cocoda bietet einen einheitlichen Zugang zu einer Vielzahl von <strong>Vokabularen</strong> wie Ontologien, Klassifikationen, Taxonomien und Terminologien aus verschiedenen <a href="#Datenquellen">Datenquellen</a>. Ein Vokabular ist eine organisierte Sammlung von Konzepten mit zusätzlichen Informationen über das Vokabular. Ein <strong>Konzept</strong> ist ein individuelles Objekt wie eine Person, einen Ort oder ein Thema. Die meisten Konzepte haben eine eindeutige Notation und Bezeichnung und eine einzigartige URI, um sie identifizieren zu können. Cocoda empfiehlt alle Vokabulare, im <a href="https://BARTOC.org">Basic Register of Thesauri, Ontologies &amp; Classifications (BARTOC)</a> zu registrieren und dessen IDs zu verwenden, um eindeutig auf einzelne Vokabulare zu verweisen. Die Dewey-Dezimalklassifikation (DDC) ist beispielsweise ein Vokabular des Typs Universelle Bibliotheksklassifikation, das von OCLC veröffentlicht und in BARTOC mit der URI <a href="http://bartoc.org/en/node/241" class="uri">http://bartoc.org/en/node/241</a> registriert wurde.</p>
 <p>Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:</p>
