@@ -50,12 +50,12 @@ Diese externen Accounts heißen in Cocoda **Identitäten**. Die jeweils ausgewä
 
 ![](img/cocoda-login-select-identity-de.png){width=50% .border .border-dark}
 
-Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
-
 <!--
-Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
+Entwurf für Text zum Thema Löschen der Daten:
+Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen werden. Mit Klick auf "Delete user account", werden diese Daten sofort und unwiderruflich aus unserer Datenbank gelöscht. Dies gilt **nicht** für Daten, die in Zusammenhang mit diesen Accountdaten stehen wie z.B. Mappings. 
 -->
 
+Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
 
 ## Vokabulare und Konzepte
 
