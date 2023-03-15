@@ -56,6 +56,12 @@
       v-if="_showPopover && isHoveredFromHere"
       :id="tooltipDOMID + '-contentMap'"
       style="display: none">
+      <!-- Ancestors / Broader -->
+      <concept-detail-ancestors
+        :item="item"
+        :is-left="isLeft"
+        :allow-show-ancestors="false"
+        style="margin-bottom: 5px;" />
       <content-map :content-map="contentMap" />
     </div>
   </div>
@@ -67,6 +73,7 @@ import dragandrop from "@/mixins/dragandrop.js"
 import { getItem } from "@/items"
 
 import ContentMap from "./ContentMap.vue"
+import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
 import { mainLanguagesContentMapForConcept } from "@/utils/concept-helpers"
 
 /**
@@ -74,7 +81,7 @@ import { mainLanguagesContentMapForConcept } from "@/utils/concept-helpers"
  */
 export default {
   name: "ItemName",
-  components: { ContentMap },
+  components: { ContentMap, ConceptDetailAncestors },
   mixins: [dragandrop],
   props: {
     /**
