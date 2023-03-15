@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "3f08fa7c9cd82974879bba6ad530be456264f6ce",
-  "gitCommitShort": "3f08fa7c",
-  "gitCommitMessage": "3f08fa7c Small style change related to buttons",
-  "buildDate": "2023-03-14T12:38:25Z",
-  "date": "2023-03-14T12:37:21.000Z",
+  "gitCommit": "f2be4689fc40631fd5d4951be25e1bf7b9859ade",
+  "gitCommitShort": "f2be4689",
+  "gitCommitMessage": "f2be4689 Small style adjustments in ConceptDetailAncestors (#700)",
+  "buildDate": "2023-03-15T11:55:43Z",
+  "date": "2023-03-15T11:54:00.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
