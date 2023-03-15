@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "f2be4689fc40631fd5d4951be25e1bf7b9859ade",
-  "gitCommitShort": "f2be4689",
-  "gitCommitMessage": "f2be4689 Small style adjustments in ConceptDetailAncestors (#700)",
-  "buildDate": "2023-03-15T11:55:43Z",
-  "date": "2023-03-15T11:54:00.000Z",
+  "gitCommit": "dfdf56a041ba23c1a39d30a0408e9470d312347b",
+  "gitCommitShort": "dfdf56a0",
+  "gitCommitMessage": "dfdf56a0 ItemName: Increase delay for detail popover (#700)",
+  "buildDate": "2023-03-15T11:56:19Z",
+  "date": "2023-03-15T11:55:10.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
