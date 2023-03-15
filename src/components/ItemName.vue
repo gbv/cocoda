@@ -56,13 +56,15 @@
       v-if="_showPopover && isHoveredFromHere"
       :id="tooltipDOMID + '-contentMap'"
       style="display: none">
-      <!-- Ancestors / Broader -->
-      <concept-detail-ancestors
-        :item="item"
-        :is-left="isLeft"
-        :allow-show-ancestors="false"
-        style="margin-bottom: 5px;" />
-      <content-map :content-map="contentMap" />
+      <div style="max-height: 400px; overflow: auto;">
+        <!-- Ancestors / Broader -->
+        <concept-detail-ancestors
+          :item="item"
+          :is-left="isLeft"
+          :allow-show-ancestors="false"
+          style="margin-bottom: 5px;" />
+        <content-map :content-map="contentMap" />
+      </div>
     </div>
   </div>
 </template>
@@ -214,7 +216,7 @@ export default {
   watch: {
     _item() {
       if (this.popoverHTML) {
-        // When item is updated and popoverHTML is set, update ut
+        // When item is updated and popoverHTML is set, update it
         this.updatePopoverHTML()
       }
     },
@@ -248,7 +250,7 @@ export default {
           }
         }, 500)
         // Set popover HTML
-        this._showPopover && this.updatePopoverHTML()
+        this.updatePopoverHTML()
       } else {
         this.isHoveredFromHere = false
         this.$store.commit({
@@ -256,11 +258,10 @@ export default {
           concept: null,
         })
         window.clearInterval(this.interval)
-        this.popoverHTML = ""
       }
     },
     updatePopoverHTML() {
-      this.$nextTick(() => {
+      this._showPopover && this.$nextTick(() => {
         this.popoverHTML = document.getElementById(this.tooltipDOMID + "-contentMap").innerHTML
       })
     },
