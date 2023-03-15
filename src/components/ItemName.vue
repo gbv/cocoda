@@ -16,7 +16,7 @@
         content: `${popoverHTML}`,
         html: true,
         boundary: 'window',
-        delay: defaults.delay.short,
+        delay: defaults.delay.long,
       } : null"
       :to="url"
       class="itemName-inner"
