@@ -10,7 +10,8 @@
       class="button conceptDetail-ancestors-expand"
       @click="showAncestors = !showAncestors">
       <font-awesome-icon
-        :icon="showAncestors ? 'angle-down' : 'angle-right'" />
+        :icon="showAncestors ? 'angle-down' : 'angle-right'"
+        style="font-size: 12px;" />
     </div>
     <div
       v-for="(concept, index) in ancestors.filter(concept => concept != null).reverse()"
@@ -23,7 +24,7 @@
         <font-awesome-icon
           class="u-flip-horizontal"
           icon="level-up-alt"
-          style="margin-right: 3px;" />
+          style="margin-right: 3px; font-size: 12px;" />
         <item-name
           :item="concept"
           :is-link="true"
