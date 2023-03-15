@@ -208,7 +208,7 @@ export default {
       return contentMap
     },
     _showPopover() {
-      return this.showPopover && (!this.showText || !this._showNotation || Object.values(this.contentMap).find(map => map.props[0] !== "prefLabel"))
+      return this.showPopover && (!this.showText || !this._showNotation || Object.values(this.contentMap).length)
     },
   },
   created() {
