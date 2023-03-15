@@ -1,11 +1,11 @@
 {
   "version": "1.8.1",
   "gitBranch": "dev",
-  "gitCommit": "dfdf56a041ba23c1a39d30a0408e9470d312347b",
-  "gitCommitShort": "dfdf56a0",
-  "gitCommitMessage": "dfdf56a0 ItemName: Increase delay for detail popover (#700)",
-  "buildDate": "2023-03-15T11:56:19Z",
-  "date": "2023-03-15T11:55:10.000Z",
+  "gitCommit": "0896205e372ae7ce904d78fe24f7035b538d1190",
+  "gitCommitShort": "0896205e",
+  "gitCommitMessage": "0896205e ItemName Popover: Set maximum height and adjust update (#700)",
+  "buildDate": "2023-03-15T12:45:34Z",
+  "date": "2023-03-15T12:44:05.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
