@@ -211,6 +211,14 @@ export default {
       return this.showPopover && (!this.showText || !this._showNotation || Object.values(this.contentMap).length)
     },
   },
+  watch: {
+    _item() {
+      if (this.popoverHTML) {
+        // When item is updated and popoverHTML is set, update ut
+        this.updatePopoverHTML()
+      }
+    },
+  },
   created() {
     this.hovering = _.debounce(this._hovering, 20)
   },
@@ -240,9 +248,7 @@ export default {
           }
         }, 500)
         // Set popover HTML
-        this._showPopover && this.$nextTick(() => {
-          this.popoverHTML = document.getElementById(this.tooltipDOMID + "-contentMap").innerHTML
-        })
+        this._showPopover && this.updatePopoverHTML()
       } else {
         this.isHoveredFromHere = false
         this.$store.commit({
@@ -250,7 +256,13 @@ export default {
           concept: null,
         })
         window.clearInterval(this.interval)
+        this.popoverHTML = ""
       }
+    },
+    updatePopoverHTML() {
+      this.$nextTick(() => {
+        this.popoverHTML = document.getElementById(this.tooltipDOMID + "-contentMap").innerHTML
+      })
     },
   },
 }

@@ -62,7 +62,7 @@
     </div>
     <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
     <loading-indicator
-      v-if="ancestors.length != 0 && ancestors.includes(null) || ancestors.length == 0 && broader.length != 0 && !item.__BROADERLOADED__"
+      v-if="loading"
       size="sm" />
   </div>
 </template>
@@ -72,8 +72,7 @@ import LoadingIndicator from "./LoadingIndicator.vue"
 
 import mappedStatus from "@/mixins/mapped-status.js"
 
-import { getItems } from "@/items"
-import _ from "lodash"
+import { getItem, getItems, loadAncestors } from "@/items"
 
 export default {
   name: "ConceptDetailAncestors",
@@ -113,12 +112,23 @@ export default {
     }
   },
   computed: {
+    _item() {
+      return getItem(this.item)
+    },
     ancestors() {
-      return getItems(_.get(this.item, "ancestors", []) || [])
+      return getItems(this._item?.ancestors || [])
     },
     broader() {
-      return getItems(_.get(this.item, "broader", []) || [])
+      return getItems(this._item?.broader || [])
     },
+    loading() {
+      return this.ancestors.length != 0 && this.ancestors.includes(null) || this.ancestors.length == 0 && this.broader.length != 0 && !this._item.__BROADERLOADED__
+    },
+  },
+  mounted() {
+    if (this.loading) {
+      loadAncestors(this.item)
+    }
   },
 }
 </script>
