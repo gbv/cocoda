@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "18fc9bbc7cd0e79d78acf08988858ee049169e6e",
-  "gitCommitShort": "18fc9bbc",
-  "gitCommitMessage": "18fc9bbc Merge branch 'issue-705' into dev",
-  "buildDate": "2023-03-17T09:05:59Z",
-  "date": "2023-03-17T09:02:43.000Z",
+  "gitCommit": "ac9b397c1e814601ee2d377132c0b52d59d4f034",
+  "gitCommitShort": "ac9b397c",
+  "gitCommitMessage": "ac9b397c Rebuild package-lock.json",
+  "buildDate": "2023-03-17T09:28:01Z",
+  "date": "2023-03-17T09:26:47.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
