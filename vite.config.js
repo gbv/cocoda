@@ -1,12 +1,16 @@
 import { defineConfig } from "vite"
 import { resolve } from "path"
 import vue from "@vitejs/plugin-vue2"
+import legacy from "@vitejs/plugin-legacy"
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
   plugins: [
     vue(),
+    legacy({
+      targets: ["defaults", "not IE 11"],
+    }),
   ],
   build: {
     rollupOptions: {
