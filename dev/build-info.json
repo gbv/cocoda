@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "ac9b397c1e814601ee2d377132c0b52d59d4f034",
-  "gitCommitShort": "ac9b397c",
-  "gitCommitMessage": "ac9b397c Rebuild package-lock.json",
-  "buildDate": "2023-03-17T09:28:01Z",
-  "date": "2023-03-17T09:26:47.000Z",
+  "gitCommit": "55a77ae931b909c27c6ecfbb00a870376ff7588e",
+  "gitCommitShort": "55a77ae9",
+  "gitCommitMessage": "55a77ae9 Add terser",
+  "buildDate": "2023-03-17T09:32:15Z",
+  "date": "2023-03-17T09:29:55.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
