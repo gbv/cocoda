@@ -193,7 +193,7 @@
                   v-else
                   icon="user" />
               </span>
-              {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (user && uri == user.uri ? $t("navbar.defaultIdentity") : uri) }}
+              {{ (providerForIdentityUri(uri) && providerForIdentityUri(uri).name) || (uri == user?.uri ? $t("navbar.defaultIdentity") : uri) }}
             </p>
           </template>
           <p

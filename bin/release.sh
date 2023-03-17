@@ -40,10 +40,20 @@ if [[ `git status --porcelain` ]]; then
   exit 1
 fi
 
-echo "Creating a $semver release..."
+# 3. If current branch is not dev, either offer to publish from current branch, or abort
+source=dev
+current=$(git rev-parse --abbrev-ref HEAD)
+if [[ $source != "$current" ]]; then
+  echo "You are currently on branch $current. Releases are usually done from $source."
+  read -p "Are you sure to run the release from $current? (N/y) " -r
+  if [[ ! $REPLY =~ ^[Yy]$ ]]
+  then
+    exit 1
+  fi
+  source=$current
+fi
 
-echo "- Switching to dev branch..."
-git checkout --quiet dev 2>&1 >/dev/null
+echo "Creating a $semver release from branch $source..."
 
 echo "- Pulling changes from remote..."
 git pull --quiet --rebase 2>&1 >/dev/null
@@ -68,19 +78,19 @@ then
   exit 1
 fi
 
-echo "- Pushing dev..."
+echo "- Pushing $source..."
 git push --quiet 2>&1 >/dev/null
 while [ $? -ne 0 ]; do
   waitforenter "Pushing dev failed"
   git push
 done
 
-echo "- Checking out master and merging dev into master..."
+echo "- Checking out master and merging $source into master..."
 git checkout --quiet master 2>&1 >/dev/null
-git merge dev 2>&1 >/dev/null
+git merge "$source" 2>&1 >/dev/null
 while [ $? -ne 0 ]; do
   waitforenter "Merging failed"
-  git merge dev
+  git merge "$source"
 done
 
 echo "- Pushing master branch with tags..."
@@ -90,12 +100,13 @@ while [ $? -ne 0 ]; do
   git push --tags origin master
 done
 
-echo "- Going back to dev..."
-git checkout --quiet dev 2>&1 >/dev/null
+echo "- Going back to $source..."
+git checkout --quiet "$source" 2>&1 >/dev/null
 
 echo
-echo "Release $version seemed to be successful!"
+echo "Release $version from branch $source seemed to be successful!"
 echo "Next steps:"
+[[ $source != "dev" ]] && echo "- Consider merging $source into dev: git checkout dev; git merge $source"
 echo "- Wait until the GitHub release workflow is finished and edit and publish the release draft for $version under https://github.com/gbv/cocoda/releases."
 echo "- After publishing the release on GitHub, the master instance under https://coli-conc.gbv.de/cocoda/app/ should be updated automatically via a webhook (please check a few minutes after publishing the release)."
 echo "- Optional: Create new screencast with updates."
