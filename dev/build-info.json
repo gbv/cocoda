@@ -1,11 +1,11 @@
 {
-  "version": "1.8.1",
+  "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "0896205e372ae7ce904d78fe24f7035b538d1190",
-  "gitCommitShort": "0896205e",
-  "gitCommitMessage": "0896205e ItemName Popover: Set maximum height and adjust update (#700)",
-  "buildDate": "2023-03-15T12:45:34Z",
-  "date": "2023-03-15T12:44:05.000Z",
+  "gitCommit": "18fc9bbc7cd0e79d78acf08988858ee049169e6e",
+  "gitCommitShort": "18fc9bbc",
+  "gitCommitMessage": "18fc9bbc Merge branch 'issue-705' into dev",
+  "buildDate": "2023-03-17T09:05:59Z",
+  "date": "2023-03-17T09:02:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
