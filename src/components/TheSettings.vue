@@ -96,7 +96,7 @@
               <span v-else>
                 <b-form-select v-model="localSettings.creatorUri">
                   <option
-                    v-for="uri in userUris"
+                    v-for="uri in userUris || []"
                     :key="`settings-uris-${uri}`"
                     :value="uri">
                     {{ uri }}
@@ -300,7 +300,7 @@
                 :key="type">
                 {{ $t(`registryInfo.${type}`) }}:
                 <a
-                  :href="`${registry._api[type]}?creator=${encodeURIComponent(userUris.join('|'))}`"
+                  :href="`${registry._api[type]}?creator=${encodeURIComponent((userUris || []).join('|'))}`"
                   target="_blank">
                   {{ $t("dataModal.apiLinks") }} {{ $t("dataModal.apiUrl") }}
                 </a>

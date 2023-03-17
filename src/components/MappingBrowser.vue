@@ -285,11 +285,11 @@
                   :placeholder="$t('mappingBrowser.creator')"
                   @keyup.enter.native="searchClicked" />
                 <div
-                  v-if="authorized && searchFilterInput.creator != userUris.join('|')"
+                  v-if="authorized && searchFilterInput.creator != (userUris || []).join('|')"
                   v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: defaults.delay.medium }"
                   class="button"
                   style="margin-left: 2px;"
-                  @click="searchFilterInput.creator = userUris.join('|')">
+                  @click="searchFilterInput.creator = (userUris || []).join('|')">
                   <font-awesome-icon icon="user" />
                 </div>
               </div>
