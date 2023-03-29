@@ -8,30 +8,46 @@ on:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
+# Adapted from:
+# - https://github.com/docker/metadata-action#semver
+# - https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   publish:
-    runs-on: ubuntu-20.04
-    if: github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@v5
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker Meta
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          name: coliconc/cocoda
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: docker/Dockerfile
-          tag_semver: true
-  publish-main:
-    runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@v5
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          name: coliconc/cocoda
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: docker/Dockerfile
-          tags: latest
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and Push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

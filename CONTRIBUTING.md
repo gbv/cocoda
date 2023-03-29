@@ -277,8 +277,6 @@ If there were any errors during the release, make sure to clean up your reposito
 
 ### Docker
 
-Docker-related files are available in the `docker` folder. Images are published to Docker Hub via a GitHub Action (see `.github/workflows/docker.yml`). To make that work, `DOCKER_USERNAME` and `DOCKER_PASSWORD` must be set in GitHub under Settings -> Secrets. See [Publish Docker](https://github.com/marketplace/actions/publish-docker) for more details.
+Docker-related files are available in the `docker` folder. Images are published to GitHub's Container Registry (GHCR) via a GitHub Action (see `.github/workflows/docker.yml`). No additional configuration is required to make this work.
 
-The Docker Hub repository is https://hub.docker.com/r/coliconc/cocoda. [@stefandesu](https://github.com/stefandesu) currently maintains the organization.
-
-Due to restrictions in the Docker API, it is currently not possible to automatically set the Docker Hub description through a GitHub Action. Therefore, whenever `docker/README.md` is updated, the content must be manually copied and pasted into the Docker Hub description.
+Our Docker images were moved from Docker Hub to GHCR in March 2023. Refer to [our Docker documentation](https://github.com/gbv/cocoda/blob/dev/docker/README.md) for more details.
