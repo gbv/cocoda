@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "53eec9b72ab71cb57e5af675d37b3d7c94274f79",
-  "gitCommitShort": "53eec9b7",
-  "gitCommitMessage": "53eec9b7 Publish Docker images to GHCR and update related documentation",
-  "buildDate": "2023-03-29T09:39:00Z",
-  "date": "2023-03-29T09:37:24.000Z",
+  "gitCommit": "b963642a632adc6898222e0db5634d877e98a0f1",
+  "gitCommitShort": "b963642a",
+  "gitCommitMessage": "b963642a Remove badges in Docker README, adjust badges in README",
+  "buildDate": "2023-03-29T10:02:30Z",
+  "date": "2023-03-29T10:01:15.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
