@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "55a77ae931b909c27c6ecfbb00a870376ff7588e",
-  "gitCommitShort": "55a77ae9",
-  "gitCommitMessage": "55a77ae9 Add terser",
-  "buildDate": "2023-03-17T09:32:15Z",
-  "date": "2023-03-17T09:29:55.000Z",
+  "gitCommit": "53eec9b72ab71cb57e5af675d37b3d7c94274f79",
+  "gitCommitShort": "53eec9b7",
+  "gitCommitMessage": "53eec9b7 Publish Docker images to GHCR and update related documentation",
+  "buildDate": "2023-03-29T09:39:00Z",
+  "date": "2023-03-29T09:37:24.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
