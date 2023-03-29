@@ -5,7 +5,7 @@ Cocoda is a web-based tool for creating mappings between knowledge organization 
 - See [GitHub](https://github.com/gbv/cocoda) for more information about the tool.
 - Hosted versions of Cocoda can be found [here](https://coli-conc.gbv.de/cocoda/).
 
-**Note:** The old Docker Hub image (`coliconc/cocoda`) is deprecated as of March 2023 and will not be updated anymore. We are moving all our Docker images to GitHub's Container Registry. From now on, new Docker images will be available under `ghcr.io/gbv/cocoda` (https://github.com/gbv/cocoda/pkgs/container/cocoda). Old images will still be available through Docker Hub for the foreseeable future.
+**Note:** The old Docker Hub image (`coliconc/cocoda`) is deprecated as of March 2023 and will not be updated anymore. We are moving all our Docker images to GitHub's Container Registry. From now on, **all new Docker images** will be available under `ghcr.io/gbv/cocoda` (https://github.com/gbv/cocoda/pkgs/container/cocoda). Old images will still be available through Docker Hub for the foreseeable future.
 
 ## Supported Architectures
 Currently, only `x86-64` is supported, but we are planning to add more architectures soon.
@@ -30,8 +30,8 @@ docker run -it \
 
 This will create and start a Cocoda container running under host port 8080 with the configuration folder mounted under `/path/to/appdata`. Use `/path/to/appdata/cocoda.json` to configure the application (see below) and access it under `http://localhost:8080`.
 
-### docker-compose
-Note that depending on your system, it might be necessary to use `sudo docker-compose`.
+### Docker Compose
+Note that depending on your system, it might be necessary to use `sudo docker compose`. For older Docker versions, use `docker-compose` instead of `docker compose`.
 
 1. Create `docker-compose.yml`:
 
@@ -47,7 +47,7 @@ services:
     ports:
       # Use host port 8080
       - 8080:80
-    restart: always
+    restart: unless-stopped
 ```
 
 2. Create data folder and configuration file:
@@ -62,7 +62,7 @@ Note that if you skip this step, Docker will create the folder and the file itse
 3. Start the application:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 This will create and start a Cocoda container running under host port 8080 with the configuration folder mounted under `./config`. Use `./config/cocoda.json` to configure the application (see below) and access it under `http://localhost:8080`.
