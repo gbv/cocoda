@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "b963642a632adc6898222e0db5634d877e98a0f1",
-  "gitCommitShort": "b963642a",
-  "gitCommitMessage": "b963642a Remove badges in Docker README, adjust badges in README",
-  "buildDate": "2023-03-29T10:02:30Z",
-  "date": "2023-03-29T10:01:15.000Z",
+  "gitCommit": "acc07259fd8fdd3efd39d10ab9138482ee2c6bb4",
+  "gitCommitShort": "acc07259",
+  "gitCommitMessage": "acc07259 Adjust Docker README",
+  "buildDate": "2023-03-29T12:21:33Z",
+  "date": "2023-03-29T12:20:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
