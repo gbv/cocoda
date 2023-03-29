@@ -1,13 +1,15 @@
 # Cocoda Mapping Tool
 
 [![GitHub release](https://img.shields.io/github/release/gbv/cocoda.svg)](https://github.com/gbv/cocoda/releases/latest)
-[![GitHub](https://img.shields.io/github/license/gbv/cocoda.svg)](https://github.com/gbv/cocoda/blob/master/LICENSE)
-[![Build](https://github.com/gbv/cocoda/actions/workflows/build.yml/badge.svg)](https://github.com/gbv/cocoda/actions/workflows/build.yml)
+[![Web App Status](https://coli-conc-status.fly.dev/api/badge/8/status)](https://coli-conc.gbv.de/cocoda/app/)
+[![License](https://img.shields.io/github/license/gbv/cocoda.svg)](https://github.com/gbv/cocoda/blob/master/LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-ghcr.io%2Fgbv%2Fcocoda-informational)](https://github.com/gbv/cocoda/blob/dev/docker/README.md)
+[![Build Status](https://github.com/gbv/cocoda/actions/workflows/build.yml/badge.svg)](https://github.com/gbv/cocoda/actions/workflows/build.yml)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
 
 > A web-based tool for creating mappings between knowledge organization systems.
 
-Try out the [latest release version](https://coli-conc.gbv.de/cocoda/), the [current development version](https://coli-conc.gbv.de/cocoda/dev/), and consult the [usage documentation](#usage)!
+Try out the [latest release version](https://coli-conc.gbv.de/cocoda/app/), the [current development version](https://coli-conc.gbv.de/cocoda/dev/), and consult the [usage documentation](#usage)!
 
 ## Table of Contents
 
