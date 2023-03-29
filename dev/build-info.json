@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "acc07259fd8fdd3efd39d10ab9138482ee2c6bb4",
-  "gitCommitShort": "acc07259",
-  "gitCommitMessage": "acc07259 Adjust Docker README",
-  "buildDate": "2023-03-29T12:21:33Z",
-  "date": "2023-03-29T12:20:19.000Z",
+  "gitCommit": "e53da324a32ed0d16630fb2e0e5408c6d5f9c461",
+  "gitCommitShort": "e53da324",
+  "gitCommitMessage": "e53da324 Update Docker base image to Node 18",
+  "buildDate": "2023-03-29T13:31:23Z",
+  "date": "2023-03-29T13:29:52.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
