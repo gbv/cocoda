@@ -10,14 +10,6 @@
     <div
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
-      v-b-popover="_showPopover ? {
-        placement: 'top',
-        trigger: 'hover',
-        content: `${popoverHTML}`,
-        html: true,
-        boundary: 'window',
-        delay: defaults.delay.long,
-      } : null"
       :to="url"
       class="itemName-inner"
       :class="[
@@ -51,21 +43,6 @@
       class="missingDataIndicator">
       •
     </div>
-    <!-- Content for popover -->
-    <div
-      v-if="_showPopover && isHoveredFromHere"
-      :id="tooltipDOMID + '-contentMap'"
-      style="display: none">
-      <div style="max-height: 400px; overflow: auto;">
-        <!-- Ancestors / Broader -->
-        <concept-detail-ancestors
-          :item="item"
-          :is-left="isLeft"
-          :allow-show-ancestors="false"
-          style="margin-bottom: 5px;" />
-        <content-map :content-map="contentMap" />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -74,16 +51,12 @@ import _ from "lodash"
 import dragandrop from "@/mixins/dragandrop.js"
 import { getItem } from "@/items"
 
-import ContentMap from "./ContentMap.vue"
-import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
-import { mainLanguagesContentMapForConcept } from "@/utils/concept-helpers"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
  */
 export default {
   name: "ItemName",
-  components: { ContentMap, ConceptDetailAncestors },
   mixins: [dragandrop],
   props: {
     /**
@@ -129,13 +102,6 @@ export default {
       default: true,
     },
     /**
-     * Determines whether to show some concept details as a popover.
-     */
-    showPopover: {
-      type: Boolean,
-      default: false,
-    },
-    /**
      * Determines whether the item is highlighted
      */
     isHighlighted: {
@@ -174,8 +140,6 @@ export default {
       url: "",
       isValidLink: false,
       interval: null,
-      // We are using this inside a v-b-popover directive. To have up-to-date data, it is set on hover.
-      popoverHTML: "",
     }
   },
   computed: {
@@ -200,25 +164,6 @@ export default {
     },
     isScheme() {
       return this.$jskos.isScheme(this._item)
-    },
-    // Content for popover with ContentMap component
-    contentMap() {
-      const contentMap = mainLanguagesContentMapForConcept(this._item)
-      Object.values(contentMap).filter(map => map.props.includes("prefLabel")).forEach(map => {
-        map.classes = "fontWeight-heavy"
-      })
-      return contentMap
-    },
-    _showPopover() {
-      return this.showPopover && (!this.showText || !this._showNotation || Object.values(this.contentMap).length)
-    },
-  },
-  watch: {
-    _item() {
-      if (this.popoverHTML) {
-        // When item is updated and popoverHTML is set, update it
-        this.updatePopoverHTML()
-      }
     },
   },
   created() {
@@ -250,8 +195,6 @@ export default {
             window.clearInterval(this.interval)
           }
         }, 500)
-        // Set popover HTML
-        this.updatePopoverHTML()
       } else {
         this.isHoveredFromHere = false
         this.$store.commit({
@@ -260,11 +203,6 @@ export default {
         })
         window.clearInterval(this.interval)
       }
-    },
-    updatePopoverHTML() {
-      this._showPopover && this.$nextTick(() => {
-        this.popoverHTML = document.getElementById(this.tooltipDOMID + "-contentMap").innerHTML
-      })
     },
   },
 }

@@ -41,7 +41,6 @@
             v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
             :item="concept"
             :show-text="false"
-            :show-popover="true"
             :is-link="true"
             :is-left="true"
             :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
@@ -66,7 +65,6 @@
             v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
             :item="concept"
             :show-text="true"
-            :show-popover="true"
             :is-link="true"
             :is-left="true"
             :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
@@ -113,7 +111,6 @@
             <item-name
               :item="concept"
               :show-text="false"
-              :show-popover="true"
               :is-link="true"
               :is-left="false"
               :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
@@ -139,7 +136,6 @@
             <item-name
               :item="concept"
               :show-text="true"
-              :show-popover="true"
               :is-link="true"
               :is-left="false"
               :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
