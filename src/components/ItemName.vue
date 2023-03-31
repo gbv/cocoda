@@ -173,11 +173,13 @@ export default {
     _hovering(status) {
       if (status) {
         this.isHoveredFromHere = true
-        this.$store.commit({
-          type: "setHoveredConcept",
-          concept: this._item,
-          element: this.$el,
-        })
+        if (this.$jskos.isConcept(this._item)) {
+          this.$store.commit({
+            type: "setHoveredConcept",
+            concept: this._item,
+            element: this.$el,
+          })
+        }
         // Set URL
         this.url = this.getRouterUrl(this._item, this.isLeft, this.forceSide)
         // Set isValidLink
@@ -197,10 +199,12 @@ export default {
         }, 500)
       } else {
         this.isHoveredFromHere = false
-        this.$store.commit({
-          type: "setHoveredConcept",
-          concept: null,
-        })
+        if (this.$jskos.isConcept(this._item)) {
+          this.$store.commit({
+            type: "setHoveredConcept",
+            concept: null,
+          })
+        }
         window.clearInterval(this.interval)
       }
     },
