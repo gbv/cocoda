@@ -27,7 +27,7 @@
           style="margin-right: 3px; font-size: 12px;" />
         <item-name
           :item="concept"
-          :is-link="true"
+          :is-link="!disallowSelectItem"
           :is-left="isLeft"
           font-size="small" />
       </span>
@@ -56,7 +56,7 @@
         icon="sort-up" />
       <item-name
         :item="concept"
-        :is-link="true"
+        :is-link="!disallowSelectItem"
         :is-left="isLeft"
         font-size="small" />
     </div>
@@ -96,6 +96,10 @@ export default {
     allowShowAncestors: {
       type: Boolean,
       default: true,
+    },
+    disallowSelectItem: {
+      type: Boolean,
+      default: false,
     },
     /**
      * Settings - see [`ItemDetail`](#itemdetail).
