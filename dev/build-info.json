@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "c1becef7ce0beeb5e611f0e3029efd908f8f36f5",
-  "gitCommitShort": "c1becef7",
-  "gitCommitMessage": "c1becef7 Reimplement concept detail popover directly in MappingBrowserTable (#700)",
-  "buildDate": "2023-03-31T12:24:52Z",
-  "date": "2023-03-31T12:23:07.000Z",
+  "gitCommit": "6c92f343e0c0ec06cd90a4f4cb36c28bcec91fb9",
+  "gitCommitShort": "6c92f343",
+  "gitCommitMessage": "6c92f343 ConceptDetailAncestors: Fix issues with allowShowAncestors",
+  "buildDate": "2023-03-31T12:55:50Z",
+  "date": "2023-03-31T12:54:46.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
