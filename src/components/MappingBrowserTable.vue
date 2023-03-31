@@ -407,6 +407,27 @@
         </p>
       </div>
     </b-popover>
+    <!-- ? Maybe move into separate component, including some required properties -->
+    <b-popover
+      v-if="conceptDetailPopoverConcept"
+      :key="conceptDetailPopoverID"
+      :show.sync="popoverShown[`conceptDetailPopover-${conceptDetailPopoverID}`]"
+      :target="conceptDetailPopoverElement"
+      placement="top"
+      triggers=""
+      boundary="window"
+      @shown="popoverShow($event, `conceptDetailPopover-${conceptDetailPopoverID}`)"
+      @hide="popoverHide($event, `conceptDetailPopover-${conceptDetailPopoverID}`)">
+      <div style="max-height: 400px; overflow: auto;">
+        <!-- Ancestors / Broader -->
+        <concept-detail-ancestors
+          :item="conceptDetailPopoverConcept"
+          :allow-show-ancestors="false"
+          :disallow-select-item="true"
+          style="margin-bottom: 5px;" />
+        <content-map :content-map="conceptDetailPopoverContentMap" />
+      </div>
+    </b-popover>
   </div>
 </template>
 
@@ -423,6 +444,11 @@ import DataModalButton from "./DataModalButton.vue"
 import DateString from "./DateString.vue"
 import _ from "lodash"
 
+import ContentMap from "./ContentMap.vue"
+import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
+import { mainLanguagesContentMapForConcept } from "@/utils/concept-helpers"
+import { getItem } from "@/items"
+
 // Import mixins
 import auth from "@/mixins/auth.js"
 import objects from "@/mixins/cdk.js"
@@ -436,7 +462,7 @@ import { annotationsScore, annotationButtonColor } from "@/utils/annotation-help
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton, DateString },
+  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton, DateString, ContentMap, ConceptDetailAncestors },
   mixins: [auth, objects, computed, hoverHandler, clickHandler],
   props: {
     sections: {
@@ -476,6 +502,9 @@ export default {
       currentPopovers: {},
       annotationPopoverShown: false,
       goToPageValues: {},
+      conceptDetailPopoverConcept: null,
+      conceptDetailPopoverElement: null,
+      conceptDetailPopoverID: "",
     }
   },
   computed: {
@@ -603,6 +632,35 @@ export default {
         },
       ]
     },
+    hoveredConcept() {
+      return this.$store.state.hoveredConcept
+    },
+    hoveredConceptElement() {
+      return this.$store.state.hoveredConceptElement
+    },
+    // Content for popover with ContentMap component
+    conceptDetailPopoverContentMap() {
+      const contentMap = mainLanguagesContentMapForConcept(getItem(this.conceptDetailPopoverConcept))
+      Object.values(contentMap).filter(map => map.props.includes("prefLabel")).forEach(map => {
+        map.classes = "fontWeight-heavy"
+      })
+      return contentMap
+    },
+  },
+  watch: {
+    hoveredConcept() {
+      if (this.hoveredConceptElement && this.$el.contains(this.hoveredConceptElement)) {
+        this.conceptDetailPopoverConcept = this.hoveredConcept
+        this.conceptDetailPopoverElement = this.hoveredConceptElement
+        this.conceptDetailPopoverID = `${this.hoveredConceptElement?.__vue__._uid}`
+        // Delay showing the popover
+        setTimeout(() => {
+          if (this.conceptDetailPopoverElement === this.hoveredConceptElement) {
+            this.$set(this.popoverShown, `conceptDetailPopover-${this.conceptDetailPopoverID}`, true)
+          }
+        }, this.defaults.delay.long.show)
+      }
+    },
   },
   created() {
     this.hover = _.debounce(this._hover, 20)
@@ -664,11 +722,16 @@ export default {
         })
       }
     },
+    // Gets called by popover's @shown function to add them to currentPopovers (not required for all popovers)
+    popoverShow(event, id) {
+      event.preventDefault()
+      this.$set(this.currentPopovers, id, event)
+    },
     // Gets called by popovers @hide function to add them to currentPopovers
     popoverHide(event, id) {
       if (this.popoverShown[id]) {
         event.preventDefault()
-        this.currentPopovers[id] = event
+        this.$set(this.currentPopovers, id, event)
       }
     },
     hoverHandlers() {
