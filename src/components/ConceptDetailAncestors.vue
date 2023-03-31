@@ -1,7 +1,6 @@
 <template>
   <div
     :style="{
-      margin: 0,
       paddingLeft: (allowShowAncestors && ancestors.length > 3 && !settings.showAllAncestors) ? '8px' : 0,
     }">
     <div
