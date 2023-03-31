@@ -46,7 +46,7 @@
     </div>
     <!-- Broader -->
     <div
-      v-for="(concept, index) in (ancestors.length == 0 && item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
+      v-for="(concept, index) in ((ancestors.length == 0 && _item.__BROADERLOADED__) ? broader : []).filter(concept => concept != null)"
       :key="`conceptDetail-broader-${concept.uri}-${index}`"
       :class="{
         'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
@@ -72,7 +72,7 @@ import LoadingIndicator from "./LoadingIndicator.vue"
 
 import mappedStatus from "@/mixins/mapped-status.js"
 
-import { getItem, getItems, loadAncestors } from "@/items"
+import { getItem, getItems, loadAncestors, loadConcepts, modifyItem } from "@/items"
 
 export default {
   name: "ConceptDetailAncestors",
@@ -132,6 +132,12 @@ export default {
   mounted() {
     if (this.loading) {
       loadAncestors(this.item)
+      // Load information about its broader concepts
+      if (this._item.broader && !this._item.__BROADERLOADED__) {
+        loadConcepts(this._item.broader.filter(Boolean), { scheme: this._item.inScheme[0] }).then(() => {
+          modifyItem(this._item, "__BROADERLOADED__", true)
+        })
+      }
     }
   },
 }
