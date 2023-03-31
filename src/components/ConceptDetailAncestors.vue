@@ -33,12 +33,12 @@
       </span>
       <span
         v-else-if="index == 1"
-        v-b-tooltip.hover="{ title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium }"
+        v-b-tooltip.hover="allowShowAncestors ? { title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium } : null"
         :class="{
           'conceptDetail-ancestors-more': true,
           button: allowShowAncestors,
         }"
-        @click="showAncestors = true">
+        @click="showAncestors = allowShowAncestors">
         <font-awesome-icon
           class="u-flip-horizontal"
           icon="ellipsis-v" />
