@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "e53da324a32ed0d16630fb2e0e5408c6d5f9c461",
-  "gitCommitShort": "e53da324",
-  "gitCommitMessage": "e53da324 Update Docker base image to Node 18",
-  "buildDate": "2023-03-29T13:31:23Z",
-  "date": "2023-03-29T13:29:52.000Z",
+  "gitCommit": "c1becef7ce0beeb5e611f0e3029efd908f8f36f5",
+  "gitCommitShort": "c1becef7",
+  "gitCommitMessage": "c1becef7 Reimplement concept detail popover directly in MappingBrowserTable (#700)",
+  "buildDate": "2023-03-31T12:24:52Z",
+  "date": "2023-03-31T12:23:07.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
