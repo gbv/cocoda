@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "6c92f343e0c0ec06cd90a4f4cb36c28bcec91fb9",
-  "gitCommitShort": "6c92f343",
-  "gitCommitMessage": "6c92f343 ConceptDetailAncestors: Fix issues with allowShowAncestors",
-  "buildDate": "2023-03-31T12:55:50Z",
-  "date": "2023-03-31T12:54:46.000Z",
+  "gitCommit": "d2cf230d09f43067ec8ae88f67123668406e6d69",
+  "gitCommitShort": "d2cf230d",
+  "gitCommitMessage": "d2cf230d Fix small visual issue in ConceptDetailAncestors",
+  "buildDate": "2023-03-31T13:00:01Z",
+  "date": "2023-03-31T12:58:24.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
