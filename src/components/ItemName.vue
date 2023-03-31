@@ -231,6 +231,7 @@ export default {
         this.$store.commit({
           type: "setHoveredConcept",
           concept: this._item,
+          element: this.$el,
         })
         // Set URL
         this.url = this.getRouterUrl(this._item, this.isLeft, this.forceSide)

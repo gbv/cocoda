@@ -18,6 +18,7 @@ const state = {
   config: {},
   configLoaded: false,
   hoveredConcept: null,
+  hoveredConceptElement: null,
   draggedConcept: null,
   hoveredMapping: null,
   mousePosition: {
@@ -114,8 +115,13 @@ const mutations = {
   setConfigLoaded(state) {
     state.configLoaded = true
   },
-  setHoveredConcept(state, { concept }) {
-    state.hoveredConcept = concept && { uri: concept.uri }
+  setHoveredConcept(state, { concept, element = null }) {
+    if (!jskos.compareFast(concept, state.hoveredConcept)) {
+      state.hoveredConcept = concept && { uri: concept.uri }
+    }
+    if (state.hoveredConceptElement !== element) {
+      state.hoveredConceptElement = element
+    }
   },
   setDraggedConcept(state, { concept }) {
     state.draggedConcept = concept && { uri: concept.uri }

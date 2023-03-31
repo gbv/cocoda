@@ -224,9 +224,12 @@ export default {
      * Triggers a hovered event.
      */
     _hovering(concept) {
+      // Set hovered concept to current concept and element to labelBox
+      const element = concept && this.$el.getElementsByClassName("labelBox")?.[0]
       this.$store.commit({
         type: "setHoveredConcept",
         concept,
+        element,
       })
       this.isHoveredFromHere = concept != null
       // Set canAddToMapping
