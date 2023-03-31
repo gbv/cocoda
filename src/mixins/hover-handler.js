@@ -44,7 +44,7 @@ export default {
       delta = delta || 0
       x = x || this.mousePosition.x
       y = y || this.mousePosition.y
-      if (element) {
+      if (element?.getBoundingClientRect) {
         let { top, bottom, left, right } = element.getBoundingClientRect()
         if (y < bottom + delta && y > top - delta && x < right + delta && x > left - delta) {
           return true
