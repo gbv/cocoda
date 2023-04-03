@@ -1,11 +1,11 @@
 {
-  "version": "1.8.2",
+  "version": "1.9.0",
   "gitBranch": "dev",
-  "gitCommit": "8b16e9b07e6ca53ec8d7e3c2b13f342e55f70fbe",
-  "gitCommitShort": "8b16e9b0",
-  "gitCommitMessage": "8b16e9b0 Small revision to mainLanguagesForConcept in concept-helpers",
-  "buildDate": "2023-04-03T11:37:27Z",
-  "date": "2023-04-03T11:36:08.000Z",
+  "gitCommit": "3703c9aa717e5cad7ea7f4df30bcf5195cefaef2",
+  "gitCommitShort": "3703c9aa",
+  "gitCommitMessage": "3703c9aa Release version 1.9.0",
+  "buildDate": "2023-04-03T11:54:51Z",
+  "date": "2023-04-03T11:53:49.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
