@@ -95,11 +95,13 @@ function mainLanguagesForConcept(concept) {
   if (language) {
     languages.push(language)
   }
-  if (language !== "en" && allLanguagesForConcept(concept).includes("en")) {
-    languages.push("en")
+  const mainLanguage = jskos.languagePreference.getLanguages()?.[0]
+  if (language !== mainLanguage) {
+    languages.push(mainLanguage)
   }
-  if (languages.length === 0) {
-    languages.push(jskos.languagePreference.getLanguages()?.[0])
+  const allLanguages = allLanguagesForConcept(concept)
+  if (language !== "en" && allLanguages.includes("en")) {
+    languages.push("en")
   }
   return languages
 }
