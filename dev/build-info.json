@@ -1,11 +1,11 @@
 {
   "version": "1.8.2",
   "gitBranch": "dev",
-  "gitCommit": "d2cf230d09f43067ec8ae88f67123668406e6d69",
-  "gitCommitShort": "d2cf230d",
-  "gitCommitMessage": "d2cf230d Fix small visual issue in ConceptDetailAncestors",
-  "buildDate": "2023-03-31T13:00:01Z",
-  "date": "2023-03-31T12:58:24.000Z",
+  "gitCommit": "8b16e9b07e6ca53ec8d7e3c2b13f342e55f70fbe",
+  "gitCommitShort": "8b16e9b0",
+  "gitCommitMessage": "8b16e9b0 Small revision to mainLanguagesForConcept in concept-helpers",
+  "buildDate": "2023-04-03T11:37:27Z",
+  "date": "2023-04-03T11:36:08.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
