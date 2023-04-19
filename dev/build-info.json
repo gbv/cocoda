@@ -1,11 +1,11 @@
 {
   "version": "1.9.0",
   "gitBranch": "dev",
-  "gitCommit": "3703c9aa717e5cad7ea7f4df30bcf5195cefaef2",
-  "gitCommitShort": "3703c9aa",
-  "gitCommitMessage": "3703c9aa Release version 1.9.0",
-  "buildDate": "2023-04-03T11:54:51Z",
-  "date": "2023-04-03T11:53:49.000Z",
+  "gitCommit": "ddaf4e26dd54ae69a5f5be77258a271f6c21ae15",
+  "gitCommitShort": "ddaf4e26",
+  "gitCommitMessage": "ddaf4e26 Allow to edit names of concordance contributors (#708)",
+  "buildDate": "2023-04-19T14:16:52Z",
+  "date": "2023-04-19T14:15:41.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
