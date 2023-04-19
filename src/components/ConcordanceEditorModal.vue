@@ -200,7 +200,14 @@ export default {
       return this.$store.getters.getCurrentRegistry
     },
     contributorArray() {
-      return this.contributor.split("\n").filter(Boolean).map(uri => ({ uri }))
+      return this.contributor.split("\n").filter(Boolean).map(entry => {
+        const [, uri = "", name] = entry.match(/([^ ]+)\s*(.*)/) || [null, entry]
+        const contributor = { uri }
+        if (name) {
+          contributor.prefLabel = { en: name }
+        }
+        return contributor
+      })
     },
     contributorSubtextError() {
       const invalidContributorLineNumbers = []
@@ -224,7 +231,14 @@ export default {
         for (const lang of this.config.languages) {
           this.$set(this.description, lang, _.get(this.concordance, `scopeNote.${lang}[0]`, ""))
         }
-        this.contributor = (this.concordance.contributor || []).map(c => c.uri).join("\n")
+        this.contributor = (this.concordance.contributor || []).map(c => {
+          let line = c.uri
+          const name = this.$jskos.prefLabel(c, { fallbackToUri: false })
+          if (name) {
+            line += ` ${name}`
+          }
+          return line
+        }).join("\n")
       } else {
         this.reset()
       }
