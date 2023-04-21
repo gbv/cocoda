@@ -1,11 +1,11 @@
 {
   "version": "1.9.0",
   "gitBranch": "dev",
-  "gitCommit": "ddaf4e26dd54ae69a5f5be77258a271f6c21ae15",
-  "gitCommitShort": "ddaf4e26",
-  "gitCommitMessage": "ddaf4e26 Allow to edit names of concordance contributors (#708)",
-  "buildDate": "2023-04-19T14:16:52Z",
-  "date": "2023-04-19T14:15:41.000Z",
+  "gitCommit": "38688047216fe310eb5f2523b8a0b2dd9500ba26",
+  "gitCommitShort": "38688047",
+  "gitCommitMessage": "38688047 Concordance editing: Allow removal of description",
+  "buildDate": "2023-04-21T09:21:40Z",
+  "date": "2023-04-21T09:20:13.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
