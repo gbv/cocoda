@@ -1,11 +1,11 @@
 {
-  "version": "1.9.0",
+  "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "854470c9df55b3a9b4ff762081e9affb4fc6cba1",
-  "gitCommitShort": "854470c9",
-  "gitCommitMessage": "854470c9 Update version compatibility check and update jskos-api in package.json",
-  "buildDate": "2023-04-24T11:43:54Z",
-  "date": "2023-04-24T11:42:39.000Z",
+  "gitCommit": "3fe072ccd22fda4eee9c239fba699a70c930fbca",
+  "gitCommitShort": "3fe072cc",
+  "gitCommitMessage": "3fe072cc Release version 1.9.1",
+  "buildDate": "2023-04-24T11:49:29Z",
+  "date": "2023-04-24T11:47:57.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
