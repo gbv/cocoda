@@ -1,11 +1,11 @@
 {
   "version": "1.9.0",
   "gitBranch": "dev",
-  "gitCommit": "fded4c3d78bb019ec92b99ccbd18188265c64e39",
-  "gitCommitShort": "fded4c3d",
-  "gitCommitMessage": "fded4c3d Fix small issue in ConcordanceEditorModal",
-  "buildDate": "2023-04-24T08:52:04Z",
-  "date": "2023-04-24T08:50:48.000Z",
+  "gitCommit": "854470c9df55b3a9b4ff762081e9affb4fc6cba1",
+  "gitCommitShort": "854470c9",
+  "gitCommitMessage": "854470c9 Update version compatibility check and update jskos-api in package.json",
+  "buildDate": "2023-04-24T11:43:54Z",
+  "date": "2023-04-24T11:42:39.000Z",
   "milestoneUrl": null,
-  "jskosApi": "^1.0"
+  "jskosApi": "^1.0 || ^2.0"
 }
