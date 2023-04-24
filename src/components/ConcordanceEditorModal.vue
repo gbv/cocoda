@@ -192,7 +192,7 @@ export default {
         }
       }
       // Allow explicit removal of scopeNote
-      if (this.concordance.scopeNote && !concordance.scopeNote) {
+      if (this.concordance?.scopeNote && !concordance.scopeNote) {
         concordance.scopeNote = null
       }
       return concordance
