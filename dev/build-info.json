@@ -1,11 +1,11 @@
 {
   "version": "1.9.0",
   "gitBranch": "dev",
-  "gitCommit": "38688047216fe310eb5f2523b8a0b2dd9500ba26",
-  "gitCommitShort": "38688047",
-  "gitCommitMessage": "38688047 Concordance editing: Allow removal of description",
-  "buildDate": "2023-04-21T09:21:40Z",
-  "date": "2023-04-21T09:20:13.000Z",
+  "gitCommit": "fded4c3d78bb019ec92b99ccbd18188265c64e39",
+  "gitCommitShort": "fded4c3d",
+  "gitCommitMessage": "fded4c3d Fix small issue in ConcordanceEditorModal",
+  "buildDate": "2023-04-24T08:52:04Z",
+  "date": "2023-04-24T08:50:48.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0"
 }
