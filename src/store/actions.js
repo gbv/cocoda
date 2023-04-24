@@ -210,6 +210,7 @@ export default {
         commit("alerts/add", {
           variant: "danger",
           text,
+          countdown: 0,
         }, { root: true })
       }
     }
