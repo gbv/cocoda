@@ -164,22 +164,29 @@ export default {
      */
     const versionCompatible = (version, versionRange) => {
       const versionParts = version.split(".").map(part => parseInt(part))
-      const versionRangeParts = versionRange.slice(versionRange.startsWith("^") ? 1 : 0).split(".").map(part => parseInt(part))
-      if (!versionRange.startsWith("^")) {
-        if (versionParts[0] == versionRangeParts[0] && versionParts[1] == versionRangeParts[1]) {
-          return true
+      if (!versionRange) {
+        return true
+      }
+      // Suport || to specify multiple versions in version range
+      for (const range of versionRange.split("||").map(r => r.trim())) {
+        const versionRangeParts = range.slice(range.startsWith("^") ? 1 : 0).split(".").map(part => parseInt(part))
+        if (!versionRange.startsWith("^")) {
+          if (versionParts[0] == versionRangeParts[0] && versionParts[1] == versionRangeParts[1]) {
+            return true
+          }
+          continue
         }
-        return false
+        // Fail for differing major version
+        if (versionParts[0] != versionRangeParts[0]) {
+          continue
+        }
+        // Fail if minor is higher in versionRange
+        if (versionParts[1] < versionRangeParts[1]) {
+          continue
+        }
+        return true
       }
-      // Fail for differing major version
-      if (versionParts[0] != versionRangeParts[0]) {
-        return false
-      }
-      // Fail if minor is higher in versionRange
-      if (versionParts[1] < versionRangeParts[1]) {
-        return false
-      }
-      return true
+      return false
     }
 
     // Initialize registries
