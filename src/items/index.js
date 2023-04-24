@@ -458,11 +458,15 @@ export const concordances = ref([])
 export async function loadConcordances() {
   try {
     const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances())))
+    const previousLength = concordances.value?.length
     _.forEach(result, (concordance, index) => {
       // Set values of concordance array
       set(concordances.value, index, concordance)
     })
     set(concordances.value, "length", result.length)
+    if (result.length < previousLength) {
+      concordances.value.splice(previousLength)
+    }
   } catch (error) {
     log.error("MappingBrowser - Error loading concordances", error)
   }

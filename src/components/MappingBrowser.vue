@@ -10,7 +10,7 @@
         v-if="concordancesShown"
         :title="$t('mappingBrowser.concordances')"
         @click="handleClick">
-        <template v-if="concordances && concordances.length">
+        <template v-if="concordances">
           <!-- Registry selection, add concordance button, and modal -->
           <div
             v-if="concordanceRegistries.length"
@@ -684,7 +684,7 @@ export default {
       return items
     },
     concordancesShown() {
-      return !this.concordances || (this.concordances && this.concordances.length)
+      return !!this.concordanceRegistries.length
     },
     tabIndexes() {
       let indexes = {
