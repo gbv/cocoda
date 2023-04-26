@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "ec6bc72e8d421ecf72417836af9cec49a2c23b42",
-  "gitCommitShort": "ec6bc72e",
-  "gitCommitMessage": "ec6bc72e Fix small issues related to concordances",
-  "buildDate": "2023-04-24T12:48:55Z",
-  "date": "2023-04-24T12:47:28.000Z",
+  "gitCommit": "d9a6d7500fe396b0e570211feaf53647b2cc27f0",
+  "gitCommitShort": "d9a6d750",
+  "gitCommitMessage": "d9a6d750 Update dependencies",
+  "buildDate": "2023-04-26T08:45:43Z",
+  "date": "2023-04-26T08:43:56.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
