@@ -67,6 +67,18 @@ function contentForConcept(concept) {
       languageMap: concept.editorialNote,
       isArray: true,
     },
+    {
+      title: "note",
+      prop: "note",
+      languageMap: concept.note,
+      isArray: true,
+    },
+    {
+      title: "definition",
+      prop: "definition",
+      languageMap: concept.definition,
+      isArray: true,
+    },
   ]
   return content.filter(part => part.languageMap && Object.keys(part.languageMap).length)
 }

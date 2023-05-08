@@ -122,15 +122,6 @@
             <b>{{ $t("conceptDetail.modified") }}:</b> <date-string :date="item.modified" />
           </span>
         </div>
-        <template v-if="item.definition">
-          <b>{{ $t("conceptDetail.definition") }}:</b>
-          <div
-            v-for="({ language, definition }, index) in Object.keys(item.definition || {}).map(language => item.definition[language].map(definition => ({ language, definition }))).reduce((prev, cur) => prev.concat(cur), []).filter(item => item.language != '-').sort(sortByLanguage)"
-            :key="`conceptDetail-${isLeft}-defintion-${language}-${index}`"
-            class="conceptDetail-identifier">
-            {{ definition }} <sup class="text-lightGrey">{{ language }}</sup>
-          </div>
-        </template>
       </tab>
       <!-- coli-ana (see https://github.com/gbv/cocoda/issues/524) -->
       <tab
