@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "6dca760be777390232f406347bb9e31f8f9edcf9",
-  "gitCommitShort": "6dca760b",
-  "gitCommitMessage": "6dca760b Manual: Remove a IE shim that was loaded from Cloudflare",
-  "buildDate": "2023-04-28T11:44:12Z",
-  "date": "2023-04-28T11:42:47.000Z",
+  "gitCommit": "67d812a9c9814c445f6138247bffdad5a07d1005",
+  "gitCommitShort": "67d812a9",
+  "gitCommitMessage": "67d812a9 Update dependencies",
+  "buildDate": "2023-05-08T13:22:27Z",
+  "date": "2023-05-08T13:21:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
