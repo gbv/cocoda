@@ -359,7 +359,8 @@
     },
     "annotationPopover": {
       "addConfirmation": "Confirm",
-      "removeConfirmation": "Remove Confirmation"
+      "removeConfirmation": "Remove Confirmation",
+      "reason": "Reason"
     },
     "languages": {
       "en": "English",
@@ -751,7 +752,8 @@
     },
     "annotationPopover": {
       "addConfirmation": "Bestätigen",
-      "removeConfirmation": "Bestätigung entfernen"
+      "removeConfirmation": "Bestätigung entfernen",
+      "reason": "Grund"
     },
     "languages": {
       "en": "Englisch",

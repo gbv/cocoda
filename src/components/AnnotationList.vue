@@ -30,6 +30,21 @@
           }"
           :link="$jskos.annotationCreatorUri(annotation)"
           :text="$jskos.annotationCreatorName(annotation)" />
+        <span v-if="mismatchTagAllowedFor(annotation) && canEdit(annotation) && mismatchTagConcepts.length">
+          <br>{{ $t("annotationPopover.reason") }}:
+          <select
+            :value="mismatchTagFor(annotation)?.uri || null"
+            @change="changeMismatchTag(annotation, $event.target.value || null)">
+            <option
+              v-for="option in mismatchTagOptions"
+              :key="option.value"
+              :title="option.definition"
+              :value="option.value">{{ option.text }}</option>
+          </select>
+        </span>
+        <span v-else-if="mismatchTagFor(annotation)">
+          <br>{{ $t("annotationPopover.reason") }}: {{ mismatchTagLabel(mismatchTagFor(annotation)) }}
+        </span>
       </div>
       <div>
         <font-awesome-icon
@@ -48,6 +63,7 @@ import DateString from "./DateString.vue"
 
 // Import mixins
 import auth from "@/mixins/auth.js"
+import { getItem } from "@/items"
 
 export default {
   name: "AnnotationList",
@@ -63,6 +79,14 @@ export default {
       default: null,
     },
   },
+  computed: {
+    mismatchTagConcepts() {
+      return getItem(this.provider?._config?.annotations?.mismatchTagVocabulary)?.topConcepts ?? []
+    },
+    mismatchTagOptions() {
+      return [{ value: null, text: "-" }].concat(this.mismatchTagConcepts.map(concept => ({ value: concept.uri, text: this.mismatchTagLabel(concept), definition: this.mismatchTagDefinition(concept) })))
+    },
+  },
   methods: {
     userOwnsAnnotation(annotation) {
       return this.$jskos.annotationCreatorMatches(annotation, this.userUris)
@@ -71,6 +95,14 @@ export default {
       return !!this.provider?.isAuthorizedFor({
         type: "annotations",
         action: "delete",
+        user: this.user,
+        crossUser: !this.userOwnsAnnotation(annotation),
+      })
+    },
+    canEdit(annotation) {
+      return !!this.provider?.isAuthorizedFor({
+        type: "annotations",
+        action: "update",
         user: this.user,
         crossUser: !this.userOwnsAnnotation(annotation),
       })
@@ -103,6 +135,43 @@ export default {
       this.$emit("refresh-annotations", { annotations: this.annotations })
       return success
     },
+    mismatchTagAllowedFor(annotation) {
+      return annotation.motivation === "assessing" && annotation.bodyValue === "-1"
+    },
+    mismatchTagFor(annotation) {
+      if (!this.mismatchTagAllowedFor(annotation)) {
+        return null
+      }
+      const tag = annotation.body?.find(t => t.type === "SpecificResource" && t.purpose === "tagging" && t.value)
+      if (!tag) {
+        return null
+      }
+      return getItem({ uri: tag.value })
+    },
+    mismatchTagLabel(tag) {
+      return this.$jskos.prefLabel(getItem(tag), { language: this.$i18n.locale, fallbackToUri: false })
+    },
+    mismatchTagDefinition(tag) {
+      return this.$jskos.definition(getItem(tag), { language: this.$i18n.locale })
+    },
+    async changeMismatchTag(annotation, tag) {
+      const body = tag ? [{
+        type: "SpecificResource",
+        value: tag,
+        purpose: "tagging",
+      }] : null
+      try {
+        await this.provider.patchAnnotation({ annotation: { id: annotation.id, body } })
+        // TODO: Improve value refresh
+        if (body) {
+          annotation.body = body
+        } else {
+          delete annotation.body
+        }
+      } catch (error) {
+        this.$log.error(`Error updating mismatch tag for annotation ${annotation.id}:`, error)
+      }
+    },
   },
 }
 </script>
@@ -121,12 +190,17 @@ export default {
   flex: 1;
 }
 .annotationList > div > div:first-child {
-  flex: none;
   padding-right: 10px;
 }
 .annotationList > div > div:last-child {
-  flex: none;
   padding-left: 10px;
+}
+.annotationList > div > div:first-child, .annotationList > div > div:last-child {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 .annotationList > div:nth-child(odd) {
   background-color: @color-background;

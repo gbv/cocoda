@@ -327,9 +327,10 @@ export default {
             return
           }
           // 2. Case: User has assessed and changes the value
-          promise = provider.patchAnnotation({ annotation: { id: ownAssessment.id, bodyValue: value } }).then(annotation => {
+          promise = provider.patchAnnotation({ annotation: { id: ownAssessment.id, bodyValue: value, body: null } }).then(annotation => {
             if (annotation) {
               ownAssessment.bodyValue = value
+              delete ownAssessment.body
               this.alert(this.$t("alerts.annotationSaved"), null, "success")
               this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
             } else {

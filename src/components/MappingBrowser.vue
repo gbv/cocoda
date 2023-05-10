@@ -493,6 +493,7 @@ import ConcordanceEditorModal from "./ConcordanceEditorModal.vue"
 import ConcordanceDetail from "./ConcordanceDetail.vue"
 import DateString from "./DateString.vue"
 import _ from "lodash"
+import { cdk } from "cocoda-sdk"
 // Only use for cancel token generation!
 import axios from "axios"
 
@@ -503,7 +504,7 @@ import dragandrop from "@/mixins/dragandrop.js"
 import clickHandler from "@/mixins/click-handler.js"
 import computed from "@/mixins/computed.js"
 import pageVisibility from "@/mixins/page-visibility.js"
-import { getItem, getItems, loadConcepts } from "@/items"
+import { getItem, getItems, saveItem, loadConcepts, loadTop } from "@/items"
 
 export default {
   name: "MappingBrowser",
@@ -1149,6 +1150,16 @@ export default {
           })
         }
       })
+    })
+    // Load mismatchTagVocabulary entries if necessary
+    this.mappingRegistries.map(registry => registry._config?.annotations?.mismatchTagVocabulary).filter(Boolean).forEach(scheme => {
+      const registry = cdk.registryForScheme(scheme)
+      if (!registry) {
+        this.$log.warn(`Could not find registry for mismatchTagVocabulary ${scheme.uri}. Feature is disabled.`)
+        return
+      }
+      scheme = saveItem(scheme)
+      loadTop(scheme, { registry })
     })
   },
   beforeDestroy() {
