@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "67d812a9c9814c445f6138247bffdad5a07d1005",
-  "gitCommitShort": "67d812a9",
-  "gitCommitMessage": "67d812a9 Update dependencies",
-  "buildDate": "2023-05-08T13:22:27Z",
-  "date": "2023-05-08T13:21:19.000Z",
+  "gitCommit": "4822f2124df613a6d88cd4036a628c91cc6502eb",
+  "gitCommitShort": "4822f212",
+  "gitCommitMessage": "4822f212 First implementation of mismatch tagging (#667)",
+  "buildDate": "2023-05-10T09:35:03Z",
+  "date": "2023-05-10T09:33:23.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
