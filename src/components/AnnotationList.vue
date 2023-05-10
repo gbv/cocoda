@@ -64,8 +64,16 @@ export default {
     },
   },
   methods: {
-    canRemove(annotation) {
+    userOwnsAnnotation(annotation) {
       return this.$jskos.annotationCreatorMatches(annotation, this.userUris)
+    },
+    canRemove(annotation) {
+      return !!this.provider?.isAuthorizedFor({
+        type: "annotations",
+        action: "delete",
+        user: this.user,
+        crossUser: !this.userOwnsAnnotation(annotation),
+      })
     },
     async remove(index) {
       if (!this.provider) {
