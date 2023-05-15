@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "7e3ef56740b0450478b721f43c1c6c23146ae6f2",
-  "gitCommitShort": "7e3ef567",
-  "gitCommitMessage": "7e3ef567 MappingEditor: Disallow mapping with non-indexing concepts",
-  "buildDate": "2023-05-15T10:38:27Z",
-  "date": "2023-05-15T10:37:12.000Z",
+  "gitCommit": "aeb2ac3e16f8d9e547f671a40f3bcdcc435b4c56",
+  "gitCommitShort": "aeb2ac3e",
+  "gitCommitMessage": "aeb2ac3e Add icon for non-indexing concepts",
+  "buildDate": "2023-05-15T15:14:58Z",
+  "date": "2023-05-15T14:42:45.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
