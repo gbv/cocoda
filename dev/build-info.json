@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "4822f2124df613a6d88cd4036a628c91cc6502eb",
-  "gitCommitShort": "4822f212",
-  "gitCommitMessage": "4822f212 First implementation of mismatch tagging (#667)",
-  "buildDate": "2023-05-10T09:35:03Z",
-  "date": "2023-05-10T09:33:23.000Z",
+  "gitCommit": "7e3ef56740b0450478b721f43c1c6c23146ae6f2",
+  "gitCommitShort": "7e3ef567",
+  "gitCommitMessage": "7e3ef567 MappingEditor: Disallow mapping with non-indexing concepts",
+  "buildDate": "2023-05-15T10:38:27Z",
+  "date": "2023-05-15T10:37:12.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
