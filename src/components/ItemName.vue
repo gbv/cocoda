@@ -27,6 +27,13 @@
         class="itemName-icon fontSize-small">
         <font-awesome-icon icon="puzzle-piece" />
       </span>
+      <!-- Show icon for non-indexing concepts -->
+      <span
+        v-if="_item && _item.type && _item.type.includes('http://schema.vocnet.org/NonIndexingConcept')"
+        v-b-tooltip.hover="{ title: $t('itemDetail.nonIndexingConcept'), delay: defaults.delay.medium }"
+        class="itemName-icon fontSize-small">
+        <font-awesome-icon icon="diagram-project" />
+      </span>
       <!-- Text for notation -->
       <span
         v-if="_showNotation && notation"
