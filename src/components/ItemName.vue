@@ -24,7 +24,7 @@
       <span
         v-if="_item && _item.type && _item.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
         v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: defaults.delay.medium }"
-        :class="'fontSize-'+(fontSize || 'normal')">
+        class="itemName-icon fontSize-small">
         <font-awesome-icon icon="puzzle-piece" />
       </span>
       <!-- Text for notation -->
@@ -230,6 +230,9 @@ export default {
 }
 .itemName-highlighted {
   color: @color--itemName-highlighted !important;
+}
+.itemName-icon {
+  margin-right: 3px;
 }
 
 /* Multiline text truncation: http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/ */

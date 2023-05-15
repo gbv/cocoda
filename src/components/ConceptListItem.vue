@@ -53,7 +53,7 @@
         <span
           v-if="concept && concept.type && concept.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
           v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: defaults.delay.medium }"
-          class="fontSize-normal">
+          class="conceptListItem-icon fontSize-small">
           <font-awesome-icon icon="puzzle-piece" />
         </span>
         <span
@@ -432,5 +432,8 @@ export default {
 .down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+.conceptListItem-icon {
+  margin-right: 2px;
 }
 </style>
