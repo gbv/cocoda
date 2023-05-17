@@ -11,12 +11,8 @@
         'fontSize-small': true,
         'fontWeight-heavy': true
       }">
-      <registry-info
-        :registry="$store.getters.getCurrentRegistry"
-        :show-details="false"
-        :show-capabilities="false"
-        :show-editable="false"
-        :inline="true" />: {{ $t(canSaveCurrentMapping ? "mappingEditor.notSaved" : "mappingEditor.saved") }}
+      <registry-notation
+        :registry="$store.getters.getCurrentRegistry" /> {{ $t(canSaveCurrentMapping ? "mappingEditor.notSaved" : "mappingEditor.saved") }}
     </div>
     <div class="mappingEditorToolbar">
       <div
@@ -264,7 +260,7 @@ import MappingTypeSelection from "./MappingTypeSelection.vue"
 import _ from "lodash"
 import ComponentSettings from "./ComponentSettings.vue"
 import MappingDetail from "./MappingDetail.vue"
-import RegistryInfo from "./RegistryInfo.vue"
+import RegistryNotation from "./RegistryNotation.vue"
 import ConcordanceSelection from "./ConcordanceSelection.vue"
 import AnnotationPopover from "./AnnotationPopover.vue"
 
@@ -282,7 +278,7 @@ import { annotationsScore, annotationButtonColor } from "@/utils/annotation-help
  */
 export default {
   name: "MappingEditor",
-  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryInfo, ConcordanceSelection, AnnotationPopover },
+  components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryNotation, ConcordanceSelection, AnnotationPopover },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
   computed: {
     mapping() {
@@ -906,7 +902,7 @@ export default {
   position: absolute;
   bottom: -4px;
   right: 35px;
-  max-width: 35%;
+  max-width: 30%;
   z-index: @zIndex-2;
 }
 
