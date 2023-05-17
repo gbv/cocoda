@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "49cb7b0b2d6c0071bb53b48c0879aaa0c2b3d491",
-  "gitCommitShort": "49cb7b0b",
-  "gitCommitMessage": "49cb7b0b AnnotationPopover: Add feedback link for coli-conc mappings",
-  "buildDate": "2023-05-17T11:23:21Z",
-  "date": "2023-05-17T11:22:10.000Z",
+  "gitCommit": "4bbdb8f5694ecd2fd341af854f506f54f79aeea8",
+  "gitCommitShort": "4bbdb8f5",
+  "gitCommitMessage": "4bbdb8f5 MappingEditor: Adjust bottom bar",
+  "buildDate": "2023-05-17T11:47:08Z",
+  "date": "2023-05-17T11:45:26.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
