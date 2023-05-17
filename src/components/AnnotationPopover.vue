@@ -96,11 +96,13 @@ import AnnotationList from "./AnnotationList.vue"
 // Import mixins
 import auth from "@/mixins/auth.js"
 import hoverHandler from "@/mixins/hover-handler.js"
+// Only needed for _addIdentityParams
+import cdk from "@/mixins/cdk.js"
 
 export default {
   name: "AnnotationPopover",
   components: { LoadingIndicatorFull, AnnotationList },
-  mixins: [auth, hoverHandler],
+  mixins: [auth, hoverHandler, cdk],
   props: {
     eid: {
       type: String,
@@ -304,16 +306,16 @@ export default {
             annotation.creator.name = this.creatorName
           }
         }
-        promise = provider.postAnnotation({ annotation }).then(annotation => {
+        promise = provider.postAnnotation(this._addIdentityParams({ annotation })).then(annotation => {
           if (!annotation) {
             // Don't add annotation to mapping
             this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")
             return
           } else {
             this.alert(this.$t("alerts.annotationSaved"), null, "success")
+            mapping.annotations.push(annotation)
+            this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
           }
-          mapping.annotations.push(annotation)
-          this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
         }).catch(error => handleError(error, "annotationNotSaved"))
       } else {
         if (this.ownScore != value) {
@@ -327,9 +329,10 @@ export default {
             return
           }
           // 2. Case: User has assessed and changes the value
-          promise = provider.patchAnnotation({ annotation: { id: ownAssessment.id, bodyValue: value, body: null } }).then(annotation => {
+          promise = provider.patchAnnotation(this._addIdentityParams({ annotation: { id: ownAssessment.id, bodyValue: value, body: null } })).then(annotation => {
             if (annotation) {
-              ownAssessment.bodyValue = value
+              ownAssessment.bodyValue = annotation.bodyValue
+              ownAssessment.creator = annotation.creator
               delete ownAssessment.body
               this.alert(this.$t("alerts.annotationSaved"), null, "success")
               this.$emit("refresh-annotations", { uri, annotations: mapping.annotations })
@@ -409,7 +412,7 @@ export default {
       }
       this.loading = true
       try {
-        annotation = await provider.postAnnotation({ annotation })
+        annotation = await provider.postAnnotation(this._addIdentityParams({ annotation }))
       } catch (error) {
         annotation = null
       }

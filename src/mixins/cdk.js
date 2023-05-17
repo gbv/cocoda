@@ -320,6 +320,7 @@ export default {
       config.params = config.params || {}
       config.params.identity = this.$settings.creatorUri
       config.params.identityName = this.$settings.creator
+      return config
     },
     async postMapping({ registry, _adjust = true, _reload = true, _alert = true, _before, _after, ...config }) {
       registry = this.getRegistry(registry || config.mapping._registry)
