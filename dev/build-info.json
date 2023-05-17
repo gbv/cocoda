@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "432a0e9913a3cf853e52a9d534bb483301817d97",
-  "gitCommitShort": "432a0e99",
-  "gitCommitMessage": "432a0e99 ConceptDetails: First implementation of custom content titles",
-  "buildDate": "2023-05-17T07:49:13Z",
-  "date": "2023-05-17T07:47:28.000Z",
+  "gitCommit": "49cb7b0b2d6c0071bb53b48c0879aaa0c2b3d491",
+  "gitCommitShort": "49cb7b0b",
+  "gitCommitMessage": "49cb7b0b AnnotationPopover: Add feedback link for coli-conc mappings",
+  "buildDate": "2023-05-17T11:23:21Z",
+  "date": "2023-05-17T11:22:10.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
