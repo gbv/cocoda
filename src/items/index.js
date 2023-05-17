@@ -432,7 +432,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
   }
   try {
     let currentAncestors = []
-    const ancestors = (await registry.getAncestors({ concept })).reverse().map(ancestor => {
+    const ancestors = (await registry.getAncestors({ concept })).slice().reverse().map(ancestor => {
       // Set ancestors
       ancestor.ancestors = currentAncestors.slice()
       currentAncestors = [{ uri: ancestor.uri }].concat(currentAncestors)
