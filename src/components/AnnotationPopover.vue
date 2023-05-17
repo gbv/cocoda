@@ -74,9 +74,16 @@
           </div>
         </div>
         <div
-          v-if="canConfirm"
+          v-show="canConfirm || mailtoFeedbackLink"
           class="annotationPopover-lower">
+          <font-awesome-icon
+            v-if="mailtoFeedbackLink"
+            v-b-tooltip.hover.bottom="$t('annotationPopover.mailFeedbackTooltip', [mailtoEmail])"
+            class="button fontSize-large"
+            icon="envelope"
+            @click="clickFeedbackLink" />
           <b-button
+            v-if="canConfirm"
             class="bbutton-small"
             variant="primary"
             @click="confirm">
@@ -204,6 +211,17 @@ export default {
         }
       }
       return false
+    },
+    // TODO: This should be a setting
+    mailtoEmail() {
+      return "coli-conc@gbv.de"
+    },
+    mailtoFeedbackLink() {
+      // TODO: Currently hardcoded to work only for coli-conc mappings, should be a setting (dependent on registry) instead.
+      if (!this.mapping?.uri || !this.mapping.uri.startsWith("https://coli-conc.gbv.de")) {
+        return null
+      }
+      return `mailto:${this.mailtoEmail}?subject=Mapping Feedback&body=Dear coli-conc team,%0A%0AI would like to provide feedback about this mapping: ${this.mapping.uri}`
     },
   },
   watch: {
@@ -429,6 +447,9 @@ export default {
       this.imapping.annotations.push(annotation)
       this.$emit("refresh-annotations", { uri, annotations: this.annotations })
     },
+    clickFeedbackLink() {
+      window.open(this.mailtoFeedbackLink, "_self")
+    },
   },
 }
 </script>
@@ -445,9 +466,13 @@ export default {
   display: flex;
   justify-content: center;
 }
-.annotationPopover-lower > button {
+.annotationPopover-lower {
   width: 100%;
   margin-top: 5px;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  gap: 7px;
 }
 .annotationPopover-left {
   flex: 1;
