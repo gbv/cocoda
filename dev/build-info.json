@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "aeb2ac3e16f8d9e547f671a40f3bcdcc435b4c56",
-  "gitCommitShort": "aeb2ac3e",
-  "gitCommitMessage": "aeb2ac3e Add icon for non-indexing concepts",
-  "buildDate": "2023-05-15T15:14:58Z",
-  "date": "2023-05-15T14:42:45.000Z",
+  "gitCommit": "dfc61f5c011337a3d4bc1cec7dc056a074951d6e",
+  "gitCommitShort": "dfc61f5c",
+  "gitCommitMessage": "dfc61f5c Fix issue that reversed ancestors in certain edge case",
+  "buildDate": "2023-05-17T05:47:10Z",
+  "date": "2023-05-17T05:46:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
