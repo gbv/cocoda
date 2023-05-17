@@ -68,13 +68,13 @@ function contentForConcept(concept) {
       isArray: true,
     },
     {
-      title: "note",
+      title: i18n.t("conceptDetail.note"),
       prop: "note",
       languageMap: concept.note,
       isArray: true,
     },
     {
-      title: "definition",
+      title: i18n.t("conceptDetail.definition"),
       prop: "definition",
       languageMap: concept.definition,
       isArray: true,
