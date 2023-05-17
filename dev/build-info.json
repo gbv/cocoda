@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "dfc61f5c011337a3d4bc1cec7dc056a074951d6e",
-  "gitCommitShort": "dfc61f5c",
-  "gitCommitMessage": "dfc61f5c Fix issue that reversed ancestors in certain edge case",
-  "buildDate": "2023-05-17T05:47:10Z",
-  "date": "2023-05-17T05:46:09.000Z",
+  "gitCommit": "432a0e9913a3cf853e52a9d534bb483301817d97",
+  "gitCommitShort": "432a0e99",
+  "gitCommitMessage": "432a0e99 ConceptDetails: First implementation of custom content titles",
+  "buildDate": "2023-05-17T07:49:13Z",
+  "date": "2023-05-17T07:47:28.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
