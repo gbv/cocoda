@@ -36,6 +36,21 @@ function gndTermsForConcept(concept) {
   return gndTerms
 }
 
+// TODO: Externalize this (maybe even as setting)
+// TODO: Make sure multiple scheme URIs work
+// Custom titles for certain vocabularies
+const customTitles = [
+  {
+    get _scheme() {
+      return getItem({ uri: "http://bartoc.org/en/node/18785" })
+    },
+    altLabel: "Synonym",
+    scopeNote: "hier",
+    note: "Verweisung",
+    definition: "Erläuterung",
+  },
+]
+
 function contentForConcept(concept) {
   const gndTerms = gndTermsForConcept(concept)
   const content = [
@@ -80,6 +95,12 @@ function contentForConcept(concept) {
       isArray: true,
     },
   ]
+  const titles = customTitles.find(t => jskos.compare(t._scheme, concept?.inScheme?.[0]))
+  if (titles) {
+    content.forEach(entry => {
+      entry.title = titles[entry.prop] ?? entry.title
+    })
+  }
   return content.filter(part => part.languageMap && Object.keys(part.languageMap).length)
 }
 
