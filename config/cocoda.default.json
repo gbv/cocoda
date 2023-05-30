@@ -13,6 +13,14 @@
       }
     },
     {
+      "provider": "RVKApi",
+      "uri": "http://coli-conc.gbv.de/registry/rvk-api",
+      "api": "https://rvk.uni-regensburg.de/api_neu/",
+      "notation": [
+        "RVK"
+      ]
+    },
+    {
       "provider": "LocalMappings",
       "uri": "http://coli-conc.gbv.de/registry/local-mappings",
       "notation": [

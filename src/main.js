@@ -1,6 +1,7 @@
 import Vue from "vue"
 import * as CocodaSDK from "cocoda-sdk"
 import MeshApiProvider from "@/utils/mesh-api-provider.js"
+import RVKApiProvider from "@/utils/rvk-api-provider"
 import BootstrapVue from "bootstrap-vue"
 import VueScrollTo from "vue-scrollto"
 import jskos from "jskos-tools"
@@ -19,6 +20,7 @@ Object.keys(CocodaSDK).filter(key => key.endsWith("Provider")).forEach(key => {
 })
 
 CocodaSDK.cdk.addProvider(MeshApiProvider)
+CocodaSDK.cdk.addProvider(RVKApiProvider)
 
 // Import BootstrapVue
 Vue.use(BootstrapVue)
