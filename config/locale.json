@@ -364,6 +364,7 @@
       "addConfirmation": "Confirm",
       "removeConfirmation": "Remove Confirmation",
       "mailFeedbackTooltip": "Provide feedback about this mapping via email ({0})",
+      "mailFeedbackListItem": "please add details via email (if needed)",
       "reason": "Reason"
     },
     "languages": {
@@ -761,6 +762,7 @@
       "addConfirmation": "Bestätigen",
       "removeConfirmation": "Bestätigung entfernen",
       "mailFeedbackTooltip": "Feedback über dieses Mapping per E-Mail senden ({0})",
+      "mailFeedbackListItem": "Details ggf. bitte per E-Mail",
       "reason": "Grund"
     },
     "languages": {

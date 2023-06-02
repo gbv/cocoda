@@ -39,7 +39,8 @@
               v-for="option in mismatchTagOptions"
               :key="option.value"
               :title="option.definition"
-              :value="option.value">{{ option.text }}</option>
+              :value="option.value"
+              :disabled="option.disabled">{{ option.text }}</option>
           </select>
         </span>
         <span v-else-if="mismatchTagFor(annotation)">
@@ -84,7 +85,9 @@ export default {
       return getItem(this.provider?._config?.annotations?.mismatchTagVocabulary)?.topConcepts ?? []
     },
     mismatchTagOptions() {
-      return [{ value: null, text: "-" }].concat(this.mismatchTagConcepts.map(concept => ({ value: concept.uri, text: this.mismatchTagLabel(concept), definition: this.mismatchTagDefinition(concept) })))
+      return [{ value: null, text: "-" }]
+        .concat(this.mismatchTagConcepts.map(concept => ({ value: concept.uri, text: this.mismatchTagLabel(concept), definition: this.mismatchTagDefinition(concept) })))
+        .concat({ value: null, text: this.$t("annotationPopover.mailFeedbackListItem"), disabled: true })
     },
   },
   methods: {
