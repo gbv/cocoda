@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "3cb701e56a25b717cefe2676ade32c5a44831f7c",
-  "gitCommitShort": "3cb701e5",
-  "gitCommitMessage": "3cb701e5 Adjust naming of SKOS properties in ConceptDetails",
-  "buildDate": "2023-05-17T12:35:09Z",
-  "date": "2023-05-17T12:33:25.000Z",
+  "gitCommit": "6e52a4ec618cb1cff4a1b64d6480e54bf9945821",
+  "gitCommitShort": "6e52a4ec",
+  "gitCommitMessage": "6e52a4ec Negative assessment comment: Add disabled item for email note (#667)",
+  "buildDate": "2023-06-02T09:54:14Z",
+  "date": "2023-06-02T09:52:18.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
