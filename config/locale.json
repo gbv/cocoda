@@ -187,7 +187,7 @@
       "searchSourceNotation": "source notation/URI",
       "searchTargetScheme": "target scheme",
       "searchTargetNotation": "target notation/URI",
-      "searchType": "relation",
+      "searchType": "Relation",
       "searchAllTypes": "all mapping relations",
       "searchCardinality": "Cardinality",
       "searchCardinality11": "1-to-1",
