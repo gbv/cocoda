@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "e1419d97ed3dde00d09d2a517725fcc12b2bd8b1",
-  "gitCommitShort": "e1419d97",
-  "gitCommitMessage": "e1419d97 Rename mapping \"type\" to \"relation\" (close #714)",
-  "buildDate": "2023-06-05T06:36:50Z",
-  "date": "2023-06-05T06:35:43.000Z",
+  "gitCommit": "36caac461f4c7836083ae417821b4ddecb907145",
+  "gitCommitShort": "36caac46",
+  "gitCommitMessage": "36caac46 Uppercase search label",
+  "buildDate": "2023-06-05T06:43:27Z",
+  "date": "2023-06-05T06:42:06.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
