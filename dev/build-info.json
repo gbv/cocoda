@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "6e52a4ec618cb1cff4a1b64d6480e54bf9945821",
-  "gitCommitShort": "6e52a4ec",
-  "gitCommitMessage": "6e52a4ec Negative assessment comment: Add disabled item for email note (#667)",
-  "buildDate": "2023-06-02T09:54:14Z",
-  "date": "2023-06-02T09:52:18.000Z",
+  "gitCommit": "e1419d97ed3dde00d09d2a517725fcc12b2bd8b1",
+  "gitCommitShort": "e1419d97",
+  "gitCommitMessage": "e1419d97 Rename mapping \"type\" to \"relation\" (close #714)",
+  "buildDate": "2023-06-05T06:36:50Z",
+  "date": "2023-06-05T06:35:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
