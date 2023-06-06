@@ -71,7 +71,7 @@
     "less-loader": "^11.1.0",
     "lint-staged": "^13.2.2",
     "terser": "^5.17.1",
-    "vite": "^4.3.5",
+    "vite": "^4.3.9",
     "yorkie": "^2.0.0"
   },
   "engines": {
