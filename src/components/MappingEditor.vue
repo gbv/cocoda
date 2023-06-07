@@ -381,12 +381,12 @@ export default {
           invalid: true,
         }
       }
-      // Show error when trying to map non-indexing concept
+      // Show warning when trying to map non-indexing concept
       const nonIndexingConcept = this.$jskos.conceptsOfMapping(this.mapping).map(item => getItem(item)).find(concept => concept?.type?.includes("http://schema.vocnet.org/NonIndexingConcept"))
       if (nonIndexingConcept) {
         return {
           message: this.$t("mappingEditor.invalidNonIndexingConcept", [`${this.$jskos.notation(nonIndexingConcept?.inScheme?.[0])} ${this.$jskos.notation(nonIndexingConcept)}`]),
-          invalid: true,
+          warning: true,
         }
       }
       // Show warning if there is an original mapping, but it can't be updated
