@@ -1,3 +1,5 @@
+<!-- Hinweis: Bitte daran denken, Änderungen, die sich auf den eigentlichen Inhalt des Handbuchs beziehen, auch in die englische Version zu übertragen. -->
+
 ## Einleitung
 
 Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Die Webanwendung zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri...) wird als Teil des [Projektes coli-conc](https://coli-conc.gbv.de/) an der [Verbundzentrale des GBV (VZG)](https://www.gbv.de/) gepflegt. Die Anwendungsfälle von Cocoda reichen vom Mapping eigener Systematiken auf etabliertere Vokabulare über die Erstellung von Mappings zur Verbesserung des Retrieval in Katalogen und Discovery-Systemen bis hin zur Sammlung von Mappings in Wikidata als zentralem Normdaten-Hub.
@@ -50,10 +52,7 @@ Diese externen Accounts heißen in Cocoda **Identitäten**. Die jeweils ausgewä
 
 ![](img/cocoda-login-select-identity-de.png){width=50% .border .border-dark}
 
-<!--
-Entwurf für Text zum Thema Löschen der Daten:
-Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen werden. Mit Klick auf "Delete user account", werden diese Daten sofort und unwiderruflich aus unserer Datenbank gelöscht. Dies gilt **nicht** für Daten, die in Zusammenhang mit diesen Accountdaten stehen wie z.B. Mappings. 
--->
+Die gespeicherten Accountdaten können auf der Account-Seite unten unter "My Data" eingesehen werden. Mit "Delete User Account" können diese Daten unwiderruflich aus unserer Datenbank gelöscht werden. Dies gilt **nicht** für Daten, die in Zusammenhang mit diesen Accountdaten stehen (Mappings, Bewertungen, etc.).
 
 Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.
 
@@ -91,12 +90,9 @@ Es können auch Konzepte ausgewählt werden, auch wenn es im betreffenden Vokabu
 
 Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):
 
-<!--nächster Absatz korrigieren nach erfolgter Neubenennung der Tabs
--->
-
-* Info: Metadaten wie Identifier und Änderungsdatum
-* Bezeichnungen: Vorzugs- und Alternativbenennungen
-* Scope/Editorial: Verwendungshinweise und Beschreibungen
+* Konzept: Vorzugs- und Alternativbenennungen, Registerbegriffe, Verwendungshinweise, Beschreibungen, etc. (in der ausgewählten Vokabularsprache sowie ggf. Englisch)
+* Übersetzungen: Informationen aus "Konzept" in anderen Sprachen, falls vorhanden
+* Meta: Metadaten wie URI, Identifier und Änderungsdatum
 * Links: Links in andere Datenbanken (Wikipedia, K0plus...)
 
 Der Stern ![](img/icons/star.svg){height=1em} fügt das Konzept zur Schnellauswahl-Liste hinzu bzw. entfernt es daraus.
@@ -161,20 +157,6 @@ Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in den
 
 ![](img/cocoda-mapping-browser-con-de.png){width=100% .border .border-dark}
 
-<!--
-Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
-
-- Mapping-Details anzeigen: zeigt Mapping-Details an
-- Bearbeiten: holt das Mapping in den Mapping-Editor
-- Speichern: speichert das Mapping in die ausgewählte Datenbank
-- Löschen löscht eigene Mappings
-
-Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
-
-Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
--->
-
-
 ### Mapping-Suche
 
 Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene [Datenquellen]. In der ersten Zeile des Suchformulars können folgende Filter angegeben werden:
@@ -216,6 +198,17 @@ Sowie je nach Einstellungen:
 * ![](img/icons/trash.svg){height=1em} Mapping löschen
 * ![](img/icons/info-circle.svg){height=1em} Detailinformationen zum Mapping oder Vorschlag
 * ![](img/icons/clone-solid.svg){height=1em} Vorschlag in den Mapping-Editor kopieren
+
+Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite einige Aktionen, die ausgewählt werden können:
+
+- Mapping-Details anzeigen
+- Bearbeiten: holt das Mapping in den Mapping-Editor
+- Speichern: speichert das Mapping in die ausgewählte Datenbank
+- Löschen: löscht ein Mapping
+
+Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
+
+Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
 
 ### Bewertungen
 
