@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "c79c167008cf1ee3995a91ab36178d2537588244",
-  "gitCommitShort": "c79c1670",
-  "gitCommitMessage": "c79c1670 Review and adjust English manual (#527)",
-  "buildDate": "2023-06-19T12:16:18Z",
-  "date": "2023-06-19T12:14:48.000Z",
+  "gitCommit": "7b537cdd3456f24092cec0423f3f43499350183f",
+  "gitCommitShort": "7b537cdd",
+  "gitCommitMessage": "7b537cdd Small fixes in English manual (#527)",
+  "buildDate": "2023-06-19T13:37:59Z",
+  "date": "2023-06-19T13:36:28.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
