@@ -59,6 +59,7 @@ Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings au
 ## Vokabulare und Konzepte
 
 Cocoda bietet einen einheitlichen Zugang zu einer Vielzahl von **Vokabularen** wie Ontologien, Klassifikationen, Taxonomien und Terminologien aus verschiedenen [Datenquellen](#Datenquellen). Ein Vokabular ist eine organisierte Sammlung von Konzepten mit zusätzlichen Informationen über das Vokabular. Ein **Konzept** ist ein individuelles Objekt wie eine Person, einen Ort oder ein Thema. Die meisten Konzepte haben eine eindeutige Notation und Bezeichnung und eine einzigartige URI, um sie identifizieren zu können.
+
 Cocoda empfiehlt alle Vokabulare, im [Basic Register of Thesauri, Ontologies & Classifications (BARTOC)](https://BARTOC.org) zu registrieren und dessen IDs zu verwenden, um eindeutig auf einzelne Vokabulare zu verweisen. Die Dewey-Dezimalklassifikation (DDC) ist beispielsweise ein Vokabular des Typs Universelle Bibliotheksklassifikation, das von OCLC veröffentlicht und in BARTOC mit der URI <http://bartoc.org/en/node/241> registriert wurde.
 
 Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:
@@ -88,7 +89,7 @@ Es können auch Konzepte ausgewählt werden, auch wenn es im betreffenden Vokabu
 
 ### Konzeptdetails
 
-Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):
+Nach Auswahl eines Konzepts werden statt [Vokabulardetails](#vokabulardetails) Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen werden folgende Tabs mit Informationen angezeigt (falls vorhanden):
 
 * Konzept: Vorzugs- und Alternativbenennungen, Registerbegriffe, Verwendungshinweise, Beschreibungen, etc. (in der ausgewählten Vokabularsprache sowie ggf. Englisch)
 * Übersetzungen: Informationen aus "Konzept" in anderen Sprachen, falls vorhanden
@@ -128,7 +129,7 @@ In den Einstellungen des Editors ![](img/icons/gear-solid.svg){height=1em} kann 
 
 ![](img/cocoda-mappingeditor1-de.png){.border .border-dark}
 
-In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende **Mapping-Typen** stehen zur Auswahl:
+In der Mitte des Editors kann die Relation des Mappings ausgewählt werden. Folgende **Mapping-Relationen** stehen zur Auswahl:
 
 * **=** exakte Übereinstimmung: gleiche Bedeutung
 * **≈** hohe Übereinstimmung: in etwa gleiche Bedeutung
@@ -148,8 +149,7 @@ Rechts unten kann je nach Berechtigung eine Konkordanz ausgewählt werden, in di
 
 Nach dem Speichern wird der Editor geleert, um ein Überschreiben des gespeicherten Mappings zu vermeiden; dieses Verhalten kann in den Einstellungen des Editors ![](img/icons/gear-solid.svg){height=1em} geändert werden.
 
-Falls für die ausgewählte Kombinationen von Quell- und Zielvokabular Hinweise zum Mappingvorgang konfiguriert sind, werden diese über ein Hilfe-Info ![](img/icons/question-circle.svg){height=1em}
-aufrufbar.
+Falls für die ausgewählte Kombinationen von Quell- und Zielvokabular Hinweise zum Mappingvorgang konfiguriert sind, werden diese über ein Hilfe-Info ![](img/icons/question-circle.svg){height=1em} aufrufbar.
 
 ### Konkordanzen
 
@@ -171,7 +171,7 @@ Vokabulare und Konzepte lassen sich auch per Drag & Drop in die Suchfelder eintr
 Mit dem Schloss-Icon ![](img/icons/lock-solid.svg){height=1em} bzw. ![](img/icons/lock-open-solid.svg){height=1em} kann festgelegt werden, dass immer automatisch das per [Vokabularauswahl] gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon ![](img/icons/filter.svg){height=1em} werden weitere Suchmöglichkeiten angeboten:
 
 * Autor/Autorin
-* Mapping-Typ
+* Mapping-Relation
 * Bidirektionale Suche (Quell- und Ziel- auch vertauscht suchen)
 * Kardinalität
 * Bewertung
@@ -187,7 +187,7 @@ Die Ergebnisliste der Mapping-Suche ist nach Datenquellen unterteilt und entspri
 Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen lassen sich durch Klick auf ihre Kürzel ein- und ausblenden. Datenquellen, in die geschrieben werden kann, sind mit einem Stift ![](img/icons/pencil-alt-solid.svg){height=1em} markiert. Zu jedem Mapping bzw. Mapping-Vorschlag werden angezeigt:
 
 * Quellvokabular und -Konzept
-* Mapping-Typ
+* Mapping-Relation
 * Zielvokabular und -Konzept
 * Erstellt von wem und wann
 
