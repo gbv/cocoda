@@ -166,7 +166,7 @@ The Mapping Search provides a meta search for mappings in existing [data sources
 
 Vocabularies and concepts can also be dragged and dropped into the search fields.
 
-The lock icon ![](img/icons/lock-solid.svg){height=1em} or ![](img/icons/lock-open-solid.svg){height=1em} can be used to specify that the source or target vocabulary selected via [sheme selection](#scheme-selection) should always be used automatically. The filter icon ![](img/icons/filter.svg){height=1em} offers further search options:
+The lock icon ![](img/icons/lock-solid.svg){height=1em} or ![](img/icons/lock-open-solid.svg){height=1em} can be used to specify that the source or target vocabulary selected via [scheme selection](#scheme-selection) should always be used automatically. The filter icon ![](img/icons/filter.svg){height=1em} offers further search options:
 
 * Author
 * Mapping relation
@@ -184,7 +184,7 @@ The results list is divided by data source and corresponds to the view in the Ma
 
 In the Mapping Navigator, mappings and mapping suggestions from various data sources are displayed that match the concepts selected on the left or right side. For which concepts and vocabularies mappings should be considered in the navigator can be defined in the settings. The individual data sources can be shown or hidden by clicking on their abbreviations. Data sources that can be written to are marked with a pen ![](img/icons/pencil-alt-solid.svg){height=1em}. For each mapping or mapping suggestion are displayed:
 
-* Source vocabulary and concept.
+* Source vocabulary and concept
 * Mapping relation
 * Target vocabulary and concept
 * Created by whom and when
