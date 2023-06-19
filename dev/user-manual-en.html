@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="dcterms.date" content="2023-06-07" />
+  <meta name="dcterms.date" content="2023-06-19" />
   <title>Cocoda User Manual</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -29,11 +29,8 @@
       </div>
         <div class="col-sm-9">
           <h1>Cocoda User Manual</h1>
-          <p class="date">version 1.9.1 (2023-06-07)</p>
-<!--
-ToDos:
-- kurz coli-rich (inkl. Verlinkung) und das Redaktionsverfahren der eingetragenen Mappings im K10plus (inkl. Pflege von Updates) beschreiben: ein Absatz zum Workflow - von der Erstellung von Mappings bis zur Anreicherung via coli-rich; DA und dann die Redaktionsverfahren
--->
+          <p class="date">version 1.9.1 (2023-06-19)</p>
+<!-- Note: Remember to transfer changes related to the actual content of the manual to the German version as well. -->
 <h2 id="introduction">Introduction</h2>
 <p>This manual gives a brief introduction to the main components of Cocoda. The web application for creating and managing mappings between knowledge organization systems (classifications, authorities, thesauri…) is maintained as part of the <a href="https://coli-conc.gbv.de/">coli-conc project</a> at the <a href="https://en.gbv.de/">Head Office of the GBV Common Library Network (VZG)</a>. Cocoda use cases range from mapping own classifications to more established vocabularies, to creating mappings to improve retrieval in catalogs and discovery systems, to collecting mappings in Wikidata as a central hub for authorities.</p>
 <p>Several tutorials, screencasts, and variously configured instances of Cocoda are linked at <a href="https://coli-conc.gbv.de/cocoda/" class="uri">https://coli-conc.gbv.de/cocoda/</a>, including:</p>
@@ -43,29 +40,29 @@ ToDos:
 </ul>
 <p>Depending on the configuration of the Cocoda instance, some of the features described here may not be available.</p>
 <h2 id="user-interface">User Interface</h2>
-<p>Firefox or Chromium is recommended as the browser and a screen with at least Full HD resolution (1920×1080). The user interface can be customized via the <a href="#settings">settings</a>; among other things, the language can be changed.</p>
+<p>It is recommended to use Firefox or Chromium (Google Chrome, Microsoft Edge, or similar) as the browser and a screen with at least full HD resolution (1920×1080). The user interface can be customized via the <a href="#settings">settings</a>; among other things, the language can be changed.</p>
 <p>The <strong>menu bar</strong> contains (depending on the configuration):</p>
 <ul>
 <li>Logo and name of the respective Cocoda instance</li>
 <li><img src="img/icons/exchange.svg" style="height:1em" /> Left-right arrows to change the mapping direction</li>
 <li>Links to imprint, privacy policy, manual and feedback option</li>
-<li><img src="img/icons/trash.svg" style="height:1em" /> Trash can to view and restore last deleted mappings</li>
+<li><img src="img/icons/trash.svg" style="height:1em" /> Trash to view and restore last deleted mappings</li>
 <li><img src="img/icons/star.svg" style="height:1em" /> Quick selection of remembered concepts</li>
 <li><img src="img/icons/user-solid.svg" style="height:1em" /> <a href="#user-accounts">User account</a> and name. After successful login, the username is highlighted in bold and quick selection can be used to change identity for saving <a href="#mappings">mappings</a> and <a href="#ratings">ratings</a></li>
 <li><img src="img/icons/gear-solid.svg" style="height:1em" /> <a href="#settings">Settings</a> with quick selection of the <a href="#mapping-databases">database</a> into which mappings and ratings are saved</li>
 </ul>
 <p>The rest of the screen is divided into three areas with several <strong>components</strong>:</p>
 <ul>
-<li>Components for selecting <a href="#concept-schemes-and-concepts">Concept schemes and concepts</a> Left and Right.</li>
+<li>Components for selecting <a href="#concept-schemes-and-concepts">concept schemes and concepts</a> left and right.</li>
 <li>Components for selecting, creating, and editing <a href="#mappings">mappings</a> in the middle.</li>
 </ul>
-<p>When Cocoda is started, initially only the components for <a href="#scheme-selection">scheme selection</a> are open while general notes are displayed in the center. The size of individual components can be changed with the dots or, the minimize icon hides a component. In addition, some components have icons in the lower right corner:</p>
+<p>When Cocoda is started, initially only the components for <a href="#scheme-selection">scheme selection</a> are open while general notes are displayed in the center. The size of individual components can be changed with the dots <img src="img/icons/ellipsis-v.svg" style="height:1em" /> or <img src="img/icons/ellipsis-h.svg" style="height:1em" />; the minimize icon <img src="img/icons/window-minimize.svg" style="height:1em" /> hides a component. In addition, some components have icons in the lower right corner:</p>
 <ul>
-<li>Setting the behavior of the component</li>
-<li>Detailed view of the data and sources displayed in a component</li>
+<li><img src="img/icons/gear-solid.svg" style="height:1em" /> Setting the behavior of the component</li>
+<li><img src="img/icons/code.svg" style="height:1em" /> Detailed view of the <a href="#export-and-import">data and sources</a> displayed in a component</li>
 </ul>
-<h2 id="user-accounts">User accounts</h2>
-<p>In principle, Cocoda does not manage its own user accounts. The <a href="#settings">settings</a> are therefore also only stored in the browser. Existing accounts with external services can be used for login:</p>
+<h2 id="user-accounts">User Accounts</h2>
+<p>In principle, Cocoda does not manage its own user accounts. The <a href="#settings">settings</a> are therefore only stored in the browser. Existing accounts with external services can be used for login:</p>
 <ul>
 <li>ORCID</li>
 <li>Wikimedia (Wikipedia, Wikidata…)</li>
@@ -73,169 +70,163 @@ ToDos:
 <li>StackExchange</li>
 <li>LDAP (only VZG internal)</li>
 </ul>
-<p>These external accounts are called <strong>Identities</strong> in Cocoda. The identity selected in each case and the corresponding username are displayed in the <a href="#user-interface">menu bar</a> after successful login and can be changed there. Further details can be viewed in the <a href="#settings">settings</a> under “Account”. Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:</p>
+<p>These external accounts are called <strong>Identities</strong> in Cocoda. The selected identity and corresponding username are displayed in the <a href="#user-interface">menu bar</a> after successful login and can be changed there. Further details can be viewed in the <a href="#settings">settings</a> under “Account”. Users can decide for themselves whether and with which identity Cocoda stores user contributions for public viewing:</p>
 <ul>
 <li>If the personal assignment of contributions is not desired, the default identity should be selected. In this case, an account identifier is used whose assignment to identities is only visible to the administrators of the mapping database at VZG. In addition, a pseudonym should be assigned as a name.</li>
 <li>If one of the other identities is selected, the user can be publicly identified by the identity URI.</li>
 </ul>
 <p><img src="img/cocoda-login-select-identity-en.png" class="border border-dark" style="width:50.0%" /></p>
+<p>The stored account data can be viewed on the account page at the bottom under “My Data”. With “Delete User Account”, this data can be irrevocably deleted from our database. This does <strong>not</strong> apply to data related to this account data (mappings, ratings, etc.).</p>
 <p>If mappings should not be publicly viewable at all, mappings can also be saved locally in the own browser without login. However, this feature is disabled in some Cocoda instances for the sake of clarity.</p>
-<!--
-Evtl. kurz eräutern, was beim Löschen des Accounts passiert: welche Daten bleiben, welche werden geölscht.
--->
-<h2 id="concept-schemes-and-concepts">Concept schemes and concepts</h2>
-<p>Cocoda provides unified access to a variety of <strong>concept schemes</strong> (or just <strong>schemes</strong>) like ontologies, (controlled) vocabularies, taxonomies, and terminologies from different <a href="#data-sources">data sources</a>. A concept scheme is an organized collection of concepts with additional information about the concept scheme. A <strong>concept</strong> is an individual object such as a person, a place, or a topic. Most concepts have at least a unique preferred label, a unique notation, and a globally unique URI. Cocoda recommends all concept schemes to be registered in the <a href="https://BARTOC.org">Basic Register of Thesauri, Ontologies &amp; Classifications (BARTOC)</a> and to use its identifiers to uniquely refer to indivial concept schemes. For instance, the Dewey Decimal Classification (DDC) is a concept scheme of type universal library classification, published by OCLC and registered in BARTOC with URI <a href="http://bartoc.org/en/node/241" class="uri">http://bartoc.org/en/node/241</a>.</p>
+<h2 id="concept-schemes-and-concepts">Concept Schemes and Concepts</h2>
+<p>Cocoda provides unified access to a variety of <strong>concept schemes</strong> (or just <strong>schemes</strong>) like ontologies, (controlled) vocabularies, taxonomies, and terminologies from different <a href="#data-sources">data sources</a>. A concept scheme is an organized collection of concepts with additional information about the concept scheme. A <strong>concept</strong> is an individual object such as a person, a place, or a topic. Most concepts have at least a unique preferred label, a unique notation, and a globally unique URI.</p>
+<p>Cocoda recommends all concept schemes to be registered in the <a href="https://BARTOC.org">Basic Register of Thesauri, Ontologies &amp; Classifications (BARTOC)</a> and to use its identifiers to uniquely refer to indivial concept schemes. For instance, the Dewey Decimal Classification (DDC) is a concept scheme of type universal library classification, published by OCLC and registered in BARTOC with URI <a href="http://bartoc.org/en/node/241" class="uri">http://bartoc.org/en/node/241</a>.</p>
 <p>The display of concept schemes and concepts on the left and right side respectively consists of components for:</p>
 <ul>
-<li><a href="#scheme-selection">selection of source or target scheme</a></li>
-<li><a href="#scheme-details">view information about a selected scheme</a></li>
+<li><a href="#scheme-selection">Selection of source or target scheme</a></li>
+<li><a href="#scheme-details">View information about a selected scheme</a></li>
 <li><a href="#search-for-concepts">Search for concepts in the selected scheme</a></li>
-<li><a href="#concept-details">view information about a selected concept</a></li>
-<li><a href="#treeview">hierarchical browsing in selected scheme</a> (if available)</li>
-<li><a href="#listview">view concept lists</a> (if available).</li>
+<li><a href="#concept-details">View information about a selected concept</a></li>
+<li><a href="#tree-view">Hierarchical browsing in selected scheme</a> (if available)</li>
+<li><a href="#list-view">View concept lists</a> (if available).</li>
 </ul>
-<h3 id="scheme-selection">Scheme selection</h3>
-<p>The selection of a scheme is possible via title search and via the vocabulary list. The filter icon <img src="img/icons/filter.svg" style="height:1em" /> can be used to limit the list by source, language, vocabulary type, favorites and only vocabularies with concepts. If the filter icon is marked with a dot, a filter is active. With the plant <img src="img/icons/seedling-solid.svg" style="height:1em" /> a vocabulary can be selected or deselected as a favorite. Favorites are always displayed first. After selecting a vocabulary, a search field appears and information about the vocabulary is displayed. With the cross <img src="img/icons/times-circle.svg" style="height:1em" /> behind the scheme name the scheme can be deselected. For quick access to the scheme selection there are keyboard shortcuts <code>Ctrl+Shift+f</code> (left) and <code>Ctrl+Shift+g</code> (right).</p>
-<h3 id="scheme-details">Scheme details</h3>
-<p>This component displays scheme information like identifier, creation date, license, publisher, scheme types and <a href="#data-sources">data source</a>. If the <a href="#treeview">treeview</a> is minimized, the top concepts are also displayed here. The link to <img src="img/icons/external-link-square.svg" style="height:1em" /> existing mappings opens the <a href="#mapping-search">mapping search</a>.</p>
+<h3 id="scheme-selection">Scheme Selection</h3>
+<p>The selection of a scheme is possible via title search and via the vocabulary list. The filter icon <img src="img/icons/filter.svg" style="height:1em" /> can be used to limit the list by source, language, vocabulary type, favorites and only vocabularies with concepts. If the filter icon is marked with a dot, a filter is active. With the plant icon <img src="img/icons/seedling-solid.svg" style="height:1em" />, a vocabulary can be selected or deselected as a favorite. Favorites are always displayed first. After selecting a vocabulary, a search field appears and information about the vocabulary is displayed. With the cross <img src="img/icons/times-circle.svg" style="height:1em" /> behind the scheme name, the scheme can be deselected. For quick access to the scheme selection there are keyboard shortcuts <code>Ctrl+Shift+f</code> (left) and <code>Ctrl+Shift+g</code> (right).</p>
+<h3 id="scheme-details">Scheme Details</h3>
+<p>This component displays scheme information like identifier, creation date, license, publisher, scheme types and <a href="#data-sources">data source</a>. If the <a href="#tree-view">tree view</a> is minimized, the top concepts are also displayed here. The link to <img src="img/icons/external-link-square.svg" style="height:1em" /> existing mappings opens the <a href="#mapping-search">mapping search</a>.</p>
 <p><img src="img/cocoda-classdet-en.png" class="border border-dark" style="width:50.0%" /></p>
-<h3 id="search-for-concepts">Search for concepts</h3>
-<p>In the search field concepts can be searched for by notations or by label. It is possible to configure this component to fill in the label of the selected concept in the search field on the opposite site automatically. Some schemes offer the option to filter concepts by type: in such a case a special icon <img src="img/icons/filter.svg" style="height:1em" /> is displayed in the search field. There are shortcuts to activate the search for concepts briefly: <code>Ctrl+f</code> (left scheme) und <code>Ctrl+g</code> (right scheme).</p>
-<p>It is also possible to select concepts although there is no concept with the given notation in this scheme. This can be done by searching with a syntactically correct notation. These concepts are marked with a red dot (<span style="color: red;">•</span>).</p>
-<h3 id="concept-details">Concept details</h3>
-<p>After selecting a concept, information about the selected concept is displayed instead of <a href="#scheme-details">scheme details</a>. Besides superclasses and subclasses (if available):</p>
-<!--rewrite next section after changing tab labels
--->
+<h3 id="search-for-concepts">Search For Concepts</h3>
+<p>In the search field concepts can be searched by notations or by label. It is possible to configure this component to fill in the label of the selected concept in the search field on the opposite site automatically. Some schemes offer the option to filter concepts by type: in such a case a special icon <img src="img/icons/filter.svg" style="height:1em" /> is displayed in the search field. There are shortcuts to activate the search for concepts quickly: <code>Ctrl+f</code> (left scheme) und <code>Ctrl+g</code> (right scheme).</p>
+<p>It is also possible to select concepts even if there is no concept with the given notation in this scheme. This can be done by searching with a syntactically correct notation. These concepts are marked with a red dot (<span style="color: red;">•</span>).</p>
+<h3 id="concept-details">Concept Details</h3>
+<p>After selecting a concept, information about the selected concept is displayed instead of <a href="#scheme-details">scheme details</a>. Besides ancestor and narrower concepts, the following tabs with data about the concept are shown (if available):</p>
 <ul>
-<li>Info: metadata like identifier and modification date.</li>
-<li>Designations: Preferred and alternative designations.</li>
-<li>Scope/Editorial: usage notes and descriptions</li>
-<li>Links: Links in other databases (Wikipedia, K0plus…).</li>
+<li>Concept: Preferred and alternative labels, register terms, usage notes, descriptions, etc. (in the selected vocabulary language as well as English, if applicable)</li>
+<li>Translations: Information from “Concept” in other languages, if available</li>
+<li>Meta: Metadata such as URI, identifier, and modified date</li>
+<li>Links: Links to other databases (Wikipedia, K0plus…)</li>
 </ul>
-<p>The star <img src="img/icons/star.svg" style="height:1em" /> adds or removes the concept from the quick selection list. The plus sign <img src="img/icons/plus-circle.svg" style="height:1em" /> is used to add the concept to the <a href="#mapping-editor">Mapping Editor</a>. The arrow <img src="img/icons/arrow-right.svg" style="height:1em" /> selects the next concept in the <a href="#treeview">tree view</a> or from the currently selected <a href="#listview">list</a>. For quick switching there are keyboard shortcuts <code>Alt+n</code> (left) and <code>Alt+m</code> (right) for this action.</p>
+<p>The star <img src="img/icons/star.svg" style="height:1em" /> adds or removes the concept from the quick selection list. The plus sign <img src="img/icons/plus-circle.svg" style="height:1em" /> is used to add the concept to the <a href="#mapping-editor">Mapping Editor</a>. The arrow <img src="img/icons/arrow-right.svg" style="height:1em" /> selects the next concept in the <a href="#tree-view">tree view</a> or from the currently selected <a href="#list-view">list</a>. For quick switching there are keyboard shortcuts <code>Alt+n</code> (left) and <code>Alt+m</code> (right) for this action.</p>
 <p><img src="img/cocoda-concdet-de.png" class="border border-dark center" style="width:55.0%" /></p>
-<h3 id="treeview">Treeview</h3>
-<p>In addition to browsing via <a href="#scheme-details">scheme details</a> and <a href="#concept-details">concept details</a> tree view <img src="img/icons/sitemap-solid.svg" style="height:1em" /> is provided for monohierarchical schemes.</p>
+<h3 id="tree-view">Tree View</h3>
+<p>In addition to browsing via <a href="#scheme-details">scheme details</a> and <a href="#concept-details">concept details</a>, a hierarchical tree view <img src="img/icons/sitemap-solid.svg" style="height:1em" /> is provided for monohierarchical schemes.</p>
 <p><img src="img/cocoda-conctree-de.png" class="border border-dark center" style="width:50.0%" /></p>
-<h3 id="listview">Listview</h3>
+<h3 id="list-view">List View</h3>
 <p>Instead of the tree view, a popup <img src="img/icons/angle-up-solid.svg" style="height:1em" /> can be used to select the list of quick selection concepts <img src="img/icons/star.svg" style="height:1em" /> and, depending on the configuration, additional concept lists <img src="img/icons/list-solid.svg" style="height:1em" />. Additional lists are updated only by reloading them with the refresh icon <img src="img/icons/sync-alt-solid.svg" style="height:1em" />.</p>
 <h2 id="mappings">Mappings</h2>
-<p>The main task of Cocoda is to create, edit, search and evaluate mappings. A mapping is a directed connection between a concept and one or more concepts from another vocabulary. To select, create and edit mappings, two components are provided in the center of the user interface:</p>
+<p>The main task of Cocoda is to create, edit, search, and evaluate mappings. A mapping is a directed connection between a concept from one scheme and one or more concepts from another scheme. To select, create, and edit mappings, two components are provided in the center of the user interface:</p>
 <ul>
-<li><a href="#mapping-editor">mapping editor</a> for creating and editing mappings.</li>
-<li>Mapping browser consisting of areas for <a href="#concordances">concordances</a>, <a href="#mapping-search">search</a> and <a href="#mapping-navigator">navigator</a> for searching, browsing and rating mappings and searching for mapping suggestions.</li>
+<li><a href="#mapping-editor">Mapping Editor</a> for creating and editing mappings.</li>
+<li>Mapping Browser consisting of areas for <a href="#concordances">Concordances</a>, <a href="#mapping-search">Search</a> and <a href="#mapping-navigator">Navigator</a> for searching, browsing, and rating mappings and showing mapping suggestions.</li>
 </ul>
 <p>Mappings can also be assigned <a href="#ratings">ratings</a> depending on the configuration. Mappings and ratings can be stored in different <a href="#mapping-databases">mapping databases</a>.</p>
 <h3 id="mapping-editor">Mapping Editor</h3>
-<p>The mapping editor is used for detailed editing of a mapping. For this purpose, concepts can be dragged and dropped into the mapping editor or taken over from the left or right side with the plus icon <img src="img/icons/plus-circle.svg" style="height:1em" />. There are also keyboard shortcuts (<code>Ctrl+a</code> or <code>Ctrl+d</code>) for taking over the respective selected concept. With the cross <img src="img/icons/times-circle.svg" style="height:1em" /> a concept can be removed again.</p>
-<p>In the editor settings <img src="img/icons/gear-solid.svg" style="height:1em" /> you can specify that only 1-to-1 mappings are allowed; otherwise a concept can also be mapped to a combination of several target concepts (AND operation). For multiple alternative target concepts (OR-link), multiple mappings should be created instead. Furthermore, null mappings are possible if a concept has no equivalent in the target vocabulary.</p>
-<p>In the middle of the editor, the type of mapping can be selected. The following <strong>mapping types</strong> are available for selection:</p>
+<p>The Mapping Editor is used for detailed editing of a mapping. For this purpose, concepts can be dragged and dropped into the Mapping Editor or taken over from the left or right side with the plus icon <img src="img/icons/plus-circle.svg" style="height:1em" />. There are also keyboard shortcuts (<code>Ctrl+a</code> or <code>Ctrl+d</code>) for taking over the respective selected concept. With the cross <img src="img/icons/times-circle.svg" style="height:1em" />, a concept can be removed from the Mapping Editor.</p>
+<p>In the editor settings <img src="img/icons/gear-solid.svg" style="height:1em" />, you can specify that only 1-to-1 mappings are allowed; otherwise a concept can also be mapped to a combination of several target concepts (AND operation). For multiple alternative target concepts (OR-link), multiple mappings should be created instead. Furthermore, null mappings are possible if a concept has no equivalent in the target vocabulary.</p>
+<p>In the middle of the editor, the relation of mapping can be selected. The following <strong>mapping relations</strong> are available for selection:</p>
 <ul>
 <li><strong>=</strong> exact match: same meaning.</li>
 <li><strong>≈</strong> close match: same general idea but not fully identical meaning</li>
-<li><strong>&gt;</strong> more general meaning (e.g., superior to inferior).</li>
-<li><strong>&lt;</strong> more specific meaning (e.g., part-whole relationship).</li>
-<li><strong>~</strong> related, associative linkage.</li>
-<li><strong>→</strong> general mapping relation with unknown meaning context.</li>
+<li><strong>&gt;</strong> more general meaning (e.g. ancestor to narrower).</li>
+<li><strong>&lt;</strong> more specific meaning (e.g. part-whole relationship).</li>
+<li><strong>~</strong> related, associative link</li>
+<li><strong>→</strong> general mapping relation with unknown context</li>
 </ul>
-<p>On the bottom right, depending on the authorization, a concordance can be selected into which the mapping should be saved. At the bottom left, it is shown if and in which <a href="#mapping-databases">database</a> a mapping has been saved or should be saved. At the bottom of the editor the following actions are available:</p>
+<p>On the bottom right, depending on the authorization, a concordance can be selected into which the mapping should be saved. At the bottom left, it is shown if and in which <a href="#mapping-databases">database</a> a mapping has been saved or will be saved. At the bottom of the editor the following actions are available:</p>
 <ul>
 <li><strong>±0</strong> Evaluate mapping</li>
-<li><img src="img/icons/exchange.svg" style="height:1em" /> swap source and target of mapping</li>
-<li><img src="img/icons/save.svg" style="height:1em" /> save mapping (keyboard shortcut <code>Ctrl+s</code>)</li>
-<li><img src="img/icons/trash.svg" style="height:1em" /> delete mapping</li>
-<li><img src="img/icons/clone-solid.svg" style="height:1em" /> duplicate mapping to create a new mapping with the same content</li>
-<li><img src="img/icons/ban.svg" style="height:1em" /> empty mapping to create a new mapping (<code>Ctrl+Shift+c</code>)</li>
+<li><img src="img/icons/exchange.svg" style="height:1em" /> Swap source and target of mapping</li>
+<li><img src="img/icons/save.svg" style="height:1em" /> Save mapping (keyboard shortcut <code>Ctrl+s</code>)</li>
+<li><img src="img/icons/trash.svg" style="height:1em" /> Delete mapping</li>
+<li><img src="img/icons/clone-solid.svg" style="height:1em" /> Duplicate mapping to create a new mapping with the same content</li>
+<li><img src="img/icons/ban.svg" style="height:1em" /> Empty/clear Mapping Editor to create a new mapping (<code>Ctrl+Shift+c</code>)</li>
 </ul>
 <p>After saving, the editor will be emptied to avoid overwriting the saved mapping; this behavior can be changed in the editor settings <img src="img/icons/gear-solid.svg" style="height:1em" />.</p>
-<p>If mapping hints are configured for the selected source and target vocabulary combinations, they will be accessible via a help info <img src="img/icons/question-circle.svg" style="height:1em" /> can be called.</p>
+<p>If mapping hints are configured for the selected source and target vocabulary combinations, they will be accessible via a help info <img src="img/icons/question-circle.svg" style="height:1em" />.</p>
 <h3 id="concordances">Concordances</h3>
-<p>The first pane of the Mapping Browser component lists concordances where mappings have been collected in a coordinated fashion.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> The concordances can be filtered by source and target vocabulary and by publisher. The link icon <img src="img/icons/external-link-square.svg" style="height:1em" /> opens the <a href="#mapping-search">mapping search</a> with filter on the respective concordance. Depending on the permission, new concordances can be created with <img src="img/icons/square-plus-solid.svg" style="height:1em" /> and edited with <img src="img/icons/pen-to-square-solid.svg" style="height:1em" />. With the info icon <img src="img/icons/info-circle.svg" style="height:1em" /> you get all information about the concordance.</p>
+<p>The first pane of the Mapping Browser component lists concordances where mappings have been collected in a coordinated fashion.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> The concordances can be filtered by source and target vocabulary and by publisher. The link icon <img src="img/icons/external-link-square.svg" style="height:1em" /> opens the <a href="#mapping-search">Mapping Search</a> with a filter on the respective concordance. Depending on the permission, new concordances can be created with <img src="img/icons/square-plus-solid.svg" style="height:1em" /> and edited with <img src="img/icons/pen-to-square-solid.svg" style="height:1em" />. With the info icon <img src="img/icons/info-circle.svg" style="height:1em" />, you get all information about the concordance.</p>
 <p><img src="img/cocoda-mapping-browser-con-en.png" class="border border-dark" style="width:100.0%" /></p>
-<!--
-Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
-
-- Mapping-Details anzeigen: zeigt Mapping-Details an
-- Bearbeiten: holt das Mapping in den Mapping-Editor
-- Speichern: speichert das Mapping in die ausgewählte Datenbank
-- Löschen löscht eigene Mappings
-
-Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
-
-Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
--->
 <h3 id="mapping-search">Mapping Search</h3>
-<p>The mapping search provides a meta search for mappings in existing <a href="#data-sources">data sources</a>. The following filters can be specified in the first line of the search form:</p>
+<p>The Mapping Search provides a meta search for mappings in existing <a href="#data-sources">data sources</a>. The following filters can be specified in the first line of the search form:</p>
 <ul>
-<li>source vocabulary</li>
-<li>source notation or URI</li>
-<li>target vocabulary</li>
-<li>target notation or URI</li>
+<li>Source vocabulary</li>
+<li>Source notation or URI</li>
+<li>Target vocabulary</li>
+<li>Target notation or URI</li>
 </ul>
 <p>Vocabularies and concepts can also be dragged and dropped into the search fields.</p>
 <p>The lock icon <img src="img/icons/lock-solid.svg" style="height:1em" /> or <img src="img/icons/lock-open-solid.svg" style="height:1em" /> can be used to specify that the source or target vocabulary selected via <a href="#scheme-selection">sheme selection</a> should always be used automatically. The filter icon <img src="img/icons/filter.svg" style="height:1em" /> offers further search options:</p>
 <ul>
-<li>Author/Author</li>
-<li>Mapping type</li>
-<li>Bidirectional search (search source and target also interchanged)</li>
+<li>Author</li>
+<li>Mapping relation</li>
+<li>Bidirectional search</li>
 <li>Cardinality</li>
 <li>Rating</li>
 <li>Concordance</li>
 <li><a href="#mapping-databases">Mapping databases</a> to be searched in</li>
 </ul>
 <p>If the search returns no or too few results, it may be that too many filters are set. The Clear button <img src="img/icons/ban.svg" style="height:1em" /> resets all filters. The share icon <img src="img/icons/share-alt-square-solid.svg" style="height:1em" /> contains the URL to the current search to bookmark or share it.</p>
-<p>The mapping search results list is divided by data source and corresponds to the view in the Mapping Navigator. The individual sources can be shown or hidden by clicking on their name.</p>
+<p>The results list is divided by data source and corresponds to the view in the Mapping Navigator. The individual sources can be shown or hidden by clicking on their name.</p>
 <h3 id="mapping-navigator">Mapping Navigator</h3>
-<p>In the Mapping Navigator, mappings and mapping suggestions from various data sources are displayed that match the concepts selected on the left or right. For which concepts and vocabularies mappings should be considered in the navigator can be defined in the settings. The individual data sources can be shown or hidden by clicking on their abbreviations. Data sources that can be written to are marked with a pen <img src="img/icons/pencil-alt-solid.svg" style="height:1em" />. For each mapping or mapping suggestion are displayed:</p>
+<p>In the Mapping Navigator, mappings and mapping suggestions from various data sources are displayed that match the concepts selected on the left or right side. For which concepts and vocabularies mappings should be considered in the navigator can be defined in the settings. The individual data sources can be shown or hidden by clicking on their abbreviations. Data sources that can be written to are marked with a pen <img src="img/icons/pencil-alt-solid.svg" style="height:1em" />. For each mapping or mapping suggestion are displayed:</p>
 <ul>
 <li>Source vocabulary and concept.</li>
-<li>mapping type</li>
+<li>Mapping relation</li>
 <li>Target vocabulary and concept</li>
 <li>Created by whom and when</li>
 </ul>
 <p>As well as depending on the settings:</p>
 <ul>
-<li><a href="#ratings">ratings</a></li>
+<li><a href="#ratings">Ratings</a></li>
 <li><img src="img/icons/edit.svg" style="height:1em" /> Edit mapping</li>
-<li><img src="img/icons/trash.svg" style="height:1em" /> delete mapping</li>
-<li><img src="img/icons/info-circle.svg" style="height:1em" /> detail information about the mapping or suggestion</li>
-<li><img src="img/icons/clone-solid.svg" style="height:1em" /> copy suggestion to mapping editor</li>
+<li><img src="img/icons/trash.svg" style="height:1em" /> Delete mapping</li>
+<li><img src="img/icons/info-circle.svg" style="height:1em" /> Detailed information about the mapping or suggestion</li>
+<li><img src="img/icons/clone-solid.svg" style="height:1em" /> Copy suggestion to mapping editor</li>
 </ul>
+<p>For each mapping or mapping recommendation, there are some actions that can be performed on the right side:</p>
+<ul>
+<li>Show Mapping Details</li>
+<li>Edit: opens the mapping in the mapping editor</li>
+<li>Save: saves the mapping into the selected database</li>
+<li>Delete: deletes a mapping</li>
+</ul>
+<p>A database is an individual data source about vocabularies, concepts, mappings, etc. As an example, the public <a href="http://coli-conc.gbv.de/concordances/">Concordance Database</a> contains all concordances and mappings collected within the coli-conc project. Databases can be configured through the <a href="#databases">Mapping Navigator</a> tab. Technical access to these databases is handled by providers.</p>
+<p>Some databases can be turned on and off in the Mapping Browser to hide their mappings.</p>
 <h3 id="ratings">Ratings</h3>
 <p>Basically two types of ratings are possible, whereby it depends on the configuration who can give which ratings:</p>
 <ul>
 <li>Rating by approval <img src="img/icons/thumbs-up.svg" style="height:1em" /> or disagreement <img src="img/icons/thumbs-down.svg" style="height:1em" /></li>
-<li>Evaluation by confirmation <img src="img/icons/check.svg" style="height:1em" /> (usually only for selected accounts).</li>
+<li>Evaluation by confirmation <img src="img/icons/check.svg" style="height:1em" /> (usually only for selected accounts)</li>
 </ul>
 <p>Approvals and rejections are rated as <code>+1</code> and <code>-1</code> respectively, and their sum is displayed. For approvals <em>one</em> rating is enough for a checkmark <img src="img/icons/check.svg" style="height:1em" /> to be displayed instead of the sum. All ratings are user related. So it is visible who has given which rating and when. Own evaluations can be removed again.</p>
 <h2 id="settings">Settings</h2>
 <p>A click on the user name in the <a href="#user-interface">menu bar</a> opens the settings. In addition, some components can be configured with the icon <img src="img/icons/gear-solid.svg" style="height:1em" />. Since Cocoda does not manage <a href="#user-accounts">user accounts</a>, the settings are only stored locally in the browser. The settings are divided into different sections:</p>
 <ul>
-<li>Account: Identity for storing <a href="#mappings">mappings</a> and <a href="#ratings">ratings</a>.</li>
-<li>Data Sources: Overview of all available <a href="#data-sources">data sources</a>.</li>
-<li>Interface: settings for the <a href="#user-interface">user interface</a> like the language</li>
-<li>Keyboard shortcuts: available keyboard shortcuts</li>
-<li>My data: Import and export mappings</li>
+<li>Account: Identity for storing <a href="#mappings">mappings</a> and <a href="#ratings">ratings</a></li>
+<li>Data Sources: Overview of all available <a href="#data-sources">data sources</a></li>
+<li>Interface: Settings for the <a href="#user-interface">user interface</a> like the language</li>
+<li>Keyboard shortcuts: Available keyboard shortcuts</li>
+<li>My Data: Import and export mappings</li>
 </ul>
-<h2 id="data-sources">Data sources</h2>
+<h2 id="data-sources">Data Sources</h2>
 <p>Cocoda, as a pure web application, accesses all information via web interfaces (APIs). The data and API calls are each accessible via the source code icon <img src="img/icons/code.svg" style="height:1em" />. The data sources configured per instance can be viewed in the settings.</p>
-<h3 id="mapping-databases">Mapping databases</h3>
+<h3 id="mapping-databases">Mapping Databases</h3>
 <p>Mapping databases are used to store <a href="#mappings">mappings</a> and <a href="#ratings">ratings</a>. The database selected in each case is highlighted and can be selected via the settings or by clicking on the name of the database in the mapping browser. Most instances contain these databases:</p>
 <ul>
 <li><strong>L</strong> Local: Mappings are stored in the browser.</li>
-<li><strong>C</strong> Concordance register: public database of all mappings and assessments collected in the coli-conc project.</li>
+<li><strong>C</strong> Concordance Register: public database of all mappings and assessments collected in the coli-conc project.</li>
 <li><strong>W</strong> Wikidata mappings: read and write access to mappings in Wikidata.</li>
 </ul>
-<h3 id="other-data-sources">Other data sources</h3>
-<p>Vocabularies and mapping suggestions can be included in a Cocoda instance via JSKOS API, via Skosmos API and via OpenRefine Reconciliation API. Adding additional data sources via the user interface is not possible yet.</p>
-<h3 id="export-and-import">Export and import</h3>
+<h3 id="other-data-sources">Other Data Sources</h3>
+<p>Vocabularies and mapping suggestions can be included in a Cocoda instance via JSKOS API, via Skosmos API, and via OpenRefine Reconciliation API. Adding additional data sources via the user interface is not possible yet.</p>
+<h3 id="export-and-import">Export and Import</h3>
 <p>To export data from Cocoda, use the source icon <img src="img/icons/code.svg" style="height:1em" />. The <a href="https://gbv.github.io/jskos/jskos.html">JSKOS</a> data can be downloaded in various formats such as CSV and JSON. Partial API calls are also available to retrieve the data.</p>
 <p>Additional vocabularies, mappings and mapping suggestions can be included in the application by configuring a Cocoda instance accordingly. Please contact us if you have any questions about this (<a href="http://coli-conc.gbv.de/contact/" class="uri">http://coli-conc.gbv.de/contact/</a>).</p>
 <p>Mass import of mappings via the web interface is so far only possible in the <strong>L</strong> Local database.</p>
 <!--coli-rich-->
 <h2 id="further-information">Further information</h2>
-<p>More information, tutorials, screencasts and more can be found via the project homepage <a href="https://coli-conc.gbv.de/" class="uri">https://coli-conc.gbv.de/</a>. For questions and feedback about the software, it is best to use the <a href="https://github.com/gbv/cocoda/issues">GitHub IssueTracker</a>.</p>
-<p>The icons used in Cocoda are from <a href="https://fontawesome.com/">fontawesome</a> and licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+<p>More information, tutorials, screencasts, and more can be found via the project homepage <a href="https://coli-conc.gbv.de/" class="uri">https://coli-conc.gbv.de/</a>. For questions and feedback about the software, it is best to use the <a href="https://github.com/gbv/cocoda/issues">GitHub issue tracker</a>.</p>
+<p>The icons used in Cocoda are from <a href="https://fontawesome.com/">fontawesome</a> and are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
 <section class="footnotes">
 <hr />
 <ol>

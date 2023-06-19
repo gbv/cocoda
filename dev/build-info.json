@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "a6faea5f9f4b1b08afc151fde17f8c8e220b9c6b",
-  "gitCommitShort": "a6faea5f",
-  "gitCommitMessage": "a6faea5f Allow to map non-indexing concepts",
-  "buildDate": "2023-06-07T17:47:48Z",
-  "date": "2023-06-07T16:37:26.000Z",
+  "gitCommit": "c79c167008cf1ee3995a91ab36178d2537588244",
+  "gitCommitShort": "c79c1670",
+  "gitCommitMessage": "c79c1670 Review and adjust English manual (#527)",
+  "buildDate": "2023-06-19T12:16:18Z",
+  "date": "2023-06-19T12:14:48.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }

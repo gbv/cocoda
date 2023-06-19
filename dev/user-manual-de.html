@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="dcterms.date" content="2023-06-07" />
+  <meta name="dcterms.date" content="2023-06-19" />
   <title>Cocoda-Benutzerhandbuch</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -29,7 +29,8 @@
       </div>
         <div class="col-sm-9">
           <h1>Cocoda-Benutzerhandbuch</h1>
-          <p class="date">version 1.9.1 (2023-06-07)</p>
+          <p class="date">version 1.9.1 (2023-06-19)</p>
+<!-- Hinweis: Bitte daran denken, Änderungen, die sich auf den eigentlichen Inhalt des Handbuchs beziehen, auch in die englische Version zu übertragen. -->
 <h2 id="einleitung">Einleitung</h2>
 <p>Dieses Handbuch gibt eine kurze Einführung in die wichtigsten Bestandteile von Cocoda. Die Webanwendung zur Erstellung und Verwaltung von Mappings zwischen Wissensorganisationssystemen (Klassifikationen, Normdaten, Thesauri…) wird als Teil des <a href="https://coli-conc.gbv.de/">Projektes coli-conc</a> an der <a href="https://www.gbv.de/">Verbundzentrale des GBV (VZG)</a> gepflegt. Die Anwendungsfälle von Cocoda reichen vom Mapping eigener Systematiken auf etabliertere Vokabulare über die Erstellung von Mappings zur Verbesserung des Retrieval in Katalogen und Discovery-Systemen bis hin zur Sammlung von Mappings in Wikidata als zentralem Normdaten-Hub.</p>
 <p>Unter <a href="https://coli-conc.gbv.de/cocoda/" class="uri">https://coli-conc.gbv.de/cocoda/</a> sind mehrere Anleitungen, Screencasts sowie unterschiedlich konfigurierte Instanzen von Cocoda verlinkt, darunter:</p>
@@ -75,13 +76,11 @@
 <li>Wird eine der anderen Identitäten ausgewählt, lässt sich der / die Nutzer(in) öffentlich über die Identitäts-URI identifizieren.</li>
 </ul>
 <p><img src="img/cocoda-login-select-identity-de.png" class="border border-dark" style="width:50.0%" /></p>
-<!--
-Entwurf für Text zum Thema Löschen der Daten:
-Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen werden. Mit Klick auf "Delete user account", werden diese Daten sofort und unwiderruflich aus unserer Datenbank gelöscht. Dies gilt **nicht** für Daten, die in Zusammenhang mit diesen Accountdaten stehen wie z.B. Mappings. 
--->
+<p>Die gespeicherten Accountdaten können auf der Account-Seite unten unter “My Data” eingesehen werden. Mit “Delete User Account” können diese Daten unwiderruflich aus unserer Datenbank gelöscht werden. Dies gilt <strong>nicht</strong> für Daten, die in Zusammenhang mit diesen Accountdaten stehen (Mappings, Bewertungen, etc.).</p>
 <p>Sollen Mappings überhaupt nicht öffentlich einsehbar sein, können Mappings auch ohne Login lokal im eigenen Browser gespeichert werden. Diese Funktion ist der Übersichtlichkeit halber in einigen Cocoda-Instanzen allerdings abgestellt.</p>
 <h2 id="vokabulare-und-konzepte">Vokabulare und Konzepte</h2>
-<p>Cocoda bietet einen einheitlichen Zugang zu einer Vielzahl von <strong>Vokabularen</strong> wie Ontologien, Klassifikationen, Taxonomien und Terminologien aus verschiedenen <a href="#Datenquellen">Datenquellen</a>. Ein Vokabular ist eine organisierte Sammlung von Konzepten mit zusätzlichen Informationen über das Vokabular. Ein <strong>Konzept</strong> ist ein individuelles Objekt wie eine Person, einen Ort oder ein Thema. Die meisten Konzepte haben eine eindeutige Notation und Bezeichnung und eine einzigartige URI, um sie identifizieren zu können. Cocoda empfiehlt alle Vokabulare, im <a href="https://BARTOC.org">Basic Register of Thesauri, Ontologies &amp; Classifications (BARTOC)</a> zu registrieren und dessen IDs zu verwenden, um eindeutig auf einzelne Vokabulare zu verweisen. Die Dewey-Dezimalklassifikation (DDC) ist beispielsweise ein Vokabular des Typs Universelle Bibliotheksklassifikation, das von OCLC veröffentlicht und in BARTOC mit der URI <a href="http://bartoc.org/en/node/241" class="uri">http://bartoc.org/en/node/241</a> registriert wurde.</p>
+<p>Cocoda bietet einen einheitlichen Zugang zu einer Vielzahl von <strong>Vokabularen</strong> wie Ontologien, Klassifikationen, Taxonomien und Terminologien aus verschiedenen <a href="#Datenquellen">Datenquellen</a>. Ein Vokabular ist eine organisierte Sammlung von Konzepten mit zusätzlichen Informationen über das Vokabular. Ein <strong>Konzept</strong> ist ein individuelles Objekt wie eine Person, einen Ort oder ein Thema. Die meisten Konzepte haben eine eindeutige Notation und Bezeichnung und eine einzigartige URI, um sie identifizieren zu können.</p>
+<p>Cocoda empfiehlt alle Vokabulare, im <a href="https://BARTOC.org">Basic Register of Thesauri, Ontologies &amp; Classifications (BARTOC)</a> zu registrieren und dessen IDs zu verwenden, um eindeutig auf einzelne Vokabulare zu verweisen. Die Dewey-Dezimalklassifikation (DDC) ist beispielsweise ein Vokabular des Typs Universelle Bibliotheksklassifikation, das von OCLC veröffentlicht und in BARTOC mit der URI <a href="http://bartoc.org/en/node/241" class="uri">http://bartoc.org/en/node/241</a> registriert wurde.</p>
 <p>Die Anzeige von Vokabularen und Konzepten auf der linken bzw. rechten Seite besteht aus Komponenten für:</p>
 <ul>
 <li><a href="#vokabularauswahl">Auswahl von Quell- bzw. Zielvokabular</a></li>
@@ -100,13 +99,11 @@ Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen
 <p>Im Suchfeld lassen sich Konzepte per Notationen oder Bezeichnung suchen. Die Komponente lässt sich so konfigurieren, dass bei Auswahl eines Konzepts auf der gegenüberliegenden Seite automatisch dessen Benennung im Suchfeld eingetragen wird. Einige Vokabulare bieten die Filterung nach Konzept-Typ an: neben dem Suchschlitz steht dann ein Filter-Icon <img src="img/icons/filter.svg" style="height:1em" />. Zum schnellen Zugriff auf die Konzeptsuche gibt es die Tastaturkürzel <code>Ctrl+f</code> (links) und <code>Ctrl+g</code> (rechts).</p>
 <p>Es können auch Konzepte ausgewählt werden, auch wenn es im betreffenden Vokabular kein Konzept mit der eingegebenen Notation gibt. Dazu muss nach einer syntaktisch korrekten Notation gesucht werden. Solche unbekannten Konzepte werden mit einem roten Punkt (<span style="color: red;">•</span>) gekennzeichnet.</p>
 <h3 id="konzeptdetails">Konzeptdetails</h3>
-<p>Nach Auswahl eines Konzepts werden statt <a href="#vokabulardetails">Vokabulardetails</a> Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen (falls vorhanden):</p>
-<!--nächster Absatz korrigieren nach erfolgter Neubenennung der Tabs
--->
+<p>Nach Auswahl eines Konzepts werden statt <a href="#vokabulardetails">Vokabulardetails</a> Informationen zum ausgewählten Konzept angezeigt. Neben Ober- und Unterklassen werden folgende Tabs mit Informationen angezeigt (falls vorhanden):</p>
 <ul>
-<li>Info: Metadaten wie Identifier und Änderungsdatum</li>
-<li>Bezeichnungen: Vorzugs- und Alternativbenennungen</li>
-<li>Scope/Editorial: Verwendungshinweise und Beschreibungen</li>
+<li>Konzept: Vorzugs- und Alternativbenennungen, Registerbegriffe, Verwendungshinweise, Beschreibungen, etc. (in der ausgewählten Vokabularsprache sowie ggf. Englisch)</li>
+<li>Übersetzungen: Informationen aus “Konzept” in anderen Sprachen, falls vorhanden</li>
+<li>Meta: Metadaten wie URI, Identifier und Änderungsdatum</li>
 <li>Links: Links in andere Datenbanken (Wikipedia, K0plus…)</li>
 </ul>
 <p>Der Stern <img src="img/icons/star.svg" style="height:1em" /> fügt das Konzept zur Schnellauswahl-Liste hinzu bzw. entfernt es daraus. Das Plus-Zeichen <img src="img/icons/plus-circle.svg" style="height:1em" /> dient dazu das Konzept in den <a href="#mapping-editor">Mapping-Editor</a> zu übernehmen. Der Pfeil <img src="img/icons/arrow-right.svg" style="height:1em" /> wählt das nächste Konzept in der <a href="#baumansicht">Baumansicht</a> oder aus der aktuell ausgewählten <a href="#listenansicht">Liste</a> aus. Zum schnellen Wechsel gibt es für diese Aktion die Tatstaturkürzel <code>Alt+n</code> (links) und <code>Alt+m</code> (rechts).</p>
@@ -127,7 +124,7 @@ Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen
 <p>Der Mapping-Editor dient der detaillierten Bearbeitung eines Mappings. Dazu können Konzepte per Drag und Drop in den Mapping-Editor gezogen oder mit dem Plus-Icon <img src="img/icons/plus-circle.svg" style="height:1em" /> von der linken oder rechten Seite übernommen werden. Zur Übernahme des jeweils ausgewählten Konzepts gibt es außerdem Tastaturkürzel (<code>Ctrl+a</code> bzw. <code>Ctrl+d</code>). Mit dem Kreuz <img src="img/icons/times-circle.svg" style="height:1em" /> kann ein Konzept wieder entfernt werden.</p>
 <p>In den Einstellungen des Editors <img src="img/icons/gear-solid.svg" style="height:1em" /> kann festgelegt werden nur 1-zu-1 Mappings zu erlauben; ansonsten kann ein Konzept auch auf eine Kombination mehrerer Zielkonzepte gemappt werden (UND-Verknüpfung). Für mehrere alternative Zielkonzepte (ODER-Verknüpfung) sollten stattdessen mehrere Mappings angelegt werden. Darüber hinaus sind Null-Mappings möglich wenn ein Konzept keine Entsprechung im Ziel-Vokabular hat.</p>
 <p><img src="img/cocoda-mappingeditor1-de.png" class="border border-dark" /></p>
-<p>In der Mitte des Editors kann die Art des Mappings ausgewählt werden. Folgende <strong>Mapping-Typen</strong> stehen zur Auswahl:</p>
+<p>In der Mitte des Editors kann die Relation des Mappings ausgewählt werden. Folgende <strong>Mapping-Relationen</strong> stehen zur Auswahl:</p>
 <ul>
 <li><strong>=</strong> exakte Übereinstimmung: gleiche Bedeutung</li>
 <li><strong>≈</strong> hohe Übereinstimmung: in etwa gleiche Bedeutung</li>
@@ -150,18 +147,6 @@ Die Accountdaten können auf der Account-Seite mit Klick auf "MyData" eingesehen
 <h3 id="konkordanzen">Konkordanzen</h3>
 <p>Der erste Bereich der Mapping-Browser-Komponente listet Konkordanzen auf, in denen Mappings koordiniert gesammelt wurden.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Die Konkordanzen können nach Quell- und Zielvokabular und nach Herausgeber gefiltert werden. Das Link-Icon <img src="img/icons/external-link-square.svg" style="height:1em" /> öffnet die <a href="#mapping-suche">Mapping-Suche</a> mit Filter auf der jeweiligen Konkordanz. Je nach Berechtigung lassen sich neue Konkordanzen mit <img src="img/icons/square-plus-solid.svg" style="height:1em" /> anlegen und mit <img src="img/icons/pen-to-square-solid.svg" style="height:1em" /> bearbeiten. Über das Info-Icon <img src="img/icons/info-circle.svg" style="height:1em" /> erhält man alle Informationen zur Konkordanz.</p>
 <p><img src="img/cocoda-mapping-browser-con-de.png" class="border border-dark" style="width:100.0%" /></p>
-<!--
-Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite ein paar Aktionen, die geklickt werden können:
-
-- Mapping-Details anzeigen: zeigt Mapping-Details an
-- Bearbeiten: holt das Mapping in den Mapping-Editor
-- Speichern: speichert das Mapping in die ausgewählte Datenbank
-- Löschen löscht eigene Mappings
-
-Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche [Konkordanz-Datenbank](http://coli-conc.gbv.de/concordances/), mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter [Mapping-Navigator](#datenbanken) konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.
-
-Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um ihre Mappings zu verbergen.
--->
 <h3 id="mapping-suche">Mapping-Suche</h3>
 <p>Die Mapping-Suche bietet eine Metasuche nach Mappings in vorhandene <a href="#datenquellen">Datenquellen</a>. In der ersten Zeile des Suchformulars können folgende Filter angegeben werden:</p>
 <ul>
@@ -174,7 +159,7 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <p>Mit dem Schloss-Icon <img src="img/icons/lock-solid.svg" style="height:1em" /> bzw. <img src="img/icons/lock-open-solid.svg" style="height:1em" /> kann festgelegt werden, dass immer automatisch das per <a href="#vokabularauswahl">Vokabularauswahl</a> gewählte Quell- bzw. Zielvokabular verwendet werden soll. Über das Filter-Icon <img src="img/icons/filter.svg" style="height:1em" /> werden weitere Suchmöglichkeiten angeboten:</p>
 <ul>
 <li>Autor/Autorin</li>
-<li>Mapping-Typ</li>
+<li>Mapping-Relation</li>
 <li>Bidirektionale Suche (Quell- und Ziel- auch vertauscht suchen)</li>
 <li>Kardinalität</li>
 <li>Bewertung</li>
@@ -187,7 +172,7 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <p>Im Mapping-Navigator werden aus verschiedenen Datenquellen Mappings und Mapping-Vorschläge angezeigt die zu den links bzw. rechts ausgewählten Konzepten passen. Zu welchen Konzepten und Vokabularen Mappings im Navigator berücksichtigt werden sollen, kann in den Einstellungen festgelegt werden. Die einzelnen Datenquellen lassen sich durch Klick auf ihre Kürzel ein- und ausblenden. Datenquellen, in die geschrieben werden kann, sind mit einem Stift <img src="img/icons/pencil-alt-solid.svg" style="height:1em" /> markiert. Zu jedem Mapping bzw. Mapping-Vorschlag werden angezeigt:</p>
 <ul>
 <li>Quellvokabular und -Konzept</li>
-<li>Mapping-Typ</li>
+<li>Mapping-Relation</li>
 <li>Zielvokabular und -Konzept</li>
 <li>Erstellt von wem und wann</li>
 </ul>
@@ -199,6 +184,15 @@ Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet  werden, um 
 <li><img src="img/icons/info-circle.svg" style="height:1em" /> Detailinformationen zum Mapping oder Vorschlag</li>
 <li><img src="img/icons/clone-solid.svg" style="height:1em" /> Vorschlag in den Mapping-Editor kopieren</li>
 </ul>
+<p>Für jedes Mapping oder Mapping-Empfehlung gibt es auf der rechten Seite einige Aktionen, die ausgewählt werden können:</p>
+<ul>
+<li>Mapping-Details anzeigen</li>
+<li>Bearbeiten: holt das Mapping in den Mapping-Editor</li>
+<li>Speichern: speichert das Mapping in die ausgewählte Datenbank</li>
+<li>Löschen: löscht ein Mapping</li>
+</ul>
+<p>Eine Datenbank ist eine individuelle Datenquelle über Vokabulare, Konzepte, Mappings usw. Als Beispiel dient die öffentliche <a href="http://coli-conc.gbv.de/concordances/">Konkordanz-Datenbank</a>, mit allen Konkordanzen und Mappings, die im Laufe des coli-conc-Projektes gesammelt wurden. Datenbanken können über den Reiter <a href="#datenbanken">Mapping-Navigator</a> konfiguriert werden. Der Technische Zugang zu diesen Datenbanken wird durch Provider sichergestellt.</p>
+<p>Einige Datenbanken können im Mapping-Browser an- und ausgeschaltet werden, um ihre Mappings zu verbergen.</p>
 <h3 id="bewertungen">Bewertungen</h3>
 <p>Grundsätzlich sind zwei Arten von Bewertungen möglich, wobei es von der Konfiguration abhängt, wer welche Bewertungen abgeben kann:</p>
 <ul>
