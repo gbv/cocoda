@@ -136,7 +136,7 @@
     {
       "uri": "http://coli-conc.gbv.de/registry/occurrences",
       "provider": "OccurrencesApi",
-      "api": "https://coli-conc.gbv.de/occurrences/api/",
+      "api": "https://coli-conc.gbv.de/subjects/occurrences",
       "notation": [
         "CO"
       ],
