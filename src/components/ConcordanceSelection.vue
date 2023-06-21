@@ -14,7 +14,7 @@
 
 <script>
 import cdk from "@/mixins/cdk.js"
-import { displayNameForConcordance } from "@/utils"
+import { displayNameForConcordance, concordanceSort } from "@/utils"
 
 export default {
   name: "ConcordanceSelection",
@@ -37,7 +37,7 @@ export default {
         concordance,
         user: this.user,
         isExistingMapping: !!this.mapping._registry,
-      }))
+      })).sort(concordanceSort)
     },
     concordanceOptions() {
       let options = [
