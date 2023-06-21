@@ -292,7 +292,7 @@
         <span v-else-if="data.item.occurrence.count == -1">-</span>
         <span
           v-else
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.occurrenceCountTooltip'), delay: defaults.delay.medium }">
+          v-b-tooltip.hover="{ title: $t('mappingBrowser.occurrenceCountTooltip', [$jskos.prefLabel(data.item.occurrence?.database, { language: locale, fallbackToUri: false }) || $t('general.catalog')]), delay: defaults.delay.medium }">
           <auto-link
             :link="data.item.occurrence.url"
             :text="String(data.item.occurrence.count)" />
