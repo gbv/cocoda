@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "884eff9edd6728579541ddbcee5f0913c6b0bb3e",
-  "gitCommitShort": "884eff9e",
-  "gitCommitMessage": "884eff9e Change URL of Occurrences API",
-  "buildDate": "2023-06-20T08:24:51Z",
-  "date": "2023-06-20T08:23:21.000Z",
+  "gitCommit": "c25c4d54cd6bc01f46100d798ad8ec0c6d59a4f4",
+  "gitCommitShort": "c25c4d54",
+  "gitCommitMessage": "c25c4d54 MappingBrowser: Improve concordance search filter (#712)",
+  "buildDate": "2023-06-21T08:45:12Z",
+  "date": "2023-06-21T08:43:56.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
