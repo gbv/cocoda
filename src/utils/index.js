@@ -1,5 +1,7 @@
 import _ from "lodash"
 import jskos from "jskos-tools"
+import { getItem } from "@/items"
+import i18n from "@/utils/i18n.js"
 
 export function getRegistryName({ registry, locale }) {
   if (!registry) {
@@ -29,17 +31,17 @@ export function getRegistryName({ registry, locale }) {
 
 export function displayNameForConcordance(concordance) {
   if (!concordance) {
-    return ""
+    return "-"
   }
   let name = jskos.prefLabel(concordance, { fallbackToUri: false })
     || (jskos.languageMapContent(concordance, "scopeNote") || [])[0]
-    || concordance.uri
     || ""
-  if (concordance.creator && concordance.creator.length) {
-    let creator = jskos.prefLabel(concordance.creator[0], { fallbackToUri: false })
-    if (creator) {
-      name += ` (${creator})`
-    }
+  const fromScheme = jskos.notation(getItem(concordance.fromScheme)) || "?", toScheme = jskos.notation(getItem(concordance.toScheme)) || "?", creator = jskos.prefLabel(concordance?.creator?.[0], { fallbackToUri: false }) || "?"
+  const extra = `${fromScheme} ${i18n.t("general.to")} ${toScheme} ${i18n.t("general.by")} ${creator}`
+  if (!name) {
+    name = extra
+  } else {
+    name += ` (${extra})`
   }
   return name
 }
