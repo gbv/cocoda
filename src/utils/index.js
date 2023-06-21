@@ -46,6 +46,12 @@ export function displayNameForConcordance(concordance) {
   return name
 }
 
+export function concordanceSort(a, b) {
+  a = displayNameForConcordance(a)
+  b = displayNameForConcordance(b)
+  return (a < b) ? -1 : (a === b ? 0 : 1)
+}
+
 export function userUris(user) {
   if (!user) {
     return null
