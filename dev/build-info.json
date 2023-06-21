@@ -1,11 +1,11 @@
 {
-  "version": "1.9.1",
+  "version": "1.10.0",
   "gitBranch": "dev",
-  "gitCommit": "b7bfcc7b403465cbe067ce8031d4b53b7ce79015",
-  "gitCommitShort": "b7bfcc7b",
-  "gitCommitMessage": "b7bfcc7b Update dependencies",
-  "buildDate": "2023-06-21T11:24:56Z",
-  "date": "2023-06-21T11:23:09.000Z",
+  "gitCommit": "f7ab6379d0d3a17c563fd581987aaa5d0282f539",
+  "gitCommitShort": "f7ab6379",
+  "gitCommitMessage": "f7ab6379 Release version 1.10.0",
+  "buildDate": "2023-06-21T11:29:21Z",
+  "date": "2023-06-21T11:28:14.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
