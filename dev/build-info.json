@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "18b3e0ded3c373616c5e1fc8d0cd14884db6cb63",
-  "gitCommitShort": "18b3e0de",
-  "gitCommitMessage": "18b3e0de Show database name of Co-Occurrences (#711)",
-  "buildDate": "2023-06-21T09:41:41Z",
-  "date": "2023-06-21T09:39:58.000Z",
+  "gitCommit": "b7bfcc7b403465cbe067ce8031d4b53b7ce79015",
+  "gitCommitShort": "b7bfcc7b",
+  "gitCommitMessage": "b7bfcc7b Update dependencies",
+  "buildDate": "2023-06-21T11:24:56Z",
+  "date": "2023-06-21T11:23:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
