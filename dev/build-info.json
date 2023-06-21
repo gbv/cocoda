@@ -1,11 +1,11 @@
 {
   "version": "1.9.1",
   "gitBranch": "dev",
-  "gitCommit": "c25c4d54cd6bc01f46100d798ad8ec0c6d59a4f4",
-  "gitCommitShort": "c25c4d54",
-  "gitCommitMessage": "c25c4d54 MappingBrowser: Improve concordance search filter (#712)",
-  "buildDate": "2023-06-21T08:45:12Z",
-  "date": "2023-06-21T08:43:56.000Z",
+  "gitCommit": "18b3e0ded3c373616c5e1fc8d0cd14884db6cb63",
+  "gitCommitShort": "18b3e0de",
+  "gitCommitMessage": "18b3e0de Show database name of Co-Occurrences (#711)",
+  "buildDate": "2023-06-21T09:41:41Z",
+  "date": "2023-06-21T09:39:58.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
