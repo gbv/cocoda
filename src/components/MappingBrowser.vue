@@ -505,6 +505,7 @@ import clickHandler from "@/mixins/click-handler.js"
 import computed from "@/mixins/computed.js"
 import pageVisibility from "@/mixins/page-visibility.js"
 import { getItem, getItems, saveItem, loadConcepts, loadTop } from "@/items"
+import { concordanceSort, displayNameForConcordance } from "@/utils"
 
 export default {
   name: "MappingBrowser",
@@ -742,11 +743,19 @@ export default {
         { value: "none", text: this.$t("mappingBrowser.searchConcordancesNone") },
       ]
 
-      for (let item of this.concordanceTableItems) {
-        let text = `${item.fromNotation} to ${item.toNotation} (${item.description})`
+      // Use all concordances, but assure that it doesn't conflict with existing fromScheme/toScheme filters
+      for (const concordance of (this.concordances || []).filter(concordance => {
+        if (this.searchFromScheme && !this.$jskos.compare(this.searchFromScheme, concordance.fromScheme)) {
+          return false
+        }
+        if (this.searchToScheme && !this.$jskos.compare(this.searchToScheme, concordance.toScheme)) {
+          return false
+        }
+        return true
+      }).sort(concordanceSort)) {
         options.push({
-          value: item.concordance.uri,
-          text,
+          value: concordance.uri,
+          text: displayNameForConcordance(concordance),
         })
       }
 
@@ -1108,6 +1117,12 @@ export default {
       if (this.concordancesRepeatManager) {
         // Set interval for concordancesRepeatManager
         this.concordancesRepeatManager.interval = this.autoRefresh * 2
+      }
+    },
+    concordanceOptions(options) {
+      // Clear search filter for concordance if it's not available as an option anymore
+      if (this.searchFilterInput.partOf && !options.find(option => option.value === this.searchFilterInput.partOf)) {
+        this.searchFilterInput.partOf = null
       }
     },
   },
