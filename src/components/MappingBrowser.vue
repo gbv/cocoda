@@ -1800,27 +1800,39 @@ export default {
           return !!scheme?.notationFromUri(conceptUri)
         })
       }
-      const mappings = [].concat(...[true, false].map(side => getItem(this.selected.concept[side])?.mappings || []))
       // Only return mappings where both fromScheme and toScheme are supported; also load concept data
-      const results = mappings.filter(mapping => {
-        const fromScheme = getItem(mapping.fromScheme) || detectScheme(mapping.from?.memberSet?.[0]?.uri)
-        const toScheme = getItem(mapping.toScheme) || detectScheme(mapping.to?.memberSet?.[0]?.uri)
-        // Filter out mappings with unsupported schemes and where both sides match
-        if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
-          return false
-        }
-        if (!mapping.fromScheme) {
-          mapping.fromScheme = { uri: fromScheme.uri }
-        }
-        if (!mapping.toScheme) {
-          mapping.toScheme = { uri: toScheme.uri }
-        }
-        this.adjustMapping(mapping)
-        // Load concept data for both sides
-        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
-        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
-        return true
-      })
+      const results = [].concat(...[true, false].map(side => {
+        const concept = getItem(this.selected.concept[side])
+        return (concept?.mappings || []).map(mapping => this.$jskos.copyDeep(mapping)).filter(mapping => {
+          if (!mapping.from && !mapping.to) {
+            return false
+          }
+          // If either `from` or `to` is missing, we'll assume that the concept itself is used
+          ["from", "to"].forEach(side => {
+            if (!mapping[side]) {
+              mapping[side] = { memberSet: [{ uri: concept.uri }] }
+              mapping[side + "Scheme"] = { uri: concept.inScheme[0].uri }
+            }
+          })
+          const fromScheme = getItem(mapping.fromScheme) || detectScheme(mapping.from?.memberSet?.[0]?.uri)
+          const toScheme = getItem(mapping.toScheme) || detectScheme(mapping.to?.memberSet?.[0]?.uri)
+          // Filter out mappings with unsupported schemes and where both sides match
+          if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
+            return false
+          }
+          if (!mapping.fromScheme) {
+            mapping.fromScheme = { uri: fromScheme.uri }
+          }
+          if (!mapping.toScheme) {
+            mapping.toScheme = { uri: toScheme.uri }
+          }
+          this.adjustMapping(mapping)
+          // Load concept data for both sides
+          loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
+          loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
+          return true
+        })
+      }))
       this.embeddedMappings = results
     },
   },
