@@ -1,11 +1,11 @@
 {
   "version": "1.10.0",
   "gitBranch": "dev",
-  "gitCommit": "2436d2adf4ebb133e00ce7c9ce644e55a13c5bd7",
-  "gitCommitShort": "2436d2ad",
-  "gitCommitMessage": "2436d2ad Fix and improve support for embedded mappings",
-  "buildDate": "2023-07-21T12:21:06Z",
-  "date": "2023-07-21T12:19:47.000Z",
+  "gitCommit": "d15aeb862fca583da9471e817c5eca3e24012877",
+  "gitCommitShort": "d15aeb86",
+  "gitCommitMessage": "d15aeb86 Adjust footer of concordance view",
+  "buildDate": "2023-09-27T06:49:12Z",
+  "date": "2023-09-27T06:47:45.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/32?closed=1",
   "jskosApi": "^1.0 || ^2.0"
 }
