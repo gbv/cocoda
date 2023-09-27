@@ -164,13 +164,13 @@
             </flexible-table>
           </div>
           <div style="display: flex;">
-            <p style="font-weight: bold; flex: 1; padding-left: 5px;">
+            <p style="flex: 1; text-align: right; font-weight: bold; padding-right: 45px;">
               {{ concordanceTableItems.length }} {{ $t("mappingBrowser.concordances") }}
-            </p>
-            <p style="text-align: right; font-weight: bold; padding-right: 45px;">
-              {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
-                return total + current.mappings || 0
-              }, 0).toLocaleString() }} {{ $t("general.of") }} {{ totalNumberOfMappings && totalNumberOfMappings.toLocaleString() || "?" }}
+              {{ $t("mappingBrowser.total") }}
+              {{ concordanceTableItems.reduce((total, current) => {
+                return total + (current.mappings || 0)
+              }, 0).toLocaleString() }}
+              {{ $t("registryInfo.mappings") }}
             </p>
             <data-modal-button
               v-if="concordances && concordances.length > 0"
@@ -538,7 +538,6 @@ export default {
     return {
       tab: 0,
       concordancesLoaded: false,
-      totalNumberOfMappings: null,
       /** Whether tab was automatically switched to Mapping Navigator once.
        *  Will not switch automatically again afterwards.
        */
@@ -1788,8 +1787,6 @@ export default {
     },
     async refreshConcordances() {
       await this.loadConcordances()
-      // Also retrieve total number of mappings in those registries
-      this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
       this.concordancesLoaded = true
     },
     refreshEmbeddedMappings() {
