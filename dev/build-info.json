@@ -1,11 +1,11 @@
 {
-  "version": "1.10.0",
+  "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "0860c8ed49a4af93c25a022875a67847b4c5461f",
-  "gitCommitShort": "0860c8ed",
-  "gitCommitMessage": "0860c8ed Update dependencies",
-  "buildDate": "2023-10-06T10:53:18Z",
-  "date": "2023-10-06T10:52:06.000Z",
-  "milestoneUrl": "https://github.com/gbv/cocoda/milestone/32?closed=1",
+  "gitCommit": "4504923b92367a4b351056cde00b26412ccfb531",
+  "gitCommitShort": "4504923b",
+  "gitCommitMessage": "4504923b Release version 1.10.1",
+  "buildDate": "2023-10-06T10:58:49Z",
+  "date": "2023-10-06T10:57:40.000Z",
+  "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
