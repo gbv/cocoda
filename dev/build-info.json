@@ -1,11 +1,11 @@
 {
   "version": "1.10.0",
   "gitBranch": "dev",
-  "gitCommit": "edf1c3e55c085d3fc0dbff3d76bb50d46ce2e771",
-  "gitCommitShort": "edf1c3e5",
-  "gitCommitMessage": "edf1c3e5 Update dependencies",
-  "buildDate": "2023-09-27T06:54:56Z",
-  "date": "2023-09-27T06:53:36.000Z",
+  "gitCommit": "dc764608304910a7a78fb1cd159d06a92c12f918",
+  "gitCommitShort": "dc764608",
+  "gitCommitMessage": "dc764608 Settings: Fix small bug where interface language would reset",
+  "buildDate": "2023-10-06T10:49:36Z",
+  "date": "2023-10-06T10:46:57.000Z",
   "milestoneUrl": "https://github.com/gbv/cocoda/milestone/32?closed=1",
   "jskosApi": "^1.0 || ^2.0"
 }
