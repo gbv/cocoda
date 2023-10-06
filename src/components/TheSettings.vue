@@ -611,6 +611,9 @@ export default {
       // Clone local settings again
       this.localSettings = _.cloneDeep(this.$settings)
     },
+    locale() {
+      this.localSettings.locale = this.locale
+    },
   },
   created() {
     this.languagesRegistry.getTop({ scheme: this.languagesRegistry.schemes[0] }).then(topConcepts => {
