@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "4504923b92367a4b351056cde00b26412ccfb531",
-  "gitCommitShort": "4504923b",
-  "gitCommitMessage": "4504923b Release version 1.10.1",
-  "buildDate": "2023-10-06T10:58:49Z",
-  "date": "2023-10-06T10:57:40.000Z",
+  "gitCommit": "348ea39b0f55ee380bfd8ede4df4eaa69ccb3b35",
+  "gitCommitShort": "348ea39b",
+  "gitCommitMessage": "348ea39b Fix small issue related to mappings' partOf property",
+  "buildDate": "2023-10-19T09:51:42Z",
+  "date": "2023-10-19T09:49:55.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
