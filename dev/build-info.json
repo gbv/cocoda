@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "348ea39b0f55ee380bfd8ede4df4eaa69ccb3b35",
-  "gitCommitShort": "348ea39b",
-  "gitCommitMessage": "348ea39b Fix small issue related to mappings' partOf property",
-  "buildDate": "2023-10-19T09:51:42Z",
-  "date": "2023-10-19T09:49:55.000Z",
+  "gitCommit": "db99cd6253f722e4a196302f536869adb59db90f",
+  "gitCommitShort": "db99cd62",
+  "gitCommitMessage": "db99cd62 Adjust URL for Wikidata reconciliation API (#719)",
+  "buildDate": "2023-10-24T10:44:55Z",
+  "date": "2023-10-24T10:39:34.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
