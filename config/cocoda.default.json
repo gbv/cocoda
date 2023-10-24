@@ -168,7 +168,7 @@
     {
       "provider": "ReconciliationApi",
       "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
-      "api": "https://tools.wmflabs.org/openrefine-wikidata/{language}/api",
+      "api": "https://wikidata.reconci.link/{language}/api",
       "schemes": [
         {
           "uri": "http://bartoc.org/en/node/1940"
