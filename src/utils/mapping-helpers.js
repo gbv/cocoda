@@ -20,7 +20,9 @@ export function getRegistry(registry) {
 }
 
 export function isCreatorOrContributor(entity, user) {
-  if (!entity) return false
+  if (!entity) {
+    return false
+  }
   const creatorUris = [].concat(
     entity.creator || [],
     entity.contributor || [],

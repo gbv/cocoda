@@ -231,7 +231,9 @@ const mutations = {
    */
   add(state, { concept, scheme, isLeft, cardinality = "1-to-n" }) {
     scheme = scheme || concept.inScheme && concept.inScheme[0]
-    if (!scheme) return
+    if (!scheme) {
+      return
+    }
     if (getters.added(state)(concept, isLeft)) {
       return
     }

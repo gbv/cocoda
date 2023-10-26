@@ -516,7 +516,9 @@ export default {
       }
     },
     async saveCurrentMapping() {
-      if (!this.canSaveCurrentMapping) return false
+      if (!this.canSaveCurrentMapping) {
+        return false
+      }
       // Determine whether it should update original mapping
       const updateOriginal = this.$store.getters["mapping/canUpdate"]
       // If only concordance has changed, save that change only
@@ -571,7 +573,9 @@ export default {
       }
     },
     setCreator() {
-      if (!this.creator || !this.userUris || this.userUris.length === 0) return
+      if (!this.creator || !this.userUris || this.userUris.length === 0) {
+        return
+      }
       const updatingOriginal = this.$store.getters["mapping/canUpdate"]
       const creatorIndex = (this.mapping.creator || []).findIndex(c => this.$jskos.compare({ uri: c.uri }, { identifier: this.userUris }))
       if (updatingOriginal && creatorIndex === -1) {
@@ -615,7 +619,9 @@ export default {
       })
     },
     deleteCurrentMapping() {
-      if (!this.canDeleteCurrentMapping) return false
+      if (!this.canDeleteCurrentMapping) {
+        return false
+      }
       this.$refs.deleteModal.show()
       return true
     },
@@ -635,7 +641,9 @@ export default {
       return true
     },
     clearMapping() {
-      if (!this.canClearCurrentMapping) return false
+      if (!this.canClearCurrentMapping) {
+        return false
+      }
       this.$store.commit({
         type: "mapping/empty",
       })

@@ -94,7 +94,9 @@ export default {
      */
     settings: {
       type: Object,
-      default: () => { return {} },
+      default: () => {
+        return {} 
+      },
     },
   },
   data () {

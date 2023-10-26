@@ -244,7 +244,9 @@ export default {
      */
     settings: {
       type: Object,
-      default: () => { return {} },
+      default: () => {
+        return {} 
+      },
     },
   },
   data () {
@@ -390,7 +392,9 @@ export default {
     },
     async loadGndTerms() {
       // TODO: Refactoring necessary!
-      if (!this.item) return
+      if (!this.item) {
+        return
+      }
       let itemBefore = this._item
       if (!this.gnd) {
         return
@@ -426,9 +430,13 @@ export default {
     },
     async loadColiAna() {
       const api = this.config["coli-ana"]
-      if (!api) return
+      if (!api) {
+        return
+      }
       const itemBefore = getItem(this._item, { relatedItems: true })
-      if (!itemBefore) return
+      if (!itemBefore) {
+        return
+      }
       if (itemBefore.memberList) {
         // Data already loaded
         return

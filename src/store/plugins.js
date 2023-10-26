@@ -123,8 +123,7 @@ const lastUsedConcordancePlugin = store => {
     }
     if (mutation.type === "mapping/setConcordance") {
       lastUsedConcordanceStore.concordance = mutation.payload && mutation.payload.concordance
-    }
-    else if (lastUsedConcordanceStore.concordance && ["mapping/add", "mapping/set", "mapping/switch"].includes(mutation.type)) {
+    } else if (lastUsedConcordanceStore.concordance && ["mapping/add", "mapping/set", "mapping/switch"].includes(mutation.type)) {
       const concordance = lastUsedConcordanceStore.concordance
       // Compare against last used concordance and set concordance if necessary
       if (compareItems(concordance.fromScheme, store.state.mapping.mapping.fromScheme) && compareItems(concordance.toScheme, store.state.mapping.mapping.toScheme)) {

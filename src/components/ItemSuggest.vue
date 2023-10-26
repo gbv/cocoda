@@ -123,7 +123,9 @@ export default defineComponent({
       // convert into different array
       let suggestResults
       try {
-        suggestResults = (await promise).slice(1).reduce((current, next) => { current = next.map((element, index) => (current[index] || []).concat(element)); return current }, [])
+        suggestResults = (await promise).slice(1).reduce((current, next) => {
+          current = next.map((element, index) => (current[index] || []).concat(element)); return current 
+        }, [])
       } catch (error) {
         if (error.message === "canceled") {
           return
@@ -173,7 +175,9 @@ export default defineComponent({
         uri: results.value[chosenIndex][2],
       })
       // Remove focus
-      if (document.activeElement !== document.body) document.activeElement.blur()
+      if (document.activeElement !== document.body) {
+        document.activeElement.blur()
+      }
       // Clear search field
       query.value = ""
     }

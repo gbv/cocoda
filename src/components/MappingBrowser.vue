@@ -847,7 +847,9 @@ export default {
           stored: true,
           // ? Do we need this elsewhere?
           readonly: true,
-          isAuthorizedFor() { return false },
+          isAuthorizedFor() {
+            return false 
+          },
         }
         section.id = registry.uri
         section.registry = registry
