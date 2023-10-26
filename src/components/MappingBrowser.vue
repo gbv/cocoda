@@ -164,13 +164,13 @@
             </flexible-table>
           </div>
           <div style="display: flex;">
-            <p style="font-weight: bold; flex: 1; padding-left: 5px;">
+            <p style="flex: 1; text-align: right; font-weight: bold; padding-right: 45px;">
               {{ concordanceTableItems.length }} {{ $t("mappingBrowser.concordances") }}
-            </p>
-            <p style="text-align: right; font-weight: bold; padding-right: 45px;">
-              {{ $t("mappingBrowser.total") }}: {{ concordanceTableItems.reduce((total, current) => {
-                return total + current.mappings || 0
-              }, 0).toLocaleString() }} {{ $t("general.of") }} {{ totalNumberOfMappings && totalNumberOfMappings.toLocaleString() || "?" }}
+              {{ $t("mappingBrowser.total") }}
+              {{ concordanceTableItems.reduce((total, current) => {
+                return total + (current.mappings || 0)
+              }, 0).toLocaleString() }}
+              {{ $t("registryInfo.mappings") }}
             </p>
             <data-modal-button
               v-if="concordances && concordances.length > 0"
@@ -538,7 +538,6 @@ export default {
     return {
       tab: 0,
       concordancesLoaded: false,
-      totalNumberOfMappings: null,
       /** Whether tab was automatically switched to Mapping Navigator once.
        *  Will not switch automatically again afterwards.
        */
@@ -848,7 +847,9 @@ export default {
           stored: true,
           // ? Do we need this elsewhere?
           readonly: true,
-          isAuthorizedFor() { return false },
+          isAuthorizedFor() {
+            return false 
+          },
         }
         section.id = registry.uri
         section.registry = registry
@@ -1346,11 +1347,25 @@ export default {
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
 
-        const getMappings = () => this.getMappings({
+        const schemeAndConceptFilters = {
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
           fromScheme: this.getSchemeForFilter(this.searchFilter.fromScheme),
           toScheme: this.getSchemeForFilter(this.searchFilter.toScheme),
+        }
+        for (const side of ["from", "to"]) {
+          let scheme = schemeAndConceptFilters[`${side}Scheme`]
+          if (!scheme || !schemeAndConceptFilters[side]) {
+            continue
+          }
+          scheme = new this.$jskos.ConceptScheme(schemeAndConceptFilters[`${side}Scheme`])
+          if (scheme?.uriPattern) {
+            schemeAndConceptFilters[side] = schemeAndConceptFilters[side].split("|").map(notation => scheme.uriFromNotation(notation) || notation).join("|")
+          }
+        }
+
+        const getMappings = () => this.getMappings({
+          ...schemeAndConceptFilters,
           creator: this.searchFilter.creator,
           type: this.searchFilter.type,
           direction: this.searchFilter.direction,
@@ -1788,8 +1803,6 @@ export default {
     },
     async refreshConcordances() {
       await this.loadConcordances()
-      // Also retrieve total number of mappings in those registries
-      this.totalNumberOfMappings = (await Promise.all(this.concordanceRegistries.map(r => r.getMappings({ limit: 1 })))).reduce((p, c) => p + c._totalCount, 0)
       this.concordancesLoaded = true
     },
     refreshEmbeddedMappings() {
@@ -1800,27 +1813,39 @@ export default {
           return !!scheme?.notationFromUri(conceptUri)
         })
       }
-      const mappings = [].concat(...[true, false].map(side => getItem(this.selected.concept[side])?.mappings || []))
       // Only return mappings where both fromScheme and toScheme are supported; also load concept data
-      const results = mappings.filter(mapping => {
-        const fromScheme = getItem(mapping.fromScheme) || detectScheme(mapping.from?.memberSet?.[0]?.uri)
-        const toScheme = getItem(mapping.toScheme) || detectScheme(mapping.to?.memberSet?.[0]?.uri)
-        // Filter out mappings with unsupported schemes and where both sides match
-        if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
-          return false
-        }
-        if (!mapping.fromScheme) {
-          mapping.fromScheme = { uri: fromScheme.uri }
-        }
-        if (!mapping.toScheme) {
-          mapping.toScheme = { uri: toScheme.uri }
-        }
-        this.adjustMapping(mapping)
-        // Load concept data for both sides
-        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
-        loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
-        return true
-      })
+      const results = [].concat(...[true, false].map(side => {
+        const concept = getItem(this.selected.concept[side])
+        return (concept?.mappings || []).map(mapping => this.$jskos.copyDeep(mapping)).filter(mapping => {
+          if (!mapping.from && !mapping.to) {
+            return false
+          }
+          // If either `from` or `to` is missing, we'll assume that the concept itself is used
+          ["from", "to"].forEach(side => {
+            if (!mapping[side]) {
+              mapping[side] = { memberSet: [{ uri: concept.uri }] }
+              mapping[side + "Scheme"] = { uri: concept.inScheme[0].uri }
+            }
+          })
+          const fromScheme = getItem(mapping.fromScheme) || detectScheme(mapping.from?.memberSet?.[0]?.uri)
+          const toScheme = getItem(mapping.toScheme) || detectScheme(mapping.to?.memberSet?.[0]?.uri)
+          // Filter out mappings with unsupported schemes and where both sides match
+          if (!fromScheme || !toScheme || this.$jskos.compare(fromScheme, toScheme)) {
+            return false
+          }
+          if (!mapping.fromScheme) {
+            mapping.fromScheme = { uri: fromScheme.uri }
+          }
+          if (!mapping.toScheme) {
+            mapping.toScheme = { uri: toScheme.uri }
+          }
+          this.adjustMapping(mapping)
+          // Load concept data for both sides
+          loadConcepts(this.$jskos.conceptsOfMapping(mapping, "from"), { scheme: fromScheme })
+          loadConcepts(this.$jskos.conceptsOfMapping(mapping, "to"), { scheme: toScheme })
+          return true
+        })
+      }))
       this.embeddedMappings = results
     },
   },

@@ -305,7 +305,9 @@ export default {
       // Set selected
       this.setSelected({ concept, isLeft: this.isLeft })
       // Remove focus
-      if (document.activeElement != document.body) document.activeElement.blur()
+      if (document.activeElement != document.body) {
+        document.activeElement.blur()
+      }
     },
     closeResults() {
       this.isOpen = false

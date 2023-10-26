@@ -233,7 +233,9 @@ export default {
     if (!scheme || !scheme.uri) {
       return
     }
-    if (!jskos.isContainedIn(scheme, getters.favoriteSchemes.map(uri => { uri }))) {
+    if (!jskos.isContainedIn(scheme, getters.favoriteSchemes.map(uri => {
+      uri 
+    }))) {
       commit({
         type: "settings/set",
         prop: "favoriteSchemes",
