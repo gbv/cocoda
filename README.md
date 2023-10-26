@@ -13,7 +13,6 @@ Try out the [latest release version](https://coli-conc.gbv.de/cocoda/app/), the 
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Install](#install)
   - [Release versions](#release-versions)
   - [Development versions](#development-versions)
@@ -60,12 +59,13 @@ Files are created in directory `dist`, including the configuration file.
 
 ### Serving the Files
 
-Any web server can be used to serve Cocoda files. No special configuration is necessary. For instance using the `http-server` npm package to server Cocoda at <http://localhost:8000>:
+Any web server can be used to serve Cocoda files. No special configuration is necessary. For instance using the `http-server` npm package to serve Cocoda at <http://localhost:8000>:
 
 ```bash
-npm install -g http-server
-http-server -p 8000 cocoda/     # serve the pre-built release
-http-server -p 8000 dist/       # or serve the build version
+# serve the pre-built release
+npx http-server -p 8000 cocoda/
+# or serve the build version
+npx http-server -p 8000 dist/
 ```
 
 ### Docker
