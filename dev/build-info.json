@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "db99cd6253f722e4a196302f536869adb59db90f",
-  "gitCommitShort": "db99cd62",
-  "gitCommitMessage": "db99cd62 Adjust URL for Wikidata reconciliation API (#719)",
-  "buildDate": "2023-10-24T10:44:55Z",
-  "date": "2023-10-24T10:39:34.000Z",
+  "gitCommit": "78e6506975ece7eae664ae57698607835fe443c5",
+  "gitCommitShort": "78e65069",
+  "gitCommitMessage": "78e65069 Mapping Search: Translate notations into URIs if possible (#721)",
+  "buildDate": "2023-10-26T09:40:48Z",
+  "date": "2023-10-26T09:39:02.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
