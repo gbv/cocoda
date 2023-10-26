@@ -1347,11 +1347,25 @@ export default {
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
 
-        const getMappings = () => this.getMappings({
+        const schemeAndConceptFilters = {
           from: this.searchFilter.fromNotation,
           to: this.searchFilter.toNotation,
           fromScheme: this.getSchemeForFilter(this.searchFilter.fromScheme),
           toScheme: this.getSchemeForFilter(this.searchFilter.toScheme),
+        }
+        for (const side of ["from", "to"]) {
+          let scheme = schemeAndConceptFilters[`${side}Scheme`]
+          if (!scheme || !schemeAndConceptFilters[side]) {
+            continue
+          }
+          scheme = new this.$jskos.ConceptScheme(schemeAndConceptFilters[`${side}Scheme`])
+          if (scheme?.uriPattern) {
+            schemeAndConceptFilters[side] = schemeAndConceptFilters[side].split("|").map(notation => scheme.uriFromNotation(notation) || notation).join("|")
+          }
+        }
+
+        const getMappings = () => this.getMappings({
+          ...schemeAndConceptFilters,
           creator: this.searchFilter.creator,
           type: this.searchFilter.type,
           direction: this.searchFilter.direction,
