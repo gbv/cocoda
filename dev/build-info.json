@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "78e6506975ece7eae664ae57698607835fe443c5",
-  "gitCommitShort": "78e65069",
-  "gitCommitMessage": "78e65069 Mapping Search: Translate notations into URIs if possible (#721)",
-  "buildDate": "2023-10-26T09:40:48Z",
-  "date": "2023-10-26T09:39:02.000Z",
+  "gitCommit": "277675e213c7132738b18b1e973f9db1404dbc70",
+  "gitCommitShort": "277675e2",
+  "gitCommitMessage": "277675e2 Small adjustments and fixes to README",
+  "buildDate": "2023-10-26T11:13:57Z",
+  "date": "2023-10-26T11:12:33.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
