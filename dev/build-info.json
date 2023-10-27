@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "e729177ff30f1ea5ff253bc54b87579e797b94ee",
-  "gitCommitShort": "e729177f",
-  "gitCommitMessage": "e729177f Merge branch 'dev' of github.com:gbv/cocoda into dev",
-  "buildDate": "2023-10-27T10:51:17Z",
-  "date": "2023-10-27T10:50:11.000Z",
+  "gitCommit": "f287b3752fada35ad706af426293c0908d1b111f",
+  "gitCommitShort": "f287b375",
+  "gitCommitMessage": "f287b375 Mapping Search: Fix issues related to searchRegistries",
+  "buildDate": "2023-10-27T11:24:01Z",
+  "date": "2023-10-27T11:22:17.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
