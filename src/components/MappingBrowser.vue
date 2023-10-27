@@ -782,6 +782,8 @@ export default {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
     searchRegistries() {
+      const selected = this.selected
+      const relevantSchemes = [this.getSchemeForFilter(this.searchFilter.fromScheme), this.getSchemeForFilter(this.searchFilter.toScheme), getItem(selected.scheme[true]), getItem(selected.scheme[false])]
       return _.get(this.registryGroups.find(group => group.stored), "registries", []).filter(registry => {
         // Support "schemes" field for stored registries, but handle it a bit differently than with non-stored ones.
         // (Registries with no "schemes" property will always be shown.)
@@ -790,7 +792,7 @@ export default {
           return true
         }
         // If either one of the selected schemes or one of the search filter schemes is supported, show the registry.
-        for (const scheme of [this.getSchemeForFilter(this.searchFilter.fromScheme), this.getSchemeForFilter(this.searchFilter.toScheme), getItem(this.selected.scheme[true]), getItem(this.selected.scheme[false])]) {
+        for (const scheme of relevantSchemes) {
           if (registry.supportsScheme(scheme)) {
             return true
           }
@@ -1241,6 +1243,10 @@ export default {
       }
       if (changed) {
         this.searchClicked()
+      } else {
+        // It might still be required to update search results for certain registries (if they got added to or removed from "searchRegistries")
+        _.difference(Object.keys(this.searchResults), this.searchRegistries.map(r => r.uri)).forEach(uri => this.$delete(this.searchResults, uri))
+        _.difference(this.searchRegistries.map(r => r.uri), Object.keys(this.searchResults)).forEach(uri => this.search(uri, 1))
       }
       // Set previousSelected
       this.previousSelected = {}
@@ -1337,10 +1343,10 @@ export default {
           }
         }
       }
+      // Clear search results of old registries
+      _.difference(Object.keys(this.searchResults), this.searchRegistries.map(r => r.uri)).forEach(uri => this.$delete(this.searchResults, uri))
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
-      // Clear search results of old registries
-      _.difference(Object.keys(this.searchResults), registries.map(r => r.uri)).forEach(uri => this.$delete(this.searchResults, uri))
       for (let registry of registries) {
         // Cancel previous requests
         if (this.searchCancelToken[registry.uri]) {
