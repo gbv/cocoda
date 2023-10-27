@@ -73,6 +73,20 @@
     {
       "provider": "MappingsApi",
       "uri": "http://coli-conc.gbv.de/registry/konsys-mappings",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1443"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/2053"
+        }
+      ],
       "status": "https://konsys.uni-konstanz.de/api/jskos/status",
       "notation": [
         "K"
