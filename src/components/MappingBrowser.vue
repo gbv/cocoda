@@ -782,7 +782,21 @@ export default {
       return this.$store.state.mapping.mappingsNeedRefresh
     },
     searchRegistries() {
-      return _.get(this.registryGroups.find(group => group.stored), "registries", [])
+      return _.get(this.registryGroups.find(group => group.stored), "registries", []).filter(registry => {
+        // Support "schemes" field for stored registries, but handle it a bit differently than with non-stored ones.
+        // (Registries with no "schemes" property will always be shown.)
+        // ? It might make sense to apply this to navigatorRegistries as well.
+        if (!registry.schemes || !registry.supportsScheme) {
+          return true
+        }
+        // If either one of the selected schemes or one of the search filter schemes is supported, show the registry.
+        for (const scheme of [this.getSchemeForFilter(this.searchFilter.fromScheme), this.getSchemeForFilter(this.searchFilter.toScheme), getItem(this.selected.scheme[true]), getItem(this.selected.scheme[false])]) {
+          if (registry.supportsScheme(scheme)) {
+            return true
+          }
+        }
+        return false
+      })
     },
     mappingRegistriesSorted() {
       return _.flatten(this.registryGroups.map(group => group.registries))
@@ -848,7 +862,7 @@ export default {
           // ? Do we need this elsewhere?
           readonly: true,
           isAuthorizedFor() {
-            return false 
+            return false
           },
         }
         section.id = registry.uri
@@ -1325,6 +1339,8 @@ export default {
       }
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
+      // Clear search results of old registries
+      _.difference(Object.keys(this.searchResults), registries.map(r => r.uri)).forEach(uri => this.$delete(this.searchResults, uri))
       for (let registry of registries) {
         // Cancel previous requests
         if (this.searchCancelToken[registry.uri]) {
