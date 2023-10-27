@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "277675e213c7132738b18b1e973f9db1404dbc70",
-  "gitCommitShort": "277675e2",
-  "gitCommitMessage": "277675e2 Small adjustments and fixes to README",
-  "buildDate": "2023-10-26T11:13:57Z",
-  "date": "2023-10-26T11:12:33.000Z",
+  "gitCommit": "e729177ff30f1ea5ff253bc54b87579e797b94ee",
+  "gitCommitShort": "e729177f",
+  "gitCommitMessage": "e729177f Merge branch 'dev' of github.com:gbv/cocoda into dev",
+  "buildDate": "2023-10-27T10:51:17Z",
+  "date": "2023-10-27T10:50:11.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
