@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "f287b3752fada35ad706af426293c0908d1b111f",
-  "gitCommitShort": "f287b375",
-  "gitCommitMessage": "f287b375 Mapping Search: Fix issues related to searchRegistries",
-  "buildDate": "2023-10-27T11:24:01Z",
-  "date": "2023-10-27T11:22:17.000Z",
+  "gitCommit": "9af6401aec7f7d032ae1b1d169ba93e0e98ecfde",
+  "gitCommitShort": "9af6401a",
+  "gitCommitMessage": "9af6401a Update Nomisma Reconciliation API URL",
+  "buildDate": "2023-11-14T08:53:20Z",
+  "date": "2023-11-14T08:52:03.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
