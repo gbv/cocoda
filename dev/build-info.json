@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "9af6401aec7f7d032ae1b1d169ba93e0e98ecfde",
-  "gitCommitShort": "9af6401a",
-  "gitCommitMessage": "9af6401a Update Nomisma Reconciliation API URL",
-  "buildDate": "2023-11-14T08:53:20Z",
-  "date": "2023-11-14T08:52:03.000Z",
+  "gitCommit": "69bfd5687b164b60c3595f9f84b9a9674d017d2d",
+  "gitCommitShort": "69bfd568",
+  "gitCommitMessage": "69bfd568 Update dependencies",
+  "buildDate": "2023-11-14T09:20:31Z",
+  "date": "2023-11-14T09:19:42.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
