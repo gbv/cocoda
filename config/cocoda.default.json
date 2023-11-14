@@ -243,7 +243,7 @@
     {
       "provider": "ReconciliationApi",
       "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
-      "api": "https://coli-conc.gbv.de/nomisma-reconciliation/",
+      "api": "https://nomisma.org/apis/reconcile",
       "schemes": [
         {
           "uri": "http://nomisma.org/id/"
