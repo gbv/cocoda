@@ -43,7 +43,9 @@
       <!-- Text for prefLabel -->
       <span v-if="showText || !notation">{{ prefLabel }}</span>
       <!-- Fallback to URI for concepts if no other data exists -->
-      <span v-if="!isScheme && !notation && !prefLabel">{{ _item?.uri }}</span>
+      <auto-link
+        v-if="!isScheme && !notation && !prefLabel && _item?.uri"
+        :link="_item?.uri" />
     </div>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
     <div
@@ -59,13 +61,14 @@
 import _ from "lodash"
 import dragandrop from "@/mixins/dragandrop.js"
 import { getItem } from "@/items"
-
+import AutoLink from "./AutoLink.vue"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.
  */
 export default {
   name: "ItemName",
+  components: { AutoLink },
   mixins: [dragandrop],
   props: {
     /**
