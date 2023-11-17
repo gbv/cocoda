@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "64f7c423f15785e291fa306d0b4b756d2c181814",
-  "gitCommitShort": "64f7c423",
-  "gitCommitMessage": "64f7c423 ItemName: Show URI for concepts without notation and prefLabel",
-  "buildDate": "2023-11-17T10:40:52Z",
-  "date": "2023-11-17T10:39:45.000Z",
+  "gitCommit": "1ad075be513df4ef02adc771af8d0c544fb2afd9",
+  "gitCommitShort": "1ad075be",
+  "gitCommitMessage": "1ad075be AutoLink URI in ItemName",
+  "buildDate": "2023-11-17T11:18:16Z",
+  "date": "2023-11-17T11:17:23.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
