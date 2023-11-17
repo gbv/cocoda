@@ -45,7 +45,7 @@
     </div>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
     <div
-      v-if="isScheme ? (_item.concepts && !_item.concepts.length) : (_item && _item.__DETAILSLOADED__ == -1)"
+      v-if="showMissingDataIndicator"
       v-b-tooltip.hover="{ title: isScheme ? $t('itemDetail.noConcepts') : $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
       class="missingDataIndicator">
       •
@@ -171,6 +171,18 @@ export default {
     },
     isScheme() {
       return this.$jskos.isScheme(this._item)
+    },
+    showMissingDataIndicator() {
+      if (this.isScheme) {
+        return this._item.concepts && !this._item.concepts.length
+      }
+      if (this._item?.__DETAILSLOADED__ === -1) {
+        return true
+      }
+      if (this._item?.__DETAILSLOADED__ === 0 && !_.get(this._item, "inScheme[0].concepts.length")) {
+        return true
+      }
+      return false
     },
   },
   created() {
