@@ -409,7 +409,7 @@
     </b-popover>
     <!-- ? Maybe move into separate component, including some required properties -->
     <b-popover
-      v-if="conceptDetailPopoverConcept"
+      v-if="conceptDetailPopoverConcept && Object.keys(conceptDetailPopoverContentMap).length"
       :key="conceptDetailPopoverID"
       :show.sync="popoverShown[`conceptDetailPopover-${conceptDetailPopoverID}`]"
       :target="conceptDetailPopoverElement"
