@@ -42,6 +42,8 @@
         v-html="notation" />
       <!-- Text for prefLabel -->
       <span v-if="showText || !notation">{{ prefLabel }}</span>
+      <!-- Fallback to URI for concepts if no other data exists -->
+      <span v-if="!isScheme && !notation && !prefLabel">{{ _item?.uri }}</span>
     </div>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
     <div
