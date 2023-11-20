@@ -5,7 +5,7 @@ inputs:
   version:
     description: Node.js version
     type: string
-    default: 16.x
+    default: 20.x
 
 runs:
   using: "composite"
