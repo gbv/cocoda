@@ -1,5 +1,5 @@
 # Step 1: Build Cocoda via node:18-alpine image.
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
 
 ## We need bash and git.
