@@ -20,7 +20,8 @@
             <b-col>
               <item-name
                 :draggable="false"
-                :item="mapping.fromScheme" />
+                :item="mapping.fromScheme"
+                :fallback-to-uri="true" />
             </b-col>
           </b-row>
           <!-- Source Concepts -->
@@ -34,7 +35,8 @@
                 :key="`mappingDetail-from-${concept.uri}`">
                 <item-name
                   :draggable="false"
-                  :item="concept" />
+                  :item="concept"
+                  :fallback-to-uri="true" />
               </p>
             </b-col>
           </b-row>
@@ -46,7 +48,8 @@
             <b-col>
               <item-name
                 :draggable="false"
-                :item="mapping.toScheme" />
+                :item="mapping.toScheme"
+                :fallback-to-uri="true" />
             </b-col>
           </b-row>
           <!-- Target Concepts -->
@@ -60,7 +63,8 @@
                 :key="`mappingDetail-to-${concept.uri}`">
                 <item-name
                   :draggable="false"
-                  :item="concept" />
+                  :item="concept"
+                  :fallback-to-uri="true" />
               </p>
             </b-col>
           </b-row>

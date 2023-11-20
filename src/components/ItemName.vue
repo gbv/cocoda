@@ -44,7 +44,7 @@
       <span v-if="showText || !notation">{{ prefLabel }}</span>
       <!-- Fallback to URI for concepts if no other data exists -->
       <auto-link
-        v-if="!isScheme && !notation && !prefLabel && _item?.uri"
+        v-if="fallbackToUri && !notation && !prefLabel && _item?.uri"
         :link="_item?.uri" />
     </div>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
@@ -98,6 +98,13 @@ export default {
     showText: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * Determines whether to show item URI if there is neither a notation nor a label.
+     */
+    fallbackToUri: {
+      type: Boolean,
+      default: false,
     },
     /**
      * Determines whether it is a link.
