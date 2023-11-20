@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "f154fe323f332a9f6a5abbc266110a4c3fe61c06",
-  "gitCommitShort": "f154fe32",
-  "gitCommitMessage": "f154fe32 Update cocoda-sdk",
-  "buildDate": "2023-11-20T09:45:30Z",
-  "date": "2023-11-20T09:44:28.000Z",
+  "gitCommit": "d3db985388c76d0caa49b961cd7801be6da7e085",
+  "gitCommitShort": "d3db9853",
+  "gitCommitMessage": "d3db9853 Adjust Node.js version for Docker build",
+  "buildDate": "2023-11-20T10:11:35Z",
+  "date": "2023-11-20T10:10:35.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
