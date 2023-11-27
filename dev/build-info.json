@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "d3db985388c76d0caa49b961cd7801be6da7e085",
-  "gitCommitShort": "d3db9853",
-  "gitCommitMessage": "d3db9853 Adjust Node.js version for Docker build",
-  "buildDate": "2023-11-20T10:11:35Z",
-  "date": "2023-11-20T10:10:35.000Z",
+  "gitCommit": "fdd64b1ced1ec6945aca675efca9f923d335218d",
+  "gitCommitShort": "fdd64b1c",
+  "gitCommitMessage": "fdd64b1c Show concordance license in ConcordanceDetail",
+  "buildDate": "2023-11-27T11:29:05Z",
+  "date": "2023-11-27T11:27:54.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
