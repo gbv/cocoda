@@ -92,6 +92,13 @@
             </b-col>
             <b-col><date-string :date="concordance.modified" /></b-col>
           </b-row>
+          <!-- URL -->
+          <b-row v-if="concordance.url">
+            <b-col cols="3">
+              {{ $t("dataModal.apiUrl") }}:
+            </b-col>
+            <b-col><auto-link :link="concordance.url" /></b-col>
+          </b-row>
           <!-- Distributions -->
           <b-row v-if="concordance.distributions && concordance.distributions.length">
             <b-col cols="3">
