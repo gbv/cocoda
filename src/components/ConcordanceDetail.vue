@@ -99,6 +99,29 @@
             </b-col>
             <b-col><auto-link :link="concordance.url" /></b-col>
           </b-row>
+          <!-- License -->
+          <b-row v-if="concordance.license?.length">
+            <b-col cols="3">
+              {{ $t("general.license") }}:
+            </b-col>
+            <b-col>
+              <span
+                v-for="(license, index) in concordance.license"
+                :key="`concordanceDetail-license-${index}`">
+                <a
+                  :href="license.uri"
+                  target="_blank">
+                  <img
+                    v-if="defaults.licenseBadges[license.uri]"
+                    :src="defaults.licenseBadges[license.uri]"
+                    class="schemeDetail-licenseBadge">
+                  <span v-else>
+                    {{ license.uri }}
+                  </span>
+                </a>
+              </span>
+            </b-col>
+          </b-row>
           <!-- Distributions -->
           <b-row v-if="concordance.distributions && concordance.distributions.length">
             <b-col cols="3">
