@@ -233,6 +233,11 @@ export default {
       },
     },
   },
+  watch: {
+    concepts() {
+      this.loadConceptsInView()
+    },
+  },
   created() {
     this.loadConceptsInView = _.debounce(this._loadConceptsInView, 300)
   },

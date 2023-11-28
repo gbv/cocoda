@@ -158,10 +158,11 @@ export default {
         // Load narrower and ancestor concepts (in background)
         // Note: We're waiting until after concept details are loaded because sometimes narrower/ancestors are already loaded there.
         loadNarrower(concept).then(narrower => {
-          loadConcepts(narrower)
+          loadConcepts(narrower, { scheme })
         })
         loadAncestors(concept).then(ancestors => {
-          // Load its ancestors' narrower concepts
+          // Load its ancestors' details and narrower concepts
+          loadConcepts(ancestors, { scheme })
           ancestors.filter(Boolean).forEach(ancestor => loadNarrower(ancestor))
         })
 
