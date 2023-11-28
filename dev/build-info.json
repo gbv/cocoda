@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "fdd64b1ced1ec6945aca675efca9f923d335218d",
-  "gitCommitShort": "fdd64b1c",
-  "gitCommitMessage": "fdd64b1c Show concordance license in ConcordanceDetail",
-  "buildDate": "2023-11-27T11:29:05Z",
-  "date": "2023-11-27T11:27:54.000Z",
+  "gitCommit": "4fb84c7fd642f589dfaaf423c2961c5ef5b57f69",
+  "gitCommitShort": "4fb84c7f",
+  "gitCommitMessage": "4fb84c7f Fix an issue where top concept details sometimes weren't loaded",
+  "buildDate": "2023-11-28T08:34:23Z",
+  "date": "2023-11-28T08:32:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
