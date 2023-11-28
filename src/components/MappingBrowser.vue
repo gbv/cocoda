@@ -674,7 +674,7 @@ export default {
         item.to = getItem(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
         item.description = (this.$jskos.languageMapContent(concordance, "scopeNote", { language: this.locale }) || [])[0] || _.get(concordance, "notation[0]") || "-"
-        item.creator = this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
+        item.creator = this.$jskos.prefLabel(_.get(concordance, "publisher[0]"), { fallbackToUri: false }) || this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
         item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
         item.download = _.get(concordance, "distributions", [])
         item.mappings = parseInt(_.get(concordance, "extent"))
