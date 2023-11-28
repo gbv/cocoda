@@ -35,6 +35,7 @@
       "noRegistries": "The configuration contains no providers. Please consult the <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>documentation</a> how to configure providers!",
       "catalog": "catalog",
       "license": "License",
+      "publisher": "Publisher",
       "storedMappings": "Mappings",
       "recommendedMappings": "Suggestions"
     },
@@ -437,6 +438,7 @@
       "noRegistries": "Es sind keine Datenquellen konfiguriert! Bitte entnehmen sie der <a href='https://gbv.github.io/cocoda/#configuration' target='_blank'>Dokumentation</a> wie Datenquellen konfiguriert werden können!",
       "catalog": "Katalog",
       "license": "Lizenz",
+      "publisher": "Herausgeber*in",
       "storedMappings": "Mappings",
       "recommendedMappings": "Vorschläge"
     },

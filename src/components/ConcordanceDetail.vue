@@ -48,6 +48,20 @@
               </p>
             </b-col>
           </b-row>
+          <b-row v-if="concordance.publisher?.length">
+            <b-col cols="3">
+              {{ $t("general.publisher") }}:
+            </b-col>
+            <b-col>
+              <p
+                v-for="(publisher, index) in concordance.publisher"
+                :key="`concordanceDetail-publisher-${index}`">
+                <auto-link
+                  :link="publisher.url || publisher.uri"
+                  :text="$jskos.prefLabel(publisher)" />
+              </p>
+            </b-col>
+          </b-row>
           <!-- Creator -->
           <b-row>
             <b-col cols="3">
