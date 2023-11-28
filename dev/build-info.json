@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "4fb84c7fd642f589dfaaf423c2961c5ef5b57f69",
-  "gitCommitShort": "4fb84c7f",
-  "gitCommitMessage": "4fb84c7f Fix an issue where top concept details sometimes weren't loaded",
-  "buildDate": "2023-11-28T08:34:23Z",
-  "date": "2023-11-28T08:32:19.000Z",
+  "gitCommit": "cf7d00463a8526104f2597e33ce4c916d5ad7c93",
+  "gitCommitShort": "cf7d0046",
+  "gitCommitMessage": "cf7d0046 ConcordanceDetail: Add publisher (#724)",
+  "buildDate": "2023-11-28T08:45:22Z",
+  "date": "2023-11-28T08:44:25.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
