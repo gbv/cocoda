@@ -68,6 +68,7 @@
 
 <script>
 import LoadingIndicator from "./LoadingIndicator.vue"
+import ItemName from "./ItemName.vue"
 
 import mappedStatus from "@/mixins/mapped-status.js"
 
@@ -75,7 +76,7 @@ import { getItem, getItems, loadAncestors, loadConcepts, modifyItem } from "@/it
 
 export default {
   name: "ConceptDetailAncestors",
-  components: { ItemName: () => import("./ItemName.vue"), LoadingIndicator },
+  components: { ItemName, LoadingIndicator },
   mixins: [mappedStatus],
   props: {
     /**
@@ -106,7 +107,7 @@ export default {
     settings: {
       type: Object,
       default: () => {
-        return {} 
+        return {}
       },
     },
   },
