@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "896f604d4a594ee9432115249bd23775b71eceea",
-  "gitCommitShort": "896f604d",
-  "gitCommitMessage": "896f604d Update build-all script",
-  "buildDate": "2024-01-12T11:39:04Z",
-  "date": "2024-01-12T11:35:55.000Z",
+  "gitCommit": "c9c93925dd75d298038dc49a6ed96f97993d0702",
+  "gitCommitShort": "c9c93925",
+  "gitCommitMessage": "c9c93925 Fix issue with stashing in build-all script",
+  "buildDate": "2024-01-12T12:03:57Z",
+  "date": "2024-01-12T12:03:02.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
