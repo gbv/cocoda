@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "c9c93925dd75d298038dc49a6ed96f97993d0702",
-  "gitCommitShort": "c9c93925",
-  "gitCommitMessage": "c9c93925 Fix issue with stashing in build-all script",
-  "buildDate": "2024-01-12T12:03:57Z",
-  "date": "2024-01-12T12:03:02.000Z",
+  "gitCommit": "131eeef76abfaa995ac1aafa3d84056c5d0ac0da",
+  "gitCommitShort": "131eeef7",
+  "gitCommitMessage": "131eeef7 build-all.sh: Use older Node versions via fnm for older Cocoda versions",
+  "buildDate": "2024-01-12T12:40:54Z",
+  "date": "2024-01-12T12:39:41.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
