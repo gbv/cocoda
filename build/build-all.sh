@@ -28,7 +28,7 @@ function cleanup {
   test -e build/build-info.backup.json && rm build/build-info.backup.json
 
   # Run one more install to get back to current dependencies
-  npm i
+  npm ci
 }
 trap cleanup EXIT
 
@@ -49,7 +49,7 @@ do
   # Checkout tag
   git checkout $TAG
   # Install dependencies
-  npm i
+  npm ci
   # Override supported jskos-api version
   # (without this, older Cocoda versions won't be compatible with newer JSKOS Server versions, even though the v2 API is mostly backwards-compatible)
   # (See https://stackoverflow.com/a/61049639 for why a variable is necessary)
