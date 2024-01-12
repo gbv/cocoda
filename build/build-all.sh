@@ -13,7 +13,7 @@ wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=1
 cp build/build-info.js temp/build-info.js
 
 # Stash changes before running script
-git stash save -u before-build-all
+git stash push -u -m before-build-all
 
 function cleanup {
   echo
@@ -23,7 +23,7 @@ function cleanup {
   git checkout dev
 
   # Apply stash after script
-  git stash pop
+  git stash pop stash@{$((git stash list | grep -w before-build-all) | cut -d "{" -f2 | cut -d "}" -f1)}
   
   test -e build/build-info.backup.json && rm build/build-info.backup.json
 
