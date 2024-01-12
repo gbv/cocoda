@@ -7,6 +7,14 @@ then
     exit 1
 fi
 
+# Make sure fnm is installed
+if ! command -v fnm &> /dev/null
+then
+    echo "fnm is required to run this script to be able to build older versions of Cocoda"
+    echo "(Feel free to submit a PR that also allows nvm)"
+    exit 1
+fi
+
 mkdir temp
 wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100' -O temp/github-milestones.json
 # Copy build-info.js to a temporary directory so it will be accessible throughout all the builds
@@ -14,6 +22,9 @@ cp build/build-info.js temp/build-info.js
 
 # Stash changes before running script
 git stash push -u -m before-build-all
+
+# Save current Node version to reset after building all the versions
+FNM_VERSION="$(fnm current)"
 
 function cleanup {
   echo
@@ -26,6 +37,9 @@ function cleanup {
   git stash pop stash@{$((git stash list | grep -w before-build-all) | cut -d "{" -f2 | cut -d "}" -f1)}
   
   test -e build/build-info.backup.json && rm build/build-info.backup.json
+
+  # Return to previous Node.js version
+  fnm use $FNM_VERSION
 
   # Run one more install to get back to current dependencies
   npm ci
@@ -48,6 +62,15 @@ do
   echo "==================== Building $TAG ===================="
   # Checkout tag
   git checkout $TAG
+  # Switch Node.js version on certain tags in history 
+  # TODO: Improve this!
+  if [[ "$TAG" == "0.2.0" ]]; then
+    fnm use --install-if-missing 10
+  elif [[ "$TAG" == "1.4.0" ]]; then
+    fnm use --install-if-missing 16
+  elif [[ "$TAG" == "1.8.0" ]]; then
+    fnm use --install-if-missing 20
+  fi
   # Install dependencies
   npm ci
   # Override supported jskos-api version
