@@ -38,7 +38,7 @@ git checkout $GIT_BRANCH
 rm -rf releases
 mkdir releases
 
-DEFAULT_TAGS="master dev $(git tag)"
+DEFAULT_TAGS="$(git tag) master dev"
 TAGS="${*:1}"
 TAGS="${TAGS:-$DEFAULT_TAGS}"
 
@@ -53,6 +53,7 @@ do
   # Override supported jskos-api version
   # (without this, older Cocoda versions won't be compatible with newer JSKOS Server versions, even though the v2 API is mostly backwards-compatible)
   # (See https://stackoverflow.com/a/61049639 for why a variable is necessary)
+  # TODO: This doesn't seem to work for version 1.4.0 +/- (probably because the value is expected); we can't use "^1.0 || ^2.0" there either because it wasn't supported at that time...
   packageJson="$(jq 'del(."jskos-api")' package.json)"
   echo -E "${packageJson}" > package.json
   # Create build
