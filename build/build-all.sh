@@ -67,7 +67,7 @@ do
   if [[ "$TAG" == "0.2.0" ]]; then
     fnm use --install-if-missing 10
   elif [[ "$TAG" == "1.4.0" ]]; then
-    fnm use --install-if-missing 16
+    fnm use --install-if-missing 14
   elif [[ "$TAG" == "1.8.0" ]]; then
     fnm use --install-if-missing 20
   fi
@@ -77,7 +77,7 @@ do
   # (without this, older Cocoda versions won't be compatible with newer JSKOS Server versions, even though the v2 API is mostly backwards-compatible)
   # (See https://stackoverflow.com/a/61049639 for why a variable is necessary)
   # TODO: This doesn't seem to work for version 1.4.0 +/- (probably because the value is expected); we can't use "^1.0 || ^2.0" there either because it wasn't supported at that time...
-  packageJson="$(jq 'del(."jskos-api")' package.json)"
+  packageJson="$(jq '."jskos-api"=""' package.json)"
   echo -E "${packageJson}" > package.json
   # Create build
   npm run build
