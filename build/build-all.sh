@@ -36,7 +36,7 @@ function cleanup {
   git checkout dev
 
   # Apply stash after script
-  git stash pop stash@{$((git stash list | grep -w before-build-all) | cut -d "{" -f2 | cut -d "}" -f1)}
+  git stash pop stash@\{"$( (git stash list | grep -w before-build-all) | cut -d "{" -f2 | cut -d "}" -f1)"\}
   
   test -e build/build-info.backup.json && rm build/build-info.backup.json
 
@@ -50,6 +50,9 @@ function cleanup {
   mv temp/node_modules ./
 
   rm -r temp
+
+  # TODO: Maybe we can disambiguate between success and failure states somehow
+  exit 0
 }
 trap cleanup EXIT
 
