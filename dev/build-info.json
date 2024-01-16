@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "0d1d6ef8db0d315409f113493f6323a7dc5767d6",
-  "gitCommitShort": "0d1d6ef8",
-  "gitCommitMessage": "0d1d6ef8 build-all.sh: Small adjustments to fix versions around 1.4.0",
-  "buildDate": "2024-01-15T09:57:02Z",
-  "date": "2024-01-15T09:55:34.000Z",
+  "gitCommit": "d255ef3ed07185fd553b68db270abf633bbe643c",
+  "gitCommitShort": "d255ef3e",
+  "gitCommitMessage": "d255ef3e build-all.sh: Improve Node version selection for building older tags",
+  "buildDate": "2024-01-16T08:33:16Z",
+  "date": "2024-01-16T08:31:49.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
