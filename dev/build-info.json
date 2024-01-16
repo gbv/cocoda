@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "c5f1e495a7e5dc1492fb3cb0b26ab42dad007ce6",
-  "gitCommitShort": "c5f1e495",
-  "gitCommitMessage": "c5f1e495 Remove GIT_BRANCH from build-all.sh",
-  "buildDate": "2024-01-16T10:38:22Z",
-  "date": "2024-01-16T10:37:24.000Z",
+  "gitCommit": "a9e531a840ff733d926080de0f2d7618e3afed11",
+  "gitCommitShort": "a9e531a8",
+  "gitCommitMessage": "a9e531a8 build-all.sh: More small changes",
+  "buildDate": "2024-01-16T11:52:37Z",
+  "date": "2024-01-16T11:51:30.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
