@@ -52,6 +52,9 @@ git checkout $GIT_BRANCH
 rm -rf releases
 mkdir releases
 
+# From: https://stackoverflow.com/a/18558871
+beginswith() { case $2 in "$1"*) true;; *) false;; esac; }
+
 DEFAULT_TAGS="$(git tag) master dev"
 TAGS="${*:1}"
 TAGS="${TAGS:-$DEFAULT_TAGS}"
@@ -62,13 +65,12 @@ do
   echo "==================== Building $TAG ===================="
   # Checkout tag
   git checkout $TAG
-  # Switch Node.js version on certain tags in history 
-  # TODO: Improve this!
-  if [[ "$TAG" == "0.2.0" ]]; then
+  # Switch Node.js version on certain tags
+  if beginswith "0." "$TAG" || beginswith "1.0." "$TAG" || beginswith "1.1." "$TAG" || beginswith "1.2." "$TAG" || beginswith "1.3." "$TAG"; then
     fnm use --install-if-missing 10
-  elif [[ "$TAG" == "1.4.0" ]]; then
+  elif beginswith "1.4." "$TAG" || beginswith "1.5." "$TAG" || beginswith "1.6." "$TAG" || beginswith "1.7." "$TAG"; then
     fnm use --install-if-missing 14
-  elif [[ "$TAG" == "1.8.0" ]]; then
+  else
     fnm use --install-if-missing 20
   fi
   # Install dependencies
