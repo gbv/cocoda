@@ -53,9 +53,6 @@ function cleanup {
 }
 trap cleanup EXIT
 
-GIT_BRANCH=master
-
-git checkout $GIT_BRANCH
 rm -rf releases
 mkdir releases
 
@@ -91,7 +88,7 @@ do
   # Create build
   npm run build
   # Create build-info.json from scratch (due to new properties)
-  VERSION=$TAG GIT_BRANCH=$GIT_BRANCH temp/build-info.js > dist/build-info.json
+  VERSION=$TAG temp/build-info.js > dist/build-info.json
   # Move build to separate folder
   mv dist releases/$TAG
   # Reset repo for next checkout
