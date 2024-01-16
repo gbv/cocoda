@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "d255ef3ed07185fd553b68db270abf633bbe643c",
-  "gitCommitShort": "d255ef3e",
-  "gitCommitMessage": "d255ef3e build-all.sh: Improve Node version selection for building older tags",
-  "buildDate": "2024-01-16T08:33:16Z",
-  "date": "2024-01-16T08:31:49.000Z",
+  "gitCommit": "b3543efb597644ba41eeb31cdcda21708344f4c3",
+  "gitCommitShort": "b3543efb",
+  "gitCommitMessage": "b3543efb build-all.sh: Handle issues with current fnm version",
+  "buildDate": "2024-01-16T10:31:16Z",
+  "date": "2024-01-16T10:30:15.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
