@@ -20,6 +20,9 @@ wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=1
 # Copy build-info.js to a temporary directory so it will be accessible throughout all the builds
 cp build/build-info.js temp/build-info.js
 
+# Move node_modules to temporary directory so that we can restore it afterwards
+mv node_modules temp/
+
 # Stash changes before running script
 git stash push -u -m before-build-all
 
@@ -29,7 +32,6 @@ FNM_VERSION="$(fnm current)"
 function cleanup {
   echo
   echo "==================== Cleaning up ===================="
-  rm -r temp
   git reset --hard
   git checkout dev
 
@@ -41,8 +43,11 @@ function cleanup {
   # Return to previous Node.js version
   fnm use $FNM_VERSION
 
-  # Run one more install to get back to current dependencies
-  npm ci
+  # Restore previous node_modules
+  rm -r ./node_modules
+  mv temp/node_modules ./
+
+  rm -r temp
 }
 trap cleanup EXIT
 
