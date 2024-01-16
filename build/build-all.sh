@@ -41,7 +41,9 @@ function cleanup {
   test -e build/build-info.backup.json && rm build/build-info.backup.json
 
   # Return to previous Node.js version
-  fnm use $FNM_VERSION
+  if [ "$FNM_VERSION" != "" ] && [ "$FNM_VERSION" != "none" ]; then
+    fnm use "$FNM_VERSION"
+  fi
 
   # Restore previous node_modules
   rm -r ./node_modules
