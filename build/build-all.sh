@@ -29,9 +29,15 @@ git stash push -u -m before-build-all
 # Save current Node version to reset after building all the versions
 FNM_VERSION="$(fnm current)"
 
+# shellcheck disable=SC2317
 function cleanup {
   echo
   echo "==================== Cleaning up ===================="
+  if [ "$1" != "0" ]; then
+    echo "Note: Error $1 occurred on line $2"
+    echo
+  fi
+
   git reset --hard
   git checkout dev
 
@@ -51,10 +57,12 @@ function cleanup {
 
   rm -r temp
 
-  # TODO: Maybe we can disambiguate between success and failure states somehow
+  if [ "$1" != "0" ]; then
+    exit 1
+  fi
   exit 0
 }
-trap cleanup EXIT
+trap 'cleanup $? $LINENO' EXIT
 
 rm -rf releases
 mkdir releases
@@ -102,3 +110,5 @@ done
 
 # Create symlink for "master" if exists
 test -e releases/master && ln -s master releases/app
+
+exit 0
