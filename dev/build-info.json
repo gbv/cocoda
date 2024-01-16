@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "b3543efb597644ba41eeb31cdcda21708344f4c3",
-  "gitCommitShort": "b3543efb",
-  "gitCommitMessage": "b3543efb build-all.sh: Handle issues with current fnm version",
-  "buildDate": "2024-01-16T10:31:16Z",
-  "date": "2024-01-16T10:30:15.000Z",
+  "gitCommit": "c5f1e495a7e5dc1492fb3cb0b26ab42dad007ce6",
+  "gitCommitShort": "c5f1e495",
+  "gitCommitMessage": "c5f1e495 Remove GIT_BRANCH from build-all.sh",
+  "buildDate": "2024-01-16T10:38:22Z",
+  "date": "2024-01-16T10:37:24.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
