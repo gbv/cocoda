@@ -97,7 +97,8 @@ do
   packageJson="$(jq '."jskos-api"=""' package.json)"
   echo -E "${packageJson}" > package.json
   # Create build
-  npm run build
+  # Note: The timeout is a temporary workaround for some environments where the build succeeds, but does not exit
+  timeout 3m npm run build
   # Create build-info.json from scratch (due to new properties)
   VERSION=$TAG temp/build-info.js > dist/build-info.json
   # Move build to separate folder
