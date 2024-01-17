@@ -23,6 +23,9 @@ cp build/build-info.js temp/build-info.js
 # Move node_modules to temporary directory so that we can restore it afterwards
 mv node_modules temp/
 
+# Move cocoda.json to temporary directory to be restored afterwards
+mv config/cocoda.json temp/
+
 # Stash changes before running script
 git stash push -u -m before-build-all
 
@@ -54,6 +57,10 @@ function cleanup {
   # Restore previous node_modules
   rm -r ./node_modules
   mv temp/node_modules ./
+
+  # Restore previous config
+  rm config/cocoda.json
+  mv temp/cocoda.json config/
 
   rm -r temp
 
@@ -96,6 +103,8 @@ do
   # TODO: This doesn't seem to work for version 1.4.0 +/- (probably because the value is expected); we can't use "^1.0 || ^2.0" there either because it wasn't supported at that time...
   packageJson="$(jq '."jskos-api"=""' package.json)"
   echo -E "${packageJson}" > package.json
+  # Use empty config file
+  echo "{}" >> config/cocoda.json
   # Create build
   # Note: The timeout is a temporary workaround for some environments where the build succeeds, but does not exit
   timeout 3m npm run build
