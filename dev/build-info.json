@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "dd107a4905c860d0050d69fab0f364062f491709",
-  "gitCommitShort": "dd107a49",
-  "gitCommitMessage": "dd107a49 build-all.sh: Add error handling in cleanup",
-  "buildDate": "2024-01-16T12:24:49Z",
-  "date": "2024-01-16T12:23:46.000Z",
+  "gitCommit": "722b5141d2d697a8a92812ac5dc605ca44f65e97",
+  "gitCommitShort": "722b5141",
+  "gitCommitMessage": "722b5141 build-all.sh: Use empty config",
+  "buildDate": "2024-01-17T14:19:32Z",
+  "date": "2024-01-17T14:17:21.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
