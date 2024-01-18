@@ -31,6 +31,7 @@ git stash push -u -m before-build-all
 
 # Save current Node version to reset after building all the versions
 FNM_VERSION="$(fnm current)"
+FNM_DEFAULT=$(fnm list | grep default | tr "*" " " | tr "default" " " | xargs)
 
 # shellcheck disable=SC2317
 function cleanup {
@@ -52,6 +53,9 @@ function cleanup {
   # Return to previous Node.js version
   if [ "$FNM_VERSION" != "" ] && [ "$FNM_VERSION" != "none" ]; then
     fnm use "$FNM_VERSION"
+  fi
+  if [ "$FNM_DEFAULT" != "" ] && [ "$FNM_DEFAULT" != "none" ]; then
+    fnm default "$FNM_DEFAULT"
   fi
 
   # Restore previous node_modules
@@ -90,10 +94,13 @@ do
   # Switch Node.js version on certain tags
   if beginswith "0." "$TAG" || beginswith "1.0." "$TAG" || beginswith "1.1." "$TAG" || beginswith "1.2." "$TAG" || beginswith "1.3." "$TAG"; then
     fnm use --install-if-missing 10
+    fnm default 10
   elif beginswith "1.4." "$TAG" || beginswith "1.5." "$TAG" || beginswith "1.6." "$TAG" || beginswith "1.7." "$TAG"; then
     fnm use --install-if-missing 14
+    fnm default 14
   else
     fnm use --install-if-missing 20
+    fnm default 20
   fi
   # Install dependencies
   npm ci
