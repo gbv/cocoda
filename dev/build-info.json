@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "722b5141d2d697a8a92812ac5dc605ca44f65e97",
-  "gitCommitShort": "722b5141",
-  "gitCommitMessage": "722b5141 build-all.sh: Use empty config",
-  "buildDate": "2024-01-17T14:19:32Z",
-  "date": "2024-01-17T14:17:21.000Z",
+  "gitCommit": "27bb0403a91d73ebfaf46f42ee0d23162c147050",
+  "gitCommitShort": "27bb0403",
+  "gitCommitMessage": "27bb0403 build-all.sh: Fix issue with older builds",
+  "buildDate": "2024-01-18T14:12:08Z",
+  "date": "2024-01-18T14:09:45.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
