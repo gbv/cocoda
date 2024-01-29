@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "27bb0403a91d73ebfaf46f42ee0d23162c147050",
-  "gitCommitShort": "27bb0403",
-  "gitCommitMessage": "27bb0403 build-all.sh: Fix issue with older builds",
-  "buildDate": "2024-01-18T14:12:08Z",
-  "date": "2024-01-18T14:09:45.000Z",
+  "gitCommit": "d2ba894e8529d642310fcf892d041d4192eb543e",
+  "gitCommitShort": "d2ba894e",
+  "gitCommitMessage": "d2ba894e Update dependencies",
+  "buildDate": "2024-01-29T13:00:59Z",
+  "date": "2024-01-29T13:00:08.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
