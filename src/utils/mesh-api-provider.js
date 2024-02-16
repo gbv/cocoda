@@ -2,7 +2,7 @@ import { BaseProvider, errors } from "cocoda-sdk"
 // TODO: Maybe utils should be exported from cocoda-sdk properly.
 import { listOfCapabilities } from "cocoda-sdk/dist/esm/utils"
 import axios from "axios"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 
 const mesh = {
   uri: "http://id.nlm.nih.gov/mesh",

@@ -5,7 +5,7 @@
  */
 
 import _ from "lodash"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { getItem } from "@/items"
 import i18n from "@/utils/i18n.js"
 

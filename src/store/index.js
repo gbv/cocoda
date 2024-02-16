@@ -6,7 +6,7 @@ import alerts from "./modules/alerts.js"
 import auth from "./modules/auth.js"
 import settings from "./modules/settings.js"
 import { plugins } from "./plugins.js"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import _ from "lodash"
 // Root store
 import actions from "./actions.js"

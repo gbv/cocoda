@@ -3,7 +3,7 @@ import * as CocodaSDK from "cocoda-sdk"
 import MeshApiProvider from "@/utils/mesh-api-provider.js"
 import BootstrapVue from "bootstrap-vue"
 import VueScrollTo from "vue-scrollto"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import log from "@/utils/log.js"
 import store from "@/store/index.js"
 import { Tabs, Tab } from "cocoda-vue-tabs"
@@ -29,16 +29,6 @@ Vue.use(VueScrollTo)
 
 // Add jskos-tools, use with this.$jskos in components
 Vue.prototype.$jskos = jskos
-// Add a `compareFast` method to jskos (only compares URI)
-jskos.compareFast = (object1, object2) => {
-  if (!object1 && !object2) {
-    return true
-  }
-  if (!object1 || !object2) {
-    return false
-  }
-  return object1.uri === object2.uri
-}
 
 // Add logger, use with this.$log.log/warn/error in components
 Vue.prototype.$log = log

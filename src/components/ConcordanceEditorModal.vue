@@ -125,7 +125,7 @@ import computed from "@/mixins/computed.js"
 import cdk from "@/mixins/cdk.js"
 
 import _ from "lodash"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { compareItems, getItem } from "@/items"
 
 /**

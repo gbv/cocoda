@@ -1,4 +1,4 @@
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import _ from "lodash"
 import Vue from "vue"
 

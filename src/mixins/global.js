@@ -4,7 +4,7 @@
 
 import _ from "lodash"
 import FileSaver from "file-saver"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { getItem, loadAncestors, loadConcepts, loadNarrower, loadTop, loadTypes, modifyItem, saveItem } from "@/items"
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping

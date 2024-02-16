@@ -1,4 +1,4 @@
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import _ from "lodash"
 import axios from "axios"
 const axiosConfig = {
@@ -234,7 +234,7 @@ export default {
       return
     }
     if (!jskos.isContainedIn(scheme, getters.favoriteSchemes.map(uri => {
-      uri 
+      uri
     }))) {
       commit({
         type: "settings/set",

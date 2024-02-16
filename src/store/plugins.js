@@ -1,5 +1,5 @@
 import router from "@/router.js"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { compareItems } from "@/items"
 
 /**

@@ -1,5 +1,5 @@
 import _ from "lodash"
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { userUris } from "@/utils"
 import { concordances, compareItems } from "@/items"
 import store from "@/store"

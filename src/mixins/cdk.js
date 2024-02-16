@@ -11,7 +11,7 @@
  * - ...
  */
 
-import jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { cdk } from "cocoda-sdk"
 import _ from "lodash"
 import computed from "./computed.js"
