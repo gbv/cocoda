@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "d2ba894e8529d642310fcf892d041d4192eb543e",
-  "gitCommitShort": "d2ba894e",
-  "gitCommitMessage": "d2ba894e Update dependencies",
-  "buildDate": "2024-01-29T13:00:59Z",
-  "date": "2024-01-29T13:00:08.000Z",
+  "gitCommit": "8ba9c9a066bea3b16a5b10f2b092905a6f6880a6",
+  "gitCommitShort": "8ba9c9a0",
+  "gitCommitMessage": "8ba9c9a0 Update dependencies",
+  "buildDate": "2024-02-16T11:22:55Z",
+  "date": "2024-02-16T11:21:58.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
