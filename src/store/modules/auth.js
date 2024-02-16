@@ -163,6 +163,9 @@ const actions = {
         value: true,
       })
 
+      // Resolve promise after half a second if nothing else happens
+      setTimeout(resolve, 500)
+
     })
 
   },
