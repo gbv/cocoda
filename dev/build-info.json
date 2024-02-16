@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "7be0920e1599b6da3a226fdb2593c5dca0817055",
-  "gitCommitShort": "7be0920e",
-  "gitCommitMessage": "7be0920e Make sure auth initialization doesn't block first load for too long",
-  "buildDate": "2024-02-16T11:32:41Z",
-  "date": "2024-02-16T11:31:32.000Z",
+  "gitCommit": "cb166ac7f366819f1c31f5f18453d16498ba56cb",
+  "gitCommitShort": "cb166ac7",
+  "gitCommitMessage": "cb166ac7 Update required Node.js version in README and package.json (#723)",
+  "buildDate": "2024-02-16T11:44:50Z",
+  "date": "2024-02-16T11:43:59.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
