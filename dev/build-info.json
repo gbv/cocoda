@@ -1,11 +1,11 @@
 {
   "version": "1.10.1",
   "gitBranch": "dev",
-  "gitCommit": "8ba9c9a066bea3b16a5b10f2b092905a6f6880a6",
-  "gitCommitShort": "8ba9c9a0",
-  "gitCommitMessage": "8ba9c9a0 Update dependencies",
-  "buildDate": "2024-02-16T11:22:55Z",
-  "date": "2024-02-16T11:21:58.000Z",
+  "gitCommit": "7be0920e1599b6da3a226fdb2593c5dca0817055",
+  "gitCommitShort": "7be0920e",
+  "gitCommitMessage": "7be0920e Make sure auth initialization doesn't block first load for too long",
+  "buildDate": "2024-02-16T11:32:41Z",
+  "date": "2024-02-16T11:31:32.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
