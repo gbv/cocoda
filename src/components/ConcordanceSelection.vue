@@ -31,13 +31,15 @@ export default {
   },
   computed: {
     availableTargetConcordances() {
-      return this.concordances.filter(concordance => this.canAddMappingToConcordance({
-        registry: this.registry,
-        mapping: this.mapping,
-        concordance,
-        user: this.user,
-        isExistingMapping: !!this.mapping._registry,
-      })).sort(concordanceSort)
+      return this.concordances.filter(concordance =>
+        this.$jskos.compareFast(this.registry, concordance._registry) &&
+        this.canAddMappingToConcordance({
+          registry: this.registry,
+          mapping: this.mapping,
+          concordance,
+          user: this.user,
+          isExistingMapping: !!this.mapping._registry,
+        })).sort(concordanceSort)
     },
     concordanceOptions() {
       let options = [
