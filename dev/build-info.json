@@ -1,11 +1,11 @@
 {
   "version": "1.11.0",
   "gitBranch": "dev",
-  "gitCommit": "8001cf412ba3270570da636597bb4b93dbc7777c",
-  "gitCommitShort": "8001cf41",
-  "gitCommitMessage": "8001cf41 Release version 1.11.0",
-  "buildDate": "2024-02-16T11:48:08Z",
-  "date": "2024-02-16T11:46:33.000Z",
+  "gitCommit": "d26eff3a566f039b840f9ad816d07de7dc23821e",
+  "gitCommitShort": "d26eff3a",
+  "gitCommitMessage": "d26eff3a ConcordanceSelection: Only show concordances for current registry",
+  "buildDate": "2024-02-22T11:44:48Z",
+  "date": "2024-02-22T11:43:43.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
