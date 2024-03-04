@@ -457,7 +457,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
 export const concordances = ref([])
 export async function loadConcordances() {
   try {
-    const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances())))
+    const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances({ params: { limit: 10000 } }))))
     const previousLength = concordances.value?.length
     _.forEach(result, (concordance, index) => {
       // Set values of concordance array
