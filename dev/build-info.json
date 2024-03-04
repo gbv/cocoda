@@ -1,11 +1,11 @@
 {
   "version": "1.11.0",
   "gitBranch": "dev",
-  "gitCommit": "d26eff3a566f039b840f9ad816d07de7dc23821e",
-  "gitCommitShort": "d26eff3a",
-  "gitCommitMessage": "d26eff3a ConcordanceSelection: Only show concordances for current registry",
-  "buildDate": "2024-02-22T11:44:48Z",
-  "date": "2024-02-22T11:43:43.000Z",
+  "gitCommit": "b8467d9dbc9687b5a2749f52c0d2b74fa3476fc2",
+  "gitCommitShort": "b8467d9d",
+  "gitCommitMessage": "b8467d9d Fix issue where only a maximum of 100 concordances were loaded",
+  "buildDate": "2024-03-04T09:42:54Z",
+  "date": "2024-03-04T09:41:36.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
