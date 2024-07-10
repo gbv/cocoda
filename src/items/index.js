@@ -6,7 +6,7 @@
 
 import { reactive, ref, set, del } from "vue"
 import _ from "lodash"
-import * as jskos from "jskos-tools"
+import jskos from "@/utils/jskos.js"
 import { cdk } from "cocoda-sdk"
 import log from "@/utils/log.js"
 import store from "@/store"
