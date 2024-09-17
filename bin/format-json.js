@@ -4,7 +4,7 @@
  * Receives a single JSON file as an argument. Tries to fix that file and returns an error if the file is invalid.
  */
 
-const fs = require("fs")
+import fs from "fs"
 const input = process.argv[2]
 
 let raw = fs.readFileSync(input, { encoding: "utf-8" })

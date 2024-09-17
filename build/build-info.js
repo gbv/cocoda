@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { execSync: _execSync } = require("child_process")
+import { execSync as _execSync } from "child_process"
 const execSync = (cmd) => {
   let stdout = _execSync(cmd).toString()
   if (stdout.endsWith("\n")) {
@@ -9,7 +9,8 @@ const execSync = (cmd) => {
   return stdout
 }
 
-const pkg = require("../package.json")
+import fs from "fs"
+const pkg = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
 // Use existing VERSION variable first, then version from package.json
 const version = process.env.VERSION || pkg.version
@@ -31,7 +32,7 @@ const date = new Date(execSync("git show -s --format=%ct") * 1000)
 // Milestone URL (if github-milestones.json exists)
 let ms
 try {
-  ms = require("../temp/github-milestones.json")
+  ms = JSON.parse(fs.readFileSync("./temp/github-milestones.json", "utf8"))
 } catch (error) {
   ms = []
 }
