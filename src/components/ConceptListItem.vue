@@ -344,7 +344,7 @@ export default {
         parent = parent.parentElement
       }
       // Scroll element
-      var options = {
+      const options = {
         container: parent,
         easing: "ease-in",
         offset: -20,

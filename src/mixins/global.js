@@ -250,7 +250,7 @@ export default {
         window.getSelection().removeAllRanges()
         // from https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
         const selectText = (el) => {
-          var sel, range
+          let sel, range
           if (window.getSelection && document.createRange) {
             sel = window.getSelection()
             if(sel.toString() == "") {
@@ -306,7 +306,7 @@ export default {
       return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
     },
     downloadFile(filename, contents) {
-      var blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
+      const blob = new Blob([contents], {type: "text/plain;charset=utf-8"})
       FileSaver.saveAs(blob, filename)
     },
     /**
@@ -360,9 +360,9 @@ export default {
     },
     // adapted from: https://stackoverflow.com/a/22429679/11050851
     hash(str) {
-      var FNV1_32A_INIT = 0x811c9dc5
-      var hval = FNV1_32A_INIT
-      for ( var i = 0; i < str.length; ++i ) {
+      const FNV1_32A_INIT = 0x811c9dc5
+      let hval = FNV1_32A_INIT
+      for ( let i = 0; i < str.length; ++i ) {
         hval ^= str.charCodeAt(i)
         hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24)
       }

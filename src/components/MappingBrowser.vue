@@ -1222,7 +1222,6 @@ export default {
           document.getElementById("mappingBrowser-search-shareButton"),
         ],
         handler: () => {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.searchShareShow = false
         },
       })

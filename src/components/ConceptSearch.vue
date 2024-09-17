@@ -264,9 +264,9 @@ export default {
           ],
           handler: () => {
             if (!this.filterPopoverShow) {
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+               
               this.isOpen = false
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+               
               this.searchSelected = -1
             }
           },
@@ -278,7 +278,7 @@ export default {
             this.$refs.filterPopover,
           ],
           handler: () => {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+             
             this.filterPopoverShow = false
           },
         },
@@ -387,8 +387,8 @@ export default {
      */
     scrollSelectedIntoView() {
       let target = document.getElementById(this.uniqueID + "-searchResult-" + this.searchSelected)
-      var rect = target.getBoundingClientRect()
-      var parentRect = target.parentElement.parentElement.getBoundingClientRect()
+      const rect = target.getBoundingClientRect()
+      const parentRect = target.parentElement.parentElement.getBoundingClientRect()
       if (rect.bottom > parentRect.bottom) {
         target.scrollIntoView(false)
       }
