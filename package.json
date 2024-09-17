@@ -6,6 +6,7 @@
   "author": "Stefan Peters <stefan.peters@gbv.de>",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "scripts": {
     "_prepare": "./bin/prepare.sh",
     "dev": "npm run serve",
@@ -13,8 +14,8 @@
     "serve": "npm run _prepare; vite",
     "build": "./build/build.sh",
     "build-all": "./build/build-all.sh",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.vue .",
-    "fix": "npm run lint -- --fix",
+    "lint": "eslint",
+    "fix": "eslint --fix",
     "lint-staged": "lint-staged",
     "build-info": "./build/build-info.js > ./build/build-info.json",
     "manual": "make -BC docs",
@@ -26,7 +27,7 @@
   },
   "lint-staged": {
     "**/*.{js,vue}": [
-      "eslint --ignore-path .gitignore --ext .js,.vue"
+      "eslint"
     ],
     "**/*.json": [
       "./bin/format-json.js"
@@ -64,9 +65,8 @@
   "devDependencies": {
     "@vitejs/plugin-legacy": "^5.4.1",
     "@vitejs/plugin-vue2": "^2.3.1",
-    "eslint": "^8.57.0",
-    "eslint-config-gbv": "^1.1.0",
-    "eslint-plugin-vue": "^9.27.0",
+    "eslint": "~9.10",
+    "eslint-config-gbv": "~2.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "lint-staged": "^15.2.9",
