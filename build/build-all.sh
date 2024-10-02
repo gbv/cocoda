@@ -18,7 +18,7 @@ fi
 mkdir temp
 wget 'https://api.github.com/repos/gbv/cocoda/milestones?state=closed&per_page=100' -O temp/github-milestones.json
 # Copy build-info.js to a temporary directory so it will be accessible throughout all the builds
-cp build/build-info.js temp/build-info.js
+cp build/build-info.js temp/build-info.mjs
 
 # Move node_modules to temporary directory so that we can restore it afterwards
 mv node_modules temp/
@@ -116,7 +116,7 @@ do
   # Note: The timeout is a temporary workaround for some environments where the build succeeds, but does not exit
   timeout 3m npm run build
   # Create build-info.json from scratch (due to new properties)
-  VERSION=$TAG temp/build-info.js > dist/build-info.json
+  VERSION=$TAG temp/build-info.mjs > dist/build-info.json
   # Move build to separate folder
   mv dist releases/$TAG
   # Reset repo for next checkout
