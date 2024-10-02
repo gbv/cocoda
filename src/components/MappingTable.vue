@@ -65,13 +65,12 @@
 
 <script>
 import ItemName from "./ItemName.vue"
-import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation.vue"
 import _ from "lodash"
 
 export default {
   name: "MappingTable",
-  components: { ItemName, FlexibleTable, RegistryNotation },
+  components: { ItemName, RegistryNotation },
   props: {
     /**
      * The list of mappings to be displayed.

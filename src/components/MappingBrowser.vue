@@ -484,7 +484,6 @@
 
 <script>
 import MappingBrowserTable from "./MappingBrowserTable.vue"
-import FlexibleTable from "vue-flexible-table"
 import RegistryNotation from "./RegistryNotation.vue"
 import ItemName from "./ItemName.vue"
 import ComponentSettings from "./ComponentSettings.vue"
@@ -509,7 +508,7 @@ import { concordanceSort, displayNameForConcordance } from "@/utils"
 
 export default {
   name: "MappingBrowser",
-  components: { FlexibleTable, MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, ConcordanceDetail, DateString },
+  components: { MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, ConcordanceDetail, DateString },
   mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**

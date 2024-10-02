@@ -13,6 +13,10 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import globalMixins from "@/mixins/global.js"
 
+import FlexibleTable from "vue-flexible-table"
+Vue.use(FlexibleTable)
+import "vue-flexible-table/style"
+
 // Add all providers to cocoda-sdk
 Object.keys(CocodaSDK).filter(key => key.endsWith("Provider")).forEach(key => {
   CocodaSDK.cdk.addProvider(CocodaSDK[key])

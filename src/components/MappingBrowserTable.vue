@@ -441,7 +441,6 @@ import AutoLink from "./AutoLink.vue"
 import LoadingIndicator from "./LoadingIndicator.vue"
 import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 import RegistryInfo from "./RegistryInfo.vue"
-import FlexibleTable from "vue-flexible-table"
 import MappingDetail from "./MappingDetail.vue"
 import AnnotationPopover from "./AnnotationPopover.vue"
 import DataModalButton from "./DataModalButton.vue"
@@ -466,7 +465,7 @@ import { annotationsScore, annotationButtonColor } from "@/utils/annotation-help
  */
 export default {
   name: "MappingBrowser",
-  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, FlexibleTable, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton, DateString, ContentMap, ConceptDetailAncestors },
+  components: { ItemName, AutoLink, LoadingIndicator, LoadingIndicatorFull, RegistryInfo, MappingDetail, AnnotationPopover, DataModalButton, DateString, ContentMap, ConceptDetailAncestors },
   mixins: [auth, objects, computed, hoverHandler, clickHandler],
   props: {
     sections: {
