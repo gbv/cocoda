@@ -1,11 +1,11 @@
 {
   "version": "1.11.2",
   "gitBranch": "dev",
-  "gitCommit": "85a32f4ce8a891081f6ca3e73a06eec742f9ea1d",
-  "gitCommitShort": "85a32f4c",
-  "gitCommitMessage": "85a32f4c Release version 1.11.2",
-  "buildDate": "2024-10-02T08:54:25Z",
-  "date": "2024-10-02T08:53:33.000Z",
+  "gitCommit": "2c6b2850358c776f754aa0532307019310b77e73",
+  "gitCommitShort": "2c6b2850",
+  "gitCommitMessage": "2c6b2850 Adjust build-all.sh",
+  "buildDate": "2024-10-02T09:41:26Z",
+  "date": "2024-10-02T09:40:29.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
