@@ -11,7 +11,7 @@ jobs:
   github-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/build
@@ -22,22 +22,13 @@ jobs:
       - name: Set artifact name
         run: |
           echo "ARTIFACT_NAME=$(ls cocoda-*.zip)" >> $GITHUB_ENV
+      - run: |
+          echo "ARTIFACT_NAME=$(ls cocoda-*.zip)" >> $GITHUB_ENV
       - name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Cocoda ${{ github.ref }}
+          name: Cocoda ${{ github.ref_name }}
           body: TODO
           draft: true
           prerelease: false
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.ARTIFACT_NAME }}
-          asset_name: ${{ env.ARTIFACT_NAME }}
-          asset_content_type: application/zip
+          files: ${{ env.ARTIFACT_NAME }}

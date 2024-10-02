@@ -4,14 +4,13 @@ description: Installs build dependencies and builds the project
 inputs:
   version:
     description: Node.js version
-    type: string
     default: 20.x
 
 runs:
   using: "composite"
   steps:
     - name: Use Node.js ${{ inputs.version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.version }}
     - name: Install Pandoc

@@ -8,7 +8,7 @@ jobs:
   gh-pages:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/build
@@ -19,7 +19,7 @@ jobs:
           cp docs/index.md dist-docs/
           cp -R cocoda dist-docs/dev
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist-docs
