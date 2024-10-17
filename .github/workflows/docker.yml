@@ -7,6 +7,12 @@ on:
       - test
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
+      - '.*'
+      - 'eslint.config.js'
+      - LICENSE
 
 # Adapted from:
 # - https://github.com/docker/metadata-action#semver
