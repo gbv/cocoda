@@ -1,11 +1,11 @@
 {
   "version": "1.11.2",
   "gitBranch": "dev",
-  "gitCommit": "2c6b2850358c776f754aa0532307019310b77e73",
-  "gitCommitShort": "2c6b2850",
-  "gitCommitMessage": "2c6b2850 Adjust build-all.sh",
-  "buildDate": "2024-10-02T09:41:26Z",
-  "date": "2024-10-02T09:40:29.000Z",
+  "gitCommit": "a891128b6a43df6bc00cdbfff1e06130964c58e0",
+  "gitCommitShort": "a891128b",
+  "gitCommitMessage": "a891128b Add paths-ignore to Docker GitHub workflow",
+  "buildDate": "2024-10-17T11:50:29Z",
+  "date": "2024-10-17T11:49:33.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
