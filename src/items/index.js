@@ -120,6 +120,9 @@ export function saveItem(item, options = {}) {
       if (!item.type.includes(typeUri)) {
         item.type = [typeUri].concat(item.type)
       }
+      if (item.topConcepts?.length && !item.concepts?.length) {
+        item.concepts = [null]
+      }
       // ? Anything else?
     }
     if (type === "concept") {
@@ -289,6 +292,10 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
       return saveItem(concept, { type: "concept", scheme })
     })
     modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts, !!_.get(scheme, "DISPLAY.numericalNotation")).map(mapMinimalProps))
+    // Also add [null] to `concepts`
+    if (!scheme.concepts?.length) {
+      modifyItem(scheme, "concepts", [null])
+    }
   } catch (error) {
     // Ignore error, show warning only.
     log.warn(`Error loading top concepts for scheme ${scheme.uri}; assuming empty list.`)
