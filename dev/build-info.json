@@ -1,11 +1,11 @@
 {
   "version": "1.11.2",
   "gitBranch": "dev",
-  "gitCommit": "a891128b6a43df6bc00cdbfff1e06130964c58e0",
-  "gitCommitShort": "a891128b",
-  "gitCommitMessage": "a891128b Add paths-ignore to Docker GitHub workflow",
-  "buildDate": "2024-10-17T11:50:29Z",
-  "date": "2024-10-17T11:49:33.000Z",
+  "gitCommit": "f1d6b700d106b0e5482ac91bf2185d9a53167768",
+  "gitCommitShort": "f1d6b700",
+  "gitCommitMessage": "f1d6b700 Fix small bug that mistakenly showed data error for certain concepts",
+  "buildDate": "2024-10-28T10:35:10Z",
+  "date": "2024-10-28T10:32:56.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
