@@ -1,11 +1,11 @@
 {
-  "version": "1.11.2",
+  "version": "1.11.3",
   "gitBranch": "dev",
-  "gitCommit": "f1d6b700d106b0e5482ac91bf2185d9a53167768",
-  "gitCommitShort": "f1d6b700",
-  "gitCommitMessage": "f1d6b700 Fix small bug that mistakenly showed data error for certain concepts",
-  "buildDate": "2024-10-28T10:35:10Z",
-  "date": "2024-10-28T10:32:56.000Z",
+  "gitCommit": "d14fd171eade6b9a3655f4e0bd15439e03f82ddd",
+  "gitCommitShort": "d14fd171",
+  "gitCommitMessage": "d14fd171 Release version 1.11.3",
+  "buildDate": "2024-10-30T12:29:10Z",
+  "date": "2024-10-30T12:28:22.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
