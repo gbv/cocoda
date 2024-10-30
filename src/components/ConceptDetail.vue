@@ -49,6 +49,7 @@
 
     <tabs
       ref="tabs"
+      v-model="tab"
       style="margin-top: 3px; position: relative;"
       borders="bottom"
       size="sm">
@@ -187,6 +188,35 @@
           </li>
         </ul>
       </tab>
+      <!-- Titles index in K10plus -->
+      <tab
+        v-if="scheme?.CQLKEY"
+        ref="k10plusTab"
+        :key="`conceptDetail-${isLeft}-k10plus`"
+        :title="$t('conceptDetail.k10plus')">
+        <ul>
+          <li
+            v-for="(title, index) in k10plusTitles.filter(Boolean)"
+            :key="index">
+            <a
+              v-if="title"
+              :href="title.url"
+              target="k10plus"
+              :title="$t('conceptDetail.k10plusTooltip')">
+              <span v-html="title.citation" />
+            </a>
+          </li>
+          <li v-if="k10plusTitles.includes(null) && k10plusTitles.length === k10plusTitleCount - k10plusInitialTitleCount + 1 ">
+            <loading-indicator size="sm" />
+          </li>
+        </ul>
+        <a
+          v-if="k10plusTitles.length > 1 && k10plusTitles.includes(null)"
+          href=""
+          @click.prevent="k10plusTitleCount += k10plusInitialTitleCount">
+          {{ $t("conceptDetail.k10plusLoadMore") }}
+        </a>
+      </tab>
     </tabs>
 
     <!-- Narrower concepts -->
@@ -203,6 +233,7 @@ import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import DateString from "./DateString.vue"
 import ContentMap from "./ContentMap.vue"
+import LoadingIndicator from "./LoadingIndicator.vue"
 import _ from "lodash"
 import axios from "axios"
 
@@ -221,7 +252,7 @@ import { mainLanguagesContentMapForConcept, additionalLanguagesContentMapForConc
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, ConceptDetailAncestors, ItemDetailNarrower, DateString, ContentMap,
+    AutoLink, ItemName, ConceptDetailAncestors, ItemDetailNarrower, DateString, ContentMap, LoadingIndicator,
   },
   mixins: [objects, computed, hotkeys, mappedStatus],
   props: {
@@ -245,18 +276,24 @@ export default {
     settings: {
       type: Object,
       default: () => {
-        return {} 
+        return {}
       },
     },
   },
   data () {
     return {
       searchLinks: [],
+      tab: 0,
+      k10plusInitialTitleCount: 5,
+      k10plusTitleCount: 5,
     }
   },
   computed: {
     _item() {
       return getItem(this.item)
+    },
+    scheme() {
+      return getItem(_.get(this._item, "inScheme[0]") || this.selected.scheme[this.isLeft])
     },
     gnd() {
       return getItem({ uri: "http://bartoc.org/en/node/430" })
@@ -322,6 +359,12 @@ export default {
       }
       return gndTerms
     },
+    k10plusTitles() {
+      if (!this._item.K10PLUS) {
+        return [null]
+      }
+      return this._item.K10PLUS || []
+    },
     // Returns the available concept
     previousConcept() {
       return this.selected.previousConcept[this.isLeft]
@@ -361,6 +404,14 @@ export default {
         this.updateSearchLinks(newValue)
       }
     },
+    tab() {
+      if (this.$refs.k10plusTab?.isActive && !this._item.K10PLUS) {
+        this.loadK10plus()
+      }
+    },
+    k10plusTitleCount() {
+      this.loadK10plus()
+    },
   },
   mounted() {
     // Initial refresh
@@ -382,6 +433,7 @@ export default {
       }
     },
     refresh() {
+      this.k10plusTitleCount = this.k10plusInitialTitleCount
       // Load GND terms
       this.loadGndTerms()
       // Load details if not loaded
@@ -476,6 +528,42 @@ export default {
             tabs.activateTab(coliAnaTab)
           }
         })
+      }
+    },
+    async loadK10plus() {
+      if (!this.scheme?.CQLKEY) {
+        modifyItem(this._item, "K10PLUS", [])
+        return
+      }
+      if (this._item.K10PLUS && !this._item.K10PLUS.includes(null)) {
+        return
+      }
+      if (!this._item.K10PLUS) {
+        modifyItem(this._item, "K10PLUS", [null])
+      }
+      try {
+        const result = await axios.get("https://ws.gbv.de/suggest/csl2/", {
+          params: {
+            citationstyle: "ieee",
+            query: `pica.${this.scheme.CQLKEY.toLowerCase()}=${this.$jskos.notation(this._item)}`,
+            database: "opac-de-627",
+            highlight: "1",
+            // ? Load multiple languages?
+            language: "en",
+            count: this.k10plusTitleCount + 1,
+          },
+        })
+        modifyItem(this._item, "K10PLUS", (result.data?.[1] || []).map((citation, index) => {
+          if (index === this.k10plusTitleCount) {
+            return null
+          }
+          return {
+            citation,
+            url: `https://opac.k10plus.de/DB=2.299/PPNSET?PPN=${result.data[3][index].replace(/^.+:/,"")}`,
+          }
+        }))
+      } catch (error) {
+        console.warn("Error loading K10plus titles:", error)
       }
     },
     isMemberParentOf(member1, member2) {
