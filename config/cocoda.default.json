@@ -97,34 +97,6 @@
     },
     {
       "provider": "LabelSearchSuggestion",
-      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
-      "excludedSchemes": [
-        {
-          "uri": "http://bartoc.org/en/node/1940"
-        },
-        {
-          "uri": "http://bartoc.org/en/node/430"
-        },
-        {
-          "uri": "http://nomisma.org/id/"
-        },
-        {
-          "uri": "http://bartoc.org/en/node/533"
-        },
-        {
-          "uri": "http://bartoc.org/en/node/18785"
-        }
-      ],
-      "notation": [
-        "CR"
-      ],
-      "prefLabel": {
-        "en": "coli-conc Suggestions",
-        "de": "coli-conc Vorschläge"
-      }
-    },
-    {
-      "provider": "LabelSearchSuggestion",
       "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations-experimental",
       "schemes": [
         {
@@ -183,6 +155,46 @@
       ],
       "notation": [
         "CR*"
+      ],
+      "prefLabel": {
+        "en": "coli-conc Suggestions",
+        "de": "coli-conc Vorschläge"
+      }
+    },
+    {
+      "provider": "LabelSearchSuggestion",
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
+      "excludedSchemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        },
+        {
+          "uri": "http://nomisma.org/id/"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/533"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18785"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/241"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1043"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18797"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/20049"
+        }
+      ],
+      "notation": [
+        "CR"
       ],
       "prefLabel": {
         "en": "coli-conc Suggestions",
