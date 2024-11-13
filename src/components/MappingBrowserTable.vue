@@ -342,11 +342,11 @@
               @click.stop.prevent="$set(popoverShown, `goToPage-${section.id}`, false)">
               <font-awesome-icon icon="arrow-right-to-bracket" />
             </a>
-            <span v-if="section.items.length < section.totalCount">
-              {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
-            </span>
             <span v-if="section.totalCount === 0">
               {{ $t("mappingBrowser.noItems") }}
+            </span>
+            <span v-else>
+              {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
             </span>
             <span
               v-if="!!registryHasErrored[section.registry.uri]"
