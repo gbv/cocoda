@@ -132,6 +132,18 @@
         },
         {
           "uri": "http://bartoc.org/en/node/18785"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/241"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1043"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18797"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/20049"
         }
       ],
       "overrides": [
@@ -148,10 +160,29 @@
             "http://uri.gbv.de/terminology/bk/"
           ],
           "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/241",
+          "identifier": [
+            "http://dewey.info/scheme/edition/e23/"
+          ],
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1043",
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18797",
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/20049",
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
         }
       ],
       "notation": [
-        "CRe"
+        "CR*"
       ],
       "prefLabel": {
         "en": "coli-conc Suggestions",
