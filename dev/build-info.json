@@ -1,11 +1,11 @@
 {
   "version": "1.11.3",
   "gitBranch": "dev",
-  "gitCommit": "f29d4fd5ccb800e20285a63ada6569ad629d1aca",
-  "gitCommitShort": "f29d4fd5",
-  "gitCommitMessage": "f29d4fd5 Remove (experimental) from new coli-conc suggestions",
-  "buildDate": "2024-11-13T08:45:12Z",
-  "date": "2024-11-13T08:43:31.000Z",
+  "gitCommit": "441dabd20d72457ee5d3d1224ff4b72726de1ae6",
+  "gitCommitShort": "441dabd2",
+  "gitCommitMessage": "441dabd2 Config: Add support for more schemes in new coli-conc suggestions",
+  "buildDate": "2024-11-13T11:34:26Z",
+  "date": "2024-11-13T11:33:17.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
