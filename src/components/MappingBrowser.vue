@@ -244,7 +244,7 @@
               @drop="drop($event, { scheme: lockScheme[false] ? null : 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <b-button
               style="flex: none; margin: 3px;"
-              variant="primary"
+              :variant="filterChanged ? 'primary' : 'secondary'"
               size="sm"
               @click="searchClicked">
               <font-awesome-icon icon="search" />{{ $t("mappingBrowser.searchSubmit") }}
@@ -929,6 +929,9 @@ export default {
         autoRefresh = Math.max(autoRefresh, 5000)
       }
       return autoRefresh
+    },
+    filterChanged() {
+      return !_.isEqual(this.searchFilter, this.searchFilterInput)
     },
   },
   watch: {
