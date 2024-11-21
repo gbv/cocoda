@@ -531,6 +531,15 @@ export default {
       loadConcepts(this.favoriteConcepts)
       // Load mapping trash
       await this.$store.dispatch("mapping/loadMappingTrash")
+      // Load concept data for concepts in mapping trash
+      const trash = this.$store.state.mapping.mappingTrash
+      const trashConcepts = trash.reduce((concepts, { mapping }) => {
+        for (const side of ["from", "to"]) {
+          concepts = concepts.concat(this.$jskos.conceptsOfMapping(mapping, side).map(concept => (saveItem({ uri: concept.uri, inScheme: [mapping[`${side}Scheme`]] }))))
+        }
+        return concepts
+      }, [])
+      loadConcepts(trashConcepts)
       // Application is now considered loaded
       this.loaded = true
       this.loadingGlobal = false
