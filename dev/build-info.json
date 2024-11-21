@@ -1,11 +1,11 @@
 {
   "version": "1.11.4",
   "gitBranch": "dev",
-  "gitCommit": "b1d81dc919ec0c2066ffb1c9303b7645eac175b4",
-  "gitCommitShort": "b1d81dc9",
-  "gitCommitMessage": "b1d81dc9 Release version 1.11.4",
-  "buildDate": "2024-11-13T12:07:03Z",
-  "date": "2024-11-13T12:06:08.000Z",
+  "gitCommit": "979e5e7561447a9b3a846776eb919c58584ef5d2",
+  "gitCommitShort": "979e5e75",
+  "gitCommitMessage": "979e5e75 MappingEditor: Fix small issue related to mapping cardinality",
+  "buildDate": "2024-11-21T13:11:22Z",
+  "date": "2024-11-21T12:34:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
