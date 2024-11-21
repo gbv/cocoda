@@ -374,10 +374,11 @@ export default {
         }
       }
       // Take mapping cardinality into account
-      const cardinality = _.get(registry, "config.mappings.cardinality")
-      if (cardinality == "1-to-1" && this.$jskos.conceptsOfMapping(this.mapping, "to").length > 1) {
+      const registryOnlyAllows1to1 = _.get(registry, "config.mappings.cardinality") === "1-to-1"
+      const settingsOnlyAllow1to1 = this.$store.state.settings.settings.components.MappingEditor.only1to1mappings
+      if ((registryOnlyAllows1to1 || settingsOnlyAllow1to1) && this.$jskos.conceptsOfMapping(this.mapping, "to").length > 1) {
         return {
-          message: this.$t("mappingEditor.invalid1to1", [this.$jskos.prefLabel(registry)]),
+          message: this.$t("mappingEditor.invalid1to1", [registryOnlyAllows1to1 ? this.$jskos.prefLabel(registry) : this.$t("mappingEditor.settingsButton")]),
           invalid: true,
         }
       }
