@@ -136,7 +136,7 @@
                 <!-- Delete button for concept -->
                 <span
                   v-b-tooltip.hover="{ title: $t('mappingEditor.removeConceptFromMapping'), delay: defaults.delay.medium }"
-                  class="button fontSize-large"
+                  class="mappingEditor-removeConceptButton button"
                   @click="$store.commit({
                     type: 'mapping/remove',
                     concept,
@@ -889,6 +889,11 @@ export default {
 }
 .mappingEditor-deleteButtons button {
   margin: 10px 20px;
+}
+
+.mappingEditor-removeConceptButton {
+  .fontSize-large;
+  margin-left: 5px;
 }
 
 .mappingEditor-mappingNotSaved, .mappingEditor-mappingSaved {
