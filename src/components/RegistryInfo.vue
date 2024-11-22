@@ -54,7 +54,7 @@
         </span>
       </span>
       <span
-        v-if="registry.has.auth"
+        v-if="registry.has.auth && showAuth"
         style="margin-left: 5px;">
         <span
           v-if="registry.isAuthorizedFor({
@@ -107,6 +107,10 @@ export default {
       default: true,
     },
     showEditable: {
+      type: Boolean,
+      default: true,
+    },
+    showAuth: {
       type: Boolean,
       default: true,
     },

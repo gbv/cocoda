@@ -112,7 +112,7 @@
           <div
             v-for="(registry, index) in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
             :key="`settingsModal-mapping-registries-${index}`"
-            class="settingsModal-mapping-registry"
+            class="settingsModal-mapping-registry selectable"
             :class="{'selected-registry': $jskos.compareFast(registry, currentRegistry)}">
             <b-form-checkbox
               v-model="showRegistry[registry.uri]"
@@ -134,8 +134,14 @@
             <b-form-checkbox
               v-if="registry.has.mappings !== false"
               v-model="showRegistry[registry.uri]" />
+            <b-form-checkbox
+              v-else
+              style="filter: opacity(50%);"
+              :checked="true"
+              :disabled="registry.has.mappings === false" />
             <registry-info
               :registry="registry"
+              :show-auth="false"
               class="settings-sources" />
           </div>
         </tab>
@@ -862,7 +868,7 @@ p {
   justify-content: center;
   align-items: center;
 }
-.settingsModal-mapping-registry:hover {
+.settingsModal-mapping-registry.selectable:hover {
   background-color: @color-background-secondary;
   cursor: pointer;
 }
@@ -871,6 +877,8 @@ p {
   flex: none;
   margin-left: 5px;
   margin-right: -5px;
+  margin-top: 5px;
+  align-self: flex-start;
 }
 // Last Child: Registry Info
 .settingsModal-mapping-registry > div:last-child {
