@@ -1,11 +1,11 @@
 {
   "version": "1.11.4",
   "gitBranch": "dev",
-  "gitCommit": "7acfab7f8c17236f2da39c43b8b0547c6638caef",
-  "gitCommitShort": "7acfab7f",
-  "gitCommitMessage": "7acfab7f MappingBrowser: Add datalist for from/to in Concordances tab",
-  "buildDate": "2024-11-22T08:58:20Z",
-  "date": "2024-11-22T08:56:57.000Z",
+  "gitCommit": "0256c23655f6b95a2e4fb219373bc31fa0ff7a1e",
+  "gitCommitShort": "0256c236",
+  "gitCommitMessage": "0256c236 Settings: Improve Data Sources tab",
+  "buildDate": "2024-11-22T09:18:57Z",
+  "date": "2024-11-22T09:17:49.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
