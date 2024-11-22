@@ -56,12 +56,16 @@
     </p>
     <p>
       <b>Notation</b>
-      <b-input
-        v-model="notation"
-        type="text"
+      <b-input-group
         size="sm"
-        :placeholder="notationDefault"
-        :disabled="editing" />
+        :prepend="currentRegistry._api.concordances + '/'">
+        <b-input
+          v-model="notation"
+          type="text"
+          size="sm"
+          :placeholder="notationDefault"
+          :disabled="editing" />
+      </b-input-group>
       <span class="concordanceEditor-subtitle">{{ $t("concordanceEditor.notationSubtext") }}</span>
     </p>
     <p>
