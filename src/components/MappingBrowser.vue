@@ -1305,7 +1305,10 @@ export default {
         this.searchFilterInput.toScheme = ""
       }
       this.searchFilterExtended = false
-      this.searchResults = {}
+      Object.keys(this.searchResults).forEach(uri => {
+        this.searchLoading[uri] = true
+        this.searchResults[uri] = []
+      })
       this.searchClicked()
     },
     searchWithParams(filter) {
