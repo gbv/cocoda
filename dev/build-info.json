@@ -1,11 +1,11 @@
 {
   "version": "1.11.4",
   "gitBranch": "dev",
-  "gitCommit": "75dadc04e7bb8c2140cc44a667b0803e40fc97bc",
-  "gitCommitShort": "75dadc04",
-  "gitCommitMessage": "75dadc04 Add workaround for misaligned tooltips",
-  "buildDate": "2024-11-22T08:23:35Z",
-  "date": "2024-11-22T08:22:37.000Z",
+  "gitCommit": "7acfab7f8c17236f2da39c43b8b0547c6638caef",
+  "gitCommitShort": "7acfab7f",
+  "gitCommitMessage": "7acfab7f MappingBrowser: Add datalist for from/to in Concordances tab",
+  "buildDate": "2024-11-22T08:58:20Z",
+  "date": "2024-11-22T08:56:57.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
