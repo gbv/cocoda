@@ -48,16 +48,32 @@
                 v-if="field.key == 'from'"
                 v-model="concordanceFilter.from"
                 type="text"
+                list="concordances-from-list"
                 style="width: 55%; display: inline-block;"
                 size="sm"
                 :placeholder="$t('mappingBrowser.from')" />
+              <datalist id="concordances-from-list">
+                <option
+                  v-for="notation in new Set(concordances.map(c => $jskos.notation(c.fromScheme)))"
+                  :key="notation">
+                  {{ notation }}
+                </option>
+              </datalist>
               <b-input
                 v-if="field.key == 'to'"
                 v-model="concordanceFilter.to"
                 type="text"
+                list="concordances-to-list"
                 style="width: 75%; display: inline-block;"
                 size="sm"
                 :placeholder="$t('mappingBrowser.to')" />
+              <datalist id="concordances-to-list">
+                <option
+                  v-for="notation in new Set(concordances.map(c => $jskos.notation(c.toScheme)))"
+                  :key="notation">
+                  {{ notation }}
+                </option>
+              </datalist>
               <b-input
                 v-if="field.key == 'creator'"
                 v-model="concordanceFilter.creator"
