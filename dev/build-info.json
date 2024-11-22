@@ -1,11 +1,11 @@
 {
   "version": "1.11.4",
   "gitBranch": "dev",
-  "gitCommit": "979e5e7561447a9b3a846776eb919c58584ef5d2",
-  "gitCommitShort": "979e5e75",
-  "gitCommitMessage": "979e5e75 MappingEditor: Fix small issue related to mapping cardinality",
-  "buildDate": "2024-11-21T13:11:22Z",
-  "date": "2024-11-21T12:34:09.000Z",
+  "gitCommit": "75dadc04e7bb8c2140cc44a667b0803e40fc97bc",
+  "gitCommitShort": "75dadc04",
+  "gitCommitMessage": "75dadc04 Add workaround for misaligned tooltips",
+  "buildDate": "2024-11-22T08:23:35Z",
+  "date": "2024-11-22T08:22:37.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
