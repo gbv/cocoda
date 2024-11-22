@@ -115,7 +115,7 @@
                 <a
                   ref="removeAllFiltersLink"
                   href=""
-                  @click.prevent="onlyFavorites = false; onlyWithConcepts = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+                  @click.prevent="onlyFavorites = false; onlyWithConcepts = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.baseUrl); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
                   {{ $t("schemeSelection.filtersRemove") }}
                 </a>
               </p>
@@ -143,7 +143,7 @@
               <b-collapse :id="`conceptSchemeSelection-filterPopover-${id}-registryFilterCollapse`">
                 <a
                   href=""
-                  @click.prevent="registryFilter = availableRegistries.map(r => r.uri)">
+                  @click.prevent="registryFilter = availableRegistries.map(r => r.baseUrl)">
                   {{ $t("schemeSelection.filterSelectAll") }}
                 </a>•
                 <a
@@ -253,7 +253,7 @@
               <a
                 ref="showAllSchemesLink"
                 href=""
-                @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.uri); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
+                @click.prevent="onlyFavorites = false; schemeFilter = ''; registryFilter = availableRegistries.map(r => r.baseUrl); languageFilter = availableLanguages.concat([null]); typeFilter = availableTypes.concat([null]);">
                 {{ $t("schemeSelection.showAllSchemes", { count: schemes.length }) }}
               </a>
             </div>
@@ -282,6 +282,18 @@ import computed from "@/mixins/computed.js"
 // KOS types
 import kosTypes from "@/../config/kos-types.json"
 import { getItem, getItems } from "@/items"
+
+function getTitleAndBaseUrlForScheme(scheme) {
+  return {
+    baseUrl: scheme._registry?._config?.baseUrl || scheme._registry?._api?.api,
+    title: scheme._registry?._config?.title,
+  }
+}
+
+const schemeMatchesBaseUrl = (scheme, baseUrl) => {
+  const { baseUrl: schemeBaseUrl, title } = getTitleAndBaseUrlForScheme(scheme)
+  return baseUrl === schemeBaseUrl || !title && baseUrl === "other"
+}
 
 /**
  * Concept scheme selection component.
@@ -350,7 +362,19 @@ export default {
     },
     // Returns an array of all available registries
     availableRegistries() {
-      return this.config.registries.filter(registry => registry.has.concepts !== false)
+      const registriesByBaseUrl = {}
+      this._schemes.forEach(scheme => {
+        const { baseUrl, title } = getTitleAndBaseUrlForScheme(scheme)
+        if (!baseUrl || !title || !registriesByBaseUrl.other) {
+          registriesByBaseUrl.other = this.$t("schemeSelection.filterOther")
+        } else if (baseUrl && !registriesByBaseUrl[baseUrl]) {
+          registriesByBaseUrl[baseUrl] = title
+        }
+      })
+      return Object.keys(registriesByBaseUrl).map(baseUrl => ({
+        baseUrl,
+        title: registriesByBaseUrl[baseUrl],
+      }))
     },
     // Returns an array of all available languages.
     availableLanguages() {
@@ -419,7 +443,10 @@ export default {
         deep: true,
       },
     ],
-    availableRegistries() {
+    availableRegistries(newValue, oldValue) {
+      if (oldValue.length !== newValue.length && this.registryFilter.length === oldValue.length) {
+        this.registryFilter = newValue.slice()
+      }
       this.updateProperties()
     },
     onlyFavorites() {
@@ -441,7 +468,7 @@ export default {
     // Enable shortcuts
     this.enableShortcuts()
     // Set filters to all
-    this.registryFilter = this.availableRegistries.map(r => r.uri)
+    this.registryFilter = this.availableRegistries.map(r => r.baseUrl)
     this.languageFilter = this.availableLanguages.concat([null])
     this.typeFilter = this.availableTypes.concat([null])
     if (!this.allowFavoriteSchemesFilter) {
@@ -531,14 +558,14 @@ export default {
             !this.onlyWithConcepts || this.hasConcepts(scheme)
           ),
       )
-      this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => this.$jskos.compareFast(registry, scheme._registry)))
+      this.shownRegistries = this.availableRegistries.filter(registry => schemes.find(scheme => schemeMatchesBaseUrl(scheme, registry.baseUrl)))
 
       // ===== shownLanguages =====
       schemes = this._schemes.filter(
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compareFast({ uri }, scheme._registry))
+            this.registryFilter.find(baseUrl => schemeMatchesBaseUrl(scheme, baseUrl))
           ) &&
           (
             (this.typeFilter.includes(null) && (scheme.type || []).length <= 1) ||
@@ -558,7 +585,7 @@ export default {
         scheme =>
           (
             this.registryFilter.length == this.availableRegistries.length ||
-            this.registryFilter.find(uri => this.$jskos.compareFast({ uri }, scheme._registry))
+            this.registryFilter.find(baseUrl => schemeMatchesBaseUrl(scheme, baseUrl))
           ) &&
           (
             (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
@@ -574,7 +601,7 @@ export default {
       this.shownTypes = _.uniq(_.flatten(schemes.map(scheme => scheme.type || []))).filter(type => type && type != "http://www.w3.org/2004/02/skos/core#ConceptScheme")
 
       // ===== registryFilterOptions =====
-      this.registryFilterOptions = this.shownRegistries.map(registry => ({ value: registry.uri, text: this.$jskos.prefLabel(registry) }))
+      this.registryFilterOptions = this.shownRegistries.map(registry => ({ value: registry.baseUrl, text: registry.title }))
 
       // ===== languageFilterOptions =====
       options = []
@@ -632,7 +659,7 @@ export default {
           scheme =>
             (
               this.registryFilter.length == this.availableRegistries.length ||
-              this.registryFilter.find(uri => this.$jskos.compareFast({ uri }, scheme._registry))
+              this.registryFilter.find(baseUrl => schemeMatchesBaseUrl(scheme, baseUrl))
             ) &&
             (
               (this.languageFilter.includes(null) && !(scheme.languages || []).length) ||
