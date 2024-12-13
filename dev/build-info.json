@@ -1,11 +1,11 @@
 {
   "version": "1.11.4",
   "gitBranch": "dev",
-  "gitCommit": "c2bde96cf52a04b61756b7ab57d79e66a2a70fe4",
-  "gitCommitShort": "c2bde96c",
-  "gitCommitMessage": "c2bde96c Update dependencies",
-  "buildDate": "2024-12-13T08:23:42Z",
-  "date": "2024-12-13T08:22:14.000Z",
+  "gitCommit": "53ac1f64ac0b9de4877bb651acda0e45cf353fb2",
+  "gitCommitShort": "53ac1f64",
+  "gitCommitMessage": "53ac1f64 Replace yorkie with husky",
+  "buildDate": "2024-12-13T09:03:58Z",
+  "date": "2024-12-13T09:02:40.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
