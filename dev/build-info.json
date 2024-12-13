@@ -1,11 +1,11 @@
 {
   "version": "1.11.4",
   "gitBranch": "dev",
-  "gitCommit": "0256c23655f6b95a2e4fb219373bc31fa0ff7a1e",
-  "gitCommitShort": "0256c236",
-  "gitCommitMessage": "0256c236 Settings: Improve Data Sources tab",
-  "buildDate": "2024-11-22T09:18:57Z",
-  "date": "2024-11-22T09:17:49.000Z",
+  "gitCommit": "c2bde96cf52a04b61756b7ab57d79e66a2a70fe4",
+  "gitCommitShort": "c2bde96c",
+  "gitCommitMessage": "c2bde96c Update dependencies",
+  "buildDate": "2024-12-13T08:23:42Z",
+  "date": "2024-12-13T08:22:14.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
