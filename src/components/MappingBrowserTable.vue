@@ -243,7 +243,7 @@
             v-b-tooltip.hover="{ title: $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
             class="button"
             icon="save"
-            @click="postMapping({ mapping: data.item.mapping, registry: currentRegistry, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false }})" />
+            @click="postMapping({ mapping: Object.assign({}, data.item.mapping, { partOf: null }), registry: currentRegistry, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false }})" />
         </div>
         <div
           v-else-if="showEditingTools"
