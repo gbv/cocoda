@@ -23,7 +23,8 @@
     "release:patch": "./bin/release.sh patch",
     "release:minor": "./bin/release.sh minor",
     "release:major": "./bin/release.sh major",
-    "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json"
+    "kos-types": "wget http://api.dante.gbv.de/voc/top?uri=http://w3id.org/nkos/nkostype -O config/kos-types.json",
+    "prepare": "husky || true"
   },
   "lint-staged": {
     "**/*.{js,vue}": [
@@ -32,11 +33,6 @@
     "**/*.json": [
       "./bin/format-json.js"
     ]
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "post-commit": "npm run build-info",
-    "post-receive": "npm run build-info"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
@@ -67,12 +63,12 @@
     "@vitejs/plugin-vue2": "^2.3.3",
     "eslint": "~9.16",
     "eslint-config-gbv": "~2.6",
+    "husky": "^9.1.7",
     "less": "^4.2.1",
     "less-loader": "^12.2.0",
     "lint-staged": "^15.2.11",
     "terser": "^5.37.0",
-    "vite": "^5.4.11",
-    "yorkie": "^2.0.0"
+    "vite": "^5.4.11"
   },
   "engines": {
     "node": ">=18.12.0"
