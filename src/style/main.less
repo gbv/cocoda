@@ -86,20 +86,20 @@ p {
   margin: 3px 0 !important;
 }
 a:link, a:visited, a:active {
-  color: @color-link;
+  color: var(--color-link);
 }
 a:hover, .alert a:hover {
   text-decoration: none;
-  color: @color-link-hover;
+  color: var(--color-link-hover);
 }
 .page-link {
-  color: @color-link !important;
+  color: var(--color-link) !important;
 }
 .page-item.disabled > .page-link {
   color: @color-text-lightGrey !important;
 }
 .page-link:hover {
-  color: @color-link-hover !important;
+  color: var(--color-link-hover) !important;
 }
 
 ul {
@@ -277,10 +277,10 @@ h6 {
 // bootstrap buttons
 .btn-primary, .btn-primary:active, .btn-primary:focus {
   background-color: var(--color-primary) !important;
-  border-color: @color-primary-dark !important;
+  border-color: var(--color-primary-dark) !important;
 }
 .btn-primary:hover {
-  background-color: @color-primary-light !important;
+  background-color: var(--color-primary-light) !important;
   border-color: var(--color-primary) !important;
 }
 .btn-success {

@@ -488,6 +488,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .conceptSearch {
   position: relative;
@@ -549,7 +550,7 @@ export default {
 
 .conceptSearch-selected {
   background-color: @color--conceptSearch-result-selected-background;
-  color: @color--conceptSearch-result-selected;
+  color: var(--color--conceptSearch-result-selected);
 }
 
 .conceptSearch-loading {
