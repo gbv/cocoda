@@ -181,6 +181,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .annotationList {
   max-height: 300px;
@@ -209,7 +210,7 @@ export default {
   background-color: @color-background;
 }
 .annotationList > div:nth-child(even) {
-  background-color: fadeout(@color-text-veryLightGrey, 70%);
+  background-color: var(--color-text-veryLightGrey-opacity);
 }
 
 </style>

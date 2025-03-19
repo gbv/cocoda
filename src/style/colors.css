@@ -8,7 +8,7 @@
     /* Adjusted base colors */
     --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
     --color-primary-light: hsl(16.7, 80.6%, 53.4%); /* lighten increase 15%*/
-    --color-primary-opacity: hsl(16.7, 80.6%, 53.4%, 0.3);
+    --color-primary-opacity: hsl(16.7, 80.6%, 53.4%, 0.3); /* Opacity at 70%*/
 
     /* Text colors (monochrome) */
     --color-text-dark: var(--color-black);
@@ -16,6 +16,7 @@
     --color-text-lightGrey: rgb(115, 115, 115);
     --color-text-mediumLightGrey: rgb(170, 170, 170);
     --color-text-veryLightGrey: rgb(210, 210, 210);
+    --color-text-veryLightGrey-opacity: rgba(210, 210, 210, 0.3); /* Opacity at 70%*/
 
     /* General colors */
     --color-link: var(--color-primary);

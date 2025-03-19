@@ -779,7 +779,7 @@ export default {
   flex-direction: column;
 }
 .mappingEditorPart-noConcepts > div {
-  border: 1px dashed @color-text-veryLightGrey;
+  border: 1px dashed var(--color-text-veryLightGrey);
   border-radius: 10px;
 }
 .mappingEditorPart-dropTarget > div {
