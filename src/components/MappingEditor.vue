@@ -783,7 +783,7 @@ export default {
   border-radius: 10px;
 }
 .mappingEditorPart-dropTarget > div {
-  border: 1px dashed @color-success-dark;
+  border: 1px dashed var(--color-success-dark);
   border-radius: 10px;
 }
 .mappingEditor-addButton {
@@ -906,7 +906,7 @@ export default {
   z-index: @zIndex-2;
 }
 .mappingEditor-mappingSaved {
-  color: @color-success-dark;
+  color: var(--color-success-dark);
 }
 .mappingEditor-mappingAlert {
   // Prevent other icons from moving by using min-width

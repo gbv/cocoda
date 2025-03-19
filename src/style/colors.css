@@ -2,13 +2,13 @@
     /* Base colors */
 
     --color-primary: hsl(16.71, 80.6%, 38.4%); /* Hex is #b13f13 */ 
-    --color-secondary: hsl(0, 13.9%, 83.1%) /* Hex is #dacece */;
+    --color-secondary: hsl(0, 13.9%, 83.1%); /* Hex is #dacece */
     --color-black: #212121;
     /* --color-white: #f2f1ef */
     
-    --color-success: desaturate(#309000, 30%);
+    --color-success: hsl(100, 70%, 28.24%); /* desaturate of #309000 by 30%, second argument) */
     --color-warning: var(--color-secondary);
-    --color-danger: rgb(206, 18, 18);
+    --color-danger: hsl(0, 84%, 44%);
     
     /* Adjusted base colors */
     --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
@@ -19,6 +19,17 @@
     --color-secondary-dark: hsl(0, 13.9%, 58.1%); /* darken decrease third 25%*/
     --color-secondary-dark-faded-70: hsla(0, 13.9%, 58.1%, 0.3); /* Opacity at 70%*/
     --color-secondary-dark-faded-35: hsla(0, 13.9%, 58.1%, 0.65); /* Opacity at 35%*/
+
+    --color-success-light: hsl(100, 70%, 43.24%); /* lighten increase third 15%*/
+    --color-success-lighter: hsl(100, 70%, 93.24%); /* lighten increase third 50%*/
+    --color-success-dark: hsl(100, 70%, 13.24%); /* darken decrease third 15%*/
+    --color-warning-light: hsl(0, 13.9%, 98.1%); /* lighten increase third 15%*/
+    --color-warning-dark: hsl(0, 13.9%, 68.1%); /* darken decrease third 15%*/
+    --color-warning-darker: hsl(0, 13.9%, 43.1%); /* darken decrease third 25%*/
+    --color-danger-light: hsl(0, 84%, 59%); /* lighten increase third 15%*/
+    --color-danger-lighter-30: hsl(0, 84%, 89%); /* lighten increase third 30%*/
+    --color-danger-lighter-15: hsl(0, 84%, 74%); /* lighten increase third 15%*/
+    --color-danger-dark: hsl(0, 84%, 29%);; /* darken decrease third 15%*/
 
     /* Text colors (monochrome) */
     --color-text-dark: var(--color-black);
@@ -34,7 +45,6 @@
 
     /* Button colors (monochrome) */
     --color-button-hover: var(--color-primary-light);
-
 
     /* Component specific colors */
     --color--conceptSearch-result-selected: var(--color-primary-dark);
