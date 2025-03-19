@@ -456,6 +456,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .annotationPopover {
   display: flex;
@@ -504,7 +505,7 @@ export default {
   flex: 1;
 }
 .annotationPopover-voting-button-current {
-  color: @color-primary;
+  color: var(--color-primary);
 }
 
 .bbutton-small {

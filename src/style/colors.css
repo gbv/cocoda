@@ -1,0 +1,23 @@
+:root {
+    /* Base colors */
+
+    --color-primary: hsl(16.71, 80.6%, 38.4%); /* Hex is #b13f13 */ 
+    
+    /* Adjusted base colors */
+    --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
+    --color-primary-light: hsl(16.7, 80.6%, 53.4%); /* lighten increase 15%*/
+    --color-primary-opacity: hsl(16.7, 80.6%, 53.4%, 0.3);
+
+
+    /* General colors */
+    --color-link: var(--color-primary);
+    --color-link-hover: var(--color-primary-light);
+
+    /* Button colors (monochrome) */
+    --color-button-hover: var(--color-primary-light);
+
+
+    /* Component specific colors */
+    --color--conceptSearch-result-selected: var(--color-primary-dark);
+
+}

@@ -3,6 +3,9 @@
 // Import colors
 @import "./colors.less";
 
+// Import colors.css
+@import "./colors.css";
+
 // Import z-index values
 @import "./z-index.less";
 
@@ -200,7 +203,7 @@ h6 {
   cursor: pointer;
 }
 .starFavorite {
-  color: @color-primary;
+  color: var(--color-primary);
   margin-right: 5px;
 }
 .starFavorite:hover, .starNormal:hover {
@@ -273,12 +276,12 @@ h6 {
 }
 // bootstrap buttons
 .btn-primary, .btn-primary:active, .btn-primary:focus {
-  background-color: @color-primary !important;
+  background-color: var(--color-primary) !important;
   border-color: @color-primary-dark !important;
 }
 .btn-primary:hover {
   background-color: @color-primary-light !important;
-  border-color: @color-primary !important;
+  border-color: var(--color-primary) !important;
 }
 .btn-success {
   background-color: @color-success;

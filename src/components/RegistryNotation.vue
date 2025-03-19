@@ -45,6 +45,7 @@ export default {
 
 <style lang="less">
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .registry-notation {
   user-select: none;
@@ -60,10 +61,10 @@ export default {
   background-color: fadeout(@color-secondary-dark, 35%);
 }
 .registry-notation-current {
-  background-color: fadeout(@color-primary, 70%);
+  background-color: var(--color-primary-opacity);
 }
 .registry-notation.registry-current-enabled {
-  background-color: @color-primary;
+  background-color: var(--color-primary);
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {

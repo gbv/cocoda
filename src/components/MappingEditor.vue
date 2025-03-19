@@ -748,6 +748,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 #mappingEditor {
   position: relative;
@@ -818,7 +819,7 @@ export default {
   margin: 5px 12px 5px 0;
 }
 .mappingConceptLink:hover {
-  color: @color-primary;
+  color: var(--color-primary);
 }
 .mappingNoConcepts {
   position: absolute;
