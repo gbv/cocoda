@@ -973,7 +973,7 @@ export default {
   text-align: right;
   padding-top: 3px;
   padding-right: 25px;
-  color: @color-text-grey;
+  color: var(--color-text-grey);
 }
 .registry-has-errored-indicator {
   cursor: default;

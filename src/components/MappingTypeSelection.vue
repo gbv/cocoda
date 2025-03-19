@@ -98,6 +98,6 @@ export default {
 }
 .mappingType:hover {
   background-color: @color-secondary-light;
-  color: @color-text-grey;
+  color: var(--color-text-grey);
 }
 </style>

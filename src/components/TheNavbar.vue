@@ -471,7 +471,7 @@ hr {
   color: white !important;
 }
 .nav-link:hover, .btn-link:hover {
-  color: @color-text-grey !important;
+  color: var(--color-text-grey) !important;
 }
 .navbar-dropdown {
   overflow-x: hidden;
