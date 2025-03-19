@@ -4,6 +4,9 @@
 @import "./colors.less";
 
 // Import colors.css
+@import "../style/colors.css";
+
+// Import colors.css
 @import "./colors.css";
 
 // Import z-index values
@@ -182,7 +185,7 @@ h6 {
   position: absolute;
   bottom: 0px;
   right: 5px;
-  color: @color-text-mediumLightGrey;
+  color: var(--color-text-mediumLightGrey);
   cursor: pointer;
 }
 .dataModalButton:hover {

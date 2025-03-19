@@ -1896,6 +1896,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .mappingBrowser-navigator-results {
   flex: 1;
@@ -1938,7 +1939,7 @@ export default {
   right: 20px;
   bottom: 0px;
   z-index: @zIndex-2;
-  color: @color-text-mediumLightGrey;
+  color: var(--color-text-mediumLightGrey);
 }
 #mappingBrowser-search-shareButton:hover {
   color: @color-button-hover;
