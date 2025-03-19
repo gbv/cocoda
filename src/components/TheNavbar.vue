@@ -458,6 +458,7 @@ hr {
 
 <style lang="less">
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .nav-link, .nav-link > span, .btn-link {
   color: @color-text-dark !important;
@@ -491,7 +492,7 @@ hr {
   background-color: @color-secondary-light;
 }
 .favoriteConceptsDropdown-iconTarget {
-  color: @color-secondary;
+  color: var(--color-secondary);
 }
 .navbar-dropdown-selectable {
   word-break: default;
@@ -516,7 +517,7 @@ hr {
 .navbar-dropdown-selectable-selected {
   .fontWeight-heavy;
   padding-right: 5px;
-  background-color: @color-secondary;
+  background-color: var(--color-secondary);
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;

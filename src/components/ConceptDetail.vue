@@ -536,13 +536,14 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .conceptDetail-scheme {
   margin-top: 5px;
 }
 
 .conceptDetail-name {
-  background-color: @color-secondary;
+  background-color: var(--color-secondary);
   position: relative;
   padding: 0 20px;
 }

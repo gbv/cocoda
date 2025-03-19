@@ -207,6 +207,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .minimizeButton {
   right: 0px;
@@ -250,7 +251,7 @@ export default {
   user-select: none;
 }
 .minimizedOverlay:hover {
-  background-color: @color-secondary;
+  background-color: var(--color-secondary);
 }
 .minimizedOverlay > div {
   position: absolute;

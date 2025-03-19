@@ -2,6 +2,7 @@
     /* Base colors */
 
     --color-primary: hsl(16.71, 80.6%, 38.4%); /* Hex is #b13f13 */ 
+    --color-secondary: hsl(0, 13.9%, 83.1%) /* Hex is #dacece */;
     
     /* Adjusted base colors */
     --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
