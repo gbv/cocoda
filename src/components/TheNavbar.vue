@@ -490,7 +490,7 @@ hr {
   display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
-  background-color: @color-secondary-light;
+  background-color: var(--color-secondary-light);
 }
 .favoriteConceptsDropdown-iconTarget {
   color: var(--color-secondary);
@@ -525,6 +525,6 @@ hr {
 }
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
-  background-color: @color-secondary-light;
+  background-color: var(--color-secondary-light);
 }
 </style>

@@ -97,7 +97,7 @@ export default {
   background-color: var(--color-secondary);
 }
 .mappingType:hover {
-  background-color: @color-secondary-light;
+  background-color: var(--color-secondary-light);
   color: var(--color-text-grey);
 }
 </style>

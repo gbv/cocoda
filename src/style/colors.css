@@ -12,8 +12,11 @@
     
     /* Adjusted base colors */
     --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
-    --color-primary-light: hsl(16.7, 80.6%, 53.4%); /* lighten increase 15%*/
-    --color-primary-opacity: hsl(16.7, 80.6%, 53.4%, 0.3); /* Opacity at 70%*/
+    --color-primary-light: hsl(16.7, 80.6%, 53.4%); /* lighten increase third 15%*/
+    --color-primary-opacity: hsla(16.7, 80.6%, 53.4%, 0.3); /* Opacity at 70%*/
+
+    --color-secondary-light: hsl(0, 13.9%, 91.1%); /* lighten increase third 8%*/
+    --color-secondary-dark: hsl(0, 13.9%, 58.1%); /* darken decrease third 25%*/
 
     /* Text colors (monochrome) */
     --color-text-dark: var(--color-black);

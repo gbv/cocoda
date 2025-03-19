@@ -409,7 +409,7 @@ export default {
 .selected.hovered,
 .arrowBox:hover,
 .conceptListItem:hover {
-  background-color: @color-secondary-light;
+  background-color: var(--color-secondary-light);
 }
 
 .conceptListItem-buttonBefore {
