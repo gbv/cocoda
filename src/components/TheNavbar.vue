@@ -424,6 +424,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 nav.navbar {
   padding: 2px 8px;
@@ -431,7 +432,7 @@ nav.navbar {
   background-color: @color-background-primary;
 }
 .navbar-brand {
-  color: @color-text-dark !important;
+  color: var(--color-text-dark) !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
@@ -461,7 +462,7 @@ hr {
 @import "../style/colors.css";
 
 .nav-link, .nav-link > span, .btn-link {
-  color: @color-text-dark !important;
+  color: var(--color-text-dark) !important;
 }
 .nav-link.active, .btn-link.active {
   font-weight: 700;

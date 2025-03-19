@@ -961,7 +961,7 @@ export default {
 
 .mappingBrowser-pagination.pagination .page-item.active .page-link {
   font-weight: bold;
-  color: @color-text-dark;
+  color: var(--color-text-dark);
   border-bottom: 3px solid var(--color-primary);
 }
 
