@@ -887,7 +887,7 @@ export default {
 }
 
 .mappingBrowser-table-light {
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
 }
 .mappingBrowser-table-paddingTopLeftAdjustment {
   padding-left: 10px;

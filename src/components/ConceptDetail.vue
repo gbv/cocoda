@@ -613,7 +613,7 @@ export default {
 .coli-ana > li > div:first-child {
   width: 8px;
   user-select: none;
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
   font-weight: normal;
 }
 .coli-ana > li > div:not(:last-child) {

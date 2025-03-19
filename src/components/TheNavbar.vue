@@ -436,7 +436,7 @@ nav.navbar {
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
 }
 
 .navbar-settingsButton > span > img, .navbar-settingsButton > span > svg {
