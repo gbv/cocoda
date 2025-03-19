@@ -361,6 +361,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .conceptBox {
   display: flex;
@@ -418,7 +419,7 @@ export default {
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 // TODO: Use font awesome or move somewhere else
 .arrowBox > i {
-  border: solid @color-black;
+  border: solid var(--color-black);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;

@@ -3,12 +3,19 @@
 
     --color-primary: hsl(16.71, 80.6%, 38.4%); /* Hex is #b13f13 */ 
     --color-secondary: hsl(0, 13.9%, 83.1%) /* Hex is #dacece */;
+    --color-black: #212121;
     
     /* Adjusted base colors */
     --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
     --color-primary-light: hsl(16.7, 80.6%, 53.4%); /* lighten increase 15%*/
     --color-primary-opacity: hsl(16.7, 80.6%, 53.4%, 0.3);
 
+    /* Text colors (monochrome) */
+    --color-text-dark: var(--color-black);
+    --color-text-grey: rgb(74, 74, 74);
+    --color-text-lightGrey: rgb(115, 115, 115);
+    --color-text-mediumLightGrey: rgb(170, 170, 170);
+    --color-text-veryLightGrey: rgb(210, 210, 210);
 
     /* General colors */
     --color-link: var(--color-primary);
