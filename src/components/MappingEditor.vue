@@ -902,7 +902,7 @@ export default {
   position: absolute;
   bottom: -1px;
   left: 0px;
-  color: @color-danger;
+  color: var(--color-danger);
   z-index: @zIndex-2;
 }
 .mappingEditor-mappingSaved {
