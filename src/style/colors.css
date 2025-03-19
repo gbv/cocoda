@@ -17,6 +17,8 @@
 
     --color-secondary-light: hsl(0, 13.9%, 91.1%); /* lighten increase third 8%*/
     --color-secondary-dark: hsl(0, 13.9%, 58.1%); /* darken decrease third 25%*/
+    --color-secondary-dark-faded-70: hsla(0, 13.9%, 58.1%, 0.3); /* Opacity at 70%*/
+    --color-secondary-dark-faded-35: hsla(0, 13.9%, 58.1%, 0.65); /* Opacity at 35%*/
 
     /* Text colors (monochrome) */
     --color-text-dark: var(--color-black);

@@ -55,10 +55,10 @@ export default {
   color: @color-background;
   height: 18px;
   .fontSize-verySmall;
-  background-color: fadeout(@color-secondary-dark, 70%); // note: only used when disabled
+  background-color: var(--color-secondary-dark-faded-70); // note: only used when disabled
 }
 .registry-notation:hover, .registry-notation.registry-enabled:hover {
-  background-color: fadeout(@color-secondary-dark, 35%);
+  background-color: var(--color-secondary-dark-faded-35);
 }
 .registry-notation-current {
   background-color: var(--color-primary-opacity);
@@ -68,7 +68,7 @@ export default {
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {
-  background-color: @color-secondary-dark;
+  background-color: var(--color-secondary-dark);
   .fontWeight-heavy;
 }
 </style>
