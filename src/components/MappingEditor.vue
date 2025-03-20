@@ -753,8 +753,8 @@ export default {
 #mappingEditor {
   position: relative;
   display: flex;
-  border: 1px solid @color-background;
-  background-color: @color-background
+  border: 1px solid var(--color-background);
+  background-color: var(--color-background);
 }
 .mappingTypeSelection {
   flex: none;

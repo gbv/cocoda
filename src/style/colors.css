@@ -40,11 +40,27 @@
     --color-text-veryLightGrey-opacity: rgba(210, 210, 210, 0.3); /* Opacity at 70%*/
 
     /* General colors */
+    --color-background: rgb(255, 255, 255);
+    --color-background-primary: var(--color-secondary);
+    --color-background-secondary: hsl(0, 15.38%, 94.8%); /* Original hex is #e9e1e1 with lightness of 6% */ 
+    --color-background-heading: rgb(240, 240, 240);
+    --color-loading-overlay-background: rgba(255, 255, 255, 0.6);
+    --color-shadow: rgba(0, 0, 0, 0.2);
     --color-link: var(--color-primary);
     --color-link-hover: var(--color-primary-light);
 
     /* Button colors (monochrome) */
     --color-button-hover: var(--color-primary-light);
+
+    /*  
+        @color-button: #555555;
+    @color-button-slightlyFaded: fadeout(@color-button, 40%);
+    @color-button-faded: fadeout(@color-button, 80%);
+    @color-button-hover: @color-primary-light;
+    @color-button-disabled: @color-button-faded;
+    @color-button-delete: @color-danger;
+    @color-button-delete-hover: @color-danger-dark;
+    */
 
     /* Component specific colors */
     --color--conceptSearch-result-selected: var(--color-primary-dark);

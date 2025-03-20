@@ -207,7 +207,7 @@ export default {
   flex-direction: column;
 }
 .annotationList > div:nth-child(odd) {
-  background-color: @color-background;
+  background-color: var(--color-background);
 }
 .annotationList > div:nth-child(even) {
   background-color: var(--color-text-veryLightGrey-opacity);

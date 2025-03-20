@@ -43,7 +43,7 @@
 }
 
 .visualComponent {
-  background-color: @color-background;
+  background-color: var(--color-background);
   margin: 4px;
   box-shadow: 0 1px 2px 0 @color-shadow;
   padding: 5px;
@@ -197,7 +197,7 @@ h6 {
   border-right: 5px solid var(--color-success);
 }
 .concept-mappingsDoNotExist {
-  border-right: 5px solid @color-background;
+  border-right: 5px solid var(--color-background);
 }
 
 // Favorite stars
@@ -254,7 +254,7 @@ h6 {
 
 // Override bootstrap styles
 .custom-control-label:before{
-  background-color: @color-background-secondary !important;
+  background-color: var(--color-background-secondary) !important;
 }
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
   background-color: @color-button !important;

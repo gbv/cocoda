@@ -43,10 +43,11 @@ export default {
 <style lang="less">
 @import "@/style/z-index.less";
 @import "@/style/utilities.less";
+@import "../style/colors.css";
 
 .loadingIndicatorFull {
   z-index: @zIndex-8 !important;
-  background-color: @color-loading-overlay-background;
+  background-color: var(--color-loading-overlay-background);
   animation: fadein 0.5s;
 }
 @keyframes fadein {

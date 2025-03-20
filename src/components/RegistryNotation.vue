@@ -52,7 +52,7 @@ export default {
   display: inline-block;
   text-align: center;
   .m-borderRadius(5px);
-  color: @color-background;
+  color: var(--color-background);
   height: 18px;
   .fontSize-verySmall;
   background-color: var(--color-secondary-dark-faded-70); // note: only used when disabled

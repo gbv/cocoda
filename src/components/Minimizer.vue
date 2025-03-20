@@ -213,7 +213,7 @@ export default {
   right: 0px;
   top: 0px;
   background: @color-button-faded;
-  color: @color-background;
+  color: var(--color-background);
   border-radius: 0 0 0 3px;
 }
 .minimizeButton {
@@ -233,7 +233,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: @color-loading-overlay-background;
+  background-color: var(--color-loading-overlay-background);
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized
@@ -247,7 +247,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: @color-background;
+  background-color: var(--color-background);
   user-select: none;
 }
 .minimizedOverlay:hover {

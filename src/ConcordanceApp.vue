@@ -346,7 +346,7 @@ html, body {
 .main {
   flex: 1;
   position: relative;
-  background-color: @color-background-secondary;
+  background-color: var(--color-background-secondary);
 }
 .flexbox-row {
   display: flex;
@@ -448,7 +448,7 @@ html, body {
 // Override border color for all cocoda-vue-tabs
 .cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
   border-bottom-color: var(--color-primary) !important;
-  background-color: @color-background-heading !important;
+  background-color: var(--color-background-heading) !important;
 }
 // Override font-size for all cocoda-vue-tabs
 .cocoda-vue-tabs-sm {

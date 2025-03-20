@@ -827,7 +827,7 @@ html, body {
 .main {
   flex: 1;
   position: relative;
-  background-color: @color-background-secondary;
+  background-color: var(--color-background-secondary);
 }
 .flexbox-row {
   display: flex;
@@ -903,7 +903,7 @@ html, body {
   width: 100%;
 }
 .configError {
-  background-color: @color-background;
+  background-color: var(--color-background);
   width: 100%;
   height: 100%;
 }
@@ -940,7 +940,7 @@ html, body {
 // Override border color for all cocoda-vue-tabs
 .cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
   border-bottom-color: var(--color-primary) !important;
-  background-color: @color-background-heading !important;
+  background-color: var(--color-background-heading) !important;
 }
 // Override font-size for all cocoda-vue-tabs
 .cocoda-vue-tabs-sm {

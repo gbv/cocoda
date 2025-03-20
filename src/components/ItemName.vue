@@ -290,6 +290,6 @@ export default {
   width: 1em;
   height: 1em;
   margin-top: 0.2em;
-  background: @color-background;
+  background: var(--color-background);
 }
 </style>

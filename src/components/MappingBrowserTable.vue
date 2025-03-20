@@ -868,7 +868,7 @@ export default {
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
   content: "";
-  background: @color-loading-overlay-background;
+  background: var(--color-loading-overlay-background);
   top: 0; right: 0; left: 0; bottom: 0;
   z-index: @zIndex-10;
 }
@@ -984,7 +984,7 @@ export default {
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
-  background-color: @color-background-heading;
+  background-color: var(--color-background-heading);
 }
 
 // Custom section class for current registry

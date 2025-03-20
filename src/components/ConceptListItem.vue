@@ -398,7 +398,7 @@ export default {
 .addToMapping {
   .fontSize-large;
   position: absolute;
-  color: @color-background;
+  color: var(--color-background);
   top: 50%;
   transform: translateY(-50%);
   right: 8px;

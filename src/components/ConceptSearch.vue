@@ -530,8 +530,8 @@ export default {
   width: 100%;
   padding: 0;
   margin: 3px 0;
-  background-color: @color-background;
-  box-shadow: 0 2px 4px 0 @color-shadow;
+  background-color: var(--color-background);
+  box-shadow: 0 2px 4px 0 var(--color-shadow);
   z-index: @zIndex-10;
 }
 
@@ -558,7 +558,7 @@ export default {
   height: 50px;
   padding: 0px 0px 0px 12px;
   z-index: @zIndex-3;
-  background-color: @color-loading-overlay-background;
+  background-color: var(--color-loading-overlay-background);
   display: flex;
   justify-content: left;
   align-items: center;

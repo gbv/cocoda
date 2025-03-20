@@ -557,7 +557,7 @@ export default {
   position: absolute;
   right: 3px;
   top: -2px;
-  color: @color-background;
+  color: var(--color-background);
 }
 
 .conceptDetail-identifier {
