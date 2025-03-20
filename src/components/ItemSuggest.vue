@@ -325,7 +325,7 @@ export default defineComponent({
   padding: 0;
   margin: 1px 0;
   background-color: var(--color-background);
-  box-shadow: 0 2px 4px 0 @color-shadow;
+  box-shadow: 0 2px 4px 0 var(--color-shadow);
   z-index: @zIndex-10;
 }
 

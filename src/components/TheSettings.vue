@@ -894,7 +894,7 @@ p {
 .settingsModal-footer {
   padding: .75rem 1.25rem;
   background-color: var(--color-background-secondary);
-  border-top: 1px solid @color-shadow;
+  border-top: 1px solid var(--color-shadow);
 }
 // Hide no data tag if it's not first child
 .myDataDownloads > li:not(:first-child).myDataDownloads-noData {

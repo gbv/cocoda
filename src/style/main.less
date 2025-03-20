@@ -45,7 +45,7 @@
 .visualComponent {
   background-color: var(--color-background);
   margin: 4px;
-  box-shadow: 0 1px 2px 0 @color-shadow;
+  box-shadow: 0 1px 2px 0 var(--color-shadow);
   padding: 5px;
 }
 .componentTitle {
@@ -227,7 +227,7 @@ h6 {
 // Other styles // --------------------------------------------------
 
 .selected {
-  background-color: @color-secondary;
+  background-color: var(--color-secondary);
   .fontWeight-heavy;
 }
 
@@ -257,7 +257,7 @@ h6 {
   background-color: var(--color-background-secondary) !important;
 }
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
-  background-color: @color-button !important;
+  background-color: var(--color-button) !important;
 }
 .popover {
   max-width: 400px !important;
@@ -356,7 +356,7 @@ div kbd {
   background-color: #f7f7f7;
   border: 1px solid #ccc;
   border-radius: 3px;
-  box-shadow: 0 1px 0 @color-shadow,0 0 0 2px #fff inset;
+  box-shadow: 0 1px 0 var(--color-shadow), 0 0 0 2px #fff inset;
   color: #333;
   display: inline-block;
   font-size: 11px;
