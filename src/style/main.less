@@ -1,7 +1,10 @@
 // Imports // --------------------------------------------------
 
-// Import colors
-@import "./colors.less";
+// Import colors.css
+@import "../style/colors.css";
+
+// Import colors.css
+@import "./colors.css";
 
 // Import z-index values
 @import "./z-index.less";
@@ -37,9 +40,9 @@
 }
 
 .visualComponent {
-  background-color: @color-background;
+  background-color: var(--color-background);
   margin: 4px;
-  box-shadow: 0 1px 2px 0 @color-shadow;
+  box-shadow: 0 1px 2px 0 var(--color-shadow);
   padding: 5px;
 }
 .componentTitle {
@@ -83,20 +86,20 @@ p {
   margin: 3px 0 !important;
 }
 a:link, a:visited, a:active {
-  color: @color-link;
+  color: var(--color-link);
 }
 a:hover, .alert a:hover {
   text-decoration: none;
-  color: @color-link-hover;
+  color: var(--color-link-hover);
 }
 .page-link {
-  color: @color-link !important;
+  color: var(--color-link) !important;
 }
 .page-item.disabled > .page-link {
-  color: @color-text-lightGrey !important;
+  color: var(--color-text-lightGrey) !important;
 }
 .page-link:hover {
-  color: @color-link-hover !important;
+  color: var(--color-link-hover) !important;
 }
 
 ul {
@@ -128,22 +131,22 @@ h6 {
   cursor: pointer;
   user-select: none;
   vertical-align: middle;
-  color: @color-button;
+  color: rgb(var(--color-button));
 }
 .button:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 .button-disabled {
   user-select: none;
   vertical-align: middle;
-  color: @color-button-disabled;
+  color: var(--color-button-disabled);
 }
 .button-delete {
   .button();
-  color: @color-button-delete;
+  color: var(--color-button-delete);
 }
 .button-delete:hover {
-  color: @color-button-delete-hover;
+  color: var(--color-button-delete-hover);
 }
 
 // Button click animation (makes buttons feel more "alive")
@@ -165,12 +168,12 @@ h6 {
   width: 20px;
   height: 20px;
   z-index: @zIndex-4;
-  color: fadeout(@color-button, 70%);
-  background-color: fadeout(@color-button-disabled, 80%);
+  color: var(--color-button-faded-70);
+  background-color: var(--color-button-disabled-faded-80);
 }
 .utilityButton:hover {
-  color: fadeout(@color-button, 40%);
-  background-color: fadeout(@color-button-disabled, 60%);
+  color: var(--color-button-faded-40);
+  background-color: var(--color-button-disabled-faded-60);
 }
 
 // These are here and not in the component because the button might be used somewhere else separately (e.g. MappingDetails).
@@ -179,19 +182,19 @@ h6 {
   position: absolute;
   bottom: 0px;
   right: 5px;
-  color: @color-text-mediumLightGrey;
+  color: var(--color-text-mediumLightGrey);
   cursor: pointer;
 }
 .dataModalButton:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 // Mapped status of concept items
 .concept-mappingsExist {
-  border-right: 5px solid @color-success;
+  border-right: 5px solid var(--color-success);
 }
 .concept-mappingsDoNotExist {
-  border-right: 5px solid @color-background;
+  border-right: 5px solid var(--color-background);
 }
 
 // Favorite stars
@@ -200,19 +203,19 @@ h6 {
   cursor: pointer;
 }
 .starFavorite {
-  color: @color-primary;
+  color: var(--color-primary);
   margin-right: 5px;
 }
 .starFavorite:hover, .starNormal:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 .starNormal {
-  color: @color-button-faded;
+  color: var(--color-button-faded);
   margin-right: 5px;
 }
 
 .missingDataIndicator {
-  color: @color-danger !important;
+  color: var(--color-danger) !important;
   font-weight: bold;
   display: inline;
   user-select: none;
@@ -221,7 +224,7 @@ h6 {
 // Other styles // --------------------------------------------------
 
 .selected {
-  background-color: @color-secondary;
+  background-color: hsl(var(--color-secondary));
   .fontWeight-heavy;
 }
 
@@ -248,10 +251,10 @@ h6 {
 
 // Override bootstrap styles
 .custom-control-label:before{
-  background-color: @color-background-secondary !important;
+  background-color: var(--color-background-secondary) !important;
 }
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
-  background-color: @color-button !important;
+  background-color: var(--color-button) !important;
 }
 .popover {
   max-width: 400px !important;
@@ -273,56 +276,56 @@ h6 {
 }
 // bootstrap buttons
 .btn-primary, .btn-primary:active, .btn-primary:focus {
-  background-color: @color-primary !important;
-  border-color: @color-primary-dark !important;
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary-dark) !important;
 }
 .btn-primary:hover {
-  background-color: @color-primary-light !important;
-  border-color: @color-primary !important;
+  background-color: hsl(var(--color-primary-light)) !important;
+  border-color: var(--color-primary) !important;
 }
 .btn-success {
-  background-color: @color-success;
+  background-color: var(--color-success);
 }
 .btn-success:hover {
-  background-color: @color-success-dark;
+  background-color: var(--color-success-dark);
 }
 .btn-warning {
-  background-color: @color-warning;
+  background-color: var(--color-warning);
 }
 .btn-warning:hover {
-  background-color: @color-warning-dark;
+  background-color: var(--color-warning-dark);
 }
 .btn-danger {
-  background-color: @color-danger;
+  background-color: var(--color-danger);
 }
 .btn-danger:hover {
-  background-color: @color-danger-dark;
+  background-color: var(--color-danger-dark);
 }
 // bootstrap text
 .text-success {
-  color: @color-success !important;
+  color: var(--color-success) !important;
 }
 .text-warning {
-  color: @color-warning-dark !important;
+  color: var(--color-warning-dark) !important;
 }
 .text-danger {
-  color: @color-danger !important;
+  color: var(--color-danger) !important;
 }
 // bootstrap alerts
 .alert-success {
-  color: @color-success-dark !important;
-  background-color: lighten(@color-success-light, 50%) !important;
-  border-color: @color-success-light !important;
+  color: var(--color-success-dark) !important;
+  background-color: var(---color-success-lighter) !important;
+  border-color: var(--color-success-light) !important;
 }
 .alert-warning {
-  color: darken(@color-warning-dark, 25%) !important;
-  background-color: @color-warning-light !important;
-  border-color: @color-warning !important;
+  color: var(--color-warning-darker) !important;
+  background-color: var(--color-warning-light) !important;
+  border-color: var(--color-warning) !important;
 }
 .alert-danger {
-  color: @color-danger-dark !important;
-  background-color: lighten(@color-danger-light, 30%) !important;
-  border-color: lighten(@color-danger-light, 15%) !important;
+  color: var(--color-danger-dark) !important;
+  background-color: var(--color-danger-lighter-30) !important;
+  border-color: var(--color-danger-lighter-15) !important;
 }
 
 // Orders
@@ -350,7 +353,7 @@ div kbd {
   background-color: #f7f7f7;
   border: 1px solid #ccc;
   border-radius: 3px;
-  box-shadow: 0 1px 0 @color-shadow,0 0 0 2px #fff inset;
+  box-shadow: 0 1px 0 var(--color-shadow), 0 0 0 2px #fff inset;
   color: #333;
   display: inline-block;
   font-size: 11px;

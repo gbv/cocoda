@@ -74,6 +74,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .mappingTypes {
   width: 72px;
@@ -93,10 +94,10 @@ export default {
   font-weight: bold;
 }
 .mappingTypeSelected {
-  background-color: @color-secondary;
+  background-color: hsl(var(--color-secondary));
 }
 .mappingType:hover {
-  background-color: @color-secondary-light;
-  color: @color-text-grey;
+  background-color: hsl(var(--color-secondary-light));
+  color: var(--color-text-grey);
 }
 </style>

@@ -1,0 +1,85 @@
+:root {
+    /* Base colors */
+
+    --color-primary: hsl(16.71, 80.6%, 38.4%); /* Hex is #b13f13 */ 
+    --color-secondary: 0, 13.9%, 83.1%; /* Hex is #dacece */
+    --color-black: #212121;
+    /* --color-white: #f2f1ef */
+    
+    --color-success: hsl(100, 70%, 28.24%); /* desaturate of #309000 by 30%, second argument) */
+    --color-warning: hsl(var(--color-secondary));
+    --color-danger: hsl(0, 84%, 44%);
+    
+    /* Adjusted base colors */
+    --color-primary-dark: hsl(16.7, 80.6%, 33.4%); /* darken decrease third 5%*/
+    --color-primary-light: 16.7, 80.6%, 53.4%; /* lighten increase third 15%*/
+    --color-primary-opacity: hsla(var(--color-primary-light), 0.7); /* Opacity at 70%*/
+
+    --color-secondary-light: 0, 13.9%, 91.1%; /* lighten increase third 8%*/
+    --color-secondary-dark: 0, 13.9%, 58.1%; /* darken of color-secondary decrease third 25%*/
+    --color-secondary-dark-faded-30: hsla(var(--color-secondary-dark), 0.3); /* Opacity at 30%*/
+    --color-secondary-dark-faded-65: hsla(var(--color-secondary-dark), 0.65); /* Opacity at 65%*/
+
+    --color-success-light: hsl(100, 70%, 43.24%); /* lighten increase third 15%*/
+    --color-success-lighter: hsl(100, 70%, 93.24%); /* lighten increase third 50%*/
+    --color-success-dark: hsl(100, 70%, 13.24%); /* darken decrease third 15%*/
+    --color-warning-light: hsl(0, 13.9%, 98.1%); /* lighten increase third 15%*/
+    --color-warning-dark: hsl(0, 13.9%, 68.1%); /* darken decrease third 15%*/
+    --color-warning-darker: hsl(0, 13.9%, 43.1%); /* darken decrease third 25%*/
+    --color-danger-light: hsl(0, 84%, 59%); /* lighten increase third 15%*/
+    --color-danger-lighter-30: hsl(0, 84%, 89%); /* lighten increase third 30%*/
+    --color-danger-lighter-15: hsl(0, 84%, 74%); /* lighten increase third 15%*/
+    --color-danger-dark: hsl(0, 84%, 29%); /* darken decrease third 15%*/
+
+    /* Text colors (monochrome) */
+    --color-text-dark: var(--color-black);
+    --color-text-grey: rgb(74, 74, 74);
+    --color-text-lightGrey: rgb(115, 115, 115);
+    --color-text-mediumLightGrey: rgb(170, 170, 170);
+    --color-text-veryLightGrey: rgb(210, 210, 210);
+    --color-text-veryLightGrey-opacity: rgba(210, 210, 210, 0.7); /* Opacity at 70%*/
+
+    /* General colors */
+    --color-background: rgb(255, 255, 255);
+    --color-background-primary: hsl(var(--color-secondary));
+    --color-background-secondary: hsl(0, 15.38%, 94.8%); /* Original hex is #e9e1e1 with lightness of 6% */ 
+    --color-background-heading: rgb(240, 240, 240);
+    --color-loading-overlay-background: rgba(255, 255, 255, 0.6);
+    --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-link: var(--color-primary);
+    --color-link-hover: hsl(var(--color-primary-light));
+
+    /* Button colors (monochrome) */
+    --color-button-hover: hsl(var(--color-primary-light));
+    --color-button: 85, 85, 85; /* It was #555555, now in rgb, important is to use only numbers, without rgb function */
+    --color-button-faded: rgba(var(--color-button), 0.8);
+    --color-button-faded-70: rgba(var(--color-button), 0.7);
+    --color-button-faded-40: rgba(var(--color-button), 0.4);
+    --color-button-disabled: var(--color-button-faded);
+    --color-button-disabled-faded-80: rgba(var(--color-button), 0.64); /* 80% of 80% = 64% */
+    --color-button-disabled-faded-60: rgba(var(--color-button), 0.48); /* 80% of 60% = 48% */
+    --color-button-delete: var(--color-danger);
+    --color-button-delete-hover: var(--color-danger-dark);
+
+    /* Component specific colors */
+    --color--conceptSearch-result-selected: var(--color-primary-dark);
+    --color--mappingBrowser-table-match: hsla(var(--color-secondary-light), 0.7); /* Opacity at 70% */
+    --color--mappingBrowser-table-match-hover: hsla(var(--color-secondary-light), 0.45); /* Opacity at 45% */
+    --color--mappingBrowser-table-editing: hsla(var(--color-secondary), 0.4); /* Opacity at 40% */
+    --color--mappingBrowser-table-editing-hover: hsla(var(--color-secondary), 0.3); /* Opacity at 30% */
+    
+    --color--conceptSearch-result-selected-background: var(--color-background-secondary);
+    --color--conceptSearch-searchHighlight: var(--color-secondary-dark);
+    --color--conceptSearch-searchHighlight-selected: var(--color-secondary-dark);
+
+    --color--itemName-highlighted: var(--color-text-grey);
+    
+    --color--loadingIndicator-border: rgb(243, 243, 243);
+    --color--loadingIndicator-border-top: rgb(52, 152, 219);
+
+    /* Alert colors */
+
+    --color-alert-success: var(--color-text-dark);
+    --color-alert-success-background: rgb(193, 221, 198);
+        
+}

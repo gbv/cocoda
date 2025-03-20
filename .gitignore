@@ -14,7 +14,7 @@ config/cocoda*.json
 !config/cocoda.dev.json
 !config/cocoda.master.json
 # local colors file
-src/style/user-colors.less
+src/style/user-colors.css
 
 # Relases (when using bin/build-all.sh)
 releases/

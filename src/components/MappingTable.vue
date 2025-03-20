@@ -246,15 +246,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/style/colors.less";
+@import "../style/colors.css";
 
 .button {
   cursor: pointer;
   user-select: none;
-  color: @color-button;
+  color: rgb(var(--color-button));
 }
 .button:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 svg.button {
   margin-left: 2px;

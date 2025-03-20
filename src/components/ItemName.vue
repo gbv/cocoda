@@ -246,13 +246,14 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .itemName {
   display: inline;
   user-select: text;
 }
 .itemName-inner, .itemName-inner > * {
-  color: @color-text-dark !important;
+  color: var(--color-text-dark) !important;
   display: inline;
 }
 .itemName-hovered, .itemName-hoverable:hover {
@@ -260,7 +261,7 @@ export default {
   text-decoration: underline;
 }
 .itemName-highlighted {
-  color: @color--itemName-highlighted !important;
+  color: var(--color--itemName-highlighted) !important;
 }
 .itemName-icon {
   margin-right: 3px;
@@ -289,6 +290,6 @@ export default {
   width: 1em;
   height: 1em;
   margin-top: 0.2em;
-  background: @color-background;
+  background: var(--color-background);
 }
 </style>

@@ -114,8 +114,8 @@ Using the pre-built version, the application only has to be reloaded after editi
 
 ## Maintainers
 
-- [@stefandesu](https://github.com/stefandesu)
 - [@nichtich](https://github.com/nichtich)
+- [@rodolv-commons](https://github.com/rodolv-commons)
 
 ## Contribute
 

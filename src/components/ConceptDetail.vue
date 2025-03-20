@@ -536,13 +536,14 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .conceptDetail-scheme {
   margin-top: 5px;
 }
 
 .conceptDetail-name {
-  background-color: @color-secondary;
+  background-color: hsl(var(--color-secondary));
   position: relative;
   padding: 0 20px;
 }
@@ -556,7 +557,7 @@ export default {
   position: absolute;
   right: 3px;
   top: -2px;
-  color: @color-background;
+  color: var(--color-background);
 }
 
 .conceptDetail-identifier {
@@ -612,7 +613,7 @@ export default {
 .coli-ana > li > div:first-child {
   width: 8px;
   user-select: none;
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
   font-weight: normal;
 }
 .coli-ana > li > div:not(:last-child) {

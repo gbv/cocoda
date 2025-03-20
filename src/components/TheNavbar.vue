@@ -424,18 +424,19 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 nav.navbar {
   padding: 2px 8px;
   height: 42px;
-  background-color: @color-background-primary;
+  background-color: var(--color-background-primary);
 }
 .navbar-brand {
-  color: @color-text-dark !important;
+  color: var(--color-text-dark) !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
 }
 
 .navbar-settingsButton > span > img, .navbar-settingsButton > span > svg {
@@ -458,9 +459,10 @@ hr {
 
 <style lang="less">
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .nav-link, .nav-link > span, .btn-link {
-  color: @color-text-dark !important;
+  color: var(--color-text-dark) !important;
 }
 .nav-link.active, .btn-link.active {
   font-weight: 700;
@@ -469,7 +471,7 @@ hr {
   color: white !important;
 }
 .nav-link:hover, .btn-link:hover {
-  color: @color-text-grey !important;
+  color: var(--color-text-grey) !important;
 }
 .navbar-dropdown {
   overflow-x: hidden;
@@ -488,10 +490,10 @@ hr {
   display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
-  background-color: @color-secondary-light;
+  background-color: hsl(var(--color-secondary-light));
 }
 .favoriteConceptsDropdown-iconTarget {
-  color: @color-secondary;
+  color: hsl(var(--color-secondary));
 }
 .navbar-dropdown-selectable {
   word-break: default;
@@ -516,13 +518,13 @@ hr {
 .navbar-dropdown-selectable-selected {
   .fontWeight-heavy;
   padding-right: 5px;
-  background-color: @color-secondary;
+  background-color: hsl(var(--color-secondary));
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;
 }
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
-  background-color: @color-secondary-light;
+  background-color: hsl(var(--color-secondary-light));
 }
 </style>

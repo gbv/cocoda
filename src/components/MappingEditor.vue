@@ -748,12 +748,13 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 #mappingEditor {
   position: relative;
   display: flex;
-  border: 1px solid @color-background;
-  background-color: @color-background
+  border: 1px solid var(--color-background);
+  background-color: var(--color-background);
 }
 .mappingTypeSelection {
   flex: none;
@@ -778,11 +779,11 @@ export default {
   flex-direction: column;
 }
 .mappingEditorPart-noConcepts > div {
-  border: 1px dashed @color-text-veryLightGrey;
+  border: 1px dashed var(--color-text-veryLightGrey);
   border-radius: 10px;
 }
 .mappingEditorPart-dropTarget > div {
-  border: 1px dashed @color-success-dark;
+  border: 1px dashed var(--color-success-dark);
   border-radius: 10px;
 }
 .mappingEditor-addButton {
@@ -818,7 +819,7 @@ export default {
   margin: 5px 12px 5px 0;
 }
 .mappingConceptLink:hover {
-  color: @color-primary;
+  color: var(--color-primary);
 }
 .mappingNoConcepts {
   position: absolute;
@@ -864,10 +865,10 @@ export default {
   z-index: @zIndex-2;
 }
 .mappingEditor-infoIcon .button {
-  color: @color-text-mediumLightGrey;
+  color: var(--color-text-mediumLightGrey);
 }
 .mappingEditor-infoIcon .button:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 .mappingEditor-title {
@@ -901,11 +902,11 @@ export default {
   position: absolute;
   bottom: -1px;
   left: 0px;
-  color: @color-danger;
+  color: var(--color-danger);
   z-index: @zIndex-2;
 }
 .mappingEditor-mappingSaved {
-  color: @color-success-dark;
+  color: var(--color-success-dark);
 }
 .mappingEditor-mappingAlert {
   // Prevent other icons from moving by using min-width

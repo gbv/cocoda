@@ -45,29 +45,30 @@ export default {
 
 <style lang="less">
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .registry-notation {
   user-select: none;
   display: inline-block;
   text-align: center;
   .m-borderRadius(5px);
-  color: @color-background;
+  color: var(--color-background);
   height: 18px;
   .fontSize-verySmall;
-  background-color: fadeout(@color-secondary-dark, 70%); // note: only used when disabled
+  background-color: var(--color-secondary-dark-faded-30); // note: only used when disabled
 }
 .registry-notation:hover, .registry-notation.registry-enabled:hover {
-  background-color: fadeout(@color-secondary-dark, 35%);
+  background-color: var(--color-secondary-dark-faded-65);
 }
 .registry-notation-current {
-  background-color: fadeout(@color-primary, 70%);
+  background-color: var(--color-primary-opacity);
 }
 .registry-notation.registry-current-enabled {
-  background-color: @color-primary;
+  background-color: var(--color-primary);
   .fontWeight-heavy;
 }
 .registry-notation.registry-enabled {
-  background-color: @color-secondary-dark;
+  background-color: hsl(var(--color-secondary-dark));
   .fontWeight-heavy;
 }
 </style>

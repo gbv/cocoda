@@ -852,6 +852,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 p {
   margin: 5px 0 20px 0 !important;
@@ -861,7 +862,7 @@ p {
   padding: 6px 5px;
 }
 .selected-registry {
-  background-color: @color-secondary-light;
+  background-color: hsl(var(--color-secondary-light));
 }
 .settingsModal-mapping-registry {
   display: flex;
@@ -869,7 +870,7 @@ p {
   align-items: center;
 }
 .settingsModal-mapping-registry.selectable:hover {
-  background-color: @color-background-secondary;
+  background-color: var(--color-background-secondary);
   cursor: pointer;
 }
 // First Child: Checkbox
@@ -892,8 +893,8 @@ p {
 }
 .settingsModal-footer {
   padding: .75rem 1.25rem;
-  background-color: @color-background-secondary;
-  border-top: 1px solid @color-shadow;
+  background-color: var(--color-background-secondary);
+  border-top: 1px solid var(--color-shadow);
 }
 // Hide no data tag if it's not first child
 .myDataDownloads > li:not(:first-child).myDataDownloads-noData {

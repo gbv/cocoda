@@ -306,6 +306,7 @@ export default defineComponent({
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .jskos-vue-itemSuggest {
   position: relative;
@@ -323,8 +324,8 @@ export default defineComponent({
   width: 100%;
   padding: 0;
   margin: 1px 0;
-  background-color: @color-background;
-  box-shadow: 0 2px 4px 0 @color-shadow;
+  background-color: var(--color-background);
+  box-shadow: 0 2px 4px 0 var(--color-shadow);
   z-index: @zIndex-10;
 }
 
@@ -341,8 +342,8 @@ export default defineComponent({
 }
 
 .jskos-vue-itemSuggest-selected {
-  color: @color--conceptSearch-result-selected;
-  background-color: @color--conceptSearch-result-selected-background;
+  color: var(--color--conceptSearch-result-selected);
+  background-color: var(--color--conceptSearch-result-selected-background);
 }
 
 .jskos-vue-itemSuggest-loading {

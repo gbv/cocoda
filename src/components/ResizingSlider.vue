@@ -233,7 +233,7 @@ export default {
 
 .resizingSliderCol, .resizingSliderRow {
   flex: 0 1 6px;
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
 }
 .resizingSliderCol {
   cursor: col-resize;

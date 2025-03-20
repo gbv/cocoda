@@ -207,12 +207,13 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .minimizeButton {
   right: 0px;
   top: 0px;
-  background: @color-button-faded;
-  color: @color-background;
+  background: var(--color-button-faded);
+  color: var(--color-background);
   border-radius: 0 0 0 3px;
 }
 .minimizeButton {
@@ -222,7 +223,7 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: @color-button-faded;;
+  color: var(--color-button-faded);
   font-size: 1rem;
 }
 // Overlay when minimize button is hovered
@@ -232,7 +233,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: @color-loading-overlay-background;
+  background-color: var(--color-loading-overlay-background);
   z-index: @zIndex-3;
 }
 // Overlay when component is minimized
@@ -246,11 +247,11 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: @color-background;
+  background-color: var(--color-background);
   user-select: none;
 }
 .minimizedOverlay:hover {
-  background-color: @color-secondary;
+  background-color: hsl(var(--color-secondary));
 }
 .minimizedOverlay > div {
   position: absolute;

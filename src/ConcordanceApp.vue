@@ -328,6 +328,7 @@ export default {
 
 <style lang="less">
 @import "./style/main.less";
+@import "./style/colors.css";
 
 html, body {
   height: 100%;
@@ -345,7 +346,7 @@ html, body {
 .main {
   flex: 1;
   position: relative;
-  background-color: @color-background-secondary;
+  background-color: var(--color-background-secondary);
 }
 .flexbox-row {
   display: flex;
@@ -435,10 +436,10 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: @color-button;
+  color: rgb(var(--color-button));
 }
 #swapSides:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 .tooltip {
@@ -446,8 +447,8 @@ html, body {
 }
 // Override border color for all cocoda-vue-tabs
 .cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
-  border-bottom-color: @color-primary !important;
-  background-color: @color-background-heading !important;
+  border-bottom-color: var(--color-primary) !important;
+  background-color: var(--color-background-heading) !important;
 }
 // Override font-size for all cocoda-vue-tabs
 .cocoda-vue-tabs-sm {

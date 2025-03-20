@@ -488,6 +488,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .conceptSearch {
   position: relative;
@@ -529,8 +530,8 @@ export default {
   width: 100%;
   padding: 0;
   margin: 3px 0;
-  background-color: @color-background;
-  box-shadow: 0 2px 4px 0 @color-shadow;
+  background-color: var(--color-background);
+  box-shadow: 0 2px 4px 0 var(--color-shadow);
   z-index: @zIndex-10;
 }
 
@@ -548,8 +549,8 @@ export default {
 }
 
 .conceptSearch-selected {
-  background-color: @color--conceptSearch-result-selected-background;
-  color: @color--conceptSearch-result-selected;
+  background-color: var(--color--conceptSearch-result-selected-background);
+  color: var(--color--conceptSearch-result-selected);
 }
 
 .conceptSearch-loading {
@@ -557,7 +558,7 @@ export default {
   height: 50px;
   padding: 0px 0px 0px 12px;
   z-index: @zIndex-3;
-  background-color: @color-loading-overlay-background;
+  background-color: var(--color-loading-overlay-background);
   display: flex;
   justify-content: left;
   align-items: center;
@@ -568,13 +569,13 @@ export default {
 </style>
 
 <style lang="less">
-@import "@/style/colors.less";
+@import "../style/colors.css";
 
 // Has to be global to work
 .conceptSearch-searchHighlight {
-  color: @color--conceptSearch-searchHighlight;
+  color: var(--color--conceptSearch-searchHighlight);
 }
 .conceptSearch-selected .conceptSearch-searchHighlight {
-  color: @color--conceptSearch-searchHighlight-selected;
+  color: var(--color--conceptSearch-searchHighlight-selected);
 }
 </style>

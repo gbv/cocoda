@@ -851,23 +851,24 @@ export default {
 
 <style lang="less">
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .mappingBrowser-table-row-match {
-  background-color: @color--mappingBrowser-table-match;
+  background-color: var(--color--mappingBrowser-table-match);
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-match {
-  background-color: @color--mappingBrowser-table-match-hover;
+  background-color: var(--color--mappingBrowser-table-match-hover);
 }
 .mappingBrowser-table-row-edited {
-  background-color: @color--mappingBrowser-table-editing;
+  background-color: var(--color--mappingBrowser-table-editing);
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-edited {
-  background-color: @color--mappingBrowser-table-editing-hover;
+  background-color: var(--color--mappingBrowser-table-editing-hover);
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
   content: "";
-  background: @color-loading-overlay-background;
+  background: var(--color-loading-overlay-background);
   top: 0; right: 0; left: 0; bottom: 0;
   z-index: @zIndex-10;
 }
@@ -886,7 +887,7 @@ export default {
 }
 
 .mappingBrowser-table-light {
-  color: @color-text-lightGrey;
+  color: var(--color-text-lightGrey);
 }
 .mappingBrowser-table-paddingTopLeftAdjustment {
   padding-left: 10px;
@@ -960,8 +961,8 @@ export default {
 
 .mappingBrowser-pagination.pagination .page-item.active .page-link {
   font-weight: bold;
-  color: @color-text-dark;
-  border-bottom: 3px solid @color-primary;
+  color: var(--color-text-dark);
+  border-bottom: 3px solid var(--color-primary);
 }
 
 .mappingBrowser-pagination.pagination.pagination-hide-goToLast > li:last-child {
@@ -972,7 +973,7 @@ export default {
   text-align: right;
   padding-top: 3px;
   padding-right: 25px;
-  color: @color-text-grey;
+  color: var(--color-text-grey);
 }
 .registry-has-errored-indicator {
   cursor: default;
@@ -983,12 +984,12 @@ export default {
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
-  background-color: @color-background-heading;
+  background-color: var(--color-background-heading);
 }
 
 // Custom section class for current registry
 .mappingBrowser-table-currentRegistrySection > .flexibleTable-section-before {
-  background-color: @color-secondary;
+  background-color: hsl(var(--color-secondary));
 }
 
 </style>
