@@ -543,7 +543,7 @@ export default {
 }
 
 .conceptDetail-name {
-  background-color: var(--color-secondary);
+  background-color: hsl(var(--color-secondary));
   position: relative;
   padding: 0 20px;
 }

@@ -1,8 +1,5 @@
 // Imports // --------------------------------------------------
 
-// Import colors
-@import "./colors.less";
-
 // Import colors.css
 @import "../style/colors.css";
 
@@ -134,7 +131,7 @@ h6 {
   cursor: pointer;
   user-select: none;
   vertical-align: middle;
-  color: var(--color-button);
+  color: rgb(var(--color-button));
 }
 .button:hover {
   color: var(--color-button-hover);
@@ -227,7 +224,7 @@ h6 {
 // Other styles // --------------------------------------------------
 
 .selected {
-  background-color: var(--color-secondary);
+  background-color: hsl(var(--color-secondary));
   .fontWeight-heavy;
 }
 
@@ -283,7 +280,7 @@ h6 {
   border-color: var(--color-primary-dark) !important;
 }
 .btn-primary:hover {
-  background-color: var(--color-primary-light) !important;
+  background-color: hsl(var(--color-primary-light)) !important;
   border-color: var(--color-primary) !important;
 }
 .btn-success {

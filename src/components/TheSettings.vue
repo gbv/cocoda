@@ -862,7 +862,7 @@ p {
   padding: 6px 5px;
 }
 .selected-registry {
-  background-color: var(--color-secondary-light);
+  background-color: hsl(var(--color-secondary-light));
 }
 .settingsModal-mapping-registry {
   display: flex;

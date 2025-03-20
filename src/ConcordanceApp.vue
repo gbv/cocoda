@@ -436,7 +436,7 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: var(--color-button);
+  color: rgb(var(--color-button));
 }
 #swapSides:hover {
   color: var(--color-button-hover);

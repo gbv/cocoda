@@ -113,14 +113,14 @@ Design of cards should roughly adhere to [material design cards](https://materia
 
 ### Colors
 
-For interface elements, there is a range of pre-defined colors available in `src/style/colors.less`. For non-linked text, please use one of the following colors:
+For interface elements, there is a range of pre-defined colors available in `src/style/colors.css`. For non-linked text, please use one of the following colors:
 
 * CSS class `text-dark`
 * CSS class `text-grey`
 * CSS class `text-lightGrey`
 * CSS class `text-veryLightGrey`
 
-Colors can be overridden using a custom user file in `src/style/user-colors.less`.
+Colors can be overridden using a custom user file in `src/style/user-colors.css`, it needs to be imported in `src/style/colors.css`.
 
 ### Tables
 

@@ -246,13 +246,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "@/style/colors.less";
 @import "../style/colors.css";
 
 .button {
   cursor: pointer;
   user-select: none;
-  color: var(--color-button);
+  color: rgb(var(--color-button));
 }
 .button:hover {
   color: var(--color-button-hover);

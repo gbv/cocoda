@@ -569,7 +569,7 @@ export default {
 </style>
 
 <style lang="less">
-@import "@/style/colors.less";
+@import "../style/colors.css";
 
 // Has to be global to work
 .conceptSearch-searchHighlight {

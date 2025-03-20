@@ -490,10 +490,10 @@ hr {
   display: flex;
 }
 .favoriteConceptsDropdown .dropdown-item:hover {
-  background-color: var(--color-secondary-light);
+  background-color: hsl(var(--color-secondary-light));
 }
 .favoriteConceptsDropdown-iconTarget {
-  color: var(--color-secondary);
+  color: hsl(var(--color-secondary));
 }
 .navbar-dropdown-selectable {
   word-break: default;
@@ -518,13 +518,13 @@ hr {
 .navbar-dropdown-selectable-selected {
   .fontWeight-heavy;
   padding-right: 5px;
-  background-color: var(--color-secondary);
+  background-color: hsl(var(--color-secondary));
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;
 }
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
-  background-color: var(--color-secondary-light);
+  background-color: hsl(var(--color-secondary-light));
 }
 </style>
