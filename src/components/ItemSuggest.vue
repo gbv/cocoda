@@ -343,7 +343,7 @@ export default defineComponent({
 
 .jskos-vue-itemSuggest-selected {
   color: var(--color--conceptSearch-result-selected);
-  background-color: @color--conceptSearch-result-selected-background;
+  background-color: var(--color--conceptSearch-result-selected-background);
 }
 
 .jskos-vue-itemSuggest-loading {

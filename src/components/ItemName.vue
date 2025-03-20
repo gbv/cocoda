@@ -261,7 +261,7 @@ export default {
   text-decoration: underline;
 }
 .itemName-highlighted {
-  color: @color--itemName-highlighted !important;
+  color: var(--color--itemName-highlighted) !important;
 }
 .itemName-icon {
   margin-right: 3px;

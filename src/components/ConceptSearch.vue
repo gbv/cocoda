@@ -549,7 +549,7 @@ export default {
 }
 
 .conceptSearch-selected {
-  background-color: @color--conceptSearch-result-selected-background;
+  background-color: var(--color--conceptSearch-result-selected-background);
   color: var(--color--conceptSearch-result-selected);
 }
 
@@ -573,9 +573,9 @@ export default {
 
 // Has to be global to work
 .conceptSearch-searchHighlight {
-  color: @color--conceptSearch-searchHighlight;
+  color: var(--color--conceptSearch-searchHighlight);
 }
 .conceptSearch-selected .conceptSearch-searchHighlight {
-  color: @color--conceptSearch-searchHighlight-selected;
+  color: var(--color--conceptSearch-searchHighlight-selected);
 }
 </style>

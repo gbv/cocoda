@@ -854,16 +854,16 @@ export default {
 @import "../style/colors.css";
 
 .mappingBrowser-table-row-match {
-  background-color: @color--mappingBrowser-table-match;
+  background-color: var(--color--mappingBrowser-table-match);
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-match {
-  background-color: @color--mappingBrowser-table-match-hover;
+  background-color: var(--color--mappingBrowser-table-match-hover);
 }
 .mappingBrowser-table-row-edited {
-  background-color: @color--mappingBrowser-table-editing;
+  background-color: var(--color--mappingBrowser-table-editing);
 }
 .flexibleTable-body .flexibleTable-row:hover .flexibleTable-cell.mappingBrowser-table-row-edited {
-  background-color: @color--mappingBrowser-table-editing-hover;
+  background-color: var(--color--mappingBrowser-table-editing-hover);
 }
 .mappingBrowser-hoveredRegistry:before {
   position: absolute;
