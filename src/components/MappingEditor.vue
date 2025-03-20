@@ -868,7 +868,7 @@ export default {
   color: var(--color-text-mediumLightGrey);
 }
 .mappingEditor-infoIcon .button:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 .mappingEditor-title {

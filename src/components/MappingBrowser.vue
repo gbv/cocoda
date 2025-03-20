@@ -1942,7 +1942,7 @@ export default {
   color: var(--color-text-mediumLightGrey);
 }
 #mappingBrowser-search-shareButton:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 .mappingBrowser-concordanceMenu {

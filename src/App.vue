@@ -928,10 +928,10 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: @color-button;
+  color: var(--color-button);
 }
 #swapSides:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 .tooltip {

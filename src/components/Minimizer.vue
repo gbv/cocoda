@@ -212,7 +212,7 @@ export default {
 .minimizeButton {
   right: 0px;
   top: 0px;
-  background: @color-button-faded;
+  background: var(--color-button-faded);
   color: var(--color-background);
   border-radius: 0 0 0 3px;
 }
@@ -223,7 +223,7 @@ export default {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: @color-button-faded;;
+  color: var(--color-button-faded);
   font-size: 1rem;
 }
 // Overlay when minimize button is hovered

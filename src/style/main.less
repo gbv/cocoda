@@ -134,22 +134,22 @@ h6 {
   cursor: pointer;
   user-select: none;
   vertical-align: middle;
-  color: @color-button;
+  color: var(--color-button);
 }
 .button:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 .button-disabled {
   user-select: none;
   vertical-align: middle;
-  color: @color-button-disabled;
+  color: var(--color-button-disabled);
 }
 .button-delete {
   .button();
-  color: @color-button-delete;
+  color: var(--color-button-delete);
 }
 .button-delete:hover {
-  color: @color-button-delete-hover;
+  color: var(--color-button-delete-hover);
 }
 
 // Button click animation (makes buttons feel more "alive")
@@ -171,12 +171,12 @@ h6 {
   width: 20px;
   height: 20px;
   z-index: @zIndex-4;
-  color: fadeout(@color-button, 70%);
-  background-color: fadeout(@color-button-disabled, 80%);
+  color: var(--color-button-faded-70);
+  background-color: var(--color-button-disabled-faded-80);
 }
 .utilityButton:hover {
-  color: fadeout(@color-button, 40%);
-  background-color: fadeout(@color-button-disabled, 60%);
+  color: var(--color-button-faded-40);
+  background-color: var(--color-button-disabled-faded-60);
 }
 
 // These are here and not in the component because the button might be used somewhere else separately (e.g. MappingDetails).
@@ -189,7 +189,7 @@ h6 {
   cursor: pointer;
 }
 .dataModalButton:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 
 // Mapped status of concept items
@@ -210,10 +210,10 @@ h6 {
   margin-right: 5px;
 }
 .starFavorite:hover, .starNormal:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 .starNormal {
-  color: @color-button-faded;
+  color: var(--color-button-faded);
   margin-right: 5px;
 }
 

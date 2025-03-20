@@ -160,6 +160,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/style/main.less";
+@import "../style/colors.css";
 
 .componentSettings {
   position: absolute;
@@ -168,9 +169,9 @@ export default {
   z-index: @zIndex-2;
 }
 .componentSettings > .button {
-  color: @color-button-slightlyFaded;
+  color: var(--color-button-faded-40);
 }
 .componentSettings > .button:hover {
-  color: @color-button-hover;
+  color: var(--color-button-hover);
 }
 </style>

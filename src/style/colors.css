@@ -51,18 +51,44 @@
 
     /* Button colors (monochrome) */
     --color-button-hover: var(--color-primary-light);
+    --color-button: 85, 85, 85; /* It was #555555, now in rgb, important is to use only numbers, without rgb function */
+    --color-button-faded: rgba(var(--color-button), 0.8);
+    --color-button-faded-70: rgba(var(--color-button), 0.7);
+    --color-button-faded-40: rgba(var(--color-button), 0.4);
+    --color-button-disabled: var(--color-button-faded);
+    --color-button-disabled-faded-80: rgba(var(--color-button), 0.64); /* 80% of 80% = 64% */
+    --color-button-disabled-faded-60: rgba(var(--color-button), 0.48); /* 80% of 60% = 48% */
+    --color-button-delete: var(--color-danger);
+    --color-button-delete-hover: var(--color-danger-dark);
 
-    /*  
-        @color-button: #555555;
-    @color-button-slightlyFaded: fadeout(@color-button, 40%);
-    @color-button-faded: fadeout(@color-button, 80%);
-    @color-button-hover: @color-primary-light;
-    @color-button-disabled: @color-button-faded;
-    @color-button-delete: @color-danger;
-    @color-button-delete-hover: @color-danger-dark;
-    */
-
-    /* Component specific colors */
+    /* 
+    
+    
+    // Component specific colors // ----------------------------------------
     --color--conceptSearch-result-selected: var(--color-primary-dark);
+    
+    @color--mappingBrowser-table-match: fadeout(@color-secondary-light, 70%);
+    @color--mappingBrowser-table-match-hover: fadeout(@color-secondary-light, 45%);
+    @color--mappingBrowser-table-editing: fadeout(@color-secondary, 40%);
+    @color--mappingBrowser-table-editing-hover: fadeout(@color-secondary, 30%);
+
+    @color--conceptSearch-result-selected: @color-primary-dark;
+    @color--conceptSearch-result-selected-background: @color-background-secondary;
+    @color--conceptSearch-searchHighlight: @color-secondary-dark;
+    @color--conceptSearch-searchHighlight-selected: @color-secondary-dark;
+
+    @color--itemName-highlighted: @color-text-grey;
+
+    @color--loadingIndicator-border: rgb(243, 243, 243);
+    @color--loadingIndicator-border-top: rgb(52, 152, 219);
+
+    // Alert colors // -----------------------------------------------------
+
+    @color-alert-success: @color-text-dark;
+    @color-alert-success-background: rgb(193, 221, 198);
+        
+    */
+    
+   
 
 }
