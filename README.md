@@ -78,7 +78,11 @@ There is a detailled end-user manual available [in German](https://gbv.github.io
 
 ## Configuration
 
-For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory. The default options are given in the file [`config/cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json) (please consult this file for examples on how to use the configuration options). When using a manual build, create file `config/cocoda.json` and rebuild (`npm run build`) after editing (you can also run `npm run build -- --config-only` if you already have a build in folder `dist/` and only need to update the config file). The following fields are recognized so far:
+For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory and by passing query parameter `config` with an URL of a config file (CORS headers must be enabled to load if from another domain). 
+
+The default options are given in the file [`config/cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json) (please consult this file for examples on how to use the configuration options). When using a manual build, create file `config/cocoda.json` and rebuild (`npm run build`) after editing (you can also run `npm run build -- --config-only` if you already have a build in folder `dist/` and only need to update the config file).
+
+The following fields are recognized so far:
 
 * **title**: the main title of the instance as plain string
 
