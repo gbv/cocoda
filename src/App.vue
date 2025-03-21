@@ -263,6 +263,21 @@ export default {
   },
   watch: {
     /**
+     * Watch css custom properties to be applied on every chnages
+     */
+    "config.cssProperties": {
+      handler(newCssProperties) {
+        if (!newCssProperties) {
+          return
+        }
+        Object.entries(newCssProperties).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(`--${key}`, value)
+        })
+      },
+      immediate: true, // Apply immediately on component mount
+      deep: true, // Watch for nested changes
+    },
+    /**
      * Watch route of vue-router and load from parameters if necessary.
      */
     $route({ query: toQuery }, { query: fromQuery }) {
