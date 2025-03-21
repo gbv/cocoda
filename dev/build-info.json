@@ -1,11 +1,11 @@
 {
   "version": "1.11.5",
   "gitBranch": "dev",
-  "gitCommit": "93aa96e07afb0e21f71336f5fd588c40669fc3bc",
-  "gitCommitShort": "93aa96e0",
-  "gitCommitMessage": "93aa96e0 Issue #740 allow to configure color scheme via config",
-  "buildDate": "2025-03-20T15:03:35Z",
-  "date": "2025-03-20T15:02:53.000Z",
+  "gitCommit": "401a5ffa35d2e19fbbb5094d6e6bac137d54ab14",
+  "gitCommitShort": "401a5ffa",
+  "gitCommitMessage": "401a5ffa Mention ?config= parameter for configuration",
+  "buildDate": "2025-03-21T06:43:35Z",
+  "date": "2025-03-21T06:42:41.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
