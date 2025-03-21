@@ -1,11 +1,11 @@
 {
   "version": "1.11.5",
   "gitBranch": "dev",
-  "gitCommit": "401a5ffa35d2e19fbbb5094d6e6bac137d54ab14",
-  "gitCommitShort": "401a5ffa",
-  "gitCommitMessage": "401a5ffa Mention ?config= parameter for configuration",
-  "buildDate": "2025-03-21T06:43:35Z",
-  "date": "2025-03-21T06:42:41.000Z",
+  "gitCommit": "8c7912a2d110affbfd7c491368e801c323ee2ede",
+  "gitCommitShort": "8c7912a2",
+  "gitCommitMessage": "8c7912a2 (#740) Add watchers able to observe changes in the config about css custom porperties",
+  "buildDate": "2025-03-21T09:59:00Z",
+  "date": "2025-03-21T09:57:45.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
