@@ -1,11 +1,11 @@
 {
-  "version": "1.11.5",
+  "version": "1.11.6",
   "gitBranch": "dev",
-  "gitCommit": "93b46bbb9f521aab03686c19b4aa2845efea05ca",
-  "gitCommitShort": "93b46bbb",
-  "gitCommitMessage": "93b46bbb (#740) Add documentation about custom css possibility",
-  "buildDate": "2025-03-24T08:40:11Z",
-  "date": "2025-03-24T08:38:23.000Z",
+  "gitCommit": "4c13817839687f73e1da4eef6f98a31c8c9aba5b",
+  "gitCommitShort": "4c138178",
+  "gitCommitMessage": "4c138178 Release version 1.11.6",
+  "buildDate": "2025-03-24T08:50:24Z",
+  "date": "2025-03-24T08:49:36.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
