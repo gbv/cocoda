@@ -912,6 +912,9 @@ p {
   height: 100%;
 }
 
+#settingsModal .modal-content > header {
+  background-color: var(--color-background-component-heading);
+}
 #settingsModal .modal-body {
   padding: 0;
 }
@@ -928,6 +931,7 @@ p {
 }
 #settingsModal .modal-body .card .cocoda-vue-tabs {
   height: 100%;
+  background-color: var(--color-background-component);
 }
 #settingsModal .modal-body .card .cocoda-vue-tabs .cocoda-vue-tabs-content {
   padding: 20px 20px 5px 20px;
