@@ -1,11 +1,11 @@
 {
   "version": "1.11.6",
   "gitBranch": "dev",
-  "gitCommit": "6d479b3fce8163af674790dd4bc16fc540e80b11",
-  "gitCommitShort": "6d479b3f",
-  "gitCommitMessage": "6d479b3f Extend use of base colors",
-  "buildDate": "2025-03-24T13:26:52Z",
-  "date": "2025-03-24T13:23:18.000Z",
+  "gitCommit": "1f6ce618c652f65771f448932189947aa76e4c2e",
+  "gitCommitShort": "1f6ce618",
+  "gitCommitMessage": "1f6ce618 Reduce use of less vs css",
+  "buildDate": "2025-03-24T15:17:08Z",
+  "date": "2025-03-24T15:15:09.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
