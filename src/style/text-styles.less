@@ -1,12 +1,14 @@
-// Text and font styles // --------------------------------------------------
-
-@import "./colors.css";
+:root {
+  --font-size-large: 1.1rem;
+  --font-size-normal: 0.9rem;
+  --font-size-small: 0.8rem;
+  --font-size-tiny: 0.75rem;
+  --font-weight-medium: 500;
+  --font-weight-heavy: 700;
+}
 
 .text-dark {
   color: var(--color-text);
-}
-.text-grey {
-  color: var(--color-text-grey);
 }
 .text-lightGrey {
   color: var(--color-text-lightGrey);
@@ -18,30 +20,30 @@
   color: var(--color-text-veryLightGrey);
 }
 .fontWeight-medium {
-  font-weight: 500
+  font-weight: var(--font-weight-medium);
 }
 .fontWeight-heavy {
-  font-weight: 700
+  font-weight: var(--font-weight-heavy);
 }
 .font-italic {
   font-style: italic;
 }
 .fontSize-verySmall {
-  font-size: 0.75rem;
+  font-size: var(--font-size-tiny);
 }
 .fontSize-small {
-  font-size: 0.8rem;
+  font-size: var(--font-size-small);
 }
 .fontSize-normal {
-  font-size: 0.9rem
+  font-size: var(--font-size-normal);
 }
 .fontSize-large {
-  font-size: 1.1rem
+  font-size: var(--font-size-large);
 }
 .font-default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  .fontSize-normal;
-  .text-dark;
+  font-size: var(--font-size-normal);
+  color: var(--color-text);
 }

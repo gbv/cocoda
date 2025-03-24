@@ -903,13 +903,15 @@ p {
 
 </style>
 
-<style>
+<style lang="less">
+@import "@/style/text-styles.less";
 
 #settingsModal .modal-dialog {
   height: 90%;
 }
 #settingsModal .modal-content {
   height: 100%;
+  .font-default
 }
 
 #settingsModal .modal-content > header {
