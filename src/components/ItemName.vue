@@ -253,7 +253,7 @@ export default {
   user-select: text;
 }
 .itemName-inner, .itemName-inner > * {
-  color: var(--color-text-dark) !important;
+  color: var(--color-text) !important;
   display: inline;
 }
 .itemName-hovered, .itemName-hoverable:hover {
@@ -290,6 +290,6 @@ export default {
   width: 1em;
   height: 1em;
   margin-top: 0.2em;
-  background: var(--color-background);
+  background: var(--color-background-component);
 }
 </style>

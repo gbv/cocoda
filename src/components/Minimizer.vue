@@ -213,7 +213,7 @@ export default {
   right: 0px;
   top: 0px;
   background: var(--color-button-faded);
-  color: var(--color-background);
+  color: var(--color-background-component);
   border-radius: 0 0 0 3px;
 }
 .minimizeButton {
@@ -247,11 +247,11 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: var(--color-background);
+  background-color: var(--color-background-component);
   user-select: none;
 }
 .minimizedOverlay:hover {
-  background-color: hsl(var(--color-secondary));
+  background-color: var(--color-secondary);
 }
 .minimizedOverlay > div {
   position: absolute;

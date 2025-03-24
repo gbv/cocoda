@@ -264,9 +264,9 @@ export default {
           ],
           handler: () => {
             if (!this.filterPopoverShow) {
-               
+
               this.isOpen = false
-               
+
               this.searchSelected = -1
             }
           },
@@ -278,7 +278,7 @@ export default {
             this.$refs.filterPopover,
           ],
           handler: () => {
-             
+
             this.filterPopoverShow = false
           },
         },
@@ -530,7 +530,7 @@ export default {
   width: 100%;
   padding: 0;
   margin: 3px 0;
-  background-color: var(--color-background);
+  background-color: var(--color-background-component);
   box-shadow: 0 2px 4px 0 var(--color-shadow);
   z-index: @zIndex-10;
 }

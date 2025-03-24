@@ -124,7 +124,7 @@ export default defineComponent({
       let suggestResults
       try {
         suggestResults = (await promise).slice(1).reduce((current, next) => {
-          current = next.map((element, index) => (current[index] || []).concat(element)); return current 
+          current = next.map((element, index) => (current[index] || []).concat(element)); return current
         }, [])
       } catch (error) {
         if (error.message === "canceled") {
@@ -324,7 +324,7 @@ export default defineComponent({
   width: 100%;
   padding: 0;
   margin: 1px 0;
-  background-color: var(--color-background);
+  background-color: var(--color-background-component);
   box-shadow: 0 2px 4px 0 var(--color-shadow);
   z-index: @zIndex-10;
 }

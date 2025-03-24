@@ -870,7 +870,7 @@ p {
   align-items: center;
 }
 .settingsModal-mapping-registry.selectable:hover {
-  background-color: var(--color-background-secondary);
+  background-color: var(--color-background);
   cursor: pointer;
 }
 // First Child: Checkbox
@@ -893,7 +893,7 @@ p {
 }
 .settingsModal-footer {
   padding: .75rem 1.25rem;
-  background-color: var(--color-background-secondary);
+  background-color: var(--color-background);
   border-top: 1px solid var(--color-shadow);
 }
 // Hide no data tag if it's not first child

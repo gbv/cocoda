@@ -429,10 +429,10 @@ export default {
 nav.navbar {
   padding: 2px 8px;
   height: 42px;
-  background-color: var(--color-background-primary);
+  background-color: var(--color-background-navbar);
 }
 .navbar-brand {
-  color: var(--color-text-dark) !important;
+  color: var(--color-text) !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
@@ -462,7 +462,7 @@ hr {
 @import "../style/colors.css";
 
 .nav-link, .nav-link > span, .btn-link {
-  color: var(--color-text-dark) !important;
+  color: var(--color-text) !important;
 }
 .nav-link.active, .btn-link.active {
   font-weight: 700;
@@ -493,7 +493,7 @@ hr {
   background-color: hsl(var(--color-secondary-light));
 }
 .favoriteConceptsDropdown-iconTarget {
-  color: hsl(var(--color-secondary));
+  color: var(--color-secondary);
 }
 .navbar-dropdown-selectable {
   word-break: default;
@@ -518,7 +518,7 @@ hr {
 .navbar-dropdown-selectable-selected {
   .fontWeight-heavy;
   padding-right: 5px;
-  background-color: hsl(var(--color-secondary));
+  background-color: var(--color-secondary);
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;

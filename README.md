@@ -86,7 +86,7 @@ The following fields are recognized so far:
 
 * **title**: the main title of the instance as plain string
 
-* **cssProperties**: A list of css variable names (see #)
+* **cssProperties**: object of global CSS properties, used for [color settings](#color-settings)
 
 * **logos**: a list of logos to display left to the title, each with subfields:
   * `file`: image URL relative to the `static` directory
@@ -118,32 +118,29 @@ The following fields are recognized so far:
 
 Using the pre-built version, the application only has to be reloaded after editing the configuration file.
 
+### Color settings
 
-#### Customizing App Component Colors
-You can easily adjust the colors of various app components by modifying the config.js file. Color settings are managed within the `cssProperties` object.
+Colors can be changed with the `cssProperties` configuration object. Most colors are derived from a set of basic color codes, each given with three values in HSL color model (hue, saturation, and lightness). Some other colors can be given by standard CSS color name or code.
 
-##### Changing a Component's Color
-To override a default color, add an entry in `config.js`. For example, to set the primary background color:
+In particular the following properties can be set:
+
+- **color-primary-h**, **color-primary-s** and **color-primary-l**: selected elements, links...
+- **color-secondary-h**, **color-secondary-s** and **color-secondary-l**: menus, selectable elements, warnings...
+- **color-text-h**, **color-text-s** and **color-text-l**: labels, text...
+- **color-background**: background of the application
+- **color-background-component** and **color-background-component-heading**: background of components (concept browser, mapping editor...) and their heading
+
+See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future release.
+
+For instance to change the primary color for navigation bar, data source icons...:
 
 ```json
 "cssProperties": {
-  "color-background-primary": "red" // This overwrites the css variable --color-background-primary defined in colors.css
+  "color-primary-h": "180",
+  "color-primary-s": "100%",
+  "color-primary-l": "40%"
 }
 ```
-This will change the header's background to red.
-
-##### Naming Conventions & Reference
-
-Some CSS property names are intuitive, while others may not be immediately clear. For example, `color-background-primary` applies to the header background.
-
-For a full list of available properties, refer to `src/style/colors.css`. 
-
-##### Color Formats and Adjustments in colors.css
-In the `src/style/colors.css` file, colors are defined using multiple formats: RGB, HEX, and HSL.
-
-The HSL format is particularly useful for generating lighter or darker variations of base colors by adjusting the third parameter, `lightness`. Increasing the lightness value creates a brighter shade, while decreasing it results in a darker tone.
-
-Additionally, comments are included next to each color definition to provide clarity on its purpose and usage within the application.
 
 ## Maintainers
 

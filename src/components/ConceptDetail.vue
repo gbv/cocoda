@@ -245,7 +245,7 @@ export default {
     settings: {
       type: Object,
       default: () => {
-        return {} 
+        return {}
       },
     },
   },
@@ -543,7 +543,7 @@ export default {
 }
 
 .conceptDetail-name {
-  background-color: hsl(var(--color-secondary));
+  background-color: var(--color-secondary);
   position: relative;
   padding: 0 20px;
 }
@@ -557,7 +557,7 @@ export default {
   position: absolute;
   right: 3px;
   top: -2px;
-  color: var(--color-background);
+  color: var(--color-background-component);
 }
 
 .conceptDetail-identifier {

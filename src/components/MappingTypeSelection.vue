@@ -94,7 +94,7 @@ export default {
   font-weight: bold;
 }
 .mappingTypeSelected {
-  background-color: hsl(var(--color-secondary));
+  background-color: var(--color-secondary);
 }
 .mappingType:hover {
   background-color: hsl(var(--color-secondary-light));

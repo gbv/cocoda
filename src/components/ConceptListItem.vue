@@ -398,7 +398,7 @@ export default {
 .addToMapping {
   .fontSize-large;
   position: absolute;
-  color: var(--color-background);
+  color: var(--color-background-component);
   top: 50%;
   transform: translateY(-50%);
   right: 8px;
@@ -419,7 +419,7 @@ export default {
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
 // TODO: Use font awesome or move somewhere else
 .arrowBox > i {
-  border: solid var(--color-black);
+  border: solid var(--color-button);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;

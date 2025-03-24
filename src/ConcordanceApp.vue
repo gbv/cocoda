@@ -346,7 +346,7 @@ html, body {
 .main {
   flex: 1;
   position: relative;
-  background-color: var(--color-background-secondary);
+  background-color: var(--color-background);
 }
 .flexbox-row {
   display: flex;
@@ -436,7 +436,7 @@ html, body {
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
-  color: rgb(var(--color-button));
+  color: var(--color-button);
 }
 #swapSides:hover {
   color: var(--color-button-hover);
@@ -448,7 +448,7 @@ html, body {
 // Override border color for all cocoda-vue-tabs
 .cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
   border-bottom-color: var(--color-primary) !important;
-  background-color: var(--color-background-heading) !important;
+  background-color: var(--color-background-component-heading) !important;
 }
 // Override font-size for all cocoda-vue-tabs
 .cocoda-vue-tabs-sm {

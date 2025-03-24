@@ -40,7 +40,7 @@
 }
 
 .visualComponent {
-  background-color: var(--color-background);
+  background-color: var(--color-background-component);
   margin: 4px;
   box-shadow: 0 1px 2px 0 var(--color-shadow);
   padding: 5px;
@@ -131,7 +131,7 @@ h6 {
   cursor: pointer;
   user-select: none;
   vertical-align: middle;
-  color: rgb(var(--color-button));
+  color: var(--color-button);
 }
 .button:hover {
   color: var(--color-button-hover);
@@ -194,7 +194,7 @@ h6 {
   border-right: 5px solid var(--color-success);
 }
 .concept-mappingsDoNotExist {
-  border-right: 5px solid var(--color-background);
+  border-right: 5px solid var(--color-background-component);
 }
 
 // Favorite stars
@@ -203,7 +203,7 @@ h6 {
   cursor: pointer;
 }
 .starFavorite {
-  color: var(--color-primary);
+  color: hsl(var(--color-primary));
   margin-right: 5px;
 }
 .starFavorite:hover, .starNormal:hover {
@@ -224,7 +224,7 @@ h6 {
 // Other styles // --------------------------------------------------
 
 .selected {
-  background-color: hsl(var(--color-secondary));
+  background-color: var(--color-secondary);
   .fontWeight-heavy;
 }
 
@@ -251,7 +251,7 @@ h6 {
 
 // Override bootstrap styles
 .custom-control-label:before{
-  background-color: var(--color-background-secondary) !important;
+  background-color: var(--color-background) !important;
 }
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
   background-color: var(--color-button) !important;
@@ -280,7 +280,7 @@ h6 {
   border-color: var(--color-primary-dark) !important;
 }
 .btn-primary:hover {
-  background-color: hsl(var(--color-primary-light)) !important;
+  background-color: var(--color-primary-light) !important;
   border-color: var(--color-primary) !important;
 }
 .btn-success {

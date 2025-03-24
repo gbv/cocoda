@@ -251,7 +251,7 @@ export default {
 .button {
   cursor: pointer;
   user-select: none;
-  color: rgb(var(--color-button));
+  color: var(--color-button);
 }
 .button:hover {
   color: var(--color-button-hover);

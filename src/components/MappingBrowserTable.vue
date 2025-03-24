@@ -961,7 +961,7 @@ export default {
 
 .mappingBrowser-pagination.pagination .page-item.active .page-link {
   font-weight: bold;
-  color: var(--color-text-dark);
+  color: var(--color-text);
   border-bottom: 3px solid var(--color-primary);
 }
 
@@ -984,12 +984,12 @@ export default {
 }
 
 .mappingBrowser-table .flexibleTable-section-before {
-  background-color: var(--color-background-heading);
+  background-color: var(--color-background-component-heading);
 }
 
 // Custom section class for current registry
 .mappingBrowser-table-currentRegistrySection > .flexibleTable-section-before {
-  background-color: hsl(var(--color-secondary));
+  background-color: var(--color-secondary);
 }
 
 </style>
