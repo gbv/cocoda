@@ -1,11 +1,11 @@
 {
   "version": "1.11.6",
   "gitBranch": "dev",
-  "gitCommit": "e0b589c89c4c646d746842bf63cb678ca9d33cbc",
-  "gitCommitShort": "e0b589c8",
-  "gitCommitMessage": "e0b589c8 Extend color configuration",
-  "buildDate": "2025-03-24T12:02:53Z",
-  "date": "2025-03-24T12:02:06.000Z",
+  "gitCommit": "6d479b3fce8163af674790dd4bc16fc540e80b11",
+  "gitCommitShort": "6d479b3f",
+  "gitCommitMessage": "6d479b3f Extend use of base colors",
+  "buildDate": "2025-03-24T13:26:52Z",
+  "date": "2025-03-24T13:23:18.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
