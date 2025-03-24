@@ -86,6 +86,8 @@ The following fields are recognized so far:
 
 * **title**: the main title of the instance as plain string
 
+* **cssProperties**: A list of css variable names (see #)
+
 * **logos**: a list of logos to display left to the title, each with subfields:
   * `file`: image URL relative to the `static` directory
   * `alt`: alternate text for the image, if the image cannot be displayed, as plain string
@@ -115,6 +117,33 @@ The following fields are recognized so far:
 * **autoRefresh**: an object with auto refresh values in milliseconds. `autoRefresh.mappings` determines how often mappings in MappingBrowser will be reloaded (default: 10000 = every 10 seconds), `autoRefresh.update` determines how often Cocoda will look for an update (default: 120000 = every 2 minutes).
 
 Using the pre-built version, the application only has to be reloaded after editing the configuration file.
+
+
+#### Customizing App Component Colors
+You can easily adjust the colors of various app components by modifying the config.js file. Color settings are managed within the `cssProperties` object.
+
+##### Changing a Component's Color
+To override a default color, add an entry in `config.js`. For example, to set the primary background color:
+
+```json
+"cssProperties": {
+  "color-background-primary": "red" // This overwrites the css variable --color-background-primary defined in colors.css
+}
+```
+This will change the header's background to red.
+
+##### Naming Conventions & Reference
+
+Some CSS property names are intuitive, while others may not be immediately clear. For example, `color-background-primary` applies to the header background.
+
+For a full list of available properties, refer to `src/style/colors.css`. 
+
+##### Color Formats and Adjustments in colors.css
+In the `src/style/colors.css` file, colors are defined using multiple formats: RGB, HEX, and HSL.
+
+The HSL format is particularly useful for generating lighter or darker variations of base colors by adjusting the third parameter, `lightness`. Increasing the lightness value creates a brighter shade, while decreasing it results in a darker tone.
+
+Additionally, comments are included next to each color definition to provide clarity on its purpose and usage within the application.
 
 ## Maintainers
 
