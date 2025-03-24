@@ -1,11 +1,11 @@
 {
   "version": "1.11.5",
   "gitBranch": "dev",
-  "gitCommit": "1e14c3363ee44ab6f0e587c01825cd561721e072",
-  "gitCommitShort": "1e14c336",
-  "gitCommitMessage": "1e14c336 (#740) Avoid watcher for retrieving css custom properties; loading them just once",
-  "buildDate": "2025-03-21T10:18:49Z",
-  "date": "2025-03-21T10:17:54.000Z",
+  "gitCommit": "93b46bbb9f521aab03686c19b4aa2845efea05ca",
+  "gitCommitShort": "93b46bbb",
+  "gitCommitMessage": "93b46bbb (#740) Add documentation about custom css possibility",
+  "buildDate": "2025-03-24T08:40:11Z",
+  "date": "2025-03-24T08:38:23.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
