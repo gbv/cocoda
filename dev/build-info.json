@@ -1,11 +1,11 @@
 {
   "version": "1.11.6",
   "gitBranch": "dev",
-  "gitCommit": "1f6ce618c652f65771f448932189947aa76e4c2e",
-  "gitCommitShort": "1f6ce618",
-  "gitCommitMessage": "1f6ce618 Reduce use of less vs css",
-  "buildDate": "2025-03-24T15:17:08Z",
-  "date": "2025-03-24T15:15:09.000Z",
+  "gitCommit": "6e7a545ab75d8fcaf8299fff9996c05ea9df1a33",
+  "gitCommitShort": "6e7a545a",
+  "gitCommitMessage": "6e7a545a Extend color configuration",
+  "buildDate": "2025-03-25T11:54:14Z",
+  "date": "2025-03-25T11:53:21.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
