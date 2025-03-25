@@ -3,61 +3,66 @@
     :style="{
       paddingLeft: (allowShowAncestors && ancestors.length > 3 && !settings.showAllAncestors) ? '8px' : 0,
     }">
-    <div
-      v-if="allowShowAncestors && ancestors.length > 3 && !settings.showAllAncestors"
-      v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium }"
-      class="button conceptDetail-ancestors-expand"
-      @click="showAncestors = !showAncestors">
-      <font-awesome-icon
-        :icon="showAncestors ? 'angle-down' : 'angle-right'"
-        style="font-size: 12px;" />
-    </div>
-    <div
-      v-for="(concept, index) in ancestors.filter(concept => concept != null).reverse()"
-      :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`"
-      :class="{
-        'concept-mappingsExist': (showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3) && loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
-        'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
-      }">
-      <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
+    <div v-if="broader.length < 2 && ancestors.length > 0">
+      <!-- Ancestors block -->      
+      <div
+        v-if="allowShowAncestors && ancestors.length > 3 && !settings.showAllAncestors"
+        v-b-tooltip.hover="{ title: showAncestors ? $t('conceptDetail.showLessAncestors') : $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium }"
+        class="button conceptDetail-ancestors-expand"
+        @click="showAncestors = !showAncestors">
         <font-awesome-icon
-          class="u-flip-horizontal"
-          icon="level-up-alt"
-          style="margin-right: 3px; font-size: 12px;" />
+          :icon="showAncestors ? 'angle-down' : 'angle-right'"
+          style="font-size: 12px;" />
+      </div>
+      <div
+        v-for="(concept, index) in ancestors.filter(concept => concept != null).reverse()"
+        :key="`conceptDetail-${isLeft}-ancesters-${concept.uri}-${index}`"
+        :class="{
+          'concept-mappingsExist': (showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3) && loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+          'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+        }">
+        <span v-if="showAncestors || settings.showAllAncestors || index == 0 || index == ancestors.length - 1 || ancestors.length <= 3">
+          <font-awesome-icon
+            class="u-flip-horizontal"
+            icon="level-up-alt"
+            style="margin-right: 3px; font-size: 12px;" />
+          <item-name
+            :item="concept"
+            :is-link="!disallowSelectItem"
+            :is-left="isLeft"
+            font-size="small" />
+        </span>
+        <span
+          v-else-if="index == 1"
+          v-b-tooltip.hover="allowShowAncestors ? { title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium } : null"
+          :class="{
+            'conceptDetail-ancestors-more': true,
+            button: allowShowAncestors,
+          }"
+          @click="showAncestors = allowShowAncestors">
+          <font-awesome-icon
+            class="u-flip-horizontal"
+            icon="ellipsis-v" />
+        </span>
+      </div>
+    </div>
+    <div v-else>
+      <!-- Broader block -->      
+      <div
+        v-for="(concept, index) in (_item.__BROADERLOADED__ ? broader : []).filter(concept => concept != null)"
+        :key="`conceptDetail-broader-${concept.uri}-${index}`"
+        :class="{
+          'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
+          'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
+        }">
+        <font-awesome-icon
+          icon="sort-up" />
         <item-name
           :item="concept"
           :is-link="!disallowSelectItem"
           :is-left="isLeft"
           font-size="small" />
-      </span>
-      <span
-        v-else-if="index == 1"
-        v-b-tooltip.hover="allowShowAncestors ? { title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium } : null"
-        :class="{
-          'conceptDetail-ancestors-more': true,
-          button: allowShowAncestors,
-        }"
-        @click="showAncestors = allowShowAncestors">
-        <font-awesome-icon
-          class="u-flip-horizontal"
-          icon="ellipsis-v" />
-      </span>
-    </div>
-    <!-- Broader -->
-    <div
-      v-for="(concept, index) in ((ancestors.length == 0 && _item.__BROADERLOADED__) ? broader : []).filter(concept => concept != null)"
-      :key="`conceptDetail-broader-${concept.uri}-${index}`"
-      :class="{
-        'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(concept, isLeft),
-        'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(concept, isLeft)
-      }">
-      <font-awesome-icon
-        icon="sort-up" />
-      <item-name
-        :item="concept"
-        :is-link="!disallowSelectItem"
-        :is-left="isLeft"
-        font-size="small" />
+      </div>
     </div>
     <!-- Show LoadingIndicator when ancestors exist, but are not loaded yet -->
     <loading-indicator
