@@ -1,11 +1,11 @@
 {
-  "version": "1.11.6",
+  "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "d5f27003e12cf10db7e755a83dbbd7ca9f845566",
-  "gitCommitShort": "d5f27003",
-  "gitCommitMessage": "d5f27003 show ancestors and broaded accordingly (#730)",
-  "buildDate": "2025-03-25T12:11:43Z",
-  "date": "2025-03-25T12:10:35.000Z",
+  "gitCommit": "48269061f180f34b5fa4610c3369e6ca44ef4ef1",
+  "gitCommitShort": "48269061",
+  "gitCommitMessage": "48269061 Release version 1.12.0",
+  "buildDate": "2025-03-25T12:40:28Z",
+  "date": "2025-03-25T12:38:55.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
