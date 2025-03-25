@@ -865,7 +865,7 @@ export default {
   z-index: @zIndex-2;
 }
 .mappingEditor-infoIcon .button {
-  color: var(--color-text-mediumLightGrey);
+  color: var(--color-button-light);
 }
 .mappingEditor-infoIcon .button:hover {
   color: var(--color-button-hover);

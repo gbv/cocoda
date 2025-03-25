@@ -1939,7 +1939,7 @@ export default {
   right: 20px;
   bottom: 0px;
   z-index: @zIndex-2;
-  color: var(--color-text-mediumLightGrey);
+  color: var(--color-button-light);
 }
 #mappingBrowser-search-shareButton:hover {
   color: var(--color-button-hover);

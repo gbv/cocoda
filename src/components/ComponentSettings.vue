@@ -169,7 +169,7 @@ export default {
   z-index: @zIndex-2;
 }
 .componentSettings > .button {
-  color: var(--color-button-faded-40);
+  color: var(--color-button-light);
 }
 .componentSettings > .button:hover {
   color: var(--color-button-hover);

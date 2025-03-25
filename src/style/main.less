@@ -125,7 +125,7 @@ h6 {
 .button-disabled {
   user-select: none;
   vertical-align: middle;
-  color: var(--color-button-disabled);
+  color: var(--color-button-lighter);
 }
 .button-delete {
   .button();
@@ -143,32 +143,13 @@ h6 {
   transform: translateY(1px);
 }
 
-.utilityButton {
-  font-weight: var(--font-weight-heavy);
-  cursor: pointer;
-  user-select: none;
-  position: absolute;
-  font-size: 11px;
-  right: 0px;
-  top: 0px;
-  width: 20px;
-  height: 20px;
-  z-index: @zIndex-4;
-  color: var(--color-button-faded-70);
-  background-color: var(--color-button-disabled-faded-80);
-}
-.utilityButton:hover {
-  color: var(--color-button-faded-40);
-  background-color: var(--color-button-disabled-faded-60);
-}
-
 // These are here and not in the component because the button might be used somewhere else separately (e.g. MappingDetails).
 .dataModalButton {
   z-index: @zIndex-3;
   position: absolute;
   bottom: 0px;
   right: 5px;
-  color: var(--color-text-mediumLightGrey);
+  color: var(--color-button-light);
   cursor: pointer;
 }
 .dataModalButton:hover {
@@ -196,7 +177,7 @@ h6 {
   color: var(--color-button-hover);
 }
 .starNormal {
-  color: var(--color-button-faded);
+  color: var(--color-button);
   margin-right: 5px;
 }
 
@@ -269,6 +250,19 @@ h6 {
   background-color: var(--color-primary-light) !important;
   border-color: var(--color-primary) !important;
 }
+
+// TODO: neutral button
+/*
+.btn-secondary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary-dark) !important;
+}
+.btn-secondary:hover {
+  background-color: var(--color-button-hover) !important;
+  border-color: var(--color-primary) !important;
+}
+*/
+
 .btn-success {
   background-color: var(--color-success);
 }
@@ -300,7 +294,7 @@ h6 {
 // bootstrap alerts
 .alert-success {
   color: var(--color-success-dark) !important;
-  background-color: var(---color-success-lighter) !important;
+  background-color: var(--color-success-lighter) !important;
   border-color: var(--color-success-light) !important;
 }
 .alert-warning {
@@ -310,8 +304,8 @@ h6 {
 }
 .alert-danger {
   color: var(--color-danger-dark) !important;
-  background-color: var(--color-danger-lighter-30) !important;
-  border-color: var(--color-danger-lighter-15) !important;
+  background-color: var(--color-danger-lighter) !important;
+  border-color: var(--color-danger-light) !important;
 }
 
 // Orders

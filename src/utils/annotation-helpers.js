@@ -9,20 +9,12 @@ export function annotationsScore(annotations) {
 }
 
 export function annotationButtonColor(annotations) {
-  // A score of +3 or -3 means it will have 100% transparency.
-  let maxIntensity = 3
-  let { score, sign } = annotationsScore(annotations)
-  let delta = Math.min(score / maxIntensity, 1) * 150
-  let r = 85, g = 85, b = 85
+  const { sign } = annotationsScore(annotations)
   if (sign == "-") {
-    r += delta
-    g -= 50
-    b -= 50
+    return "var(--color-danger)"
   } else if (sign == "+") {
-    g += delta
-    r -= 50
-    b -= 50
+    return "var(--color-success)"
+  } else {
+    return "var(--color-text-grey)"
   }
-  let color = `rgb(${r}, ${g}, ${b})`
-  return color
 }

@@ -3,7 +3,7 @@
     <div
       v-show="!minimized"
       v-b-tooltip.hover="{ title: $t('minimizer.minimize'), delay: defaults.delay.medium }"
-      class="utilityButton minimizeButton"
+      class="minimizeButton"
       @click="toggleMinimize()"
       @mouseover="minimizeHovered = true"
       @mouseout="minimizeHovered = false">
@@ -210,20 +210,29 @@ export default {
 @import "../style/colors.css";
 
 .minimizeButton {
+  background: var(--color-button-light);
+  border-radius: 0 0 0 3px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: var(--font-weight-heavy);
+  height: 20px;
+  position: absolute;
+  padding-left: 5px;
   right: 0px;
   top: 0px;
-  background: var(--color-button-faded);
-  color: var(--color-background-component);
-  border-radius: 0 0 0 3px;
+  user-select: none;
+  width: 20px;
+  z-index: @zIndex-4;
 }
-.minimizeButton {
-  padding-left: 5px;
+.minimizeButton:hover {
+  background-color: var(--color-button-hover);
 }
 .maximizeButton {
   z-index: @zIndex-9;
   display: inline-block;
   position: static;
-  color: var(--color-button-faded);
+  color: var(--color-button-light);
   font-size: 1rem;
 }
 // Overlay when minimize button is hovered
