@@ -154,12 +154,13 @@
         <div class="mappingNoConcepts">
           <div
             v-if="$store.state.draggedConcept == null"
-            style="margin-bottom: -12px;">
+            style="margin-bottom: -12px;"
+            class="text-lightGrey">
             {{ $t("mappingEditor.placeholder") }}<br><br>
           </div>
           <div
             v-else
-            class="fontWeight-heavy">
+            class="text-lightGrey fontWeight-heavy">
             {{ $t("mappingEditor.placeholderDragging") }}
           </div>
           <div
@@ -828,7 +829,6 @@ export default {
   transform: translateX(-50%) translateY(-50%);
   text-align: center;
   .fontSize-small;
-  .text-lightGrey;
 }
 
 .mappingEditorToolbar {
