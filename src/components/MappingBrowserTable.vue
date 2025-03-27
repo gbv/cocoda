@@ -351,9 +351,7 @@
             <span
               v-if="!!registryHasErrored[section.registry.uri]"
               v-b-tooltip.hover="{ title: $t('mappingBrowser.registryHasErrored'), delay: defaults.delay.medium }"
-              class="registry-has-errored-indicator">
-              🔴
-            </span>
+              class="missingDataIndicator" />
           </div>
           <data-modal-button
             style="margin-left: 3px;"
@@ -974,9 +972,6 @@ export default {
   padding-top: 3px;
   padding-right: 25px;
   color: var(--color-text-grey);
-}
-.registry-has-errored-indicator {
-  cursor: default;
 }
 
 .mappingBrowser-table .flexibleTable-body {
