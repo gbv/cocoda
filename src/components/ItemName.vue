@@ -51,9 +51,7 @@
     <div
       v-if="showMissingDataIndicator"
       v-b-tooltip.hover="{ title: isScheme ? $t('itemDetail.noConcepts') : $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
-      class="missingDataIndicator">
-      •
-    </div>
+      class="missingDataIndicator" />
   </div>
 </template>
 

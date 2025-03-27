@@ -87,9 +87,7 @@
             @mouseover="mouseover(i)">
             <span
               v-if="result[1] == '###conceptWithoutData###'"
-              class="missingDataIndicator">
-              •
-            </span>
+              class="missingDataIndicator" />
             <span v-html="highlightQueryInResult(result[0])" />
           </li>
           <li

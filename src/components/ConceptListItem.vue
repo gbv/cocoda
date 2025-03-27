@@ -77,9 +77,7 @@
         <span
           v-if="concept && concept.__DETAILSLOADED__ == -1"
           v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
-          class="missingDataIndicator">
-          •
-        </span>
+          class="missingDataIndicator" />
       </div>
       <div
         v-if="canAddToMapping"
