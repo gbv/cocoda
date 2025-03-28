@@ -133,9 +133,19 @@ In particular the following properties can be set:
 - **color-background**: background of the application
 - **color-background-component** and **color-background-component-heading**: background of components (concept browser, mapping editor...) and their heading
 
-See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future release.
+See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future releases.
 
-For instance to change the primary color for navigation bar, data source icons...:
+Colors in the `cssProperties` object can be provided as:
+- **HSL values** (e.g., "color-primary-h": "180", "color-primary-s": "100%", "color-primary-l": "40%"), or
+- **HEX values** (e.g., "color-primary": "#ffff00"), which will automatically be converted to HSL.
+
+For instance, to change the primary color for the navigation bar, data source icons, etc., you can set the color-primary property in HEX like this:
+```json
+"cssProperties": {
+  "color-primary": "#00ffff"
+}
+```
+Or you can directly set the individual HSL values for fine-grained control:
 
 ```json
 "cssProperties": {
@@ -144,6 +154,7 @@ For instance to change the primary color for navigation bar, data source icons..
   "color-primary-l": "40%"
 }
 ```
+In the background, HEX values will be converted to HSL for those properties that are defined in HSL format.
 
 ## Maintainers
 
