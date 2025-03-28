@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "c58ae2566be07efb32f07b9f3d6d2bfa44d94971",
-  "gitCommitShort": "c58ae256",
-  "gitCommitMessage": "c58ae256 Add CSS color property color-text-secondary",
-  "buildDate": "2025-03-28T13:29:31Z",
-  "date": "2025-03-28T13:28:30.000Z",
+  "gitCommit": "994bf7163107b4e758512b565aa6a514028215b8",
+  "gitCommitShort": "994bf716",
+  "gitCommitMessage": "994bf716 Fix default color",
+  "buildDate": "2025-03-28T13:31:16Z",
+  "date": "2025-03-28T13:30:28.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
