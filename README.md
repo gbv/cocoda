@@ -122,22 +122,27 @@ Using the pre-built version, the application only has to be reloaded after editi
 
 Colors can be changed with the `cssProperties` configuration object. Most colors are derived from a set of basic color codes, each given with three values in HSL color model (hue, saturation, and lightness). Some other colors can be given by standard CSS color name or code.
 
-In particular the following properties can be set:
+Colors in the `cssProperties` object can be provided as **Hsl** or **Hex** values. See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. 
+Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future releases.
 
-- **color-primary-h**, **color-primary-s** and **color-primary-l**: selected elements, links...
-- **color-secondary-h**, **color-secondary-s** and **color-secondary-l**: menus, selectable elements, warnings...
-- **color-text-h**, **color-text-s** and **color-text-l**: labels, text...
-- **color-button-h**, **color-button-s** and **color-button-l**: clickable buttons
-- **color-success-h**, **color-success-s** and **color-success-l**: confirmation messages, mapped concepts, positive votes...
-- **color-danger-h**, **color-danger-s** and **color-danger-l**: error messages, error indicators, delete buttons, negative votes...
-- **color-background**: background of the application
-- **color-background-component** and **color-background-component-heading**: background of components (concept browser, mapping editor...) and their heading
+| Color Property                    | Description                                                                 | Can be set as HSL? |
+|-----------------------------------|-----------------------------------------------------------------------------|--------------------|
+| **color-primary**                 | Primary color is for selected elements, links, etc.                         | ✓                  |
+| **color-secondary**               | Secondary color is for menus, selectable elements, warnings, etc.           | ✓                  |
+| **color-text**                    | Color for text, labels, etc.                                                | ✓                  |
+| **color-button**                  | Color for clickable buttons                                                 | ✓                  |
+| **color-success**                 | Color for confirmation messages, mapped concepts, positive votes            | ✓                  |
+| **color-danger**                  | Color for error messages, error indicators, delete buttons, negative votes  | ✓                  |
+| **color-background**              | Background color of the application                                         |                    |
+| **color-background-component**    | Background color of components (concept browser, mapping editor, etc.)      |                    |
+| **color-background-component-heading** | Background color for component headings.                               |                    |
+| **color-background-navbar**       | Background color for the navigation bar                                     |                    |
+| **color-link**                    | Color of the links                                                          |                    |
+| **color-link-hover**              | Color of the links when hovering                                            |                    |
 
-See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future releases.
 
-Colors in the `cssProperties` object can be provided as **Hsl values** or **Hex values** values.
+According to the table, to change the primary color, you can set the color-primary property in HEX like this:
 
-For instance, to change the primary color for selected elements, links, etc., you can set the `color-primary` property in HEX like this:
 ```json
 "cssProperties": {
   "color-primary": "#00ffff"
@@ -152,7 +157,7 @@ Or you can directly set the individual HSL values for fine-grained control:
   "color-primary-l": "40%"
 }
 ```
-In the background, HEX values will be converted to HSL for those properties that are defined in HSL format.
+Internally, HEX values will be converted to HSL for properties defined in the HSL format.
 
 ## Maintainers
 
