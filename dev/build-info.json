@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "005626968f9f874317366662d60ec0997989bbc4",
-  "gitCommitShort": "00562696",
-  "gitCommitMessage": "00562696 Refine documentation",
-  "buildDate": "2025-03-28T12:36:20Z",
-  "date": "2025-03-28T12:35:31.000Z",
+  "gitCommit": "88f2bea95d005147bf8072f71bd4a3df49d0fc4a",
+  "gitCommitShort": "88f2bea9",
+  "gitCommitMessage": "88f2bea9 Proofread configuration",
+  "buildDate": "2025-03-28T12:48:48Z",
+  "date": "2025-03-28T12:48:02.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
