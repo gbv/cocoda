@@ -120,35 +120,33 @@ Using the pre-built version, the application only has to be reloaded after editi
 
 ### Color settings
 
-Colors can be changed with the `cssProperties` configuration object. Most colors are derived from a set of basic color codes, each given with three values in HSL color model (hue, saturation, and lightness). Some other colors can be given by standard CSS color name or code.
+Colors can be changed with the `cssProperties` configuration object. Most colors are derived from a set of basic color codes, each given with three values in HSL color model (hue, saturation, and lightness). Some other colors can be given by standard CSS color name or code. Colors can be provided as hexadecimal **RGB** value or, for selected properties, with **HSL** value components. The following color properties are can be configured, at least:
 
-Colors in the `cssProperties` object can be provided as **Hsl** or **Hex** values. See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. 
-Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future releases.
+| Color Property                    | Description                                                                 | HSL |
+|:----------------------------------|:----------------------------------------------------------------------------|-----|
+| **color-primary**                 | Primary color is for selected elements, links, etc.                         | ✓   |
+| **color-secondary**               | Secondary color is for menus, selectable elements, warnings, etc.           | ✓   |
+| **color-text**                    | Color for text, labels, etc.                                                | ✓   |
+| **color-button**                  | Color for clickable buttons                                                 | ✓   |
+| **color-success**                 | Color for confirmation messages, mapped concepts, positive votes            | ✓   |
+| **color-danger**                  | Color for error messages, error indicators, delete buttons, negative votes  | ✓   |
+| **color-background**              | Background color of the application                                         |     |
+| **color-background-component**    | Background color of components (concept browser, mapping editor, etc.)      |     |
+| **color-background-component-heading** | Background color for component headings.                               |     |
+| **color-background-navbar**       | Background color for the navigation bar                                     |     |
+| **color-link**                    | Color of the links                                                          |     |
+| **color-link-hover**              | Color of the links when hovering                                            |     |
 
-| Color Property                    | Description                                                                 | Can be set as HSL? |
-|-----------------------------------|-----------------------------------------------------------------------------|--------------------|
-| **color-primary**                 | Primary color is for selected elements, links, etc.                         | ✓                  |
-| **color-secondary**               | Secondary color is for menus, selectable elements, warnings, etc.           | ✓                  |
-| **color-text**                    | Color for text, labels, etc.                                                | ✓                  |
-| **color-button**                  | Color for clickable buttons                                                 | ✓                  |
-| **color-success**                 | Color for confirmation messages, mapped concepts, positive votes            | ✓                  |
-| **color-danger**                  | Color for error messages, error indicators, delete buttons, negative votes  | ✓                  |
-| **color-background**              | Background color of the application                                         |                    |
-| **color-background-component**    | Background color of components (concept browser, mapping editor, etc.)      |                    |
-| **color-background-component-heading** | Background color for component headings.                               |                    |
-| **color-background-navbar**       | Background color for the navigation bar                                     |                    |
-| **color-link**                    | Color of the links                                                          |                    |
-| **color-link-hover**              | Color of the links when hovering                                            |                    |
+See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Some comments are included to provide clarity on its purpose and usage within the application. Property names not included in the list above may change in future releases.
 
-
-According to the table, to change the primary color, you can set the color-primary property in HEX like this:
+For instance the color property `color-primary` can be set in RGB like this:
 
 ```json
 "cssProperties": {
   "color-primary": "#00ffff"
 }
 ```
-Or you can directly set the individual HSL values for fine-grained control:
+Or you can set the individual HSL values:
 
 ```json
 "cssProperties": {
@@ -157,7 +155,7 @@ Or you can directly set the individual HSL values for fine-grained control:
   "color-primary-l": "40%"
 }
 ```
-Internally, HEX values will be converted to HSL for properties defined in the HSL format.
+Internally, RGB values will also be converted to HSL for properties if the property supports HSL.
 
 ## Maintainers
 
