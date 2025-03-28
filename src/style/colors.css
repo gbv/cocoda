@@ -12,6 +12,8 @@
   --color-text-h: 0;
   --color-text-s: 0%;
   --color-text-l: 13%;
+  --color-text: hsl(var(--color-text-h), var(--color-text-s), var(--color-text-l));
+  --color-text-secondary: var(--color-text);
 
   --color-button-h: 0;
   --color-button-s: 0%;
@@ -24,8 +26,6 @@
   --color-success-h: 100;
   --color-success-s: 70%;
   --color-success-l: 28%;
-
-  --color-text-secondary: #fff;
 
   --color-background: #f4f0f0;
   --color-background-component: #ffffff;
@@ -66,7 +66,6 @@
 
   /* Text colors */
   --color-text-navbar: var(--color-text);
-  --color-text: hsl(var(--color-text-h), var(--color-text-s), var(--color-text-l));
   --color-text-grey: hsl(var(--color-text-h), var(--color-text-s), 29%);
   --color-text-lightGrey: hsl(var(--color-text-h), var(--color-text-s), 45%);
   --color-text-veryLightGrey: hsl(var(--color-text-h), var(--color-text-s), 82%);
