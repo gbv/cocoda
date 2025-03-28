@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "88f2bea95d005147bf8072f71bd4a3df49d0fc4a",
-  "gitCommitShort": "88f2bea9",
-  "gitCommitMessage": "88f2bea9 Proofread configuration",
-  "buildDate": "2025-03-28T12:48:48Z",
-  "date": "2025-03-28T12:48:02.000Z",
+  "gitCommit": "c58ae2566be07efb32f07b9f3d6d2bfa44d94971",
+  "gitCommitShort": "c58ae256",
+  "gitCommitMessage": "c58ae256 Add CSS color property color-text-secondary",
+  "buildDate": "2025-03-28T13:29:31Z",
+  "date": "2025-03-28T13:28:30.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
