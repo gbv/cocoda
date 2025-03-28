@@ -478,3 +478,86 @@ export async function loadConcordances() {
     log.error("MappingBrowser - Error loading concordances", error)
   }
 }
+
+/**
+ * Converts a HEX color code to HSL format.
+ *
+ * @param {string} hexCode - The HEX color code (e.g., "#ff5733").
+ * @returns {Array} An array representing the HSL values [hue, saturation, lightness].
+ */
+export const hexToHsl = (hexCode) => {
+  // Remove the '#' symbol if present in the input string
+  const hex = hexCode.replace(/^#/, "")
+
+  // Convert HEX values (two characters at a time) to decimal RGB values 
+  // and normalize each to the range [0, 1] by dividing by 255
+  let r = parseInt(hex.slice(0, 2), 16) / 255
+  let g = parseInt(hex.slice(2, 4), 16) / 255
+  let b = parseInt(hex.slice(4, 6), 16) / 255
+
+  // Declare variables for hue (h), saturation (s)
+  let h, s
+
+  // Calculate the maximum and minimum RGB values to find the chroma
+  let max = Math.max(r, g, b)
+  let min = Math.min(r, g, b)
+  
+  // // lightness (l) is the average of the max and min values
+  let l = (max + min) / 2
+
+  if (max === min) {
+    // If the maximum and minimum RGB values are equal 
+    // (i.e., the color is grayscale), then the 
+    // saturation is 0% because there's no color intensity.
+    h = s = 0
+  } else {
+    // Calculate chroma, which is the difference between max and min RGB values
+    let chroma = max - min
+
+    // Saturation is determined by the lightness value
+    if (l > 0.5) {
+      s = chroma / (2 - max - min)
+    } else {
+      s = chroma / (max + min)
+    }
+
+    // Calculate the hue based on which RGB component is the dominant color
+    if (max === r) {
+      h = (g - b) / chroma + (g < b ? 6 : 0)
+    } else if (max === g) {
+      h = (b - r) / chroma + 2
+    } else { // max === b
+      h = (r - g) / chroma + 4
+    }
+
+    // Convert hue to degrees
+    h *= 60
+  }
+
+  return [Math.round(h), `${Math.round(s * 100)}%`, `${Math.round(l * 100)}%`]
+}
+
+/**
+ * Set CSS custom properties (variables) in the document, converting specified HEX values to HSL format
+ * only for some css variables.
+ *
+ * @param {Object} cssProperties - A dictionary of CSS properties with their HEX color values.
+ */
+export const setCssCustomProperties = (cssProperties) => {
+  // A list of css variables expressed in colors.css in hsl values
+  const allowedCssVariablesInHsl = ["color-primary", "color-secondary", 
+    "color-text", "color-button", "color-danger", "color-success"]
+
+  Object.entries(cssProperties).forEach(([key, hexValue]) => {
+    // If the property is not in the list of properties requiring HSL conversion
+    if (!allowedCssVariablesInHsl.includes(key)){
+      document.documentElement.style.setProperty(`--${key}`, hexValue)
+    } else {
+      const hslValues = hexToHsl(hexValue)
+      document.documentElement.style.setProperty(`--${key}-h`, hslValues[0])
+      document.documentElement.style.setProperty(`--${key}-s`, hslValues[1])
+      document.documentElement.style.setProperty(`--${key}-l`, hslValues[2])
+    }
+    
+  })
+}

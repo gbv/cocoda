@@ -206,6 +206,7 @@ import auth from "./mixins/auth.js"
 import objects from "./mixins/cdk.js"
 import computed from "./mixins/computed.js"
 import pageVisibility from "./mixins/page-visibility.js"
+import { setCssCustomProperties } from "./items"
 
 // Use css-element-queries (https://github.com/marcj/css-element-queries) to be able to specify CSS element queries like .someClass[min-width~="800px"]. Used mainly in MappingBrowser.
 import { ElementQueries } from "css-element-queries"
@@ -558,9 +559,8 @@ export default {
       }
       if (this.config.cssProperties) {
         const cssProperties = this.config.cssProperties
-        Object.entries(cssProperties).forEach(([key, value]) =>
-          document.documentElement.style.setProperty(`--${key}`, value),
-        )
+        // call to the which set up custom Css properties from config 
+        setCssCustomProperties(cssProperties)
       }
       this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },
