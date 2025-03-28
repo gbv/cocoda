@@ -544,6 +544,7 @@ export default {
 
 .conceptDetail-name {
   background-color: var(--color-secondary);
+  color: var(--color-text-secondary); /* TODO: this is overridden */
   position: relative;
   padding: 0 20px;
 }

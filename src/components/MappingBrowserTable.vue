@@ -985,6 +985,7 @@ export default {
 // Custom section class for current registry
 .mappingBrowser-table-currentRegistrySection > .flexibleTable-section-before {
   background-color: var(--color-secondary);
+  color: var(--color-text-secondary);
 }
 
 </style>

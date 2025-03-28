@@ -251,7 +251,7 @@ export default {
   user-select: text;
 }
 .itemName-inner, .itemName-inner > * {
-  color: var(--color-text) !important;
+  color: var(--color-text);
   display: inline;
 }
 .itemName-hovered, .itemName-hoverable:hover {

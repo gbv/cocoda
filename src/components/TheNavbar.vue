@@ -432,7 +432,7 @@ nav.navbar {
   background-color: var(--color-background-navbar);
 }
 .navbar-brand {
-  color: var(--color-text) !important;
+  color: var(--color-text-secondary) !important;
 }
 .btn-link:disabled, .btn-link.disabled {
   text-decoration: line-through;
@@ -462,16 +462,13 @@ hr {
 @import "../style/colors.css";
 
 .nav-link, .nav-link > span, .btn-link {
-  color: var(--color-text) !important;
+  color: var(--color-text-secondary) !important;
 }
 .nav-link.active, .btn-link.active {
   font-weight: 700;
 }
 .nav-pills .nav-link.active {
   color: white !important;
-}
-.nav-link:hover, .btn-link:hover {
-  color: var(--color-text-grey) !important;
 }
 .navbar-dropdown {
   overflow-x: hidden;
@@ -519,6 +516,7 @@ hr {
   .fontWeight-heavy;
   padding-right: 5px;
   background-color: var(--color-secondary);
+  color: var(--color-text-secondary);
 }
 .navbar-settingsTabs-row {
   padding: 3px 10px;
@@ -526,5 +524,6 @@ hr {
 .navbar-settingsTabs-row:hover, .navbar-dropdown-selectable:hover {
   cursor: pointer;
   background-color: hsl(var(--color-secondary-light));
+  color: var(--color-text-secondary);
 }
 </style>
