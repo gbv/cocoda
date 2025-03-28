@@ -135,11 +135,9 @@ In particular the following properties can be set:
 
 See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Comments are included to provide some clarity on its purpose and usage within the application. Property names are not stable yet and may change in future releases.
 
-Colors in the `cssProperties` object can be provided as:
-- **HSL values** (e.g., "color-primary-h": "180", "color-primary-s": "100%", "color-primary-l": "40%"), or
-- **HEX values** (e.g., "color-primary": "#ffff00"), which will automatically be converted to HSL.
+Colors in the `cssProperties` object can be provided as **Hsl values** or **Hex values** values.
 
-For instance, to change the primary color for the navigation bar, data source icons, etc., you can set the color-primary property in HEX like this:
+For instance, to change the primary color for selected elements, links, etc., you can set the `color-primary` property in HEX like this:
 ```json
 "cssProperties": {
   "color-primary": "#00ffff"
