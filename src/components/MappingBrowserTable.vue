@@ -987,5 +987,8 @@ export default {
   background-color: var(--color-secondary);
   color: var(--color-text-secondary);
 }
-
+.mappingBrowser-table-currentRegistrySection .mappingBrowser-pagination-number,
+.mappingBrowser-table-currentRegistrySection .dataModalButton {
+  color: var(--color-text-secondary);
+}
 </style>

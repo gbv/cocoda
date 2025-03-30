@@ -127,6 +127,7 @@ Colors can be changed with the `cssProperties` configuration object. Most colors
 | **color-primary**                 | Primary color is for selected elements, links, etc.                         | ✓   |
 | **color-secondary**               | Secondary color is for menus, selectable elements, warnings, etc.           | ✓   |
 | **color-text**                    | Color for text, labels, etc.                                                | ✓   |
+| **color-text-secondary**          | Color for text on background color-secondary                                | ✓   |
 | **color-button**                  | Color for clickable buttons                                                 | ✓   |
 | **color-success**                 | Color for confirmation messages, mapped concepts, positive votes            | ✓   |
 | **color-danger**                  | Color for error messages, error indicators, delete buttons, negative votes  | ✓   |

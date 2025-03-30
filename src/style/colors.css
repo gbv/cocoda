@@ -13,7 +13,11 @@
   --color-text-s: 0%;
   --color-text-l: 13%;
   --color-text: hsl(var(--color-text-h), var(--color-text-s), var(--color-text-l));
-  --color-text-secondary: var(--color-text);
+
+  --color-text-secondary-h: var(--color-text-h);
+  --color-text-secondary-s: var(--color-text-s);
+  --color-text-secondary-l: var(--color-text-l);
+  --color-text-secondary: hsl(var(--color-text-secondary-h), var(--color-text-secondary-s), var(--color-text-secondary-l));
 
   --color-button-h: 0;
   --color-button-s: 0%;

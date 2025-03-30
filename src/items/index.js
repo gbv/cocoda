@@ -489,7 +489,7 @@ export const hexToHsl = (hexCode) => {
   // Remove the '#' symbol if present in the input string
   const hex = hexCode.replace(/^#/, "")
 
-  // Convert HEX values (two characters at a time) to decimal RGB values 
+  // Convert HEX values (two characters at a time) to decimal RGB values
   // and normalize each to the range [0, 1] by dividing by 255
   let r = parseInt(hex.slice(0, 2), 16) / 255
   let g = parseInt(hex.slice(2, 4), 16) / 255
@@ -501,13 +501,13 @@ export const hexToHsl = (hexCode) => {
   // Calculate the maximum and minimum RGB values to find the chroma
   let max = Math.max(r, g, b)
   let min = Math.min(r, g, b)
-  
+
   // // lightness (l) is the average of the max and min values
   let l = (max + min) / 2
 
   if (max === min) {
-    // If the maximum and minimum RGB values are equal 
-    // (i.e., the color is grayscale), then the 
+    // If the maximum and minimum RGB values are equal
+    // (i.e., the color is grayscale), then the
     // saturation is 0% because there's no color intensity.
     h = s = 0
   } else {
@@ -545,8 +545,8 @@ export const hexToHsl = (hexCode) => {
  */
 export const setCssCustomProperties = (cssProperties) => {
   // A list of css variables expressed in colors.css in hsl values
-  const allowedCssVariablesInHsl = ["color-primary", "color-secondary", 
-    "color-text", "color-button", "color-danger", "color-success"]
+  const allowedCssVariablesInHsl = ["color-primary", "color-secondary",
+    "color-text", "color-text-secondary", "color-button", "color-danger", "color-success"]
 
   Object.entries(cssProperties).forEach(([key, hexValue]) => {
     // If the property is not in the list of properties requiring HSL conversion
@@ -558,6 +558,6 @@ export const setCssCustomProperties = (cssProperties) => {
       document.documentElement.style.setProperty(`--${key}-s`, hslValues[1])
       document.documentElement.style.setProperty(`--${key}-l`, hslValues[2])
     }
-    
+
   })
 }

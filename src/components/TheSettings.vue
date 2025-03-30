@@ -863,6 +863,7 @@ p {
 }
 .selected-registry {
   background-color: hsl(var(--color-secondary-light));
+  color: var(--color-text-secondary);
 }
 .settingsModal-mapping-registry {
   display: flex;
