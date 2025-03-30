@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "994bf7163107b4e758512b565aa6a514028215b8",
-  "gitCommitShort": "994bf716",
-  "gitCommitMessage": "994bf716 Fix default color",
-  "buildDate": "2025-03-28T13:31:16Z",
-  "date": "2025-03-28T13:30:28.000Z",
+  "gitCommit": "c51e7ef61d07c3bd6ea8992e883a439c1399adf8",
+  "gitCommitShort": "c51e7ef6",
+  "gitCommitMessage": "c51e7ef6 Extend color-text-secondary",
+  "buildDate": "2025-03-30T19:10:54Z",
+  "date": "2025-03-30T19:10:08.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
