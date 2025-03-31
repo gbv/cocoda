@@ -861,7 +861,8 @@ p {
 .settings-sources {
   padding: 6px 5px;
 }
-.selected-registry {
+.selected-registry,
+.settingsModal-mapping-registry.selectable:hover {
   background-color: hsl(var(--color-secondary-light));
   color: var(--color-text-secondary);
 }
@@ -871,9 +872,9 @@ p {
   align-items: center;
 }
 .settingsModal-mapping-registry.selectable:hover {
-  background-color: var(--color-background);
   cursor: pointer;
 }
+
 // First Child: Checkbox
 .settingsModal-mapping-registry > div:first-child {
   flex: none;
