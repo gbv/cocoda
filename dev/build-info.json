@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "75cb9ad62a2ddaf52c7c93547cfa5c74757439ab",
-  "gitCommitShort": "75cb9ad6",
-  "gitCommitMessage": "75cb9ad6 Update authors, add codemeta.json",
-  "buildDate": "2025-03-31T07:24:21Z",
-  "date": "2025-03-31T07:23:37.000Z",
+  "gitCommit": "01c6be5d7e8e026cc4fc2ea6271eda6c11df16e1",
+  "gitCommitShort": "01c6be5d",
+  "gitCommitMessage": "01c6be5d Improve text-color-secondary with dark color-secondary (#744)",
+  "buildDate": "2025-03-31T09:09:53Z",
+  "date": "2025-03-31T09:08:13.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
