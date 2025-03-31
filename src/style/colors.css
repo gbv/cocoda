@@ -4,10 +4,12 @@
   --color-primary-h: 17;
   --color-primary-s: 81%;
   --color-primary-l: 38%; 
+  --color-primary: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
 
   --color-secondary-h: 0;
   --color-secondary-s: 14%;
   --color-secondary-l: 83%; 
+  --color-secondary: hsl(var(--color-secondary-h), var(--color-secondary-s), var(--color-secondary-l));
 
   --color-text-h: 0;
   --color-text-s: 0%;
@@ -22,6 +24,7 @@
   --color-button-h: 0;
   --color-button-s: 0%;
   --color-button-l: 33%;
+  --color-button: hsl(var(--color-button-h), var(--color-button-s), var(--color-button-l));
 
   --color-danger-h: 0;
   --color-danger-s: 84%;
@@ -40,9 +43,6 @@
   --color-link-hover: var(--color-primary-light);
 
   /* Computed colors */
-  --color-primary: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
-  --color-secondary-hsl: var(--color-secondary-h), var(--color-secondary-s), var(--color-secondary-l);
-  --color-secondary: hsl(var(--color-secondary-hsl));
 
   --color-primary-dark: hsl(var(--color-primary-h), var(--color-primary-s), calc(var(--color-primary-l) * .95));
   --color-primary-light: hsl(var(--color-primary-h), var(--color-primary-s), calc(var(--color-primary-l) * 1.15));
@@ -58,7 +58,7 @@
   --color-success-light: hsl(var(--color-success-h), var(--color-success-s), calc(var(--color-success-l) * 1.5));
   --color-success-lighter: hsl(var(--color-success-h), var(--color-success-s), calc(var(--color-success-l) * 3));
 
-  --color-warning: hsl(var(--color-secondary-hsl));
+  --color-warning: var(--color-secondary);
   --color-warning-light: hsl(var(--color-secondary-h), var(--color-secondary-s), calc(var(--color-secondary-l) * 1.15));
   --color-warning-dark: hsl(var(--color-secondary-h), var(--color-secondary-s), calc(var(--color-secondary-l) * 0.85));
   --color-warning-darker: hsl(var(--color-secondary-h), var(--color-secondary-s), calc(var(--color-secondary-l) * 0.75));
@@ -76,11 +76,9 @@
   --color-text-veryLightGrey-opacity: hsla(var(--color-text-h), var(--color-text-s), 82%, 0.7);
 
   /* Button colors */
-  --color-button-hsl: var(--color-button-h), var(--color-button-s), var(--color-button-l);
   --color-button-hover: var(--color-primary-light);
-  --color-button: hsl(var(--color-button-hsl));
-  --color-button-light: hsla(var(--color-button-hsl), 0.8);
-  --color-button-lighter: hsla(var(--color-button-hsl), 0.4);
+  --color-button-light: hsla(var(--color-button-h), var(--color-button-s), var(--color-button-l), 0.8);
+  --color-button-lighter: hsla(var(--color-button-h), var(--color-button-s), var(--color-button-l), 0.4);
 
   --color-button-delete: var(--color-danger);
   --color-button-delete-hover: var(--color-danger-dark);
@@ -93,8 +91,8 @@
   --color--conceptSearch-result-selected: var(--color-primary-dark);
   --color--mappingBrowser-table-match: hsla(var(--color-secondary-light), 0.7);
   --color--mappingBrowser-table-match-hover: hsla(var(--color-secondary-light), 0.45);
-  --color--mappingBrowser-table-editing: hsla(var(--color-secondary-hsl), 0.4);
-  --color--mappingBrowser-table-editing-hover: hsla(var(--color-secondary-hsl), 0.3);
+  --color--mappingBrowser-table-editing: hsla(var(--color-secondary-h), var(--color-secondary-s), var(--color-secondary-l), 0.4);
+  --color--mappingBrowser-table-editing-hover: hsla(var(--color-secondary-h), var(--color-secondary-s), var(--color-secondary-l), 0.3);
   
   --color--conceptSearch-result-selected-background: var(--color-background);
   --color--conceptSearch-searchHighlight: var(--color-secondary-dark);
