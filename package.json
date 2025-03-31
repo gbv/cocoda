@@ -3,7 +3,11 @@
   "version": "1.12.0",
   "jskos-api": "^1.0 || ^2.0",
   "description": "Cocoda Mapping Tool",
-  "author": "Stefan Peters <stefan.peters@gbv.de>",
+  "author": "Jakob Voß <jakob.voss@gbv.de>",
+  "contributors": [
+    "Rodolfo Marraffa <rodolfo.marraffa@gbv.de>",
+    "Stefan Peters <stefan.peters@gbv.de>"
+  ],
   "license": "MIT",
   "private": true,
   "type": "module",
