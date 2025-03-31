@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "b3064d5573f576e4dac735feb322b0980f4dfd98",
-  "gitCommitShort": "b3064d55",
-  "gitCommitMessage": "b3064d55 Extend color settings",
-  "buildDate": "2025-03-31T04:57:14Z",
-  "date": "2025-03-31T04:56:30.000Z",
+  "gitCommit": "75cb9ad62a2ddaf52c7c93547cfa5c74757439ab",
+  "gitCommitShort": "75cb9ad6",
+  "gitCommitMessage": "75cb9ad6 Update authors, add codemeta.json",
+  "buildDate": "2025-03-31T07:24:21Z",
+  "date": "2025-03-31T07:23:37.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
