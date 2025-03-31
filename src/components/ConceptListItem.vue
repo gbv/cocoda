@@ -49,35 +49,7 @@
         <span v-if="scheme && showScheme">
           {{ $jskos.notation(scheme) }}
         </span>
-        <!-- Show icon for combined concepts -->
-        <span
-          v-if="concept && concept.type && concept.type.includes('http://rdf-vocabulary.ddialliance.org/xkos#CombinedConcept')"
-          v-b-tooltip.hover="{ title: $t('itemDetail.combinedConcept'), delay: defaults.delay.medium }"
-          class="conceptListItem-icon fontSize-small">
-          <font-awesome-icon icon="puzzle-piece" />
-        </span>
-        <!-- Show icon for non-indexing concepts -->
-        <span
-          v-if="concept && concept.type && concept.type.includes('http://schema.vocnet.org/NonIndexingConcept')"
-          v-b-tooltip.hover="{ title: $t('itemDetail.nonIndexingConcept'), delay: defaults.delay.medium }"
-          class="conceptListItem-icon fontSize-small">
-          <font-awesome-icon icon="diagram-project" />
-        </span>
-        <span
-          v-if="showNotation"
-          class="fontWeight-heavy"
-          v-html="notation" />
-        <span
-          :class="{
-            'fontWeight-medium': true
-          }">
-          {{ prefLabel }}
-        </span>
-        <!-- Show icon for concepts where no data could be loaded -->
-        <span
-          v-if="concept && concept.__DETAILSLOADED__ == -1"
-          v-b-tooltip.hover="{ title: $t('itemDetail.unknownConcept'), delay: defaults.delay.medium }"
-          class="missingDataIndicator" />
+        <item-name :item="concept" />
       </div>
       <div
         v-if="canAddToMapping"
@@ -400,7 +372,6 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   right: 8px;
-  opacity: 0.7;
 }
 
 .hovered,

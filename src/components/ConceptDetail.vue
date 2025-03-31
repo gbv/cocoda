@@ -10,7 +10,7 @@
 
     <!-- Name of concept -->
     <div
-      class="conceptDetail-name"
+      class="conceptDetail-name selected"
       :class="{
         'concept-mappingsExist': loadConceptsMappedStatus && $store.getters.mappedStatus(item, isLeft),
         'concept-mappingsDoNotExist': loadConceptsMappedStatus && !$store.getters.mappedStatus(item, isLeft)
@@ -22,10 +22,7 @@
         @click="setSelected({ scheme: selected.scheme[isLeft], isLeft })">
         <font-awesome-icon icon="times-circle" />
       </div>
-      <item-name
-        :item="item"
-        :is-highlighted="true"
-        font-size="normal" />
+      <item-name :item="item" />
       <font-awesome-icon
         v-b-tooltip.hover="{ title: $jskos.isContainedIn(item, favoriteConcepts) ? $t('schemeSelection.starRemove') : $t('schemeSelection.starAdd'), delay: defaults.delay.medium }"
         :class="$jskos.isContainedIn(item, favoriteConcepts) ? 'starFavorite' : 'starNormal'"
@@ -34,10 +31,9 @@
         icon="star"
         @click="$jskos.isContainedIn(item, favoriteConcepts) ? $store.dispatch('removeConceptFromFavorites', item) : $store.dispatch('addConceptToFavorites', item)" />
       <div
-        v-if="showAddToMappingButton"
+        v-if="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: defaults.delay.medium }"
-        :class="{ button: showAddToMappingButton }"
-        class="conceptDetail-name-addButton"
+        class="button addToMapping"
         @click="addToMapping({
           concept: item,
           scheme: (item.inScheme && item.inScheme[0]) || selected.scheme[isLeft],
@@ -267,7 +263,7 @@ export default {
     memberListComplete() {
       return this._item && this._item.memberList && !this._item.memberList.includes(null)
     },
-    showAddToMappingButton() {
+    canAddToMapping() {
       return this.$store.getters["mapping/canAdd"](this._item, _.get(this._item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
     },
     searchLinkInfo() {
@@ -552,12 +548,13 @@ export default {
   left: 2px;
   top: 2px;
 }
-.conceptDetail-name-addButton {
+
+.addToMapping {
   .fontSize-large;
   position: absolute;
+  color: var(--color-background-component);
   right: 3px;
   top: -2px;
-  color: var(--color-background-component);
 }
 
 .conceptDetail-identifier {

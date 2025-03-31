@@ -173,12 +173,15 @@ h6 {
   color: var(--color-primary);
   margin-right: 5px;
 }
-.starFavorite:hover, .starNormal:hover {
+.starFavorite:hover, .starNormal:hover, .selected .starNormal:hover {
   color: var(--color-button-hover);
 }
 .starNormal {
   color: var(--color-button);
   margin-right: 5px;
+}
+.selected .starNormal {
+  color: var(--color-text-secondary);
 }
 
 .missingDataIndicator {
@@ -197,7 +200,7 @@ h6 {
 
 .selected {
   background-color: var(--color-secondary);
-  font-weight: var(--font-weight-heavy);
+  color: var(--text-color-secondary);
 }
 
 .scrollable {

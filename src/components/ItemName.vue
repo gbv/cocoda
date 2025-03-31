@@ -254,6 +254,9 @@ export default {
   color: var(--color-text);
   display: inline;
 }
+.selected .itemName-inner, .selected .itemName-inner > * {
+  color: var(--color-text-secondary);
+}
 .itemName-hovered, .itemName-hoverable:hover {
   cursor: pointer;
   text-decoration: underline;
