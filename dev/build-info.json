@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "421d87222a4f381bed3c976a6f4d61c98cc5b1a5",
-  "gitCommitShort": "421d8722",
-  "gitCommitMessage": "421d8722 Allow to configure favicon",
-  "buildDate": "2025-04-01T07:26:13Z",
-  "date": "2025-04-01T07:25:09.000Z",
+  "gitCommit": "1a144da942ef0e33e6f0c0e0a9ed648ee5f7432c",
+  "gitCommitShort": "1a144da9",
+  "gitCommitMessage": "1a144da9 Close #744 as good enough",
+  "buildDate": "2025-04-01T08:52:07Z",
+  "date": "2025-04-01T08:49:47.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
