@@ -1,0 +1,174 @@
+{
+  "ConceptSchemeSelection": {
+    "insertPrefLabel": {
+      "prefLabel": {
+        "en": "Copy selected concept label from opposite side into search field",
+        "de": "Ausgewähltes Konzept der gegenüberliegenden Seite in Suchfeld eintragen"
+      },
+      "definition": {
+        "en": [
+          "When turned on, the label of the selected concept on the opposite side will be inserted in the concept search whenever the selected concept changes."
+        ],
+        "de": [
+          "Falls eingeschaltet wird das Label vom ausgewählten Konzept der gegenüberliegenden Seite in das Suchfeld einfügt, sobald das Konzept sich ändert."
+        ]
+      },
+      "type": "Boolean",
+      "default": true,
+      "sideDependent": true
+    }
+  },
+  "ItemDetail": {
+    "showAllAncestors": {
+      "prefLabel": {
+        "en": "Always show all ancestors in concept details",
+        "de": "Übergeordneten Konzepte immer anzeigen"
+      },
+      "type": "Boolean",
+      "default": false
+    }
+  },
+  "ConceptListWrapper": {
+    "addToMappingSelectsConcept": {
+      "prefLabel": {
+        "en": "Select concept when added to mapping",
+        "de": "Konzept beim Hinzufügen zu Mapping auswählen"
+      },
+      "type": "Boolean",
+      "default": false
+    },
+    "loadConceptsMappedStatus": {
+      "prefLabel": {
+        "en": "Mark mapped concepts",
+        "de": "Gemappte Konzepte markieren"
+      },
+      "definition": {
+        "en": [
+          "Concepts with at least one mapping in the currently selected mapping database to the opposite concept scheme will be marked with a green bar."
+        ],
+        "de": [
+          "Es wird ein grüner Balken rechts von Konzepten angezeigt, die in der ausgewählten Mapping-Datenbank mindestens ein Mapping auf das gegenüberstehende Vokabular haben."
+        ]
+      },
+      "type": "Boolean",
+      "default": true
+    }
+  },
+  "MappingEditor": {
+    "clearOnSave": {
+      "prefLabel": {
+        "en": "Clear on save",
+        "de": "Leere Editor nach Speichern"
+      },
+      "definition": {
+        "en": [
+          "When turned on, the editor will be cleared after a mapping was saved."
+        ],
+        "de": [
+          "Falls eingeschaltet wird der Editor nach dem Speichern eines Mappings geleert."
+        ]
+      },
+      "type": "Boolean",
+      "default": true
+    },
+    "only1to1mappings": {
+      "prefLabel": {
+        "en": "Only allow 1-to-1 mappings (1-to-n otherwise)",
+        "de": "Nur 1-zu-1 Mappings erlauben (sonst 1-zu-n)"
+      },
+      "definition": {
+        "en": [
+          "When turned on, only 1-to-1 mappings will be allowed. When turned off, 1-to-n mappings will be allowed."
+        ],
+        "de": [
+          "Falls eingeschaltet, werden nur 1-zu-1 Mappings erlaubt. Falls ausgeschaltet, werden 1-zu-n Mappings erlaubt."
+        ]
+      },
+      "type": "Boolean",
+      "default": false
+    }
+  },
+  "MappingBrowser": {
+    "resultLimit": {
+      "prefLabel": {
+        "en": "Results per page:",
+        "de": "Ergebnisse pro Seite:"
+      },
+      "type": "Number",
+      "default": 5,
+      "min": 1,
+      "max": 20
+    },
+    "autoRefresh": {
+      "prefLabel": {
+        "en": "Automatically refresh (seconds):",
+        "de": "Automatisch aktualiseren (Sekunden):"
+      },
+      "definition": {
+        "en": [
+          "Determines how often mappings are refreshed from the API. A value below 10 is not recommended. 0 disables automatic refresh."
+        ],
+        "de": [
+          "Bestimmt, wie häufig Mappings von der API aktualisiert werden. Ein Wert unter 10 ist nicht empfohlen. 0 deaktiviert die automatische Aktualisierung."
+        ]
+      },
+      "type": "Number",
+      "min": 0,
+      "max": 10000
+    },
+    "showIdentityWarning": {
+      "prefLabel": {
+        "en": "Show warning for mismatch in mapping identity",
+        "de": "Hinweis bei abweichender Identität"
+      },
+      "definition": {
+        "en": [
+          "When enabled, a warning sign will be shown if one of your own mappings contains an identity different from the one currently selected."
+        ],
+        "de": [
+          "Falls eingeschaltet wird eine Warnung angezeigt, falls in einem deiner Mappings eine von der aktuell ausgewählten abweichende Identität gespeichert ist."
+        ]
+      },
+      "type": "Boolean",
+      "default": true
+    },
+    "navigatorDivider": {
+      "prefLabel": {
+        "en": "Navigator"
+      },
+      "class": "fontWeight-heavy"
+    },
+    "showAllSchemes": {
+      "prefLabel": {
+        "en": "Show results of all concept schemes",
+        "de": "Alle Vokabulare berücksichtigen"
+      },
+      "definition": {
+        "en": [
+          "When turned off, only the results of the currently selected concept schemes will be shown."
+        ],
+        "de": [
+          "Falls ausgeschaltet werden nur Ergebnisse der Vokabulare angezeigt, die aktuell ausgewählt sind."
+        ]
+      },
+      "type": "Boolean",
+      "default": true
+    },
+    "navigatorShowResultsForLeft": {
+      "prefLabel": {
+        "en": "Results related to selected concept on the left side",
+        "de": "Mappings mit linkem Konzept anzeigen"
+      },
+      "type": "Boolean",
+      "default": true
+    },
+    "navigatorShowResultsForRight": {
+      "prefLabel": {
+        "en": "Results related to selected concept on the right side",
+        "de": "Mappings mit rechtem Konzept anzeigen"
+      },
+      "type": "Boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,675 @@
+{
+  "registries": [
+    {
+      "provider": "ConceptApi",
+      "uri": "http://coli-conc.gbv.de/registry/bartoc",
+      "status": "https://bartoc.org/api/status",
+      "schemes": "https://bartoc.org/api/voc?partOf=http%3A%2F%2Fbartoc.org%2Fen%2Fnode%2F18926",
+      "notation": [
+        "BARTOC"
+      ],
+      "prefLabel": {
+        "en": "BARTOC API"
+      }
+    },
+    {
+      "provider": "LocalMappings",
+      "uri": "http://coli-conc.gbv.de/registry/local-mappings",
+      "notation": [
+        "L"
+      ],
+      "prefLabel": {
+        "de": "Lokal",
+        "en": "Local"
+      },
+      "definition": {
+        "en": [
+          "Mappings saved locally in the browser"
+        ],
+        "de": [
+          "Mappings, die lokal im Browser gespeichert wurden"
+        ]
+      }
+    },
+    {
+      "provider": "MappingsApi",
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-mappings",
+      "status": "https://coli-conc.gbv.de/api/status",
+      "notation": [
+        "C"
+      ],
+      "prefLabel": {
+        "de": "Konkordanz-Register",
+        "en": "Concordance Registry"
+      },
+      "definition": {
+        "en": [
+          "Central concordance registry of coli-conc"
+        ],
+        "de": [
+          "Zentrale Konkordanz-Datenbank von coli-conc"
+        ]
+      }
+    },
+    {
+      "provider": "MappingsApi",
+      "uri": "http://coli-conc.gbv.de/registry/wikidata-mappings",
+      "status": "https://coli-conc.gbv.de/services/wikidata/status",
+      "notation": [
+        "W"
+      ],
+      "prefLabel": {
+        "en": "Wikidata-Mappings"
+      },
+      "definition": {
+        "en": [
+          "Access to Wikidata mappings in JSKOS format"
+        ],
+        "de": [
+          "Zugriff auf Wikidata-Mappings im JSKOS-Format"
+        ]
+      }
+    },
+    {
+      "provider": "MappingsApi",
+      "uri": "http://coli-conc.gbv.de/registry/konsys-mappings",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1443"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/2053"
+        }
+      ],
+      "status": "https://konsys.uni-konstanz.de/api/jskos/status",
+      "notation": [
+        "K"
+      ],
+      "prefLabel": {
+        "en": "KonSys Mappings"
+      }
+    },
+    {
+      "provider": "LabelSearchSuggestion",
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations-experimental",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/533"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18785"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/241"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1043"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18797"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/20049"
+        }
+      ],
+      "overrides": [
+        {
+          "uri": "http://bartoc.org/en/node/533",
+          "identifier": [
+            "http://uri.gbv.de/terminology/rvk/"
+          ],
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18785",
+          "identifier": [
+            "http://uri.gbv.de/terminology/bk/"
+          ],
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/241",
+          "identifier": [
+            "http://dewey.info/scheme/edition/e23/"
+          ],
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1043",
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18797",
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/20049",
+          "search": "https://coli-conc.gbv.de/test/typesense-suggest-backend/search"
+        }
+      ],
+      "notation": [
+        "CR*"
+      ],
+      "prefLabel": {
+        "en": "coli-conc Suggestions",
+        "de": "coli-conc Vorschläge"
+      }
+    },
+    {
+      "provider": "LabelSearchSuggestion",
+      "uri": "http://coli-conc.gbv.de/registry/coli-conc-recommendations",
+      "excludedSchemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        },
+        {
+          "uri": "http://nomisma.org/id/"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/533"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18785"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/241"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/1043"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/18797"
+        },
+        {
+          "uri": "http://bartoc.org/en/node/20049"
+        }
+      ],
+      "notation": [
+        "CR"
+      ],
+      "prefLabel": {
+        "en": "coli-conc Suggestions",
+        "de": "coli-conc Vorschläge"
+      }
+    },
+    {
+      "uri": "http://coli-conc.gbv.de/registry/occurrences",
+      "provider": "OccurrencesApi",
+      "api": "https://coli-conc.gbv.de/subjects/occurrences",
+      "notation": [
+        "CO"
+      ],
+      "prefLabel": {
+        "en": "Co-Occurrences"
+      }
+    },
+    {
+      "provider": "MappingsApi",
+      "uri": "http://coli-conc.gbv.de/registry/ccmapper-mapping-recommendations",
+      "status": "https://coli-conc.gbv.de/ccmapper/api/status",
+      "schemes": [
+        {
+          "uri": "http://dewey.info/scheme/edition/e23/"
+        },
+        {
+          "uri": "http://uri.gbv.de/terminology/rvk/"
+        }
+      ],
+      "stored": false,
+      "notation": [
+        "CC"
+      ],
+      "prefLabel": {
+        "en": "ccmapper Mapping Suggestions",
+        "de": "ccmapper Mapping-Vorschläge"
+      }
+    },
+    {
+      "provider": "ReconciliationApi",
+      "uri": "http://coli-conc.gbv.de/registry/wikidata-reconciliation",
+      "api": "https://wikidata.reconci.link/{language}/api",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/1940"
+        }
+      ],
+      "notation": [
+        "WR"
+      ],
+      "prefLabel": {
+        "de": "Wikidata-Reconciliation",
+        "en": "Wikidata Reconciliation"
+      },
+      "definition": {
+        "en": [
+          "Wikidata Reconciliation API"
+        ],
+        "de": [
+          "Wikidata-Reconciliation API"
+        ]
+      }
+    },
+    {
+      "provider": "ReconciliationApi",
+      "uri": "http://coli-conc.gbv.de/registry/gnd-reconciliation",
+      "api": "https://lobid.org/gnd/reconcile",
+      "schemes": [
+        {
+          "uri": "http://bartoc.org/en/node/430"
+        }
+      ],
+      "notation": [
+        "GR"
+      ],
+      "prefLabel": {
+        "de": "GND-Reconciliation",
+        "en": "GND Reconciliation"
+      },
+      "definition": {
+        "en": [
+          "GND Reconciliation API (lobid.org)"
+        ],
+        "de": [
+          "GND-Reconciliation API (lobid.org)"
+        ]
+      }
+    },
+    {
+      "provider": "ReconciliationApi",
+      "uri": "http://coli-conc.gbv.de/registry/nomisma-reconciliation",
+      "api": "https://nomisma.org/apis/reconcile",
+      "schemes": [
+        {
+          "uri": "http://nomisma.org/id/"
+        }
+      ],
+      "notation": [
+        "NR"
+      ],
+      "prefLabel": {
+        "de": "Nomisma-Reconciliation",
+        "en": "Nomisma Reconciliation"
+      },
+      "definition": {
+        "en": [
+          "Nomisma Reconciliation API"
+        ],
+        "de": [
+          "Nomisma-Reconciliation API"
+        ]
+      }
+    }
+  ],
+  "overrideRegistries": false,
+  "searchLinks": [
+    {
+      "prefLabel": {
+        "en": "Netherlands Institute for Art History"
+      },
+      "schemeUris": [
+        "http://bartoc.org/en/node/459"
+      ],
+      "url": "https://rkd.nl/en/explore/images#filters%5Biconclass_code%5D={notation}"
+    },
+    {
+      "prefLabel": {
+        "en": "finto"
+      },
+      "schemeUris": [
+        "http://bartoc.org/en/node/459"
+      ],
+      "url": "https://finto.fi/ic/en/page/{notation}"
+    },
+    {
+      "prefLabel": {
+        "de": "Erdteilallegorien"
+      },
+      "schemeUris": [
+        "http://bartoc.org/en/node/459"
+      ],
+      "url": "https://erdteilallegorien.univie.ac.at/iconclass/{notation}"
+    },
+    {
+      "prefLabel": {
+        "de": "ccmapper"
+      },
+      "url": "https://ccmapper-de.pansoft.de/m/mapping.html?id={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Wikipedia (de)"
+      },
+      "url": "https://de.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": {
+        "de": "Wikipedia (en)"
+      },
+      "url": "https://en.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": {
+        "de": "Wikipedia"
+      },
+      "url": "https://{language}.wikipedia.org/w/index.php?title=Special:Search&search={prefLabel}"
+    },
+    {
+      "prefLabel": {
+        "de": "RVK Online"
+      },
+      "url": "https://rvk.uni-regensburg.de/regensburger-verbundklassifikation-online#notation/{notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "WebDewey Search"
+      },
+      "url": "https://deweysearchde.pansoft.de/webdeweysearch/executeSearch.html?query={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/241"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus"
+      },
+      "url": "https://opac.k10plus.de/DB=2.299/CLK?IKT=8549&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/430"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus"
+      },
+      "url": "https://opac.k10plus.de/DB=2.299/CLK?IKT=5004&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/18785"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "WebGND"
+      },
+      "url": "http://gnd.eurospider.com",
+      "urlSuffix": "/s?q={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/430"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Bremer Online Systematik"
+      },
+      "url": "https://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&term={notation}?&LAN=DE&IHITS=30&FHITS=30&XML_STYLE=/styles/cns-DE.xml&index=C&n_dtyp=1L&n_rtyp=ceEdX&RELEVANCE=55&INDEXINFO=awCN&forward=1&section=ms",
+      "schemeUris": [
+        "https://bartoc.org/de/node/730"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "GEPRIS"
+      },
+      "url": "https://gepris.dfg.de/gepris/OCTOPUS?task=doSearchExtended&context=projekt&fachlicheZuordnung={notation}",
+      "schemeUris": [
+        "http://uri.gbv.de/terminology/dfg/"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "DFG-Fachkollegien"
+      },
+      "url": "https://www.dfg.de/dfg_profil/gremien/fachkollegien/liste/index.jsp?id={notation}",
+      "schemeUris": [
+        "http://uri.gbv.de/terminology/dfg/"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus"
+      },
+      "url": "https://opac.k10plus.de/DB=2.299/CLK?IKT=3002&NOABS=Y&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "SWB"
+      },
+      "url": "https://swb.bsz-bw.de/DB=2.1/CMD?ACT=SRCHA&IKT=3002&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Bibliotheksverbund Bayern (BVB)"
+      },
+      "url": "https://bvbat01.bib-bvb.de/TP61/start.do?Query=0080%3D%22{notation}%22+IN+%5B1%5D",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "de": "Österreichischer Bibliothekenverbund (OBV)"
+      },
+      "url": "https://search.obvsg.at/primo-explore/search?vid=OBV&query=lsr06%2Cexact%2C{notation}%2CAND&mode=advanced",
+      "schemeUris": [
+        "http://bartoc.org/en/node/533"
+      ]
+    },
+    {
+      "prefLabel": {
+        "en": "K10plus"
+      },
+      "url": "https://opac.k10plus.de/DB=2.299/CMD?ACT=SRCHA&IKT=8506&TRM={notation}",
+      "schemeUris": [
+        "http://bartoc.org/en/node/454",
+        "http://bartoc.org/en/node/18536"
+      ]
+    }
+  ],
+  "favoriteSchemes": [
+    "http://uri.gbv.de/terminology/bk/",
+    "http://bartoc.org/en/node/18785",
+    "http://uri.gbv.de/terminology/rvk/",
+    "http://bartoc.org/en/node/533",
+    "http://bartoc.org/en/node/430",
+    "http://dewey.info/scheme/edition/e23/",
+    "http://bartoc.org/en/node/241",
+    "http://bartoc.org/en/node/1940"
+  ],
+  "shortcuts": [
+    {
+      "id": "saveMapping",
+      "action": "saveMapping",
+      "component": "MappingEditor",
+      "keys": "ctrl+s,command+s",
+      "prefLabel": {
+        "en": "Save current mapping",
+        "de": "Aktuelles Mapping speichern"
+      }
+    },
+    {
+      "id": "clearMapping",
+      "action": "clearMapping",
+      "component": "MappingEditor",
+      "keys": "ctrl+shift+c,command+shift+c",
+      "prefLabel": {
+        "en": "Clear current mapping",
+        "de": "Aktuelles Mapping leeren"
+      }
+    },
+    {
+      "id": "addConceptLeft",
+      "action": "addConcept",
+      "component": "MappingEditor",
+      "keys": "ctrl+a,command+a",
+      "prefLabel": {
+        "en": "Add left concept to current mapping",
+        "de": "Linkes Konzept zu aktuellem Mapping hinzufügen"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "addConceptRight",
+      "action": "addConcept",
+      "component": "MappingEditor",
+      "keys": "ctrl+d,command+d",
+      "prefLabel": {
+        "en": "Add right concept to current mapping",
+        "de": "Rechtes Konzept zu aktuellem Mapping hinzufügen"
+      },
+      "isLeft": false
+    },
+    {
+      "id": "nextConceptLeft",
+      "action": "nextConcept",
+      "component": "ConceptDetail",
+      "keys": "alt+n,alt+keyCode:78",
+      "prefLabel": {
+        "en": "Open next concept (left)",
+        "de": "Nächstes Konzept öffnen (links)"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "nextConceptRight",
+      "action": "nextConcept",
+      "component": "ConceptDetail",
+      "keys": "alt+m,alt+µ",
+      "prefLabel": {
+        "en": "Open next concept (right)",
+        "de": "Nächstes Konzept öffnen (rechts)"
+      },
+      "isLeft": false
+    },
+    {
+      "id": "openSchemeSelectionLeft",
+      "action": "openSchemeSelection",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+shift+f,command+shift+f",
+      "prefLabel": {
+        "en": "Open concept scheme selection (left)",
+        "de": "Vokabularauswahl öffnen (links)"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "openSchemeSelectionRight",
+      "action": "openSchemeSelection",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+shift+g,command+shift+g",
+      "prefLabel": {
+        "en": "Open concept scheme selection (right)",
+        "de": "Vokabularauswahl öffnen (rechts)"
+      },
+      "isLeft": false
+    },
+    {
+      "id": "openConceptSearchLeft",
+      "action": "openConceptSearch",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+f,command+f",
+      "prefLabel": {
+        "en": "Open concept search (left)",
+        "de": "Konzeptsuche öffnen (links)"
+      },
+      "isLeft": true
+    },
+    {
+      "id": "openConceptSearchRight",
+      "action": "openConceptSearch",
+      "component": "ConceptSchemeSelection",
+      "keys": "ctrl+g,command+g",
+      "prefLabel": {
+        "en": "Open concept search (right)",
+        "de": "Konzeptsuche öffnen (rechts)"
+      },
+      "isLeft": false
+    }
+  ],
+  "languages": [
+    "en",
+    "de"
+  ],
+  "logos": [
+    {
+      "file": "coli-conc-logo.svg",
+      "url": "https://coli-conc.gbv.de/",
+      "alt": "coli-conc"
+    }
+  ],
+  "title": "Cocoda Mapping Tool",
+  "menu": [
+    {
+      "url": "https://www.gbv.de/impressum",
+      "prefLabel": {
+        "en": "Imprint",
+        "de": "Impressum"
+      }
+    },
+    {
+      "url": "https://github.com/gbv/cocoda/wiki/Barrierefreiheit",
+      "prefLabel": {
+        "en": "Accessibility",
+        "de": "Barrierefreiheit"
+      }
+    },
+    {
+      "url": "https://www.gbv.de/datenschutz",
+      "prefLabel": {
+        "en": "Privacy Policy",
+        "de": "Datenschutz"
+      }
+    },
+    {
+      "url": "https://coli-conc.gbv.de/contact/",
+      "prefLabel": {
+        "en": "Feedback"
+      }
+    }
+  ],
+  "guidelines": [
+    {
+      "fromScheme": {
+        "uri": "http://bartoc.org/en/node/1940"
+      },
+      "toScheme": {
+        "uri": "http://uri.gbv.de/terminology/bk/"
+      },
+      "url": "https://github.com/gbv/cocoda/wiki/Wikidata-Basisklassifikation"
+    },
+    {
+      "fromScheme": {
+        "uri": "http://bartoc.org/en/node/1940"
+      },
+      "toScheme": {
+        "uri": "http://bartoc.org/en/node/430"
+      },
+      "url": "https://github.com/gbv/cocoda/wiki/Wikidata-GND"
+    }
+  ],
+  "conceptLists": [],
+  "autoRefresh": {
+    "mappings": 10000,
+    "update": 120000
+  },
+  "coli-ana": "https://coli-conc.gbv.de/coli-ana/app/"
+}
