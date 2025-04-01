@@ -242,7 +242,7 @@ export default {
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "@/style/main.less";
 @import "../style/colors.css";
 
@@ -257,6 +257,12 @@ export default {
 .selected .itemName-inner, .selected .itemName-inner > * {
   color: var(--color-text-secondary);
 }
+
+/* When used in a concept list */
+.conceptListItem:hover .itemName-inner > * {
+  color: var(--color-text-secondary);
+}
+
 .itemName-hovered, .itemName-hoverable:hover {
   cursor: pointer;
   text-decoration: underline;
