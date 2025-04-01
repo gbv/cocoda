@@ -68,6 +68,28 @@
               </p>
             </b-col>
           </b-row>
+          <!-- Seachr Links -->
+          <b-row>
+            <b-col cols="3">
+              {{ $t('conceptDetail.searchLinks') }}:
+            </b-col>
+            <b-col
+              v-if="searchLinks.length"
+              :key="`MappingDetail-searchLinks`"
+              :title="$t('conceptDetail.searchLinks')">
+              <ul style="margin-bottom: 0;">
+                <li
+                  v-for="(searchLink, index) of searchLinks"
+                  :key="`searchLink-${index}`">
+                  <a
+                    :href="searchLink.url"
+                    target="_blank">
+                    {{ searchLink.label }}
+                  </a>
+                </li>
+              </ul>
+            </b-col>
+          </b-row>
           <!-- Mapping Type -->
           <b-row v-if="mapping.type && mapping.type.length">
             <b-col cols="3">
@@ -243,6 +265,15 @@ export default {
       type: Object,
       default: null,
     },
+
+    /**
+     * Search Links Array
+     */
+    searchLinks: {
+      type: Array,
+      default: null,
+    },
+
 
   },
   computed: {

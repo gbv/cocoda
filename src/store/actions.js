@@ -335,22 +335,41 @@ export default {
     }
     return conceptLists
   },
-
-  async getSearchLinks({ state }, { scheme, ...info }) {
+  async getSearchLinks({ state }, { scheme, info }) {
     let searchLinks = []
+    const infoArray = Array.isArray(info) ? info : [info]
+    let notationValues = infoArray.map(item => item.notation)
+    
+    for (let infoItem of infoArray) {
+      for (let searchLink of (state.config.searchLinks || []).filter(l => l.schemes.length === 0 || jskos.isContainedIn(scheme, l.schemes))) {
+          
+        // Construct URL
+        let url = searchLink.url + (searchLink.urlSuffix ?? "")
 
-    for (let searchLink of (state.config.searchLinks || []).filter(l => l.schemes.length === 0 || jskos.isContainedIn(scheme, l.schemes))) {
-      // Construct URL
-      let url = searchLink.url + (searchLink.urlSuffix ?? "")
-      _.forOwn(info, (value, key) => {
-        // Replace all occurrences of {key} with value
-        url = _.replace(url, new RegExp(`{${key}}`, "g"), value)
-      })
-      searchLinks.push({
-        url,
-        label: jskos.prefLabel(searchLink, { language: info.locale }),
-      })
+        // Replace notation values
+        const notationReplacement = notationValues.length > 0
+          ? notationValues.join(searchLink.separator)  // Use default separator if not provided
+          : notationValues[0]
+
+        url = url.replace(/{notation}/g, notationReplacement)
+
+        // Replace other keys
+        _.forOwn(infoItem, (value, key) => {
+          if (key !== "notation") {  // Skip notation as it is handled above
+            url = url.replace(new RegExp(`{${key}}`, "g"), value)
+          }
+        })
+
+        // Add URL and label to searchLinks
+        searchLinks.push({
+          url,
+          label: jskos.prefLabel(searchLink, { language: infoItem.locale }),
+        })
+      }
+
     }
+
+
     // Add custom WebDewey links for DDC
     if (jskos.compare(scheme, { uri: "http://bartoc.org/en/node/241" })) {
       let recordIdPrefix = "ddc"

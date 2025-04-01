@@ -513,7 +513,7 @@ export default {
     async updateSearchLinks(searchLinkInfo) {
       this.searchLinks = await this.$store.dispatch("getSearchLinks", {
         scheme: getItem(this.selected.scheme[this.isLeft]),
-        ...searchLinkInfo,
+        info: searchLinkInfo,
       })
     },
     sortByLanguage(a, b) {
