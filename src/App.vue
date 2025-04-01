@@ -513,6 +513,14 @@ export default {
       this.loadingGlobal = true
       // Load config
       await this.$store.dispatch("loadConfig", _.get(this.$route, "query.config"))
+      // Adjust layout
+      if (this.config.cssProperties) {
+        const cssProperties = this.config.cssProperties
+        setCssCustomProperties(cssProperties)
+      }
+      if (this.config.favicon) {
+        document.getElementById("favicon").href = this.config.favicon
+      }
       // Load settings
       await this.$store.dispatch("settings/load")
       // Wait for authentication to initialize
@@ -556,11 +564,6 @@ export default {
         if (_.isArray(registry.schemes)) {
           registry._jskos.schemes = registry.schemes.map(scheme => getItem(scheme) || scheme)
         }
-      }
-      if (this.config.cssProperties) {
-        const cssProperties = this.config.cssProperties
-        // call to the which set up custom Css properties from config 
-        setCssCustomProperties(cssProperties)
       }
       this.$log.log(`Application loaded in ${((new Date()) - time)/1000} seconds.`)
     },

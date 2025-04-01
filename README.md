@@ -89,9 +89,11 @@ The following fields are recognized so far:
 * **cssProperties**: object of global CSS properties, used for [color settings](#color-settings)
 
 * **logos**: a list of logos to display left to the title, each with subfields:
-  * `file`: image URL relative to the `static` directory
+  * `file`: image URL relative to the `public` directory
   * `alt`: alternate text for the image, if the image cannot be displayed, as plain string
   * `url`: URL to link from the logo
+
+* **favicon**: URL of a custom favicon.
 
 * **menu**: a list of links to show in the menu, each with subfields:
   * `url`: the link URL
@@ -157,6 +159,21 @@ Or you can set the individual HSL values:
 }
 ```
 Internally, RGB values will also be converted to HSL for properties if the property supports HSL.
+
+### Image files
+
+Images files (`.png`, `.svg`, `.ico`) in the `config` directory are made available at path `/config` and can be referenced like this:
+
+~~~json
+"favicon": "config/favicon.ico",
+"logos": [
+  {
+    "file": "config/logo.png",
+    "alt": "Mapping Editor ",
+    "url": "https://example.org/"
+  }
+]
+~~~
 
 ## Maintainers
 

@@ -13,6 +13,10 @@ config/cocoda*.json
 !config/cocoda.default.json
 !config/cocoda.dev.json
 !config/cocoda.master.json
+config/*.ico
+config/*.png
+config/*.svg
+
 # local colors file
 src/style/user-colors.css
 
