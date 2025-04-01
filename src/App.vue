@@ -832,6 +832,7 @@ html, body {
   flex-wrap: nowrap;
   min-width: 1220px;
   min-height: 640px;
+  background-color: var(--color-background);
 }
 .main {
   flex: 1;
