@@ -347,7 +347,7 @@ export default {
         let url = searchLink.url + (searchLink.urlSuffix ?? "")
 
         // Replace notation values
-        const notationReplacement = notationValues.length > 0
+        const notationReplacement = notationValues.length > 0 && searchLink.separator
           ? notationValues.join(searchLink.separator)  // Use default separator if not provided
           : notationValues[0]
 
@@ -372,9 +372,8 @@ export default {
 
     }
 
-
     // Add custom WebDewey links for DDC
-    if (jskos.compare(scheme, { uri: "http://bartoc.org/en/node/241" })) {
+    if (jskos.compare(scheme, { uri: "http://bartoc.org/en/node/241" }) && !multipleConcepts) {
       let recordIdPrefix = "ddc"
       let notation = info.notation
       // Adjust notation
