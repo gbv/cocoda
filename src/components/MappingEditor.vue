@@ -508,6 +508,7 @@ export default {
     },
     searchLinkInfo(newValue, oldValue) {
       if (!_.isEqual(newValue, oldValue)) {
+        this.items = [] 
         this.updateSearchLinks(newValue)
       }
     },
