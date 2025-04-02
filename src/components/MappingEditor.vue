@@ -472,7 +472,6 @@ export default {
     },
     items() {
       return this.$store.getters["mapping/getConcepts"](false).map(getItem)
-      // return getItem(this.selected.concept[true]) // Correct!
     },
   },
   watch: {
@@ -508,7 +507,6 @@ export default {
     },
     searchLinkInfo(newValue, oldValue) {
       if (!_.isEqual(newValue, oldValue)) {
-        this.items = [] 
         this.updateSearchLinks(newValue)
       }
     },
@@ -525,7 +523,7 @@ export default {
       this.searchLinks = await this.$store.dispatch("getSearchLinks", {
         scheme: getItem(this.selected.scheme[false]),
         info: searchLinkInfo,
-        multipleConcepts: true,
+        multipleConcepts: this.items && this.items.length > 1,
       })
     },
     refreshAnnotations(data) {

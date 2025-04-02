@@ -373,9 +373,9 @@ export default {
     }
 
     // Add custom WebDewey links for DDC
-    if (jskos.compare(scheme, { uri: "http://bartoc.org/en/node/241" }) && !multipleConcepts) {
+    if (jskos.compare(scheme, { uri: "http://bartoc.org/en/node/241" }) && infoArray.length > 0) {
       let recordIdPrefix = "ddc"
-      let notation = info.notation
+      let notation = infoArray[0].notation
       // Adjust notation
       // 1. Determine postfix
       let postfix
@@ -399,7 +399,7 @@ export default {
         label: jskos.prefLabel({ prefLabel: {
           en: "WebDewey English (requires login)",
           de: "WebDewey Englisch (benötigt Login)",
-        }}, { language: info.locale }),
+        }}, { language: infoArray[0].locale }),
       })
       // German
       searchLinks.push({
@@ -407,7 +407,7 @@ export default {
         label: jskos.prefLabel({ prefLabel: {
           en: "WebDewey German (requires login)",
           de: "WebDewey Deutsch (benötigt Login)",
-        }}, { language: info.locale }),
+        }}, { language: infoArray[0].locale }),
       })
     }
     // Filter out duplicate URLs (e.g. Wikipedia)
