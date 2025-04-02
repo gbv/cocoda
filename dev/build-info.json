@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "0e6fe031eefd84cddf562b1c4b7bd3e3ab6cd4c8",
-  "gitCommitShort": "0e6fe031",
-  "gitCommitMessage": "0e6fe031 First implementation search links in mappingDetail (#743)",
-  "buildDate": "2025-04-01T11:54:46Z",
-  "date": "2025-04-01T11:53:47.000Z",
+  "gitCommit": "2641bb55b1d4cf0e7a267cbfa953dd3c95050590",
+  "gitCommitShort": "2641bb55",
+  "gitCommitMessage": "2641bb55 Avoid blanck fileds in mapiingDetails (#743)",
+  "buildDate": "2025-04-02T07:34:12Z",
+  "date": "2025-04-02T07:33:21.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
