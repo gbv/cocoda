@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "2641bb55b1d4cf0e7a267cbfa953dd3c95050590",
-  "gitCommitShort": "2641bb55",
-  "gitCommitMessage": "2641bb55 Avoid blanck fileds in mapiingDetails (#743)",
-  "buildDate": "2025-04-02T07:34:12Z",
-  "date": "2025-04-02T07:33:21.000Z",
+  "gitCommit": "917e882f49d9d6290bcf26a116b853ac2fd457d6",
+  "gitCommitShort": "917e882f",
+  "gitCommitMessage": "917e882f Bug fixing; show all links in MappingDetail when only one concept is selected (#743)",
+  "buildDate": "2025-04-02T13:15:26Z",
+  "date": "2025-04-02T13:14:03.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
