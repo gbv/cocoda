@@ -524,6 +524,7 @@ export default {
       this.searchLinks = await this.$store.dispatch("getSearchLinks", {
         scheme: getItem(this.selected.scheme[false]),
         info: searchLinkInfo,
+        multipleConcepts: true,
       })
     },
     refreshAnnotations(data) {

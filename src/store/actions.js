@@ -335,7 +335,7 @@ export default {
     }
     return conceptLists
   },
-  async getSearchLinks({ state }, { scheme, info }) {
+  async getSearchLinks({ state }, { scheme, info, multipleConcepts }) {
     let searchLinks = []
     const infoArray = Array.isArray(info) ? info : [info]
     let notationValues = infoArray.map(item => item.notation)
@@ -360,11 +360,14 @@ export default {
           }
         })
 
-        // Add URL and label to searchLinks
-        searchLinks.push({
-          url,
-          label: jskos.prefLabel(searchLink, { language: infoItem.locale }),
-        })
+        // Add URL and label to searchLinks based on multipleConcepts
+        if (!multipleConcepts || (multipleConcepts && searchLink.separator)) {
+          searchLinks.push({
+            url,
+            label: jskos.prefLabel(searchLink, { language: infoItem.locale }),
+          })
+        }
+       
       }
 
     }

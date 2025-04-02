@@ -514,6 +514,7 @@ export default {
       this.searchLinks = await this.$store.dispatch("getSearchLinks", {
         scheme: getItem(this.selected.scheme[this.isLeft]),
         info: searchLinkInfo,
+        multipleConcepts: false,
       })
     },
     sortByLanguage(a, b) {
