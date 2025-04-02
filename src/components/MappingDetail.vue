@@ -13,7 +13,7 @@
           class="mappingDetail-container"
           fluid>
           <!-- Source Scheme -->
-          <b-row>
+          <b-row v-if="mapping.fromScheme !== null">
             <b-col cols="3">
               {{ $t("mappingDetail.sourceScheme") }}:
             </b-col>
@@ -25,7 +25,7 @@
             </b-col>
           </b-row>
           <!-- Source Concepts -->
-          <b-row>
+          <b-row v-if="$jskos.conceptsOfMapping(mapping, 'from').length">
             <b-col cols="3">
               {{ $tc("mappingDetail.sourceConcept", $jskos.conceptsOfMapping(mapping, 'from').length) }}:
             </b-col>
@@ -41,7 +41,7 @@
             </b-col>
           </b-row>
           <!-- Target Scheme -->
-          <b-row>
+          <b-row v-if="mapping.toScheme !== null">
             <b-col cols="3">
               {{ $t("mappingDetail.targetScheme") }}:
             </b-col>
@@ -53,7 +53,7 @@
             </b-col>
           </b-row>
           <!-- Target Concepts -->
-          <b-row>
+          <b-row v-if="$jskos.conceptsOfMapping(mapping, 'to').length">
             <b-col cols="3">
               {{ $tc("mappingDetail.targetConcept", $jskos.conceptsOfMapping(mapping, 'to').length) }}:
             </b-col>
@@ -69,12 +69,11 @@
             </b-col>
           </b-row>
           <!-- Seachr Links -->
-          <b-row>
+          <b-row v-if="searchLinks.length">
             <b-col cols="3">
               {{ $t('conceptDetail.searchLinks') }}:
             </b-col>
             <b-col
-              v-if="searchLinks.length"
               :key="`MappingDetail-searchLinks`"
               :title="$t('conceptDetail.searchLinks')">
               <ul style="margin-bottom: 0;">
@@ -104,7 +103,7 @@
             </b-col>
           </b-row>
           <!-- Creator -->
-          <b-row>
+          <b-row v-if="mapping.creator">
             <b-col cols="3">
               {{ $t("mappingDetail.creator") }}:
             </b-col>
@@ -134,14 +133,14 @@
             </b-col>
           </b-row>
           <!-- Created -->
-          <b-row>
+          <b-row v-if="mapping.created">
             <b-col cols="3">
               {{ $t("mappingDetail.created") }}:
             </b-col>
             <b-col><date-string :date="mapping.created" /></b-col>
           </b-row>
           <!-- Modified -->
-          <b-row>
+          <b-row v-if="mapping.modified">
             <b-col cols="3">
               {{ $t("mappingDetail.modified") }}:
             </b-col>
