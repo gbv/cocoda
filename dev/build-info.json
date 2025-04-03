@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "e38b203debfb59c7c6e00968c61e203476f862ed",
-  "gitCommitShort": "e38b203d",
-  "gitCommitMessage": "e38b203d Remove searchLinks from SchemeDetails",
-  "buildDate": "2025-04-03T13:53:11Z",
-  "date": "2025-04-03T13:51:39.000Z",
+  "gitCommit": "3f8207f0fb4d22859a70e383b4fe8d1ae8f2c7a2",
+  "gitCommitShort": "3f8207f0",
+  "gitCommitMessage": "3f8207f0 Refactor component; better management of keys on li items (#743)",
+  "buildDate": "2025-04-03T14:50:17Z",
+  "date": "2025-04-03T14:48:24.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
