@@ -171,9 +171,9 @@
         v-if="searchLinks.length"
         :key="`conceptDetail-${isLeft}-searchLinks`"
         :title="$t('conceptDetail.searchLinks')">
-        <SearchLinks
+        <LinkList
           :search-links="searchLinks"
-          :is-left="isLeft" />
+          list-key-prefix="concept-detail" />
       </tab>
     </tabs>
 
@@ -191,7 +191,7 @@ import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import DateString from "./DateString.vue"
 import ContentMap from "./ContentMap.vue"
-import SearchLinks from "./SearchLinks.vue"
+import LinkList from "./LinkList.vue"
 import _ from "lodash"
 import axios from "axios"
 
@@ -210,7 +210,7 @@ import { mainLanguagesContentMapForConcept, additionalLanguagesContentMapForConc
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, ConceptDetailAncestors, ItemDetailNarrower, DateString, ContentMap, SearchLinks,
+    AutoLink, ItemName, ConceptDetailAncestors, ItemDetailNarrower, DateString, ContentMap, LinkList,
   },
   mixins: [objects, computed, hotkeys, mappedStatus],
   props: {

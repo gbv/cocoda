@@ -69,12 +69,17 @@
             </b-col>
           </b-row>
           <!-- Search Links -->
-          <SearchLinks
-            v-if="searchLinks.length"
-            :search-links="searchLinks"
-            layout-mode="bootstrap"
-            component-name="MappingDetail"
-            :title="$t('conceptDetail.searchLinks') + ':'" />
+          <b-row v-if="searchLinks.length">
+            <b-col cols="3">
+              {{ $t("conceptDetail.searchLinks") }}:
+            </b-col>
+            <b-col>
+              <LinkList
+                v-if="searchLinks.length"
+                :search-links="searchLinks"
+                list-key-prefix="mapping-detail" />
+            </b-col>
+          </b-row>
           <!-- Mapping Type -->
           <b-row v-if="mapping.type && mapping.type.length">
             <b-col cols="3">
@@ -231,17 +236,16 @@ import AutoLink from "./AutoLink.vue"
 import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
-import SearchLinks from "./SearchLinks.vue"
-
 import computed from "@/mixins/computed.js"
 import { displayNameForConcordance } from "@/utils"
+import LinkList from "./LinkList.vue"
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString, SearchLinks },
+  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString, LinkList },
   mixins: [computed],
   props: {
     /**
