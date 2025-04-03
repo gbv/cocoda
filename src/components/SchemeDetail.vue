@@ -39,21 +39,6 @@
       </span>
     </div>
 
-    <div
-      v-if="searchLinks.length"
-      class="schemeDetail-identifier">
-      <b>{{ $t("schemeDetail.links") }}:</b>
-      <span
-        v-for="(searchLink, index) in searchLinks"
-        :key="index">
-        <a
-          :href="searchLink.url"
-          target="_blank">
-          {{ $jskos.prefLabel(searchLink, { language: locale }) }}
-        </a><template v-if="index !== searchLinks.length - 1">·</template>
-      </span>
-    </div>
-
     <!-- URI and identifier -->
     <div
       v-for="(identifier, index) in [_item.uri].concat(_item.identifier).filter(identifier => identifier != null)"
@@ -177,7 +162,7 @@ export default {
     settings: {
       type: Object,
       default: () => {
-        return {} 
+        return {}
       },
     },
   },
@@ -189,10 +174,6 @@ export default {
   computed: {
     _item() {
       return getItem(this.item) || this.item
-    },
-    searchLinks() {
-      // TODO: Possibly adjust this implementation (and rethink how to denote links that are also shown in SchemeDetails)
-      return (this.config.searchLinks || []).filter(searchLink => searchLink.urlSuffix && searchLink.schemeUris && searchLink.schemeUris.find(s => this.$jskos.compare({ uri: s }, this._item)))
     },
   },
   methods: {
