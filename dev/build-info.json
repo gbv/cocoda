@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "917e882f49d9d6290bcf26a116b853ac2fd457d6",
-  "gitCommitShort": "917e882f",
-  "gitCommitMessage": "917e882f Bug fixing; show all links in MappingDetail when only one concept is selected (#743)",
-  "buildDate": "2025-04-02T13:15:26Z",
-  "date": "2025-04-02T13:14:03.000Z",
+  "gitCommit": "7659ca414129488c3cbd11d034b93fe2e9779bc9",
+  "gitCommitShort": "7659ca41",
+  "gitCommitMessage": "7659ca41 Add SearchLinks component (#743)",
+  "buildDate": "2025-04-03T08:54:24Z",
+  "date": "2025-04-03T08:40:26.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
