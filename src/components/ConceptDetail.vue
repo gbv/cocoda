@@ -171,17 +171,9 @@
         v-if="searchLinks.length"
         :key="`conceptDetail-${isLeft}-searchLinks`"
         :title="$t('conceptDetail.searchLinks')">
-        <ul style="margin-bottom: 0;">
-          <li
-            v-for="(searchLink, index) of searchLinks"
-            :key="`searchLink-${isLeft}-${index}`">
-            <a
-              :href="searchLink.url"
-              target="_blank">
-              {{ searchLink.label }}
-            </a>
-          </li>
-        </ul>
+        <SearchLinks
+          :search-links="searchLinks"
+          :is-left="isLeft" />
       </tab>
     </tabs>
 
@@ -199,6 +191,7 @@ import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import DateString from "./DateString.vue"
 import ContentMap from "./ContentMap.vue"
+import SearchLinks from "./SearchLinks.vue"
 import _ from "lodash"
 import axios from "axios"
 
@@ -217,7 +210,7 @@ import { mainLanguagesContentMapForConcept, additionalLanguagesContentMapForConc
 export default {
   name: "ConceptDetail",
   components: {
-    AutoLink, ItemName, ConceptDetailAncestors, ItemDetailNarrower, DateString, ContentMap,
+    AutoLink, ItemName, ConceptDetailAncestors, ItemDetailNarrower, DateString, ContentMap, SearchLinks,
   },
   mixins: [objects, computed, hotkeys, mappedStatus],
   props: {

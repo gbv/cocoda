@@ -68,27 +68,13 @@
               </p>
             </b-col>
           </b-row>
-          <!-- Seachr Links -->
-          <b-row v-if="searchLinks.length">
-            <b-col cols="3">
-              {{ $t('conceptDetail.searchLinks') }}:
-            </b-col>
-            <b-col
-              :key="`MappingDetail-searchLinks`"
-              :title="$t('conceptDetail.searchLinks')">
-              <ul style="margin-bottom: 0;">
-                <li
-                  v-for="(searchLink, index) of searchLinks"
-                  :key="`searchLink-${index}`">
-                  <a
-                    :href="searchLink.url"
-                    target="_blank">
-                    {{ searchLink.label }}
-                  </a>
-                </li>
-              </ul>
-            </b-col>
-          </b-row>
+          <!-- Search Links -->
+          <SearchLinks
+            v-if="searchLinks.length"
+            :search-links="searchLinks"
+            layout-mode="bootstrap"
+            component-name="MappingDetail"
+            :title="$t('conceptDetail.searchLinks') + ':'" />
           <!-- Mapping Type -->
           <b-row v-if="mapping.type && mapping.type.length">
             <b-col cols="3">
@@ -245,6 +231,7 @@ import AutoLink from "./AutoLink.vue"
 import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
+import SearchLinks from "./SearchLinks.vue"
 
 import computed from "@/mixins/computed.js"
 import { displayNameForConcordance } from "@/utils"
@@ -254,7 +241,7 @@ import { displayNameForConcordance } from "@/utils"
  */
 export default {
   name: "MappingDetail",
-  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString },
+  components: { DataModal, ItemName, AutoLink, AnnotationList, RegistryInfo, DateString, SearchLinks },
   mixins: [computed],
   props: {
     /**
