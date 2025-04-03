@@ -74,10 +74,10 @@
               {{ $t("conceptDetail.searchLinks") }}:
             </b-col>
             <b-col>
-              <LinkList
+              <link-list
                 v-if="searchLinks.length"
-                :search-links="searchLinks"
-                list-key-prefix="mapping-detail" />
+                :links="searchLinks"
+                key-prefix="mapping-detail" />
             </b-col>
           </b-row>
           <!-- Mapping Type -->

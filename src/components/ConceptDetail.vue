@@ -171,9 +171,9 @@
         v-if="searchLinks.length"
         :key="`conceptDetail-${isLeft}-searchLinks`"
         :title="$t('conceptDetail.searchLinks')">
-        <LinkList
-          :search-links="searchLinks"
-          list-key-prefix="concept-detail" />
+        <link-list
+          :links="searchLinks"
+          key-prefix="concept-detail" />
       </tab>
     </tabs>
 

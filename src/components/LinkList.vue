@@ -1,32 +1,30 @@
 <template>
-  <!-- Generic layout (i.e. for ConceptDetail.vue) -->
   <ul
-    v-if="searchLinks.length"
-    style="margin-bottom: 0;">
+    v-if="links.length"
+    style="margin: 0;">
     <li
-      v-for="(searchLink, index) in searchLinks"
-      :key="`${listKeyPrefix}-${index}`">
+      v-for="(link, index) in links"
+      :key="`${keyPrefix}-${index}`">
       <a
-        :href="searchLink.url"
+        :href="link.url"
         target="_blank">
-        {{ searchLink.label }}
+        {{ link.label }}
       </a>
     </li>
   </ul>
 </template>
-  
+
 <script>
 export default {
   props: {
-    searchLinks: {
+    links: {
       type: Array,
       required: true,
     },
-    listKeyPrefix: {
+    keyPrefix: {
       type: String,
       required: true,
     },
   },
 }
 </script>
-  
