@@ -1,11 +1,11 @@
 {
   "version": "1.12.0",
   "gitBranch": "dev",
-  "gitCommit": "7659ca414129488c3cbd11d034b93fe2e9779bc9",
-  "gitCommitShort": "7659ca41",
-  "gitCommitMessage": "7659ca41 Add SearchLinks component (#743)",
-  "buildDate": "2025-04-03T08:54:24Z",
-  "date": "2025-04-03T08:40:26.000Z",
+  "gitCommit": "e38b203debfb59c7c6e00968c61e203476f862ed",
+  "gitCommitShort": "e38b203d",
+  "gitCommitMessage": "e38b203d Remove searchLinks from SchemeDetails",
+  "buildDate": "2025-04-03T13:53:11Z",
+  "date": "2025-04-03T13:51:39.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
