@@ -1,11 +1,11 @@
 {
-  "version": "1.12.0",
+  "version": "1.12.1",
   "gitBranch": "dev",
-  "gitCommit": "30844316d5ed4fd6343cb1f0b6737ba55c69f904",
-  "gitCommitShort": "30844316",
-  "gitCommitMessage": "30844316 Add documentation for separator parameter",
-  "buildDate": "2025-04-04T07:29:43Z",
-  "date": "2025-04-04T07:28:47.000Z",
+  "gitCommit": "3fc0c669883d590715ea8c6c0d79d8bb270cb1d9",
+  "gitCommitShort": "3fc0c669",
+  "gitCommitMessage": "3fc0c669 Release version 1.12.1",
+  "buildDate": "2025-04-04T07:34:07Z",
+  "date": "2025-04-04T07:33:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
