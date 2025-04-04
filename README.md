@@ -102,6 +102,7 @@ The following fields are recognized so far:
 * **searchLinks**: a list of search links to quickly link to external resources from concepts. Each searchlink has subfields:
   * `url` an URL template with possible parameters `{prefLabel}` and/or `{notation}`
   * `prefLabel`: mapping of language codes to link titles
+  * `separator`: defines how to join multiple values (especially multiple `{notation}` values) when constructing the final URL.
 
 * **favoriteSchemes**: list of vocabulary URIs to be favorited by default.
 
