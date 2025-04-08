@@ -232,8 +232,7 @@
     <!-- Mapping detail modal -->
     <mapping-detail
       ref="mappingDetail"
-      :mapping="mapping"
-      :search-links="searchLinks" />
+      :mapping="mapping" />
     <div
       class="mappingEditor-infoIcon">
       <font-awesome-icon
@@ -282,11 +281,6 @@ export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryNotation, ConcordanceSelection, AnnotationPopover },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
-  data () {
-    return {
-      searchLinks: [],
-    }
-  },
   computed: {
     mapping() {
       return this.$store.state.mapping.mapping
@@ -462,17 +456,6 @@ export default {
     currentGuidelines() {
       return (this.config.guidelines || []).find(g => this.$jskos.compare(g.fromScheme, getItem(this.selected.scheme[true])) && this.$jskos.compare(g.toScheme, getItem(this.selected.scheme[false])))
     },
-    searchLinkInfo() {
-      return this.items.map(item => ({
-        uri: item?.uri,
-        language: this.locale,
-        notation: this.$jskos.notation(item),
-        prefLabel: this.$jskos.prefLabel(item, { fallbackToUri: false }),
-      }))
-    },
-    items() {
-      return this.$store.getters["mapping/getConcepts"](false).map(getItem)
-    },
   },
   watch: {
     mappingEncoded() {
@@ -505,27 +488,14 @@ export default {
     mapping() {
       this.setCreator()
     },
-    searchLinkInfo(newValue, oldValue) {
-      if (!_.isEqual(newValue, oldValue)) {
-        this.updateSearchLinks(newValue)
-      }
-    },
   },
   mounted() {
     // Enable shortcuts
     this.enableShortcuts()
     // Set creator (fixes #560)
     this.setCreator()
-    this.updateSearchLinks(this.searchLinkInfo)
   },
   methods: {
-    async updateSearchLinks(searchLinkInfo) {
-      this.searchLinks = await this.$store.dispatch("getSearchLinks", {
-        scheme: getItem(this.selected.scheme[false]),
-        info: searchLinkInfo,
-        multipleConcepts: this.items && this.items.length > 1,
-      })
-    },
     refreshAnnotations(data) {
       if (data.uri === this.original.uri && this.original.registry) {
         // Send mapping refresh request
