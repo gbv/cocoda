@@ -1,11 +1,11 @@
 {
   "version": "1.12.1",
   "gitBranch": "dev",
-  "gitCommit": "3fc0c669883d590715ea8c6c0d79d8bb270cb1d9",
-  "gitCommitShort": "3fc0c669",
-  "gitCommitMessage": "3fc0c669 Release version 1.12.1",
-  "buildDate": "2025-04-04T07:34:07Z",
-  "date": "2025-04-04T07:33:19.000Z",
+  "gitCommit": "0498c62b278046439bf212cc404c424b6d33dc7e",
+  "gitCommitShort": "0498c62b",
+  "gitCommitMessage": "0498c62b Issue (#746) bug on mapping detail (#749)",
+  "buildDate": "2025-04-09T06:09:16Z",
+  "date": "2025-04-09T06:08:41.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
