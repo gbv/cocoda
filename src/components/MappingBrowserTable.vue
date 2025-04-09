@@ -270,7 +270,7 @@
             v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
             icon="info-circle"
             class="button"
-            @click="(mappingDetailMapping = data.item.mapping) && $refs.mappingDetail.show()" />
+            @click="openMappingDetail(data.item.mapping)" />
         </div>
       </span>
       <span
@@ -826,6 +826,10 @@ export default {
         inputField.focus()
         inputField.select()
       }
+    },
+    openMappingDetail(mapping) {
+      this.mappingDetailMapping = _.cloneDeep(mapping)
+      this.$refs.mappingDetail.show()
     },
   },
 }

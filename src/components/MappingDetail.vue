@@ -1,3 +1,5 @@
+
+
 <template>
   <div>
     <b-modal
@@ -239,6 +241,9 @@ import DateString from "./DateString.vue"
 import computed from "@/mixins/computed.js"
 import { displayNameForConcordance } from "@/utils"
 import LinkList from "./LinkList.vue"
+import { getItem } from "@/items"
+import _ from "lodash"
+
 
 /**
  * A component (bootstrap modal) that allows viewing and exporting JSKOS data.
@@ -256,15 +261,11 @@ export default {
       default: null,
     },
 
-    /**
-     * Search Links Array
-     */
-    searchLinks: {
-      type: Array,
-      default: null,
-    },
-
-
+  },
+  data () {
+    return {
+      searchLinks: [],
+    }
   },
   computed: {
     catalogEnrichmentLink() {
@@ -276,12 +277,40 @@ export default {
     contributors() {
       return (this.mapping.contributor || []).filter(c => !this.$jskos.isContainedIn(c, this.mapping.creator))
     },
+    searchLinkInfo() {
+      return this.concepts.map(concept => ({
+        uri: concept?.uri,
+        language: this.locale,
+        notation: this.$jskos.notation(concept),
+        prefLabel: this.$jskos.prefLabel(concept, { fallbackToUri: false }),
+      }))
+    },
+    concepts() {
+      return this.$jskos.conceptsOfMapping(this.mapping, "to")
+    },
+  },
+  watch: {
+    searchLinkInfo(newValue, oldValue) {
+      if (!_.isEqual(newValue, oldValue)) {
+        this.updateSearchLinks(newValue)
+      }
+    },
+  },
+  mounted() {
+    this.updateSearchLinks(this.searchLinkInfo)
   },
   methods: {
     show() {
       this.$refs.mappingDetail.show()
     },
     displayNameForConcordance,
+    async updateSearchLinks(searchLinkInfo) {
+      this.searchLinks = await this.$store.dispatch("getSearchLinks", {
+        scheme: getItem(this.mapping && this.mapping.toScheme),
+        info: searchLinkInfo,
+        multipleConcepts: this.concepts && this.concepts.length > 1,
+      })
+    },
   },
 }
 </script>
