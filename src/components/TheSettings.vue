@@ -317,43 +317,43 @@
             </ul>
           </p>
 
-          <h3>{{ $t("settings.localMappings") }}</h3>
-          <div>
-            <p>{{ $t("settings.localMappingsInfo") }}</p>
-          </div>
-          <div v-if="localMappingsRegistry && dlAllMappings && dlMappingsReady">
-            <h4>{{ $t("settings.localDownload") }}</h4>
-            <span
-              v-for="(download, index) in dlMappings"
-              :key="index">
-              {{ download.label }} ({{ download.mappings.length }}):
+          <div v-if="localMappingsRegistry">
+            <h3>{{ $t("settings.localMappings") }} <span v-if="localMappingsCount">({{ localMappingsCount }})</span></h3>
+            <div>
+              <p>{{ $t("settings.localMappingsInfo") }}</p>
+            </div>
+            <div v-if="dlAllMappings && dlMappingsReady">
+              <h4>{{ $t("settings.localDownload") }}</h4>
+              <span
+                v-for="(download, index) in dlMappings"
+                :key="index">
+                {{ download.label }} ({{ download.mappings.length }}):
+                <a
+                  href=""
+                  @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)">
+                  JSKOS
+                </a>
+                <a
+                  href=""
+                  @click.prevent="downloadFile(download.filename + '.csv', download.csv)">
+                  CSV
+                </a>
+                <br>
+              </span>
+              <br>
               <a
                 href=""
-                @click.prevent="downloadFile(download.filename + '.ndjson', download.ndjson)">
-                JSKOS
-              </a>
-              <a
-                href=""
-                @click.prevent="downloadFile(download.filename + '.csv', download.csv)">
-                CSV
+                @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)">
+                {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
               </a>
               <br>
-            </span>
+              <a
+                href=""
+                @click.prevent="downloadFile('mappings.csv', dlAllMappingsCsv)">
+                {{ $t("settings.localDownloadCsv", [dlAllMappingsCsv.split("\n").length - 2]) }}
+              </a>
+            </div>
             <br>
-            <a
-              href=""
-              @click.prevent="downloadFile('mappings.ndjson', dlAllMappings)">
-              {{ $t("settings.localDownloadJskos", [dlAllMappings.split("\n").length]) }}
-            </a>
-            <br>
-            <a
-              href=""
-              @click.prevent="downloadFile('mappings.csv', dlAllMappingsCsv)">
-              {{ $t("settings.localDownloadCsv", [dlAllMappingsCsv.split("\n").length - 2]) }}
-            </a>
-          </div>
-          <br>
-          <div v-if="localMappingsRegistry">
             <h4>{{ $t("settings.localUpload") }}</h4>
             <b-form-file
               ref="fileUpload"
@@ -364,48 +364,47 @@
             <p>
               {{ uploadedFileStatus }}
             </p>
-          </div>
-          <div v-if="localMappingsRegistry && dlAllMappings">
-            <h4>{{ $t("settings.localDeleteTitle") }}</h4>
-            <b-button
-              :disabled="!dlAllMappings"
-              variant="danger"
-              hide-footer
-              @click="deleteMappingsButtons = true">
-              {{ $t("settings.localDeleteText") }}
-            </b-button>
-            <p
-              v-if="deleteMappingsButtons">
-              {{ $t("settings.localDeleteSure") }}
+            <div v-if="dlAllMappings">
               <b-button
+                :disabled="!dlAllMappings"
                 variant="danger"
-                size="sm"
-                @click="deleteMappings_">
-                {{ $t("general.yes") }}
+                hide-footer
+                @click="deleteMappingsButtons = true">
+                {{ $t("settings.localDeleteText") }}
               </b-button>
-              <b-button
-                variant="success"
-                size="sm"
-                @click="deleteMappingsButtons = false">
-                {{ $t("general.no") }}
-              </b-button>
-            </p>
-          </div>
-          <br>
-          <div v-if="localMappingsRegistry && dlAllMappings">
-            <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
-            <p v-html="$t('settings.creatorRewriteText')" />
-            <p class="fontSize-small">
-              <b>Name:</b> {{ $jskos.prefLabel(creator, { language: locale }) }}<br>
-              <b>URI:</b> {{ creator.uri }}
-            </p>
-            <p>
-              <b-button
-                :variant="creatorRewritten ? 'success' : 'primary'"
-                @click="rewriteCreator">
-                {{ $t("settings.creatorRewriteButton") }}
-              </b-button>
-            </p>
+              <p
+                v-if="deleteMappingsButtons">
+                {{ $t("settings.localDeleteSure") }}
+                <b-button
+                  variant="danger"
+                  size="sm"
+                  @click="deleteMappings_">
+                  {{ $t("general.yes") }}
+                </b-button>
+                <b-button
+                  variant="success"
+                  size="sm"
+                  @click="deleteMappingsButtons = false">
+                  {{ $t("general.no") }}
+                </b-button>
+              </p>
+              <div>
+                <br>
+                <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
+                <p v-html="$t('settings.creatorRewriteText')" />
+                <p class="fontSize-small">
+                  <b>Name:</b> {{ $jskos.prefLabel(creator, { language: locale }) }}<br>
+                  <b>URI:</b> {{ creator.uri }}
+                </p>
+                <p>
+                  <b-button
+                    :variant="creatorRewritten ? 'success' : 'primary'"
+                    @click="rewriteCreator">
+                    {{ $t("settings.creatorRewriteButton") }}
+                  </b-button>
+                </p>
+              </div>
+            </div>
           </div>
         </tab>
         <span class="settingsModal-footer">
@@ -476,6 +475,7 @@ export default {
     return {
       localSettings: null,
       creatorRewritten: false,
+      localMappingsCount: null,
       dlMappingsReady: false,
       dlAllMappings: null,
       dlAllMappingsCsv: null,
@@ -636,6 +636,7 @@ export default {
       if (!this.localMappingsRegistry) {
         return
       }
+      this.localMappingsCount = null
       // Set download data variables
       this.dlMappingsReady = false
       this.dlAllMappings = null
@@ -643,6 +644,7 @@ export default {
       let mappings = []
       this.getMappings({ registry: this.localMappingsRegistry }).then(result => {
         mappings = result
+        this.localMappingsCount = mappings._totalCount
         // First, load concepts for all mappings into Vuex store (to have the labels available)
         // TODO: Add support for loading multiple concepts together.
         let promises = []
