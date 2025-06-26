@@ -364,47 +364,43 @@
             <p>
               {{ uploadedFileStatus }}
             </p>
-            <div v-if="dlAllMappings">
+          </div>
+          <div v-if="localMappingsCount">
+            <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
+            <p v-html="$t('settings.creatorRewriteText')" />
+            <p class="fontSize-small">
+              <b>Name:</b> {{ $jskos.prefLabel(creator, { language: locale }) }}<br>
+              <b>URI:</b> {{ creator.uri }}
+            </p>
+            <p>
               <b-button
-                :disabled="!dlAllMappings"
-                variant="danger"
-                hide-footer
-                @click="deleteMappingsButtons = true">
-                {{ $t("settings.localDeleteText") }}
+                :variant="creatorRewritten ? 'success' : 'primary'"
+                @click="rewriteCreator">
+                {{ $t("settings.creatorRewriteButton") }}
               </b-button>
-              <p
-                v-if="deleteMappingsButtons">
-                {{ $t("settings.localDeleteSure") }}
-                <b-button
-                  variant="danger"
-                  size="sm"
-                  @click="deleteMappings_">
-                  {{ $t("general.yes") }}
-                </b-button>
-                <b-button
-                  variant="success"
-                  size="sm"
-                  @click="deleteMappingsButtons = false">
-                  {{ $t("general.no") }}
-                </b-button>
-              </p>
-              <div>
-                <br>
-                <h4>{{ $t("settings.creatorRewriteTitle") }}</h4>
-                <p v-html="$t('settings.creatorRewriteText')" />
-                <p class="fontSize-small">
-                  <b>Name:</b> {{ $jskos.prefLabel(creator, { language: locale }) }}<br>
-                  <b>URI:</b> {{ creator.uri }}
-                </p>
-                <p>
-                  <b-button
-                    :variant="creatorRewritten ? 'success' : 'primary'"
-                    @click="rewriteCreator">
-                    {{ $t("settings.creatorRewriteButton") }}
-                  </b-button>
-                </p>
-              </div>
-            </div>
+            </p>
+            <b-button
+              variant="danger"
+              hide-footer
+              @click="deleteMappingsButtons = true">
+              {{ $t("settings.localDeleteText") }}
+            </b-button>
+            <p
+              v-if="deleteMappingsButtons">
+              {{ $t("settings.localDeleteSure") }}
+              <b-button
+                variant="danger"
+                size="sm"
+                @click="deleteMappings_">
+                {{ $t("general.yes") }}
+              </b-button>
+              <b-button
+                variant="success"
+                size="sm"
+                @click="deleteMappingsButtons = false">
+                {{ $t("general.no") }}
+              </b-button>
+            </p>
           </div>
         </tab>
         <span class="settingsModal-footer">
@@ -772,6 +768,7 @@ export default {
       if (!this.localMappingsRegistry) {
         return
       }
+      this.uploadedFileStatus = ""
       try {
         const mappings = await this.getMappings({ registry: this.localMappingsRegistry })
         await this.deleteMappings({ mappings, registry: this.localMappingsRegistry, _alert: false, _refresh: false, _trash: false })
