@@ -1,11 +1,11 @@
 {
-  "version": "1.12.1",
+  "version": "1.12.2",
   "gitBranch": "dev",
-  "gitCommit": "ec8a277c67db7187984ea601cef4f2904ee992cf",
-  "gitCommitShort": "ec8a277c",
-  "gitCommitMessage": "ec8a277c Always allow to delete all local mappings",
-  "buildDate": "2025-06-26T07:24:12Z",
-  "date": "2025-06-26T07:14:43.000Z",
+  "gitCommit": "1ec35e9800574b1374781a64ffa4924a2038f88c",
+  "gitCommitShort": "1ec35e98",
+  "gitCommitMessage": "1ec35e98 Release version 1.12.2",
+  "buildDate": "2025-08-13T05:36:52Z",
+  "date": "2025-08-13T05:36:01.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
