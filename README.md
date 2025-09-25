@@ -176,6 +176,10 @@ Images files (`.png`, `.svg`, `.ico`) in the `config` directory are made availab
 ]
 ~~~
 
+## System architecture
+
+![](public/img/cocoda-system-diagram.svg)
+
 ## Maintainers
 
 - [@nichtich](https://github.com/nichtich)
