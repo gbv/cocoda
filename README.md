@@ -14,21 +14,23 @@ Try out the [latest release version](https://coli-conc.gbv.de/cocoda/app/), the 
 ## Table of Contents
 
 - [Install](#install)
-  - [Release versions](#release-versions)
-  - [Development versions](#development-versions)
-  - [Serving the Files](#serving-the-files)
+  - [Releases](#releases)
+  - [Webserver](#webserver)
   - [Docker](#docker)
-- [Usage](#usage)
 - [Configuration](#configuration)
+- [Usage](#usage)
+- [Development](#development)
 - [Maintainers](#maintainers)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Install
 
-### Release versions
+Cocoda is a client-side web application that connects to [configured](#configuration) backend services from within the web browser. The application [can be served](#webserver) in form of static files from any web server.
 
-Releases [can be downloaded](https://github.com/gbv/cocoda/releases) in form of static files. Extract into a web server directory and adjust [configuration](#configuration) file `cocoda.json`. You could automate download and extraction of the latest release with [jq](https://stedolan.github.io/jq/) like this:
+### Releases
+
+[Download a release](https://github.com/gbv/cocoda/releases), extract it into a web server directory and adjust [configuration](#configuration) file `cocoda.json`. You could automate download and extraction of the latest release with [jq](https://stedolan.github.io/jq/) like this:
 
 ```bash
 # You can also manually download the latest release here: https://github.com/gbv/cocoda/releases/latest
@@ -37,27 +39,7 @@ unzip cocoda-*.zip
 rm cocoda-*.zip
 ```
 
-The directory `cocoda` is then ready to be [served with any web server](#serving-the-files).
-
-### Development versions
-
-Alternatively, it's possible to clone the [Cocoda repository](https://github.com/gbv/cocoda):
-
-```bash
-git clone https://github.com/gbv/cocoda.git
-cd cododa
-```
-
-Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build (requires Node.js v18 or above, v20 recommended):
-
-```bash
-npm ci
-npm run build
-```
-
-Files are created in directory `dist`, including the configuration file.
-
-### Serving the Files
+### Webserver
 
 Any web server can be used to serve Cocoda files. No special configuration is necessary. For instance using the `http-server` npm package to serve Cocoda at <http://localhost:8000>:
 
@@ -70,15 +52,11 @@ npx http-server -p 8000 dist/
 
 ### Docker
 
-Cocoda is also available via Docker. Please refer to [our Docker documentation](https://github.com/gbv/cocoda/blob/dev/docker/README.md) for more information and instructions.
-
-## Usage
-
-There is a detailled end-user manual available [in German](https://gbv.github.io/cocoda/dev/user-manual-de.html) and [in English](https://gbv.github.io/cocoda/dev/user-manual-en.html). The German version will likely be more up-to-date. Documentation sources are located in directory `docs`.
+Cocoda is also made available as Docker image with a web server. Please refer to [our Docker documentation](https://github.com/gbv/cocoda/blob/dev/docker/README.md) for more information and instructions.
 
 ## Configuration
 
-For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory and by passing query parameter `config` with an URL of a config file (CORS headers must be enabled to load if from another domain). 
+For the pre-built version, configuration options can be overridden by using `cocoda.json` in the root of the directory and by passing query parameter `config` with an URL of a config file (CORS headers must be enabled to load if from another domain).
 
 The default options are given in the file [`config/cocoda.default.json`](https://github.com/gbv/cocoda/blob/dev/config/cocoda.default.json) (please consult this file for examples on how to use the configuration options). When using a manual build, create file `config/cocoda.json` and rebuild (`npm run build`) after editing (you can also run `npm run build -- --config-only` if you already have a build in folder `dist/` and only need to update the config file).
 
@@ -141,9 +119,9 @@ Colors can be changed with the `cssProperties` configuration object. Most colors
 | **color-link**                    | Color of the links                                                          |     |
 | **color-link-hover**              | Color of the links when hovering                                            |     |
 
-See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Some comments are included to provide clarity on its purpose and usage within the application. Property names not included in the list above may change in future releases.
+See [src/style/colors.css](src/style/colors.css) for additional CSS color properties. Some comments are included to provide clarity on its purpose and usage within the application. Property names not included in the list above may change in future releases!
 
-For instance the color property `color-primary` can be set in RGB like this:
+To give an exmple the color property `color-primary` can be set in RGB like this:
 
 ```json
 "cssProperties": {
@@ -176,7 +154,39 @@ Images files (`.png`, `.svg`, `.ico`) in the `config` directory are made availab
 ]
 ~~~
 
-## System architecture
+## Usage
+
+There is a detailled end-user manual available [in German](https://gbv.github.io/cocoda/dev/user-manual-de.html) and [in English](https://gbv.github.io/cocoda/dev/user-manual-en.html). The German version will likely be more up-to-date. Documentation sources are located in directory `docs`.
+
+### Development
+
+Clone the [Cocoda repository](https://github.com/gbv/cocoda):
+
+```bash
+git clone https://github.com/gbv/cocoda.git
+cd cododa
+```
+
+Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build (requires Node.js v18 or above, v20 recommended):
+
+```bash
+npm ci
+npm run build
+```
+
+Files are created in directory `dist`, including the configuration file.
+
+For live update during development run `npm run dev`.
+
+Coding style is enforced with linting rules (`npm run lint` / `npm run fix`)
+
+Creation of the manual (see directory [`docs`](docs) requires pandoc and xelatex.
+
+Please consult **[the developer documentation](CONTRIBUTING.md)** for more information!
+
+Some additional notes may be found [in the project wiki](https://github.com/gbv/cocoda/wiki/).
+
+Cocoda is best used with backend services to read terminologies from and to store mappings and mapping annotations into. The following diagram shows the current architecture of services connected to Cocoda main instances used at VZG. Blue parts run in the browser:
 
 ![](public/img/cocoda-system-diagram.svg)
 
@@ -193,4 +203,4 @@ See <https://gbv.github.io/cocoda/> for API documentation automatically build fr
 
 ## License
 
-MIT ©2019 Verbundzentrale des GBV (VZG)
+MIT ©2019- Verbundzentrale des GBV (VZG)

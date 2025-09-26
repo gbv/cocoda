@@ -13,9 +13,7 @@
   "type": "module",
   "scripts": {
     "_prepare": "./bin/prepare.sh",
-    "dev": "npm run serve",
-    "start": "npm run serve",
-    "serve": "npm run _prepare; vite",
+    "dev": "npm run _prepare; vite",
     "build": "./build/build.sh",
     "build-all": "./build/build-all.sh",
     "lint": "eslint",
