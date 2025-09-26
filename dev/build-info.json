@@ -1,11 +1,11 @@
 {
   "version": "1.12.2",
   "gitBranch": "dev",
-  "gitCommit": "0104dc67adf92aa2113bd0b0101aeb1d7ab33664",
-  "gitCommitShort": "0104dc67",
-  "gitCommitMessage": "0104dc67 add diagramm and update readme (#765)",
-  "buildDate": "2025-09-25T13:53:20Z",
-  "date": "2025-09-25T13:51:22.000Z",
+  "gitCommit": "dfea5e420ebae578cdb4a13167fa02e076a05b40",
+  "gitCommitShort": "dfea5e42",
+  "gitCommitMessage": "dfea5e42 Update README",
+  "buildDate": "2025-09-26T05:57:41Z",
+  "date": "2025-09-26T05:56:52.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
