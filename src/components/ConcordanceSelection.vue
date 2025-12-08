@@ -5,8 +5,11 @@
       size="sm"
       :options="concordanceOptions"
       :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
+      class="hasConcordance ? 'text-success' : 'text-danger'"
       @change="changeConcordance" />
-    <span v-else>
+    <span
+      v-else
+      :class="hasConcordance ? 'text-success' : 'text-danger'">
       {{ (mapping.partOf && mapping.partOf[0]) ? displayNameForConcordance(mapping.partOf[0]) : $t("mappingDetail.partOfNone") }}
     </span>
   </div>
@@ -55,6 +58,15 @@ export default {
 
       return options
     },
+    hasConcordance() {
+      return !!(
+        this.mapping &&
+      this.mapping.partOf &&
+      this.mapping.partOf[0] &&
+      this.mapping.partOf[0].uri
+      )
+    },
+
   },
   methods: {
     displayNameForConcordance,
