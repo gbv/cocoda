@@ -1,11 +1,11 @@
 {
   "version": "1.12.2",
   "gitBranch": "dev",
-  "gitCommit": "5058378dd382dd728f1f8eea6cfa35d4f298c341",
-  "gitCommitShort": "5058378d",
-  "gitCommitMessage": "5058378d Chnage color for text about concordance (#769)",
-  "buildDate": "2025-12-08T14:13:26Z",
-  "date": "2025-12-08T14:12:29.000Z",
+  "gitCommit": "a9504f4833d41dc77bfa57e95b2fe2087888670a",
+  "gitCommitShort": "a9504f48",
+  "gitCommitMessage": "a9504f48 Update dependencies",
+  "buildDate": "2026-02-24T07:41:36Z",
+  "date": "2026-02-24T07:40:51.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
