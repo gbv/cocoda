@@ -546,7 +546,7 @@ export default {
 .addToMapping {
   .fontSize-large;
   position: absolute;
-  color: var(--color-background-component);
+  color: var(--color-button);
   right: 3px;
   top: -2px;
 }

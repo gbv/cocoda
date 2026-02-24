@@ -368,17 +368,22 @@ export default {
 .addToMapping {
   .fontSize-large;
   position: absolute;
-  color: var(--color-background-component);
+  color: rgba(0,0,0,0); /* transparent */
   top: 50%;
   transform: translateY(-50%);
   right: 8px;
 }
 
-.hovered,
 .selected.hovered,
 .arrowBox:hover,
 .conceptListItem:hover {
   background-color: hsl(var(--color-secondary-light));
+}
+
+.conceptListItem.selected .addToMapping,
+.conceptListItem:hover .addToMapping
+{
+  color: var(--color-button);
 }
 
 .conceptListItem-buttonBefore {
@@ -386,7 +391,7 @@ export default {
 }
 
 /* For arrows, from https://www.w3schools.com/howto/howto_css_arrows.asp */
-// TODO: Use font awesome or move somewhere else
+/* TODO: Use font awesome or move somewhere else */
 .arrowBox > i {
   border: solid var(--color-button);
   border-width: 0 2px 2px 0;
