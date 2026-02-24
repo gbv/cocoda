@@ -482,6 +482,7 @@
             <mapping-browser-table
               v-if="(group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations).length"
               :sections="group.stored ? navigatorSectionsDatabases : navigatorSectionsRecommendations"
+              :hide-empty-sections="!group.stored"
               :search-limit="componentSettings.resultLimit"
               :registry-has-errored="registryHasErrored"
               @pageChange="changePage('navigator', $event)" />

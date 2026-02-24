@@ -303,6 +303,7 @@
         </span>
       </span>
       <span
+        v-if="section.totalCount > 0 || section.loading || !hideEmptySections"
         slot="BEFORE_SECTION"
         slot-scope="{ section }">
         <div style="display: flex; position: relative;">
@@ -477,6 +478,10 @@ export default {
     showEditingTools: {
       type: Boolean,
       default: true,
+    },
+    hideEmptySections: {
+      type: Boolean,
+      default: false,
     },
     /**
      * If true, a link to Cocoda for mappings will be shown.
