@@ -3,8 +3,8 @@
     class="itemDetail"
     @dragover="dragOver"
     @drop="drop">
-    <!-- Minimizer allows component to get minimized -->
-    <minimizer
+    <!-- MiniMizer allows component to get minimized -->
+    <mini-mizer
       :name="`itemDetail_${isLeft}`"
       :text="type + ' Detail'" />
     <!-- Include component depending on item type -->
@@ -40,7 +40,7 @@
 
 <script>
 import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
-import Minimizer from "./Minimizer.vue"
+import MiniMizer from "./MiniMizer.vue"
 import ConceptDetail from "./ConceptDetail.vue"
 import SchemeDetail from "./SchemeDetail.vue"
 import DataModalButton from "./DataModalButton.vue"
@@ -59,7 +59,7 @@ import { getItem } from "@/items"
 export default {
   name: "ItemDetail",
   components: {
-    LoadingIndicatorFull, Minimizer, ConceptDetail, SchemeDetail, DataModalButton, ComponentSettings,
+    LoadingIndicatorFull, MiniMizer, ConceptDetail, SchemeDetail, DataModalButton, ComponentSettings,
   },
   mixins: [objects, dragandrop, computed],
   props: {

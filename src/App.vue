@@ -60,7 +60,7 @@
               order5: !isLeft
             }"
             class="browser mainComponent">
-            <minimizer
+            <mini-mizer
               :name="`browserComponent_${isLeft}`"
               :is-column="true" />
             <!-- Concept scheme selection -->
@@ -150,10 +150,10 @@
                   </p>
                 </div>
               </div>
-              <!-- Minimizer allows component to get minimized -->
-              <minimizer
+              <!-- MiniMizer allows component to get minimized -->
+              <mini-mizer
                 v-show="!forceMappingEditor"
-                ref="mappingEditorMinimizer"
+                ref="mappingEditorMiniMizer"
                 name="mappingEditorComponent"
                 :text="$t('mappingEditor.title')"
                 :force-minimized="forceMappingEditor ? false : null" />
@@ -168,9 +168,9 @@
               class="mappingToolItem mainComponent visualComponent">
               <!-- MappingBrowser -->
               <mapping-browser ref="mappingBrowser" />
-              <!-- Minimizer allows component to get minimized -->
-              <minimizer
-                ref="mappingBrowserMinimizer"
+              <!-- MiniMizer allows component to get minimized -->
+              <mini-mizer
+                ref="mappingBrowserMiniMizer"
                 name="mappingBrowserComponent"
                 :text="$t('mappingBrowser.title')" />
             </div>
@@ -196,7 +196,7 @@ import ItemDetail from "./components/ItemDetail.vue"
 import ResizingSlider from "./components/ResizingSlider.vue"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull.vue"
-import Minimizer from "./components/Minimizer.vue"
+import MiniMizer from "./components/MiniMizer.vue"
 import { refreshRouter } from "./store/plugins.js"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection.vue"
 import { cdk } from "cocoda-sdk"
@@ -219,7 +219,7 @@ ElementQueries.listen()
 export default {
   name: "App",
   components: {
-    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, Minimizer, ConceptSchemeSelection,
+    TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, MiniMizer, ConceptSchemeSelection,
   },
   mixins: [auth, objects, computed, pageVisibility],
   data () {
@@ -451,7 +451,7 @@ export default {
      */
     forceMappingBrowser(force) {
       if (force) {
-        const minimizer = this.$refs.mappingBrowserMinimizer
+        const minimizer = this.$refs.mappingBrowserMiniMizer
         if (minimizer) {
           minimizer.minimized = false
         }
@@ -602,7 +602,7 @@ export default {
     },
     refresh(key) {
       if (key == "minimize") {
-        // Minimizer causes a refresh, therefore recheck item detail settings
+        // MiniMizer causes a refresh, therefore recheck item detail settings
         this.itemDetailSettings.left.showTopConceptsInScheme = this.conceptListLeft() != null && this.conceptListLeft().$el.dataset.minimized == "1"
         this.itemDetailSettings.right.showTopConceptsInScheme = this.conceptListRight() != null && this.conceptListRight().$el.dataset.minimized == "1"
       }

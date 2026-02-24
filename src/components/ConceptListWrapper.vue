@@ -85,8 +85,8 @@
     </div>
     <!-- Full screen loading indicator -->
     <loading-indicator-full v-if="loading" />
-    <!-- Minimizer allows the component to get minimized -->
-    <minimizer
+    <!-- MiniMizer allows the component to get minimized -->
+    <mini-mizer
       v-if="concepts.length > 0"
       :name="`conceptList_${isLeft}`"
       :text="currentChoice.label" />
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import Minimizer from "./Minimizer.vue"
+import MiniMizer from "./MiniMizer.vue"
 import ConceptList from "./ConceptList.vue"
 import _ from "lodash"
 import ComponentSettings from "./ComponentSettings.vue"
@@ -110,7 +110,7 @@ import { getItem, getItemByUri, saveItem, loadConcepts } from "@/items"
 
 export default {
   name: "ConceptListWrapper",
-  components: { Minimizer, ConceptList, ComponentSettings,  DataModalButton, LoadingIndicatorFull },
+  components: { MiniMizer, ConceptList, ComponentSettings,  DataModalButton, LoadingIndicatorFull },
   mixins: [computed, objects, dragandrop, hoverHandler, mappedStatus],
   props: {
     /**

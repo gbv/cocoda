@@ -37,17 +37,17 @@ import computed from "@/mixins/computed.js"
  * Adds minimizing functionality to another component.
  *
  * To add this to a component, it has to be of the CSS class "mainComponent" (or a child of it). Add this component to its component list and add the minimizer right under the root element of the component:
- * <minimizer text="Name of Component" />
+ * <mini-mizer text="Name of Component" />
  *
  * If it's a vertical component:
- * <minimizer :is-column="true" text="Name of Component" />
+ * <mini-mizer :is-column="true" text="Name of Component" />
  *
  * If you want the minimized status to be written into local storage, provide a name:
- * <minimizer name="myComponent" text="Name of Component" />
+ * <mini-mizer name="myComponent" text="Name of Component" />
  *
  */
 export default {
-  name: "Minimizer",
+  name: "MiniMizer",
   mixins: [computed],
   props: {
     /**
