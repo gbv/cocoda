@@ -1,11 +1,11 @@
 {
   "version": "1.12.2",
   "gitBranch": "dev",
-  "gitCommit": "405dd14c49c30f167902dd8a0064a008b5faefe2",
-  "gitCommitShort": "405dd14c",
-  "gitCommitMessage": "405dd14c Color Highlighting Plus Button (#773)",
-  "buildDate": "2026-02-24T08:27:42Z",
-  "date": "2026-02-24T08:24:50.000Z",
+  "gitCommit": "7b21190bda694b6fb5354d29a3d3c03ecd8df018",
+  "gitCommitShort": "7b21190b",
+  "gitCommitMessage": "7b21190b Partly hide empty suggestions (#775)",
+  "buildDate": "2026-02-24T08:39:17Z",
+  "date": "2026-02-24T08:36:34.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
