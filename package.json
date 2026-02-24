@@ -1,6 +1,6 @@
 {
   "name": "cocoda",
-  "version": "1.12.2",
+  "version": "1.12.3",
   "jskos-api": "^1.0 || ^2.0",
   "description": "Cocoda Mapping Tool",
   "author": "Jakob Voß <jakob.voss@gbv.de>",
