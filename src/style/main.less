@@ -239,10 +239,56 @@ h6 {
   padding-top: 3px;
   margin: 2px 0;
 }
+
+/* form-control */
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+.form-control-sm {
+  height: calc(1.5em + .5rem + 2px);
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+}
 .form-control.is-valid, .form-control.is-invalid {
   padding-right: 8px !important;
   background-image: none !important;
 }
+.form-control.is-valid {
+  border-color: #28a745;
+}
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+.form-control.is-invalid:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 .2rem rgba(220,53,69,.25);
+}
+.form-control.is-valid:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 .2rem rgba(40,167,69,.25);
+}
+
 .cocoda-vue-tabs-content {
   overflow: auto !important;
 }
@@ -258,18 +304,6 @@ h6 {
   background-color: var(--color-primary-light) !important;
   border-color: var(--color-primary) !important;
 }
-
-// TODO: neutral button
-/*
-.btn-secondary {
-  background-color: var(--color-primary) !important;
-  border-color: var(--color-primary-dark) !important;
-}
-.btn-secondary:hover {
-  background-color: var(--color-button-hover) !important;
-  border-color: var(--color-primary) !important;
-}
-*/
 
 .btn-success {
   background-color: var(--color-success);

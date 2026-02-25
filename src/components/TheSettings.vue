@@ -266,8 +266,8 @@
           v-if="config.shortcuts && config.shortcuts.length"
           :title="$t('settingsTabs')[3]">
           <table
-            class="table table-borderless"
-            style="height: unset;">
+            class="table"
+            style="border: 0; height: unset;">
             <tbody>
               <tr
                 v-for="shortcut in config.shortcuts"

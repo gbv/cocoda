@@ -1,1 +1,486 @@
-../../node_modules/bootstrap-vue/dist/bootstrap-vue.css
+/**
+ * Stylesheet based on:
+ *
+ * Bootstrap v4.6.2 (https://getbootstrap.com/)
+ *   Copyright 2011-2022 The Bootstrap Authors
+ *   Copyright 2011-2022 Twitter, Inc.
+
+ * BootstrapVue Custom CSS (https://bootstrap-vue.org)
+ *
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+/* From BootstrapVue */
+
+.dropdown:not(.dropleft) .dropdown-toggle.dropdown-toggle-no-caret::after {
+  display: none !important;
+}
+.dropdown.dropleft .dropdown-toggle.dropdown-toggle-no-caret::before {
+  display: none !important;
+}
+.dropdown .dropdown-menu:focus {
+  outline: none;
+}
+
+.b-dropdown-form {
+  display: inline-block;
+  padding: 0.25rem 1.5rem;
+  width: 100%;
+  clear: both;
+  font-weight: 400;
+}
+.b-dropdown-form:focus {
+  outline: 1px dotted !important;
+  outline: 5px auto -webkit-focus-ring-color !important;
+}
+.b-dropdown-form.disabled, .b-dropdown-form:disabled {
+  outline: 0 !important;
+  color: #adb5bd;
+  pointer-events: none;
+}
+
+.b-dropdown-text {
+  display: inline-block;
+  padding: 0.25rem 1.5rem;
+  margin-bottom: 0;
+  width: 100%;
+  clear: both;
+  font-weight: lighter;
+}
+
+.custom-checkbox.b-custom-control-lg,
+.input-group-lg .custom-checkbox {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  padding-left: 1.875rem;
+}
+.custom-checkbox.b-custom-control-lg .custom-control-label::before,
+.input-group-lg .custom-checkbox .custom-control-label::before {
+  top: 0.3125rem;
+  left: -1.875rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.3rem;
+}
+.custom-checkbox.b-custom-control-lg .custom-control-label::after,
+.input-group-lg .custom-checkbox .custom-control-label::after {
+  top: 0.3125rem;
+  left: -1.875rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: 50% 50%;
+}
+
+.custom-checkbox.b-custom-control-sm,
+.input-group-sm .custom-checkbox {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding-left: 1.3125rem;
+}
+.custom-checkbox.b-custom-control-sm .custom-control-label::before,
+.input-group-sm .custom-checkbox .custom-control-label::before {
+  top: 0.21875rem;
+  left: -1.3125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 0.2rem;
+}
+.custom-checkbox.b-custom-control-sm .custom-control-label::after,
+.input-group-sm .custom-checkbox .custom-control-label::after {
+  top: 0.21875rem;
+  left: -1.3125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  background-size: 50% 50%;
+}
+
+.input-group > .input-group-prepend > .btn-group > .btn,
+.input-group > .input-group-append:not(:last-child) > .btn-group > .btn,
+.input-group > .input-group-append:last-child > .btn-group:not(:last-child):not(.dropdown-toggle) > .btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.input-group > .input-group-append > .btn-group > .btn,
+.input-group > .input-group-prepend:not(:first-child) > .btn-group > .btn,
+.input-group > .input-group-prepend:first-child > .btn-group:not(:first-child) > .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.b-form-btn-label-control.btn-group > .dropdown-menu {
+  padding: 0.5rem;
+}
+
+.custom-file-label {
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.b-custom-control-lg.custom-file,
+.b-custom-control-lg .custom-file-input,
+.b-custom-control-lg .custom-file-label,
+.input-group-lg.custom-file,
+.input-group-lg .custom-file-input,
+.input-group-lg .custom-file-label {
+  font-size: 1.25rem;
+  height: calc(1.5em + 1rem + 2px);
+}
+.b-custom-control-lg .custom-file-label,
+.b-custom-control-lg .custom-file-label:after,
+.input-group-lg .custom-file-label,
+.input-group-lg .custom-file-label:after {
+  padding: 0.5rem 1rem;
+  line-height: 1.5;
+}
+.b-custom-control-lg .custom-file-label,
+.input-group-lg .custom-file-label {
+  border-radius: 0.3rem;
+}
+.b-custom-control-lg .custom-file-label::after,
+.input-group-lg .custom-file-label::after {
+  font-size: inherit;
+  height: calc(
+  1.5em + 1rem
+);
+  border-radius: 0 0.3rem 0.3rem 0;
+}
+
+.b-custom-control-sm.custom-file,
+.b-custom-control-sm .custom-file-input,
+.b-custom-control-sm .custom-file-label,
+.input-group-sm.custom-file,
+.input-group-sm .custom-file-input,
+.input-group-sm .custom-file-label {
+  font-size: 0.875rem;
+  height: calc(1.5em + 0.5rem + 2px);
+}
+.b-custom-control-sm .custom-file-label,
+.b-custom-control-sm .custom-file-label:after,
+.input-group-sm .custom-file-label,
+.input-group-sm .custom-file-label:after {
+  padding: 0.25rem 0.5rem;
+  line-height: 1.5;
+}
+.b-custom-control-sm .custom-file-label,
+.input-group-sm .custom-file-label {
+  border-radius: 0.2rem;
+}
+.b-custom-control-sm .custom-file-label::after,
+.input-group-sm .custom-file-label::after {
+  font-size: inherit;
+  height: calc(
+  1.5em + 0.5rem
+);
+  border-radius: 0 0.2rem 0.2rem 0;
+}
+
+input[type=color].form-control {
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.125rem 0.25rem;
+}
+
+input[type=color].form-control.form-control-sm,
+.input-group-sm input[type=color].form-control {
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.125rem 0.25rem;
+}
+
+input[type=color].form-control.form-control-lg,
+.input-group-lg input[type=color].form-control {
+  height: calc(1.5em + 1rem + 2px);
+  padding: 0.125rem 0.25rem;
+}
+
+input[type=color].form-control:disabled {
+  background-color: #adb5bd;
+  opacity: 0.65;
+}
+
+.form-control-sm .b-form-tag {
+  line-height: 1.5;
+}
+
+.form-control-lg .b-form-tag {
+  line-height: 1.5;
+}
+
+.b-pagination-pills .page-item .page-link {
+  border-radius: 50rem !important;
+  margin-left: 0.25rem;
+  line-height: 1;
+}
+.b-pagination-pills .page-item:first-child .page-link {
+  margin-left: 0;
+}
+
+.popover.b-popover {
+  display: block;
+  opacity: 1;
+  outline: 0;
+}
+.popover.b-popover.fade:not(.show) {
+  opacity: 0;
+}
+.popover.b-popover.show {
+  opacity: 1;
+}
+
+
+.b-popover-success.popover {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+.b-popover-success.bs-popover-top > .arrow::before, .b-popover-success.bs-popover-auto[x-placement^=top] > .arrow::before {
+  border-top-color: #c3e6cb;
+}
+.b-popover-success.bs-popover-top > .arrow::after, .b-popover-success.bs-popover-auto[x-placement^=top] > .arrow::after {
+  border-top-color: #d4edda;
+}
+.b-popover-success.bs-popover-right > .arrow::before, .b-popover-success.bs-popover-auto[x-placement^=right] > .arrow::before {
+  border-right-color: #c3e6cb;
+}
+.b-popover-success.bs-popover-right > .arrow::after, .b-popover-success.bs-popover-auto[x-placement^=right] > .arrow::after {
+  border-right-color: #d4edda;
+}
+.b-popover-success.bs-popover-bottom > .arrow::before, .b-popover-success.bs-popover-auto[x-placement^=bottom] > .arrow::before {
+  border-bottom-color: #c3e6cb;
+}
+.b-popover-success.bs-popover-bottom > .arrow::after, .b-popover-success.bs-popover-auto[x-placement^=bottom] > .arrow::after {
+  border-bottom-color: #c9e8d1;
+}
+.b-popover-success.bs-popover-bottom .popover-header::before, .b-popover-success.bs-popover-auto[x-placement^=bottom] .popover-header::before {
+  border-bottom-color: #c9e8d1;
+}
+.b-popover-success.bs-popover-left > .arrow::before, .b-popover-success.bs-popover-auto[x-placement^=left] > .arrow::before {
+  border-left-color: #c3e6cb;
+}
+.b-popover-success.bs-popover-left > .arrow::after, .b-popover-success.bs-popover-auto[x-placement^=left] > .arrow::after {
+  border-left-color: #d4edda;
+}
+.b-popover-success .popover-header {
+  color: #212529;
+  background-color: #c9e8d1;
+  border-bottom-color: #b7e1c1;
+}
+.b-popover-success .popover-body {
+  color: #155724;
+}
+
+.b-popover-info.popover {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+.b-popover-info.bs-popover-top > .arrow::before, .b-popover-info.bs-popover-auto[x-placement^=top] > .arrow::before {
+  border-top-color: #bee5eb;
+}
+.b-popover-info.bs-popover-top > .arrow::after, .b-popover-info.bs-popover-auto[x-placement^=top] > .arrow::after {
+  border-top-color: #d1ecf1;
+}
+.b-popover-info.bs-popover-right > .arrow::before, .b-popover-info.bs-popover-auto[x-placement^=right] > .arrow::before {
+  border-right-color: #bee5eb;
+}
+.b-popover-info.bs-popover-right > .arrow::after, .b-popover-info.bs-popover-auto[x-placement^=right] > .arrow::after {
+  border-right-color: #d1ecf1;
+}
+.b-popover-info.bs-popover-bottom > .arrow::before, .b-popover-info.bs-popover-auto[x-placement^=bottom] > .arrow::before {
+  border-bottom-color: #bee5eb;
+}
+.b-popover-info.bs-popover-bottom > .arrow::after, .b-popover-info.bs-popover-auto[x-placement^=bottom] > .arrow::after {
+  border-bottom-color: #c5e7ed;
+}
+.b-popover-info.bs-popover-bottom .popover-header::before, .b-popover-info.bs-popover-auto[x-placement^=bottom] .popover-header::before {
+  border-bottom-color: #c5e7ed;
+}
+.b-popover-info.bs-popover-left > .arrow::before, .b-popover-info.bs-popover-auto[x-placement^=left] > .arrow::before {
+  border-left-color: #bee5eb;
+}
+.b-popover-info.bs-popover-left > .arrow::after, .b-popover-info.bs-popover-auto[x-placement^=left] > .arrow::after {
+  border-left-color: #d1ecf1;
+}
+.b-popover-info .popover-header {
+  color: #212529;
+  background-color: #c5e7ed;
+  border-bottom-color: #b2dfe7;
+}
+.b-popover-info .popover-body {
+  color: #0c5460;
+}
+
+.b-popover-warning.popover {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+.b-popover-warning.bs-popover-top > .arrow::before, .b-popover-warning.bs-popover-auto[x-placement^=top] > .arrow::before {
+  border-top-color: #ffeeba;
+}
+.b-popover-warning.bs-popover-top > .arrow::after, .b-popover-warning.bs-popover-auto[x-placement^=top] > .arrow::after {
+  border-top-color: #fff3cd;
+}
+.b-popover-warning.bs-popover-right > .arrow::before, .b-popover-warning.bs-popover-auto[x-placement^=right] > .arrow::before {
+  border-right-color: #ffeeba;
+}
+.b-popover-warning.bs-popover-right > .arrow::after, .b-popover-warning.bs-popover-auto[x-placement^=right] > .arrow::after {
+  border-right-color: #fff3cd;
+}
+.b-popover-warning.bs-popover-bottom > .arrow::before, .b-popover-warning.bs-popover-auto[x-placement^=bottom] > .arrow::before {
+  border-bottom-color: #ffeeba;
+}
+.b-popover-warning.bs-popover-bottom > .arrow::after, .b-popover-warning.bs-popover-auto[x-placement^=bottom] > .arrow::after {
+  border-bottom-color: #ffefbe;
+}
+.b-popover-warning.bs-popover-bottom .popover-header::before, .b-popover-warning.bs-popover-auto[x-placement^=bottom] .popover-header::before {
+  border-bottom-color: #ffefbe;
+}
+.b-popover-warning.bs-popover-left > .arrow::before, .b-popover-warning.bs-popover-auto[x-placement^=left] > .arrow::before {
+  border-left-color: #ffeeba;
+}
+.b-popover-warning.bs-popover-left > .arrow::after, .b-popover-warning.bs-popover-auto[x-placement^=left] > .arrow::after {
+  border-left-color: #fff3cd;
+}
+.b-popover-warning .popover-header {
+  color: #212529;
+  background-color: #ffefbe;
+  border-bottom-color: #ffe9a4;
+}
+.b-popover-warning .popover-body {
+  color: #856404;
+}
+
+.b-popover-danger.popover {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.b-popover-danger.bs-popover-top > .arrow::before, .b-popover-danger.bs-popover-auto[x-placement^=top] > .arrow::before {
+  border-top-color: #f5c6cb;
+}
+.b-popover-danger.bs-popover-top > .arrow::after, .b-popover-danger.bs-popover-auto[x-placement^=top] > .arrow::after {
+  border-top-color: #f8d7da;
+}
+.b-popover-danger.bs-popover-right > .arrow::before, .b-popover-danger.bs-popover-auto[x-placement^=right] > .arrow::before {
+  border-right-color: #f5c6cb;
+}
+.b-popover-danger.bs-popover-right > .arrow::after, .b-popover-danger.bs-popover-auto[x-placement^=right] > .arrow::after {
+  border-right-color: #f8d7da;
+}
+.b-popover-danger.bs-popover-bottom > .arrow::before, .b-popover-danger.bs-popover-auto[x-placement^=bottom] > .arrow::before {
+  border-bottom-color: #f5c6cb;
+}
+.b-popover-danger.bs-popover-bottom > .arrow::after, .b-popover-danger.bs-popover-auto[x-placement^=bottom] > .arrow::after {
+  border-bottom-color: #f6cace;
+}
+.b-popover-danger.bs-popover-bottom .popover-header::before, .b-popover-danger.bs-popover-auto[x-placement^=bottom] .popover-header::before {
+  border-bottom-color: #f6cace;
+}
+.b-popover-danger.bs-popover-left > .arrow::before, .b-popover-danger.bs-popover-auto[x-placement^=left] > .arrow::before {
+  border-left-color: #f5c6cb;
+}
+.b-popover-danger.bs-popover-left > .arrow::after, .b-popover-danger.bs-popover-auto[x-placement^=left] > .arrow::after {
+  border-left-color: #f8d7da;
+}
+.b-popover-danger .popover-header {
+  color: #212529;
+  background-color: #f6cace;
+  border-bottom-color: #f2b4ba;
+}
+.b-popover-danger .popover-body {
+  color: #721c24;
+}
+
+.b-popover-light.popover {
+  background-color: #fefefe;
+  border-color: #fdfdfe;
+}
+.b-popover-light.bs-popover-top > .arrow::before, .b-popover-light.bs-popover-auto[x-placement^=top] > .arrow::before {
+  border-top-color: #fdfdfe;
+}
+.b-popover-light.bs-popover-top > .arrow::after, .b-popover-light.bs-popover-auto[x-placement^=top] > .arrow::after {
+  border-top-color: #fefefe;
+}
+.b-popover-light.bs-popover-right > .arrow::before, .b-popover-light.bs-popover-auto[x-placement^=right] > .arrow::before {
+  border-right-color: #fdfdfe;
+}
+.b-popover-light.bs-popover-right > .arrow::after, .b-popover-light.bs-popover-auto[x-placement^=right] > .arrow::after {
+  border-right-color: #fefefe;
+}
+.b-popover-light.bs-popover-bottom > .arrow::before, .b-popover-light.bs-popover-auto[x-placement^=bottom] > .arrow::before {
+  border-bottom-color: #fdfdfe;
+}
+.b-popover-light.bs-popover-bottom > .arrow::after, .b-popover-light.bs-popover-auto[x-placement^=bottom] > .arrow::after {
+  border-bottom-color: #f6f6f6;
+}
+.b-popover-light.bs-popover-bottom .popover-header::before, .b-popover-light.bs-popover-auto[x-placement^=bottom] .popover-header::before {
+  border-bottom-color: #f6f6f6;
+}
+.b-popover-light.bs-popover-left > .arrow::before, .b-popover-light.bs-popover-auto[x-placement^=left] > .arrow::before {
+  border-left-color: #fdfdfe;
+}
+.b-popover-light.bs-popover-left > .arrow::after, .b-popover-light.bs-popover-auto[x-placement^=left] > .arrow::after {
+  border-left-color: #fefefe;
+}
+.b-popover-light .popover-header {
+  color: #212529;
+  background-color: #f6f6f6;
+  border-bottom-color: #eaeaea;
+}
+.b-popover-light .popover-body {
+  color: #818182;
+}
+
+.b-popover-dark.popover {
+  background-color: #d6d8d9;
+  border-color: #c6c8ca;
+}
+.b-popover-dark.bs-popover-top > .arrow::before, .b-popover-dark.bs-popover-auto[x-placement^=top] > .arrow::before {
+  border-top-color: #c6c8ca;
+}
+.b-popover-dark.bs-popover-top > .arrow::after, .b-popover-dark.bs-popover-auto[x-placement^=top] > .arrow::after {
+  border-top-color: #d6d8d9;
+}
+.b-popover-dark.bs-popover-right > .arrow::before, .b-popover-dark.bs-popover-auto[x-placement^=right] > .arrow::before {
+  border-right-color: #c6c8ca;
+}
+.b-popover-dark.bs-popover-right > .arrow::after, .b-popover-dark.bs-popover-auto[x-placement^=right] > .arrow::after {
+  border-right-color: #d6d8d9;
+}
+.b-popover-dark.bs-popover-bottom > .arrow::before, .b-popover-dark.bs-popover-auto[x-placement^=bottom] > .arrow::before {
+  border-bottom-color: #c6c8ca;
+}
+.b-popover-dark.bs-popover-bottom > .arrow::after, .b-popover-dark.bs-popover-auto[x-placement^=bottom] > .arrow::after {
+  border-bottom-color: #ced0d2;
+}
+.b-popover-dark.bs-popover-bottom .popover-header::before, .b-popover-dark.bs-popover-auto[x-placement^=bottom] .popover-header::before {
+  border-bottom-color: #ced0d2;
+}
+.b-popover-dark.bs-popover-left > .arrow::before, .b-popover-dark.bs-popover-auto[x-placement^=left] > .arrow::before {
+  border-left-color: #c6c8ca;
+}
+.b-popover-dark.bs-popover-left > .arrow::after, .b-popover-dark.bs-popover-auto[x-placement^=left] > .arrow::after {
+  border-left-color: #d6d8d9;
+}
+.b-popover-dark .popover-header {
+  color: #212529;
+  background-color: #ced0d2;
+  border-bottom-color: #c1c4c5;
+}
+.b-popover-dark .popover-body {
+  color: #1b1e21;
+}
+
+.tooltip.b-tooltip {
+  display: block;
+  opacity: 0.9;
+  outline: 0;
+}
+.tooltip.b-tooltip.fade:not(.show) {
+  opacity: 0;
+}
+.tooltip.b-tooltip.show {
+  opacity: 0.9;
+}
+.tooltip.b-tooltip.noninteractive {
+  pointer-events: none;
+}
+.tooltip.b-tooltip .arrow {
+  margin: 0 0.25rem;
+}
+
