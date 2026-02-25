@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "5533f75d2d3ead16418a662fa8dfc96d23638a5e",
-  "gitCommitShort": "5533f75d",
-  "gitCommitMessage": "5533f75d Release version 1.12.3",
-  "buildDate": "2026-02-24T08:45:31Z",
-  "date": "2026-02-24T08:44:42.000Z",
+  "gitCommit": "5db70b0bf4fe82674b272603ee675ce938f2c291",
+  "gitCommitShort": "5db70b0b",
+  "gitCommitMessage": "5db70b0b Start to reduce CSS (#776)",
+  "buildDate": "2026-02-25T07:52:56Z",
+  "date": "2026-02-25T07:51:47.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
