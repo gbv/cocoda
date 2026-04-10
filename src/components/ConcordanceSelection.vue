@@ -4,14 +4,12 @@
       v-if="canRemoveMappingFromConcordance({ mapping, user }) || availableTargetConcordances.length > 0"
       size="sm"
       :options="concordanceOptions"
-      :value="mapping.partOf && mapping.partOf[0] && mapping.partOf[0].uri || null"
-      class="hasConcordance ? 'text-success' : 'text-danger'"
+      :value="currentConcordance?.uri"
       @change="changeConcordance" />
+    <span v-else-if="currentConcordance">{{ displayNameForConcordance(currentConcordance) }}</span>
     <span
       v-else
-      :class="hasConcordance ? 'text-success' : 'text-danger'">
-      {{ (mapping.partOf && mapping.partOf[0]) ? displayNameForConcordance(mapping.partOf[0]) : $t("mappingDetail.partOfNone") }}
-    </span>
+      class="text-danger">{{ $t("mappingDetail.partOfNone") }}</span>
   </div>
 </template>
 
@@ -58,15 +56,9 @@ export default {
 
       return options
     },
-    hasConcordance() {
-      return !!(
-        this.mapping &&
-      this.mapping.partOf &&
-      this.mapping.partOf[0] &&
-      this.mapping.partOf[0].uri
-      )
+    currentConcordance() {
+      return this.mapping?.partOf?.[0]
     },
-
   },
   methods: {
     displayNameForConcordance,
