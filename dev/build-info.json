@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "1d263b39e1ddba719bd73872c0885026a0d785c4",
-  "gitCommitShort": "1d263b39",
-  "gitCommitMessage": "1d263b39 Make CSS warning classes all danger (#780)",
-  "buildDate": "2026-04-10T12:49:24Z",
-  "date": "2026-04-10T12:48:41.000Z",
+  "gitCommit": "934d9d03e1891144b8563935d5eb5686e66a08bb",
+  "gitCommitShort": "934d9d03",
+  "gitCommitMessage": "934d9d03 Simplify display of current concordance (#769)",
+  "buildDate": "2026-04-10T13:11:58Z",
+  "date": "2026-04-10T13:10:45.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
