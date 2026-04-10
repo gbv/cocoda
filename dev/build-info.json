@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "5db70b0bf4fe82674b272603ee675ce938f2c291",
-  "gitCommitShort": "5db70b0b",
-  "gitCommitMessage": "5db70b0b Start to reduce CSS (#776)",
-  "buildDate": "2026-02-25T07:52:56Z",
-  "date": "2026-02-25T07:51:47.000Z",
+  "gitCommit": "1d263b39e1ddba719bd73872c0885026a0d785c4",
+  "gitCommitShort": "1d263b39",
+  "gitCommitMessage": "1d263b39 Make CSS warning classes all danger (#780)",
+  "buildDate": "2026-04-10T12:49:24Z",
+  "date": "2026-04-10T12:48:41.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
