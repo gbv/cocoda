@@ -89,8 +89,7 @@
         }"
         class="mappingEditorToolbarItem mappingEditor-mappingAlert fontWeight-heavy"
         :class="{
-          'text-warning': mappingStatus.warning,
-          'text-danger': mappingStatus.invalid,
+          'text-danger': mappingStatus.invalid || mappingStatus.warning,
         }">
         <font-awesome-icon
           v-if="$jskos.conceptsOfMapping(mapping).length > 0 && mappingStatus.message"

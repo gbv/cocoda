@@ -58,11 +58,6 @@
   --color-success-light: hsl(var(--color-success-h), var(--color-success-s), calc(var(--color-success-l) * 1.5));
   --color-success-lighter: hsl(var(--color-success-h), var(--color-success-s), calc(var(--color-success-l) * 3));
 
-  --color-warning: var(--color-secondary);
-  --color-warning-light: hsl(var(--color-secondary-h), var(--color-secondary-s), calc(var(--color-secondary-l) * 1.15));
-  --color-warning-dark: hsl(var(--color-secondary-h), var(--color-secondary-s), calc(var(--color-secondary-l) * 0.85));
-  --color-warning-darker: hsl(var(--color-secondary-h), var(--color-secondary-s), calc(var(--color-secondary-l) * 0.75));
-
   --color-danger: hsl(var(--color-danger-h), var(--color-danger-s), var(--color-danger-l));
   --color-danger-dark: hsl(var(--color-danger-h), var(--color-danger-s), calc(var(--color-danger-l) * 0.65));
   --color-danger-light: hsl(var(--color-danger-h), var(--color-danger-s), calc(var(--color-danger-l) * 1.68));

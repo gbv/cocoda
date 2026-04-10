@@ -16,7 +16,7 @@ const mutations = {
    */
   add (state, alert) {
     // Default values
-    alert.variant = alert.variant || "warning"
+    alert.variant = alert.variant || "warning" // TODO: warning is not supported anymore?
     alert.countdown = alert.countdown != null ? alert.countdown : 5
     let shouldCountdown = true
     if (!alert.countdown || alert.countdown == -1) {

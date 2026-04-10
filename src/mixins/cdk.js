@@ -358,13 +358,13 @@ export default {
             }
           }
           message += "."
-          this.alert(message, null, concordance && !mapping.partOf ? "warning" : "success")
+          this.alert(message, null, concordance && !mapping.partOf ? "danger" : "success")
           // Additionally, if this is the first time the user saved into local mappings, show an alert:
           if (jskos.compare(registry, this.localMappingsRegistry) && !this.$settings.hasWrittenIntoLocalMappings) {
             this.alert(
               this.$t("alerts.localMappingsFirstSaved"),
               0,
-              "warning",
+              "danger",
             )
             this.$store.commit({
               type: "settings/set",
@@ -577,7 +577,7 @@ export default {
             }
           }
           message += "."
-          this.alert(message, null, hasConcordance && !mapping.partOf ? "warning" : "success")
+          this.alert(message, null, hasConcordance && !mapping.partOf ? "danger" : "success")
         } else {
           showFailureAlert()
         }

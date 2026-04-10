@@ -172,7 +172,7 @@
           <font-awesome-icon
             v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
             icon="exclamation"
-            class="text-warning" />
+            class="text-danger" />
         </span>
         <span
           v-if="item.creator != null"
