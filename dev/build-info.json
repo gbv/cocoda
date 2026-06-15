@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "21c1a4cff761ba05ebdc0e28bc545ad2fb3ae4ed",
-  "gitCommitShort": "21c1a4cf",
-  "gitCommitMessage": "21c1a4cf Bump cocoda-sdk dependency",
-  "buildDate": "2026-06-15T09:25:40Z",
-  "date": "2026-06-15T09:24:48.000Z",
+  "gitCommit": "6dfb0e7b0e7b85bd65ca4f8d4a97719823b64d39",
+  "gitCommitShort": "6dfb0e7b",
+  "gitCommitMessage": "6dfb0e7b Update cocoda-sdk",
+  "buildDate": "2026-06-15T11:31:55Z",
+  "date": "2026-06-15T11:31:05.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
