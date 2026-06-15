@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "aba7007c513fbebf4185523697e08f935393f100",
-  "gitCommitShort": "aba7007c",
-  "gitCommitMessage": "aba7007c Don't show empty favorite concepts",
-  "buildDate": "2026-06-15T08:25:28Z",
-  "date": "2026-06-15T08:24:05.000Z",
+  "gitCommit": "70114ead2efa3e4288a1411b0b0c9a02c7e000f5",
+  "gitCommitShort": "70114ead",
+  "gitCommitMessage": "70114ead Include sourcemaps in dev and test branch",
+  "buildDate": "2026-06-15T09:03:58Z",
+  "date": "2026-06-15T09:03:11.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
