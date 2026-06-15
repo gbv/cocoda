@@ -29,7 +29,7 @@ To start contributing please make sure you have a [GitHub account](https://githu
 
 ## Getting Started
 
-It's recommended to use Node.js v16 or above.
+It's recommended to use Node.js v18 or above.
 
 ``` bash
 # get the sources
@@ -50,6 +50,15 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+
+# Show lines of code (requires cloc to be installed)
+npm run loc
+
+# Run code linter
+npm run lint
+
+# Fix linting errors
+npm run fix
 ```
 
 ## Background
@@ -113,14 +122,7 @@ Design of cards should roughly adhere to [material design cards](https://materia
 
 ### Colors
 
-For interface elements, there is a range of pre-defined colors available in `src/style/colors.css`. For non-linked text, please use one of the following colors:
-
-* CSS class `text-dark`
-* CSS class `text-grey`
-* CSS class `text-lightGrey`
-* CSS class `text-veryLightGrey`
-
-Colors can be overridden using a custom user file in `src/style/user-colors.css`, it needs to be imported in `src/style/colors.css`.
+For interface elements, there is a range of pre-defined CSS variables with colors available in `src/style/colors.css`. Don't hard-code color values but use these variables.
 
 ### Tables
 
@@ -138,6 +140,7 @@ For text buttons, there are predefined CSS classes in `src/style/main.less`. In 
 If you need to use z-index values, please use the predefined LESS variables in `src/style/z-index.less`.
 
 ### Icons
+
 Cocoda uses [Font Awesome](https://fontawesome.com/) for some icons. You can use any of their free icons (see their [icon gallery](https://fontawesome.com/icons?d=gallery&s=brands,solid&m=free)) like this:
 
 ```html static

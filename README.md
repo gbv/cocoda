@@ -164,7 +164,7 @@ Clone the [Cocoda repository](https://github.com/gbv/cocoda):
 
 ```bash
 git clone https://github.com/gbv/cocoda.git
-cd cododa
+cd cocoda
 ```
 
 Then install required Node modules with [npm](https://www.npmjs.com/get-npm) and run build (requires Node.js v18 or above, v20 recommended):
@@ -180,7 +180,7 @@ For live update during development run `npm run dev`.
 
 Coding style is enforced with linting rules (`npm run lint` / `npm run fix`)
 
-Creation of the manual (see directory [`docs`](docs) requires pandoc and xelatex.
+Optional creation of the manual (see directory [`docs`](docs)) requires pandoc and xelatex.
 
 Please consult **[the developer documentation](CONTRIBUTING.md)** for more information!
 

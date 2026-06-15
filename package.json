@@ -19,6 +19,7 @@
     "lint": "eslint",
     "fix": "eslint --fix",
     "lint-staged": "lint-staged",
+    "loc": "cloc $(git ls-files)",
     "build-info": "./build/build-info.js > ./build/build-info.json",
     "manual": "make -BC docs",
     "manual-pdf": "make -BC docs pdfs",

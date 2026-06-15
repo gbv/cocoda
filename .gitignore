@@ -17,9 +17,6 @@ config/*.ico
 config/*.png
 config/*.svg
 
-# local colors file
-src/style/user-colors.css
-
 # Relases (when using bin/build-all.sh)
 releases/
 
