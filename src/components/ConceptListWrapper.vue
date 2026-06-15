@@ -128,49 +128,54 @@ export default {
   },
   computed: {
     dataChoices() {
-      // Determine top concepts URL
-      let topConceptsUrl = _.get(getItem(this.selected.scheme[this.isLeft]), "_registry.top")
-      if (topConceptsUrl) {
-        // Add selected schemes URI
-        topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`
-      }
-      let choices = [
-        {
-          id: "topConcepts",
-          label: this.$t("conceptList.topConceptsShort"),
-          tooltip: this.$t("conceptList.topConcepts"),
-          noItemsLabel: this.$t("schemeDetail.noTopConcepts"),
-          concepts: this._topConcepts,
-          showChildren: true,
-          showScheme: false,
-          url: topConceptsUrl,
-          available: this._topConcepts.length > 0,
-          icon: "sitemap",
-        },
-        {
-          id: "favoriteConcepts",
-          label: this.$t("conceptList.favoriteConceptsShort"),
-          tooltip: this.$t("conceptList.favoriteConcepts"),
-          concepts: this.favoriteConcepts,
-          showChildren: false,
-          showScheme: true,
-          available: true,
-          buttons: [
-            {
-              position: "before",
-              icon: "times-circle",
-              tooltip: this.$t("schemeSelection.starRemove"),
-              onClick: (event, concept) => {
-                this.$store.dispatch("removeConceptFromFavorites", concept)
-              },
-            },
-          ],
-          droppedConcept: concept => {
-            this.$store.dispatch("addConceptToFavorites", concept)
+      let choices = []
+      if (this.selected.scheme[this.isLeft] !== null) {
+        let topConceptsUrl = _.get(getItem(this.selected.scheme[this.isLeft]), "_registry.top")
+        if (topConceptsUrl) {
+          topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`
+        }
+        choices.push(
+          {
+            id: "topConcepts",
+            label: this.$t("conceptList.topConceptsShort"),
+            tooltip: this.$t("conceptList.topConcepts"),
+            noItemsLabel: this.$t("schemeDetail.noTopConcepts"),
+            concepts: this._topConcepts,
+            showChildren: true,
+            showScheme: false,
+            url: topConceptsUrl,
+            available: this._topConcepts.length > 0,
+            icon: "sitemap",
           },
-          icon: "star",
-        },
-      ]
+        )
+      }
+      if (this.favoriteConcepts.length) {
+        choices.push(
+          {
+            id: "favoriteConcepts",
+            label: this.$t("conceptList.favoriteConceptsShort"),
+            tooltip: this.$t("conceptList.favoriteConcepts"),
+            concepts: this.favoriteConcepts,
+            showChildren: false,
+            showScheme: true,
+            available: true,
+            buttons: [
+              {
+                position: "before",
+                icon: "times-circle",
+                tooltip: this.$t("schemeSelection.starRemove"),
+                onClick: (event, concept) => {
+                  this.$store.dispatch("removeConceptFromFavorites", concept)
+                },
+              },
+            ],
+            droppedConcept: concept => {
+              this.$store.dispatch("addConceptToFavorites", concept)
+            },
+            icon: "star",
+          },
+        )
+      }
       let index = 0
       for (let list of this.config.conceptLists || []) {
         // Skip list if selected scheme is not part of list
@@ -197,7 +202,7 @@ export default {
           available: list.concepts.length > 0,
           icon: "list",
         }
-        choice.reloadButton = choice.url != null
+        choice.reloadButton = !!choice.url
         choices.push(choice)
         index += 1
       }
