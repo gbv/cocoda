@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "70114ead2efa3e4288a1411b0b0c9a02c7e000f5",
-  "gitCommitShort": "70114ead",
-  "gitCommitMessage": "70114ead Include sourcemaps in dev and test branch",
-  "buildDate": "2026-06-15T09:03:58Z",
-  "date": "2026-06-15T09:03:11.000Z",
+  "gitCommit": "21c1a4cff761ba05ebdc0e28bc545ad2fb3ae4ed",
+  "gitCommitShort": "21c1a4cf",
+  "gitCommitMessage": "21c1a4cf Bump cocoda-sdk dependency",
+  "buildDate": "2026-06-15T09:25:40Z",
+  "date": "2026-06-15T09:24:48.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
