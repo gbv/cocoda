@@ -87,9 +87,8 @@
     <loading-indicator-full v-if="loading" />
     <!-- MiniMizer allows the component to get minimized -->
     <mini-mizer
-      v-if="concepts.length > 0"
       :name="`conceptList_${isLeft}`"
-      :text="currentChoice.label" />
+      :text="$t('registryInfo.concepts')" />
   </div>
 </template>
 
