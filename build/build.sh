@@ -47,7 +47,11 @@ if [ $CONFIG_ONLY ]; then
   cp ./config/cocoda.json ./dist/cocoda.json
   success=$?
 else
-  vite build
+  if [ $GIT_BRANCH == "dev" ] || [ $GIT_BRANCH == "test" ]; then
+    vite build --mode development
+  else
+    vite build
+  fi
   success=$?
 fi
 

@@ -4,7 +4,7 @@ import vue from "@vitejs/plugin-vue2"
 import legacy from "@vitejs/plugin-legacy"
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(configEnv => ({
   base: "./",
   plugins: [
     vue(),
@@ -21,6 +21,7 @@ export default defineConfig({
     },
     outDir: "dist-temp",
     chunkSizeWarningLimit: 1000,
+    sourcemap: configEnv.mode === "development",
   },
   resolve: {
     alias: {
@@ -47,4 +48,4 @@ export default defineConfig({
       }],
     },
   },
-})
+}))
