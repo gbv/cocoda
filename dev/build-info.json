@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "6dfb0e7b0e7b85bd65ca4f8d4a97719823b64d39",
-  "gitCommitShort": "6dfb0e7b",
-  "gitCommitMessage": "6dfb0e7b Update cocoda-sdk",
-  "buildDate": "2026-06-15T11:31:55Z",
-  "date": "2026-06-15T11:31:05.000Z",
+  "gitCommit": "b41c8f9f72357e5a8922320567bda7fa9039b51f",
+  "gitCommitShort": "b41c8f9f",
+  "gitCommitMessage": "b41c8f9f Use jskos-tools 1.3.0",
+  "buildDate": "2026-06-16T08:01:15Z",
+  "date": "2026-06-16T08:00:16.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
