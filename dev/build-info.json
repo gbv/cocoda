@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "ab7c6a7e89780d8248dc6e3d33472b59a60f6979",
-  "gitCommitShort": "ab7c6a7e",
-  "gitCommitMessage": "ab7c6a7e Remove node 18",
-  "buildDate": "2026-06-17T07:59:05Z",
-  "date": "2026-06-17T07:58:19.000Z",
+  "gitCommit": "93aa68c335fabd5a5ab190e11fdd554d1da50239",
+  "gitCommitShort": "93aa68c3",
+  "gitCommitMessage": "93aa68c3 Remove node entirely 18",
+  "buildDate": "2026-06-17T08:03:47Z",
+  "date": "2026-06-17T08:02:51.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
