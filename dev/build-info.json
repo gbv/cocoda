@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "f63085cf5ecc733b3b1c84d6dce79e8f3291e54b",
-  "gitCommitShort": "f63085cf",
-  "gitCommitMessage": "f63085cf Update dependencies",
-  "buildDate": "2026-06-16T08:53:18Z",
-  "date": "2026-06-16T08:52:26.000Z",
+  "gitCommit": "ab7c6a7e89780d8248dc6e3d33472b59a60f6979",
+  "gitCommitShort": "ab7c6a7e",
+  "gitCommitMessage": "ab7c6a7e Remove node 18",
+  "buildDate": "2026-06-17T07:59:05Z",
+  "date": "2026-06-17T07:58:19.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
