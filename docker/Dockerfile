@@ -1,4 +1,4 @@
-# Step 1: Build Cocoda via node:18-alpine image.
+# Step 1: Build Cocoda via node:20-alpine image.
 FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
 
