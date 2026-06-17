@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "93aa68c335fabd5a5ab190e11fdd554d1da50239",
-  "gitCommitShort": "93aa68c3",
-  "gitCommitMessage": "93aa68c3 Remove node entirely 18",
-  "buildDate": "2026-06-17T08:03:47Z",
-  "date": "2026-06-17T08:02:51.000Z",
+  "gitCommit": "7693946b6fd74bb2b94202f1f2127cbaaa6f8143",
+  "gitCommitShort": "7693946b",
+  "gitCommitMessage": "7693946b Ensure Vite uses a single Vue runtime",
+  "buildDate": "2026-06-17T08:50:07Z",
+  "date": "2026-06-17T08:49:00.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
