@@ -25,9 +25,11 @@ export default defineConfig(configEnv => ({
   },
   resolve: {
     alias: {
+      vue: resolve(__dirname, "node_modules/vue/dist/vue.runtime.esm.js"),
       // This allows relative imports starting with @/ instead of absolute imports
       "@": resolve(__dirname, "./src"),
     },
+    dedupe: ["vue"],
   },
   server: {
     port: 8080,
