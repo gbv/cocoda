@@ -1,9 +1,11 @@
 <template>
   <div
     class="conceptSearch"
+    :class="{ 'conceptSearch--compact': !showIcon }"
     @mousemove="mousemove()">
     <!-- Search icon -->
     <div
+      v-if="showIcon"
       class="conceptSearch-icon button"
       @click="focusSearch">
       <font-awesome-icon icon="search" />
@@ -17,13 +19,13 @@
       </div>
       <div
         v-show="_scheme.types && _scheme.types.length > 0"
-        :id="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
+        :id="`conceptSearch-filter-${uniqueID}`"
         class="conceptSearch-filter button">
         <font-awesome-icon icon="filter" />
       </div>
       <!-- Filter Popover -->
       <b-popover
-        :target="`conceptSearch-filter-${isLeft ? 'left' : 'right'}`"
+        :target="`conceptSearch-filter-${uniqueID}`"
         :show.sync="filterPopoverShow"
         triggers="click"
         placement="auto">
@@ -47,7 +49,7 @@
       <b-form-input
         ref="searchInput"
         v-model="searchQuery"
-        :placeholder="$t('search.placeholder')"
+        :placeholder="placeholder || $t('search.placeholder')"
         size="sm"
         autocomplete="off"
         @click.native="isOpen = searchQuery != ''"
@@ -136,6 +138,37 @@ export default {
       type: Object,
       default: null,
     },
+    /**
+     * Custom placeholder for the input field (defaults to search.placeholder).
+     */
+    placeholder: {
+      type: String,
+      default: null,
+    },
+    /**
+     * External v-model for the search query.
+     * When bound, the query is kept when the scheme changes.
+     */
+    value: {
+      type: String,
+      default: null,
+    },
+    /**
+     * Whether choosing a result selects the concept in the application.
+     * When false, choosing a result puts its notation into the query
+     * and emits "choose" instead.
+     */
+    selectsConcept: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * Whether to show the search icon on the left.
+     */
+    showIcon: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -159,6 +192,8 @@ export default {
       uniqueID: null,
       // Show/hide types popover
       filterPopoverShow: false,
+      // Whether the next searchQuery change was set programmatically and should not trigger a search
+      preventSearchOnQueryChange: false,
     }
   },
   computed: {
@@ -199,14 +234,30 @@ export default {
   },
   watch: {
     /**
+     * Syncs the external v-model into the query.
+     */
+    value: function (newValue) {
+      if (newValue != null && newValue !== this.searchQuery) {
+        this.preventSearchOnQueryChange = true
+        this.searchQuery = newValue
+      }
+    },
+    /**
      * Deals with query changes.
      */
     searchQuery: function (newQuestion) {
+      this.$emit("input", newQuestion)
       this.searchSelected = -1
       // Already cancel previous request
       if (this.cancel != null) {
         this.cancel("There was a newer search query.")
         this.cancel = null
+      }
+      if (this.preventSearchOnQueryChange) {
+        this.preventSearchOnQueryChange = false
+        this.loading = false
+        this.isOpen = false
+        return
       }
       if (newQuestion == "") {
         this.loading = false
@@ -225,7 +276,8 @@ export default {
      */
     _scheme: function(newValue, oldValue) {
       if (!this.$jskos.compare(oldValue, newValue)) {
-        this.clear()
+        // With an external v-model, the query is kept when the scheme changes.
+        this.clear(this.value != null)
       }
     },
     typesForSchemes() {
@@ -236,14 +288,21 @@ export default {
   },
   created: function () {
     this.clear()
+    // Initialize query from external v-model
+    if (this.value) {
+      this.preventSearchOnQueryChange = true
+      this.searchQuery = this.value
+    }
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)
     // Create a unique ID for the DOM IDs
     this.uniqueID = this.generateID()
   },
   methods: {
-    clear() {
-      this.searchQuery = ""
+    clear(keepQuery = false) {
+      if (!keepQuery) {
+        this.searchQuery = ""
+      }
       this.searchResult = []
       this.isOpen = false
       this.isValid = false
@@ -272,7 +331,7 @@ export default {
         // Types popover
         {
           elements: [
-            document.getElementById(`conceptSearch-filter-${this.isLeft ? "left" : "right"}`),
+            document.getElementById(`conceptSearch-filter-${this.uniqueID}`),
             this.$refs.filterPopover,
           ],
           handler: () => {
@@ -300,8 +359,26 @@ export default {
       }
       // Get concept from store
       concept = saveItem(concept, { type: "concept", scheme: this._scheme, provider: this.provider })
-      // Set selected
-      this.setSelected({ concept, isLeft: this.isLeft })
+      if (this.selectsConcept) {
+        // Set selected
+        this.setSelected({ concept, isLeft: this.isLeft })
+      } else {
+        // Put the concept's notation into the query and notify the parent
+        let notation = this.$jskos.notation(concept)
+        if (!notation) {
+          try {
+            notation = new this.$jskos.ConceptScheme(this._scheme).notationFromUri(uri)
+          } catch (error) {
+            this.$log.warn("ConceptSearch: Error getting notation from URI.", error)
+          }
+        }
+        this.preventSearchOnQueryChange = true
+        this.searchQuery = notation || uri
+        // Wait for nextTick so that the v-model update reaches the parent first
+        this.$nextTick(() => {
+          this.$emit("choose", concept)
+        })
+      }
       // Remove focus
       if (document.activeElement != document.body) {
         document.activeElement.blur()
@@ -398,6 +475,13 @@ export default {
      * Handles an enter down event.
      */
     onEnter() {
+      // Without concept selection, enter with no actively selected result
+      // is handled by the parent (e.g. to start a mapping search).
+      if (!this.selectsConcept && this.searchSelected < 0) {
+        this.closeResults()
+        this.$emit("enter")
+        return
+      }
       let chosenIndex
       if (this.loading || !this.isValid || this.searchResult.length == 0) {
         return
@@ -478,6 +562,10 @@ export default {
       this.dragStart(concept, event)
     },
     droppedConcept(concept) {
+      if (!this.selectsConcept) {
+        this.$emit("concept-dropped", concept)
+        return
+      }
       this.setSearchQuery(this.$jskos.prefLabel(concept, { fallbackToUri: true }))
     },
   },
@@ -491,6 +579,13 @@ export default {
 .conceptSearch {
   position: relative;
   height: 34px;
+}
+
+.conceptSearch--compact {
+  height: auto;
+}
+.conceptSearch--compact .conceptSearch-inputWrapper {
+  margin-left: 0;
 }
 
 .conceptSearch-icon {
