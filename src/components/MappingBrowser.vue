@@ -222,7 +222,19 @@
               @click="lockScheme[true] = !lockScheme[true]">
               <font-awesome-icon :icon="lockScheme[true] ? 'lock' : 'lock-open'" />
             </div>
+            <concept-search
+              v-if="searchFromScheme"
+              v-model="searchFilterInput.fromNotation"
+              :scheme="searchFromScheme"
+              :selects-concept="false"
+              :show-icon="false"
+              :placeholder="$t('mappingBrowser.searchSourceNotation')"
+              style="flex: 2; margin: 3px; min-width: 60px;"
+              @enter="searchClicked"
+              @choose="searchClicked"
+              @concept-dropped="droppedConcept($event, { scheme: lockScheme[true] ? null : 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <b-input
+              v-else
               v-model="searchFilterInput.fromNotation"
               style="flex: 2; margin: 3px; min-width: 60px;"
               size="sm"
@@ -251,7 +263,20 @@
               @click="lockScheme[false] = !lockScheme[false]">
               <font-awesome-icon :icon="lockScheme[false] ? 'lock' : 'lock-open'" />
             </div>
+            <concept-search
+              v-if="searchToScheme"
+              v-model="searchFilterInput.toNotation"
+              :scheme="searchToScheme"
+              :is-left="false"
+              :selects-concept="false"
+              :show-icon="false"
+              :placeholder="$t('mappingBrowser.searchTargetNotation')"
+              style="flex: 2; margin: 3px; min-width: 60px;"
+              @enter="searchClicked"
+              @choose="searchClicked"
+              @concept-dropped="droppedConcept($event, { scheme: lockScheme[false] ? null : 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <b-input
+              v-else
               v-model="searchFilterInput.toNotation"
               style="flex: 2; margin: 3px; min-width: 60px;"
               size="sm"
@@ -508,6 +533,7 @@ import DataModalButton from "./DataModalButton.vue"
 import ConcordanceEditorModal from "./ConcordanceEditorModal.vue"
 import ConcordanceDetail from "./ConcordanceDetail.vue"
 import DateString from "./DateString.vue"
+import ConceptSearch from "./ConceptSearch.vue"
 import _ from "lodash"
 import { cdk } from "cocoda-sdk"
 // Only use for cancel token generation!
@@ -525,7 +551,7 @@ import { concordanceSort, displayNameForConcordance } from "@/utils"
 
 export default {
   name: "MappingBrowser",
-  components: { MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, ConcordanceDetail, DateString },
+  components: { MappingBrowserTable, RegistryNotation, ItemName, ComponentSettings, DataModalButton, ConcordanceEditorModal, ConcordanceDetail, DateString, ConceptSearch },
   mixins: [auth, objects, dragandrop, clickHandler, computed, pageVisibility],
   props: {
     /**
