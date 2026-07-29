@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "6032638e1cf43f007fe17506d6e62ab9b7020fbd",
-  "gitCommitShort": "6032638e",
-  "gitCommitMessage": "6032638e Add concept typeahead to mapping search notation fields",
-  "buildDate": "2026-07-28T11:58:46Z",
-  "date": "2026-07-28T11:58:03.000Z",
+  "gitCommit": "6ca79c22b68b8225d57eb8b2808a15f12516215b",
+  "gitCommitShort": "6ca79c22",
+  "gitCommitMessage": "6ca79c22 Update dependencies",
+  "buildDate": "2026-07-29T19:24:03Z",
+  "date": "2026-07-29T19:23:11.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
