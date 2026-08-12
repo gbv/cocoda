@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "3307ce24bfafc8b4124d2490678782e5fd939ed8",
-  "gitCommitShort": "3307ce24",
-  "gitCommitMessage": "3307ce24 Update dependencies",
-  "buildDate": "2026-08-12T10:27:17Z",
-  "date": "2026-08-12T10:16:51.000Z",
+  "gitCommit": "5aa0b19d3c369dab8b1ee503f426cac707bdddb4",
+  "gitCommitShort": "5aa0b19d",
+  "gitCommitMessage": "5aa0b19d Update to cocoda-sdk 3.8.3",
+  "buildDate": "2026-08-12T11:22:56Z",
+  "date": "2026-08-12T11:22:14.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
