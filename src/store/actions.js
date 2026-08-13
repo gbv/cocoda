@@ -1,7 +1,7 @@
 import jskos from "@/utils/jskos.js"
 import _ from "lodash"
-import axios from "axios"
-const axiosConfig = {
+import fetchJson from "@/utils/fetch-json.js"
+const fetchConfig = {
   headers: {
     "Cache-Control": "no-cache",
   },
@@ -32,14 +32,14 @@ export default {
     let config
     let userConfig
     try {
-      userConfig = (await axios.get(configFile, axiosConfig)).data
+      userConfig = await fetchJson(configFile, fetchConfig)
     } catch (error) {
       userConfig = null
     }
     if (!userConfig) {
-      // Try again without axios config: Cache-Control header might not be allowed
+      // Try again without fetch config: Cache-Control header might not be allowed
       try {
-        userConfig = (await axios.get(configFile)).data
+        userConfig = await fetchJson(configFile)
       } catch (error) {
         userConfig = null
       }
@@ -292,7 +292,7 @@ export default {
         // Load list from URL
         try {
           let url = list.url
-          list = (await axios.get(url)).data
+          list = await fetchJson(url)
           list.url = url
         } catch (error) {
           log.warn("Could not load list from URL:", list)
@@ -313,7 +313,7 @@ export default {
       if (list.conceptsUrl) {
         let url = list.conceptsUrl
         try {
-          let concepts = (await axios.get(url)).data
+          let concepts = await fetchJson(url)
           list.concepts = concepts
         } catch (error) {
           log.warn("Could not load concepts for list with URL:", url)

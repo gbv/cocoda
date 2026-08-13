@@ -193,7 +193,7 @@ import DateString from "./DateString.vue"
 import ContentMap from "./ContentMap.vue"
 import LinkList from "./LinkList.vue"
 import _ from "lodash"
-import axios from "axios"
+import fetchJson from "@/utils/fetch-json.js"
 
 // Import mixins
 import objects from "@/mixins/cdk.js"
@@ -435,12 +435,10 @@ export default {
         // Only DDC supported for now
         return
       }
-      const result = await axios.get(`${api}analyze`, {
-        params: {
-          notation: this.$jskos.notation(itemBefore),
-        },
-      })
-      const resultConcept = (result.data || []).find(c => this.$jskos.compare(c, itemBefore))
+      const url = new URL(`${api}analyze`, window.location.href)
+      url.searchParams.set("notation", this.$jskos.notation(itemBefore))
+      const result = await fetchJson(url)
+      const resultConcept = (result || []).find(c => this.$jskos.compare(c, itemBefore))
       if (resultConcept) {
         // Save each concept in memberList
         resultConcept.memberList.forEach(member => {
