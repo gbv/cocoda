@@ -1,11 +1,11 @@
 {
   "version": "1.12.3",
   "gitBranch": "dev",
-  "gitCommit": "5aa0b19d3c369dab8b1ee503f426cac707bdddb4",
-  "gitCommitShort": "5aa0b19d",
-  "gitCommitMessage": "5aa0b19d Update to cocoda-sdk 3.8.3",
-  "buildDate": "2026-08-12T11:22:56Z",
-  "date": "2026-08-12T11:22:14.000Z",
+  "gitCommit": "31e40314e5012d375e24dfbf2e0ca86180dafdbb",
+  "gitCommitShort": "31e40314",
+  "gitCommitMessage": "31e40314 refactor: remove use of lodash _.get",
+  "buildDate": "2026-08-27T07:42:45Z",
+  "date": "2026-08-27T07:41:47.000Z",
   "milestoneUrl": null,
   "jskosApi": "^1.0 || ^2.0"
 }
