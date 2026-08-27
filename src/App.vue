@@ -295,7 +295,7 @@ export default {
      */
     selectedConceptLeft: {
       handler(newValue, oldValue) {
-        if (_.isEqual(_.get(newValue, "prefLabel"), _.get(oldValue, "prefLabel"))) {
+        if (_.isEqual(newValue?.prefLabel, oldValue?.prefLabel)) {
           return
         }
         this.insertPrefLabel(true)
@@ -317,7 +317,7 @@ export default {
      */
     selectedConceptRight: {
       handler(newValue, oldValue) {
-        if (_.isEqual(_.get(newValue, "prefLabel"), _.get(oldValue, "prefLabel"))) {
+        if (_.isEqual(newValue?.prefLabel, oldValue?.prefLabel)) {
           return
         }
         this.insertPrefLabel(false)
@@ -512,7 +512,7 @@ export default {
       const time = new Date()
       this.loadingGlobal = true
       // Load config
-      await this.$store.dispatch("loadConfig", _.get(this.$route, "query.config"))
+      await this.$store.dispatch("loadConfig", this.$route.query.config)
       // Adjust layout
       if (this.config.cssProperties) {
         const cssProperties = this.config.cssProperties
@@ -595,7 +595,7 @@ export default {
       this.setConceptSearchQuery(isLeft, regexResult ? regexResult[0] : prefLabel)
     },
     setConceptSearchQuery(isLeft, query, open) {
-      let conceptSchemeSelection = _.get(this, `$refs.conceptSchemeSelection${isLeft ? "Right" : "Left"}[0]`)
+      let conceptSchemeSelection = this.$refs[`conceptSchemeSelection${isLeft ? "Right" : "Left"}`]?.[0]
       if (conceptSchemeSelection) {
         conceptSchemeSelection.setConceptSearchQuery(query, open)
       }
@@ -627,8 +627,8 @@ export default {
       }, 300)
       // Swap open status as well by recursively iterating over all concepts in tree
       let swapOpen = (concept) => {
-        let openLeft = _.get(concept, "__ISOPEN__.true", false)
-        let openRight = _.get(concept, "__ISOPEN__.false", false)
+        let openLeft = concept.__ISOPEN__?.true ?? false
+        let openRight = concept.__ISOPEN__?.false ?? false
         this.open(concept, true, openRight)
         this.open(concept, false, openLeft)
         if (concept.narrower && !concept.narrower.includes(null)) {
@@ -638,7 +638,7 @@ export default {
         }
       }
       for (let uri of _.uniq([query.fromScheme, query.toScheme])) {
-        let topConcepts = _.get(getItemByUri(uri), "topConcepts")
+        let topConcepts = getItemByUri(uri)?.topConcepts
         for (let concept of topConcepts || []) {
           swapOpen(concept)
         }
@@ -717,7 +717,7 @@ export default {
           let mapping = mappingFromQuery, original = null
           if (loadedMappings.length) {
             // Prefer mapping from writable registry if there are multiples
-            original = loadedMappings.find(m => _.get(m, "_registry").isAuthorizedFor && _.get(m, "_registry").isAuthorizedFor({
+            original = loadedMappings.find(m => m?._registry?.isAuthorizedFor && m._registry.isAuthorizedFor({
               type: "mappings",
               action: "create",
               user: this.user,

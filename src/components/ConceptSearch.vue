@@ -229,7 +229,7 @@ export default {
       },
     },
     provider() {
-      return _.get(this._scheme, "_registry")
+      return this._scheme?._registry
     },
   },
   watch: {

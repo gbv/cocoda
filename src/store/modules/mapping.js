@@ -169,7 +169,7 @@ const getters = {
   },
 
   hasConcordanceChangedFromOriginal: (state) => {
-    return !jskos.compare(_.get(state.mapping, "partOf[0]"), _.get(state.original, "mapping.partOf[0]"))
+    return !jskos.compare(state.mapping?.partOf?.[0], state.original?.mapping?.partOf?.[0])
   },
 
   mappingTrash: (state, getters, rootState) => {
@@ -300,7 +300,7 @@ const mutations = {
       state.mapping = mapping
     }
     // Save the original with identifiers and the LOCAL property.
-    registry = registry || _.get(original, "_registry")
+    registry = registry || original?._registry
     if (original && registry) {
       state.original.uri = original.uri
       state.original.mapping = original

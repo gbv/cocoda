@@ -49,7 +49,7 @@ export default {
      */
     getProvider(object) {
       object = getItem(object) || object
-      return _.get(object, "_registry") || _.get(object, "inScheme[0]._registry")
+      return object?._registry || object?.inScheme?.[0]?._registry
     },
     toggleMinimize() {
       for (let child of this.$children) {
@@ -73,7 +73,7 @@ export default {
         query[fromTo + "Scheme"] = object.uri
       } else {
         // Consider object a concept
-        let conceptScheme = getItem(_.get(object, "inScheme[0]"))
+        let conceptScheme = getItem(object?.inScheme?.[0])
         !conceptScheme && console.assert("getRouterUrl", object, conceptScheme)
         if (forceSide || this.$store.state.selected.scheme[isLeft] == null || this.$jskos.compare(this.$store.state.selected.scheme[isLeft], conceptScheme)) {
         // If the scheme on the same side is null or the same as the concept's scheme, don't change anything.
@@ -95,7 +95,7 @@ export default {
       let loadingId = this.generateID()
 
       concept = concept && saveItem(concept, { returnIfExists: true, type: "concept", scheme })
-      scheme = _.get(concept, "inScheme[0]") || scheme
+      scheme = concept?.inScheme?.[0] || scheme
       scheme = scheme && saveItem(scheme, { returnIfExists: true, type: "scheme" })
 
       // Check if concept and scheme are already selected
@@ -211,7 +211,7 @@ export default {
       params.type = "mapping/add"
       params.cardinality = this.$store.state.settings.settings.components.MappingEditor.only1to1mappings ? "1-to-1" : "1-to-n"
       // Override cardinality from registry if necessary
-      const cardinality = _.get(this.$store.getters.getCurrentRegistry, "config.mappings.cardinality")
+      const cardinality = this.$store.getters.getCurrentRegistry?.config?.mappings?.cardinality
       if (cardinality == "1-to-1") {
         params.cardinality = cardinality
       }
@@ -332,7 +332,7 @@ export default {
             "http://id.loc.gov/vocabulary/classSchemes/sdnb",
             "http://uri.gbv.de/terminology/sdnb",
           ],
-        }, _.get(item, "inScheme[0]"))) {
+        }, item?.inScheme?.[0])) {
           // Fix notations for table ranges
           if (notation) {
             notation = notation.replace(/^(T[1-9][A-Z]?--)(.*)-(.*)$/, "$1$2-$1$3")

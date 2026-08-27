@@ -25,7 +25,7 @@ function getRegistryForItem(item) {
   if (item._registry) {
     return item._registry
   }
-  const scheme = getItem(_.get(item, "inScheme[0]"))
+  const scheme = getItem(item?.inScheme?.[0])
   if (scheme && scheme._registry) {
     return scheme._registry
   }
@@ -291,7 +291,7 @@ export async function loadTop(scheme, { registry, force = false } = {}) {
       // Save concept
       return saveItem(concept, { type: "concept", scheme })
     })
-    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts, !!_.get(scheme, "DISPLAY.numericalNotation")).map(mapMinimalProps))
+    modifyItem(scheme, "topConcepts", jskos.sortConcepts(topConcepts, !!scheme?.DISPLAY?.numericalNotation).map(mapMinimalProps))
     // Also add [null] to `concepts`
     if (!scheme.concepts?.length) {
       modifyItem(scheme, "concepts", [null])
@@ -397,7 +397,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
     return []
   }
   try {
-    const scheme = getItem(_.get(concept, "inScheme[0]"))
+    const scheme = getItem(concept?.inScheme?.[0])
     const narrower = (await registry.getNarrower({ concept })).map(child => {
       // Set ancestors
       // TODO: Include registry.has.ancestors?
@@ -413,7 +413,7 @@ export async function loadNarrower(concept, { registry, force = false } = {}) {
       // Save concept
       return saveItem(child, { type: "concept", scheme })
     })
-    const narrowerSorted = jskos.sortConcepts(narrower, !!_.get(scheme, "DISPLAY.numericalNotation")).map(mapMinimalProps)
+    const narrowerSorted = jskos.sortConcepts(narrower, !!scheme?.DISPLAY?.numericalNotation).map(mapMinimalProps)
     modifyItem(concept, "narrower", narrowerSorted)
     return narrowerSorted
   } catch (error) {
@@ -444,7 +444,7 @@ export async function loadAncestors(concept, { registry, force = false } = {}) {
       ancestor.ancestors = currentAncestors.slice()
       currentAncestors = [{ uri: ancestor.uri }].concat(currentAncestors)
       // Save concept
-      return saveItem(ancestor, { type: "concept", scheme: _.get(concept, "inScheme[0]") })
+      return saveItem(ancestor, { type: "concept", scheme: concept?.inScheme?.[0] })
     }).map(mapMinimalProps).reverse()
     modifyItem(concept, "ancestors", ancestors)
     // Set ancestors for narrower of concept if necessary

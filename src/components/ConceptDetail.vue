@@ -257,7 +257,7 @@ export default {
       return this._item && this._item.memberList && !this._item.memberList.includes(null)
     },
     canAddToMapping() {
-      return this.$store.getters["mapping/canAdd"](this._item, _.get(this._item, "inScheme[0]") || this.selected.scheme[this.isLeft], this.isLeft)
+      return this.$store.getters["mapping/canAdd"](this._item, this._item?.inScheme?.[0] || this.selected.scheme[this.isLeft], this.isLeft)
     },
     searchLinkInfo() {
       return {
@@ -273,7 +273,7 @@ export default {
         return []
       }
       let types = []
-      const scheme = getItem(_.get(this.item, "inScheme[0]"))
+      const scheme = getItem(this.item?.inScheme?.[0])
       const schemeTypes = scheme.types || []
       for (let typeUri of this._item.type || []) {
         if (typeUri == "http://www.w3.org/2004/02/skos/core#Concept") {
@@ -288,11 +288,11 @@ export default {
     },
     gndTerms() {
       // Assemble gndTerms array for display
-      let mappings = _.get(this._item, "__GNDMAPPINGS__", [])
+      let mappings = this._item?.__GNDMAPPINGS__ || []
       let concepts = []
       for (let mapping of mappings) {
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
-          if (this.$jskos.compare(this.gnd, _.get(concept, "inScheme[0]")) && !concepts.find(c => this.$jskos.compare(c.concept, concept))) {
+          if (this.$jskos.compare(this.gnd, concept?.inScheme?.[0]) && !concepts.find(c => this.$jskos.compare(c.concept, concept))) {
             concepts.push({
               concept: getItem(concept),
               type: this.$jskos.mappingTypeByType(mapping.type),
@@ -389,7 +389,7 @@ export default {
         return
       }
       // Don't load GND terms for GND items
-      if (this.$jskos.compare(this.gnd, _.get(itemBefore, "inScheme[0]"))) {
+      if (this.$jskos.compare(this.gnd, itemBefore?.inScheme?.[0])) {
         return
       }
       // Load GND mappings from all stored registries
@@ -406,7 +406,7 @@ export default {
       for (let mapping of mappings) {
         let concepts = this.$jskos.conceptsOfMapping(mapping)
         for (let concept of concepts) {
-          if (this.$jskos.compare(this.gnd, _.get(concept, "inScheme[0]"))) {
+          if (this.$jskos.compare(this.gnd, concept?.inScheme?.[0])) {
             gndConcepts.push(concept)
           }
         }
@@ -431,7 +431,7 @@ export default {
         return
       }
       const ddc = getItem({ uri: "http://dewey.info/scheme/edition/e23/" })
-      if (!this.$jskos.compare(ddc, _.get(itemBefore, "inScheme[0]"))) {
+      if (!this.$jskos.compare(ddc, itemBefore?.inScheme?.[0])) {
         // Only DDC supported for now
         return
       }

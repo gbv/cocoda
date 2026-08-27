@@ -50,7 +50,7 @@ const getters = {
     }
     if (!registry) {
       // Fallback to first registry which can save mappings (even if the user is not authorized for it)
-      registry = state.config.registries.find(registry => _.get(registry, "has.mappings.create"))
+      registry = state.config.registries.find(registry => registry.has?.mappings?.create)
     }
     return registry
   },
@@ -82,7 +82,7 @@ const getters = {
    */
   mappedStatus: (state) => (concept, isLeft) => {
     // TODO: Use concept from store?
-    return !!_.get(concept, "__MAPPED__", []).find(item => item.exist.length && jskos.compareFast(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
+    return !!(concept?.__MAPPED__ ?? []).find(item => item.exist.length && jskos.compareFast(item.registry, getters.getCurrentRegistry(state)) && jskos.compare(item.scheme, state.selected.scheme[!isLeft]))
   },
   languages: (state) => {
     let languages = ["en", "de"]

@@ -130,7 +130,7 @@ export default {
     dataChoices() {
       let choices = []
       if (this.selected.scheme[this.isLeft] !== null) {
-        let topConceptsUrl = _.get(getItem(this.selected.scheme[this.isLeft]), "_registry.top")
+        let topConceptsUrl = getItem(this.selected.scheme[this.isLeft])?._registry?.top
         if (topConceptsUrl) {
           topConceptsUrl += `?uri=${encodeURIComponent(this.selected.scheme[this.isLeft].uri)}`
         }
@@ -209,8 +209,8 @@ export default {
       return choices
     },
     _topConcepts() {
-      let uri = _.get(this.selected.scheme[this.isLeft], "uri", null)
-      return _.get(getItemByUri(uri), "topConcepts") || [null]
+      let uri = this.selected.scheme[this.isLeft]?.uri ?? null
+      return getItemByUri(uri)?.topConcepts || [null]
     },
     concepts() {
       return this.currentChoice.concepts
@@ -264,16 +264,16 @@ export default {
     },
     _loadConceptsInView() {
       const concepts = []
-      const conceptList = _.get(this, `$refs.conceptList[${this.currentChoiceIndex}]`)
-      const children = _.get(conceptList, "$children[0].$children")
-      const container = _.get(conceptList, "$children[0].$el")
+      const conceptList = this?.$refs?.conceptList?.[this.currentChoiceIndex]
+      const children = conceptList?.$children?.[0]?.$children
+      const container = conceptList?.$children?.[0]?.$el
       if (children && container) {
         for (let child of children) {
           if (!child || !child.$el) {
             continue
           }
           const element = child.$el
-          const concept = _.get(child, "$children[0].concept")
+          const concept = child?.$children?.[0]?.concept
           if (concept && this.checkInView(container, element)) {
             concepts.push(concept)
           }

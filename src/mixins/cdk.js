@@ -166,7 +166,7 @@ export default {
         mapping.partOf = mapping.partOf.map(concordance => this.concordances.find(c => this.$jskos.compare(c, concordance)) || concordance)
       }
       // Set mapped entry for concepts that have mappings
-      const registry = _.get(mapping, "_registry")
+      const registry = mapping?._registry
       if (jskos.mappingRegistryIsStored(registry)) {
         for (let [from, to] of [["from", "to"], ["to", "from"]]) {
           const targetScheme = getItem(mapping[`${to}Scheme`])
@@ -329,7 +329,7 @@ export default {
       }
       _before && _before()
       try {
-        const concordance = this.concordances.find(c => jskos.compare(c, _.get(config, "mapping.partOf[0]")))
+        const concordance = this.concordances.find(c => jskos.compare(c, config.mapping?.partOf?.[0]))
         config.mapping = this.prepareMapping(_.omit(config.mapping, "partOf"))
         this._addIdentityParams(config)
         const mapping = await registry.postMapping(config)
@@ -459,7 +459,7 @@ export default {
         this.mappingWasDeleted({ mapping: config.mapping, registry, _trash })
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-          _.get(config, "mapping.partOf[0]") && config.mapping.partOf[0] && this.loadConcordances()
+          config.mapping?.partOf?.[0] && config.mapping.partOf[0] && this.loadConcordances()
         }
         if (_alert) {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
@@ -480,7 +480,7 @@ export default {
       }
     },
     async deleteMappings({ registry, _reload = true, _alert = true, _trash = true, _before, _after, ...config }) {
-      registry = this.getRegistry(registry || _.get(config, "mappings[0]._registry"))
+      registry = this.getRegistry(registry || config.mappings?.[0]?._registry)
       if (!registry) {
         throw new Error("deleteMapping: No registry to delete mapping from.")
       }
@@ -492,7 +492,7 @@ export default {
         }
         if (_reload) {
           this.$store.commit("mapping/setRefresh", { registry: registry.uri })
-          _.get(config, "mappings[0].partOf[0]") && this.loadConcordances()
+          config.mappings?.[0]?.partOf?.[0] && this.loadConcordances()
         }
         if (_alert) {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
@@ -553,7 +553,7 @@ export default {
         return false
       }
       try {
-        const hasConcordance = !!_.get(item, "mapping.partOf[0]")
+        const hasConcordance = !!item.mapping?.partOf?.[0]
         const mapping = await this.postMapping({ registry, mapping: item.mapping, _alert: false, _reload: false })
         if (mapping) {
           // Remove item from trash
@@ -653,8 +653,8 @@ export default {
       if (!concordance.fromScheme || !concordance.toScheme) {
         return false
       }
-      const notation = _.get(concordance, "notation[0]")
-      if (!notation || this.concordances.find(c => _.get(c, "notation[0]") === notation)) {
+      const notation = concordance?.notation?.[0]
+      if (!notation || this.concordances.find(c => c?.notation?.[0] === notation)) {
         return false
       }
       return true

@@ -138,7 +138,7 @@ export default {
       const time = new Date()
       this.loadingGlobal = true
       // Load config
-      await this.$store.dispatch("loadConfig", _.get(this.$route, "query.config"))
+      await this.$store.dispatch("loadConfig", this.$route?.query?.config)
       // Load settings
       await this.$store.dispatch("settings/load")
       // Set page title
@@ -234,7 +234,7 @@ export default {
           let mapping = mappingFromQuery, original = null
           if (loadedMappings.length) {
             // Prefer mapping from writable registry if there are multiples
-            original = loadedMappings.find(m => _.get(m, "_registry").isAuthorizedFor && _.get(m, "_registry").isAuthorizedFor({
+            original = loadedMappings.find(m => m?._registry?.isAuthorizedFor && m._registry.isAuthorizedFor({
               type: "mappings",
               action: "create",
               user: this.user,

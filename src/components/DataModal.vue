@@ -224,10 +224,10 @@ export default {
         // ... for concepts
         for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
           let conceptInStore = getItem(concept)
-          let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
+          let language = this.$jskos.languagePreference.selectLanguage(conceptInStore?.prefLabel)
           if (language) {
             // NOTE: Hardcoded language, see note above.
-            concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
+            concept.prefLabel = { de: conceptInStore.prefLabel?.[language] }
           }
         }
         // ... for creator
@@ -240,7 +240,7 @@ export default {
     },
     validated() {
       let type = this.computedType
-      let validate = _.get(this.$jskos.validate, type, this.$jskos.validate && this.$jskos.validate.resource)
+      let validate = this.$jskos.validate?.[type] ?? (this.$jskos.validate && this.$jskos.validate.resource)
       if (!this.preparedData || !validate) {
         return false
       }

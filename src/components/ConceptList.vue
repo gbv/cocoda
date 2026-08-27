@@ -234,7 +234,7 @@ export default {
           }
           const parent = getItem(_.first(concept.ancestors) || _.first(concept.broader))
           // Get children of parent
-          let children = _.get(parent, "narrower")
+          let children = parent?.narrower
           // If there is no parent, use top concepts as children (everything with depth 0 from items)
           if (!parent) {
             children = this.items.filter(item => item.depth == 0).map(item => item.concept)

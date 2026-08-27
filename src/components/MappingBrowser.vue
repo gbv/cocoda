@@ -709,17 +709,17 @@ export default {
       let items = []
       for (let concordance of (this.concordances || []).filter(c => this.$jskos.compare(c._registry, this.currentConcordanceRegistry))) {
         let item = { concordance }
-        item.from = _.get(concordance, "fromScheme")
+        item.from = concordance.fromScheme
         item.from = getItem(item.from) || item.from
         item.fromNotation = this.$jskos.notation(item.from) || "-"
-        item.to = _.get(concordance, "toScheme")
+        item.to = concordance.toScheme
         item.to = getItem(item.to) || item.to
         item.toNotation = this.$jskos.notation(item.to) || "-"
-        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote", { language: this.locale }) || [])[0] || _.get(concordance, "notation[0]") || "-"
-        item.creator = this.$jskos.prefLabel(_.get(concordance, "publisher[0]"), { fallbackToUri: false }) || this.$jskos.prefLabel(_.get(concordance, "creator[0]"), { fallbackToUri: false }) || "-"
-        item.date = _.get(concordance, "modified") || _.get(concordance, "created") || ""
-        item.download = _.get(concordance, "distributions", [])
-        item.mappings = parseInt(_.get(concordance, "extent"))
+        item.description = (this.$jskos.languageMapContent(concordance, "scopeNote", { language: this.locale }) || [])[0] || concordance.notation?.[0] || "-"
+        item.creator = this.$jskos.prefLabel(concordance.publisher?.[0], { fallbackToUri: false }) || this.$jskos.prefLabel(concordance.creator?.[0], { fallbackToUri: false }) || "-"
+        item.date = concordance.modified || concordance.created || ""
+        item.download = concordance.distributions ?? []
+        item.mappings = parseInt(concordance.extent)
         if (item.fromNotation.toLowerCase().startsWith(this.concordanceFilter.from.toLowerCase()) && item.toNotation.toLowerCase().startsWith(this.concordanceFilter.to.toLowerCase()) && item.creator.toLowerCase().startsWith(this.concordanceFilter.creator.toLowerCase())) {
           items.push(item)
         }
@@ -826,7 +826,7 @@ export default {
     searchRegistries() {
       const selected = this.selected
       const relevantSchemes = [this.getSchemeForFilter(this.searchFilter.fromScheme), this.getSchemeForFilter(this.searchFilter.toScheme), getItem(selected.scheme[true]), getItem(selected.scheme[false])]
-      return _.get(this.registryGroups.find(group => group.stored), "registries", []).filter(registry => {
+      return (this.registryGroups.find(group => group.stored)?.registries || []).filter(registry => {
         // Support "schemes" field for stored registries, but handle it a bit differently than with non-stored ones.
         // (Registries with no "schemes" property will always be shown.)
         // ? It might make sense to apply this to navigatorRegistries as well.
@@ -922,8 +922,8 @@ export default {
         }
         section.items = mappings.map(mapping => {
           let item = { mapping, registry }
-          item.sourceScheme = _.get(mapping, "fromScheme") || undefined
-          item.targetScheme = _.get(mapping, "toScheme") || undefined
+          item.sourceScheme = mapping?.fromScheme || undefined
+          item.targetScheme = mapping?.toScheme || undefined
           item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
           item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
           // Save concepts as xLabels attribute as well
@@ -1252,7 +1252,7 @@ export default {
       for (let group of this.registryGroups) {
         popovers.push({
           elements: [
-            _.get(this.$refs[`registryGroup-${group.stored}-popover`], "[0]"),
+            this.$refs[`registryGroup-${group.stored}-popover`]?.[0],
             document.getElementById(`registryGroup-${group.stored}`),
           ],
           handler: () => {
@@ -1379,7 +1379,7 @@ export default {
       if (this.searchFilter.partOf) {
         let toEnable = []
         for (let concordance of this.concordances.filter(c => this.$jskos.compare(c, { uri: this.searchFilter.partOf }))) {
-          let registryUri = _.get(concordance, "_registry.uri")
+          let registryUri = concordance?._registry?.uri
           if (registryUri && !toEnable.includes(registryUri)) {
             toEnable.push(registryUri)
           }
@@ -1532,8 +1532,8 @@ export default {
           },
         },
       }
-      let from = this.componentSettings.navigatorShowResultsForLeft ? _.get(this, "selected.concept[true]") : null
-      let to = this.componentSettings.navigatorShowResultsForRight ? _.get(this, "selected.concept[false]") : null
+      let from = this.componentSettings.navigatorShowResultsForLeft ? this.selected?.concept?.["true"] : null
+      let to = this.componentSettings.navigatorShowResultsForRight ? this.selected?.concept?.["false"] : null
       if (from) {
         params["from"] = from
       }
@@ -1612,7 +1612,7 @@ export default {
             // Sort mappings
             if (a._occurrence || b._occurrence) {
               // Sort by occurrence count descending
-              return _.get(b, "_occurrence.count", 0) - _.get(a, "_occurrence.count", 0)
+              return (b._occurrence?.count ?? 0) - (a._occurrence?.count ?? 0)
             }
             if (a.mappingRelevance && b.mappingRelevance) {
               return b.mappingRelevance - a.mappingRelevance
@@ -1768,8 +1768,8 @@ export default {
           // }
 
           let item = { mapping, registry }
-          item.sourceScheme = _.get(mapping, "fromScheme") || undefined
-          item.targetScheme = _.get(mapping, "toScheme") || undefined
+          item.sourceScheme = mapping?.fromScheme || undefined
+          item.targetScheme = mapping?.toScheme || undefined
           item.sourceConcepts = this.$jskos.conceptsOfMapping(mapping, "from").filter(concept => concept != null)
           item.targetConcepts = this.$jskos.conceptsOfMapping(mapping, "to").filter(concept => concept != null)
           // // Load prefLabels for all concepts
@@ -1778,10 +1778,10 @@ export default {
           item.sourceConceptsLong = item.sourceConcepts
           item.targetConceptsLong = item.targetConcepts
           // Set source/targetScheme to empty string if from/to is null.
-          if (!_.get(mapping, "from") && item.sourceConcepts.length == 0) {
+          if (!mapping?.from && item.sourceConcepts.length == 0) {
             item.sourceScheme = undefined
           }
-          if (!_.get(mapping, "to") && item.targetConcepts.length == 0) {
+          if (!mapping?.to && item.targetConcepts.length == 0) {
             item.targetScheme = undefined
           }
           // Skip if there are no concepts.
@@ -1798,7 +1798,7 @@ export default {
             item._rowClass = "mappingBrowser-table-row-match"
           }
           // Highlight if this exact mapping is being edited right now
-          let originalUri = _.get(this.$store.state.mapping.original, "uri")
+          let originalUri = this.$store.state.mapping.original?.uri
           if (originalUri && mapping.uri == originalUri) {
             item._rowClass = "mappingBrowser-table-row-edited"
           }
@@ -1835,14 +1835,14 @@ export default {
         if (type == "scheme") {
           // For scheme targtet, insert notation of inScheme of concept or notation of scheme
           if (this.$jskos.isScheme(object)) {
-            text = _.get(object, "notation[0]")
+            text = object.notation?.[0]
           } else {
-            text = _.get(object, "inScheme[0].notation[0]")
+            text = object.inScheme?.[0]?.notation?.[0]
           }
         } else if (type == "concept") {
           // For concept, insert notation of concept
           if (this.$jskos.isConcept(object)) {
-            text = _.get(object, "notation[0]")
+            text = object.notation?.[0]
           }
         }
         if (text) {

@@ -150,7 +150,7 @@ export default {
   },
   computed: {
     hasChildren() {
-      return  _.get(this.concept, "narrower.length", 1) != 0
+      return (this.concept?.narrower?.length ?? 1) != 0
     },
     isHovered() {
       return this.isHoveredFromHere
@@ -159,10 +159,10 @@ export default {
       return !this.concept.narrower || !this.concept.narrower.includes(null)
     },
     isOpen() {
-      return _.get(this.concept, `__ISOPEN__[${this.isLeft}]`, false)
+      return this.concept?.__ISOPEN__?.[this.isLeft] ?? false
     },
     scheme() {
-      return _.get(this.concept, "inScheme[0]")
+      return this.concept?.inScheme?.[0]
     },
     mappedStatus() {
       return this.$store.getters.mappedStatus(this.concept, this.isLeft)
@@ -180,7 +180,7 @@ export default {
       return this.source.isSelected
     },
     showNotation() {
-      return _.get(this.concept, "inScheme[0].DISPLAY.hideNotation") === true && this.prefLabel ? false : true
+      return this.scheme()?.DISPLAY?.hideNotation === true && this.prefLabel ? false : true
     },
     notation() {
       return this.getNotation(this.concept, "concept", true)

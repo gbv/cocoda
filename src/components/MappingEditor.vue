@@ -363,7 +363,7 @@ export default {
       }
       // Take fromSchemeFilter/toSchemeFilter into account if they exist.
       for (let side of ["fromScheme", "toScheme"]) {
-        const whitelist = _.get(registry, `config.mappings.${side}Whitelist`)
+        const whitelist = registry?.config?.mappings?.[`${side}Whitelist`]
         if (whitelist) {
           if (!whitelist.find(s => this.$jskos.compare(s, this.mapping[side]))) {
             return {
@@ -374,7 +374,7 @@ export default {
         }
       }
       // Take mapping cardinality into account
-      const registryOnlyAllows1to1 = _.get(registry, "config.mappings.cardinality") === "1-to-1"
+      const registryOnlyAllows1to1 = registry?.config?.mappings?.cardinality === "1-to-1"
       const settingsOnlyAllow1to1 = this.$store.state.settings.settings.components.MappingEditor.only1to1mappings
       if ((registryOnlyAllows1to1 || settingsOnlyAllow1to1) && this.$jskos.conceptsOfMapping(this.mapping, "to").length > 1) {
         return {
@@ -409,7 +409,7 @@ export default {
       for (let side of ["fromScheme", "toScheme"]) {
         if (this.original.uri && !this.$jskos.compare(this.mapping[side], this.original.mapping[side])) {
           // Invalid if mapping is part of concordance
-          const invalid = !!_.get(this.original.mapping, "partOf[0]")
+          const invalid = !!(this.original.mapping?.partOf?.[0])
           return {
             message: this.$t("mappingEditor.warningUpdateScheme" + (invalid ? "Concordance" : ""), [side]),
             warning: true,
@@ -418,7 +418,7 @@ export default {
         }
       }
       // Show a warning if mapping is going to be removed from concordance, but user is not the creator
-      if (this.$store.getters["mapping/hasConcordanceChangedFromOriginal"] && !_.get(this.mapping, "partOf[0]") && !(this.mapping.creator || []).find(c => this.$jskos.compare({ uri: c.uri }, { identifier: this.userUris }))) {
+      if (this.$store.getters["mapping/hasConcordanceChangedFromOriginal"] && !this.mapping?.partOf?.[0] && !(this.mapping.creator || []).find(c => this.$jskos.compare({ uri: c.uri }, { identifier: this.userUris }))) {
         return {
           message: this.$t("mappingEditor.warningRemoveFromConcordanceWhenNotCreator"),
           warning: true,
@@ -459,7 +459,7 @@ export default {
   watch: {
     mappingEncoded() {
       // When mapping changed, maximize MappingEditor.
-      let minimizerComponent = _.get(this.$el.parentElement.getElementsByClassName("minimizer"), "[0].__vue__")
+      let minimizerComponent = this.$el.parentElement.getElementsByClassName("minimizer")?.[0]?.__vue__
       if (minimizerComponent) {
         minimizerComponent.toggleMinimize(false)
       }
@@ -524,7 +524,7 @@ export default {
       const updateOriginal = this.$store.getters["mapping/canUpdate"]
       // If only concordance has changed, save that change only
       if (updateOriginal && !this.$store.getters["mapping/hasMappingChangedFromOriginal"] && this.$store.getters["mapping/hasConcordanceChangedFromOriginal"]) {
-        await this.addMappingToConcordance({ mapping: this.mapping, concordance: _.get(this.mapping, "partOf[0]") })
+        await this.addMappingToConcordance({ mapping: this.mapping, concordance: this.mapping?.partOf?.[0] })
         return
       }
       if (this.creator) {

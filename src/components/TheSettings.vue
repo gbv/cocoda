@@ -664,7 +664,7 @@ export default {
           // Add labels to concepts in mapping
           for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
             let conceptInStore = getItem(concept)
-            let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
+            let language = this.$jskos.languagePreference.selectLanguage(conceptInStore?.prefLabel)
             if (language) {
               concept.prefLabel = _.pick(conceptInStore.prefLabel, [language])
             }
@@ -711,10 +711,10 @@ export default {
             // ... for concepts
             for (let concept of this.$jskos.conceptsOfMapping(mapping)) {
               let conceptInStore = getItem(concept)
-              let language = this.$jskos.languagePreference.selectLanguage(_.get(conceptInStore, "prefLabel"))
+              let language = this.$jskos.languagePreference.selectLanguage(conceptInStore?.prefLabel)
               if (language) {
                 // NOTE: Hardcoded language, see note above.
-                concept.prefLabel = { de: _.get(conceptInStore.prefLabel, language) }
+                concept.prefLabel = { de: conceptInStore.prefLabel?.[language] }
               }
             }
             // ... for creator
@@ -724,9 +724,9 @@ export default {
           }
           download.csv = mappingCSV.fromMappings(download.mappings)
           // Label
-          download.label = (this.$jskos.notation(_.get(download, "fromScheme"), "scheme") || "?") + " to " + (this.$jskos.notation(_.get(download, "toScheme"), "scheme") || "?")
+          download.label = (this.$jskos.notation(download?.fromScheme, "scheme") || "?") + " to " + (this.$jskos.notation(download?.toScheme, "scheme") || "?")
           // Filename
-          download.filename = `${this.$jskos.notation(_.get(download, "fromScheme"), "scheme") || "?"}_to_${this.$jskos.notation(_.get(download, "toScheme"), "scheme") || "?"}_${this.localSettings.creator}`
+          download.filename = `${this.$jskos.notation(download?.fromScheme, "scheme") || "?"}_to_${this.$jskos.notation(download?.toScheme, "scheme") || "?"}_${this.localSettings.creator}`
         }
         // Set CSV export for all mappings
         this.dlAllMappingsCsv = mappingCSV.fromMappings(minifiedMappings)

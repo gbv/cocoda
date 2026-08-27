@@ -555,8 +555,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = this.$jskos.prefLabel(_.get(a, "type"), { fallbackToUri: false })
-            let labelB = this.$jskos.prefLabel(_.get(b, "type"), { fallbackToUri: false })
+            let labelA = this.$jskos.prefLabel(a?.type, { fallbackToUri: false })
+            let labelB = this.$jskos.prefLabel(b?.type, { fallbackToUri: false })
             if (labelA < labelB) {
               return -1
             }
@@ -613,11 +613,11 @@ export default {
           sortable: false,
           class: "mappingBrowser-table-extra",
           compare: (a, b) => {
-            let first = _.get(a, "occurrence.count", -1)
-            let second = _.get(b, "occurrence.count", -1)
+            let first = a?.occurrence?.count ?? -1
+            let second = b?.occurrence?.count ?? -1
             if (first == -1 && second == -1) {
-              first = _.get(a, "extra")
-              second = _.get(b, "extra")
+              first = a?.extra
+              second = b?.extra
             }
             if (first < second) {
               return -1

@@ -32,20 +32,21 @@ export function isCreatorOrContributor(entity, user) {
 
 function checkMappingSchemes({ mapping, registry }) {
   // Check multiple things regarding fromScheme/toScheme
+  const config = registry?.config?.mappings || {}
   for (let side of ["fromScheme", "toScheme"]) {
     // Require both sides
     if (!mapping[side]) {
       return false
     }
     // Check registry whitelist
-    const whitelist = _.get(registry, `config.mappings.${side}Whitelist`)
+    const whitelist = config[`${side}Whitelist`]
     if (whitelist) {
       if (!whitelist.find(s => compareItems(s, mapping[side]))) {
         return false
       }
     }
     // Check cardinality
-    const cardinality = _.get(registry, "config.mappings.cardinality")
+    const cardinality = config.cardinality
     if (cardinality == "1-to-1" && jskos.conceptsOfMapping(mapping, "to").length > 1) {
       return false
     }
@@ -98,7 +99,7 @@ export function canUpdateMapping({ registry, mapping, user, original }) {
   if (!checkMappingSchemes({ mapping, registry })) {
     return false
   }
-  const concordance = concordances.value.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
+  const concordance = concordances.value.find(c => jskos.compare(c, original?.partOf?.[0]))
   const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
   if (concordance && !crossUser && !isContributor && !hasCrossUserForConcordances({ registry, user, action: "update" })) {
@@ -123,7 +124,7 @@ export function canDeleteMapping({ registry, mapping, user, original }) {
   if (!registry) {
     return false
   }
-  const concordance = concordances.value.find(c => jskos.compare(c, _.get(original, "partOf[0]")))
+  const concordance = concordances.value.find(c => jskos.compare(c, original?.partOf?.[0]))
   const isContributor = isCreatorOrContributor(concordance, user)
   let crossUser = !jskos.userOwnsMapping(user, original)
   if (concordance && !crossUser && !isContributor && !hasCrossUserForConcordances({ registry, user, action: "update" })) {

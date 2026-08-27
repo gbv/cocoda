@@ -12,11 +12,11 @@ import i18n from "@/utils/i18n.js"
 function gndTermsForConcept(concept) {
   const gnd = getItem({ uri: "http://bartoc.org/en/node/430" })
   // Assemble gndTerms array for display
-  let mappings = _.get(concept, "__GNDMAPPINGS__", [])
+  let mappings = concept?.__GNDMAPPINGS__ ?? []
   let concepts = []
   for (let mapping of mappings) {
     for (let concept of jskos.conceptsOfMapping(mapping)) {
-      if (jskos.compare(gnd, _.get(concept, "inScheme[0]")) && !concepts.find(c => jskos.compare(c.concept, concept))) {
+      if (jskos.compare(gnd, concept?.inScheme?.[0]) && !concepts.find(c => jskos.compare(c.concept, concept))) {
         concepts.push({
           concept: getItem(concept),
           type: jskos.mappingTypeByType(mapping.type),

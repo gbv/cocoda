@@ -66,7 +66,6 @@
 <script>
 import ItemName from "./ItemName.vue"
 import RegistryNotation from "./RegistryNotation.vue"
-import _ from "lodash"
 
 export default {
   name: "MappingTable",
@@ -143,8 +142,8 @@ export default {
           minWidth: "",
           sortable: false,
           compare: (a ,b) => {
-            let labelA = this.$jskos.prefLabel(_.get(a, "type"), { fallbackToUri: false })
-            let labelB = this.$jskos.prefLabel(_.get(b, "type"), { fallbackToUri: false })
+            let labelA = this.$jskos.prefLabel(a?.type, { fallbackToUri: false })
+            let labelB = this.$jskos.prefLabel(b?.type, { fallbackToUri: false })
             if (labelA < labelB) {
               return -1
             }

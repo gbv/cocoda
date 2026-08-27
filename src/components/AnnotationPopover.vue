@@ -145,7 +145,7 @@ export default {
       return this.idPrefix + (this.iid || "")
     },
     annotations() {
-      return _.get(this.imapping, "annotations") || []
+      return this.imapping?.annotations|| []
     },
     score() {
       let score = 0
@@ -176,10 +176,10 @@ export default {
       return this.annotations.find(annotation => annotation.motivation == "assessing" && this.$jskos.annotationCreatorMatches(annotation, this.userUris))
     },
     ownScore() {
-      return _.get(this.ownAssessment, "bodyValue")
+      return this.ownAssessment?.bodyValue
     },
     provider() {
-      return _.get(this.imapping, "_registry")
+      return this.imapping?._registry
     },
     canSaveAnnotation() {
       if (!this.provider) {
@@ -205,7 +205,7 @@ export default {
         user: this.user,
       })) {
         // Check if user is in "moderatingIdentities" in jskos-server config
-        const moderatingIdentities = _.get(this.provider, "_config.annotations.moderatingIdentities") || []
+        const moderatingIdentities = this.provider?._config?.annotations?.moderatingIdentities || []
         if (_.intersection(moderatingIdentities, this.userUris).length > 0) {
           return true
         }
@@ -291,7 +291,7 @@ export default {
         return
       }
       const mapping = this.imapping
-      const uri = _.get(mapping, "uri")
+      const uri = mapping?.uri
       if (!uri) {
         this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
@@ -388,7 +388,7 @@ export default {
     },
     remove(index, mapping = this.imapping) {
       let provider = this.provider
-      let annotation = _.get(mapping, `annotations[${index}]`)
+      let annotation = mapping?.annotations?.[index]
       if (!annotation) {
         return
       }
@@ -409,7 +409,7 @@ export default {
         this.alert(this.$t("alerts.annotationError"), null, "danger")
         return
       }
-      const uri = _.get(this.imapping, "uri")
+      const uri = this.imapping?.uri
       if (!uri) {
         this.$log.warn("No URI found to add annotation.")
         this.alert(this.$t("alerts.annotationError"), null, "danger")
@@ -436,7 +436,7 @@ export default {
       }
       this.loading = false
       // Check if URI stayed the same
-      const newUri = _.get(this.imapping, "uri")
+      const newUri = this.imapping?.uri
       if (uri != newUri || !annotation) {
         // Don't add annotation to mapping
         this.alert(this.$t("alerts.annotationNotSaved"), null, "danger")

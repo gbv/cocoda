@@ -128,7 +128,6 @@ import ItemSuggest from "./ItemSuggest.vue"
 import computed from "@/mixins/computed.js"
 import cdk from "@/mixins/cdk.js"
 
-import _ from "lodash"
 import jskos from "@/utils/jskos.js"
 import { compareItems, getItem } from "@/items"
 
@@ -235,9 +234,9 @@ export default {
   watch: {
     concordance() {
       if (this.concordance) {
-        this.notation = _.get(this.concordance, "notation[0]", "")
+        this.notation = this.concordance?.notation?.[0] ?? ""
         for (const lang of this.config.languages) {
-          this.$set(this.description, lang, _.get(this.concordance, `scopeNote.${lang}[0]`, ""))
+          this.$set(this.description, lang, this.concordance?.scopeNote?.[lang]?.[0] ?? "")
         }
         this.contributor = (this.concordance.contributor || []).map(c => {
           let line = c.uri
