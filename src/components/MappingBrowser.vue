@@ -536,8 +536,6 @@ import DateString from "./DateString.vue"
 import ConceptSearch from "./ConceptSearch.vue"
 import _ from "lodash"
 import { cdk } from "cocoda-sdk"
-// Only use for cancel token generation!
-import axios from "axios"
 
 // Import mixins
 import auth from "@/mixins/auth.js"
@@ -601,7 +599,7 @@ export default {
       searchPages: {},
       searchResults: {},
       searchLoading: {},
-      searchCancelToken: {},
+      searchAbortController: {},
       // Array of objects with registryUri and page (as parameters for search)
       searchNeedsRefresh: [],
       // Whether fromScheme/toScheme are locked to the selected scheme
@@ -624,7 +622,7 @@ export default {
       navigatorLoading: {},
       // Array of booleans and/or registry URIs (as parameters for navigatorRefresh)
       navigatorNeedsRefresh: [],
-      navigatorCancelToken: {},
+      navigatorAbortController: {},
       /** Currently hovered registry */
       hoveredRegistry: null,
       /** An object of repeat managers for registries for search */
@@ -1309,9 +1307,6 @@ export default {
       }
       this.refreshEmbeddedMappings()
     },
-    generateCancelToken() {
-      return axios.CancelToken.source()
-    },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
       this.tab = this.tabIndexes.search
@@ -1396,8 +1391,8 @@ export default {
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
         // Cancel previous requests
-        if (this.searchCancelToken[registry.uri]) {
-          this.searchCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        if (this.searchAbortController[registry.uri]) {
+          this.searchAbortController[registry.uri].abort()
         }
         // Stop previous repeat
         const manager = this.searchRepeatManagers[registry.uri]
@@ -1409,10 +1404,10 @@ export default {
           this.$delete(this.searchResults, registry.uri)
           continue
         }
-        let cancelToken = this.generateCancelToken()
-        this.searchCancelToken[registry.uri] = cancelToken
-        // From here on, check if token is invalid:
-        // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
+        let abortController = new AbortController()
+        this.searchAbortController[registry.uri] = abortController
+        // From here on, check if controller is invalid:
+        // if (abortController != this.searchAbortController[registry.uri]) { ... }
         this.$set(this.searchPages, registry.uri, page)
         this.$set(this.searchLoading, registry.uri, true)
 
@@ -1447,10 +1442,10 @@ export default {
           order: this.searchFilter.order,
           offset: ((this.searchPages[registry.uri] || 1) - 1) * this.componentSettings.resultLimit,
           limit: this.componentSettings.resultLimit,
-          cancelToken: cancelToken.token,
+          signal: abortController.signal,
         })
         const handleResult = mappings => {
-          if (cancelToken == this.searchCancelToken[registry.uri]) {
+          if (abortController == this.searchAbortController[registry.uri]) {
             // Handle error
             if (!mappings) {
               this.$set(this.registryHasErrored, registry.uri, true)
@@ -1475,6 +1470,12 @@ export default {
             }
           }
         }
+        const handleError = error => {
+          if (!abortController.signal.aborted) {
+            this.$log.warn("Mapping Browser (Search): Error during refresh", error)
+            handleResult()
+          }
+        }
         // Call cdk.repeat via mixin
         if (this.autoRefresh) {
           const manager = this.repeat({
@@ -1484,14 +1485,15 @@ export default {
             interval: this.autoRefresh,
             callback: (error, mappings) => {
               if (error) {
-                this.$log.warn("Mapping Browser (Search): Error during refresh", error)
+                handleError(error)
+              } else {
+                handleResult(mappings)
               }
-              handleResult(mappings)
             },
           })
           this.$set(this.searchRepeatManagers, registry.uri, manager)
         } else {
-          getMappings().then(handleResult)
+          getMappings().then(handleResult).catch(handleError)
         }
       }
 
@@ -1571,13 +1573,13 @@ export default {
         }
 
         // Cancel previous refreshs
-        if (this.navigatorCancelToken[registry.uri]) {
-          this.navigatorCancelToken[registry.uri].cancel("There was a newer refresh operation.")
+        if (this.navigatorAbortController[registry.uri]) {
+          this.navigatorAbortController[registry.uri].abort()
         }
-        let cancelToken = this.generateCancelToken()
-        this.navigatorCancelToken[registry.uri] = cancelToken
-        // From here on, check if token is invalid:
-        // if (cancelToken != this.navigatorCancelToken[registry.uri]) { ... }
+        let abortController = new AbortController()
+        this.navigatorAbortController[registry.uri] = abortController
+        // From here on, check if controller is invalid:
+        // if (abortController != this.navigatorAbortController[registry.uri]) { ... }
 
         if (!registriesToReload) {
           this.$set(this.navigatorResults, registry.uri, [null])
@@ -1591,10 +1593,10 @@ export default {
           limit: this.$jskos.mappingRegistryIsStored(registry) ? 100 : 30,
           // Sort by mappingRelevance if not stored
           sort: this.$jskos.mappingRegistryIsStored(registry) ? "modified" : "mappingRelevance",
-          cancelToken: cancelToken.token,
+          signal: abortController.signal,
         })
         const handleResult = mappings => {
-          if (cancelToken != this.navigatorCancelToken[registry.uri]) {
+          if (abortController != this.navigatorAbortController[registry.uri]) {
             return
           }
           if (!mappings) {
@@ -1696,6 +1698,12 @@ export default {
             this.$set(this.navigatorPages, registry.uri, this.navigatorPages[registry.uri] - 1)
           }
         }
+        const handleError = error => {
+          if (!abortController.signal.aborted) {
+            this.$log.warn("Mapping Browser (Navigator): Error during refresh", error)
+            handleResult()
+          }
+        }
 
         // Call cdk.repeat via mixin
         if (this.autoRefresh) {
@@ -1706,14 +1714,15 @@ export default {
             interval: this.autoRefresh,
             callback: (error, mappings) => {
               if (error) {
-                this.$log.warn("Mapping Browser (Navigator): Error during refresh", error)
+                handleError(error)
+              } else {
+                handleResult(mappings)
               }
-              handleResult(mappings)
             },
           })
           this.$set(this.navigatorRepeatManagers, registry.uri, manager)
         } else {
-          getMappings().then(handleResult)
+          getMappings().then(handleResult).catch(handleError)
         }
       }
     },
