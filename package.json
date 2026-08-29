@@ -9,6 +9,10 @@
     "Stefan Peters <stefan.peters@gbv.de>"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gbv/cocoda.git"
+  },
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,6 +25,7 @@
     "lint-staged": "lint-staged",
     "loc": "cloc $(git ls-files)",
     "build-info": "./build/build-info.js > ./build/build-info.json",
+    "citation": "node ./bin/citation-cff.js > CITATION.cff",
     "manual": "make -BC docs",
     "manual-pdf": "make -BC docs pdfs",
     "release:patch": "./bin/release.sh patch",

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use cocoda, please cite it using the metadata from this file."
+type: software
+title: "Cocoda Mapping Tool"
+authors:
+  - family-names: "Voß"
+    given-names: "Jakob"
+    email: "jakob.voss@gbv.de"
+  - family-names: "Marraffa"
+    given-names: "Rodolfo"
+    email: "rodolfo.marraffa@gbv.de"
+  - family-names: "Peters"
+    given-names: "Stefan"
+    email: "stefan.peters@gbv.de"
+repository-code: "https://github.com/gbv/cocoda"
+license: MIT
+version: "1.12.3"
+
