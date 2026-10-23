@@ -189,6 +189,21 @@ export default {
       return false
     }
 
+    // A registry that does not answer holds up the whole start-up: every
+    // registry is initialized from its status endpoint below, and cocoda-sdk
+    // waits 200 seconds per registry before giving up. `registryTimeout` puts
+    // a shorter bound on that, for every registry that does not name a
+    // `timeout` of its own -- which is the only way to shorten it for a
+    // registry from cocoda.default.json, since a user entry with the same URI
+    // replaces that definition rather than extending it.
+    if (config.registryTimeout) {
+      for (const registry of config.registries) {
+        if (registry.timeout == null) {
+          registry.timeout = config.registryTimeout
+        }
+      }
+    }
+
     // Initialize registries
     cdk.setConfig(config)
     await Promise.all(config.registries.map(r => r.init()))
