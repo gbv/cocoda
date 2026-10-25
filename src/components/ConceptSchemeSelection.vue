@@ -54,7 +54,7 @@
     </div>
     <!-- This is shown when no scheme is selected, or as a popover. -->
     <!-- The popover reacts to the expand button above. It is attached to the main element of this component. -->
-    <div
+    <component
       :is="scheme == null ? 'div' : 'b-popover'"
       :target="`${id}-expandButton`"
       :container="`conceptSchemeSelection-${id}`"
@@ -246,7 +246,7 @@
             favoriteSchemes,
             toggleFavoriteScheme,
           }">
-          <template slot="footer">
+          <template #footer>
             <div
               v-show="isFiltered && filteredSchemes.length < schemes.length"
               class="conceptSchemeSelection-schemeList-item">
@@ -260,7 +260,7 @@
           </template>
         </virtual-list>
       </div>
-    </div>
+    </component>
   </div>
 </template>
 

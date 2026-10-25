@@ -31,6 +31,7 @@
 
 <script>
 import _ from "lodash"
+import { markRaw } from "vue"
 import computed from "@/mixins/computed.js"
 
 /**
@@ -151,7 +152,10 @@ export default {
             minSize = computedStyle.getPropertyValue("min-height")
           }
           this.previousMinSizes.push({
-            element: current,
+            // markRaw: a DOM node stored in reactive component data. Vue 3
+            // would proxy it and the style writes below would go through that
+            // proxy. No effect under Vue 2.
+            element: markRaw(current),
             minSize,
           })
           if (this.isColumn) {

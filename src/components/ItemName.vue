@@ -7,7 +7,7 @@
     @dragend="dragEnd"
     @mouseover="hovering(true)"
     @mouseout="hovering(false)">
-    <div
+    <component
       :is="isValidLink ? 'router-link' : 'div'"
       :id="tooltipDOMID"
       :to="url"
@@ -46,7 +46,7 @@
       <auto-link
         v-if="fallbackToUri && !notation && !prefLabel && _item?.uri"
         :link="_item?.uri" />
-    </div>
+    </component>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
     <div
       v-if="showMissingDataIndicator"
@@ -207,6 +207,10 @@ export default {
             type: "setHoveredConcept",
             concept: this._item,
             element: this.$el,
+            // Consumers need a stable id for this element (MappingBrowserTable
+            // keys its concept popover by it). Passing it along avoids having
+            // to resolve the element back to its component instance.
+            elementId: this.tooltipDOMID,
           })
         }
         // Set URL

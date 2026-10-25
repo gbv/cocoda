@@ -130,8 +130,17 @@ export default {
         // Don't remove annotation because it changed
         return false
       }
-      // Remove annotation from list
-      this.$delete(this.annotations, index)
+      // Remove annotation from list.
+      // splice, not $delete/delete: this is an array, and removing by index
+      // has to close the gap instead of leaving a hole.
+      //
+      // This mutates the `annotations` prop in place, which the previous
+      // `$delete(this.annotations, index)` did just as much - the lint rule
+      // simply did not recognize that form. Behaviour is kept as it was; the
+      // parent is notified through `refresh-annotations` right below. Turning
+      // this into a proper one-way flow is a separate change.
+      // eslint-disable-next-line vue/no-mutating-props
+      this.annotations.splice(index, 1)
       // Show alert
       this.alert(this.$t("alerts.annotationRemoved"), null, "success")
       // Emit event

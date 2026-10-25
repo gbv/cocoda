@@ -8,6 +8,9 @@ export default [
     ignores: [
       "releases",
       "dist",
+      // Vite's build.outDir; git-ignored, but eslint used to descend into it
+      // and report tens of thousands of errors from bundled output.
+      "dist-temp",
     ],
   },
 ]

@@ -36,7 +36,7 @@
         @click="button.onClick($event, concept)">
         <font-awesome-icon :icon="button.icon" />
       </span>
-      <div
+      <component
         :is="url ? 'router-link' : 'div'"
         :to="url"
         :class="{
@@ -50,7 +50,7 @@
           {{ $jskos.notation(scheme) }}
         </span>
         <item-name :item="concept" />
-      </div>
+      </component>
       <div
         v-if="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: defaults.delay.medium}"

@@ -398,7 +398,8 @@ export default {
         if (!success) {
           return false
         }
-        this.$delete(mapping.annotations, index)
+        // splice, not $delete/delete: annotations is an array.
+        mapping.annotations.splice(index, 1)
         return success
       })
     },

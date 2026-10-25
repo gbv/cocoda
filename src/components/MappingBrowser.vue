@@ -108,75 +108,75 @@
               :items="concordanceTableItems"
               :sort-by="'date'"
               :sort-direction="-1">
-              <span
-                slot="mappings"
-                slot-scope="{ item, value }">
-                {{ (isNaN(value) ? "?" : value).toLocaleString() }}
-                <font-awesome-icon
-                  v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: defaults.delay.medium }"
-                  icon="external-link-square-alt"
-                  class="button"
-                  @click="showMappingsForConcordance(item.concordance)" />
-              </span>
-              <span
-                slot="actions"
-                slot-scope="{ item }">
-                <div class="mappingBrowser-toolbar-button">
+              <template #mappings="{ item, value }">
+                <span>
+                  {{ (isNaN(value) ? "?" : value).toLocaleString() }}
                   <font-awesome-icon
-                    v-if="canUpdateConcordance({ concordance: item.concordance })"
-                    v-b-tooltip.hover="{ title: $t('mappingBrowser.editConcordanceTooltip'), delay: defaults.delay.medium }"
-                    icon="edit"
+                    v-b-tooltip.hover="{ title: $t('mappingBrowser.showMappings'), delay: defaults.delay.medium }"
+                    icon="external-link-square-alt"
                     class="button"
-                    @click="editConcordance(item.concordance)" />
-                  <font-awesome-icon
-                    v-else-if="isCreatorOrContributor(item.concordance, user) && item.concordance._registry.isAuthorizedFor({
-                      type: 'mappings',
-                      action: 'update',
-                      user,
-                    })"
-                    v-b-tooltip="$t('mappingBrowser.canSaveIntoConcordanceTooltip')"
-                    class="button"
-                    style="font-size: 12px;"
-                    icon="pencil-alt" />
-                </div>
-                <div class="mappingBrowser-toolbar-button">
-                  <font-awesome-icon
-                    v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
-                    icon="info-circle"
-                    class="button"
-                    @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
-                </div>
-              </span>
-              <span
-                slot="from"
-                slot-scope="{ value }">
-                <item-name
-                  :item="value"
-                  :show-text="false"
-                  :is-link="value.__SAVED__ === true"
-                  :is-left="true"
-                  font-size="sm" />
-              </span>
-              <span
-                slot="to"
-                slot-scope="{ value }">
-                <item-name
-                  :item="value"
-                  :show-text="false"
-                  :is-link="value.__SAVED__"
-                  :is-left="false"
-                  font-size="sm" />
-              </span>
-              <span
-                slot="creator"
-                slot-scope="{ value }">
-                {{ value }}
-              </span>
-              <span
-                slot="date"
-                slot-scope="{ value }">
-                <date-string :date="value" />
-              </span>
+                    @click="showMappingsForConcordance(item.concordance)" />
+                </span>
+              </template>
+              <template #actions="{ item }">
+                <span>
+                  <div class="mappingBrowser-toolbar-button">
+                    <font-awesome-icon
+                      v-if="canUpdateConcordance({ concordance: item.concordance })"
+                      v-b-tooltip.hover="{ title: $t('mappingBrowser.editConcordanceTooltip'), delay: defaults.delay.medium }"
+                      icon="edit"
+                      class="button"
+                      @click="editConcordance(item.concordance)" />
+                    <font-awesome-icon
+                      v-else-if="isCreatorOrContributor(item.concordance, user) && item.concordance._registry.isAuthorizedFor({
+                        type: 'mappings',
+                        action: 'update',
+                        user,
+                      })"
+                      v-b-tooltip="$t('mappingBrowser.canSaveIntoConcordanceTooltip')"
+                      class="button"
+                      style="font-size: 12px;"
+                      icon="pencil-alt" />
+                  </div>
+                  <div class="mappingBrowser-toolbar-button">
+                    <font-awesome-icon
+                      v-b-tooltip.hover="{ title: $t('mappingBrowser.showConcordanceDetail'), delay: defaults.delay.medium }"
+                      icon="info-circle"
+                      class="button"
+                      @click="(concordanceToEdit = item.concordance) && $refs.concordanceDetail.show()" />
+                  </div>
+                </span>
+              </template>
+              <template #from="{ value }">
+                <span>
+                  <item-name
+                    :item="value"
+                    :show-text="false"
+                    :is-link="value.__SAVED__ === true"
+                    :is-left="true"
+                    font-size="sm" />
+                </span>
+              </template>
+              <template #to="{ value }">
+                <span>
+                  <item-name
+                    :item="value"
+                    :show-text="false"
+                    :is-link="value.__SAVED__"
+                    :is-left="false"
+                    font-size="sm" />
+                </span>
+              </template>
+              <template #creator="{ value }">
+                <span>
+                  {{ value }}
+                </span>
+              </template>
+              <template #date="{ value }">
+                <span>
+                  <date-string :date="value" />
+                </span>
+              </template>
             </flexible-table>
           </div>
           <div style="display: flex;">

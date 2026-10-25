@@ -4,7 +4,7 @@
  * TODO
  */
 
-import { reactive, ref, set, del } from "vue"
+import { reactive, ref, set } from "vue"
 import _ from "lodash"
 import jskos from "@/utils/jskos.js"
 import { cdk } from "cocoda-sdk"
@@ -358,7 +358,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
           for (let uri of uris) {
             let index = loadingConcepts.value.findIndex(concept => jskos.compareFast(concept, { uri }))
             if (index >= 0) {
-              del(loadingConcepts.value, index)
+              loadingConcepts.value.splice(index, 1)
             }
           }
         })
@@ -374,7 +374,7 @@ export async function loadConcepts(concepts, { registry: fallbackRegistry, schem
     if (index >= 0) {
       let concept = loadingConcepts.value[index]
       modifyItem(concept, "__DETAILSLOADED__", -1)
-      del(loadingConcepts.value, index)
+      loadingConcepts.value.splice(index, 1)
       erroredConcepts.value.push(concept)
     }
   }

@@ -52,7 +52,7 @@
         right
         @mouseover.native="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
         @mouseout.native="dropdownSetStatus($refs.mappingTrashDropdown, false)">
-        <template slot="button-content">
+        <template #button-content>
           <font-awesome-icon icon="trash-alt" />
         </template>
         <b-dropdown-header>
@@ -92,7 +92,7 @@
         @hide="favoriteConceptsDropdownHide"
         @mouseover.native="dropdownSetStatus($refs.favoriteConceptsDropdown, true); _dropdownSetStatus($refs.favoriteConceptsDropdown, true)"
         @mouseout.native="dropdownSetStatus($refs.favoriteConceptsDropdown, false)">
-        <template slot="button-content">
+        <template #button-content>
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
             icon="star" />
@@ -154,7 +154,7 @@
         right
         @mouseover.native="dropdownSetStatus($refs.accountDropdown, true); _dropdownSetStatus($refs.accountDropdown, true)"
         @mouseout.native="dropdownSetStatus($refs.accountDropdown, false)">
-        <template slot="button-content">
+        <template #button-content>
           <div
             class="navbar-settingsButton"
             @click="openSettingsTab(0)">
@@ -238,7 +238,7 @@
         right
         @mouseover.native="dropdownSetStatus($refs.settingsDropdown, true); _dropdownSetStatus($refs.settingsDropdown, true)"
         @mouseout.native="dropdownSetStatus($refs.settingsDropdown, false)">
-        <template slot="button-content">
+        <template #button-content>
           <font-awesome-icon
             icon="cog"
             @click="$refs.settings.show()" />
