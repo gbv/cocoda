@@ -30,7 +30,7 @@
               :registry="registry"
               :disabled="!$jskos.compareFast(registry, currentConcordanceRegistry)"
               class="mappingBrowser-search-registryNotation pointer"
-              @click.native="$store.commit({
+              @click="$store.commit({
                 type: 'settings/set',
                 prop: 'mappingRegistry',
                 value: registry.uri
@@ -212,8 +212,8 @@
               style="flex: 1; margin: 3px; min-width: 40px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceScheme')"
-              @keyup.native="lockScheme[true] = false"
-              @keyup.enter.native="searchClicked"
+              @keyup="lockScheme[true] = false"
+              @keyup.enter="searchClicked"
               @drop="!lockScheme[true] && drop($event, { scheme: 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <div
               v-b-tooltip="lockScheme[true] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
@@ -239,7 +239,7 @@
               style="flex: 2; margin: 3px; min-width: 60px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchSourceNotation')"
-              @keyup.enter.native="searchClicked"
+              @keyup.enter="searchClicked"
               @drop="drop($event, { scheme: lockScheme[true] ? null : 'searchFilterInput.fromScheme', concept: 'searchFilterInput.fromNotation' })" />
             <div
               class="button"
@@ -253,8 +253,8 @@
               style="flex: 1; margin: 3px; min-width: 40px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetScheme')"
-              @keyup.native="lockScheme[false] = false"
-              @keyup.enter.native="searchClicked"
+              @keyup="lockScheme[false] = false"
+              @keyup.enter="searchClicked"
               @drop="!lockScheme[false] && drop($event, { scheme: 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <div
               v-b-tooltip="lockScheme[false] ? $t('mappingBrowser.unlockScheme') : $t('mappingBrowser.lockScheme')"
@@ -281,7 +281,7 @@
               style="flex: 2; margin: 3px; min-width: 60px;"
               size="sm"
               :placeholder="$t('mappingBrowser.searchTargetNotation')"
-              @keyup.enter.native="searchClicked"
+              @keyup.enter="searchClicked"
               @drop="drop($event, { scheme: lockScheme[false] ? null : 'searchFilterInput.toScheme', concept: 'searchFilterInput.toNotation' })" />
             <b-button
               style="flex: none; margin: 3px;"
@@ -324,7 +324,7 @@
                   v-model="searchFilterInput.creator"
                   size="sm"
                   :placeholder="$t('mappingBrowser.creator')"
-                  @keyup.enter.native="searchClicked" />
+                  @keyup.enter="searchClicked" />
                 <div
                   v-if="authorized && searchFilterInput.creator != (userUris || []).join('|')"
                   v-b-tooltip.hover="{ title: $t('mappingBrowser.searchInsertSelfIntoCreator'), delay: defaults.delay.medium }"
@@ -337,12 +337,12 @@
               <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.searchType") }}:
               </div>
-              <b-select
+              <b-form-select
                 v-model="searchFilterInput.type"
                 style="flex: 3; margin: 3px;"
                 size="sm"
                 :options="typeOptions"
-                @keyup.enter.native="searchClicked" />
+                @keyup.enter="searchClicked" />
               <div
                 v-b-tooltip.hover="{ title: $t('mappingBrowser.searchBidirectionalTooltip'), delay: defaults.delay.medium }"
                 style="text-align: right; flex: none; margin: auto 5px;">
@@ -353,7 +353,7 @@
                   size="sm"
                   value="both"
                   unchecked-value=""
-                  @keyup.enter.native="searchClicked" />
+                  @keyup.enter="searchClicked" />
               </div>
               <div style="flex-basis: 100%; height: 0;" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
@@ -364,7 +364,7 @@
                 style="flex: 1; margin: 3px;"
                 size="sm"
                 :options="cardinalityOptions"
-                @keyup.enter.native="searchClicked" />
+                @keyup.enter="searchClicked" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.searchAnnotated") }}:
               </div>
@@ -373,7 +373,7 @@
                 style="flex: 1; margin: 3px;"
                 size="sm"
                 :options="annotatedOptions"
-                @keyup.enter.native="searchClicked" />
+                @keyup.enter="searchClicked" />
               <div style="flex-basis: 100%; height: 0;" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
                 {{ $t("mappingBrowser.concordance") }}:
@@ -383,7 +383,7 @@
                 style="flex: 2; margin: 3px;"
                 size="sm"
                 :options="concordanceOptions"
-                @keyup.enter.native="searchClicked" />
+                @keyup.enter="searchClicked" />
               <div style="text-align: right; flex: none; margin: auto 5px;">
                 Sort:
               </div>
@@ -392,7 +392,7 @@
                 style="flex: 1; margin: 3px;"
                 size="sm"
                 :options="orderOptions"
-                @keyup.enter.native="searchClicked" />
+                @keyup.enter="searchClicked" />
               <!-- Registry selection -->
               <registry-notation
                 v-for="registry in searchRegistries"
@@ -403,9 +403,9 @@
                 :class="{
                   pointer: !$jskos.compareFast(registry, currentRegistry)
                 }"
-                @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
-                @mouseover.native="hoveredRegistry = registry"
-                @mouseout.native="hoveredRegistry = null" />
+                @click="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+                @mouseover="hoveredRegistry = registry"
+                @mouseout="hoveredRegistry = null" />
               <b-button
                 style="flex: none; margin: 3px;"
                 variant="danger"
@@ -425,7 +425,7 @@
           :show-editing-tools="showEditingTools"
           :show-cocoda-link="showCocodaLink"
           :registry-has-errored="registryHasErrored"
-          @pageChange="changePage('search', $event)" />
+          @page-change="changePage('search', $event)" />
         <div
           v-else
           class="fontWeight-heavy"
@@ -439,10 +439,10 @@
           <font-awesome-icon icon="share-alt-square" /> {{ $t("mappingBrowser.searchShareLabel") }}
         </div>
         <b-popover
-          :show.sync="searchShareShow"
+          v-model="searchShareShow"
           target="mappingBrowser-search-shareButton"
-          triggers="click"
-          placement="bottomleft">
+          click
+          placement="bottom-start">
           <div
             ref="searchSharePopover">
             <p><b>{{ $t("mappingBrowser.searchShareTitle") }}</b></p>
@@ -452,9 +452,14 @@
                 {{ $t("mappingBrowser.searchShareInclude") }}
               </b-form-checkbox>
             </p>
-            <p id="mappingBrowser-search-shareLinkInput">
+            <!-- A div, not a p: a <pre> may not sit inside a paragraph, and
+                 the build warns about it. The margin is the one the global
+                 `p` rule gave it. -->
+            <div
+              id="mappingBrowser-search-shareLinkInput"
+              class="mappingBrowser-search-shareLink">
               <pre><code>{{ searchShareLink }}</code></pre>
-            </p>
+            </div>
             <p style="text-align: right;">
               <b-button
                 size="sm"
@@ -499,9 +504,9 @@
                   :class="{
                     pointer: !$jskos.compareFast(registry, currentRegistry)
                   }"
-                  @click.native="showRegistry[registry.uri] = !showRegistry[registry.uri]"
-                  @mouseover.native="hoveredRegistry = registry"
-                  @mouseout.native="hoveredRegistry = null" />
+                  @click="showRegistry[registry.uri] = !showRegistry[registry.uri]"
+                  @mouseover="hoveredRegistry = registry"
+                  @mouseout="hoveredRegistry = null" />
               </span>
             </div>
             <mapping-browser-table
@@ -510,7 +515,7 @@
               :hide-empty-sections="!group.stored"
               :search-limit="componentSettings.resultLimit"
               :registry-has-errored="registryHasErrored"
-              @pageChange="changePage('navigator', $event)" />
+              @page-change="changePage('navigator', $event)" />
             <div
               v-else-if="selected.concept[true] || selected.concept[false]"
               class="fontWeight-heavy"
@@ -537,6 +542,7 @@ import ConceptSearch from "./ConceptSearch.vue"
 import _ from "lodash"
 import { cdk } from "cocoda-sdk"
 // Only use for cancel token generation!
+import { markRaw } from "vue"
 import axios from "axios"
 
 // Import mixins
@@ -1053,10 +1059,20 @@ export default {
         }
       }
     },
-    navigatorNeedsRefresh(value) {
-      if (value.length > 0 && this.tab == this.tabIndexes.navigator) {
-        this.navigatorRefresh()
-      }
+    // deep: this queue is filled with push(), and in Vue 3 that no longer
+    // reaches a plain watcher. Vue 2 tracked an array's own dependency as part
+    // of reading the property, so mutating it notified watchers of the
+    // property; Vue 3 only tracks the property access itself, and the array it
+    // returns is the same object before and after. Every refresh that goes
+    // through this queue -- above all selecting a concept while the navigator
+    // is open -- was silently dropped.
+    navigatorNeedsRefresh: {
+      handler(value) {
+        if (value.length > 0 && this.tab == this.tabIndexes.navigator) {
+          this.navigatorRefresh()
+        }
+      },
+      deep: true,
     },
     selected: {
       handler() {
@@ -1140,7 +1156,7 @@ export default {
           if (type == "search") {
             this.search(registryUri, newPage)
           } else {
-            this.$set(this.navigatorPages, registryUri, newPage)
+            this.navigatorPages[registryUri] = newPage
             this.navigatorNeedsRefresh.push(registryUri)
           }
         }
@@ -1239,7 +1255,7 @@ export default {
       loadTop(scheme, { registry })
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // Stop any repeat managers
     for (let manager of [].concat(Object.values(this.searchRepeatManagers), Object.values(this.navigatorRepeatManagers), this.concordancesRepeatManager)) {
       manager && !manager.isPaused && manager.stop()
@@ -1256,7 +1272,7 @@ export default {
             document.getElementById(`registryGroup-${group.stored}`),
           ],
           handler: () => {
-            this.$set(this.registryGroupShow, group.stored, false)
+            this.registryGroupShow[group.stored] = false
           },
         })
       }
@@ -1289,7 +1305,7 @@ export default {
         this.searchClicked()
       } else {
         // It might still be required to update search results for certain registries (if they got added to or removed from "searchRegistries")
-        _.difference(Object.keys(this.searchResults), this.searchRegistries.map(r => r.uri)).forEach(uri => this.$delete(this.searchResults, uri))
+        _.difference(Object.keys(this.searchResults), this.searchRegistries.map(r => r.uri)).forEach(uri => delete this.searchResults[uri])
         _.difference(this.searchRegistries.map(r => r.uri), Object.keys(this.searchResults)).forEach(uri => this.search(uri, 1))
       }
       // Set previousSelected
@@ -1310,7 +1326,12 @@ export default {
       this.refreshEmbeddedMappings()
     },
     generateCancelToken() {
-      return axios.CancelToken.source()
+      // markRaw: this is a request handle, not data. It gets stored in reactive
+      // state and the stored object's identity is later compared against this
+      // one to decide whether a response is still the current one. Vue 3 would
+      // store a Proxy, so raw !== stored would always hold, every result would
+      // be discarded and the registries would stay in loading forever.
+      return markRaw(axios.CancelToken.source())
     },
     showMappingsForConcordance(concordance) {
       // Change tab to mapping search.
@@ -1391,7 +1412,7 @@ export default {
         }
       }
       // Clear search results of old registries
-      _.difference(Object.keys(this.searchResults), this.searchRegistries.map(r => r.uri)).forEach(uri => this.$delete(this.searchResults, uri))
+      _.difference(Object.keys(this.searchResults), this.searchRegistries.map(r => r.uri)).forEach(uri => delete this.searchResults[uri])
       // TODO: Use only registries that support search/filter/sort
       let registries = this.searchRegistries.filter(registry => registryUri == null || registry.uri == registryUri)
       for (let registry of registries) {
@@ -1406,15 +1427,15 @@ export default {
         }
         // Check if enabled
         if (!this.showRegistry[registry.uri]) {
-          this.$delete(this.searchResults, registry.uri)
+          delete this.searchResults[registry.uri]
           continue
         }
         let cancelToken = this.generateCancelToken()
         this.searchCancelToken[registry.uri] = cancelToken
         // From here on, check if token is invalid:
         // if (cancelToken != this.searchCancelToken[registry.uri]) { ... }
-        this.$set(this.searchPages, registry.uri, page)
-        this.$set(this.searchLoading, registry.uri, true)
+        this.searchPages[registry.uri] = page
+        this.searchLoading[registry.uri] = true
 
         const schemeAndConceptFilters = {
           from: this.searchFilter.fromNotation,
@@ -1453,25 +1474,25 @@ export default {
           if (cancelToken == this.searchCancelToken[registry.uri]) {
             // Handle error
             if (!mappings) {
-              this.$set(this.registryHasErrored, registry.uri, true)
+              this.registryHasErrored[registry.uri] = true
               // Set results to empty array if not yet set
               if (!this.searchResults[registry.uri] || this.searchResults[registry.uri].includes(null)) {
-                this.$set(this.searchResults, registry.uri, [])
+                this.searchResults[registry.uri] = []
               }
-              this.$set(this.searchLoading, registry.uri, false)
+              this.searchLoading[registry.uri] = false
               return
             }
-            this.$set(this.registryHasErrored, registry.uri, false)
+            this.registryHasErrored[registry.uri] = false
             page = page || this.searchPages[registry.uri] || 1
             if (mappings.length == 0 && page > 1) {
               // When on a later page and there were zero mappings, go back one page
               // This can happen if there was a single mapping on a page and it go deleted, or mappings got deleted from the server while browsing
               this.search(registry.uri, page - 1)
             } else {
-              this.$set(this.searchResults, registry.uri, mappings)
-              this.$set(this.searchLoading, registry.uri, false)
+              this.searchResults[registry.uri] = mappings
+              this.searchLoading[registry.uri] = false
               // Workaround: Set page again because certain circumstances can cause the page in searchPages to be set to the wrong value.
-              this.$set(this.searchPages, registry.uri, page)
+              this.searchPages[registry.uri] = page
             }
           }
         }
@@ -1489,7 +1510,7 @@ export default {
               handleResult(mappings)
             },
           })
-          this.$set(this.searchRepeatManagers, registry.uri, manager)
+          this.searchRepeatManagers[registry.uri] = manager
         } else {
           getMappings().then(handleResult)
         }
@@ -1535,10 +1556,10 @@ export default {
       let from = this.componentSettings.navigatorShowResultsForLeft ? _.get(this, "selected.concept[true]") : null
       let to = this.componentSettings.navigatorShowResultsForRight ? _.get(this, "selected.concept[false]") : null
       if (from) {
-        params["from"] = from
+        params.from = from
       }
       if (to) {
-        params["to"] = to
+        params.to = to
       }
       // If no concept is selected, clear navigator
       if (!from && !to) {
@@ -1560,7 +1581,7 @@ export default {
 
         // Check if enabled
         if (!this.showRegistry[registry.uri]) {
-          this.$delete(this.navigatorResults, registry.uri)
+          delete this.navigatorResults[registry.uri]
           continue
         }
 
@@ -1580,7 +1601,7 @@ export default {
         // if (cancelToken != this.navigatorCancelToken[registry.uri]) { ... }
 
         if (!registriesToReload) {
-          this.$set(this.navigatorResults, registry.uri, [null])
+          this.navigatorResults[registry.uri] = [null]
         }
 
         const getMappings = () => this.getMappings({
@@ -1598,14 +1619,14 @@ export default {
             return
           }
           if (!mappings) {
-            this.$set(this.registryHasErrored, registry.uri, true)
+            this.registryHasErrored[registry.uri] = true
             // Set results to empty array if not yet set
             if (!this.navigatorResults[registry.uri] || this.navigatorResults[registry.uri].includes(null)) {
-              this.$set(this.navigatorResults, registry.uri, [])
+              this.navigatorResults[registry.uri] = []
             }
             return
           }
-          this.$set(this.registryHasErrored, registry.uri, false)
+          this.registryHasErrored[registry.uri] = false
           // Traditional way of sorting navigator results
           // TODO: Should be improved by getting results from sorted the server
           mappings = mappings.sort((a, b) => {
@@ -1690,10 +1711,10 @@ export default {
               return true
             })
           }
-          this.$set(this.navigatorResults, registry.uri, mappings)
+          this.navigatorResults[registry.uri] = mappings
           // Check if refresh leads to an empty page and decrement page if necessary
           if (this.navigatorPages[registry.uri] > 1 && mappings.length < (this.navigatorPages[registry.uri] - 1) * this.componentSettings.resultLimit + 1) {
-            this.$set(this.navigatorPages, registry.uri, this.navigatorPages[registry.uri] - 1)
+            this.navigatorPages[registry.uri] = this.navigatorPages[registry.uri] - 1
           }
         }
 
@@ -1711,7 +1732,7 @@ export default {
               handleResult(mappings)
             },
           })
-          this.$set(this.navigatorRepeatManagers, registry.uri, manager)
+          this.navigatorRepeatManagers[registry.uri] = manager
         } else {
           getMappings().then(handleResult)
         }
@@ -1853,16 +1874,16 @@ export default {
     changePage(type, { registry, page, userInitiated }) {
       let currentPage = this[`${type}Pages`][registry.uri]
       if (userInitiated) {
-        this.$set(this[`${type}Pages`], registry.uri, page)
+        this[`${type}Pages`][registry.uri] = page
         if (type == "search") {
           this.search(registry.uri, page)
         }
       } else if (page != currentPage) {
         // This is a workaround for bootstrap-vue's b-pagination to prevent an unwanted jump back to page 1
         // See: https://github.com/bootstrap-vue/bootstrap-vue/issues/3372
-        this.$set(this[`${type}Pages`], registry.uri, page)
+        this[`${type}Pages`][registry.uri] = page
         this.$nextTick(() => {
-          this.$set(this[`${type}Pages`], registry.uri, currentPage)
+          this[`${type}Pages`][registry.uri] = currentPage
         })
       }
     },
@@ -1922,6 +1943,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.mappingBrowser-search-shareLink {
+  margin: 3px 0;
+}
 @import "@/style/main.less";
 @import "../style/colors.css";
 
@@ -2006,11 +2030,27 @@ export default {
   display: none;
 }
 
-#mappingBrowser > .cocoda-vue-tabs > .cocoda-vue-tabs-content {
+#mappingBrowser > .jskos-vue-tabs > .jskos-vue-tabs-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 5px 0px 0px 0px;
+  // jskos-vue-tabs sets position: relative here, which makes this the
+  // containing block for the absolutely positioned concordance menu and share
+  // button. cocoda-vue-tabs left it static, so those resolved against the tabs
+  // root and their offsets are measured from there - from above the tab
+  // headers, not below them. The library has no absolutely positioned elements
+  // of its own, so taking the containing block away is safe.
+  position: static;
+}
+// cocoda-vue-tabs put the content class on each panel, so the column layout
+// above applied to the panel itself. jskos-vue-tabs has one shared wrapper and
+// a plain div per panel, so the panel needs it too - otherwise the table
+// container inside (flex: 1; height: 0) has no flex parent, collapses to zero
+// height, and the summary line below it slides up over the table header.
+#mappingBrowser > .jskos-vue-tabs > .jskos-vue-tabs-content > div {
+  display: flex;
+  flex-direction: column;
 }
 
 // Correctly position search table

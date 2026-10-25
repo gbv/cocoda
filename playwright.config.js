@@ -1,6 +1,9 @@
 import { defineConfig, devices } from "@playwright/test"
 
-const PORT = 8080
+// Overridable because the default port is a popular one: if some other dev
+// server happens to hold it, `reuseExistingServer` below would silently point
+// the whole suite at that application instead.
+const PORT = Number(process.env.COCODA_E2E_PORT ?? 8080)
 const baseURL = `http://localhost:${PORT}`
 
 /**
@@ -30,7 +33,7 @@ export default defineConfig({
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
   ],
   webServer: {
-    command: "npm run dev",
+    command: `npm run dev -- --port ${PORT} --strictPort`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

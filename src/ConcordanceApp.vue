@@ -334,6 +334,13 @@ html, body {
   height: 100%;
   margin: 0;
 }
+// Vue 3 mounts into the container element instead of replacing it, so there is
+// one more level between body and the app root. Without a height here the
+// percentage height below has nothing to resolve against and the app collapses
+// to its min-height.
+#cocoda-concordances {
+  height: 100%;
+}
 #concordanceApp {
   height: 100%;
   width: 100%;
@@ -445,19 +452,19 @@ html, body {
 .tooltip {
   pointer-events: none !important;
 }
-// Override border color for all cocoda-vue-tabs
-.cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
+// Override border color for all jskos-vue-tabs
+.jskos-vue-tabs-header-item.jskos-vue-tabs-header-item-active {
   border-bottom-color: var(--color-primary) !important;
   background-color: var(--color-background-component-heading) !important;
 }
-// Override font-size for all cocoda-vue-tabs
-.cocoda-vue-tabs-sm {
+// Override font-size for all jskos-vue-tabs
+.jskos-vue-tabs-sm {
   font-size: 0.8rem !important;
 }
-.cocoda-vue-tabs-md {
+.jskos-vue-tabs-md {
   font-size: 0.9rem !important;
 }
-.cocoda-vue-tabs-lg {
+.jskos-vue-tabs-lg {
   font-size: 1.1rem !important;
 }
 </style>

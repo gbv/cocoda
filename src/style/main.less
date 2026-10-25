@@ -191,7 +191,7 @@ h6 {
   border-radius: 50%;
   display: inline-block;
   height: 0.5em;
-  width: 0.5em;  
+  width: 0.5em;
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
@@ -225,19 +225,32 @@ h6 {
 }
 
 // Override bootstrap styles
-.custom-control-label:before{
+// Bootstrap 4 drew the checkbox as the label's ::before pseudo element
+// (.custom-control-label); Bootstrap 5 styles the real input instead, so the
+// colors go directly on it. Only background and border are overridden - the
+// check mark itself is a background-image and has to stay.
+.form-check-input {
   background-color: var(--color-background) !important;
 }
-.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+.form-check-input:checked {
   background-color: var(--color-button) !important;
+  border-color: var(--color-button) !important;
 }
 .popover {
   max-width: 400px !important;
 }
-.custom-control-label {
+.form-check-label {
   line-height: 16px;
   padding-top: 3px;
   margin: 2px 0;
+}
+// bootstrap-vue-next puts form-control-sm on the .form-check wrapper, where the
+// local .form-control-sm rule further down resets the padding to .5rem.
+// Bootstrap 5 hangs the checkbox into that padding with margin-left: -1.5em, so
+// the smaller padding pushes it out of the element - and out of the scrolling
+// popovers it sits in, which clip it.
+.form-check.form-control-sm {
+  padding-left: 1.5em;
 }
 
 /* form-control */
@@ -289,8 +302,15 @@ h6 {
   box-shadow: 0 0 0 .2rem rgba(40,167,69,.25);
 }
 
-.cocoda-vue-tabs-content {
+.jskos-vue-tabs-content {
   overflow: auto !important;
+}
+// jskos-vue-tabs wraps all panels in a single .jskos-vue-tabs-content; the
+// panels themselves are plain divs. cocoda-vue-tabs gave every panel the
+// content class instead, so it stretched on its own. Cocoda positions panel
+// content absolutely, which needs a panel with an actual height.
+.jskos-vue-tabs-content > div {
+  height: 100%;
 }
 .popover-body {
   .font-default;

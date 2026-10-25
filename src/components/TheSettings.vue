@@ -3,7 +3,7 @@
     id="settingsModal"
     ref="settingsModal"
     :title="$t('settings.title')"
-    hide-footer
+    no-footer
     centered
     size="lg">
     <b-card
@@ -11,10 +11,10 @@
       footer-tag="footer">
       <tabs
         fill
-        :value="tab"
+        :model-value="tab"
         @change="$emit('update:tab', $event.index)">
         <tab
-          :title="$t('settingsTabs')[0]">
+          :title="$t('settingsTabs[0]')">
           <div v-if="localSettings">
             <p v-if="user && authorized">
               <span
@@ -107,7 +107,7 @@
           </div>
         </tab>
         <tab
-          :title="$t('settingsTabs')[1]">
+          :title="$t('settingsTabs[1]')">
           <h4>{{ $t("settings.mappingRegistries") }}</h4>
           <div
             v-for="(registry, index) in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry))"
@@ -120,7 +120,7 @@
             <registry-info
               :registry="registry"
               class="settings-sources"
-              @click.native="$store.commit({
+              @click="$store.commit({
                 type: 'settings/set',
                 prop: 'mappingRegistry',
                 value: registry.uri
@@ -146,13 +146,20 @@
           </div>
         </tab>
         <tab
-          :title="$t('settingsTabs')[2]">
+          :title="$t('settingsTabs[2]')">
           <div class="settingsModal-componentSettings-component">
+            <!-- .form-inline is gone in Bootstrap 5; these are the
+                 utilities it was made of. -->
             <div
               v-if="localSettings"
-              class="form-inline">
+              class="d-flex flex-wrap align-items-center">
               <label style="padding-right: 0.5em">{{ $t("settings.language") }}:</label>
-              <b-form-select v-model="$i18n.locale">
+              <!-- .form-inline also shrank the controls inside it to
+                   width: auto; a form-select is full width on its own and
+                   would wrap onto the next line. -->
+              <b-form-select
+                v-model="$i18n.locale"
+                class="w-auto">
                 <option
                   v-for="language in config.languages"
                   :key="language"
@@ -175,8 +182,8 @@
                 v-model="languageToAdd"
                 size="sm"
                 list="languages-datalist"
-                @keydown.native="addLanguageKeydown"
-                @input.native="addLanguageInput" />
+                @keydown="addLanguageKeydown"
+                @input="addLanguageInput" />
               <datalist id="languages-datalist">
                 <option
                   v-for="lang in allLanguages"
@@ -264,7 +271,7 @@
         </tab>
         <tab
           v-if="config.shortcuts && config.shortcuts.length"
-          :title="$t('settingsTabs')[3]">
+          :title="$t('settingsTabs[3]')">
           <table
             class="table"
             style="border: 0; height: unset;">
@@ -275,7 +282,7 @@
                 <td>
                   <span v-html="shortcut.keys.split(',').map(keys => keys.split('+').map(key => `<kbd>${replaceKey(key)}</kbd>`).join(' + ')).join(` ${$t('general.or')} `)" />
                 </td>
-                <td class="text-left">
+                <td class="text-start">
                   {{ $jskos.prefLabel(shortcut, { language: locale }) || shortcut.action }}
                 </td>
               </tr>
@@ -283,14 +290,18 @@
           </table>
         </tab>
         <tab
-          :title="$t('settingsTabs')[4]">
+          :title="$t('settingsTabs[4]')">
           <h3>{{ $t("settings.dataInRegistries") }}</h3>
           <p>
             {{ $t("settings.dataInRegistriesSubtitle") }}
           </p>
-          <p
+          <!-- A div, not a p: the list below may not sit inside a paragraph,
+               and the build warns about it. The class carries the margin the
+               local `p` rule gave it. -->
+          <div
             v-for="registry in config.registries.filter(registry => $jskos.mappingRegistryIsStored(registry) && !$jskos.compare(registry, localMappingsRegistry) && registry.uri !== 'http://coli-conc.gbv.de/registry/wikidata-mappings')"
-            :key="registry.uri">
+            :key="registry.uri"
+            class="settings-registryData">
             <registry-info
               :registry="registry"
               :show-details="false"
@@ -315,7 +326,7 @@
                 {{ $t("settings.noDataForRegistry") }}
               </li>
             </ul>
-          </p>
+          </div>
 
           <div v-if="localMappingsRegistry">
             <h3>{{ $t("settings.localMappings") }} <span v-if="localMappingsCount">({{ localMappingsCount }})</span></h3>
@@ -403,40 +414,44 @@
             </p>
           </div>
         </tab>
-        <span class="settingsModal-footer">
-          <a
-            href="https://github.com/gbv/cocoda"
-            target="_blank">
-            <font-awesome-icon :icon="['fab', 'github']" />
-            GitHub
-          </a>
-          <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
-            •
-            {{ $t("settings.version") }} {{ config.buildInfo.version }}
-          </span>
-          <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
-            •
-            {{ $t("settings.currentCommit") }}:
-            <a
-              v-b-tooltip.hover="{ title: config.buildInfo.gitCommitMessage, delay: defaults.delay.short }"
-              :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
-              target="_blank">
-              {{ config.buildInfo.gitCommitShort }}
-            </a>
-          </span>
-          <span v-if="config.buildInfo.buildDate">
-            •
-            {{ $t("settings.buildDate") }}: <date-string :date="config.buildInfo.buildDate" />
-          </span>
-          <br>
-          <span>
-            {{ $t("settings.suggestions1") }}
-            <a
-              href="https://github.com/gbv/cocoda/issues"
-              target="_blank">{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
-          </span>
-        </span>
       </tabs>
+      <!-- The footer sits after the tab strip, not inside it: jskos-vue-tabs
+           puts every non-<tab> child of <tabs> into the shared content
+           wrapper, where this would scroll along with the active panel.
+           cocoda-vue-tabs rendered them after the panels instead. -->
+      <span class="settingsModal-footer">
+        <a
+          href="https://github.com/gbv/cocoda"
+          target="_blank">
+          <font-awesome-icon :icon="['fab', 'github']" />
+          GitHub
+        </a>
+        <span v-if="config.buildInfo.version && config.buildInfo.version != ''">
+          •
+          {{ $t("settings.version") }} {{ config.buildInfo.version }}
+        </span>
+        <span v-if="config.buildInfo.gitCommit && config.buildInfo.gitCommitShort">
+          •
+          {{ $t("settings.currentCommit") }}:
+          <a
+            v-b-tooltip.hover="{ title: config.buildInfo.gitCommitMessage, delay: defaults.delay.short }"
+            :href="'https://github.com/gbv/cocoda/commit/' + config.buildInfo.gitCommit"
+            target="_blank">
+            {{ config.buildInfo.gitCommitShort }}
+          </a>
+        </span>
+        <span v-if="config.buildInfo.buildDate">
+          •
+          {{ $t("settings.buildDate") }}: <date-string :date="config.buildInfo.buildDate" />
+        </span>
+        <br>
+        <span>
+          {{ $t("settings.suggestions1") }}
+          <a
+            href="https://github.com/gbv/cocoda/issues"
+            target="_blank">{{ $t("settings.suggestions2") }}</a>{{ $t("settings.suggestions3") }}
+        </span>
+      </span>
     </b-card>
   </b-modal>
 </template>
@@ -467,6 +482,7 @@ export default {
       default: 0,
     },
   },
+  emits: ["update:tab"],
   data() {
     return {
       localSettings: null,
@@ -856,6 +872,11 @@ export default {
 p {
   margin: 5px 0 20px 0 !important;
 }
+/* Was a <p> until the list inside it made the build complain; this keeps the
+   spacing that rule gave it. */
+.settings-registryData {
+  margin: 5px 0 20px 0;
+}
 
 .settings-sources {
   padding: 6px 5px;
@@ -878,7 +899,11 @@ p {
 .settingsModal-mapping-registry > div:first-child {
   flex: none;
   margin-left: 5px;
-  margin-right: -5px;
+  // Bootstrap 4's checkbox wrapper reserved 1.5rem for a 1rem box, and the
+  // 8px left over were the gap to the registry notation beside it. Bootstrap 5
+  // wraps the box and nothing else, so the gap has to be stated. The 5px of
+  // left padding on .settings-sources count towards it, hence 3 rather than 8.
+  margin-right: 3px;
   margin-top: 5px;
   align-self: flex-start;
 }
@@ -932,11 +957,22 @@ p {
   /* Note: This is a Firefox workaround. Footer will be hidden if the content is too tall. */
   overflow: hidden;
 }
-#settingsModal .modal-body .card .cocoda-vue-tabs {
-  height: 100%;
+/* The card holds the tab strip and, below it, the footer. The strip takes
+   whatever is left; min-height keeps it from being pushed past the bottom by
+   its own content. */
+#settingsModal .modal-body .card {
+  display: flex;
+  flex-direction: column;
+}
+#settingsModal .modal-body .card .jskos-vue-tabs {
+  flex: 1;
+  min-height: 0;
   background-color: var(--color-background-component);
 }
-#settingsModal .modal-body .card .cocoda-vue-tabs .cocoda-vue-tabs-content {
+#settingsModal .modal-body .card > .settingsModal-footer {
+  flex: none;
+}
+#settingsModal .modal-body .card .jskos-vue-tabs .jskos-vue-tabs-content {
   padding: 20px 20px 5px 20px;
 }
 

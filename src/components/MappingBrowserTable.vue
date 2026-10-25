@@ -181,9 +181,9 @@
           <!-- Creator popover -->
           <b-popover
             v-if="item.creator != null"
+            v-model="popoverShown[`creator-${item.uniqueId}`]"
             :target="`mappingBrowserTable-item-${item.uniqueId}-creator`"
-            :show.sync="popoverShown[`creator-${item.uniqueId}`]"
-            triggers="hover"
+            hover
             :delay="defaults.delay.medium"
             placement="auto"
             @hide="popoverHide($event, `creator-${item.uniqueId}`)">
@@ -383,10 +383,10 @@
     <b-popover
       v-for="section in sections.filter(s => s.lastPage > 4)"
       :key="section.randomId"
-      :show.sync="popoverShown[`goToPage-${section.id}`]"
+      v-model="popoverShown[`goToPage-${section.id}`]"
       :target="`mappingBrowser-pagination-goToPage-${section.id}`"
-      triggers="click"
-      placement="bottomleft"
+      click
+      placement="bottom-start"
       @shown="goToPagePopoverShown"
       @hide="popoverHide($event, `goToPage-${section.id}`)">
       <div ref="goToPagePopover">
@@ -396,7 +396,7 @@
             type="number"
             size="sm"
             style="display: inline-block; width: 100px;"
-            @keyup.enter.native="goToPage(section)" />
+            @keyup.enter="goToPage(section)" />
           <b-button
             variant="primary"
             size="sm"
@@ -414,11 +414,10 @@
     <b-popover
       v-if="conceptDetailPopoverConcept && Object.keys(conceptDetailPopoverContentMap).length"
       :key="conceptDetailPopoverID"
-      :show.sync="popoverShown[`conceptDetailPopover-${conceptDetailPopoverID}`]"
+      v-model="popoverShown[`conceptDetailPopover-${conceptDetailPopoverID}`]"
       :target="conceptDetailPopoverElement"
       placement="top"
-      triggers=""
-      boundary="window"
+      manual
       @shown="popoverShow($event, `conceptDetailPopover-${conceptDetailPopoverID}`)"
       @hide="popoverHide($event, `conceptDetailPopover-${conceptDetailPopoverID}`)">
       <div style="max-height: 400px; overflow: auto;">
@@ -499,6 +498,7 @@ export default {
       default: () => ({}),
     },
   },
+  emits: ["pageChange"],
   data () {
     return {
       /** Currently hovered item unique ID  */
@@ -669,7 +669,7 @@ export default {
         // Delay showing the popover
         setTimeout(() => {
           if (this.conceptDetailPopoverElement === this.hoveredConceptElement) {
-            this.$set(this.popoverShown, `conceptDetailPopover-${this.conceptDetailPopoverID}`, true)
+            this.popoverShown[`conceptDetailPopover-${this.conceptDetailPopoverID}`] = true
           }
         }, this.defaults.delay.long.show)
       }
@@ -739,18 +739,18 @@ export default {
     // Exists so templates don't have to call `$set` directly: that global
     // helper is gone in Vue 3, and a method gives one place to change.
     setPopoverShown(id, shown) {
-      this.$set(this.popoverShown, id, shown)
+      this.popoverShown[id] = shown
     },
     // Gets called by popover's @shown function to add them to currentPopovers (not required for all popovers)
     popoverShow(event, id) {
       event.preventDefault()
-      this.$set(this.currentPopovers, id, event)
+      this.currentPopovers[id] = event
     },
     // Gets called by popovers @hide function to add them to currentPopovers
     popoverHide(event, id) {
       if (this.popoverShown[id]) {
         event.preventDefault()
-        this.$set(this.currentPopovers, id, event)
+        this.currentPopovers[id] = event
       }
     },
     hoverHandlers() {
@@ -761,8 +761,8 @@ export default {
           delta: 5,
           handler: (isInside) => {
             if (!isInside) {
-              this.$set(this.popoverShown, id, false)
-              this.$delete(this.currentPopovers, id)
+              this.popoverShown[id] = false
+              delete this.currentPopovers[id]
             }
           },
         })
@@ -836,7 +836,7 @@ export default {
     },
     goToPage(section) {
       this.$emit("pageChange", { registry: section.registry, page: this.goToPageValues[section.id], userInitiated: true })
-      this.$set(this.popoverShown, `goToPage-${section.id}`, false)
+      this.popoverShown[`goToPage-${section.id}`] = false
     },
     goToPagePopoverShown(event) {
       const inputField = event.relatedTarget && event.relatedTarget.getElementsByTagName("input")[0]

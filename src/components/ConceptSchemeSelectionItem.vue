@@ -11,7 +11,7 @@
       :item="scheme"
       :is-link="true"
       :is-left="isLeft"
-      @click.native="hidePopover" />
+      @click="hidePopover" />
   </div>
 </template>
 

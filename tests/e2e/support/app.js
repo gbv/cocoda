@@ -67,9 +67,14 @@ export async function selectScheme(page, isLeft, notation) {
   await expect(conceptList(page, isLeft)).toBeVisible()
 }
 
-/** A single row in a concept list, addressed by concept URI. */
+/**
+ * A single row in a concept list, addressed by concept URI.
+ *
+ * `:visible` filters out the copy the virtual scroller keeps hidden while it
+ * measures a row's height.
+ */
 export function conceptListItem(page, isLeft, uri) {
-  return conceptList(page, isLeft).locator(`.conceptListItem[data-uri="${uri}"]`)
+  return conceptList(page, isLeft).locator(`.conceptListItem[data-uri="${uri}"]:visible`)
 }
 
 /** Clicks a concept in the list and waits for the selection to reach the URL. */

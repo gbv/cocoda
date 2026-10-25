@@ -1,10 +1,14 @@
-import Vue from "vue"
-import VueRouter from "vue-router"
+import { createRouter, createWebHistory } from "vue-router"
 
-Vue.use(VueRouter)
-
-const router = new VueRouter({
-  mode: "history",
+// Cocoda has no real routes: the router is used only to keep the selection in
+// the URL query (see store/plugins.js).
+const router = createRouter({
+  history: createWebHistory(),
+  // Cocoda navigates only by query, never by path. A catch-all keeps
+  // vue-router from warning "No match found for location" on every navigation.
+  routes: [
+    { path: "/:pathMatch(.*)*", component: { render: () => null } },
+  ],
 })
 
 export default router

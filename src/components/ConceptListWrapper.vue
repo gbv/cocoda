@@ -3,7 +3,7 @@
     class="conceptListWrapper"
     :style="`${concepts.length == 0 ? 'min-height: 80px; max-height: 80px;' : ''}`">
     <tabs
-      :value="currentChoiceIndex"
+      :model-value="currentChoiceIndex"
       style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"
       fill
       @change="tabChanged">
@@ -13,8 +13,8 @@
         :title="choice.label"
         style="position: relative; overflow: hidden !important;"
         :hidden="choice !== currentChoice"
-        @dragover.native="dragOver"
-        @drop.native="drop($event, choice.droppedConcept)">
+        @dragover="dragOver"
+        @drop="drop($event, choice.droppedConcept)">
         <!-- List of concepts -->
         <concept-list
           ref="conceptList"
@@ -25,7 +25,7 @@
           :no-items-label="choice.noItemsLabel"
           :buttons="choice.buttons"
           :shown="index == currentChoiceIndex"
-          @scroll="loadConceptsInView" />
+          @visible-concepts="visibleConceptsChanged" />
       </tab>
       <template #title="slotProps">
         <span>
@@ -53,8 +53,9 @@
     <b-popover
       v-if="dataChoices.filter(choice => choice.available).length > 1"
       ref="listSelectionPopover"
+      v-model="listSelectionPopoverShow"
+      click
       placement="top"
-      :show.sync="listSelectionPopoverShow"
       :target="`conceptListWrapper-listSelectionButton-${isLeft}`">
       <div :id="`conceptListWrapper-listSelectionPopover-${isLeft}`">
         <div
@@ -124,6 +125,8 @@ export default {
     return {
       listSelectionPopoverShow: false,
       loading: 0,
+      // Concepts the active list currently has on screen, reported by it.
+      conceptsInView: [],
     }
   },
   computed: {
@@ -262,22 +265,22 @@ export default {
         droppedConcept(concept)
       }
     },
+    /**
+     * Remembers which concepts the active list currently shows and loads their
+     * details.
+     *
+     * The concept list reports this itself now. Previously this method walked
+     * the virtual list's internal component tree via $children and measured
+     * each row's geometry, because the old library exposed no visible range.
+     */
+    visibleConceptsChanged(concepts) {
+      this.conceptsInView = concepts
+      this.loadConceptsInView()
+    },
     _loadConceptsInView() {
-      const concepts = []
-      const conceptList = _.get(this, `$refs.conceptList[${this.currentChoiceIndex}]`)
-      const children = _.get(conceptList, "$children[0].$children")
-      const container = _.get(conceptList, "$children[0].$el")
-      if (children && container) {
-        for (let child of children) {
-          if (!child || !child.$el) {
-            continue
-          }
-          const element = child.$el
-          const concept = _.get(child, "$children[0].concept")
-          if (concept && this.checkInView(container, element)) {
-            concepts.push(concept)
-          }
-        }
+      const concepts = this.conceptsInView
+      if (!concepts.length) {
+        return
       }
       // Save concepts because it might be necessary
       concepts.forEach(concept => saveItem(concept, { type: "concept", returnIfExists: true }))
@@ -336,7 +339,7 @@ export default {
 <style lang="less">
 @import "@/style/main.less";
 
-.conceptListWrapper .cocoda-vue-tabs-content {
+.conceptListWrapper .jskos-vue-tabs-content {
   padding: 5px 0 0 0 !important;
 }
 .conceptListWrapper .componentSettings {

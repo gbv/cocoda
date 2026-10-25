@@ -4,7 +4,7 @@
  * TODO
  */
 
-import { reactive, ref, set } from "vue"
+import { reactive, ref } from "vue"
 import _ from "lodash"
 import jskos from "@/utils/jskos.js"
 import { cdk } from "cocoda-sdk"
@@ -144,9 +144,9 @@ export function saveItem(item, options = {}) {
     }
 
     // Save item
-    set(_items, uri, item)
+    _items[uri] = item
     for (const id of item.identifier || []) {
-      set(_items, id, _items[uri])
+      _items[id] = _items[uri]
     }
 
   } else {
@@ -222,11 +222,11 @@ export function modifyItem(item, path, value) {
   let object = getItem(item)
   for (const prop of path) {
     if (!object[prop]) {
-      set(object, prop, {})
+      object[prop] = {}
     }
     object = object[prop]
   }
-  set(object, lastProp, value)
+  object[lastProp] = value
 }
 
 export function modifyItemByUri(uri, path, value) {
@@ -465,15 +465,10 @@ export const concordances = ref([])
 export async function loadConcordances() {
   try {
     const result = _.flatten(await Promise.all(store.getters.concordanceRegistries.map(r => r.getConcordances({ params: { limit: 10000 } }))))
-    const previousLength = concordances.value?.length
-    _.forEach(result, (concordance, index) => {
-      // Set values of concordance array
-      set(concordances.value, index, concordance)
-    })
-    set(concordances.value, "length", result.length)
-    if (result.length < previousLength) {
-      concordances.value.splice(previousLength)
-    }
+    // Replace the contents in place; the ref itself is kept so existing
+    // references stay valid. Vue 2 needed Vue.set for index writes and even
+    // for `length`; in Vue 3 plain assignment is reactive.
+    concordances.value.splice(0, concordances.value.length, ...result)
   } catch (error) {
     log.error("MappingBrowser - Error loading concordances", error)
   }

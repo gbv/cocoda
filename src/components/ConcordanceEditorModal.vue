@@ -237,7 +237,7 @@ export default {
       if (this.concordance) {
         this.notation = _.get(this.concordance, "notation[0]", "")
         for (const lang of this.config.languages) {
-          this.$set(this.description, lang, _.get(this.concordance, `scopeNote.${lang}[0]`, ""))
+          this.description[lang] = _.get(this.concordance, `scopeNote.${lang}[0]`, "")
         }
         this.contributor = (this.concordance.contributor || []).map(c => {
           let line = c.uri
@@ -265,7 +265,7 @@ export default {
     reset() {
       this.notation = ""
       for (const lang of this.config.languages) {
-        this.$set(this.description, lang, "")
+        this.description[lang] = ""
       }
       this.contributor = ""
     },

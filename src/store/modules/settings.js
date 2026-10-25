@@ -1,3 +1,4 @@
+import { toRaw } from "vue"
 import localforage from "localforage"
 import _ from "lodash"
 import log from "@/utils/log.js"
@@ -54,7 +55,7 @@ const mutations = {
   save(state, { settings }) {
     if (state.loaded) {
       state.settings = settings
-      localforage.setItem(localStorageKey, settings)
+      localforage.setItem(localStorageKey, toRaw(settings))
     } else {
       log.warn("Tried to save settings before they were loaded.")
     }
@@ -63,7 +64,7 @@ const mutations = {
   set(state, { prop, value }) {
     if (state.loaded) {
       _.set(state.settings, prop, value)
-      localforage.setItem(localStorageKey, state.settings)
+      localforage.setItem(localStorageKey, toRaw(state.settings))
     } else {
       log.warn("Tried to save settings before they were loaded.")
     }
@@ -76,7 +77,7 @@ const mutations = {
       } else {
         _.set(state.settings.components[component], setting, value)
       }
-      localforage.setItem(localStorageKey, state.settings)
+      localforage.setItem(localStorageKey, toRaw(state.settings))
     } else {
       log.warn("Tried to save settings before they were loaded.")
     }

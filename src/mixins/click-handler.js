@@ -30,7 +30,7 @@ export default {
     // Add click event listener
     document.addEventListener("click", this.handleClick)
   },
-  destroyed() {
+  unmounted() {
     // Remove click event listener
     document.removeEventListener("click", this.handleClick)
   },

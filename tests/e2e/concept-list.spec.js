@@ -67,6 +67,11 @@ test("loads details only for concepts that came into view", async ({ page }) => 
     el.scrollTop = el.scrollHeight
   })
 
+  // Setting scrollTop only queues the re-render, so wait for the scroller to
+  // have caught up before taking the list apart.
+  await expect(conceptList(page, LEFT).locator(".conceptListItem").first())
+    .not.toHaveAttribute("data-uri", first.uri)
+
   // Whatever ended up on screen must have had its details requested. Asserting
   // it this way - rather than naming a fixed index - keeps the test about the
   // behaviour ("details follow the viewport") instead of about how many rows a

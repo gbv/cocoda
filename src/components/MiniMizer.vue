@@ -33,6 +33,7 @@
 import _ from "lodash"
 import { markRaw } from "vue"
 import computed from "@/mixins/computed.js"
+import { minimizerRegistryKey } from "@/utils/minimizer-registry.js"
 
 /**
  * Adds minimizing functionality to another component.
@@ -50,6 +51,9 @@ import computed from "@/mixins/computed.js"
 export default {
   name: "MiniMizer",
   mixins: [computed],
+  inject: {
+    minimizerRegistry: { from: minimizerRegistryKey, default: null },
+  },
   props: {
     /**
      *
@@ -124,7 +128,19 @@ export default {
     },
   },
   mounted() {
+    // Announce this minimizer so sliders, neighbouring minimizers and the
+    // mapping editor can find it without going through the DOM.
+    this.unregister = this.minimizerRegistry?.register({
+      name: this.name,
+      el: this.$el,
+      isColumn: this.isColumn,
+      isMinimized: () => this.minimized,
+      toggle: (minimized = null) => this.toggleMinimize(minimized),
+    })
     this.refreshMinimize()
+  },
+  beforeUnmount() {
+    this.unregister?.()
   },
   methods: {
     toggleMinimize(minimized = null) {
@@ -178,12 +194,10 @@ export default {
         this.refresh("minimize")
         // Adjust z-index values of minimizers that might overlay the current minimizer
         let zIndex = window.getComputedStyle(this.$el.getElementsByClassName("minimizedOverlay")[0]).getPropertyValue("z-index")
-        for (let element of current.getElementsByClassName("minimizer")) {
-          if (element != this.$el) {
-            let component = element.__vue__
-            if (component.minimized && window.getComputedStyle(element.getElementsByClassName("minimizedOverlay")[0]).getPropertyValue("z-index") >= zIndex) {
-              element.getElementsByClassName("minimizedOverlay")[0].style.zIndex = zIndex - 1
-            }
+        for (const entry of this.minimizerRegistry?.within(current, { exclude: this.$el }) || []) {
+          const overlay = entry.el.getElementsByClassName("minimizedOverlay")[0]
+          if (entry.isMinimized() && overlay && window.getComputedStyle(overlay).getPropertyValue("z-index") >= zIndex) {
+            overlay.style.zIndex = zIndex - 1
           }
         }
       } else {

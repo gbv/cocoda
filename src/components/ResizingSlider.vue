@@ -13,6 +13,7 @@
 <script>
 import _ from "lodash"
 import computed from "@/mixins/computed.js"
+import { minimizerRegistryKey } from "@/utils/minimizer-registry.js"
 
 /**
  * Resizing slider.
@@ -20,6 +21,9 @@ import computed from "@/mixins/computed.js"
 export default {
   name: "ResizingSlider",
   mixins: [computed],
+  inject: {
+    minimizerRegistry: { from: minimizerRegistryKey, default: null },
+  },
   props: {
     isColumn: {
       type: Boolean,
@@ -139,14 +143,11 @@ export default {
           if (newPreviousWidth < previousMinWidth || newNextWidth < nextMinWidth  || previousMinimized + nextMinimized == 1) {
             // Minimize/maximize previous/next component when resize is committed all the way.
             if (newPreviousWidth <= 10 || newNextWidth <= 10 || newPreviousWidth >= previousMinWidth * 3 && previousMinimized == 1 || newNextWidth >= nextMinWidth * 3 && nextMinimized == 1) {
-              // Get minimizer component
+              // Get the minimizer that belongs to the neighbouring box. The
+              // depth limit keeps minimizers of nested components out: they
+              // are rendered inside the box, but are not its own.
               let element = newPreviousWidth <= 10 || previousMinimized == 1 ? previous : next
-              let minimizerElement = element.getElementsByClassName("minimizer")[0]
-              // Only continue if minimizerElement is one or two elements deep.
-              if (minimizerElement.parentElement != element && minimizerElement.parentElement.parentElement != element) {
-                return
-              }
-              let minimizerComponent = minimizerElement.__vue__
+              let minimizerComponent = vm.minimizerRegistry?.ownedBy(element)
               if (minimizerComponent) {
                 // Restore saved values
                 previous.style.flex = vm.savedValues.previousWidth / totalWidth * totalFlex
@@ -154,7 +155,7 @@ export default {
                 next.style.flex = vm.savedValues.nextWidth / totalWidth * totalFlex
                 vm.saveFlex(next)
                 // Minimize/maximize
-                minimizerComponent.toggleMinimize()
+                minimizerComponent.toggle()
                 // End resizing
                 endResizing()
               }
@@ -171,14 +172,11 @@ export default {
           if (newPreviousHeight < previousMinHeight || newNextHeight < nextMinHeight || previousMinimized + nextMinimized == 1) {
             // Minimize/maximize previous/next component when resize is committed all the way.
             if (newPreviousHeight <= 10 || newNextHeight <= 10 || newPreviousHeight >= previousMinHeight * 3 && previousMinimized == 1 || newNextHeight >= nextMinHeight * 3 && nextMinimized == 1) {
-              // Get minimizer component
+              // Get the minimizer that belongs to the neighbouring box. The
+              // depth limit keeps minimizers of nested components out: they
+              // are rendered inside the box, but are not its own.
               let element = newPreviousHeight <= 10 || previousMinimized == 1 ? previous : next
-              let minimizerElement = element.getElementsByClassName("minimizer")[0]
-              // Only continue if minimizerElement is one or two elements deep.
-              if (minimizerElement.parentElement != element && minimizerElement.parentElement.parentElement != element) {
-                return
-              }
-              let minimizerComponent = minimizerElement.__vue__
+              let minimizerComponent = vm.minimizerRegistry?.ownedBy(element)
               if (minimizerComponent) {
                 // Restore saved values
                 previous.style.flex = vm.savedValues.previousHeight / totalHeight * totalFlex
@@ -186,7 +184,7 @@ export default {
                 next.style.flex = vm.savedValues.nextHeight / totalHeight * totalFlex
                 vm.saveFlex(next)
                 // Minimize/maximize
-                minimizerComponent.toggleMinimize()
+                minimizerComponent.toggle()
                 // End resizing
                 endResizing()
               }

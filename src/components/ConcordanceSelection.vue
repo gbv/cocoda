@@ -30,6 +30,7 @@ export default {
       default: null,
     },
   },
+  emits: ["change"],
   computed: {
     availableTargetConcordances() {
       return this.concordances.filter(concordance =>

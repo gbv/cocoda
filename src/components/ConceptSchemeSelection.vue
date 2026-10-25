@@ -56,13 +56,8 @@
     <!-- The popover reacts to the expand button above. It is attached to the main element of this component. -->
     <component
       :is="scheme == null ? 'div' : 'b-popover'"
-      :target="`${id}-expandButton`"
-      :container="`conceptSchemeSelection-${id}`"
-      triggers="disabled"
-      placement="leftbottom"
-      class="conceptSchemeSelection-popover"
-      @shown="popoverShown = true"
-      @hidden="popoverShown = false">
+      v-bind="popoverProps"
+      class="conceptSchemeSelection-popover">
       <!-- Inner div. Classes are attached because #app's classes don't apply for popovers. -->
       <div
         ref="popover"
@@ -75,8 +70,12 @@
         <div class="componentTitle">
           {{ isLeft ? $t("schemeSelection.source") : $t("schemeSelection.target") }}
         </div>
+        <!-- Bootstrap 5 dropped .form-inline and BForm dropped the prop with
+             it, so the row has to be laid out with the flex utilities that
+             replaced it; without them the filter button wraps under the
+             input. -->
         <b-form
-          inline
+          class="d-flex flex-wrap align-items-center"
           @submit="chooseFirst">
           <!-- Scheme filter input field -->
           <b-form-input
@@ -86,7 +85,7 @@
             autocomplete="off"
             size="sm"
             style="flex: 1; margin-right: 5px;"
-            @keyup.esc.native="hidePopover" />
+            @keyup.esc="hidePopover" />
           <div
             :id="`conceptSchemeSelection-filterButton-${id}`"
             style="position: relative;"
@@ -101,9 +100,9 @@
             </span>
           </div>
           <b-popover
+            v-model="filterPopoverShow"
             :target="`conceptSchemeSelection-filterButton-${id}`"
-            :show.sync="filterPopoverShow"
-            triggers="click"
+            click
             placement="auto">
             <div
               ref="filterPopover"
@@ -233,20 +232,27 @@
           </b-popover>
         </b-form>
         <!-- List of all schemes, showing favorites first -->
-        <virtual-list
+        <dynamic-scroller
           class="conceptSchemeSelection-schemeList scrollable"
-          :data-key="'uri'"
-          :data-sources="filteredSchemes"
-          :data-component="itemComponent"
-          :keeps="50"
-          :item-class="'conceptSchemeSelection-schemeList-item'"
-          :extra-props="{
-            isLeft,
-            hidePopover,
-            favoriteSchemes,
-            toggleFavoriteScheme,
-          }">
-          <template #footer>
+          :items="filteredSchemes"
+          key-field="uri"
+          :min-item-size="20"
+          item-class="conceptSchemeSelection-schemeList-item">
+          <template #default="{ item, index, active }">
+            <dynamic-scroller-item
+              :item="item"
+              :active="active"
+              :data-index="index">
+              <concept-scheme-selection-item
+                :source="item"
+                :index="index"
+                :is-left="isLeft"
+                :hide-popover="hidePopover"
+                :favorite-schemes="favoriteSchemes"
+                :toggle-favorite-scheme="toggleFavoriteScheme" />
+            </dynamic-scroller-item>
+          </template>
+          <template #after>
             <div
               v-show="isFiltered && filteredSchemes.length < schemes.length"
               class="conceptSchemeSelection-schemeList-item">
@@ -258,7 +264,7 @@
               </a>
             </div>
           </template>
-        </virtual-list>
+        </dynamic-scroller>
       </div>
     </component>
   </div>
@@ -268,7 +274,7 @@
 import ItemName from "./ItemName.vue"
 import ConceptSearch from "./ConceptSearch.vue"
 import ComponentSettings from "./ComponentSettings.vue"
-import VirtualList from "vue-virtual-scroll-list"
+import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller"
 import ConceptSchemeSelectionItemVue from "./ConceptSchemeSelectionItem.vue"
 
 import _ from "lodash"
@@ -303,7 +309,7 @@ const schemeMatchesBaseUrl = (scheme, baseUrl) => {
  */
 export default {
   name: "ConceptSchemeSelection",
-  components: { ItemName, ConceptSearch, ComponentSettings, VirtualList },
+  components: { ItemName, ConceptSearch, ComponentSettings, ConceptSchemeSelectionItem: ConceptSchemeSelectionItemVue, DynamicScroller, DynamicScrollerItem },
   mixins: [objects, clickHandler, hotkeys, computed],
   props: {
     /**
@@ -334,8 +340,6 @@ export default {
       onlyFavorites: true,
       // Flag whether to show only schemes that potentially have concepts
       onlyWithConcepts: false,
-      // Item component for VirtualList
-      itemComponent: ConceptSchemeSelectionItemVue,
       // TODO: To mitigate performance issues, we're updating these properties in a debounced watcher.
       // However, in the long term this should be solved in a better way. Maybe using the composition-api will help.
       shownRegistries: [],
@@ -386,6 +390,38 @@ export default {
     },
     allowFavoriteSchemesFilter() {
       return !!this.favoriteSchemes.find(s => this.$jskos.isContainedIn(s, this._schemes))
+    },
+    /**
+     * Props for the element above, which is a popover only while a scheme is
+     * selected and a plain div otherwise.
+     *
+     * Collected here rather than written as attributes so the div case carries
+     * none of them - as attributes they would end up in the DOM.
+     */
+    popoverProps() {
+      if (this.scheme == null) {
+        return {}
+      }
+      return {
+        target: `${this.id}-expandButton`,
+        // Cocoda opens and closes this one itself: from the expand button, the
+        // keyboard shortcut, and the outside-click handler below.
+        manual: true,
+        // The panel opens away from its own column, into the middle of the
+        // application. bootstrap-vue got there from a fixed "leftbottom" that
+        // popper flipped whenever the left column was too narrow to hold it;
+        // naming the side outright gives the same result and keeps it once the
+        // column is wide enough that nothing would overflow. floating-ui still
+        // flips if the window is too narrow for either side.
+        placement: this.isLeft ? "right-end" : "left-end",
+        // Popovers are rendered into document.body by default (see main.js).
+        // This one is the exception bootstrap-vue was told about too, with
+        // `container="conceptSchemeSelection-<id>"`: it stays inside the
+        // component, whose stacking context and styles it relies on.
+        teleportDisabled: true,
+        modelValue: this.popoverShown,
+        "onUpdate:modelValue": this.setPopoverShown,
+      }
     },
   },
   watch: {
@@ -725,11 +761,18 @@ export default {
         input.select()
       }
     },
+    // bootstrap-vue steered popovers through a root event bus
+    // (`bv::show::popover`). Vue 3 has no such bus and bootstrap-vue-next no
+    // such listener, so the emit went nowhere and the scheme selection simply
+    // never opened. The popover's own v-model is the replacement.
+    setPopoverShown(shown) {
+      this.popoverShown = shown
+    },
     showPopover() {
-      this.$root.$emit("bv::show::popover", `${this.id}-expandButton`)
+      this.setPopoverShown(true)
     },
     hidePopover() {
-      this.$root.$emit("bv::hide::popover", `${this.id}-expandButton`)
+      this.setPopoverShown(false)
     },
     togglePopover() {
       if (this.popoverShown) {
@@ -821,8 +864,9 @@ export default {
   max-width: 252px;
   max-height: 75vh;
 }
-.conceptSchemeSelection-filterPopover .custom-control {
-  height: unset !important;
+.conceptSchemeSelection-filterPopover .form-check {
+  // Bootstrap 5 reserves space with min-height, Bootstrap 4 used height.
+  min-height: unset !important;
 }
 </style>
 
@@ -840,6 +884,19 @@ export default {
   bottom: 2px;
 }
 .conceptSchemeSelection-schemeList-item {
+  padding-top: 8px;
+}
+/* vue-virtual-scroller measures the DynamicScrollerItem inside the wrapper it
+   puts item-class on, not the wrapper itself. Padding left on the wrapper is
+   therefore not part of the height the scroller lays rows out with: they end
+   up closer together than they are tall, overlapping, and the list runs past
+   its bottom edge. For scroller rows the spacing has to sit one level in. The
+   "show all schemes" row below the list is not a scroller item and keeps the
+   rule above. */
+.vue-recycle-scroller__item-view.conceptSchemeSelection-schemeList-item {
+  padding-top: 0;
+}
+.vue-recycle-scroller__item-view.conceptSchemeSelection-schemeList-item > * {
   padding-top: 8px;
 }
 </style>

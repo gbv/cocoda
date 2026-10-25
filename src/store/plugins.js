@@ -1,4 +1,5 @@
 import router from "@/router.js"
+import { isNavigationFailure } from "vue-router"
 import jskos from "@/utils/jskos.js"
 import { compareItems } from "@/items"
 
@@ -14,6 +15,7 @@ const mappingIdentifierPlugin = store => {
   })
 }
 
+import { toRaw } from "vue"
 import localforage from "localforage"
 const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
 /**
@@ -22,7 +24,7 @@ const localStorageKey = "cocoda-mappingTrash--" + window.location.pathname
 const mappingTrashPlugin = store => {
   store.subscribe((mutation) => {
     if (["mapping/addToTrash", "mapping/removeFromTrash", "mapping/clearTrash"].includes(mutation.type) && store.state.mapping.mappingTrashLoaded) {
-      localforage.setItem(localStorageKey, store.state.mapping.mappingTrash)
+      localforage.setItem(localStorageKey, toRaw(store.state.mapping.mappingTrash))
     }
   })
 }
@@ -58,16 +60,18 @@ const refreshRouter = (store) => {
       }
     }
   }
-  // Keep certain properties from original route
-  if (router.currentRoute.query.config) {
-    query.config = router.currentRoute.query.config
+  // Keep certain properties from original route.
+  // `currentRoute` is a Ref in vue-router 4, hence `.value`.
+  const currentQuery = router.currentRoute.value.query
+  if (currentQuery.config) {
+    query.config = currentQuery.config
   }
   // Decide whether to push or replace depending on change in schemes/concepts
   let replace = true
   for (let kind of kinds) {
     for (let isLeft of [true, false]) {
       let key = sides[isLeft] + (kind == "scheme" ? "Scheme" : "")
-      if (query[key] != router.currentRoute.query[key]) {
+      if (query[key] != currentQuery[key]) {
         replace = false
       }
     }
@@ -79,9 +83,15 @@ const refreshRouter = (store) => {
   } else {
     promise = router.push({ query })
   }
-  // Catch NavigationDuplicated error
-  // TODO: - Figure out why this error occurs (probably because this method is called twice).
-  return promise.catch(() => null)
+  // vue-router 4 no longer rejects on duplicate navigation; it resolves with a
+  // NavigationFailure instead. Only swallow those, so real errors still surface
+  // (the old blanket `.catch(() => null)` hid them).
+  return promise.then(failure => {
+    if (failure && !isNavigationFailure(failure)) {
+      throw failure
+    }
+    return null
+  })
 }
 
 /**

@@ -18,8 +18,8 @@
           :show-text="showLabels"
           :is-link="false"
           :is-highlighted="false"
-          @mouseover.native="() => null"
-          @click.native="() => null" />
+          @mouseover="() => null"
+          @click="() => null" />
       </span>
     </template>
     <template #targetConcepts="{ value }">
@@ -32,8 +32,8 @@
             :show-text="showLabels"
             :is-link="false"
             :is-highlighted="false"
-            @mouseover.native="() => null"
-            @click.native="() => null" />
+            @mouseover="() => null"
+            @click="() => null" />
           <br>
         </span>
       </span>
@@ -111,6 +111,7 @@ export default {
       default: false,
     },
   },
+  emits: ["click"],
   data () {
     return {
 

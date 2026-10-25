@@ -78,11 +78,44 @@ test("minimizing one column gives the other more room", async ({ page }) => {
   await expect.poll(() => widthOf(right)).toBeGreaterThan(rightBefore)
 })
 
+/**
+ * How many panes localforage currently has marked as minimized.
+ *
+ * Settings go through `localforage.setItem` without anyone awaiting it, so the
+ * data-minimized attribute flips well before IndexedDB holds the value. Read
+ * straight from the store rather than through localforage, which keeps this
+ * independent of the app's own module graph.
+ */
+function storedMinimizedCount(page) {
+  return page.evaluate(() => new Promise((resolve, reject) => {
+    const open = indexedDB.open("localforage")
+    open.onerror = () => reject(open.error)
+    open.onsuccess = () => {
+      const db = open.result
+      if (!db.objectStoreNames.contains("keyvaluepairs")) {
+        resolve(0)
+        return
+      }
+      const request = db
+        .transaction("keyvaluepairs", "readonly")
+        .objectStore("keyvaluepairs")
+        .get(`cocoda-settings--${window.location.pathname}`)
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () =>
+        resolve(Object.values(request.result?.minimized ?? {}).filter(Boolean).length)
+    }
+  }))
+}
+
 test("the minimized state is remembered across a reload", async ({ page }) => {
   await setUp(page)
   const left = column(page, LEFT)
 
   await minimize(left)
+  // The store writes settings to localforage without waiting for it, so the
+  // attribute flips well before IndexedDB has the value. Reloading on the
+  // attribute alone raced the write.
+  await expect.poll(() => storedMinimizedCount(page)).toBeGreaterThan(0)
 
   await page.reload()
 

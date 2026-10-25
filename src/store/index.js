@@ -1,5 +1,5 @@
-import Vue, { markRaw } from "vue"
-import Vuex from "vuex"
+import { markRaw } from "vue"
+import { createStore } from "vuex"
 import selected from "./modules/selected.js"
 import mapping from "./modules/mapping.js"
 import alerts from "./modules/alerts.js"
@@ -10,8 +10,6 @@ import jskos from "@/utils/jskos.js"
 import _ from "lodash"
 // Root store
 import actions from "./actions.js"
-
-Vue.use(Vuex)
 
 const state = {
   loading: 0,
@@ -150,7 +148,7 @@ const mutations = {
   },
 }
 
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     selected, mapping, alerts, auth, settings,
   },

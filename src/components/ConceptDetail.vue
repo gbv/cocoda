@@ -43,11 +43,122 @@
       </div>
     </div>
 
-    <tabs
-      ref="tabs"
-      style="margin-top: 3px; position: relative;"
-      borders="bottom"
-      size="sm">
+    <!-- The two navigation buttons sit beside the tab strip, not inside it:
+         jskos-vue-tabs collects every non-<tab> child of <tabs> into the
+         shared content wrapper, which is the scrolling panel. In there they
+         were positioned against that wrapper instead of against the tab
+         strip, 29px too low, and their height pushed the panel into showing
+         a scrollbar. cocoda-vue-tabs left such children where they stood. -->
+    <div class="conceptDetail-tabs">
+      <tabs
+        ref="tabs"
+        borders="bottom"
+        size="sm">
+        <!-- Content tabs (Content, Translations) -->
+        <template
+          v-for="([contentMap, tabTitle], tabIndex) in [[mainLanguagesContentMap, $t('conceptDetail.mainTab')], [additionalLanguagesContentMap, $t('conceptDetail.additionalLanguagesTab')]].filter(([contentMap]) => Object.keys(contentMap).length)"
+          :key="tabIndex">
+          <tab :title="tabTitle">
+            <content-map
+              :content-map="contentMap"
+              @click="copyAndSearch($event)" />
+          </tab>
+        </template>
+        <!-- URI and identifier -->
+        <tab :title="$t('conceptDetail.info')">
+          <div
+            v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
+            :key="`conceptDetail-${isLeft}-identifier-${index}`"
+            :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
+            <font-awesome-icon
+              :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
+              @dblclick="copyToClipboard(elementForEvent($event))" />
+            <auto-link :link="identifier" />
+          </div>
+          <div
+            v-for="type in types"
+            :key="`conceptDetail-${isLeft}-type-${type.uri}`"
+            class="conceptDetail-identifier">
+            <b>{{ $t("general.type") }}:</b>
+            {{ $jskos.prefLabel(type, { language: locale }) }}
+          </div>
+          <div
+            v-if="item.creator && item.creator.length"
+            class="conceptDetail-identifier">
+            <font-awesome-icon icon="user" /> {{ $jskos.prefLabel(item.creator[0]) }}
+          </div>
+          <div class="conceptDetail-identifier">
+            <span v-if="item.created">
+              <b>{{ $t("conceptDetail.created") }}:</b> <date-string :date="item.created" />
+            </span>
+            <span v-if="item.issued">
+              <b>{{ $t("conceptDetail.issued") }}:</b> <date-string :date="item.issued" />
+            </span>
+            <span v-if="item.modified">
+              <b>{{ $t("conceptDetail.modified") }}:</b> <date-string :date="item.modified" />
+            </span>
+          </div>
+        </tab>
+        <!-- coli-ana (see https://github.com/gbv/cocoda/issues/524) -->
+        <tab
+          v-if="memberList && memberList.length"
+          :title="'coli-ana'">
+          <ul class="coli-ana">
+            <li>
+              <div />
+              <div>{{ $jskos.notation(item) }}</div>
+              <div />
+            </li>
+            <li
+              v-for="(member, index) of memberList"
+              :key="`${member.uri}-${index}`"
+              :class="{
+                'fw-bold': memberList[index - 1] &&
+                  isMemberParentOf(memberList[index - 1], member) &&
+                  !isMemberParentOf(member, memberList[index + 1]),
+              }">
+              <div>
+                <span
+                  v-if="isMemberParentOf(memberList[index - 1], member)">
+                  ↳
+                </span>
+              </div>
+              <div>{{ member.notation[1] }}</div>
+              <div>
+                <item-name
+                  :item="member"
+                  :show-notation="false"
+                  :is-link="true"
+                  :is-left="isLeft"
+                  font-size="small" />
+                <span v-if="!member.uri.includes('facet')">
+                  (<item-name
+                    :item="member"
+                    :show-text="false"
+                    :is-link="false"
+                    font-size="small" />)
+                </span>
+              </div>
+            </li>
+          </ul>
+          <p
+            v-if="!memberListComplete"
+            v-html="$t('conceptDetail.coliAnaIncomplete')" />
+          <p v-html="$t('conceptDetail.coliAnaInfo', { url: `${config['coli-ana']}?notation=${$jskos.notation(item)}` })" />
+        </tab>
+        <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
+        <tab
+          v-if="searchLinks.length"
+          :key="`conceptDetail-${isLeft}-searchLinks`"
+          :title="$t('conceptDetail.searchLinks')">
+          <link-list
+            :links="searchLinks"
+            key-prefix="concept-detail" />
+        </tab>
+      </tabs>
+      <!-- After the strip in document order: both are positioned, so the
+           one that comes later is the one on top. Before it, the panel
+           covered these buttons and swallowed their clicks. -->
       <div
         v-if="previousConcept"
         v-b-tooltip.hover="{ title: $t('conceptDetail.previousConceptTooltip'), delay: defaults.delay.medium }"
@@ -74,108 +185,7 @@
           </b-button>
         </router-link>
       </div>
-      <!-- Content tabs (Content, Translations) -->
-      <template v-for="([contentMap, tabTitle], tabIndex) in [[mainLanguagesContentMap, $t('conceptDetail.mainTab')], [additionalLanguagesContentMap, $t('conceptDetail.additionalLanguagesTab')]].filter(([contentMap]) => Object.keys(contentMap).length)">
-        <tab
-          :key="tabIndex"
-          :title="tabTitle">
-          <content-map
-            :content-map="contentMap"
-            @click="copyAndSearch($event)" />
-        </tab>
-      </template>
-      <!-- URI and identifier -->
-      <tab :title="$t('conceptDetail.info')">
-        <div
-          v-for="(identifier, index) in [item.uri].concat(item.identifier).filter(identifier => identifier != null)"
-          :key="`conceptDetail-${isLeft}-identifier-${index}`"
-          :class="identifier.startsWith('http') ? 'conceptDetail-identifier' : 'conceptDetail-identifier'">
-          <font-awesome-icon
-            :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
-            @dblclick="copyToClipboard(elementForEvent($event))" />
-          <auto-link :link="identifier" />
-        </div>
-        <div
-          v-for="type in types"
-          :key="`conceptDetail-${isLeft}-type-${type.uri}`"
-          class="conceptDetail-identifier">
-          <b>{{ $t("general.type") }}:</b>
-          {{ $jskos.prefLabel(type, { language: locale }) }}
-        </div>
-        <div
-          v-if="item.creator && item.creator.length"
-          class="conceptDetail-identifier">
-          <font-awesome-icon icon="user" /> {{ $jskos.prefLabel(item.creator[0]) }}
-        </div>
-        <div class="conceptDetail-identifier">
-          <span v-if="item.created">
-            <b>{{ $t("conceptDetail.created") }}:</b> <date-string :date="item.created" />
-          </span>
-          <span v-if="item.issued">
-            <b>{{ $t("conceptDetail.issued") }}:</b> <date-string :date="item.issued" />
-          </span>
-          <span v-if="item.modified">
-            <b>{{ $t("conceptDetail.modified") }}:</b> <date-string :date="item.modified" />
-          </span>
-        </div>
-      </tab>
-      <!-- coli-ana (see https://github.com/gbv/cocoda/issues/524) -->
-      <tab
-        v-if="memberList && memberList.length"
-        :title="'coli-ana'">
-        <ul class="coli-ana">
-          <li>
-            <div />
-            <div>{{ $jskos.notation(item) }}</div>
-            <div />
-          </li>
-          <li
-            v-for="(member, index) of memberList"
-            :key="`${member.uri}-${index}`"
-            :class="{
-              'font-weight-bold': memberList[index - 1] &&
-                isMemberParentOf(memberList[index - 1], member) &&
-                !isMemberParentOf(member, memberList[index + 1]),
-            }">
-            <div>
-              <span
-                v-if="isMemberParentOf(memberList[index - 1], member)">
-                ↳
-              </span>
-            </div>
-            <div>{{ member.notation[1] }}</div>
-            <div>
-              <item-name
-                :item="member"
-                :show-notation="false"
-                :is-link="true"
-                :is-left="isLeft"
-                font-size="small" />
-              <span v-if="!member.uri.includes('facet')">
-                (<item-name
-                  :item="member"
-                  :show-text="false"
-                  :is-link="false"
-                  font-size="small" />)
-              </span>
-            </div>
-          </li>
-        </ul>
-        <p
-          v-if="!memberListComplete"
-          v-html="$t('conceptDetail.coliAnaIncomplete')" />
-        <p v-html="$t('conceptDetail.coliAnaInfo', { url: `${config['coli-ana']}?notation=${$jskos.notation(item)}` })" />
-      </tab>
-      <!-- Search Links (see https://github.com/gbv/cocoda/issues/220) -->
-      <tab
-        v-if="searchLinks.length"
-        :key="`conceptDetail-${isLeft}-searchLinks`"
-        :title="$t('conceptDetail.searchLinks')">
-        <link-list
-          :links="searchLinks"
-          key-prefix="concept-detail" />
-      </tab>
-    </tabs>
+    </div>
 
     <!-- Narrower concepts -->
     <item-detail-narrower
@@ -238,6 +248,7 @@ export default {
       },
     },
   },
+  emits: ["searchConcept"],
   data () {
     return {
       searchLinks: [],
@@ -574,6 +585,12 @@ export default {
   flex: 1;
 }
 
+/* Carries what the <tabs> element used to: the containing block for the two
+   navigation buttons, and the gap above the strip. */
+.conceptDetail-tabs {
+  position: relative;
+  margin-top: 3px;
+}
 .conceptDetail-previousButton {
   position: absolute;
   top: 30px;
@@ -618,7 +635,7 @@ export default {
 </style>
 
 <style>
-.conceptDetail .cocoda-vue-tabs .cocoda-vue-tabs-content {
+.conceptDetail .jskos-vue-tabs .jskos-vue-tabs-content {
   padding: 8px 6px 6px 6px !important;
 }
 </style>

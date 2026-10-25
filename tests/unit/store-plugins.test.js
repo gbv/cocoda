@@ -10,22 +10,20 @@ import { describe, it, expect, beforeEach, vi } from "vitest"
  *  2. Navigation must `replace` while only the mapping changes, and `push`
  *     as soon as a selected scheme or concept changes.
  *
- * MIGRATION NOTE (vue-router 3 -> 4): `router.currentRoute` becomes a `Ref`.
- * When migrating, change `setCurrentRoute` below to write into
- * `router.currentRoute.value` instead of `router.currentRoute` - every
- * assertion in this file stays as it is. If the production code is not
- * migrated along with it, these tests fail instead of the bug reaching users.
+ * `router.currentRoute` is a `Ref` in vue-router 4, so the mock exposes the
+ * route under `.value`. That shape is the only thing this file had to change
+ * during the migration - every assertion below stayed as it was, and they all
+ * failed loudly while the production code still read `currentRoute.query`.
  */
 
 const router = {
-  currentRoute: { query: {} },
+  currentRoute: { value: { query: {} } },
   push: vi.fn(() => Promise.resolve()),
   replace: vi.fn(() => Promise.resolve()),
 }
 
 function setCurrentRoute(query) {
-  // vue-router 4: router.currentRoute.value = { query }
-  router.currentRoute = { query }
+  router.currentRoute = { value: { query } }
 }
 
 vi.mock("@/router.js", () => ({ default: router }))

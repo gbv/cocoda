@@ -1,0 +1,24 @@
+/*
+ * Corrections to Bootstrap 5's reboot.
+ *
+ * These have to load after bootstrap.css and they deliberately do not live in
+ * main.less: that file is pulled into component <style> blocks, which Vite
+ * injects before the entry point's own CSS imports, so a plain `a` rule there
+ * loses to Bootstrap's. Keeping the selectors at Bootstrap's own specificity
+ * is the point - anything stronger would also beat the component rules that
+ * are supposed to win, such as .itemName-hovered.
+ */
+
+/*
+ * Bootstrap 4 left links undecorated and underlined them on hover; Bootstrap 5
+ * underlines them always. Cocoda needs the old behaviour: ItemName renders a
+ * <div> until it is first hovered and a <router-link> from then on, so a
+ * permanent underline on <a> never goes away again and every item the mouse
+ * has ever touched stays underlined.
+ */
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}

@@ -270,6 +270,7 @@ import objects from "@/mixins/cdk.js"
 import dragandrop from "@/mixins/dragandrop.js"
 import hotkeys from "@/mixins/hotkeys.js"
 import computed from "@/mixins/computed.js"
+import { minimizerRegistryKey } from "@/utils/minimizer-registry.js"
 import { getItem, loadConcepts } from "@/items"
 import { annotationsScore, annotationButtonColor } from "@/utils/annotation-helpers"
 
@@ -280,6 +281,9 @@ export default {
   name: "MappingEditor",
   components: { ItemName, MappingTypeSelection, ComponentSettings, MappingDetail, RegistryNotation, ConcordanceSelection, AnnotationPopover },
   mixins: [auth, objects, dragandrop, hotkeys, computed],
+  inject: {
+    minimizerRegistry: { from: minimizerRegistryKey, default: null },
+  },
   computed: {
     mapping() {
       return this.$store.state.mapping.mapping
@@ -459,10 +463,9 @@ export default {
   watch: {
     mappingEncoded() {
       // When mapping changed, maximize MappingEditor.
-      let minimizerComponent = _.get(this.$el.parentElement.getElementsByClassName("minimizer"), "[0].__vue__")
-      if (minimizerComponent) {
-        minimizerComponent.toggleMinimize(false)
-      }
+      // Looked up by name rather than by searching the parent element for a
+      // ".minimizer" node and reading its component off the DOM.
+      this.minimizerRegistry?.byName("mappingEditorComponent")?.toggle(false)
       // Set toScheme on every change (mutation will do nothing if there are concepts in the mapping).
       this.$store.commit({
         type: "mapping/setScheme",

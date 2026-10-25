@@ -1,9 +1,9 @@
 import gbv from "eslint-config-gbv"
-import vue2 from "eslint-config-gbv/vue2"
+import vue from "eslint-config-gbv/vue"
 
 export default [
   ...gbv,
-  ...vue2,
+  ...vue,
   {
     ignores: [
       "releases",

@@ -80,6 +80,7 @@ export default {
       default: null,
     },
   },
+  emits: ["loading", "refresh-annotations"],
   computed: {
     mismatchTagConcepts() {
       return getItem(this.provider?._config?.annotations?.mismatchTagVocabulary)?.topConcepts ?? []

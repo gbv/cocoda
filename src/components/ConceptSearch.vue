@@ -15,7 +15,7 @@
         v-if="isOpen && !loading"
         :style="`right: ${_scheme.types && _scheme.types.length ? 27 : 10}px;`"
         class="conceptSearch-resultCount">
-        {{ searchResult.length }} {{ $tc("search.results", searchResult.length) }}
+        {{ searchResult.length }} {{ $t("search.results", searchResult.length) }}
       </div>
       <div
         v-show="_scheme.types && _scheme.types.length > 0"
@@ -25,9 +25,9 @@
       </div>
       <!-- Filter Popover -->
       <b-popover
+        v-model="filterPopoverShow"
         :target="`conceptSearch-filter-${uniqueID}`"
-        :show.sync="filterPopoverShow"
-        triggers="click"
+        click
         placement="auto">
         <div ref="filterPopover">
           <b-form-checkbox-group
@@ -52,13 +52,13 @@
         :placeholder="placeholder || $t('search.placeholder')"
         size="sm"
         autocomplete="off"
-        @click.native="isOpen = searchQuery != ''"
-        @keydown.down.native.prevent="onArrowDown"
-        @keydown.up.native.prevent="onArrowUp"
-        @keydown.tab.native="closeResults"
-        @keyup.enter.native="onEnter"
-        @keyup.esc.native="$refs.searchInput.$el.blur(); closeResults()"
-        @focus.native="isOpen = searchQuery != ''"
+        @click="isOpen = searchQuery != ''"
+        @keydown.down.prevent="onArrowDown"
+        @keydown.up.prevent="onArrowUp"
+        @keydown.tab="closeResults"
+        @keyup.enter="onEnter"
+        @keyup.esc="$refs.searchInput.$el.blur(); closeResults()"
+        @focus="isOpen = searchQuery != ''"
         @dragover="dragOver"
         @drop="drop($event, isLeft)" />
       <!-- Results -->
@@ -149,7 +149,7 @@ export default {
      * External v-model for the search query.
      * When bound, the query is kept when the scheme changes.
      */
-    value: {
+    modelValue: {
       type: String,
       default: null,
     },
@@ -170,6 +170,7 @@ export default {
       default: true,
     },
   },
+  emits: ["choose", "concept-dropped", "enter", "update:modelValue"],
   data () {
     return {
       // The current search query
@@ -236,7 +237,7 @@ export default {
     /**
      * Syncs the external v-model into the query.
      */
-    value: function (newValue) {
+    modelValue: function (newValue) {
       if (newValue != null && newValue !== this.searchQuery) {
         this.preventSearchOnQueryChange = true
         this.searchQuery = newValue
@@ -246,7 +247,7 @@ export default {
      * Deals with query changes.
      */
     searchQuery: function (newQuestion) {
-      this.$emit("input", newQuestion)
+      this.$emit("update:modelValue", newQuestion)
       this.searchSelected = -1
       // Already cancel previous request
       if (this.cancel != null) {
@@ -277,7 +278,7 @@ export default {
     _scheme: function(newValue, oldValue) {
       if (!this.$jskos.compare(oldValue, newValue)) {
         // With an external v-model, the query is kept when the scheme changes.
-        this.clear(this.value != null)
+        this.clear(this.modelValue != null)
       }
     },
     typesForSchemes() {
@@ -289,9 +290,9 @@ export default {
   created: function () {
     this.clear()
     // Initialize query from external v-model
-    if (this.value) {
+    if (this.modelValue) {
       this.preventSearchOnQueryChange = true
-      this.searchQuery = this.value
+      this.searchQuery = this.modelValue
     }
     // To limit API requests during typing, we defer the function call.
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 300)

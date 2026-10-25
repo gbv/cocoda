@@ -1,0 +1,32 @@
+diff --git a/node_modules/bootstrap-vue-next/dist/floatingUi-BlKoACvc.js b/node_modules/bootstrap-vue-next/dist/floatingUi-BlKoACvc.js
+index e81cef1..40e7c81 100644
+--- a/node_modules/bootstrap-vue-next/dist/floatingUi-BlKoACvc.js
++++ b/node_modules/bootstrap-vue-next/dist/floatingUi-BlKoACvc.js
+@@ -482,6 +482,15 @@ var BPopover_default = /* @__PURE__ */ defineComponent({
+ 		};
+ 		const localShow = () => {
+ 			show();
++			// PATCH (cocoda): tryHide() is reachable only from the pointerleave
++			// listener in bind(), and that event does not always arrive. When it
++			// goes missing nothing can ever hide this popover again -- a stuck
+			// tooltip ignores further mouse movement and disappears the moment a
+			// pointerleave is dispatched by hand.
++			// tryHide() hides only once the pointer is genuinely outside and
++			// otherwise re-checks every 50ms, so starting it here makes
++			// pointerleave an optimisation rather than the only way out.
++			if (computedTriggers.value.hover) requestAnimationFrame(() => tryHide());
+ 		};
+ 		const computedTriggers = computed(() => {
+ 			if (props.manual) return {
+@@ -524,6 +533,11 @@ var BPopover_default = /* @__PURE__ */ defineComponent({
+ 			}
+ 		};
+ 		const unbind = () => {
++			// PATCH (cocoda): the retry loop outlived the component otherwise.
++			if (looptimeout) {
++				clearTimeout(looptimeout);
++				looptimeout = void 0;
++			}
+ 			if (triggerElement.value) {
+ 				triggerElement.value.removeEventListener("click", localToggle);
+ 				triggerElement.value.removeEventListener("pointerenter", localShow);

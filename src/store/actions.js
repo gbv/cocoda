@@ -7,7 +7,7 @@ const axiosConfig = {
   },
 }
 import defaultConfig from "@/../config/cocoda.default.json"
-import i18n from "@/utils/i18n.js"
+import { t } from "@/utils/i18n.js"
 import log from "@/utils/log.js"
 // Import registry providers
 import { cdk } from "cocoda-sdk"
@@ -205,7 +205,7 @@ export default {
         compatibleRegistries.push(registry)
       } else {
         // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
-        const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry._config.version, jskosApi: buildInfo.jskosApi })
+        const text = t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry._config.version, jskosApi: buildInfo.jskosApi })
         log.warn(text)
         commit("alerts/add", {
           variant: "danger",
@@ -258,7 +258,7 @@ export default {
     if (!jskos.isConcept(concept)) {
       // Show alert
       // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
-      const text = i18n.t("alerts.favoriteConceptsNonConcept")
+      const text = t("alerts.favoriteConceptsNonConcept")
       commit("alerts/add", {
         variant: "danger",
         text,

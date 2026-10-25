@@ -73,6 +73,9 @@ function statusDocument() {
  * languages, independent of the Cocoda config - so it has to be mocked
  * separately even though no test config mentions bartoc.org.
  */
+/** Must match playwright.config.js, which allows overriding the port. */
+const APP_ORIGIN = `http://localhost:${process.env.COCODA_E2E_PORT ?? 8080}`
+
 const BARTOC_API = "https://bartoc.org/api"
 const languageScheme = {
   uri: "http://bartoc.org/en/node/20287",
@@ -232,7 +235,7 @@ export async function installMocks(page, { config = testConfig } = {}) {
   // unmocked backend. Fail it loudly rather than letting it reach out.
   await page.route("**/*", (route, request) => {
     const url = request.url()
-    const isAppOrigin = url.startsWith("http://localhost:8080/")
+    const isAppOrigin = url.startsWith(`${APP_ORIGIN}/`)
       || url.startsWith("data:") || url.startsWith("blob:")
     if (isAppOrigin) {
       return route.continue()
