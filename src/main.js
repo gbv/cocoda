@@ -1,5 +1,4 @@
 import * as CocodaSDK from "cocoda-sdk"
-import MeshApiProvider from "@/utils/mesh-api-provider.js"
 import { createBootstrap, Components as BootstrapComponents, Directives as BootstrapDirectives } from "bootstrap-vue-next"
 import VueScrollTo from "vue-scrollto"
 import jskos from "@/utils/jskos.js"
@@ -21,8 +20,6 @@ import "vue-virtual-scroller/dist/vue-virtual-scroller.css"
 Object.keys(CocodaSDK).filter(key => key.endsWith("Provider")).forEach(key => {
   CocodaSDK.cdk.addProvider(CocodaSDK[key])
 })
-
-CocodaSDK.cdk.addProvider(MeshApiProvider)
 
 // Set Vuex store and path on jskos-tools' languagePreference.
 // Both are module singletons, so this stays outside the app instance.
