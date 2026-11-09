@@ -9,8 +9,8 @@ index e81cef1..40e7c81 100644
 +			// PATCH (cocoda): tryHide() is reachable only from the pointerleave
 +			// listener in bind(), and that event does not always arrive. When it
 +			// goes missing nothing can ever hide this popover again -- a stuck
-			// tooltip ignores further mouse movement and disappears the moment a
-			// pointerleave is dispatched by hand.
++			// tooltip ignores further mouse movement and disappears the moment a
++			// pointerleave is dispatched by hand.
 +			// tryHide() hides only once the pointer is genuinely outside and
 +			// otherwise re-checks every 50ms, so starting it here makes
 +			// pointerleave an optimisation rather than the only way out.
