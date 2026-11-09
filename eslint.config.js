@@ -1,13 +1,16 @@
 import gbv from "eslint-config-gbv"
-import vue2 from "eslint-config-gbv/vue2"
+import vue from "eslint-config-gbv/vue"
 
 export default [
   ...gbv,
-  ...vue2,
+  ...vue,
   {
     ignores: [
       "releases",
       "dist",
+      // Vite's build.outDir; git-ignored, but eslint used to descend into it
+      // and report tens of thousands of errors from bundled output.
+      "dist-temp",
     ],
   },
 ]

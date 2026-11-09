@@ -7,7 +7,7 @@ const axiosConfig = {
   },
 }
 import defaultConfig from "@/../config/cocoda.default.json"
-import i18n from "@/utils/i18n.js"
+import { t } from "@/utils/i18n.js"
 import log from "@/utils/log.js"
 // Import registry providers
 import { cdk } from "cocoda-sdk"
@@ -189,6 +189,21 @@ export default {
       return false
     }
 
+    // A registry that does not answer holds up the whole start-up: every
+    // registry is initialized from its status endpoint below, and cocoda-sdk
+    // waits 200 seconds per registry before giving up. `registryTimeout` puts
+    // a shorter bound on that, for every registry that does not name a
+    // `timeout` of its own -- which is the only way to shorten it for a
+    // registry from cocoda.default.json, since a user entry with the same URI
+    // replaces that definition rather than extending it.
+    if (config.registryTimeout) {
+      for (const registry of config.registries) {
+        if (registry.timeout == null) {
+          registry.timeout = config.registryTimeout
+        }
+      }
+    }
+
     // Initialize registries
     cdk.setConfig(config)
     await Promise.all(config.registries.map(r => r.init()))
@@ -205,7 +220,7 @@ export default {
         compatibleRegistries.push(registry)
       } else {
         // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
-        const text = i18n.t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry._config.version, jskosApi: buildInfo.jskosApi })
+        const text = t("alerts.versionMismatch", { registryLabel: registry.prefLabel.en || registry.prefLabel.de, registryUri: registry.uri, registryVersion: registry._config.version, jskosApi: buildInfo.jskosApi })
         log.warn(text)
         commit("alerts/add", {
           variant: "danger",
@@ -258,7 +273,7 @@ export default {
     if (!jskos.isConcept(concept)) {
       // Show alert
       // Note: Text will not show in a different language because at this point, the user configured language is not yet loaded.
-      const text = i18n.t("alerts.favoriteConceptsNonConcept")
+      const text = t("alerts.favoriteConceptsNonConcept")
       commit("alerts/add", {
         variant: "danger",
         text,

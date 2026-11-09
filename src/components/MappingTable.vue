@@ -2,64 +2,65 @@
   <flexible-table
     :items="items"
     :fields="fields">
-    <span
-      slot="registry"
-      slot-scope="{ value }">
-      <registry-notation
-        :registry="value"
-        :tooltip="false" />
-    </span>
-    <span
-      slot="sourceConcepts"
-      slot-scope="{ value }">
-      <item-name
-        v-for="concept in value"
-        :key="concept.uri"
-        :item="concept"
-        :show-text="showLabels"
-        :is-link="false"
-        :is-highlighted="false"
-        @mouseover.native="() => null"
-        @click.native="() => null" />
-    </span>
-    <span
-      slot="targetConcepts"
-      slot-scope="{ value }">
-      <span
-        v-for="concept in value"
-        :key="concept.uri">
+    <template #registry="{ value }">
+      <span>
+        <registry-notation
+          :registry="value"
+          :tooltip="false" />
+      </span>
+    </template>
+    <template #sourceConcepts="{ value }">
+      <span>
         <item-name
+          v-for="concept in value"
+          :key="concept.uri"
           :item="concept"
           :show-text="showLabels"
           :is-link="false"
           :is-highlighted="false"
-          @mouseover.native="() => null"
-          @click.native="() => null" />
-        <br>
+          @mouseover="() => null"
+          @click="() => null" />
       </span>
-    </span>
-    <span
-      slot="type"
-      slot-scope="{ value }">
-      <span
-        v-if="value != null"
-        v-b-tooltip.hover="{ title: $jskos.prefLabel(value), delay: defaults.delay.medium }">
-        {{ $jskos.notation(value) }}
+    </template>
+    <template #targetConcepts="{ value }">
+      <span>
+        <span
+          v-for="concept in value"
+          :key="concept.uri">
+          <item-name
+            :item="concept"
+            :show-text="showLabels"
+            :is-link="false"
+            :is-highlighted="false"
+            @mouseover="() => null"
+            @click="() => null" />
+          <br>
+        </span>
       </span>
-    </span>
-    <span
-      slot="actions"
-      slot-scope="data">
-      <font-awesome-icon
-        v-for="(action, index) in actions"
-        :key="index"
-        v-b-tooltip.hover="{ title: action.title, delay: defaults.delay.medium, placement: 'left' }"
-        :icon="action.icon"
-        class="button"
-        @click="$emit('click', { name: action.name, item: data.item })" />
-    </span>
-    <span
-      slot="HEAD_actions" />
+    </template>
+    <template #type="{ value }">
+      <span>
+        <span
+          v-if="value != null"
+          v-b-tooltip.hover="{ title: $jskos.prefLabel(value), delay: defaults.delay.medium }">
+          {{ $jskos.notation(value) }}
+        </span>
+      </span>
+    </template>
+    <template #actions="data">
+      <span>
+        <font-awesome-icon
+          v-for="(action, index) in actions"
+          :key="index"
+          v-b-tooltip.hover="{ title: action.title, delay: defaults.delay.medium, placement: 'left' }"
+          :icon="action.icon"
+          class="button"
+          @click="$emit('click', { name: action.name, item: data.item })" />
+      </span>
+    </template>
+    <template #HEAD_actions>
+      <span />
+    </template>
   </flexible-table>
 </template>
 
@@ -110,6 +111,7 @@ export default {
       default: false,
     },
   },
+  emits: ["click"],
   data () {
     return {
 

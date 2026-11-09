@@ -9,6 +9,7 @@
         :disabled="$store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] === false"
         :tooltip="false" />
       <span
+        class="registry-info-name"
         :class="{
           'fontWeight-heavy': $store.state.settings.settings.mappingBrowserShowRegistry[registry.uri] !== false
         }">
@@ -138,5 +139,13 @@ export default {
 }
 .registry-info-inline > div {
   display: inline-block;
+}
+/* The name used to be separated from the notation badge and the link icon by
+   the whitespace around the interpolation in the template. Vue 2's compiler
+   condensed that to a single space on each side; Vue 3 drops whitespace-only
+   text at the start and end of an element entirely, whatever the whitespace
+   option, so the three ran together. Stated as margins instead. */
+.registry-info-name {
+  margin: 0 0.28em;
 }
 </style>

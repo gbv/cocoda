@@ -1,6 +1,6 @@
 import { defineConfig } from "vite"
 import { resolve } from "path"
-import vue from "@vitejs/plugin-vue2"
+import vue from "@vitejs/plugin-vue"
 import legacy from "@vitejs/plugin-legacy"
 
 // https://vitejs.dev/config/
@@ -25,7 +25,11 @@ export default defineConfig(configEnv => ({
   },
   resolve: {
     alias: {
-      vue: resolve(__dirname, "node_modules/vue/dist/vue.runtime.esm.js"),
+      // vue-i18n resolves to a runtime build without the message compiler by
+      // default. config/locale.json is imported as a module and compiled at
+      // runtime, so without this alias translations are empty in the
+      // production build only.
+      "vue-i18n": "vue-i18n/dist/vue-i18n.esm-bundler.js",
       // This allows relative imports starting with @/ instead of absolute imports
       "@": resolve(__dirname, "./src"),
     },

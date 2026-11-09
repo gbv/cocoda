@@ -166,6 +166,7 @@ export default {
       },
     },
   },
+  emits: ["searchMappings"],
   data() {
     return {
       kosTypes,
@@ -192,6 +193,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/*
+ * Same loss as in DateString: the type used to be set off from its label by
+ * the whitespace around the interpolation inside the span, which Vue 3 drops.
+ * Only the first one needs it -- the others are preceded by a " / ".
+ */
+.schemeDetail-identifier > b + span {
+  margin-left: 0.28em;
+}
 @import "@/style/main.less";
 
 .schemeDetail-license {

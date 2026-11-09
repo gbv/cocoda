@@ -46,7 +46,7 @@ export default {
     hidden && document.addEventListener(visibilityChange, this.handleVisibilityChangeInternal, false)
     this.isPageVisible = !document[hidden]
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // Remove event listener before component is destroyed
     hidden && document.removeEventListener(visibilityChange, this.handleVisibilityChangeInternal, false)
   },

@@ -1,5 +1,9 @@
 <template>
+  <!-- container="false": bootstrap-vue-next wraps the navbar's content in a
+       .container-fluid by default, which adds its own horizontal gutter on top
+       of the padding this component sets. bootstrap-vue had no such wrapper. -->
   <b-navbar
+    :container="false"
     toggleable="md"
     type="dark">
     <!-- Load logos from config -->
@@ -20,7 +24,7 @@
       {{ title || config.title }}
     </b-navbar-brand>
     <!-- Links on right side -->
-    <b-navbar-nav class="ml-auto">
+    <b-navbar-nav class="ms-auto">
       <!-- Menu buttons (from configuration) -->
       <b-nav-item
         v-for="item in config.menu"
@@ -49,10 +53,11 @@
         ref="mappingTrashDropdown"
         menu-class="navbar-dropdown"
         no-caret
-        right
-        @mouseover.native="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
-        @mouseout.native="dropdownSetStatus($refs.mappingTrashDropdown, false)">
-        <template slot="button-content">
+        placement="bottom-end"
+        :offset="navbarDropdownOffset"
+        @mouseover="dropdownSetStatus($refs.mappingTrashDropdown, true); _dropdownSetStatus($refs.mappingTrashDropdown, true)"
+        @mouseout="dropdownSetStatus($refs.mappingTrashDropdown, false)">
+        <template #button-content>
           <font-awesome-icon icon="trash-alt" />
         </template>
         <b-dropdown-header>
@@ -86,13 +91,14 @@
         ref="favoriteConceptsDropdown"
         menu-class="navbar-dropdown favoriteConceptsDropdown"
         no-caret
-        right
-        @dragover.native="dragOver"
-        @drop.native="drop"
+        placement="bottom-end"
+        :offset="navbarDropdownOffset"
+        @dragover="dragOver"
+        @drop="drop"
         @hide="favoriteConceptsDropdownHide"
-        @mouseover.native="dropdownSetStatus($refs.favoriteConceptsDropdown, true); _dropdownSetStatus($refs.favoriteConceptsDropdown, true)"
-        @mouseout.native="dropdownSetStatus($refs.favoriteConceptsDropdown, false)">
-        <template slot="button-content">
+        @mouseover="dropdownSetStatus($refs.favoriteConceptsDropdown, true); _dropdownSetStatus($refs.favoriteConceptsDropdown, true)"
+        @mouseout="dropdownSetStatus($refs.favoriteConceptsDropdown, false)">
+        <template #button-content>
           <font-awesome-icon
             :class="favoriteCanBeDropped ? 'favoriteConceptsDropdown-iconTarget' : ''"
             icon="star" />
@@ -151,10 +157,11 @@
         ref="accountDropdown"
         menu-class="navbar-dropdown"
         no-caret
-        right
-        @mouseover.native="dropdownSetStatus($refs.accountDropdown, true); _dropdownSetStatus($refs.accountDropdown, true)"
-        @mouseout.native="dropdownSetStatus($refs.accountDropdown, false)">
-        <template slot="button-content">
+        placement="bottom-end"
+        :offset="navbarDropdownOffset"
+        @mouseover="dropdownSetStatus($refs.accountDropdown, true); _dropdownSetStatus($refs.accountDropdown, true)"
+        @mouseout="dropdownSetStatus($refs.accountDropdown, false)">
+        <template #button-content>
           <div
             class="navbar-settingsButton"
             @click="openSettingsTab(0)">
@@ -163,13 +170,13 @@
               v-if="userIdentityImage && creator.uri"
               class="fontWeight-heavy">
               <img :src="userIdentityImage">
-              {{ creatorName || $t("settingsTabs")[0] }}
+              {{ creatorName || $t("settingsTabs[0]") }}
             </span>
             <span v-else>
               <font-awesome-icon
                 icon="user" />
               <span :class="{ 'fontWeight-heavy': authorized }">
-                {{ creatorName || $t("settingsTabs")[0] }}
+                {{ creatorName || $t("settingsTabs[0]") }}
               </span>
             </span>
           </div>
@@ -235,16 +242,17 @@
         ref="settingsDropdown"
         menu-class="navbar-dropdown"
         no-caret
-        right
-        @mouseover.native="dropdownSetStatus($refs.settingsDropdown, true); _dropdownSetStatus($refs.settingsDropdown, true)"
-        @mouseout.native="dropdownSetStatus($refs.settingsDropdown, false)">
-        <template slot="button-content">
+        placement="bottom-end"
+        :offset="navbarDropdownOffset"
+        @mouseover="dropdownSetStatus($refs.settingsDropdown, true); _dropdownSetStatus($refs.settingsDropdown, true)"
+        @mouseout="dropdownSetStatus($refs.settingsDropdown, false)">
+        <template #button-content>
           <font-awesome-icon
             icon="cog"
             @click="$refs.settings.show()" />
         </template>
         <p
-          v-for="(tab, index) in $t('settingsTabs').slice(1, $t('settingsTabs').length - (localMappingsRegistry ? 0 : 1))"
+          v-for="(tab, index) in $tm('settingsTabs').slice(1, $tm('settingsTabs').length - (localMappingsRegistry ? 0 : 1))"
           :key="`navbar-settingsTabs-${index}`"
           class="navbar-settingsTabs-row"
           @click="openSettingsTab(index+1)">
@@ -291,7 +299,7 @@
       <!-- Settings modal -->
       <the-settings
         ref="settings"
-        :tab.sync="settingsTab" />
+        v-model:tab="settingsTab" />
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -336,6 +344,20 @@ export default {
     }
   },
   computed: {
+    /**
+     * Where the navbar's dropdown menus sit relative to their button.
+     *
+     * The menus used to be nudged with `right: -8px; top: 95%` on the menu
+     * class, which worked because popper positioned them with top and right.
+     * floating-ui uses a transform instead, so those offsets were added to the
+     * computed position rather than replacing part of it -- which is where the
+     * gap under the navbar came from. The nudge belongs in the middleware now:
+     * flush with the button, and far enough right that the menus line up with
+     * the edge of the bar rather than with its padding.
+     */
+    navbarDropdownOffset() {
+      return { mainAxis: 0, crossAxis: 8 }
+    },
     draggedConcept: {
       get() {
         return this.$store.state.draggedConcept
@@ -382,6 +404,16 @@ export default {
     },
     _dropdownSetStatus(dropdown, status) {
       if (status) {
+        // bootstrap-vue closed every other dropdown when one opened, over a
+        // root event bus that no longer exists. bootstrap-vue-next only closes
+        // one on a click outside it - and these open on hover, where no click
+        // happens, so they piled up on screen.
+        for (const name of ["mappingTrashDropdown", "favoriteConceptsDropdown", "accountDropdown", "settingsDropdown"]) {
+          const other = this.$refs[name]
+          if (other && other !== dropdown) {
+            other.hide()
+          }
+        }
         dropdown.show()
       } else {
         dropdown.hide()
@@ -452,6 +484,15 @@ nav.navbar {
 .navbar-settingsButton:hover > span > img, .navbar-settingsButton:hover > span > svg {
   opacity: .5;
 }
+/* The account name was set off from its icon by the whitespace around the
+   interpolation inside the span, which Vue 2's compiler condensed to a single
+   space and Vue 3 drops at an element's edges -- the same loss as in
+   DateString and the registry names. The identity-image variant above needs
+   nothing: there the space sits between the image and the text rather than at
+   the edge of an element, so it survives. */
+.navbar-settingsButton > span > span {
+  margin-left: 0.28em;
+}
 hr {
   margin: 0.75rem 0;
 }
@@ -472,10 +513,6 @@ hr {
 }
 .navbar-dropdown {
   overflow-x: hidden;
-  // Offset to the right
-  right: -8px !important;
-  // Move a little to the top
-  top: 95% !important;
 }
 .favoriteConceptsDropdown {
   max-height: 700px;

@@ -7,7 +7,7 @@
 import _ from "lodash"
 import jskos from "@/utils/jskos.js"
 import { getItem } from "@/items"
-import i18n from "@/utils/i18n.js"
+import { t } from "@/utils/i18n.js"
 
 function gndTermsForConcept(concept) {
   const gnd = getItem({ uri: "http://bartoc.org/en/node/430" })
@@ -27,7 +27,7 @@ function gndTermsForConcept(concept) {
   let gndTerms = []
   let relevanceOrder = ["conceptDetail.relevanceVeryHigh", "conceptDetail.relevanceHigh", "conceptDetail.relevanceMedium", "conceptDetail.relevanceLow", "conceptDetail.relevanceGeneric"]
   for (let relevance of relevanceOrder) {
-    for (let { concept } of concepts.filter(c => c.type.RELEVANCE == i18n.t(relevance, "en"))) {
+    for (let { concept } of concepts.filter(c => c.type.RELEVANCE == t(relevance, "en"))) {
       if (concept && (jskos.prefLabel(concept, { fallbackToUri: false }))) {
         gndTerms.push(_.escape(jskos.prefLabel(concept)))
       }
@@ -55,41 +55,41 @@ function contentForConcept(concept) {
   const gndTerms = gndTermsForConcept(concept)
   const content = [
     {
-      title: i18n.t("conceptDetail.prefLabel"),
+      title: t("conceptDetail.prefLabel"),
       prop: "prefLabel",
       languageMap: concept.prefLabel,
     },
     {
-      title: i18n.t("conceptDetail.altLabel"),
+      title: t("conceptDetail.altLabel"),
       prop: "altLabel",
       languageMap: concept.altLabel,
       isArray: true,
     },
     {
-      title: i18n.t("conceptDetail.gnd"),
+      title: t("conceptDetail.gnd"),
       languageMap: gndTerms.length ? { de: gndTerms } : null,
       isArray: true,
     },
     {
-      title: i18n.t("conceptDetail.scope"),
+      title: t("conceptDetail.scope"),
       prop: "scopeNote",
       languageMap: concept.scopeNote,
       isArray: true,
     },
     {
-      title: i18n.t("conceptDetail.editorial"),
+      title: t("conceptDetail.editorial"),
       prop: "editorialNote",
       languageMap: concept.editorialNote,
       isArray: true,
     },
     {
-      title: i18n.t("conceptDetail.note"),
+      title: t("conceptDetail.note"),
       prop: "note",
       languageMap: concept.note,
       isArray: true,
     },
     {
-      title: i18n.t("conceptDetail.definition"),
+      title: t("conceptDetail.definition"),
       prop: "definition",
       languageMap: concept.definition,
       isArray: true,

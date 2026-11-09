@@ -9,363 +9,363 @@
       :hide-header="true"
       class="mappingBrowser-table"
       @hover="hover">
-      <span
-        slot="sourceScheme"
-        slot-scope="{ value }">
-        <item-name
-          :item="value"
-          :show-text="false"
-          :is-link="true"
-          :is-left="true"
-          font-size="sm"
-          class="fontWeight-heavy" />
-        <!-- null means repeating scheme, undefined means no scheme -->
-        <div
-          v-if="value === null"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingTopLeftAdjustment">
-          "
-        </div>
-        <div
-          v-if="value === undefined"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingTopAdjustment mappingBrowser-table-paddingLeftAdjustment">
-          —
-        </div>
-      </span>
-      <span
-        slot="sourceConcepts"
-        slot-scope="{ value }">
-        <span
-          v-for="concept in value"
-          :key="concept.uri">
+      <template #sourceScheme="{ value }">
+        <span>
           <item-name
-            v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
-            :item="concept"
+            :item="value"
             :show-text="false"
-            :fallback-to-uri="true"
             :is-link="true"
             :is-left="true"
-            :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
-          <loading-indicator
-            v-else
-            size="sm" />
+            font-size="sm"
+            class="fontWeight-heavy" />
+          <!-- null means repeating scheme, undefined means no scheme -->
+          <div
+            v-if="value === null"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingTopLeftAdjustment">
+            "
+          </div>
+          <div
+            v-if="value === undefined"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingTopAdjustment mappingBrowser-table-paddingLeftAdjustment">
+            —
+          </div>
         </span>
-        <!-- No concepts -->
-        <div
-          v-if="value.length === 0"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
-          —
-        </div>
-      </span>
-      <span
-        slot="sourceConceptsLong"
-        slot-scope="{ value }">
-        <span
-          v-for="concept in value"
-          :key="concept.uri">
-          <item-name
-            v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
-            :item="concept"
-            :show-text="true"
-            :fallback-to-uri="true"
-            :is-link="true"
-            :is-left="true"
-            :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
-          <loading-indicator
-            v-else
-            size="sm" />
-        </span>
-        <!-- No concepts -->
-        <div
-          v-if="value.length === 0"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
-          —
-        </div>
-      </span>
-      <span
-        slot="targetScheme"
-        slot-scope="{ value }">
-        <item-name
-          :item="value"
-          :show-text="false"
-          :is-link="true"
-          :is-left="false"
-          font-size="sm"
-          class="fontWeight-heavy" />
-        <!-- null means repeating scheme, undefined means no scheme -->
-        <div
-          v-if="value === null"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingTopLeftAdjustment">
-          "
-        </div>
-        <div
-          v-if="value === undefined"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingTopAdjustment mappingBrowser-table-paddingLeftAdjustment">
-          —
-        </div>
-      </span>
-      <span
-        slot="targetConcepts"
-        slot-scope="{ value }">
-        <span
-          v-for="concept in value"
-          :key="concept.uri">
-          <span v-if="!$jskos.isContainedIn(concept, loadingConcepts)">
+      </template>
+      <template #sourceConcepts="{ value }">
+        <span>
+          <span
+            v-for="concept in value"
+            :key="concept.uri">
             <item-name
+              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
               :item="concept"
               :show-text="false"
               :fallback-to-uri="true"
               :is-link="true"
-              :is-left="false"
-              :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
+              :is-left="true"
+              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
+            <loading-indicator
+              v-else
+              size="sm" />
           </span>
-          <loading-indicator
-            v-else
-            size="sm" />
+          <!-- No concepts -->
+          <div
+            v-if="value.length === 0"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+            —
+          </div>
         </span>
-        <!-- No concepts -->
-        <div
-          v-if="value.length === 0"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
-          —
-        </div>
-      </span>
-      <span
-        slot="targetConceptsLong"
-        slot-scope="{ value }">
-        <span
-          v-for="concept in value"
-          :key="concept.uri">
-          <span v-if="!$jskos.isContainedIn(concept, loadingConcepts)">
+      </template>
+      <template #sourceConceptsLong="{ value }">
+        <span>
+          <span
+            v-for="concept in value"
+            :key="concept.uri">
             <item-name
+              v-if="!$jskos.isContainedIn(concept, loadingConcepts)"
               :item="concept"
               :show-text="true"
               :fallback-to-uri="true"
               :is-link="true"
-              :is-left="false"
-              :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
+              :is-left="true"
+              :is-highlighted="$jskos.compare(concept, selected.concept[true]) || $jskos.compare(concept, selected.concept[false])" />
+            <loading-indicator
+              v-else
+              size="sm" />
           </span>
-          <loading-indicator
-            v-else
-            size="sm" />
-        </span>
-        <!-- No concepts -->
-        <div
-          v-if="value.length === 0"
-          class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
-          —
-        </div>
-      </span>
-      <span
-        slot="type"
-        slot-scope="{ value }">
-        <span
-          v-if="value != null && $jskos.notation(value) != '→'"
-          v-b-tooltip.hover="{ title: $jskos.prefLabel(value, { fallbackToUri: false, language: locale }), delay: defaults.delay.medium }">
-          {{ $jskos.notation(value) }}
-        </span>
-      </span>
-      <span
-        slot="creator"
-        slot-scope="{ item }">
-        <span
-          v-if="$settings.components.MappingBrowser.showIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($jskos.prefLabel(item.mapping.creator[0]) != $jskos.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
-          <font-awesome-icon
-            v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
-            icon="exclamation"
-            class="text-danger" />
-        </span>
-        <span
-          v-if="item.creator != null"
-          :id="`mappingBrowserTable-item-${item.uniqueId}-creator`">
-          {{ item.creator }}
-        </span>
-        <!-- Creator popover -->
-        <b-popover
-          v-if="item.creator != null"
-          :target="`mappingBrowserTable-item-${item.uniqueId}-creator`"
-          :show.sync="popoverShown[`creator-${item.uniqueId}`]"
-          triggers="hover"
-          :delay="defaults.delay.medium"
-          placement="auto"
-          @hide="popoverHide($event, `creator-${item.uniqueId}`)">
-          <div class="font-default">
-            <p class="fontWeight-heavy">{{ item.creator }}</p>
-            <template v-if="item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri">
-              <p class="fontSize-small">
-                <auto-link :link="item.mapping.creator[0].uri" />
-              </p>
-              <p
-                class="button"
-                @click="$set(popoverShown, `creator-${item.uniqueId}`, false); searchForCreator(item.mapping.creator[0].uri)">
-                <font-awesome-icon
-                  class="fontSize-small"
-                  icon="search" />
-                {{ $t("mappingBrowser.searchForMappingsByCreator") }}
-              </p>
-            </template>
-          </div>
-        </b-popover>
-      </span>
-      <span
-        slot="actions"
-        slot-scope="data">
-        <!-- Annotation score/button -->
-        <div
-          v-if="data.item.mapping && data.item.mapping.annotations"
-          :id="'mappingBrowser-hoveredMapping-annotationButton-' + data.item.uniqueId"
-          :style="`color: ${annotationButtonColor(data.item.mapping.annotations)};`"
-          style="display: inline-block; position: relative; min-width: 18px;"
-          class="button fontWeight-heavy">
-          <span v-if="data.item.mapping.annotations.find(annotation => annotation.motivation == 'moderating')">
-            <font-awesome-icon
-              class="text-success"
-              icon="check" />
-          </span>
-          <span v-else>
-            {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
-          </span>
-        </div>
-        <div
-          v-if="showEditingTools"
-          :style="`margin-left: 1px;`"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: canUpdateMapping({ mapping: data.item.mapping, user }) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
-            :icon="canUpdateMapping({ mapping: data.item.mapping, user }) ? 'edit' : 'clone'"
-            class="button"
-            @click="edit(data)" />
-        </div>
-        <div
-          v-if="showEditingTools && !$jskos.compareFast(data.item.registry, $store.getters.getCurrentRegistry)"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-if="$jskos.mappingRegistryIsStored(data.item.registry) && canCreateMapping({ registry: currentRegistry, mapping: Object.assign({}, data.item.mapping, { partOf: null }), user })"
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
-            class="button"
-            icon="save"
-            @click="postMapping({ mapping: Object.assign({}, data.item.mapping, { partOf: null }), registry: currentRegistry, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false }})" />
-        </div>
-        <div
-          v-else-if="showEditingTools"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: canDeleteMapping({ mapping: data.item.mapping, user }) ? $t('mappingBrowser.delete') : $t('mappingBrowser.cantDelete'), delay: defaults.delay.medium }"
-            :class="canDeleteMapping({ mapping: data.item.mapping, user }) ? 'button-delete' : 'button-disabled'"
-            icon="trash-alt"
-            @click="canDeleteMapping({ mapping: data.item.mapping, user }) && deleteMapping({ mapping: data.item.mapping, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false } })" />
-        </div>
-        <div
-          v-if="showCocodaLink"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.openInCocoda'), delay: defaults.delay.medium }"
-            class="button"
-            icon="external-link-square-alt"
-            @click="openInCocoda(data.item.mapping)" />
-        </div>
-        <div
-          v-if="data.item.mapping"
-          class="mappingBrowser-toolbar-button">
-          <font-awesome-icon
-            v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
-            icon="info-circle"
-            class="button"
-            @click="openMappingDetail(data.item.mapping)" />
-        </div>
-      </span>
-      <span
-        slot="HEAD_actions"
-        slot-scope="" />
-      <span
-        slot="ITEM_ROW"
-        slot-scope="{ item }">
-        <loading-indicator
-          v-if="item.type == 'loading'"
-          size="sm" />
-        <span
-          v-if="item.type == 'noItems'">
-          {{ $t("mappingBrowser.noItems") }}
-        </span>
-      </span>
-      <span
-        slot="extra"
-        slot-scope="data">
-        <date-string
-          v-if="data.item.occurrence == null"
-          :date="data.value.date" />
-        <span v-else-if="data.item.occurrence.count == -1">-</span>
-        <span
-          v-else
-          v-b-tooltip.hover="{ title: $t('mappingBrowser.occurrenceCountTooltip', [$jskos.prefLabel(data.item.occurrence?.database, { language: locale, fallbackToUri: false }) || $t('general.catalog')]), delay: defaults.delay.medium }">
-          <auto-link
-            :link="data.item.occurrence.url"
-            :text="String(data.item.occurrence.count)" />
-        </span>
-      </span>
-      <span
-        v-if="section.totalCount > 0 || section.loading || !hideEmptySections"
-        slot="BEFORE_SECTION"
-        slot-scope="{ section }">
-        <div style="display: flex; position: relative;">
+          <!-- No concepts -->
           <div
-            style="flex: 1; padding-left: 5px;"
-            :class="{
-              'fontWeight-heavy': true,
-              'mappingBrowser-registry-selectable': $jskos.mappingRegistryIsStored(section.registry) && !section.registry.readonly
-            }"
-            @click="useRegistryForSaving(section.registry)">
-            <registry-info
-              :registry="section.registry"
-              :show-info-icon="true"
-              :show-details="false"
-              :show-capabilities="false" />
+            v-if="value.length === 0"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+            —
           </div>
-          <b-pagination
-            v-if="section.totalCount > searchLimit"
-            :value="section.page"
-            :total-rows="section.totalCount"
-            :per-page="searchLimit"
-            class="mappingBrowser-pagination justify-content-center"
-            :class="{
-              'pagination-hide-goToLast': section.totalCount > 50000,
-            }"
-            size="sm"
-            @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
-            @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
-          <div class="mappingBrowser-pagination-number fontSize-small">
-            <a
-              v-if="section.lastPage > 4"
-              :id="`mappingBrowser-pagination-goToPage-${section.id}`"
-              v-b-tooltip.hover.left="{ title: $t('mappingBrowser.goToPageTooltip'), delay: defaults.delay.medium }"
-              href=""
-              class="fontSize-verySmall"
-              style="margin-right: 6px;"
-              @click.stop.prevent="$set(popoverShown, `goToPage-${section.id}`, false)">
-              <font-awesome-icon icon="arrow-right-to-bracket" />
-            </a>
-            <span v-if="section.totalCount === 0">
-              {{ $t("mappingBrowser.noItems") }}
+        </span>
+      </template>
+      <template #targetScheme="{ value }">
+        <span>
+          <item-name
+            :item="value"
+            :show-text="false"
+            :is-link="true"
+            :is-left="false"
+            font-size="sm"
+            class="fontWeight-heavy" />
+          <!-- null means repeating scheme, undefined means no scheme -->
+          <div
+            v-if="value === null"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingTopLeftAdjustment">
+            "
+          </div>
+          <div
+            v-if="value === undefined"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingTopAdjustment mappingBrowser-table-paddingLeftAdjustment">
+            —
+          </div>
+        </span>
+      </template>
+      <template #targetConcepts="{ value }">
+        <span>
+          <span
+            v-for="concept in value"
+            :key="concept.uri">
+            <span v-if="!$jskos.isContainedIn(concept, loadingConcepts)">
+              <item-name
+                :item="concept"
+                :show-text="false"
+                :fallback-to-uri="true"
+                :is-link="true"
+                :is-left="false"
+                :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
+            </span>
+            <loading-indicator
+              v-else
+              size="sm" />
+          </span>
+          <!-- No concepts -->
+          <div
+            v-if="value.length === 0"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+            —
+          </div>
+        </span>
+      </template>
+      <template #targetConceptsLong="{ value }">
+        <span>
+          <span
+            v-for="concept in value"
+            :key="concept.uri">
+            <span v-if="!$jskos.isContainedIn(concept, loadingConcepts)">
+              <item-name
+                :item="concept"
+                :show-text="true"
+                :fallback-to-uri="true"
+                :is-link="true"
+                :is-left="false"
+                :is-highlighted="$jskos.compare(concept, selected.concept[false]) || $jskos.compare(concept, selected.concept[true])" /><br>
+            </span>
+            <loading-indicator
+              v-else
+              size="sm" />
+          </span>
+          <!-- No concepts -->
+          <div
+            v-if="value.length === 0"
+            class="mappingBrowser-table-light mappingBrowser-table-paddingLeftAdjustment">
+            —
+          </div>
+        </span>
+      </template>
+      <template #type="{ value }">
+        <span>
+          <span
+            v-if="value != null && $jskos.notation(value) != '→'"
+            v-b-tooltip.hover="{ title: $jskos.prefLabel(value, { fallbackToUri: false, language: locale }), delay: defaults.delay.medium }">
+            {{ $jskos.notation(value) }}
+          </span>
+        </span>
+      </template>
+      <template #creator="{ item }">
+        <span>
+          <span
+            v-if="$settings.components.MappingBrowser.showIdentityWarning && item.mapping && item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri && userUris && userUris.includes(item.mapping.creator[0].uri) && ($jskos.prefLabel(item.mapping.creator[0]) != $jskos.prefLabel(creator) || item.mapping.creator[0].uri != creator.uri)">
+            <font-awesome-icon
+              v-b-tooltip.hover="$t('mappingBrowser.creatorIsDifferent')"
+              icon="exclamation"
+              class="text-danger" />
+          </span>
+          <span
+            v-if="item.creator != null"
+            :id="`mappingBrowserTable-item-${item.uniqueId}-creator`">
+            {{ item.creator }}
+          </span>
+          <!-- Creator popover -->
+          <b-popover
+            v-if="item.creator != null"
+            v-model="popoverShown[`creator-${item.uniqueId}`]"
+            :target="`mappingBrowserTable-item-${item.uniqueId}-creator`"
+            hover
+            :delay="defaults.delay.medium"
+            placement="auto"
+            @hide="popoverHide($event, `creator-${item.uniqueId}`)">
+            <div class="font-default">
+              <p class="fontWeight-heavy">{{ item.creator }}</p>
+              <template v-if="item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri">
+                <p class="fontSize-small">
+                  <auto-link :link="item.mapping.creator[0].uri" />
+                </p>
+                <p
+                  class="button"
+                  @click="setPopoverShown(`creator-${item.uniqueId}`, false); searchForCreator(item.mapping.creator[0].uri)">
+                  <font-awesome-icon
+                    class="fontSize-small"
+                    icon="search" />
+                  {{ $t("mappingBrowser.searchForMappingsByCreator") }}
+                </p>
+              </template>
+            </div>
+          </b-popover>
+        </span>
+      </template>
+      <template #actions="data">
+        <span>
+          <!-- Annotation score/button -->
+          <div
+            v-if="data.item.mapping && data.item.mapping.annotations"
+            :id="'mappingBrowser-hoveredMapping-annotationButton-' + data.item.uniqueId"
+            :style="`color: ${annotationButtonColor(data.item.mapping.annotations)};`"
+            style="display: inline-block; position: relative; min-width: 18px;"
+            class="button fontWeight-heavy">
+            <span v-if="data.item.mapping.annotations.find(annotation => annotation.motivation == 'moderating')">
+              <font-awesome-icon
+                class="text-success"
+                icon="check" />
             </span>
             <span v-else>
-              {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
+              {{ annotationsScore(data.item.mapping.annotations).sign }}{{ annotationsScore(data.item.mapping.annotations).score }}
             </span>
-            <span
-              v-if="!!registryHasErrored[section.registry.uri]"
-              v-b-tooltip.hover="{ title: $t('mappingBrowser.registryHasErrored'), delay: defaults.delay.medium }"
-              class="missingDataIndicator" />
           </div>
-          <data-modal-button
-            style="margin-left: 3px;"
-            :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
-            :url="section.url"
-            :total-count="section.totalCount"
-            :position-bottom="-1"
-            type="mapping" />
-        </div>
-        <loading-indicator-full
-          v-if="section.loading"
-          size="sm" />
-      </span>
+          <div
+            v-if="showEditingTools"
+            :style="`margin-left: 1px;`"
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: canUpdateMapping({ mapping: data.item.mapping, user }) ? $t('mappingBrowser.edit', [$jskos.prefLabel(data.item.registry)]) : $t('mappingBrowser.clone', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
+              :icon="canUpdateMapping({ mapping: data.item.mapping, user }) ? 'edit' : 'clone'"
+              class="button"
+              @click="edit(data)" />
+          </div>
+          <div
+            v-if="showEditingTools && !$jskos.compareFast(data.item.registry, $store.getters.getCurrentRegistry)"
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-if="$jskos.mappingRegistryIsStored(data.item.registry) && canCreateMapping({ registry: currentRegistry, mapping: Object.assign({}, data.item.mapping, { partOf: null }), user })"
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.saveAsMapping', [$jskos.prefLabel(currentRegistry)]), delay: defaults.delay.medium }"
+              class="button"
+              icon="save"
+              @click="postMapping({ mapping: Object.assign({}, data.item.mapping, { partOf: null }), registry: currentRegistry, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false }})" />
+          </div>
+          <div
+            v-else-if="showEditingTools"
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: canDeleteMapping({ mapping: data.item.mapping, user }) ? $t('mappingBrowser.delete') : $t('mappingBrowser.cantDelete'), delay: defaults.delay.medium }"
+              :class="canDeleteMapping({ mapping: data.item.mapping, user }) ? 'button-delete' : 'button-disabled'"
+              icon="trash-alt"
+              @click="canDeleteMapping({ mapping: data.item.mapping, user }) && deleteMapping({ mapping: data.item.mapping, _before: () => { loadingGlobal = true }, _after: () => { loadingGlobal = false } })" />
+          </div>
+          <div
+            v-if="showCocodaLink"
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.openInCocoda'), delay: defaults.delay.medium }"
+              class="button"
+              icon="external-link-square-alt"
+              @click="openInCocoda(data.item.mapping)" />
+          </div>
+          <div
+            v-if="data.item.mapping"
+            class="mappingBrowser-toolbar-button">
+            <font-awesome-icon
+              v-b-tooltip.hover="{ title: $t('mappingBrowser.showDetail'), delay: defaults.delay.medium }"
+              icon="info-circle"
+              class="button"
+              @click="openMappingDetail(data.item.mapping)" />
+          </div>
+        </span>
+      </template>
+      <template #HEAD_actions>
+        <span />
+      </template>
+      <template #ITEM_ROW="{ item }">
+        <span>
+          <loading-indicator
+            v-if="item.type == 'loading'"
+            size="sm" />
+          <span
+            v-if="item.type == 'noItems'">
+            {{ $t("mappingBrowser.noItems") }}
+          </span>
+        </span>
+      </template>
+      <template #extra="data">
+        <span>
+          <date-string
+            v-if="data.item.occurrence == null"
+            :date="data.value.date" />
+          <span v-else-if="data.item.occurrence.count == -1">-</span>
+          <span
+            v-else
+            v-b-tooltip.hover="{ title: $t('mappingBrowser.occurrenceCountTooltip', [$jskos.prefLabel(data.item.occurrence?.database, { language: locale, fallbackToUri: false }) || $t('general.catalog')]), delay: defaults.delay.medium }">
+            <auto-link
+              :link="data.item.occurrence.url"
+              :text="String(data.item.occurrence.count)" />
+          </span>
+        </span>
+      </template>
+      <template #BEFORE_SECTION="{ section }">
+        <span
+          v-if="section.totalCount > 0 || section.loading || !hideEmptySections">
+          <div style="display: flex; position: relative;">
+            <div
+              style="flex: 1; padding-left: 5px;"
+              :class="{
+                'fontWeight-heavy': true,
+                'mappingBrowser-registry-selectable': $jskos.mappingRegistryIsStored(section.registry) && !section.registry.readonly
+              }"
+              @click="useRegistryForSaving(section.registry)">
+              <registry-info
+                :registry="section.registry"
+                :show-info-icon="true"
+                :show-details="false"
+                :show-capabilities="false" />
+            </div>
+            <b-pagination
+              v-if="section.totalCount > searchLimit"
+              :value="section.page"
+              :total-rows="section.totalCount"
+              :per-page="searchLimit"
+              class="mappingBrowser-pagination justify-content-center"
+              :class="{
+                'pagination-hide-goToLast': section.totalCount > 50000,
+              }"
+              size="sm"
+              @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
+              @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
+            <div class="mappingBrowser-pagination-number fontSize-small">
+              <a
+                v-if="section.lastPage > 4"
+                :id="`mappingBrowser-pagination-goToPage-${section.id}`"
+                v-b-tooltip.hover.left="{ title: $t('mappingBrowser.goToPageTooltip'), delay: defaults.delay.medium }"
+                href=""
+                class="fontSize-verySmall"
+                style="margin-right: 6px;"
+                @click.stop.prevent="setPopoverShown(`goToPage-${section.id}`, false)">
+                <font-awesome-icon icon="arrow-right-to-bracket" />
+              </a>
+              <span v-if="section.totalCount === 0">
+                {{ $t("mappingBrowser.noItems") }}
+              </span>
+              <span v-else>
+                {{ section.items.length }} {{ $t("general.of") }} {{ section.totalCount.toLocaleString() }}
+              </span>
+              <span
+                v-if="!!registryHasErrored[section.registry.uri]"
+                v-b-tooltip.hover="{ title: $t('mappingBrowser.registryHasErrored'), delay: defaults.delay.medium }"
+                class="missingDataIndicator" />
+            </div>
+            <data-modal-button
+              style="margin-left: 3px;"
+              :data="section.items.map(item => item.mapping).filter(mapping => mapping != null)"
+              :url="section.url"
+              :total-count="section.totalCount"
+              :position-bottom="-1"
+              type="mapping" />
+          </div>
+          <loading-indicator-full
+            v-if="section.loading"
+            size="sm" />
+        </span>
+      </template>
     </flexible-table>
     <!-- Mapping detail modal -->
     <mapping-detail
@@ -383,10 +383,10 @@
     <b-popover
       v-for="section in sections.filter(s => s.lastPage > 4)"
       :key="section.randomId"
-      :show.sync="popoverShown[`goToPage-${section.id}`]"
+      v-model="popoverShown[`goToPage-${section.id}`]"
       :target="`mappingBrowser-pagination-goToPage-${section.id}`"
-      triggers="click"
-      placement="bottomleft"
+      click
+      placement="bottom-start"
       @shown="goToPagePopoverShown"
       @hide="popoverHide($event, `goToPage-${section.id}`)">
       <div ref="goToPagePopover">
@@ -396,7 +396,7 @@
             type="number"
             size="sm"
             style="display: inline-block; width: 100px;"
-            @keyup.enter.native="goToPage(section)" />
+            @keyup.enter="goToPage(section)" />
           <b-button
             variant="primary"
             size="sm"
@@ -414,11 +414,10 @@
     <b-popover
       v-if="conceptDetailPopoverConcept && Object.keys(conceptDetailPopoverContentMap).length"
       :key="conceptDetailPopoverID"
-      :show.sync="popoverShown[`conceptDetailPopover-${conceptDetailPopoverID}`]"
+      v-model="popoverShown[`conceptDetailPopover-${conceptDetailPopoverID}`]"
       :target="conceptDetailPopoverElement"
       placement="top"
-      triggers=""
-      boundary="window"
+      manual
       @shown="popoverShow($event, `conceptDetailPopover-${conceptDetailPopoverID}`)"
       @hide="popoverHide($event, `conceptDetailPopover-${conceptDetailPopoverID}`)">
       <div style="max-height: 400px; overflow: auto;">
@@ -444,6 +443,7 @@ import MappingDetail from "./MappingDetail.vue"
 import AnnotationPopover from "./AnnotationPopover.vue"
 import DataModalButton from "./DataModalButton.vue"
 import DateString from "./DateString.vue"
+import { markRaw } from "vue"
 import _ from "lodash"
 
 import ContentMap from "./ContentMap.vue"
@@ -498,6 +498,7 @@ export default {
       default: () => ({}),
     },
   },
+  emits: ["pageChange"],
   data () {
     return {
       /** Currently hovered item unique ID  */
@@ -644,6 +645,9 @@ export default {
     hoveredConceptElement() {
       return this.$store.state.hoveredConceptElement
     },
+    hoveredConceptElementId() {
+      return this.$store.state.hoveredConceptElementId
+    },
     // Content for popover with ContentMap component
     conceptDetailPopoverContentMap() {
       const contentMap = mainLanguagesContentMapForConcept(getItem(this.conceptDetailPopoverConcept))
@@ -657,12 +661,15 @@ export default {
     hoveredConcept() {
       if (this.hoveredConceptElement && this.$el.contains(this.hoveredConceptElement)) {
         this.conceptDetailPopoverConcept = this.hoveredConcept
-        this.conceptDetailPopoverElement = this.hoveredConceptElement
-        this.conceptDetailPopoverID = `${this.hoveredConceptElement?.__vue__._uid}`
+        // markRaw: DOM node in reactive component data (see store/index.js).
+        this.conceptDetailPopoverElement = markRaw(this.hoveredConceptElement)
+        // Comes from the store payload now; used to be recovered from the DOM
+        // node via `__vue__._uid`, neither of which exists in Vue 3.
+        this.conceptDetailPopoverID = `${this.hoveredConceptElementId}`
         // Delay showing the popover
         setTimeout(() => {
           if (this.conceptDetailPopoverElement === this.hoveredConceptElement) {
-            this.$set(this.popoverShown, `conceptDetailPopover-${this.conceptDetailPopoverID}`, true)
+            this.popoverShown[`conceptDetailPopover-${this.conceptDetailPopoverID}`] = true
           }
         }, this.defaults.delay.long.show)
       }
@@ -728,16 +735,22 @@ export default {
         })
       }
     },
+    // Sets the visibility of one popover.
+    // Exists so templates don't have to call `$set` directly: that global
+    // helper is gone in Vue 3, and a method gives one place to change.
+    setPopoverShown(id, shown) {
+      this.popoverShown[id] = shown
+    },
     // Gets called by popover's @shown function to add them to currentPopovers (not required for all popovers)
     popoverShow(event, id) {
       event.preventDefault()
-      this.$set(this.currentPopovers, id, event)
+      this.currentPopovers[id] = event
     },
     // Gets called by popovers @hide function to add them to currentPopovers
     popoverHide(event, id) {
       if (this.popoverShown[id]) {
         event.preventDefault()
-        this.$set(this.currentPopovers, id, event)
+        this.currentPopovers[id] = event
       }
     },
     hoverHandlers() {
@@ -748,8 +761,8 @@ export default {
           delta: 5,
           handler: (isInside) => {
             if (!isInside) {
-              this.$set(this.popoverShown, id, false)
-              this.$delete(this.currentPopovers, id)
+              this.popoverShown[id] = false
+              delete this.currentPopovers[id]
             }
           },
         })
@@ -823,7 +836,7 @@ export default {
     },
     goToPage(section) {
       this.$emit("pageChange", { registry: section.registry, page: this.goToPageValues[section.id], userInitiated: true })
-      this.$set(this.popoverShown, `goToPage-${section.id}`, false)
+      this.popoverShown[`goToPage-${section.id}`] = false
     },
     goToPagePopoverShown(event) {
       const inputField = event.relatedTarget && event.relatedTarget.getElementsByTagName("input")[0]

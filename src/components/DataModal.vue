@@ -8,7 +8,7 @@
     size="lg">
     <table class="dataModal-links">
       <tr v-if="count > 0">
-        <td class="fontWeight-heavy text-right">
+        <td class="fontWeight-heavy text-end">
           {{ $t("dataModal.localDownload") }} ({{ count.toLocaleString() }})
         </td>
         <td>
@@ -53,7 +53,7 @@
         </td>
       </tr>
       <tr v-if="url">
-        <td class="fontWeight-heavy text-right">
+        <td class="fontWeight-heavy text-end">
           {{ $t("dataModal.apiLinks") }} ({{ (totalCount || count).toLocaleString() }})
         </td>
         <td>
@@ -163,9 +163,9 @@ export default {
     numberText() {
       let count = this.count
       if (this.totalCount && count != this.totalCount) {
-        return `${count.toLocaleString()} ${this.$t("general.of")} ` + this.$tc(`dataModal.${this.computedType}`, this.totalCount, { count: this.totalCount.toLocaleString() })
+        return `${count.toLocaleString()} ${this.$t("general.of")} ` + this.$t(`dataModal.${this.computedType}`, { count: this.totalCount.toLocaleString() }, this.totalCount)
       } else {
-        return this.$tc(`dataModal.${this.computedType}`, count, { count })
+        return this.$t(`dataModal.${this.computedType}`, { count }, count)
       }
     },
     isArray() {

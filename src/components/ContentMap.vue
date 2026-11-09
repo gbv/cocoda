@@ -1,8 +1,9 @@
 <template>
   <div class="fontSize-small">
-    <template v-for="({ sources, languages, margin, classes }, text, index) in contentMap">
+    <template
+      v-for="({ sources, languages, margin, classes }, text, index) in contentMap"
+      :key="index">
       <div
-        :key="index"
         :style="`margin-bottom: ${margin ? 5 : 0}px;`"
         :class="classes || ''">
         <span @click="$emit('click', text)">
@@ -23,5 +24,6 @@ export default {
       required: true,
     },
   },
+  emits: ["click"],
 }
 </script>

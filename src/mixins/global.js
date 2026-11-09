@@ -51,11 +51,6 @@ export default {
       object = getItem(object) || object
       return _.get(object, "_registry") || _.get(object, "inScheme[0]._registry")
     },
-    toggleMinimize() {
-      for (let child of this.$children) {
-        child.toggleMinimize()
-      }
-    },
     refresh(key) {
       this.$parent && this.$parent.refresh(key)
     },

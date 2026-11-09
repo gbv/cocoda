@@ -238,30 +238,30 @@ export default {
             mapping.contributor.push(creator)
           }
         }
-        this.$delete(mapping, "creator")
+        delete mapping.creator
       }
       // Prevent issue with empty strings as prefLabels
       for (let prop of ["creator", "contributor"].filter(p => mapping[p])) {
         for (let person of mapping[prop]) {
           if (person.uri === "") {
-            this.$delete(person, "uri")
+            delete person.uri
           }
           _.forOwn(person.prefLabel, (value, key) => {
             if (value == "") {
-              this.$delete(person.prefLabel, key)
+              delete person.prefLabel[key]
             }
           })
           if (_.isEmpty(person.prefLabel)) {
-            this.$delete(person, "prefLabel")
+            delete person.prefLabel
           }
         }
         mapping[prop] = mapping[prop].filter(p => !_.isEmpty(p))
       }
       if (mapping.creator && mapping.creator.length == 0) {
-        this.$delete(mapping, "creator")
+        delete mapping.creator
       }
       if (mapping.contributor && mapping.contributor.length == 0) {
-        this.$delete(mapping, "contributor")
+        delete mapping.contributor
       }
       return mapping
     },
@@ -537,7 +537,7 @@ export default {
               if (!existing || !existing.exist.length) {
                 continue
               }
-              this.$set(existing, "exist", existing.exist.filter(uri => uri != mapping.uri))
+              existing.exist = existing.exist.filter(uri => uri != mapping.uri)
             }
           }
         }

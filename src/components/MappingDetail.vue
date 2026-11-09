@@ -29,7 +29,7 @@
           <!-- Source Concepts -->
           <b-row v-if="$jskos.conceptsOfMapping(mapping, 'from').length">
             <b-col cols="3">
-              {{ $tc("mappingDetail.sourceConcept", $jskos.conceptsOfMapping(mapping, 'from').length) }}:
+              {{ $t("mappingDetail.sourceConcept", $jskos.conceptsOfMapping(mapping, 'from').length) }}:
             </b-col>
             <b-col>
               <p
@@ -57,7 +57,7 @@
           <!-- Target Concepts -->
           <b-row v-if="$jskos.conceptsOfMapping(mapping, 'to').length">
             <b-col cols="3">
-              {{ $tc("mappingDetail.targetConcept", $jskos.conceptsOfMapping(mapping, 'to').length) }}:
+              {{ $t("mappingDetail.targetConcept", $jskos.conceptsOfMapping(mapping, 'to').length) }}:
             </b-col>
             <b-col>
               <p

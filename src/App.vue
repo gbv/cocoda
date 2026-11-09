@@ -80,8 +80,8 @@
                 :is-left="isLeft"
                 :settings="itemDetailSettings[isLeft ? 'left' : 'right']"
                 class="mainComponent visualComponent conceptBrowserItem conceptBrowserItemDetail"
-                @searchMappings="searchMappings($event)"
-                @searchConcept="setConceptSearchQuery(isLeft, $event, true)" />
+                @search-mappings="searchMappings($event)"
+                @search-concept="setConceptSearchQuery(isLeft, $event, true)" />
               <!-- Slider -->
               <resizing-slider />
               <!-- ConceptList -->
@@ -197,6 +197,7 @@ import ResizingSlider from "./components/ResizingSlider.vue"
 import _ from "lodash"
 import LoadingIndicatorFull from "./components/LoadingIndicatorFull.vue"
 import MiniMizer from "./components/MiniMizer.vue"
+import { createMinimizerRegistry, minimizerRegistryKey } from "@/utils/minimizer-registry.js"
 import { refreshRouter } from "./store/plugins.js"
 import ConceptSchemeSelection from "./components/ConceptSchemeSelection.vue"
 import { cdk } from "cocoda-sdk"
@@ -222,6 +223,12 @@ export default {
     TheNavbar, ConceptListWrapper, ItemDetail, MappingEditor, MappingBrowser, ResizingSlider, LoadingIndicatorFull, MiniMizer, ConceptSchemeSelection,
   },
   mixins: [auth, objects, computed, pageVisibility],
+  provide() {
+    // Shared by every MiniMizer, ResizingSlider and the MappingEditor: they sit
+    // in different component subtrees but need to find each other. Created here
+    // rather than in data() because it holds DOM nodes and needs no reactivity.
+    return { [minimizerRegistryKey]: createMinimizerRegistry() }
+  },
   data () {
     return {
       loaded: false,
@@ -824,6 +831,13 @@ html, body {
   height: 100%;
   margin: 0;
 }
+// Vue 3 mounts into the container element instead of replacing it, so there is
+// one more level between body and the app root. Without a height here the
+// percentage height below has nothing to resolve against and the app collapses
+// to its min-height.
+#cocoda {
+  height: 100%;
+}
 #app {
   height: 100%;
   width: 100%;
@@ -947,19 +961,19 @@ html, body {
 .tooltip {
   pointer-events: none !important;
 }
-// Override border color for all cocoda-vue-tabs
-.cocoda-vue-tabs-header-item.cocoda-vue-tabs-header-item-active {
+// Override border color for all jskos-vue-tabs
+.jskos-vue-tabs-header-item.jskos-vue-tabs-header-item-active {
   border-bottom-color: var(--color-primary) !important;
   background-color: var(--color-background-component-heading) !important;
 }
-// Override font-size for all cocoda-vue-tabs
-.cocoda-vue-tabs-sm {
+// Override font-size for all jskos-vue-tabs
+.jskos-vue-tabs-sm {
   font-size: 0.8rem !important;
 }
-.cocoda-vue-tabs-md {
+.jskos-vue-tabs-md {
   font-size: 0.9rem !important;
 }
-.cocoda-vue-tabs-lg {
+.jskos-vue-tabs-lg {
   font-size: 1.1rem !important;
 }
 </style>

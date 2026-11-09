@@ -34,7 +34,7 @@
         </span>
         <span
           v-else-if="index == 1"
-          v-b-tooltip.hover="allowShowAncestors ? { title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium } : null"
+          v-b-tooltip.hover="allowShowAncestors ? { title: $t('conceptDetail.showAllAncestors'), delay: defaults.delay.medium } : { active: false }"
           :class="{
             'conceptDetail-ancestors-more': true,
             button: allowShowAncestors,

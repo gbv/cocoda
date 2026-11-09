@@ -6,10 +6,10 @@
       icon="cog"
       class="button" />
     <b-popover
-      :show.sync="isShown"
+      v-model="isShown"
       :target="`componentSettings-icon-${id}`"
-      triggers="click"
-      placement="bottomright">
+      click
+      placement="bottom-end">
       <div ref="popover">
         <slot>
           <template v-for="setting in settings">

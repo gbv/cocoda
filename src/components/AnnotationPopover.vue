@@ -6,12 +6,10 @@
     <b-popover
       v-if="enable"
       ref="annotationPopover"
+      v-model="show"
       :target="element"
-      :show.sync="show"
-      :triggers="[]"
-      :disabled="true"
-      boundary="window"
-      placement="lefttop">
+      manual
+      placement="left-start">
       <loading-indicator-full
         v-if="loading"
         style="z-index: 1100;" />
@@ -124,6 +122,7 @@ export default {
       default: null,
     },
   },
+  emits: ["hide", "refresh-annotations", "show"],
   data() {
     return {
       show: false,
@@ -398,7 +397,8 @@ export default {
         if (!success) {
           return false
         }
-        this.$delete(mapping.annotations, index)
+        // splice, not $delete/delete: annotations is an array.
+        mapping.annotations.splice(index, 1)
         return success
       })
     },

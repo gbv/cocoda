@@ -2,24 +2,29 @@
   <div
     class="conceptList">
     <!-- Show concepts -->
-    <virtual-list
+    <dynamic-scroller
       ref="conceptListItems"
       class="conceptListItems"
-      :data-key="'uri'"
-      :data-sources="items"
-      :data-component="itemComponent"
-      :keeps="70"
-      :extra-props="{
-        isLeft,
-        showChildren,
-        showScheme,
-        buttons,
-      }"
-      :wrap-style="{
-        'margin-top': '5px',
-        'margin-bottom': '15px',
-      }"
-      @scroll.native="$emit('scroll')" />
+      :items="items"
+      key-field="key"
+      :min-item-size="20"
+      :emit-update="true"
+      @update="emitVisibleConcepts">
+      <template #default="{ item, index, active }">
+        <dynamic-scroller-item
+          :item="item"
+          :active="active"
+          :data-index="index">
+          <concept-list-item
+            :source="item"
+            :index="index"
+            :is-left="isLeft"
+            :show-children="showChildren"
+            :show-scheme="showScheme"
+            :buttons="buttons" />
+        </dynamic-scroller-item>
+      </template>
+    </dynamic-scroller>
     <div
       v-if="noItems"
       class="conceptListItems-noItems">
@@ -33,9 +38,8 @@
 <script>
 import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 import ConceptListItem from "./ConceptListItem.vue"
-import VirtualList from "vue-virtual-scroll-list"
+import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller"
 import _ from "lodash"
-import { scroller } from "vue-scrollto/src/scrollTo"
 
 // Import mixins
 import objects from "@/mixins/cdk.js"
@@ -50,7 +54,9 @@ export default {
   name: "ConceptList",
   components: {
     LoadingIndicatorFull,
-    VirtualList,
+    ConceptListItem,
+    DynamicScroller,
+    DynamicScrollerItem,
   },
   mixins: [objects, computed, mappedStatus],
   props: {
@@ -104,14 +110,12 @@ export default {
       default: false,
     },
   },
-  emits: ["scroll"],
+  emits: ["visible-concepts"],
   data () {
     return {
       loading: false,
       currentSelectedConcept: null,
       shouldScroll: true,
-      scrollTo: scroller(),
-      itemComponent: ConceptListItem,
     }
   },
   computed: {
@@ -126,9 +130,13 @@ export default {
         return []
       }
       let items = []
-      for (let concept of this.concepts) {
+      for (const [index, concept] of this.concepts.entries()) {
         let item = {
           uri: concept ? concept.uri : "loading",
+          // The scroller keys rows by this. Placeholders for concepts that are
+          // not loaded yet have no URI, and giving them all the same key made
+          // them collapse into one row.
+          key: concept ? concept.uri : `loading-${index}`,
           concept,
           depth: 0,
           isSelected: this.$jskos.compareFast(this.conceptSelected, concept),
@@ -261,14 +269,15 @@ export default {
         concept: nextConcept,
       })
     },
-    children(item) {
+    children(parent) {
       let items = []
-      let concept = getItem(item.concept)
-      let depth = item.depth + 1
+      let concept = getItem(parent.concept)
+      let depth = parent.depth + 1
       if (concept && concept.__ISOPEN__ && concept.__ISOPEN__[this.isLeft]) {
-        for (let child of concept.narrower || []) {
+        for (const [index, child] of (concept.narrower || []).entries()) {
           let item = {
             uri: child ? child.uri : "loading",
+            key: child ? child.uri : `loading-${parent.key}-${index}`,
             concept: child,
             depth,
             isSelected: this.$jskos.compareFast(this.conceptSelected, child),
@@ -315,14 +324,28 @@ export default {
         }
       }
     },
+    /**
+     * Reports the concepts currently on screen.
+     *
+     * The scroller hands us the rendered and the visible index range; only the
+     * latter is of interest. This replaces walking the previous library's
+     * internal component tree to work out what the user can actually see.
+     */
+    emitVisibleConcepts(startIndex, endIndex, visibleStartIndex, visibleEndIndex) {
+      const concepts = this.items
+        .slice(visibleStartIndex, visibleEndIndex + 1)
+        .map(item => item.concept)
+        .filter(Boolean)
+      this.$emit("visible-concepts", concepts)
+    },
     scrollToInternal({ concept } = {}) {
       if (!concept) {
         return
       }
       const conceptList = this.$refs.conceptListItems
-      // Get cocoda-vue-tabs-content element
+      // Get the surrounding tab content element
       let container = conceptList && conceptList.$el
-      while (container && !container.classList.contains("cocoda-vue-tabs-content")) {
+      while (container && !container.classList.contains("jskos-vue-tabs-content")) {
         container = container.parentElement
       }
       if (!conceptList || !container || container.style.display == "none") {
@@ -339,9 +362,12 @@ export default {
         unwind()
         return
       }
-      // Check if concept is already in view
+      // Check if concept is already in view.
+      // The scroller keeps a hidden copy of an item whose height it has not
+      // measured yet, so pick the one that is actually rendered.
       const containerToCheck = container.getElementsByClassName("conceptListItems")[0]
-      const elementToCheck = containerToCheck && containerToCheck.querySelectorAll(`.conceptListItem[data-uri="${concept.uri}"]`)[0]
+      const elementToCheck = containerToCheck && [...containerToCheck.querySelectorAll(`.conceptListItem[data-uri="${concept.uri}"]`)]
+        .find(element => window.getComputedStyle(element).visibility !== "hidden")
       if (this.checkInView(containerToCheck, elementToCheck, false)) {
         unwind()
         return
@@ -349,7 +375,7 @@ export default {
       // Adjust index slightly to leave some space above selected concept after scrolling
       index = Math.min(index, Math.abs(index - 1), Math.abs(index - 2))
       _.delay(() => {
-        conceptList.scrollToIndex(index)
+        conceptList.scrollToItem(index)
         unwind()
       }, 200)
     },

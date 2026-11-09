@@ -1,6 +1,5 @@
 import jskos from "@/utils/jskos.js"
 import _ from "lodash"
-import Vue from "vue"
 
 import localforage from "localforage"
 import { canCreateMapping, canDeleteMapping, canUpdateMapping } from "@/utils/mapping-helpers"
@@ -340,7 +339,7 @@ const mutations = {
     }
     if (!creator || creator.length == 0) {
       // Remove creator from mapping
-      Vue.delete(state.mapping, "creator")
+      delete state.mapping.creator
     } else {
       state.mapping.creator = creator
     }
@@ -358,7 +357,7 @@ const mutations = {
     }
     if (!contributor || contributor.length == 0) {
       // Remove contributor from mapping
-      Vue.delete(state.mapping, "contributor")
+      delete state.mapping.contributor
     } else {
       state.mapping.contributor = contributor
     }
@@ -381,7 +380,7 @@ const mutations = {
     if (concordance && concordance.uri) {
       state.mapping.partOf = [{ uri: concordance.uri }]
     } else {
-      Vue.delete(state.mapping, "partOf")
+      delete state.mapping.partOf
     }
   },
 
@@ -412,7 +411,7 @@ const mutations = {
         // Remove same URI from identifier field
         state.mapping.identifier = state.mapping.identifier.filter(id => id !== uri)
       } else {
-        Vue.delete(state.mapping, "uri")
+        delete state.mapping.uri
       }
     }
     // Only set identifier if both fromScheme and toScheme are available

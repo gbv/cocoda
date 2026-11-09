@@ -36,7 +36,7 @@
         @click="button.onClick($event, concept)">
         <font-awesome-icon :icon="button.icon" />
       </span>
-      <div
+      <component
         :is="url ? 'router-link' : 'div'"
         :to="url"
         :class="{
@@ -50,7 +50,7 @@
           {{ $jskos.notation(scheme) }}
         </span>
         <item-name :item="concept" />
-      </div>
+      </component>
       <div
         v-if="canAddToMapping"
         v-b-tooltip.hover="{ title: $t('general.addToMapping'), delay: defaults.delay.medium}"
@@ -59,9 +59,21 @@
         <font-awesome-icon icon="plus-circle" />
       </div>
     </div>
-    <!-- Small loading indicator when loading narrower -->
+  </div>
+  <!--
+    The placeholder row for children that are still loading. This used to be a
+    loading indicator inside the parent row, which made that row taller for as
+    long as the fetch ran. vue-virtual-scroller measures a row once and keeps
+    the size: the children were then laid out below where the parent actually
+    ends, leaving a gap that no amount of scrolling cleared. Giving the
+    indicator its own row keeps every row's height stable, which is what the
+    scroller assumes.
+  -->
+  <div
+    v-else
+    class="conceptListItem conceptListItem-loadingChildren"
+    :style="`padding-left: ${depth * 10}px`">
     <loading-indicator
-      v-if="showChildren && hasChildren && isOpen && concept.narrower && concept.narrower.includes(null)"
       size="sm"
       style="margin-left: 36px" />
   </div>

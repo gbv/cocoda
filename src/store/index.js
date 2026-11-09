@@ -1,5 +1,5 @@
-import Vue from "vue"
-import Vuex from "vuex"
+import { markRaw } from "vue"
+import { createStore } from "vuex"
 import selected from "./modules/selected.js"
 import mapping from "./modules/mapping.js"
 import alerts from "./modules/alerts.js"
@@ -11,14 +11,16 @@ import _ from "lodash"
 // Root store
 import actions from "./actions.js"
 
-Vue.use(Vuex)
-
 const state = {
   loading: 0,
   config: {},
   configLoaded: false,
   hoveredConcept: null,
   hoveredConceptElement: null,
+  // Stable id of the component that rendered `hoveredConceptElement`. Supplied
+  // by the producer instead of being recovered from the element, which used to
+  // be done via `element.__vue__._uid` - both of which Vue 3 removes.
+  hoveredConceptElementId: null,
   draggedConcept: null,
   hoveredMapping: null,
   mousePosition: {
@@ -115,12 +117,17 @@ const mutations = {
   setConfigLoaded(state) {
     state.configLoaded = true
   },
-  setHoveredConcept(state, { concept, element = null }) {
+  setHoveredConcept(state, { concept, element = null, elementId = null }) {
     if (!jskos.compareFast(concept, state.hoveredConcept)) {
       state.hoveredConcept = concept && { uri: concept.uri }
     }
+    state.hoveredConceptElementId = elementId
     if (state.hoveredConceptElement !== element) {
-      state.hoveredConceptElement = element
+      // markRaw: this is a DOM node, not data. Vue 3 would otherwise wrap it in
+      // a reactive Proxy, which breaks identity checks (`!==` here, `contains()`
+      // in MappingBrowserTable) and the DOM APIs called on it. No effect under
+      // Vue 2.
+      state.hoveredConceptElement = element && markRaw(element)
     }
   },
   setDraggedConcept(state, { concept }) {
@@ -141,7 +148,7 @@ const mutations = {
   },
 }
 
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     selected, mapping, alerts, auth, settings,
   },
