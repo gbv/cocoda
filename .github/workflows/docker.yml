@@ -5,10 +5,10 @@ on:
       - master
       - dev
       - test
+      - vue3
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
     paths-ignore:
-      - '.github/**'
       - '**.md'
       - '.*'
       - 'eslint.config.js'
