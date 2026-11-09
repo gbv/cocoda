@@ -4,7 +4,7 @@ description: Installs build dependencies and builds the project
 inputs:
   version:
     description: Node.js version
-    default: 20.x
+    default: 26.x
 
 runs:
   using: "composite"
