@@ -10,6 +10,8 @@
  * and `narrower: []` means "leaf".
  */
 
+import { addMappingIdentifiers } from "jskos-tools"
+
 const SCHEME_TYPE = "http://www.w3.org/2004/02/skos/core#ConceptScheme"
 const CONCEPT_TYPE = "http://www.w3.org/2004/02/skos/core#Concept"
 
@@ -160,7 +162,9 @@ export const concordance = {
   creator: [{ prefLabel: { en: "Test Creator" } }],
 }
 
-export const remoteMapping = {
+// jskos-server adds the content and members identifiers to every mapping it
+// serves, and the MappingBrowser relies on them to highlight matches.
+export const remoteMapping = addMappingIdentifiers({
   uri: "http://example.org/mapping/1",
   type: ["http://www.w3.org/2004/02/skos/core#exactMatch"],
   fromScheme: { uri: leftScheme.uri },
@@ -168,7 +172,7 @@ export const remoteMapping = {
   from: { memberSet: [{ uri: leftArts.uri, notation: leftArts.notation }] },
   to: { memberSet: [{ uri: rightKunst.uri, notation: rightKunst.notation }] },
   partOf: [{ uri: concordance.uri }],
-}
+})
 
 export const concordances = [concordance]
 export const mappings = [remoteMapping]
