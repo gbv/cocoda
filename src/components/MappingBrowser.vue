@@ -1211,6 +1211,12 @@ export default {
     this.clearSearchFilter()
     // Set tab to search on start
     this.tab = this.tabIndexes.search
+    // clearSearchFilter() queued a search, since the tab was not the search tab
+    // yet. mounted() does the initial search itself (selectedChangedHandler);
+    // in Vue 2 that emptied the queue before the tab watcher ran. Vue 3 runs
+    // the watcher first, so the queued search would start and then be
+    // cancelled by the one from mounted().
+    this.searchNeedsRefresh = []
   },
   async mounted() {
     if (!this.concordancesRepeatManager && this.concordanceRegistries.length) {

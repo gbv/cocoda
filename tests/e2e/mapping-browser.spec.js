@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test"
 import { addMappingIdentifiers } from "jskos-tools"
 import { openApp, selectScheme, LEFT, RIGHT } from "./support/app.js"
-import { bigScheme, bigConcepts, rightScheme, rightKunst } from "./fixtures/data.js"
+import { bigScheme, bigConcepts, leftScheme, rightScheme, rightKunst } from "./fixtures/data.js"
 
 /**
  * Paging through mappings in the MappingBrowser.
@@ -69,3 +69,33 @@ test("the last page holds the remainder", async ({ page }) => {
   await expect(entry(page, "B011").first()).toBeVisible()
   await expect(entry(page, "B009")).toHaveCount(0)
 })
+
+/**
+ * created() queues a search while the tab is not yet the search tab, and
+ * mounted() starts the initial search itself. In Vue 2 mounted() ran before
+ * the tab watcher and emptied that queue; Vue 3 runs the watcher first, so
+ * every start sent each request twice and cancelled the first, which
+ * cocoda-sdk logs as "CanceledError: There was a newer refresh operation."
+ * With schemes on both sides the second search is the filtered one.
+ */
+for (const [name, path] of [
+  ["without schemes", "/"],
+  ["with schemes on both sides", `/?fromScheme=${encodeURIComponent(leftScheme.uri)}&toScheme=${encodeURIComponent(rightScheme.uri)}`],
+]) {
+  test(`the initial search runs once, ${name}`, async ({ page }) => {
+    const cancelled = []
+    page.on("console", message => {
+      if (message.text().includes("newer refresh operation")) {
+        cancelled.push(message.text())
+      }
+    })
+
+    const { mappingRequests } = await openApp(page, { path, mappings: pagedMappings })
+
+    await expect.poll(() => mappingRequests.length).toBeGreaterThan(0)
+    // Give a second search the time to show up.
+    await page.waitForTimeout(1000)
+    expect(mappingRequests).toHaveLength(1)
+    expect(cancelled).toEqual([])
+  })
+}
