@@ -12,6 +12,10 @@ const i18n = createI18n({
   // Silence fallback warnings outside of development.
   fallbackWarn: import.meta.env.DEV,
   missingWarn: import.meta.env.DEV,
+  // Some messages contain HTML on purpose and are rendered with v-html.
+  // vue-i18n 8 did not warn about that; 11 does unless told otherwise, its
+  // documented default of "off" notwithstanding.
+  warnHtmlInMessage: "off",
   messages,
 })
 
