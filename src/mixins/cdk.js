@@ -464,7 +464,7 @@ export default {
         if (_alert) {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
-            this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
+            this.$store.commit({ type: "alerts/hide", alert })
             this.restoreMappingFromTrash({ uri: config.mapping.uri })
           })
         }
@@ -497,7 +497,7 @@ export default {
         if (_alert) {
           this.alert(this.$t("alerts.mappingDeleted", [jskos.prefLabel(registry, { fallbackToUri: false })]), null, "success", this.$t("general.undo"), alert => {
             // Hide alert
-            this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
+            this.$store.commit({ type: "alerts/hide", alert })
             this.restoreMappingFromTrash({ uri: config.mapping.uri })
           })
         }
