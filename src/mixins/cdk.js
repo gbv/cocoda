@@ -150,6 +150,14 @@ export default {
       if (!mapping) {
         return null
       }
+      // cocoda-sdk up to 3.6 gave every mapping its content and members
+      // identifiers; since 3.7 only mappings from servers that store them
+      // have any (OccurrencesApi, for one, delivers none). MappingBrowser
+      // highlights by these identifiers, and the URL refers to an unsaved
+      // mapping by its content identifier.
+      if (!mapping.identifier) {
+        mapping.identifier = jskos.addMappingIdentifiers(mapping).identifier
+      }
       for (let fromTo of ["from", "to"]) {
         if (mapping[fromTo + "Scheme"]) {
           mapping[fromTo + "Scheme"] = saveItem(mapping[fromTo + "Scheme"], { type: "scheme", returnIfExists: true })
