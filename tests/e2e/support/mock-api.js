@@ -5,7 +5,7 @@ import {
   narrower,
   conceptsByUri,
   concordances,
-  mappings,
+  mappings as fixtureMappings,
 } from "../fixtures/data.js"
 
 /**
@@ -22,17 +22,35 @@ import {
  * /narrower, /ancestors, /types, /suggest, /search.
  */
 
-function json(route, body) {
+/**
+ * `total` is the size of the whole result when `body` is only one page of it;
+ * the concept list and the mapping browser page through results and read
+ * the total from X-Total-Count.
+ */
+function json(route, body, total = Array.isArray(body) ? body.length : 1) {
   return route.fulfill({
     status: 200,
     contentType: "application/json",
     headers: {
       "Access-Control-Allow-Origin": "*",
-      // The concept list pages through results and reads the total from here.
-      "X-Total-Count": String(Array.isArray(body) ? body.length : 1),
+      // The mock is cross-origin to the app, so like jskos-server it has to
+      // expose the header, or cocoda-sdk falls back to the page's length.
+      "Access-Control-Expose-Headers": "X-Total-Count",
+      "X-Total-Count": String(total),
     },
     body: JSON.stringify(body),
   })
+}
+
+/**
+ * Since 3.8.4, cocoda-sdk joins `api` and the endpoint path by plain string
+ * concatenation, so an `api` ending in "/" yields ".../api//status". Real
+ * servers answer that like ".../api/status"; the mock has to as well.
+ */
+function requestUrl(route) {
+  const url = new URL(route.request().url())
+  url.pathname = url.pathname.replace(/\/{2,}/g, "/")
+  return url
 }
 
 /** `uri` may appear multiple times; cocoda-sdk also joins them with "|". */
@@ -117,7 +135,7 @@ function handleBartoc(route, url) {
  */
 const MAPPINGS_API = `${MOCK_API}/mappings-api`
 
-function handleMappingsApi(route, url) {
+function handleMappingsApi(route, url, mappings) {
   const path = url.pathname.replace(/^\/api\/mappings-api/, "") || "/"
   switch (path) {
     case "/status":
@@ -134,7 +152,7 @@ function handleMappingsApi(route, url) {
     case "/concordances":
       return json(route, applyPaging(url, concordances))
     case "/mappings":
-      return json(route, applyPaging(url, mappings))
+      return json(route, applyPaging(url, mappings), mappings.length)
     case "/annotations":
       return json(route, [])
     default:
@@ -218,14 +236,18 @@ function handleApi(route, url) {
 /**
  * Installs the request mocks on a page.
  *
+ * `mappings` replaces what the read-only mappings backend serves.
+ *
  * @returns {object} `unexpected` holds URLs that were blocked because they
  *   targeted neither the app itself nor a mocked API. `detailRequests` records
  *   every concept URI the app asked details for - that is how a test can tell
  *   whether lazy loading actually followed the visible part of a long list.
+ *   `mappingRequests` holds the URL of every request for mappings.
  */
-export async function installMocks(page, { config = testConfig } = {}) {
+export async function installMocks(page, { config = testConfig, mappings = fixtureMappings } = {}) {
   const unexpected = []
   const detailRequests = []
+  const mappingRequests = []
 
   // Order matters: when several routes match, Playwright uses the one
   // registered LAST. The catch-all therefore has to go in first, otherwise it
@@ -245,9 +267,12 @@ export async function installMocks(page, { config = testConfig } = {}) {
   })
 
   await page.route(`${MOCK_API}/**`, route => {
-    const url = new URL(route.request().url())
+    const url = requestUrl(route)
     if (url.pathname.startsWith("/api/mappings-api")) {
-      return handleMappingsApi(route, url)
+      if (url.pathname === "/api/mappings-api/mappings") {
+        mappingRequests.push(url)
+      }
+      return handleMappingsApi(route, url, mappings)
     }
     const path = url.pathname.replace(/^\/api/, "")
     if (path === "/data" || path === "/voc/concepts") {
@@ -257,11 +282,11 @@ export async function installMocks(page, { config = testConfig } = {}) {
   })
 
   await page.route(`${BARTOC_API}/**`, route => {
-    handleBartoc(route, new URL(route.request().url()))
+    handleBartoc(route, requestUrl(route))
   })
 
   // The app fetches ./cocoda.json at runtime (store/actions.js loadConfig).
   await page.route("**/cocoda.json", route => json(route, config))
 
-  return { unexpected, detailRequests }
+  return { unexpected, detailRequests, mappingRequests }
 }

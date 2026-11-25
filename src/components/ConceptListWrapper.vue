@@ -221,7 +221,13 @@ export default {
     currentChoice: {
       get() {
         let id = this.$settings.conceptListChoice[this.isLeft]
-        return this.dataChoices.find(choice => choice.id === id && choice.available) || this.dataChoices.find(choice => choice.available)
+        return this.dataChoices.find(choice => choice.id === id && choice.available)
+          || this.dataChoices.find(choice => choice.available)
+          // Nothing to show, e.g. a scheme without top concepts (like GND) and
+          // no favorites: fall back to the empty top concepts list, which
+          // says so. The wrapper is only rendered with a scheme selected, so
+          // that list is always there.
+          || this.dataChoices[0]
       },
       set(value) {
         this.$store.commit({

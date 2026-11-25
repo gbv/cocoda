@@ -4,7 +4,7 @@
     :title="`${$t('dataModal.title')} (${numberText})`"
     class="fontSize-normal"
     centered
-    hide-footer
+    no-footer
     size="lg">
     <table class="dataModal-links">
       <tr v-if="count > 0">

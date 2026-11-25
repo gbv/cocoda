@@ -4,7 +4,7 @@
     :title="$t(editing ? 'concordanceEditor.editConcordance' : 'concordanceEditor.addConcordance')"
     class="fontSize-normal"
     centered
-    hide-footer
+    no-footer
     size="md">
     <p>
       <b>{{ $t("schemeSelection.source") }}</b>

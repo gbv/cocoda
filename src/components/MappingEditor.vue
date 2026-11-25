@@ -208,7 +208,7 @@
     <b-modal
       ref="deleteModal"
       :title="$t('mappingEditor.deleteTitle')"
-      hide-footer>
+      no-footer>
       <p style="text-align: center;">
         {{ $t("mappingEditor.deleteText") }}
         <span v-if="hasChangedFromOriginal">

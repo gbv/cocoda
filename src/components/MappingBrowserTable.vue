@@ -321,7 +321,7 @@
             </div>
             <b-pagination
               v-if="section.totalCount > searchLimit"
-              :value="section.page"
+              :model-value="section.page"
               :total-rows="section.totalCount"
               :per-page="searchLimit"
               class="mappingBrowser-pagination justify-content-center"
@@ -329,8 +329,7 @@
                 'pagination-hide-goToLast': section.totalCount > 50000,
               }"
               size="sm"
-              @input="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: false })"
-              @change="$emit('pageChange', { registry: section.registry, page: $event, userInitiated: true })" />
+              @page-click="(event, page) => $emit('pageChange', { registry: section.registry, page })" />
             <div class="mappingBrowser-pagination-number fontSize-small">
               <a
                 v-if="section.lastPage > 4"
@@ -835,7 +834,7 @@ export default {
       window.open(url.substring(0, url.length - 1), "_self")
     },
     goToPage(section) {
-      this.$emit("pageChange", { registry: section.registry, page: this.goToPageValues[section.id], userInitiated: true })
+      this.$emit("pageChange", { registry: section.registry, page: this.goToPageValues[section.id] })
       this.popoverShown[`goToPage-${section.id}`] = false
     },
     goToPagePopoverShown(event) {

@@ -7,12 +7,11 @@
         v-for="(alert, index) in $store.state.alerts.alerts"
         :key="index"
         :variant="alert.variant"
-        :show="alert.countdown || !alert.shouldCountdown"
+        :model-value="alert.show"
         :dismissible="!alert.shouldCountdown"
         fade
         style="display: flex;"
-        @dismissed="$store.commit({ type: 'alerts/setCountdown', alert, countdown: 0 })"
-        @dismiss-count-down="$store.commit({ type: 'alerts/setCountdown', alert, countdown: $event })">
+        @update:model-value="$event || $store.commit({ type: 'alerts/hide', alert })">
         <div
           style="flex: 1;"
           v-html="alert.text" />
@@ -406,7 +405,7 @@ export default {
               // Handler if button is clicked
               (alert) => {
                 // Hide alert
-                this.$store.commit({ type: "alerts/setCountdown", alert, countdown: 0 })
+                this.$store.commit({ type: "alerts/hide", alert })
                 // Switch back to local mappings
                 this.$store.commit({
                   type: "settings/set",

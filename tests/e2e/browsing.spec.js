@@ -4,7 +4,7 @@ import {
   itemDetail, queryParams, schemeItems, LEFT, RIGHT,
 } from "./support/app.js"
 import {
-  leftScheme, rightScheme, leftScience, leftArts, leftPhysics, rightNature,
+  leftScheme, rightScheme, flatScheme, leftScience, leftArts, leftPhysics, rightNature,
 } from "./fixtures/data.js"
 
 /**
@@ -21,7 +21,7 @@ test("lists the configured schemes on both sides", async ({ page }) => {
 
   for (const isLeft of [LEFT, RIGHT]) {
     const items = schemeItems(page, isLeft)
-    await expect(items).toHaveCount(3)
+    await expect(items).toHaveCount(4)
     await expect(items.filter({ hasText: "LEFT" })).toBeVisible()
     await expect(items.filter({ hasText: "RIGHT" })).toBeVisible()
   }
@@ -79,4 +79,21 @@ test("a deep link restores scheme and concept", async ({ page }) => {
 
   await expect(itemDetail(page, LEFT)).toContainText("Science")
   await expect(conceptList(page, LEFT)).toBeVisible()
+})
+
+test("a scheme without top concepts shows an empty concept list", async ({ page }) => {
+  // Collected before the app boots: the error came on the first render.
+  const vueErrors = []
+  page.on("console", message => {
+    if (message.type() === "error" && message.text().startsWith("Vue error")) {
+      vueErrors.push(message.text())
+    }
+  })
+
+  await openApp(page, { path: "/?fromScheme=" + encodeURIComponent(flatScheme.uri) })
+
+  // With no top concepts and no favorites there is no list to choose;
+  // the concept list used to fail rendering altogether then.
+  await expect(conceptList(page, LEFT)).toContainText("No top concepts")
+  expect(vueErrors).toEqual([])
 })

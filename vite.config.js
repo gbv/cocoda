@@ -13,10 +13,10 @@ export default defineConfig(configEnv => ({
     }),
   ],
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        concordances: resolve(__dirname, "concordances.html"),
+        main: resolve(import.meta.dirname, "index.html"),
+        concordances: resolve(import.meta.dirname, "concordances.html"),
       },
     },
     outDir: "dist-temp",
@@ -31,7 +31,7 @@ export default defineConfig(configEnv => ({
       // production build only.
       "vue-i18n": "vue-i18n/dist/vue-i18n.esm-bundler.js",
       // This allows relative imports starting with @/ instead of absolute imports
-      "@": resolve(__dirname, "./src"),
+      "@": resolve(import.meta.dirname, "./src"),
     },
     dedupe: ["vue"],
   },

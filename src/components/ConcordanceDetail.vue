@@ -5,8 +5,8 @@
       :title="$t('mappingBrowser.concordanceDetailTitle')"
       class="fontSize-normal"
       centered
-      hide-footer
-      no-enforce-focus
+      no-footer
+      no-trap
       size="lg">
       <div v-if="concordance">
         <b-container
