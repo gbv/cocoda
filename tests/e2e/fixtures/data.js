@@ -43,7 +43,19 @@ export const bigScheme = {
   languages: ["en"],
 }
 
-export const schemes = [leftScheme, rightScheme, bigScheme]
+/**
+ * A scheme without top concepts, like GND: its concepts can only be reached
+ * by search, so the concept list has nothing to show.
+ */
+export const flatScheme = {
+  uri: "http://example.org/scheme/flat",
+  notation: ["FLAT"],
+  prefLabel: { en: "Flat Test Scheme" },
+  type: [SCHEME_TYPE],
+  languages: ["en"],
+}
+
+export const schemes = [leftScheme, rightScheme, bigScheme, flatScheme]
 
 function concept({ uri, notation, prefLabel, scheme, narrower = [], broader = [] }) {
   return {
