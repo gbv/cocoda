@@ -1871,20 +1871,10 @@ export default {
         }
       })
     },
-    changePage(type, { registry, page, userInitiated }) {
-      let currentPage = this[`${type}Pages`][registry.uri]
-      if (userInitiated) {
-        this[`${type}Pages`][registry.uri] = page
-        if (type == "search") {
-          this.search(registry.uri, page)
-        }
-      } else if (page != currentPage) {
-        // This is a workaround for bootstrap-vue's b-pagination to prevent an unwanted jump back to page 1
-        // See: https://github.com/bootstrap-vue/bootstrap-vue/issues/3372
-        this[`${type}Pages`][registry.uri] = page
-        this.$nextTick(() => {
-          this[`${type}Pages`][registry.uri] = currentPage
-        })
+    changePage(type, { registry, page }) {
+      this[`${type}Pages`][registry.uri] = page
+      if (type == "search") {
+        this.search(registry.uri, page)
       }
     },
     editConcordance(concordance) {

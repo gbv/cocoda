@@ -33,8 +33,11 @@ export function itemDetail(page, isLeft) {
  * when a scheme is preselected (deep link), the selection collapses and the
  * list is not rendered at all.
  */
-export async function openApp(page, { path = "/", config } = {}) {
-  const mocks = await installMocks(page, config ? { config } : {})
+export async function openApp(page, { path = "/", config, mappings } = {}) {
+  const mocks = await installMocks(page, {
+    ...config && { config },
+    ...mappings && { mappings },
+  })
   await page.goto(path)
   await expect(page.locator("#app")).toBeVisible()
   await expect(column(page, LEFT).locator(".conceptSchemeSelection")).toBeVisible()

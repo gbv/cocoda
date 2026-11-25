@@ -4,8 +4,8 @@
       v-if="canRemoveMappingFromConcordance({ mapping, user }) || availableTargetConcordances.length > 0"
       size="sm"
       :options="concordanceOptions"
-      :value="currentConcordance?.uri"
-      @change="changeConcordance" />
+      :model-value="currentConcordance?.uri"
+      @update:model-value="changeConcordance" />
     <span v-else-if="currentConcordance">{{ displayNameForConcordance(currentConcordance) }}</span>
     <span
       v-else

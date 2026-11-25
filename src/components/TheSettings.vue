@@ -37,11 +37,12 @@
                 {{ $t("settings.loggedOut") }}
               </span>
             </p>
-            <p v-if="$store.state.auth.available && !user && providers.length">
+            <p
+              v-if="$store.state.auth.available && !user && providers.length"
+              class="d-grid gap-2">
               <b-button
                 v-for="provider in providers"
                 :key="`login-provider-${provider.id}`"
-                block
                 variant="light"
                 @click="login(provider)">
                 <img
@@ -137,7 +138,7 @@
             <b-form-checkbox
               v-else
               style="filter: opacity(50%);"
-              :checked="true"
+              :model-value="true"
               :disabled="registry.has.mappings === false" />
             <registry-info
               :registry="registry"
