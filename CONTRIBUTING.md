@@ -10,6 +10,7 @@ To start contributing please make sure you have a [GitHub account](https://githu
 
 - [Table of Contents](#table-of-contents)
 - [Getting Started](#getting-started)
+- [Tests](#tests)
 - [Background](#background)
 - [Documentation](#documentation)
 - [Design Guidelines](#design-guidelines)
@@ -29,7 +30,7 @@ To start contributing please make sure you have a [GitHub account](https://githu
 
 ## Getting Started
 
-It's recommended to use Node.js v18 or above.
+Node.js 22.22.1 or newer is required (the pre-commit hook runs lint-staged, which needs it).
 
 ``` bash
 # get the sources
@@ -59,7 +60,40 @@ npm run lint
 
 # Fix linting errors
 npm run fix
+
+# Run unit and browser tests (see below)
+npm test
 ```
+
+## Tests
+
+There are two test suites:
+
+- **Unit tests** in `tests/unit`, run with [Vitest](https://vitest.dev/)
+- **Browser tests** in `tests/e2e`, run with [Playwright](https://playwright.dev/) in a headless Chromium
+
+The browser tests need a Chromium build that Playwright downloads separately from the npm package. Install it once after `npm ci`, and again whenever Playwright asks for it after an update of `@playwright/test`:
+
+```bash
+npx playwright install chromium
+```
+
+On Debian and Ubuntu, `npx playwright install --with-deps chromium` also installs the system libraries the browser needs (this requires sudo).
+
+```bash
+# run both suites
+npm test
+
+# unit tests only, once or on every change
+npm run test:unit
+npm run test:unit:watch
+
+# browser tests only, headless or in Playwright's UI
+npm run test:e2e
+npm run test:e2e:ui
+```
+
+The browser tests mock all backends, so they need neither network access nor credentials. They start the dev server on port 8080, or use one that is already running there. If another application uses that port, choose a different one with `COCODA_E2E_PORT=8090 npm run test:e2e`. When a test fails, Playwright keeps a video in `test-results/` and writes an HTML report to `playwright-report/`, which `npx playwright show-report` opens.
 
 ## Background
 
