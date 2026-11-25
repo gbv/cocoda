@@ -35,6 +35,17 @@ function json(route, body) {
   })
 }
 
+/**
+ * Since 3.8.4, cocoda-sdk joins `api` and the endpoint path by plain string
+ * concatenation, so an `api` ending in "/" yields ".../api//status". Real
+ * servers answer that like ".../api/status"; the mock has to as well.
+ */
+function requestUrl(route) {
+  const url = new URL(route.request().url())
+  url.pathname = url.pathname.replace(/\/{2,}/g, "/")
+  return url
+}
+
 /** `uri` may appear multiple times; cocoda-sdk also joins them with "|". */
 function requestedUris(url) {
   const raw = url.searchParams.getAll("uri")
@@ -245,7 +256,7 @@ export async function installMocks(page, { config = testConfig } = {}) {
   })
 
   await page.route(`${MOCK_API}/**`, route => {
-    const url = new URL(route.request().url())
+    const url = requestUrl(route)
     if (url.pathname.startsWith("/api/mappings-api")) {
       return handleMappingsApi(route, url)
     }
@@ -257,7 +268,7 @@ export async function installMocks(page, { config = testConfig } = {}) {
   })
 
   await page.route(`${BARTOC_API}/**`, route => {
-    handleBartoc(route, new URL(route.request().url()))
+    handleBartoc(route, requestUrl(route))
   })
 
   // The app fetches ./cocoda.json at runtime (store/actions.js loadConfig).
