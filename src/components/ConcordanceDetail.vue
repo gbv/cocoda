@@ -57,7 +57,7 @@
                 v-for="(publisher, index) in concordance.publisher"
                 :key="`concordanceDetail-publisher-${index}`">
                 <auto-link
-                  :link="publisher.url || publisher.uri"
+                  :href="publisher.url || publisher.uri"
                   :text="$jskos.prefLabel(publisher)" />
               </p>
             </b-col>
@@ -72,7 +72,7 @@
                 v-for="(creator, index) in concordance.creator || []"
                 :key="`concordanceDetail-creator-${index}`">
                 <auto-link
-                  :link="creator.url || creator.uri"
+                  :href="creator.url || creator.uri"
                   :text="$jskos.prefLabel(creator)" />
               </p>
             </b-col>
@@ -87,7 +87,7 @@
                 v-for="(contributor, index) in contributors"
                 :key="`mappingDetail-contributor-${index}`">
                 <auto-link
-                  :link="contributor.url || contributor.uri"
+                  :href="contributor.url || contributor.uri"
                   :text="$jskos.prefLabel(contributor)" />
               </p>
             </b-col>
@@ -111,7 +111,7 @@
             <b-col cols="3">
               {{ $t("dataModal.apiUrl") }}:
             </b-col>
-            <b-col><auto-link :link="concordance.url" /></b-col>
+            <b-col><auto-link :href="concordance.url" /></b-col>
           </b-row>
           <!-- License -->
           <b-row v-if="concordance.license?.length">
@@ -173,7 +173,7 @@
                   :class="{
                     'fontWeight-heavy': identifier == concordance.uri
                   }"
-                  :link="identifier" />
+                  :href="identifier" />
               </p>
             </b-col>
           </b-row>
@@ -210,7 +210,7 @@
 <script>
 import DataModal from "./DataModal.vue"
 import ItemName from "./ItemName.vue"
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
 

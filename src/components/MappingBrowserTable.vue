@@ -191,7 +191,7 @@
               <p class="fontWeight-heavy">{{ item.creator }}</p>
               <template v-if="item.mapping.creator && item.mapping.creator[0] && item.mapping.creator[0].uri">
                 <p class="fontSize-small">
-                  <auto-link :link="item.mapping.creator[0].uri" />
+                  <auto-link :href="item.mapping.creator[0].uri" />
                 </p>
                 <p
                   class="button"
@@ -297,7 +297,7 @@
             v-else
             v-b-tooltip.hover="{ title: $t('mappingBrowser.occurrenceCountTooltip', [$jskos.prefLabel(data.item.occurrence?.database, { language: locale, fallbackToUri: false }) || $t('general.catalog')]), delay: defaults.delay.medium }">
             <auto-link
-              :link="data.item.occurrence.url"
+              :href="data.item.occurrence.url"
               :text="String(data.item.occurrence.count)" />
           </span>
         </span>
@@ -434,7 +434,7 @@
 
 <script>
 import ItemName from "./ItemName.vue"
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 import LoadingIndicator from "./LoadingIndicator.vue"
 import LoadingIndicatorFull from "./LoadingIndicatorFull.vue"
 import RegistryInfo from "./RegistryInfo.vue"

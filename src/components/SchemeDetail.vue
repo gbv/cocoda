@@ -31,10 +31,10 @@
           v-if="licenseAttribution(_item).url"
           :href="licenseAttribution(_item).url"
           target="_blank">
-          <auto-link :link="licenseAttribution(_item).label" />
+          <auto-link :href="licenseAttribution(_item).label" />
         </a>
         <span v-else>
-          <auto-link :link="licenseAttribution(_item).label" />
+          <auto-link :href="licenseAttribution(_item).label" />
         </span>
       </span>
     </div>
@@ -45,7 +45,7 @@
       :key="`schemeDetail-${isLeft}-identifier-${index}`"
       class="schemeDetail-identifier">
       <font-awesome-icon :icon="identifier.startsWith('http') ? 'link' : 'id-card'" />
-      <auto-link :link="identifier" />
+      <auto-link :href="identifier" />
     </div>
     <div class="schemeDetail-identifier">
       <span v-if="_item.created">
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 import ItemName from "./ItemName.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"
 import RegistryName from "./RegistryName.vue"

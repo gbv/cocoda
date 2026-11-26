@@ -73,7 +73,7 @@
             <font-awesome-icon
               :icon="identifier.startsWith('http') ? 'link' : 'id-card'"
               @dblclick="copyToClipboard(elementForEvent($event))" />
-            <auto-link :link="identifier" />
+            <auto-link :href="identifier" />
           </div>
           <div
             v-for="type in types"
@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 import ItemName from "./ItemName.vue"
 import ConceptDetailAncestors from "./ConceptDetailAncestors.vue"
 import ItemDetailNarrower from "./ItemDetailNarrower.vue"

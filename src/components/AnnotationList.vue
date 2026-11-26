@@ -28,7 +28,7 @@
           :class="{
             'fontWeight-heavy': $jskos.annotationCreatorMatches(annotation, userUris)
           }"
-          :link="$jskos.annotationCreatorUri(annotation)"
+          :href="$jskos.annotationCreatorUri(annotation)"
           :text="$jskos.annotationCreatorName(annotation)" />
         <span v-if="mismatchTagAllowedFor(annotation) && canEdit(annotation) && mismatchTagConcepts.length">
           <br>{{ $t("annotationPopover.reason") }}:
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 import DateString from "./DateString.vue"
 
 // Import mixins

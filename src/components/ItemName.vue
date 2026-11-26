@@ -45,7 +45,7 @@
       <!-- Fallback to URI for concepts if no other data exists -->
       <auto-link
         v-if="fallbackToUri && !notation && !prefLabel && _item?.uri"
-        :link="_item?.uri" />
+        :href="_item?.uri" />
     </component>
     <!-- Show icon for schemes without concepts or concepts where no data could be loaded -->
     <div
@@ -59,7 +59,7 @@
 import _ from "lodash"
 import dragandrop from "@/mixins/dragandrop.js"
 import { getItem } from "@/items"
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 
 /**
  * Component that displays an item's notation (if defined) and prefLabel.

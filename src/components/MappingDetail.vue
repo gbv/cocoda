@@ -193,7 +193,7 @@
             </b-col>
             <b-col>
               <auto-link
-                :link="catalogEnrichmentLink" />
+                :href="catalogEnrichmentLink" />
             </b-col>
           </b-row>
           <!-- Registry -->
@@ -234,7 +234,7 @@
 <script>
 import DataModal from "./DataModal.vue"
 import ItemName from "./ItemName.vue"
-import AutoLink from "./AutoLink.vue"
+import { AutoLink } from "jskos-vue"
 import AnnotationList from "./AnnotationList.vue"
 import RegistryInfo from "./RegistryInfo.vue"
 import DateString from "./DateString.vue"
