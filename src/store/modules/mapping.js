@@ -334,7 +334,7 @@ const mutations = {
    * - creator: the creator array
    */
   setCreator(state, { creator }) {
-    if (creator && !_.isArray(creator)) {
+    if (creator && !Array.isArray(creator)) {
       creator = [creator]
     }
     if (!creator || creator.length == 0) {
@@ -352,7 +352,7 @@ const mutations = {
    * - contributor: the contributor array
    */
   setContributor(state, { contributor }) {
-    if (contributor && !_.isArray(contributor)) {
+    if (contributor && !Array.isArray(contributor)) {
       contributor = [contributor]
     }
     if (!contributor || contributor.length == 0) {

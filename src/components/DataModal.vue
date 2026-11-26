@@ -158,7 +158,7 @@ export default {
       return this.type || (this.$jskos.isConcept(this.isArray ? this._dataFromStore[0] : this._dataFromStore) ? "concept" : (this.$jskos.isScheme(this.isArray ? this._dataFromStore[0] : this._dataFromStore) ? "scheme" : "resource"))
     },
     count() {
-      return _.isArray(this.data) ? this.data.length : (this.data ? 1 : 0)
+      return Array.isArray(this.data) ? this.data.length : (this.data ? 1 : 0)
     },
     numberText() {
       let count = this.count
@@ -169,7 +169,7 @@ export default {
       }
     },
     isArray() {
-      return _.isArray(this.data)
+      return Array.isArray(this.data)
     },
     filename() {
       let filename = this.computedType

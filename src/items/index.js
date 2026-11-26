@@ -160,13 +160,13 @@ export function saveItem(item, options = {}) {
           ) && item[prop] != null && !_.isEqual(existing[prop], item[prop])
         ) ||
         (
-          _.isArray(existing[prop]) && _.isArray(item[prop]) && item[prop].length > existing[prop].length)
+          Array.isArray(existing[prop]) && Array.isArray(item[prop]) && item[prop].length > existing[prop].length)
       ) {
         modifyItem(existing, prop, item[prop])
       } else {
         // Special cases
         // Integrate object properties
-        if (!_.isArray(existing[prop]) && !_.isArray(item[prop]) && _.isObject(existing[prop]) && _.isObject(item[prop])) {
+        if (!Array.isArray(existing[prop]) && !Array.isArray(item[prop]) && _.isObject(existing[prop]) && _.isObject(item[prop])) {
           // Just overwrite null or not existing values
           for (let prop2 of Object.keys(item[prop])) {
             if (!existing[prop][prop2]) {
@@ -214,7 +214,7 @@ export function removeItemByUri(uri) {
 }
 
 export function modifyItem(item, path, value) {
-  path = _.isArray(path) ? path : path.split(".")
+  path = Array.isArray(path) ? path : path.split(".")
   if (path.length === 1 && relatedProps.includes(path[0]) && Array.isArray(value)) {
     value = value.map(mapMinimalProps)
   }

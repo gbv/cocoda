@@ -567,7 +567,7 @@ export default {
       }
       // Set schemes in registries to objects from Cocoda
       for (let registry of this.config.registries) {
-        if (_.isArray(registry.schemes)) {
+        if (Array.isArray(registry.schemes)) {
           registry._jskos.schemes = registry.schemes.map(scheme => getItem(scheme) || scheme)
         }
       }

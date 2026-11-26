@@ -163,7 +163,7 @@ export default {
           mapping[fromTo + "Scheme"] = saveItem(mapping[fromTo + "Scheme"], { type: "scheme", returnIfExists: true })
           let scheme = mapping[fromTo + "Scheme"]
           for (let bundleType of ["memberSet", "memberList", "memberChoice"]) {
-            if (_.isArray(mapping[fromTo][bundleType])) {
+            if (Array.isArray(mapping[fromTo][bundleType])) {
               mapping[fromTo][bundleType] = mapping[fromTo][bundleType].filter(concept => concept != null).map(concept => saveItem(concept, { scheme, type: "concept", returnIfExists: true }))
             }
           }
